@@ -1,0 +1,13 @@
+# Robots.txt - Wuitalur RPG System
+User-agent: *
+Allow: /Pag_Principal/
+Allow: /Sistema_Padrao/html/
+Allow: /Historia/html/
+Disallow: /Sistema_Padrao/script/
+Disallow: /.git/
+Disallow: *.md
+Disallow: *.json
+Disallow: /.htaccess
+
+# Sitemap (opcional)
+# Sitemap: https://seudominio.com/sitemap.xml
