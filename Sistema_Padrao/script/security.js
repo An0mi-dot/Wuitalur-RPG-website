@@ -5,7 +5,7 @@
     // Desabilitar menu de contexto (botão direito)
     document.addEventListener('contextmenu', function(e) {
         e.preventDefault();
-        showSecurityAlert('Clique direito desabilitado por segurança');
+        showSecurityAlert('Acesso negado');
         return false;
     });
     
@@ -21,21 +21,21 @@
         // Ctrl+Shift+I (DevTools)
         if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
             e.preventDefault();
-            showSecurityAlert('Inspetor de elementos bloqueado');
+            showSecurityAlert('Acesso negado');
             return false;
         }
         
         // Ctrl+U (Ver código fonte)
         if (e.ctrlKey && e.keyCode === 85) {
             e.preventDefault();
-            showSecurityAlert('Visualização de código fonte bloqueada');
+            showSecurityAlert('Operação bloqueada');
             return false;
         }
         
         // Ctrl+S (Salvar página)
         if (e.ctrlKey && e.keyCode === 83) {
             e.preventDefault();
-            showSecurityAlert('Download da página bloqueado');
+            showSecurityAlert('Download bloqueado');
             return false;
         }
     });
@@ -49,9 +49,7 @@
             window.outerWidth - window.innerWidth > threshold) {
             if (!devtools.open) {
                 devtools.open = true;
-                showSecurityAlert('DevTools detectado - fechando...');
-                // Opcional: redirecionar ou fechar aba
-                // window.location.href = 'about:blank';
+                showSecurityAlert('DevTools detectado');
             }
         } else {
             devtools.open = false;
@@ -61,36 +59,45 @@
     // Verificar periodicamente
     setInterval(detectDevTools, 500);
     
-    // Função para mostrar alertas de segurança
+    // Função para mostrar alertas de segurança - Interface minimalista
     function showSecurityAlert(message) {
-        // Criar um alerta personalizado mais sutil
+        // Remove alertas anteriores
+        const existingAlert = document.querySelector('.security-alert');
+        if (existingAlert) {
+            existingAlert.remove();
+        }
+        
+        // Criar alerta minimalista
         const alertDiv = document.createElement('div');
-        alertDiv.textContent = '🔒 ' + message;
+        alertDiv.textContent = message;
+        alertDiv.className = 'security-alert';
         alertDiv.style.cssText = `
             position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #ff4444;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            z-index: 9999;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            top: 0;
+            right: 0;
+            background: #000;
+            color: #fff;
+            padding: 8px 12px;
+            font-family: monospace;
+            font-size: 12px;
+            z-index: 99999;
+            border-left: 2px solid #333;
+            border-bottom: 1px solid #333;
+            max-width: 200px;
+            word-wrap: break-word;
         `;
         
         document.body.appendChild(alertDiv);
         
-        // Remover após 3 segundos
+        // Remover após 2 segundos
         setTimeout(() => {
             if (alertDiv.parentNode) {
                 alertDiv.parentNode.removeChild(alertDiv);
             }
-        }, 3000);
+        }, 2000);
     }
     
-    // Desabilitar seleção de texto (opcional)
+    // Desabilitar seleção de texto
     document.addEventListener('selectstart', function(e) {
         if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
             e.preventDefault();
@@ -106,5 +113,6 @@
         }
     });
     
-    console.log('🔒 Sistema de segurança Wuitalur ativo');
+    // Log silencioso
+    console.log('Sistema de segurança ativo');
 })();
