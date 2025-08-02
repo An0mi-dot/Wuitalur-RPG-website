@@ -1,0 +1,2088 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wuitalur - Sistema de RPG</title>
+    <link rel="icon" href="../../Historia/Imagens/Site_Icone.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@400;700&family=Creepster&family=Butcherman&family=Permanent+Marker&family=Griffy&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Partículas de fundo -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Header Principal -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-logo">
+                    <img src="../assets/Logo W.png" alt="Logo Wuitalur" class="logo-img">
+                </div>
+                <div class="header-text">
+                    <h1>Wuitalur – Sistema de RPG</h1>
+                    <p class="version">Versão 1.3.4</p>
+                </div>
+                <div class="header-nav">
+                    <a href="../../Pag_Principal/html/index.html" class="btn-home">← Página Principal</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navegação -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#introducao">Introdução</a>
+            <a href="#atributos">Atributos</a>
+            <a href="#" onclick="openRaceSelector()">Raças</a>
+            <a href="#origens">Origens</a>
+            <a href="#" onclick="openClassSelector()">Classes</a>
+            <a href="#combate">Combate</a>
+        </div>
+    </nav>
+
+    <!-- Overlay do Seletor de Raças -->
+    <div id="race-selector-overlay" class="race-selector-overlay">
+        <div class="race-selector-container">
+            <div class="race-selector-header">
+                <h2>Escolha uma Raça</h2>
+                <button class="close-btn" onclick="closeRaceSelector()">&times;</button>
+            </div>
+            <div class="race-cards-grid">
+                <div class="race-card-mini" onclick="scrollToRace('akivus')">
+                    <img src="../assets/akivus.png" alt="Akivus">
+                    <h3>Akivus</h3>
+                    <p>Guardiões da floresta com chifres de alce</p>
+                    <span class="difficulty-mini difficulty-1">1</span>
+                </div>
+                <div class="race-card-mini" onclick="scrollToRace('vampiros')">
+                    <img src="../assets/vampiros.png" alt="Vampiros">
+                    <h3>Vampiros</h3>
+                    <p>Elegantes bebedores de sangue</p>
+                    <span class="difficulty-mini difficulty-1">1</span>
+                </div>
+                <div class="race-card-mini" onclick="scrollToRace('humanos')">
+                    <img src="../assets/humanos.png" alt="Humanos">
+                    <h3>Humanos</h3>
+                    <p>Resilientes e adaptáveis</p>
+                    <span class="difficulty-mini difficulty-1">1</span>
+                </div>
+                <div class="race-card-mini" onclick="scrollToRace('hibridos')">
+                    <img src="../assets/animalescos.png" alt="Híbridos">
+                    <h3>Híbridos</h3>
+                    <p>Animalescos e Plantíferos modificados</p>
+                    <span class="difficulty-mini difficulty-2">1-2</span>
+                </div>
+                <div class="race-card-mini" onclick="scrollToRace('praguentos')">
+                    <img src="../assets/praguentos.png" alt="Praguentos">
+                    <h3>Praguentos</h3>
+                    <p>Seres corrompidos pela Podridão</p>
+                    <span class="difficulty-mini difficulty-3">3</span>
+                </div>
+                <div class="race-card-mini" onclick="scrollToRace('insectoides')">
+                    <img src="../assets/insectoides.png" alt="Insectóides">
+                    <h3>Insectóides</h3>
+                    <p>Experimentos da Era Dourada</p>
+                    <span class="difficulty-mini difficulty-3">3</span>
+                </div>
+                <div class="race-card-mini" onclick="scrollToRace('exos')">
+                    <img src="../assets/exo.png" alt="E.X.Os">
+                    <h3>E.X.Os</h3>
+                    <p>Robôs inteligentes de Paladium</p>
+                    <span class="difficulty-mini difficulty-3">3</span>
+                </div>
+                <div class="race-card-mini" onclick="scrollToRace('abissais')">
+                    <img src="../assets/abissais.png" alt="Abissais">
+                    <h3>Abissais</h3>
+                    <p>Seres das profundezas com visão no escuro</p>
+                    <span class="difficulty-mini difficulty-4">4</span>
+                </div>
+                <div class="race-card-mini" onclick="scrollToRace('espectros')">
+                    <img src="../assets/espectros.png" alt="Espectros">
+                    <h3>Espectros</h3>
+                    <p>Entidades etéreas instáveis</p>
+                    <span class="difficulty-mini difficulty-6">6</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay do Seletor de Classes -->
+    <div id="race-selector-overlay-classes" class="race-selector-overlay">
+        <div class="race-selector-container">
+            <div class="race-selector-header">
+                <h2>Escolha uma Classe</h2>
+                <button class="close-btn" onclick="closeClassSelector()">&times;</button>
+            </div>
+            <div class="race-cards-grid">
+                <div class="race-card-mini" onclick="scrollToClass('cavaleiros-paladium')">
+                    <img src="../assets/cavaleiros_simb.png" alt="Cavaleiros de Paladium">
+                    <h3>Cavaleiros de Paladium</h3>
+                    <p>Guerreiros sagrados do reino</p>
+                    <span class="difficulty-mini difficulty-2">2</span>
+                </div>
+                <div class="race-card-mini" onclick="scrollToClass('rastejantes')">
+                    <img src="../assets/rastejantes.png" alt="Rastejantes">
+                    <h3>Rastejantes</h3>
+                    <p>Canalizadores das trevas do abismo</p>
+                    <span class="difficulty-mini difficulty-3">3</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+        <div class="container">
+            
+            <!-- Seção: Introdução -->
+            <section id="introducao" class="content-section">
+                <div class="intro-text">
+                    <p><em>"Wuitalur é um sistema autoral de RPG narrativo com foco em ambientações sombrias, horror cósmico, dilemas morais e escolhas difíceis. Mistura fantasia sombria com toques futuristas e sociais. Seus personagens vivem em um mundo onde religião, magia, tecnologia e corrupção se entrelaçam em conflitos épicos e trágicos. Esta página apresenta todo o sistema, de forma contínua e acessível, para consulta completa de regras, raças, classes e mais."</em></p>
+                </div>
+            </section>
+
+            <!-- Seção: Atributos -->
+            <section id="atributos" class="content-section">
+                <h2>Atributos</h2>
+                
+                <div class="section-intro">
+                    <p>Atributos representam as características essenciais de um personagem em Wuitalur. Eles influenciam testes, combates, resistências e habilidades ao longo da campanha.</p>
+                </div>
+
+                <!-- Distribuição de Atributos -->
+                <div class="rules-box">
+                    <h3>Distribuição de Atributos</h3>
+                    <div class="rules-content">
+                        <p>
+                            • Todos os atributos começam sempre com 1 ponto.<br>
+                            • Você tem <strong>6 pontos</strong> para distribuir entre os atributos.<br>
+                            • É permitido <em>tirar 1 ponto de um atributo (ficando com 0)</em> para ganhar 1 ponto extra em outro.<br>
+                            • Ganha <strong>+2 pontos de atributo</strong> a cada 3 níveis.<br>
+                            • Todos os personagens <strong>começam com bônus de +3 em <span class="attr-sen">Sentidos (SEN)</span></strong>.<br>
+                            • O atributo <strong><span class="attr-cosmo">Cosmo</span></strong> é definido em porcentagem (ex: 1%) e só pode ser alterado pelo mestre.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Lista de Atributos -->
+                <div class="attributes-grid">
+                    
+                    <!-- Saúde -->
+                    <div class="attribute-card">
+                        <h4><span class="attr-saude">Saúde</span></h4>
+                        <div class="attribute-description">
+                            <p>A saúde é um dos atributos básicos de um personagem, ele vai definir a saúde tanto física quanto mental.</p>
+                            <p><em>(Exemplo)</em> Um personagem com saúde baixa (-1) terá desvantagem em todos os testes de saúde que for fazer.</p>
+                            <p>Caso essa saúde seja 0, o personagem terá uma imunidade baixa a doenças. Quando for rolar um teste de resistência a alguma doença, terá desvantagem.</p>
+                        </div>
+                    </div>
+
+                    <!-- Resistência Mágica -->
+                    <div class="attribute-card">
+                        <h4><span class="attr-rm">Resistência Mágica (RM)</span></h4>
+                        <div class="attribute-description">
+                            <p>A resistência mágica significa a força da sua Energia Astral.</p>
+                            <p><em>(Exemplo)</em>: Se um inimigo fizer um ataque mágico contra você, dependendo do ataque, você deve rolar um teste de resistência mágica (1d4 + Modificador de <span class="attr-rm">RM</span>).</p>
+                        </div>
+                    </div>
+
+                    <!-- Resistência Física -->
+                    <div class="attribute-card">
+                        <h4><span class="attr-rf">Resistência Física (RF)</span></h4>
+                        <div class="attribute-description">
+                            <p>A resistência física define sua resistência corporal.</p>
+                            <p><em>(Exemplo)</em>: Se um inimigo fizer um ataque físico contra você, dependendo do ataque você deverá rolar um teste de <span class="attr-rf">RF</span> (1d4 + Modificador de <span class="attr-rf">RF</span>).</p>
+                        </div>
+                    </div>
+
+                    <!-- Destreza -->
+                    <div class="attribute-card">
+                        <h4><span class="attr-destreza">Destreza</span></h4>
+                        <div class="attribute-description">
+                            <p><span class="attr-destreza">Destreza</span> será usada principalmente para testes de iniciativa, esquiva, acerto e contra-ataques.</p>
+                            <p><em>(Exemplo)</em>: Ao ser alvo de um ataque, você pode realizar um teste de esquiva (1d20 + modificador de <span class="attr-destreza">Destreza</span>), caso seja possível.</p>
+                            <p>Se o resultado for maior que o acerto do inimigo, a esquiva será bem-sucedida.</p>
+                        </div>
+                    </div>
+
+                    <!-- Força -->
+                    <div class="attribute-card">
+                        <h4><span class="attr-forca">Força</span></h4>
+                        <div class="attribute-description">
+                            <p>A <span class="attr-forca">Força</span> define a força física do seu personagem (e a definição de seus músculos).</p>
+                            <p>Testes de <span class="attr-forca">FR</span> (1d20 + Mod de <span class="attr-forca">FR</span>) serão usados, por exemplo, quando um personagem precisar carregar algo pesado — ele deverá rolar um teste de <span class="attr-forca">FR</span>.</p>
+                        </div>
+                    </div>
+
+                    <!-- Intelecto -->
+                    <div class="attribute-card">
+                        <h4><span class="attr-intelecto">Intelecto</span></h4>
+                        <div class="attribute-description">
+                            <p>O <span class="attr-intelecto">Intelecto</span> define o conhecimento do seu personagem, por exemplo, sobre eletrônicos, comidas, geografia, medicina, etc.</p>
+                            <p>Testes de <span class="attr-intelecto">INT</span> (1d20 + Mod de <span class="attr-intelecto">INT</span>) serão utilizados em momentos que o seu personagem tem que se lembrar de algo.</p>
+                        </div>
+                    </div>
+
+                    <!-- Fama -->
+                    <div class="attribute-card">
+                        <h4><span class="attr-fama">Fama</span></h4>
+                        <div class="attribute-description">
+                            <p>A <span class="attr-fama">Fama</span> define o quanto seu personagem é conhecido, também define a sua carisma e o quão sua aparência é atrativa.</p>
+                            <p>Testes de <span class="attr-fama">FAMA</span> (1d20 + Mod de <span class="attr-fama">FAMA</span>) serão usados para Enganação, Sedução, Persuasão, etc.</p>
+                        </div>
+                    </div>
+
+                    <!-- Sentidos -->
+                    <div class="attribute-card">
+                        <h4><span class="attr-sen">Sentidos (SEN)</span></h4>
+                        <div class="attribute-description">
+                            <p>O atributo <span class="attr-sen">Sentidos (SEN)</span> define a capacidade do personagem de perceber e compreender o ambiente ao seu redor.</p>
+                            <p>Ele é utilizado em testes de percepção, investigação ou para encontrar algo. <strong>Todos os personagens começam com um bônus inicial de +3 nesse atributo.</strong></p>
+                        </div>
+                    </div>
+
+                    <!-- Cosmo -->
+                    <div class="attribute-card special-attribute">
+                        <h4><span class="attr-cosmo">C̶̪͓͋O̷̗̖̔S̶͔̺̝̑̑̈M̸̤͔͑ͅO̶͓̎͝</span></h4>
+                        <div class="attribute-description">
+                            <p><strong><span class="attr-cosmo">C̶̪͓͋O̷̗̖̔S̶͔̺̝̑̑̈M̸̤͔͑ͅO̶͓̎͝</span></strong> NÃO pode ser modificado pelo jogador.</p>
+                            <p>Ele é definido em <strong>porcentagem</strong>: <em>(ex: 1%, 5%...)</em></p>
+                            <p>Representa sua conexão com o além humano e sua estabilidade no mundo carnal e mortal. <strong>Todos os personagens começam com 1%</strong>. Somente o MESTRE pode alterar este valor.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- Seção: Raças -->
+            <section id="racas" class="content-section">
+                <h2>Raças</h2>
+                
+                <div class="section-intro">
+                    <p>Em Wuitalur, as raças representam a origem e a essência de cada personagem. Cada uma delas carrega traços biológicos, culturais e sobrenaturais únicos, influenciando diretamente os atributos, habilidades e a forma como o personagem é percebido no mundo. A escolha da raça é um dos primeiros e mais importantes passos na criação de um personagem.</p>
+                </div>
+
+                <!-- Raças Jogáveis -->
+                <div class="races-container">
+                    
+                    <!-- Raça: Akivus -->
+                    <div id="akivus" class="race-card">
+                        <h3>Akivus</h3>
+
+                        <div id="akivus-image" class="race-image">
+                            <img src="../assets/akivus.png" alt="Ilustração dos Akivus">
+                        </div>
+
+                        <div class="race-description">
+                            <p>Seres que vivem principalmente na floresta que possuem muita afinidade com a fauna e a flora, são capazes de criar plantas. Possuem chifres longos que se assemelham a de alces com vinhas e flores ao seu redor. A grande maioria tem coloração de pele parda e são geralmente mais altos que humanos (tendo 1,80m ou mais).</p>
+                            
+                            <div class="difficulty-level">
+                                <span class="difficulty-label">Nível de Dificuldade:</span>
+                                <span class="difficulty-number difficulty-1">1</span>
+                            </div>
+                        </div>
+
+                        <div class="race-stats">
+                            <h4>Bônus de Raça</h4>
+                            <ul>
+                                <li>+2 em <span class="attr-saude">Saúde</span></li>
+                                <li>-1 em <span class="attr-rf">Resistência Física</span></li>
+                                <li>+2 em <span class="attr-rm">Resistência Mágica</span></li>
+                                <li>-1 em <span class="attr-forca">Força</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="race-resistances">
+                            <h4>Fraquezas e Resistências</h4>
+                            <ul>
+                                <li><strong>Fraqueza:</strong> Podridão</li>
+                                <li><strong>Resistência:</strong> Sagrado, Dano Gélido</li>
+                            </ul>
+                        </div>
+
+                        <div class="race-abilities">
+                            <h4>Habilidades de Raça</h4>
+                            <ul>
+                                <li><strong>Afinidade com plantas:</strong> Capacidade inata de interagir com vegetação ao redor.</li>
+                                <li><strong>Criação de Vinhas:</strong> Cria vinhas que podem ser usadas para amarrar coisas.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                                <li><strong>Névoa Perfumada:</strong> Cria vinhas com flores que soltam pólen com cheiros fortes que podem atordoar algum alvo.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                                <li><strong>Cheiro do Perigo:</strong> O Akivus pode ficar parado durante um tempo para sentir o cheiro de quaisquer possíveis ameaças ao redor dentro de um raio de 8m.<br><em class="action-passive">-Passiva-</em></li>
+                                <li><strong>Regeneração Verde:</strong> Quando em contato direto com o solo ou cercado por vegetação, os Akivus podem acelerar sua regeneração natural, curando-se de ferimentos leves em um curto período de tempo. A cada 2 minutos, cura <strong>2d8</strong> de vida.<br><em class="action-passive">-Passiva-</em></li>
+                                <li><strong>Passo Silencioso:</strong> Os Akivus conseguem mover-se silenciosamente pela floresta, passando despercebidos por inimigos e evitando armadilhas naturais. Não fazem nenhum barulho ao andar. Se quiserem correr sorrateiramente, devem rolar teste de furtividade.<br><em class="action-passive">-Passiva-</em></li>
+                                <li><strong>Aura de Vitalidade:</strong> Em uma área de até 3B ao redor do Akivus, plantas e seres vivos se tornam mais resistentes e vigorosos. Aliados dentro dessa área recebem +2 em <span class="attr-saude">Saúde</span> e <span class="attr-rf">RF</span>, além de +25 de vida temporária por 2 turnos gerais.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-70 de Energia Astral-</em> (<span class="pe-cost">15 PE</span> caso <span class="survivor-text">Sobrevivente</span>)</li>
+                                <li><strong>Raízes Constritoras:</strong> Invoca raízes do solo para prender um inimigo, esmagando-o lentamente. Usa <em class="action-bonus">Ação Bônus</em>. O inimigo deve passar em um teste de <span class="attr-rf">RF</span> (CD 18). Enquanto estiver preso, sofre <strong>2d8 de dano por turno</strong>.<br><em class="energy-cost">-100 de Energia Astral-</em> (<span class="pe-cost">20 PE</span> caso <span class="survivor-text">Sobrevivente</span>)</li>
+                                <li><strong>Explosão Floral:</strong> Disponível a partir do nível 10. Cria uma flor especial usada como granada: ao contato, explode em espinhos e pólen tóxico. Atinge todos num raio de 5B, causando <strong>3d15 de dano perfurante</strong> e <strong>envenenando</strong> (teste inimigo de <span class="attr-saude">Saúde</span>). Veneno causa <strong>2d8 por turno até o fim da cena</strong>.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-100 de Energia Astral-</em></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Raça: Vampiros -->
+                    <div id="vampiros" class="race-card">
+                        <h3>Vampiros</h3>
+
+                        <div id="vampiros-image" class="race-image">
+                            <img src="../assets/vampiros.png" alt="Ilustração dos Vampiros - Friede">
+                        </div>
+
+                        <div class="race-description">
+                            <p>Seres com aparência humanoide, pele um pouco pálida e dentes caninos maiores. Alimentam-se principalmente de sangue. A maioria possui olhos vermelhos; mulheres tendem a ter corpos mais curvados e homens mais definidos. São naturalmente bonitos e elegantes.</p>
+                            
+                            <div class="difficulty-level">
+                                <span class="difficulty-label">Nível de Dificuldade:</span>
+                                <span class="difficulty-number difficulty-1">1</span>
+                            </div>
+                        </div>
+
+                        <div class="race-stats">
+                            <h4>Bônus de Raça</h4>
+                            <ul>
+                                <li>+3 em <span class="attr-saude">Saúde</span></li>
+                                <li>+2 em <span class="attr-destreza">Destreza</span></li>
+                                <li>+1 em <span class="attr-rm">Resistência Mágica</span></li>
+                                <li>+3 em <span class="attr-fama">Fama</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="race-resistances">
+                            <h4>Fraquezas e Resistências</h4>
+                            <ul>
+                                <li><strong>Fraqueza:</strong> Praga</li>
+                                <li><strong>Resistência:</strong> Pesadelo</li>
+                            </ul>
+                        </div>
+
+                        <div class="race-abilities">
+                            <h4>Habilidades de Raça</h4>
+                            <ul>
+                                <li><strong>Visão no Escuro:</strong> Enxerga claramente no escuro até 18 metros.<br><em class="action-passive">-Passiva-</em></li>
+                                <li><strong>Mordida Vampírica:</strong> Utiliza as presas para morder uma vítima e extrair sangue, restaurando seus próprios pontos de vida. Pode escolher a intensidade da mordida:
+                                    <ul class="vine-effects">
+                                        <li><strong>Pouco sangue:</strong> 1d12 + <span class="attr-saude">Saúde</span></li>
+                                        <li><strong>Sangue moderado:</strong> 1d20 + <span class="attr-saude">Saúde</span></li>
+                                        <li><strong>Muito sangue:</strong> 1d30 + <span class="attr-saude">Saúde</span></li>
+                                    </ul>
+                                    <em class="action-standard">&lt; • Ação Padrão • &gt;</em>
+                                </li>
+                                <li><strong>Frenesi Sanguíneo:</strong> Quando o vampiro estiver com 20% ou menos da vida máxima, entra em frenesi, ganhando ataques adicionais:
+                                    <ul class="vine-effects">
+                                        <li><strong>Nível 1–10:</strong> 1 ataque adicional</li>
+                                        <li><strong>Nível 11–15:</strong> 2 ataques adicionais</li>
+                                        <li><strong>Nível 16–20:</strong> 3 ataques adicionais</li>
+                                    </ul>
+                                    <strong>Se for Sobrevivente:</strong>
+                                    <ul class="vine-effects">
+                                        <li><strong>0%–25%:</strong> 1 ataque adicional</li>
+                                        <li><strong>26%–40%:</strong> 2 ataques adicionais</li>
+                                        <li><strong>45%–65%:</strong> 3 ataques adicionais</li>
+                                    </ul>
+                                    <em class="action-passive">-Passiva-</em>
+                                </li>
+                                <li><strong>Vínculo de Sangue:</strong> Cria uma ligação com um aliado. Enquanto o vínculo estiver ativo, ambos compartilham 50% do dano e da cura recebidos.<br><em class="energy-cost">-30 de Energia Astral-</em> (<span class="pe-cost">5 PE</span> caso <span class="survivor-text">Sobrevivente</span>)<br><em class="action-bonus">Ação Bônus</em></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Raça: Híbridos -->
+                    <div id="hibridos" class="race-card">
+                        <h3>Híbridos</h3>
+
+                        <div class="race-description">
+                            <p>São pessoas que, desde a Segunda Grande Guerra e após a Era Dourada, foram modificadas geneticamente pelo governo do reino de Paladium. Com o tempo, se espalharam pelo mundo e passaram a ser considerados uma raça comum. São divididos em duas sub-raças principais: <strong>Animalescos</strong> e <strong>Plantíferos</strong>.</p>
+                        </div>
+
+                        <!-- SUB-RAÇA: ANIMALESCOS -->
+                        <div class="race-abilities" style="margin-top: 3rem;">
+                            <h4 class="subrace-animalescos">Animalescos</h4>
+
+                            <div id="hibridos-image" class="race-image">
+                                <img src="../assets/animalescos.png" alt="Ilustração dos Animalescos - Luther">
+                            </div>
+
+                            <p>Animais antropomórficos ou pessoas com características de animais.</p>
+                            
+                            <div class="difficulty-level">
+                                <span class="difficulty-label">Nível de Dificuldade:</span>
+                                <span class="difficulty-number difficulty-1">1</span>
+                            </div>
+
+                            <h5>Bônus de Raça</h5>
+                            <ul>
+                                <li>+3 em <span class="attr-forca">Força</span></li>
+                                <li>+2 em <span class="attr-destreza">Destreza</span></li>
+                                <li>+2 em <span class="attr-rf">Resistência Física</span></li>
+                                <li>+2 em <span class="attr-sen">Sentidos</span></li>
+                                <li>+1 em <span class="attr-intelecto">Intelecto</span></li>
+                            </ul>
+
+                            <h5>Fraqueza</h5>
+                            <ul>
+                                <li>Dano Sonoro</li>
+                            </ul>
+
+                            <h5>Habilidades</h5>
+                            <ul>
+                                <li><strong>Percepção Aprimorada:</strong> Pode rolar um teste de <span class="attr-sen">SEN</span> + 4 para tentar perceber algo interessante ou escondido.<br><em class="action-passive">-Passiva-</em></li>
+                                <li><strong>Quadrúpede:</strong> Pode usar uma <em class="action-bonus">Ação Bônus</em> para se locomover com todos os membros, ganhando +4 de <span class="attr-destreza">Destreza</span> e vantagem em testes de esquiva. Enquanto estiver nessa posição, não pode executar ações bônus nem ações completas. Pode ser ativada como Ação Bônus após uma Ação Padrão.</li>
+                            </ul>
+                        </div>
+
+                        <!-- SUB-RAÇA: PLANTÍFEROS -->
+                        <div class="race-abilities" style="margin-top: 3rem;">
+                            <h4 class="subrace-plantiferos">Plantíferos</h4>
+
+                            <div class="race-image">
+                                <img src="../assets/plantiferos.png" alt="Ilustração dos Plantíferos - Tuko">
+                            </div>
+
+                            <p>Plantas humanoides ou pessoas com características de plantas.</p>
+                            
+                            <div class="difficulty-level">
+                                <span class="difficulty-label">Nível de Dificuldade:</span>
+                                <span class="difficulty-number difficulty-2">2</span>
+                            </div>
+
+                            <h5>Bônus de Raça</h5>
+                            <ul>
+                                <li>+3 em <span class="attr-saude">Saúde</span></li>
+                                <li>-2 em <span class="attr-rf">Resistência Física</span></li>
+                                <li>+1 em <span class="attr-rm">Resistência Mágica</span></li>
+                                <li>+3 em <span class="attr-intelecto">Intelecto</span></li>
+                            </ul>
+
+                            <h5>Fraqueza</h5>
+                            <ul>
+                                <li>Solar</li>
+                                <li>Podridão</li>
+                            </ul>
+
+                            <h5>Habilidades</h5>
+                            <ul>
+                                <li><strong>Afinidade com Plantas:</strong> Pode se comunicar com plantas.<br><em class="action-passive">-Passiva-</em></li>
+                                <li><strong>Criação de Vinhas:</strong> Cria vinhas que podem ser usadas para amarrar coisas.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                                <li><strong>Névoa Perfumada:</strong> Cria vinhas com flores que soltam pólen atordoante. O alvo deve fazer teste de <span class="attr-rm">RM</span> com CD 18.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                                
+                                <div class="song-of-trees-container">
+                                    <li class="song-of-trees-ability"><strong><span class="wood-highlight">Canção das Árvores</span>:</strong> A partir do nível 3, pode ouvir as batidas das árvores e manipular madeira ao redor.<br><em class="action-passive">-Passiva-</em></li>
+                                    <li class="song-of-trees-ability"><strong><span class="rhythm-ability">Nível 3 – Punhos Rítmicos</span>:</strong> Ativa punhos de madeira sincronizados ao BPM. Ganha 25 de <span class="pv-text">PV</span> temporária na ativação. Rola 1d30 ÷ 2 = <strong>X</strong>, e então rola 3dX de dano. Ex: 1d30 = 10 → 3d5 de dano por ataque. A habilidade continua ativa até o fim do combate.<br><em class="action-passive">-Passiva-</em></li>
+                                    <li class="song-of-trees-ability"><strong><span class="rhythm-ability">Nível 13</span>:</strong> O dado base passa a ser 1d40, aumentando o dano dos punhos.</li>
+                                    <li class="song-of-trees-ability"><strong><span class="rhythm-ability">Nível 10 – Ritmo de Animação</span>:</strong> Cria dois tambores e os toca, gerando uma área de 4 blocos com notas Astrais douradas. Todos os aliados na área recebem:
+                                        <div class="status-box">
+                                            <span class="status-label">Status</span>
+                                            <div class="status-content">
+                                                Escudo de 25 de <span class="pv-text">PV</span> temporária<br>
+                                                +2 em testes de esquiva
+                                            </div>
+                                        </div>
+                                        <em class="action-standard">&lt; • Ação Padrão • &gt;</em>
+                                    </li>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Raça: Humanos -->
+                <div id="humanos" class="race-card">
+                    <h3>Humanos</h3>
+
+                    <div id="humanos-image" class="race-image">
+                        <img src="../assets/humanos.png" alt="Ilustração dos Humanos - Akali">
+                    </div>
+
+                    <div class="race-description">
+                        <p>Os humanos são seres abundantes e resilientes, adaptados a diferentes ambientes do mundo.</p>
+                        
+                        <p>Embora não possuam habilidades inatas extraordinárias, compensam com uma notável capacidade de aprendizado, versatilidade e inovação.</p>
+                        
+                        <p>São conhecidos por sua prosperidade e por formar sociedades diversificadas, que vão de pequenas comunidades a grandes impérios.</p>
+                        
+                        <div class="difficulty-level">
+                            <span class="difficulty-label">Nível de Dificuldade:</span>
+                            <span class="difficulty-number difficulty-1">1</span>
+                        </div>
+                    </div>
+
+                    <div class="race-stats">
+                        <h4>Bônus de Raça</h4>
+                        <ul>
+                            <li>+2 em todos os Atributos</li>
+                            <li>-1 em <span class="attr-rm">Resistência Mágica</span></li>
+                            <li>+2 em <span class="attr-intelecto">Intelecto</span></li>
+                            <li>Fraqueza a dano de Pesadelo</li>
+                        </ul>
+                    </div>
+
+                    <div class="race-abilities">
+                        <h4>Habilidades de Raça</h4>
+                        <ul>
+                            <li><strong>Determinação Implacável:</strong> Com um teste de <span class="attr-saude">Saúde</span> (CD 15), após cair, pode continuar lutando até receber um número de ataques igual à metade do bônus de proficiência (arredondado para cima).<br><em class="action-passive">-Passiva-</em></li>
+                            <li><strong>Adaptação Humana:</strong> Quando estiver com menos de 25% do HP, recebe +2 em <span class="attr-forca">Força</span> e <span class="attr-destreza">Destreza</span> até o fim da cena.<br><em class="action-passive">-Passiva-</em></li>
+                            <li><strong>Aprendizado Rápido:</strong> Pode observar e copiar habilidades de outros, desde que tenha capacidade física e mental para executá-las. A habilidade copiada deve ser presenciada durante combate ou interação.<br><em class="action-passive">-Passiva-</em></li>
+                            <li><strong>Força de Vontade:</strong> Uma vez por descanso longo, ao falhar em um teste de resistência, pode refazê-lo com +3 de bônus.<br><em class="action-reaction">-Ação Reação-</em></li>
+                            <li><strong>Inovação:</strong> Ao criar itens, armas ou estratégias, pode gastar o dobro do tempo para aprimorá-los, ganhando +2 no teste correspondente. Em combate, isso consome 2 <em class="action-standard">Ações Padrões</em>.<br><em class="action-passive">-Passiva-</em></li>
+                            <li><strong>Resiliência Humana:</strong> No início de cada turno, pode realizar um teste de <span class="attr-saude">Saúde</span> (CD 14) para remover uma condição negativa (envenenamento, atordoamento, paralisia, etc).<br><em class="action-passive">-Passiva-</em></li>
+                            <li><strong>Força Interior:</strong> Em situações de perigo extremo ou emoção intensa, pode ganhar +2 temporário em qualquer atributo (exceto <span class="attr-rm">RM</span>) até o fim da cena. 1 vez por descanso longo.<br><em class="action-bonus">-Ação Bônus-</em></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Raça: Praguentos -->
+                <div id="praguentos" class="race-card">
+                    <h3>Praguentos</h3>
+
+                    <div id="praguentos-image" class="race-image">
+                        <img src="../assets/praguentos.png" alt="Ilustração dos Praguentos - A Podridão">
+                    </div>
+
+                    <div class="race-description">
+                        <p><span class="plague-highlight">Seres que personificam a zombaria da vida.</span></p>
+                        
+                        <p>Condenados pela <span class="plague-highlight">Podridão</span> a renascer como pálidas cópias do que foram, cobertos por lodo negro e viscoso, com a aparência deformada de uma lauma esquecida, com o rosto coberto de olhos alaranjados.</p>
+                        
+                        <p>Fazem parte de uma mente coletiva distorcida — ouvem, sentem, mas tudo em ruídos, como ecos de uma existência que <strong>não deveria mais ser</strong>.</p>
+                        
+                        <div class="difficulty-level">
+                            <span class="difficulty-label">Nível de Dificuldade:</span>
+                            <span class="difficulty-number difficulty-3">3</span>
+                        </div>
+                    </div>
+
+                    <div class="race-stats">
+                        <h4>Bônus de Raça</h4>
+                        <ul>
+                            <li>+2 em <span class="attr-destreza">Destreza</span></li>
+                            <li>+3 em <span class="attr-rm">Resistência Mágica</span></li>
+                            <li>+2 em <span class="attr-rf">Resistência Física</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="race-resistances">
+                        <h4>Fraquezas e Resistências</h4>
+                        <ul>
+                            <li><strong>Fraqueza:</strong> Dano Gélido, Solar/Fogo</li>
+                            <li><strong>Resistência:</strong> Praga</li>
+                            <li><strong>Imunidade:</strong> <span class="plague-highlight">Podridão</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="race-abilities">
+                        <h4>Habilidades de Raça</h4>
+                        <ul>
+                            <li><strong>Manipulação do Lodo Corporal:</strong> Os Praguentos podem manipular o lodo de seus corpos de forma criativa. Possuem um limite de <span class="plague-highlight">Energia de Lodo</span> que aumenta com o nível:
+                                <ul class="vine-effects">
+                                    <li><strong>Nível 1:</strong> 180</li>
+                                    <li><strong>Nível 6:</strong> 240</li>
+                                    <li><strong>Nível 12:</strong> 280</li>
+                                    <li><strong>Nível 18:</strong> 320</li>
+                                    <li><strong>Nível 20:</strong> 400</li>
+                                </ul>
+                                <em class="action-passive">-Passiva-</em>
+                            </li>
+                            <li><strong>Recuperação Rápida:</strong> Regenera automaticamente 10 de <span class="plague-highlight">Energia de Lodo</span> por turno. Se esgotar a energia, sofre -1 em todos os testes envolvendo <span class="attr-destreza">Destreza</span> e <span class="attr-intelecto">Intelecto</span> até descansar.<br><em class="action-passive">-Passiva-</em></li>
+                            <li><strong>Criação de Itens:</strong> Usa a <span class="plague-highlight">Energia de Lodo</span> para criar utensílios, armas ou ataques.
+                                <ul class="vine-effects">
+                                    <li><strong>Pequeno:</strong> 5 de Energia de Lodo</li>
+                                    <li><strong>Médio:</strong> 30 de Energia de Lodo</li>
+                                    <li><strong>Grande:</strong> 90 de Energia de Lodo</li>
+                                    <li><strong>Muito Grande:</strong> 150 de Energia de Lodo</li>
+                                </ul>
+                                <em class="action-standard">&lt; • Ação Padrão • &gt;</em>
+                            </li>
+                            <li><strong>Armas de Lodo:</strong> Pode criar Espada, Martelo, Foice ou Machado acoplados ao corpo. Duração: 3 rodadas. Dano: <strong>2d12 + <span class="attr-destreza">Destreza</span></strong> (Físico)<br><em class="action-bonus">-Ação Bônus-</em></li>
+                            <li><strong>Tiro Lamacento:</strong> Dispara até 5 projéteis de lodo em um turno, causando <strong>2d10 + <span class="attr-destreza">Destreza</span></strong> de dano de <span class="plague-highlight">Podridão</span>. Consome 5 de <span class="plague-highlight">Energia de Lodo</span> por tiro.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                            <li><strong>Corpo de Lodo:</strong> Transforma o corpo em lodo puro por até 2 turnos, tornando-se imune a dano físico. Durante o efeito, não pode atacar, mas pode se mover livremente por fendas e buracos. Consome <strong>50 de <span class="plague-highlight">Energia de Lodo</span></strong>. Recarga: 1 vez por descanso curto ou longo.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Raça: Insectóides -->
+                <div id="insectoides" class="race-card">
+                    <h3>Insectóides</h3>
+
+                    <div id="insectoides-image" class="race-image">
+                        <img src="../assets/insectoides.png" alt="Ilustração dos Insectóides - A Mariposa">
+                    </div>
+
+                    <div class="race-description">
+                        <p>Insectóides são herança viva dos experimentos da <strong>Era Dourada</strong> — humanos, principalmente crianças pobres, fundidas a traços de insetos como mariposas, formigas e moscas.</p>
+                        
+                        <p>Tentativa falha de Paladium de fazer humanos insetos. Carregam exoesqueletos, olhos que não piscam e membros estranhos, junto de uma natureza fria, calculista e, para muitos, cruel por instinto.</p>
+                        
+                        <p>Mesmo organizados em colônias e comunidades, raramente demonstram empatia genuína: negociam, convivem e cooperam por necessidade, não por afeto. Para o resto do mundo, continuam sendo lembrados como um povo de coração gelado, moldado para sobreviver — não para sentir.</p>
+                        
+                        <div class="difficulty-level">
+                            <span class="difficulty-label">Nível de Dificuldade:</span>
+                            <span class="difficulty-number difficulty-3">3</span>
+                        </div>
+                    </div>
+
+                    <div class="race-stats">
+                        <h4>Bônus de Raça</h4>
+                        <ul>
+                            <li>+3 em <span class="attr-destreza">Destreza</span></li>
+                            <li>+2 em <span class="attr-rm">Resistência Mágica</span></li>
+                            <li>+1 em <span class="attr-intelecto">Intelecto</span></li>
+                            <li>-5 em <span class="attr-fama">FAMA</span></li>
+                            <li>Proficiência natural em testes de Intimidação</li>
+                            <li>Sensibilidade a luzes fortes</li>
+                            <li>Fraqueza a dano Solar e Gélido</li>
+                        </ul>
+                    </div>
+
+                    <div class="race-resistances">
+                        <h4>Habilidades Básicas</h4>
+                        <ul>
+                            <li><strong>Voo:</strong> (Dependente do inseto de origem)</li>
+                            <li><strong>Visão no Escuro</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="race-abilities">
+                        <h4>Vínculo Elemental</h4>
+                        <p>Os Insectóides podem escolher um vínculo com 1 elemento à sua escolha. As opções são: <strong><span class="plague-highlight">Podridão</span></strong>, <strong><span class="nulidrico-highlight">Nulídrico</span></strong>, <strong><span class="nightmare-highlight">Pesadelo</span></strong>, <strong><span class="shadow-highlight">Sombra</span></strong>.</p>
+                        <p>Para cada vínculo escolhido, o Insectóide ganha 2 habilidades específicas:</p>
+
+                        <h5><span class="plague-highlight">Podridão</span></h5>
+                        <ul>
+                            <li><strong>Sentido Putrefato:</strong> Consegue sentir qualquer criatura feita de <span class="plague-highlight">podridão</span> a 6 blocos de distância.<br><em class="action-passive">-Passiva-</em></li>
+                            <li><strong>Engula Lodo:</strong> Pode agarrar um alvo a 2 blocos e fazer ele engolir lodo, causando <strong>2d15</strong> de dano e paralisia por 1 rodada. Alvo pode tentar esquiva com <span class="attr-destreza">Destreza</span>. (Liberada no nível 7)<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                        </ul>
+
+                        <h5><span class="nulidrico-highlight">Nulídrico</span></h5>
+                        <ul>
+                            <li><strong>Vórtice sem fim:</strong> Cria uma esfera flutuante que suga ar e enfraquece até 3 alvos (–2 em dados de esquiva). Alcance de 4 blocos. (Liberada no nível 7)<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                            <li><strong>Sacrifício de Vida:</strong> Usa 35% da vida total para criar 2 armas que causam dano adicional com base em 50% da vida do Insectóide.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                        </ul>
+
+                        <h5><span class="nightmare-highlight">Pesadelo</span></h5>
+                        <ul>
+                            <li><strong>Lembre-se:</strong> Causa <strong>2d10</strong> de dano mental e paralisa o alvo ao invocar visões horríveis. Alcance: 5 blocos.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                            <li><strong>Ilusão Amedrontadora:</strong> Cria uma ilusão visível apenas para o alvo. Se falhar no teste de <span class="attr-rm">RM</span>, ficará paralisado por 1 rodada.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                        </ul>
+
+                        <h5><span class="shadow-highlight">Sombra</span></h5>
+                        <ul>
+                            <li><strong>Medo:</strong> Com <em class="action-bonus">Ação Bônus</em>, sussurra palavras de medo. Se o alvo falhar em <span class="attr-intelecto">INT</span> (CD 16), sofre <strong>4d12</strong> de dano. (Liberada no nível 10)</li>
+                            <li><strong>Toque da Maldade:</strong> Atordoa o alvo e faz ouvir vozes. Alvo deve passar em um teste de <span class="attr-rm">RM</span>.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Raça: E.X.Os -->
+                <div id="exos" class="race-card">
+                    <h3>E.X.Os</h3>
+
+                    <div id="exos-image" class="race-image">
+                        <img src="../assets/exo.png" alt="Ilustração dos E.X.Os - R2.T">
+                    </div>
+
+                    <div class="race-description">
+                        <p>Uma espécie criada pelos engenheiros mais habilidosos de <strong>Paladium</strong>, feita para serem um sistema de proteção e segurança da cidade ou até de utilidade doméstica.</p>
+                        
+                        <p>Possuem características robóticas e são feitos de um metal especial. Alguns conseguem ter sentimentos próprios e desenvolver seus corações por razões ainda não compreendidas.</p>
+                        
+                        <p>O coração dos E.X.Os é energizado por <strong>Everact</strong>. Caso o minério perca energia, o E.X.O é desligado automaticamente.</p>
+                        
+                        <div class="difficulty-level">
+                            <span class="difficulty-label">Nível de Dificuldade:</span>
+                            <span class="difficulty-number difficulty-3">3</span>
+                        </div>
+                    </div>
+
+                    <div class="race-stats">
+                        <h4>Bônus de Raça</h4>
+                        <ul>
+                            <li>+1 em <span class="attr-rm">Resistência Mágica</span></li>
+                            <li>+3 em <span class="attr-intelecto">Intelecto</span></li>
+                            <li>+1 em <span class="attr-fama">FAMA</span></li>
+                            <li>+1 em <span class="attr-rf">Resistência Física</span></li>
+                            <li>+3 em <span class="attr-forca">Força</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="race-resistances">
+                        <h4>Fraquezas e Resistências</h4>
+                        <ul>
+                            <li><strong>Imunidades:</strong> Fogo, Praga</li>
+                            <li><strong>Fraquezas:</strong> Podridão, Água (se estiver molhado, perde –1 em <span class="attr-destreza">Destreza</span> até secar)</li>
+                        </ul>
+                    </div>
+
+                    <div class="race-abilities">
+                        <h4>Habilidades de Raça</h4>
+                        <ul>
+                            <li><strong>Consertos:</strong> É capaz de consertar qualquer coisa que tenha conhecimento técnico suficiente.<br><em class="action-passive">-Passiva-</em></li>
+                        </ul>
+
+                        <h4>Modelo de Fábrica</h4>
+                        <p>O jogador deve escolher um entre os três modelos disponíveis:</p>
+
+                        <h5>Doméstico</h5>
+                        <p>Robôs mais frágeis e sensíveis, feitos com materiais leves como vidro e partes flutuantes:</p>
+                        <ul>
+                            <li>+4 em <span class="attr-destreza">Destreza</span></li>
+                            <li>Proficiência em testes de <strong>Esquiva</strong></li>
+                            <li>–5 em <span class="attr-rf">Resistência Física</span></li>
+                        </ul>
+
+                        <h5>Guerra</h5>
+                        <p>Feitos com materiais resistentes, fortes e parrudos, sempre à frente do combate:</p>
+                        <ul>
+                            <li>+1 em <span class="attr-forca">Força</span></li>
+                            <li>+2 em <span class="attr-rf">Resistência Física</span> e <span class="attr-rm">Mágica</span></li>
+                            <li>–3 em <span class="attr-destreza">Destreza</span></li>
+                        </ul>
+
+                        <h5>Segurança</h5>
+                        <p>Projetados para proteger figuras importantes como os ricos de Paladium:</p>
+                        <ul>
+                            <li>+2 em <span class="attr-rm">Resistência Mágica</span></li>
+                            <li>+3 em <span class="attr-rf">Resistência Física</span></li>
+                            <li>+1 em <span class="attr-intelecto">Intelecto</span></li>
+                        </ul>
+
+                        <h4>Habilidades Especiais</h4>
+                        <ul>
+                            <li><strong>Ponto Fraco:</strong> O E.X.O pode rolar um teste de <span class="attr-intelecto">INT</span>. Se tirar 20, descobre o ponto fraco de um inimigo. Ao acertar esse ponto, o ataque recebe <strong>+4d15 de dano adicional</strong>. Esse valor pode ser reduzido até 18 através de modificações nos olhos do E.X.O feitas por ferreiros ou artefatos.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                            <li><strong>Agarrão:</strong> O E.X.O pode tentar imobilizar um inimigo. Ambos rolam: Alvo (<span class="attr-destreza">Destreza</span>) vs E.X.O (<span class="attr-forca">Força</span>). Se o inimigo perder, ficará imobilizado até passar em um novo teste de <span class="attr-forca">Força</span>.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Raça: Abissais -->
+                <div id="abissais" class="race-card">
+                    <h3>Abissais</h3>
+
+                    <div id="abissais-image" class="race-image">
+                        <img src="../assets/abissais.png" alt="Ilustração dos Abissais">
+                    </div>
+
+                    <div class="race-description">
+                        <p>Os Abissais são uma raça originária das profundezas. Vivem em grandes colônias, são ágeis e frágeis, mas também misteriosos. Com olhos sem íris ou pupilas, veem claramente no escuro. Sua pele é sem vida, pálida e marcada por veias escuras que percorrem o corpo.</p>
+                        
+                        <div class="difficulty-level">
+                            <span class="difficulty-label">Nível de Dificuldade:</span>
+                            <span class="difficulty-number difficulty-4">4</span>
+                        </div>
+                    </div>
+
+                    <div class="race-stats">
+                        <h4>Bônus de Raça</h4>
+                        <ul>
+                            <li>-1 em <span class="attr-saude">Saúde</span></li>
+                            <li>+3 em <span class="attr-destreza">Destreza</span></li>
+                            <li>+1 em <span class="attr-rf">Resistência Física</span></li>
+                            <li>+2 em <span class="attr-intelecto">Intelecto</span></li>
+                            <li>Desvantagem em testes de percepção em locais com luz forte</li>
+                        </ul>
+                    </div>
+
+                    <div class="race-resistances">
+                        <h4>Fraquezas e Resistências</h4>
+                        <ul>
+                            <li><strong>Imunidade:</strong> Praga</li>
+                            <li><strong>Fraqueza:</strong> Podridão</li>
+                            <li><strong>Resistência:</strong> Solar, Dano Gélido, Pesadelo</li>
+                        </ul>
+                    </div>
+
+                    <div class="race-abilities">
+                        <h4>Habilidades de Raça</h4>
+                        <ul>
+                            <li><strong>Visão no Escuro:</strong> Enxerga perfeitamente no escuro, mesmo sem fontes de luz.</li>
+                            <li><strong>Luz Amiga:</strong> Pode liberar uma bioluminescência suave pelas veias, iluminando o ambiente ao redor.</li>
+                            <li><strong>Pressentimento:</strong> Rola 1d20 para detectar emboscadas nas proximidades (CD definida pelo mestre).</li>
+                            <li><strong>Telepatia:</strong> Consegue se comunicar mentalmente com outros Abissais próximos.</li>
+                            <li><strong>Confusão:</strong> Usa a telepatia para induzir confusão em um inimigo. Realiza-se um teste de <span class="attr-intelecto">Intelecto</span> contra <span class="attr-intelecto">Intelecto</span>. Se vencer, o inimigo fica confuso por 1 turno.</li>
+                            <li><strong>A Fome de Vinhas:</strong> Abissais consomem vinhas corrompidas pela Praga para gerar efeitos instáveis. O jogador pode consumir 1 vinha e rolar 1d7:
+                                <ul class="vine-effects">
+                                    <li>7: +2 em <span class="attr-destreza">Destreza</span></li>
+                                    <li>6: +2 em <span class="attr-rf">RF</span></li>
+                                    <li>5: +1 em <span class="attr-sen">SEN</span></li>
+                                    <li>4: +2 em <span class="attr-saude">Saúde</span></li>
+                                    <li>3: -3 em <span class="attr-saude">Saúde</span></li>
+                                    <li>2: -2 em <span class="attr-destreza">Destreza</span></li>
+                                    <li>1: -4 em <span class="attr-rm">RM</span></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Raça: Espectros -->
+                <div id="espectros" class="race-card">
+                    <h3><span class="spectral-glitch" data-text="ESPECTROS">ESP<span class="spectral-error">ECTR◊S</span></span></h3>
+
+                    <div id="espectros-image" class="race-image spectral-image">
+                        <img src="../assets/espectros.png" alt="Ilustração dos Espectros - Entidades Corrompidas">
+                    </div>
+
+                    <div class="race-description">
+                        <p>Seres <span class="spectral-corruption" data-text="etéreos">etéreos</span> vindos de uma <span class="spectral-unstable">dimensão paralela</span>, com corpos translúcidos e olhos brilhantes. Os <span class="spectral-glitch" data-text="Espectros">Espectr◊s</span> estão em constante conexão com sua dimensão de origem, o que lhes dá <span class="spectral-error">p◊deres</span> únicos, mas os torna vulneráveis.</p>
+                        
+                        <div class="spectral-warning">
+                            <p><strong>⚠ AVISO IMPORTANTE ⚠</strong></p>
+                            <p>Essa Raça é <span class="spectral-error">PROPOSITALMENTE</span> injusta e <span class="spectral-corruption" data-text="EXTREMAMENTE">EXTREMAMENTE</span> difícil de jogar, esteja ciente disso.</p>
+                        </div>
+
+                        <div class="difficulty-level">
+                            <span class="difficulty-label">Nível de Dificuldade:</span>
+                            <span class="difficulty-number difficulty-6">6</span>
+                        </div>
+                    </div>
+
+                    <div class="race-stats">
+                        <h4>Bônus de Raça</h4>
+                        <ul>
+                            <li><span class="spectral-error">Naturalmente -5</span> em <span class="attr-saude">Saúde</span></li>
+                            <li><span class="spectral-corruption" data-text="Naturalmente">Naturalmente</span> +3 em <span class="attr-destreza">Destreza</span></li>
+                            <li><span class="spectral-glitch" data-text="Naturalmente">Nat◊ralmente</span> +1 em <span class="attr-rm">Resistência Mágica</span></li>
+                            <li>Na<span class="spectral-error">◊</span>turalmente -2 em <span class="attr-forca">Força</span></li>
+                            <li><span class="spectral-error">Naturalmente -1 em Intelecto</span></li>
+                            <li><span class="spectral-unstable">Naturalmente</span> +3 em <span class="attr-rf">Resistência Física</span></li>
+                            <li><span class="spectral-corruption" data-text="Desvantagem">Desvantagem</span> em interações sociais com raças <span class="spectral-glitch" data-text="não-espectrais">não-espectrais</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="race-resistances">
+                        <h4>Fraquezas e Resistências</h4>
+                        <ul>
+                            <li><strong>Imunidade:</strong> <span class="nightmare-highlight">Pesadelo</span> e <span class="shadow-highlight">Sombra</span></li>
+                            <li><strong>Resistência:</strong> Dano Físico</li>
+                            <li><strong>Fraque<span class="spectral-error">◊</span>za:</strong> Dano Sagrado e <span class="spectral-unstable">Solar</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="race-abilities">
+                        <h4>Mecânica de <span class="spectral-existence">EXISTÊNCIA</span></h4>
+                        <p>Os <span class="spectral-glitch" data-text="Espectros">Espectros</span> não possuem "vida" tradicional, mas sim <span class="spectral-existence">Existência</span>, que representa sua estabilidade no mundo físico.</p>
+                        
+                        <ul>
+                            <li><strong><span class="spectral-existence">Existência</span> Inicial:</strong> 3d8 no nível 1. Aumenta em +1d8 a<span class="spectral-error">◊</span> cada n<span class="spectral-error">í</span>vel.</li>
+                        </ul>
+
+                        <h4><span class="spectral-corruption" data-text="REGENERAÇÃO">REGENERAÇÃO</span></h4>
+                        <ul>
+                            <li><strong>Escur<span class="spectral-error">i</span>dão profunda:</strong> 1d4 p<span class="spectral-error">◊</span>r rodada</li>
+                            <li><strong>Descanso long<span class="spectral-glitch" data-text="o">o</span>:</strong> 2d8 pontos restaur<span class="spectral-error">ados</span></li>
+                            <li><strong>Absorção <span class="spectral-error">de</span> Me<span class="spectral-error">do</span>:</strong> 1d4 por rodada próximo a <span class="spectral-error">uma</span> criatura amedrontada</li>
+                        </ul>
+
+                        <h4><span class="spectral-unstable">FRAQUEZAS</span></h4>
+                        <ul>
+                            <li><strong>D<span class="spectral-error">ano</span> Sagrado e Solar:</strong> causam o dobro de redução na <span class="spectral-existence">Existência</span></li>
+                            <li><strong>Em locais ilu<span class="spectral-error">m</span>inados:</strong> -2 em testes de De<span class="spectral-error">stre</span>za e ataques</li>
+                            <li><strong>Luz solar dire<span class="spectral-error">ta</span>:</strong> causa 1d6 de<span class="spectral-error"> </span>d<span class="spectral-error">ano</span> por rodada</li>
+                        </ul>
+
+                        <h4><span class="spectral-glitch" data-text="Instabilidade Etérea">Instabilidade Etérea</span></h4>
+                        <p>Abaixo de 10% da <span class="spectral-existence">Existência</span> total, precisa passar em um teste de Resist<span class="spectral-error">ê</span>ncia Mágica (CD 15) por rodada, ou perde 1d4<span class="spectral-error"> </span>pontos extras.</p>
+
+                        <h4>Habilidades <span class="spectral-error">de Raça</span></h4>
+                        <ul>
+                            <li><strong>Incorporação:</strong> <span class="spectral-error">Pode</span> atravessar pa<span class="spectral-error">redes</span> e objetos s<span class="spectral-error">ó</span>lidos<br><em class="action-passive">-Passiva-</em></li>
+                            <li><strong>Visão <span class="spectral-error">Espectral</span>:</strong> Detect<span class="spectral-error">a</span> criaturas invisíveis e pr<span class="spectral-error">es</span>enças etéreas em um raio de 30B<br><em class="action-passive">-Passiva-</em></li>
+                            <li><strong>Toque <span class="spectral-error">Fantasmagórico</span>:</strong> C<span class="spectral-error">aus</span>a 1d8 + De<span class="spectral-error">stre</span>za de dano d<span class="spectral-error">e</span> <span class="shadow-highlight">Sombra</span>. Alv<span class="spectral-error">os</span> que falham em um<span class="spectral-error"> </span>teste de Re<span class="spectral-error">si</span>stênci<span class="spectral-error">a</span> Mágica (CD 15) ficam paralisados por<span class="spectral-error"> </span>1 rodada<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                            <li><strong>Forma <span class="spectral-error">Sombria</span>:</strong> Transfor<span class="spectral-error">ma</span>-se<span class="spectral-error"> </span>em s<span class="spectral-error">om</span>bra por 3 rodad<span class="spectral-error">as</span>, fic<span class="spectral-error">and</span>o imune a qualquer fonte de <span class="spectral-error"> </span>dano, mas incapaz d<span class="spectral-error">e</span> l<span class="spectral-error">anç</span>ar magias (1 descanso long<span class="spectral-error">o</span> para recarregar)<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                            <li><strong>Absorção <span class="spectral-error">de Medo</span>:</strong> Recupera<span class="spectral-error"> </span>1d4 pontos de<span class="spectral-error"> </span><span class="spectral-existence">Existência</span> por rodada ao e<span class="spectral-error">st</span>ar<span class="spectral-error"> </span>próximo de uma criat<span class="spectral-error">ura</span> terrorizad<span class="spectral-error">a</span><br><em class="action-passive">-Passiva-</em></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Abaixo serão adicionadas outras raças jogáveis. -->
+
+            </section>
+
+            <!-- Seção: Origens -->
+            <section id="origens" class="content-section">
+                <h2>Origens</h2>
+                
+                <div class="section-intro">
+                    <p>Ao criar um personagem para o RPG Wuitalur, os jogadores podem escolher uma origem que representa a base de suas experiências, influenciando suas perícias, habilidades e história pessoal. Cada origem concede perícias adicionais, itens únicos e poderes específicos.</p>
+                </div>
+
+                <!-- Container para as origens -->
+                <div class="origins-container">
+                    
+                    <!-- Origem: Filho do Abismo -->
+                    <div id="filho-abismo" class="origin-card">
+                        <h3>Filho do Abismo</h3>
+                        
+                        <div class="origin-description">
+                            <p>Crescido nas profundezas ocultas abaixo da superfície, você sobreviveu em ambientes hostis onde a escuridão e a corrupção dominam. Sua afinidade com as sombras moldou suas habilidades.</p>
+                        </div>
+
+                        <div class="origin-details">
+                            <div class="origin-attribute">
+                                <h4>Perícias:</h4>
+                                <p>Percepção, Intimidação</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Ferramentas:</h4>
+                                <p>Nenhuma</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Idiomas:</h4>
+                                <p>Padrão e Abissal</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Equipamento:</h4>
+                                <p>Um colar bioluminescente, um manto preto resistente e uma bolsa com 10 Moedas de Prata</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Poder:</h4>
+                                <p><strong>Olhos do Abismo</strong> — Você enxerga perfeitamente em escuridão total (até 18B).</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Traço:</h4>
+                                <p><strong>Intuição Sombria</strong> — Sempre que estiver em um ambiente hostil ou desconhecido, você tem vantagem em testes de Sentidos para detectar emboscadas.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origem: Guardião da Floresta -->
+                    <div id="guardiao-floresta" class="origin-card">
+                        <h3>Guardião da Floresta</h3>
+                        
+                        <div class="origin-description">
+                            <p>Habituado à vida entre árvores e criaturas selvagens, você é um com a natureza.</p>
+                        </div>
+
+                        <div class="origin-details">
+                            <div class="origin-attribute">
+                                <h4>Perícias:</h4>
+                                <p>Furtividade, Sobrevivência</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Ferramentas:</h4>
+                                <p>Kit de herbalismo</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Idiomas:</h4>
+                                <p>Florestal e Padrão</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Equipamento:</h4>
+                                <p>Um amuleto feito de madeira antiga, uma pequena bolsa com sementes raras e 15 Moedas de Prata</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Poder:</h4>
+                                <p><strong>Vinhas Protetoras</strong> — Como ação bônus, pode criar vinhas que impedem o movimento de um inimigo por 1 turno.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Traço:</h4>
+                                <p><strong>Conexão Verdejante</strong> — Você pode detectar perigos naturais, como terrenos instáveis ou criaturas camufladas.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origem: Herdeiro de Paladium -->
+                    <div id="herdeiro-paladium" class="origin-card">
+                        <h3>Herdeiro de Paladium</h3>
+                        
+                        <div class="origin-description">
+                            <p>Você vem de uma linhagem influente em Paladium, onde a disciplina, o treinamento militar e a liderança são valores fundamentais.</p>
+                        </div>
+
+                        <div class="origin-details">
+                            <div class="origin-attribute">
+                                <h4>Perícias:</h4>
+                                <p>Persuasão, História</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Ferramentas:</h4>
+                                <p>Uma ferramenta de escolha (arma branca ou instrumento musical)</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Idiomas:</h4>
+                                <p>Padrão e um idioma a sua escolha</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Equipamento:</h4>
+                                <p>Um símbolo familiar, uma roupa nobre simples, uma bolsa com 5 Moedas Negras</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Poder:</h4>
+                                <p><strong>Voz Inspiradora</strong> — Como ação bônus, você pode conceder +1 em um teste a sua escolha de um aliado.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Traço:</h4>
+                                <p><strong>Nobre Presença</strong> — Quando falar com figuras de autoridade, você tem vantagem em testes de Persuasão.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origem: Experimento falho da Era Dourada -->
+                    <div id="experimento-era-dourada" class="origin-card">
+                        <h3>Experimento falho da Era Dourada</h3>
+                        
+                        <div class="origin-description">
+                            <p><em>(Não é possível usar essa origem com a raça: Híbridos)</em></p>
+                            <p>Você é um descendente direto ou uma das cobaias sobreviventes dos experimentos secretos conduzidos em Paladium durante a Era Dourada. Mesmo após a fuga e adaptação dessas raças à sociedade, vestígios dessa época sombria ainda moldam sua existência.</p>
+                        </div>
+
+                        <div class="origin-details">
+                            <div class="origin-attribute">
+                                <h4>Perícias:</h4>
+                                <p>Cosmo, Furtividade</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Ferramentas:</h4>
+                                <p>Kit de Ferramentas Médicas</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Idiomas:</h4>
+                                <p>Padrão</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Equipamento:</h4>
+                                <p>Um símbolo gravado com um código de identificação em seu corpo, um frasco de medicamento experimental</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Poder:</h4>
+                                <p><strong>Instinto de Sobrevivência</strong> — Quando reduzido a 5 PV ou menos, você ganha +4 PV e +2 RF até o fim da cena (uma vez por descanso longo)</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Traço:</h4>
+                                <p><strong>Marca da Fuga</strong> — Você tem vantagem em testes de resistência contra condições que causem paralisia ou efeitos mentais.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origem: Descendente Croma -->
+                    <div id="descendente-croma" class="origin-card">
+                        <h3>Descendente Croma</h3>
+                        
+                        <div class="origin-description">
+                            <p>Os membros desse clã raro da Floresta Negra possuem olhos com reflexos prismáticos em vermelho e azul que intensificam suas capacidades à beira da morte.</p>
+                        </div>
+
+                        <div class="origin-details">
+                            <div class="origin-attribute">
+                                <h4>Perícias:</h4>
+                                <p>Intimidação, Sobrevivência</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Ferramentas:</h4>
+                                <p>Nenhuma</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Idiomas:</h4>
+                                <p>Padrão e Prisma</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Equipamento:</h4>
+                                <p>Arma branca a sua escolha, um manto marcado com símbolos antigos do clã, um pingente cristalino e 5 Moedas de Prata</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Poder:</h4>
+                                <p><strong>Último Reflexo</strong> — Quando seus PV caem abaixo de 25%, você ganha +2 em Força, Destreza e Resistência Física até o fim da cena.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Traço:</h4>
+                                <p><strong>Instinto Prismático</strong> — Vantagem em testes de resistência contra efeitos de medo enquanto estiver com 25% dos PV.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origem: Descendente Floralis -->
+                    <div id="descendente-floralis" class="origin-card">
+                        <h3>Descendente Floralis</h3>
+                        
+                        <div class="origin-description">
+                            <p>Este clã misterioso da Floresta Negra é marcado por olhos heterocromáticos (rosa e verde), que concedem aos seus membros capacidades físicas superiores. Eles são famosos por sua agilidade e vitalidade excepcionais.</p>
+                        </div>
+
+                        <div class="origin-details">
+                            <div class="origin-attribute">
+                                <h4>Perícias:</h4>
+                                <p>Atletismo, Acrobacia</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Ferramentas:</h4>
+                                <p>Kit de escalada</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Idiomas:</h4>
+                                <p>Padrão e Floralis</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Equipamento:</h4>
+                                <p>Um cinto de couro reforçado com marcas do clã, um cantil floral especial e 8 Moedas de Prata</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Poder:</h4>
+                                <p><strong>Surto Corporal</strong> — Uma vez por cena, você pode ganhar +2 em Destreza e dobrar seu deslocamento por 1 turno.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Traço:</h4>
+                                <p><strong>Vitalidade Eterna</strong> — Vantagem em testes de resistência contra exaustão.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origem: Mercenário -->
+                    <div id="mercenario" class="origin-card">
+                        <h3>Mercenário</h3>
+                        
+                        <div class="origin-description">
+                            <p>Você trabalhou como mercenário, aceitando trabalhos de todos os tipos, desde caçar monstros até proteger caravanas. Sua experiência em combate e negociação o tornou um prático e pragmático.</p>
+                        </div>
+
+                        <div class="origin-details">
+                            <div class="origin-attribute">
+                                <h4>Perícias:</h4>
+                                <p>Intimidação, Atletismo</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Ferramentas:</h4>
+                                <p>Kit a sua escolha</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Idiomas:</h4>
+                                <p>Padrão</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Equipamento:</h4>
+                                <p>Uma arma branca a sua escolha, um escudo pequeno, um saco de dormir e 3 Moedas de Ouro</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Poder:</h4>
+                                <p><strong>Adaptabilidade em Combate</strong> — Você pode transformar sua Ação Bónus em uma segunda Ação Padrão para atacar.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Traço:</h4>
+                                <p><strong>Líder de Batalha</strong> — Você pode conceder vantagem em um teste de ataque de um aliado uma vez por descanso curto.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origem: Camponês -->
+                    <div id="campones" class="origin-card">
+                        <h3>Camponês</h3>
+                        
+                        <div class="origin-description">
+                            <p>Crescendo em uma pequena aldeia, você sempre trabalhou na terra e cuidou dos animais. Sua vida simples o ensinou a valorizar o esforço físico e a natureza ao seu redor.</p>
+                        </div>
+
+                        <div class="origin-details">
+                            <div class="origin-attribute">
+                                <h4>Perícias:</h4>
+                                <p>Sobrevivência, História</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Ferramentas:</h4>
+                                <p>Nenhuma</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Idiomas:</h4>
+                                <p>Padrão e o idioma da sua aldeia (caso tenha um)</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Equipamento:</h4>
+                                <p>Uma enxada, um saco com sementes e 5 Moedas de Prata</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Poder:</h4>
+                                <p><strong>Mestre da Terra</strong> — Em um descanso você pode realizar uma colheita de plantas ou caçar por alimentos de forma mais eficiente, garantindo o dobro de recursos que podem conceder bônus.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Traço:</h4>
+                                <p><strong>Força Natural</strong> — Você consegue carregar +3 da sua carga normal.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origem: Nerd -->
+                    <div id="nerd" class="origin-card">
+                        <h3>Nerd</h3>
+                        
+                        <div class="origin-description">
+                            <p>Crescendo em uma época onde a magia e a tecnologia primitiva se entrelaçam, você dedicou sua vida a estudar os computadores feitos de pedra de Everact, artefatos que combinam magia antiga com a engenharia rudimentar. Esses sistemas, embora arcaicos, têm uma complexidade que desafia até as mentes mais brilhantes. Sua habilidade em manipular e entender esses dispositivos mágicos o torna um verdadeiro prodígio.</p>
+                        </div>
+
+                        <div class="origin-details">
+                            <div class="origin-attribute">
+                                <h4>Perícias:</h4>
+                                <p>Cosmo, Investigação</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Ferramentas:</h4>
+                                <p>Nenhuma</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Idiomas:</h4>
+                                <p>Padrão</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Equipamento:</h4>
+                                <p>Um cristal de Everact carregado, um dispositivo de interação com pedras de Everact e 10 Moedas de Prata</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Poder:</h4>
+                                <p><strong>Manipulação de Runas</strong> — Você pode ativar ou desativar sistemas de pedra de Everact com facilidade, tendo vantagem em testes para explorar, consertar ou reprogramar esses dispositivos.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Traço:</h4>
+                                <p><strong>Conexão Arcana com a Pedra</strong> — Você tem vantagem em testes de Cosmo e Investigação relacionados a máquinas feitas de Everact, sendo capaz de discernir seus padrões e operações mágicas com precisão.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origem: Herdeiro da Forja -->
+                    <div id="herdeiro-forja" class="origin-card">
+                        <h3>Herdeiro da Forja</h3>
+                        
+                        <div class="origin-description">
+                            <p>Você nasceu em uma família de ferreiros, artesãos ou engenheiros, e sua vida sempre esteve entre martelos, fornalhas e metal. A habilidade de moldar materiais e criar armas e armaduras excepcionais faz parte de quem você é. Mesmo quando não está forjando, você sente a necessidade de transformar e melhorar o mundo ao seu redor, seja com ferros ou invenções criativas.</p>
+                        </div>
+
+                        <div class="origin-details">
+                            <div class="origin-attribute">
+                                <h4>Perícias:</h4>
+                                <p>História e Forja</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Ferramentas:</h4>
+                                <p>Kit de ferreiro</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Idiomas:</h4>
+                                <p>Padrão e um a sua escolha</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Equipamento:</h4>
+                                <p>Um martelo de ferreiro, uma espada simples e 15 peças de prata</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Poder:</h4>
+                                <p><strong>Forja Rápida</strong> — Você pode forjar ou reparar um item simples, economizando tempo e recursos.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Traço:</h4>
+                                <p><strong>Toque de Ferro</strong> — Você tem vantagem em testes de forja para criar ou modificar qualquer item, mudando seus atributos e efeitos.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origem: Morador da Cidade Inexistente -->
+                    <div id="morador-cidade-inexistente" class="origin-card">
+                        <h3>Morador da Cidade Inexistente</h3>
+                        
+                        <div class="origin-description">
+                            <p>Você nasceu e cresceu em Cirus, uma cidade que existiu fora do tempo e da lógica, onde a tecnologia superava qualquer outra, deixando o resto do mundo em um ponto remoto no passado. Cirus foi guardada por um portão que, um dia, simplesmente desapareceu, deixando para trás apenas fragmentos daquilo que foi. Aqueles que conseguiram sair de Cirus não se lembram de como nem o porquê, e as memórias dessa cidade se tornaram nebulosas, como um sonho esquecido. Você é um dos poucos que ainda carrega vestígios daquela cidade perdida, mas seus próprios pensamentos podem estar sendo apagados com o tempo.</p>
+                        </div>
+
+                        <div class="origin-details">
+                            <div class="origin-attribute">
+                                <h4>Perícias:</h4>
+                                <p>Cosmo, Percepção e História</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Ferramentas:</h4>
+                                <p>Um dispositivo tecnológico de Cirus (como um gerador de energia ou uma pequena tela holográfica)</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Idiomas:</h4>
+                                <p>Padrão, Idioma de Cirus (uma língua codificada)</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Equipamento:</h4>
+                                <p>Um fragmento V3RM3X, e um Equipamento Antigo a sua escolha</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Poder:</h4>
+                                <p><strong>Memória Desvanecente</strong> — Você pode compreender e manipular tecnologias incomuns usando um teste de Cosmo, Percepção ou História com vantagem.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Traço:</h4>
+                                <p><strong>Voz do Vazio</strong> — Você tem vantagem em testes de resistência contra dano mental.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origem: Médico -->
+                    <div id="medico" class="origin-card">
+                        <h3>Médico</h3>
+                        
+                        <div class="origin-description">
+                            <p>Você dedicou grande parte da sua vida à medicina, lutando sempre para salvar seus pacientes da vida e da morte.</p>
+                        </div>
+
+                        <div class="origin-details">
+                            <div class="origin-attribute">
+                                <h4>Perícias:</h4>
+                                <p>Medicina e Alquimia</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Ferramentas:</h4>
+                                <p>Kit de medicina e kit de alquimia</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Idiomas:</h4>
+                                <p>Padrão, porém entende jargões médicos</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Equipamento:</h4>
+                                <p>Kit médico, ervas medicinais e um kit de alquimia, incluindo 2 poções iniciais a escolha do médico.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Poder:</h4>
+                                <p><strong>O Salvador</strong> — Você pode quando um aliado cair, fazer todos os testes de medicina com vantagem, além dos testes de morte terem a CD reduzida em 1d6 quando você estiver cuidando do seu paciente.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Traço:</h4>
+                                <p><strong>Socorrista Nato</strong> — Pode gastar o dobro do seu deslocamento para chegar a um personagem que acabou de ser ferido, além disso pode rolar um teste de medicina CD 18 uma vez por turno pra curar 25 de vida instantânea do alvo ferido.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origem: Guaraciense -->
+                    <div id="guaraciense" class="origin-card">
+                        <h3>Guaraciense</h3>
+                        
+                        <div class="origin-description">
+                            <p>Você nasceu no arquipélago de Monã, mais especificamente na ilha de Guaraci, você viveu toda sua vida em um mundo totalmente diferente, com outros valores, invenções e moralidade totalmente diferente.</p>
+                        </div>
+
+                        <div class="origin-details">
+                            <div class="origin-attribute">
+                                <h4>Perícias:</h4>
+                                <p>Intimidação, Diplomacia e Engenharia</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Ferramentas:</h4>
+                                <p>Kit de ferramentas à sua escolha e 5 plantas à sua escolha.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Idiomas:</h4>
+                                <p>Guaracês, Padrão e +2 a sua escolha</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Equipamento:</h4>
+                                <p>Casaco feito de folhas, arma a sua escolha e uma máscara.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Poder:</h4>
+                                <p><strong>Guerreiro da Natureza</strong> — Ao estar perto de qualquer tipo de planta, recebe apoio da natureza, ganhando +2 em testes durante o combate.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Traço:</h4>
+                                <p><strong>Ciência Sustentável</strong> — Suas armas e itens podem ser modificados com algumas plantas e elementos da natureza, acertar com o mestre os efeitos dos itens.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origem: Realeza Vampírica -->
+                    <div id="realeza-vampirica" class="origin-card">
+                        <h3>Realeza Vampírica</h3>
+                        
+                        <div class="origin-description">
+                            <p>Você nasceu em uma antiga dinastia vampírica, descendente direto de nobres vampiros antigos. A política e o sangue moldaram sua existência, e você aprendeu desde cedo a manipular o poder com sutileza e imponência.</p>
+                        </div>
+
+                        <div class="origin-details">
+                            <div class="origin-attribute">
+                                <h4>Perícias:</h4>
+                                <p>Persuasão, História e Intimidação</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Ferramentas:</h4>
+                                <p>Kit de alquimia e colar de sua família</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Idiomas:</h4>
+                                <p>Padrão, Vampírico Real e +1 idioma à sua escolha</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Equipamento:</h4>
+                                <p>Vestes nobres refinadas, uma arma elegante (Armas de Peso I) e um anel simbólico de sua linhagem</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Poder:</h4>
+                                <p><strong>Sangue Ancestral</strong> — Uma vez por combate, ao sofrer dano, você pode absorver a força vital do inimigo, recuperando PV igual a metade do dano infligido do seu próximo ataque.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Traço:</h4>
+                                <p><strong>Nobreza Sombria</strong> — Você tem vantagens em testes de Persuasão, Atuação e Intimidação.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origem: Medroso -->
+                    <div id="medroso" class="origin-card">
+                        <h3>Medroso</h3>
+                        
+                        <div class="origin-description">
+                            <p>Você ainda é uma pessoa comum, você ainda tem medo do desconhecido e das monstruosidades que este mundo mágico tem a oferecer.</p>
+                        </div>
+
+                        <div class="origin-details">
+                            <div class="origin-attribute">
+                                <h4>Perícias:</h4>
+                                <p>Disparada e Furtividade</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Ferramentas:</h4>
+                                <p>Nenhuma</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Idiomas:</h4>
+                                <p>Padrão</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Equipamento:</h4>
+                                <p>Itens adequados às suas ocupações</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Poder:</h4>
+                                <p><strong>CORRA!</strong> — Durante uma cena de perseguição ou combate, ao sofrer dano pode gastar sua reação para dobrar seu movimento para longe do oponente, não ficando suscetível a golpes de oportunidade.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Traço:</h4>
+                                <p><strong>Adaptação</strong> — A cada dano de sanidade que você sofre, você fica mais forte, você começa a aprender e se acostumar, quando sofrer dano de sanidade você recebe resistência de 1, no próximo dano resistência de 2 e assim sucessivamente.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origem: Celebridade -->
+                    <div id="celebridade" class="origin-card">
+                        <h3>Celebridade</h3>
+                        
+                        <div class="origin-description">
+                            <p>Você é uma pessoa muito famosa e reconhecida socialmente, sendo bastante convincente e amada pelas pessoas ao seu redor.</p>
+                        </div>
+
+                        <div class="origin-details">
+                            <div class="origin-attribute">
+                                <h4>Perícias:</h4>
+                                <p>Liderança, Barganha, mais uma relacionada ao motivo de sua fama</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Ferramentas:</h4>
+                                <p>Nenhuma</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Idiomas:</h4>
+                                <p>Padrão</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Equipamento:</h4>
+                                <p>Itens adequados às suas ocupações e 1 Moeda Negra</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Poder:</h4>
+                                <p><strong>Personalidade Inspiradora</strong> — Pode em situações difíceis inspirar seus aliados, os fazendo receber um bônus igual ao seu modificador de proficiência em seus testes.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Traço:</h4>
+                                <p><strong>Carteirada</strong> — Pode dar uma Carteirada com sua fama nas pessoas, recebendo vantagem em testes de barganha, intimidação e etc.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origem: Ciborgue -->
+                    <div id="ciborgue" class="origin-card">
+                        <h3>Ciborgue</h3>
+                        
+                        <div class="origin-description">
+                            <p>Seu corpo é modificado mecanicamente, te concedendo habilidades devida suas partes robóticas.</p>
+                        </div>
+
+                        <div class="origin-details">
+                            <div class="origin-attribute">
+                                <h4>Perícias:</h4>
+                                <p>Engenharia e Forja</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Ferramentas:</h4>
+                                <p>Ferramentas de forja e engenharia</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Idiomas:</h4>
+                                <p>Padrão e +1 a sua escolha</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Equipamento:</h4>
+                                <p>Partes de metal e um martelo de forja</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Poder:</h4>
+                                <p><strong>Homem de Ferro</strong> — Pode modificar alguma parte do seu corpo para transformá-lo em metálico ou armas, acertando com o mestre as modificações, inicialmente pode ter duas.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Traço:</h4>
+                                <p><strong>Homem Bomba</strong> — Pode se desfazer das suas partes tecnológicas, explodindo elas em cima dos seus alvos ao estarem danificadas ou para se salvar, elas causam o dado de dano da subclasse + 6d6 de dano</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origem: Monstro do Mar -->
+                    <div id="monstro-mar" class="origin-card">
+                        <h3>Monstro do Mar</h3>
+                        
+                        <div class="origin-description">
+                            <p>Você viveu anos e anos no mar, lutando, vivendo e guerreando nele, tendo já visto inúmeras bizarrices e sendo afetado por parte delas.</p>
+                        </div>
+
+                        <div class="origin-details">
+                            <div class="origin-attribute">
+                                <h4>Perícias:</h4>
+                                <p>Navegação, Astronomia e Natação</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Ferramentas:</h4>
+                                <p>Ferramentas de Localização</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Idiomas:</h4>
+                                <p>Padrão e +2 a sua escolha de suas viagens pelo mundo</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Equipamento:</h4>
+                                <p>Ferramentas de localização, arma de sua escolha, podendo ser de fogo também</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Poder:</h4>
+                                <p><strong>Senhor das Águas</strong> — Pode controlar água a vontade, como ataques e etc, os ataques causam dano igual ao dano de subclasse. Pode também fazer ondas e etc.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Traço:</h4>
+                                <p><strong>Bombeamento</strong> — Pode usar a água para aumentar o nível de sangue e bombear com mais força seus músculos, recebendo proficiência a mais de força em cenas de combate.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Origem: INSANO -->
+                    <div id="insano" class="origin-card">
+                        <h3>INSANO</h3>
+                        
+                        <div class="origin-description">
+                            <p>Você sempre teve seus problemas mentais e desde então você tem ficado cada vez mais insano, porém essa loucura e desapego te deixam mais fortes do que nunca, como se fosse uma maldição te consumindo</p>
+                        </div>
+
+                        <div class="origin-details">
+                            <div class="origin-attribute">
+                                <h4>Perícias:</h4>
+                                <p>2 a sua escolha</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Ferramentas:</h4>
+                                <p>Nenhuma</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Idiomas:</h4>
+                                <p>Não fala nem sequer 1 idioma perfeitamente.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Equipamento:</h4>
+                                <p>Nenhum</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Poder:</h4>
+                                <p><strong>Doente Mental</strong> — Você já começa o RPG com 0 de sanidade e um traço de loucura, a cada dano de sanidade que você sofre você adquire mais um problema mental, porém ganha também +2 em acertos e 1 ação adicional.</p>
+                            </div>
+                            
+                            <div class="origin-attribute">
+                                <h4>Traço:</h4>
+                                <p><strong>Insanidade</strong> — Você é um caso de estudo, uma aberração. quando você cai a 0 pontos de vida é como se nada fizesse sentido e você fosse trazido de volta pela loucura, você volta com metade dos seus Hp na primeira queda, na segunda com metade da metade e não existe uma terceira, além disso cada vez que você retornar você causa um dano de sanidade a todo mundo.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- Seção: Classes -->
+            <section id="classes" class="content-section">
+                <h2>Classes</h2>
+                
+                <div class="section-intro">
+                    <p>Em Wuitalur, as classes representam diferentes tipos de habilidades e estilos de combate que os jogadores podem escolher ao criar seu personagem. Cada classe oferece uma abordagem única para o jogo, permitindo que o jogador experimente diversas formas de interagir com o mundo. Algumas classes são mais focadas em ataques rápidos e furtivos, enquanto outras podem ser especialistas em resistir a danos ou em habilidades mágicas. A classe escolhida determinará como o personagem evolui, que habilidades ele desbloqueia, e como ele se comporta nas batalhas e nas situações do jogo.</p>
+                    
+                    <div class="rules-box">
+                        <h3><strong>Importante:</strong></h3>
+                        <div class="rules-content">
+                            <p>À medida que uma classe sobe de nível, o jogador tem a oportunidade de aprimorar suas habilidades. A cada novo nível em que uma classe desbloqueia habilidades, o jogador deve escolher UMA entre duas opções diferentes, cada uma oferecendo um caminho único para o desenvolvimento do personagem. (Essa mecânica não está aplicada para todas as classes ainda). Essa mecânica de escolha permite que cada jornada seja personalizada, proporcionando uma experiência única e estratégica para o jogador, já que a escolha de uma habilidade pode impactar diretamente a forma como o personagem interage com o mundo e enfrenta os desafios do jogo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Container para as classes -->
+                <div class="classes-container">
+                    
+                    <!-- Classe: Cavaleiros de Paladium -->
+                    <div id="cavaleiros-paladium" class="class-card">
+                        <h3>Cavaleiros de Paladium</h3>
+                        
+                        <div id="cavaleiros-image" class="class-image">
+                            <img src="../assets/cavaleiros_paladium.png" alt="Cavaleiros de Paladium" style="width: 100%; max-width: 400px; height: auto; border-radius: 16px; margin: 0 auto; display: block;">
+                        </div>
+
+                        <div class="class-description">
+                            <p>Os Cavaleiros de Paladium são a força máxima de proteção e autoridade do reino de Paladium, conhecidos por sua bravura e lealdade incomparáveis. Escolhidos entre os melhores guerreiros, esses cavaleiros dedicam suas vidas à proteção do povo, à preservação da paz e à execução de missões de alto risco que desafiam até mesmo os mais habilidosos.</p>
+                            
+                            <p>Organizados em um rígido sistema de ranks, que vão de 1 a 5, os Cavaleiros de Paladium têm suas hierarquias definidas pelo nível de habilidade, experiência e lealdade. Os cavaleiros de Rank 1 são a elite suprema, frequentemente louvados como herois lendários do reino. Cada cavaleiro é vinculado a um elemento de um Deus, recebendo dons e habilidades que refletem o poder dessa entidade.</p>
+                            
+                            <p>Os Cavaleiros de Paladium não são apenas soldados; eles são símbolos de armas avassaladoras, mortais e crueis para o povo do Reino de Paladium e a fora. Sua conexão com os deuses e seus elementos reforça sua imagem de guerreiros sagrados, representantes diretos das forças divinas.</p>
+                            
+                            <div class="difficulty-level">
+                                <span class="difficulty-label">Nível de Dificuldade:</span>
+                                <span class="difficulty-number difficulty-2">2</span>
+                            </div>
+                        </div>
+
+                        <div class="class-stats">
+                            <div class="class-stat-block">
+                                <h4>Características da Classe</h4>
+                                <p><strong>Vida da Classe (1º Nível):</strong> 10 + <span class="attr-saude">Saúde</span></p>
+                                <p><strong>Dado de Vida:</strong> 1d10 + <span class="attr-saude">Saúde</span> por nível</p>
+                                <p><strong>Bônus Racial:</strong> +2 em <span class="attr-destreza">Destreza</span> quando usada com Híbrido Animalesco</p>
+                            </div>
+
+                            <div class="class-stat-block">
+                                <h4>Energia Astral por Nível</h4>
+                                <ul>
+                                    <li><strong>Níveis 1-7:</strong> 120</li>
+                                    <li><strong>Níveis 7-10:</strong> 280</li>
+                                    <li><strong>Níveis 10-16:</strong> 455</li>
+                                    <li><strong>Níveis 16-18:</strong> 550</li>
+                                    <li><strong>Nível 20:</strong> 700</li>
+                                </ul>
+                            </div>
+
+                            <div class="class-stat-block">
+                                <h4>Proficiências</h4>
+                                <p><strong>Armas:</strong> Todas</p>
+                                <p><strong>Escudos:</strong> Todos</p>
+                                <p><strong>Ferramentas:</strong> Nenhuma</p>
+                                <p><strong>Testes de Resistência:</strong> <span class="attr-rf">Resistência Física</span>, <span class="attr-destreza">Destreza</span>, <span class="attr-forca">Força</span></p>
+                            </div>
+
+                            <div class="class-stat-block">
+                                <h4>Bônus de Proficiência</h4>
+                                <ul>
+                                    <li><strong>Níveis 1-4:</strong> <span class="proficiency-bonus">+2</span></li>
+                                    <li><strong>Níveis 5-8:</strong> <span class="proficiency-bonus">+3</span></li>
+                                    <li><strong>Níveis 9-12:</strong> <span class="proficiency-bonus">+4</span></li>
+                                    <li><strong>Níveis 13-16:</strong> <span class="proficiency-bonus">+5</span></li>
+                                    <li><strong>Níveis 17-20:</strong> <span class="proficiency-bonus">+6</span></li>
+                                </ul>
+                            </div>
+
+                            <div class="class-stat-block">
+                                <h4>Equipamentos Iniciais</h4>
+                                <p><strong>Armas:</strong> Lança Longa, Espada Média, Espada Longa</p>
+                                <p><strong>Escudos:</strong> Escudo pequeno, médio, grande ou nenhum</p>
+                                <p><strong>Armaduras:</strong> Armadura Leve, Média ou Pesada</p>
+                            </div>
+
+                            <div class="class-stat-block fire-effect">
+                                <h4><span class="fire-title">Dano Base Solar</span></h4>
+                                <ul>
+                                    <li><strong>Níveis 1-6:</strong> 3d10</li>
+                                    <li><strong>Níveis 7-10:</strong> 4d12</li>
+                                    <li><strong>Níveis 11-16:</strong> 5d15</li>
+                                    <li><strong>Níveis 16-18:</strong> 8d15</li>
+                                    <li><strong>Níveis 19-20:</strong> 10d15</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="rank-system">
+                            <h4>Sistema de Ranks</h4>
+                            <p>Os <span class="rank-text">Ranks</span> são uma espécie de níveis alternativos do Cavaleiro, que vão de 1 a 5. É possível aumentar o <span class="rank-text">Rank</span> fazendo missões ou derrotando inimigos de níveis altos.</p>
+                            
+                            <div class="rank-item">
+                                <h5>RANK 1</h5>
+                                <p>Ganha +1 de <span class="attr-fama">FAMA</span> e +1 de <span class="attr-rm">Resistência Mágica</span></p>
+                            </div>
+                            
+                            <div class="rank-item">
+                                <h5>RANK 2</h5>
+                                <p>Ganha +1 de <span class="attr-fama">FAMA</span>, +1 de <span class="attr-rm">Resistência Mágica</span> e +1 <span class="attr-rf">Resistência Física</span></p>
+                            </div>
+                            
+                            <div class="rank-item">
+                                <h5>RANK 3</h5>
+                                <p>Ganha +1 em <span class="attr-rm">Resistência Mágica</span> e <span class="attr-rf">Resistência Física</span></p>
+                            </div>
+                            
+                            <div class="rank-item">
+                                <h5>RANK 4</h5>
+                                <p>Ganha +1 em <span class="attr-rm">Resistência Mágica</span> e <span class="attr-rf">Resistência Física</span></p>
+                            </div>
+                            
+                            <div class="rank-item">
+                                <h5>RANK 5</h5>
+                                <p>Ganha +1 em <span class="attr-rm">Resistência Mágica</span> e <span class="attr-rf">Resistência Física</span></p>
+                            </div>
+                        </div>
+
+                        <div class="class-abilities solar-glow">
+                            <h4>Mecânica — <span class="solar-charge">Carga Solar</span></h4>
+                            <p><span class="solar-charge">Carga Solar</span> é um recurso que se acumula em combate e concede bônus crescentes. Com ela, ataques ficam mais precisos, inimigos próximos sofrem dano e, no máximo de carga, é possível liberar um golpe com todo o poder Solar.</p>
+                            
+                            <h5>Como Gerar Carga:</h5>
+                            <ul>
+                                <li>Gera 1 ponto de <span class="solar-charge">Carga Solar</span> ao acertar um ataque corpo a corpo.</li>
+                                <li>Gera 1 ponto de <span class="solar-charge">Carga Solar</span> ao sofrer dano de um ataque inimigo (máximo 1 vez por rodada).</li>
+                            </ul>
+                            
+                            <h5>Efeitos da <span class="solar-charge">Carga</span> (Máximo 8):</h5>
+                            <ul>
+                                <li><strong>1+ <span class="solar-charge">Carga</span>:</strong> Sua arma brilha. +1 em testes de ataque.</li>
+                                <li><strong>3+ <span class="solar-charge">Cargas</span>:</strong> Sua armadura irradia calor. Inimigos adjacentes 2B sofrem 1d4 de dano Solar no final do turno deles.</li>
+                                <li><strong>5+ <span class="solar-charge">Cargas</span>:</strong> A aura de calor se intensifica para 1d12.</li>
+                                <li><strong>8 <span class="solar-charge">Cargas</span> (Coroa Solar):</strong> Uma vez por turno, ao acertar um ataque corpo a corpo, você pode adicionar seu Dano Base Solar x2 completo ao dano deste ataque que consomem todas as <span class="solar-charge">cargas solares</span>.</li>
+                            </ul>
+                        </div>
+
+                        <div class="class-abilities">
+                            <h4>Habilidades de Classe</h4>
+                            
+                            <h5>Nível 1</h5>
+                            <p><em>Ganha as duas seguintes habilidades sem precisar escolher:</em></p>
+                            
+                            <ul>
+                                <li><strong>Golpe Solar:</strong> O Cavaleiro imbuí sua arma com energia. Um ataque corpo a corpo que causa dano normal da arma + Dano Solar Base.<br><em class="action-bonus">&lt; • Ação Bônus • &gt;</em><br><em class="energy-cost">-30 de Energia Astral-</em></li>
+                                
+                                <li><strong>Égide Radiante:</strong> Cria uma barreira de luz que concede <span class="attr-pv">PVs</span> Temporários equivalentes a 1d10 + <span class="attr-forca">Força</span> a si mesmo ou a um aliado a até 9B.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-25 de Energia Astral-</em></li>
+                            </ul>
+
+                            <h5>Nível 4</h5>
+                            
+                            <ul>
+                                <li><strong>Julgamento Ardente:</strong> Marca um inimigo com um sigilo solar (3B). O alvo sofre Queimando igual à metade dos dados do seu Dano Base Solar por 3 rodadas.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-100 de Energia Astral-</em></li>
+                                
+                                <li><strong>Solo Sagrado:</strong> Bate com a arma no chão, consagrando uma área de 6B. Inimigos na área sofrem 2d6 de dano Solar por turno. Aliados na área recebem +1 em resistências e testes de esquiva. Dura 3 rodadas.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-85 de Energia Astral-</em></li>
+                            </ul>
+
+                            <h5>Nível 8</h5>
+                            
+                            <ul>
+                                <li><strong>Investida Cometa:</strong> Avança até 12B em linha reta, atravessando inimigos e causando 4d8 de dano Solar a todos no caminho. O primeiro inimigo atingido é empurrado 3B para trás.<br><em class="action-bonus">&lt; • Ação Bônus • &gt;</em><br><em class="energy-cost">-65 de Energia Astral-</em></li>
+                                
+                                <li><strong>Coroa de Chamas:</strong> Por 2 turnos, você gera 1 ponto de <span class="solar-charge">Carga Solar</span> extra no início de cada um de seus turnos. Sua aura de calor também cura aliados adjacentes na mesma quantidade que causa dano a inimigos.<br><em class="action-bonus">&lt; • Ação Bônus • &gt;</em><br><em class="energy-cost">-70 de Energia Astral-</em></li>
+                            </ul>
+
+                            <h5>Nível 10</h5>
+                            
+                            <ul>
+                                <li><strong>Lança do Sol:</strong> Consome toda a sua <span class="solar-charge">Carga Solar</span> para arremessar uma lança de luz pura em um alvo a até 18B. O ataque causa dano igual ao seu Dano Base Solar completo e ignora resistências. (Requer no mínimo 3 <span class="solar-charge">Cargas</span> acumuladas).<br><em class="action-bonus">&lt; • Ação Bônus • &gt;</em><br><em class="energy-cost">-90 de Energia Astral-</em></li>
+                                
+                                <li><strong>Erupção Solar:</strong> Você consome toda a sua <span class="solar-charge">Carga Solar</span> (Max) em um surto de energia que transforma seu corpo em uma extensão viva do sol. Por 2 turnos, você recebe os seguintes efeitos: Seus ataques corpo a corpo causam +1 dado do seu Dano Base Solar para cada ponto de <span class="solar-charge">Carga</span> consumido; Você se torna imune a efeitos de empurrão, medo e atordoamento; Você se torna uma fonte de luz intensa.<br><em class="action-bonus">&lt; • Ação Bônus • &gt;</em><br><em class="energy-cost">-Toda carga solar + 120 de Energia Astral-</em></li>
+                            </ul>
+
+                            <h5>Nível 12</h5>
+                            
+                            <ul>
+                                <li><strong>Olhar da Divindade:</strong> Inimigos em um cone de 9B devem fazer um teste de Resistência Mental(<span class="attr-intelecto">Inteligência</span>) (CD 18) ou ficarão Amedrontados por 2 turnos.<br><em class="action-bonus">&lt; • Ação Bônus • &gt;</em><br><em class="energy-cost">-100 de Energia Astral-</em></li>
+                                
+                                <li><strong>Vontade de Paladium:</strong> Por 3 turnos, você e aliados a até 9B tornam-se imunes a efeitos de medo e controle mental, e ganham +2d8 em suas jogadas de dano.<br><em class="action-bonus">&lt; • Ação Bônus • &gt;</em><br><em class="energy-cost">-110 de Energia Astral-</em></li>
+                            </ul>
+
+                            <h5>Nível 15</h5>
+                            
+                            <ul>
+                                <li><strong>Vingança Solar:</strong> Quando sua vida cai abaixo de 50%, você libera uma Erupção Solar (usando 3 <span class="solar-charge">Cargas</span> como base, sem custo de Energia Astral) e sua geração de <span class="solar-charge">Carga Solar</span> é dobrada por 2 turnos.<br><em class="action-passive">-Passiva-</em></li>
+                                
+                                <li><strong>Fortaleza Inabalável:</strong> Enquanto tiver 3 ou mais pontos de <span class="solar-charge">Carga Solar</span>, você não pode ser movido contra sua vontade, empurrado, derrubado ou teleportado por efeitos inimigos.<br><em class="action-passive">-Passiva-</em></li>
+                            </ul>
+
+                            <h5>Nível 20 - Avatar da Estrela Ardente</h5>
+                            
+                            <ul>
+                                <li><strong>Avatar da Estrela Ardente:</strong> Você se torna um canal vivo de Cadamor por 5 Turnos. Efeitos da Transformação: Você fica permanentemente no estado de <span class="solar-charge">Coroa Solar</span> (8 <span class="solar-charge">Cargas</span>); Seu alcance corpo a corpo aumenta em 3B com uma lâmina de luz pura; Todos os seus ataques corpo a corpo causam dano adicional igual ao seu Dano Base Solar completo; Você se torna imune a dano de Fogo e Solar.<br><em class="action-bonus">&lt; • Ação Bônus • &gt;</em><br><em class="energy-cost">-450 de Energia Astral-</em></li>
+                            </ul>
+                        </div>
+
+                        <div class="class-stat-block">
+                            <h4>Cavaleiros Famosos</h4>
+                            <ul>
+                                <li><strong>Luke</strong></li>
+                                <li><strong>Thorf</strong></li>
+                                <li><strong>Gévaudan</strong> (Errante Lupinário)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Classe: Rastejantes -->
+                    <div id="rastejantes" class="class-card">
+                        <h3>Rastejantes</h3>
+                        
+                        <div id="rastejantes-image" class="class-image">
+                            <img src="../assets/rastejantes.png" alt="Rastejantes" style="width: 100%; max-width: 400px; height: auto; border-radius: 16px; margin: 0 auto; display: block;">
+                        </div>
+
+                        <div class="class-description">
+                            <p>Rastejantes são indivíduos escolhidos pelas trevas do abismo para canalizar seu poder sombrio em seus próprios corpos, transformando-se em veículos vivos para forças desconhecidas e aterradoras. Esses seres são comumente vistos como vítimas da escuridão, mas na realidade, são manipuladores conscientes de suas próprias conexões com as forças que habitam os abismos mais profundos da existência.</p>
+                            
+                            <p>Movidos por uma curiosidade insaciável, os Rastejantes buscam estudar e entender as forças que semeiam o Horror na humanidade, como a <span class="plague-highlight">Praga</span> e os <span class="nightmare-highlight">Pesadelos</span>. Em vez de temer essas entidades sombrias, eles as analisam, investigando as razões por trás de sua existência e o impacto devastador que causam nas almas humanas.</p>
+                            
+                            <p>Essa busca pelo entendimento é tanto um fardo quanto um objetivo, pois ao se aprofundarem nos segredos das trevas, os Rastejantes se tornam cada vez mais conectados a essas forças. A própria essência do abismo flui em suas veias, concedendo-lhes poderosas habilidades sombrias e a capacidade de manipular os pesadelos e as calamidades que afligem os mortais.</p>
+                            
+                            <div class="difficulty-level">
+                                <span class="difficulty-label">Nível de Dificuldade:</span>
+                                <span class="difficulty-number difficulty-3">3</span>
+                            </div>
+                        </div>
+
+                        <div class="class-stats">
+                            <div class="class-stat-block">
+                                <h4>Características da Classe</h4>
+                                <p><strong>Vida da Classe (1º Nível):</strong> 8 + <span class="attr-saude">Saúde</span></p>
+                                <p><strong>Dado de Vida:</strong> 1d8 + <span class="attr-saude">Saúde</span> por nível</p>
+                                <p><strong>Bônus Racial:</strong> +2 em testes de <span class="attr-intelecto">INT</span> com Insectóides e Praguentos</p>
+                            </div>
+
+                            <div class="class-stat-block">
+                                <h4>Energia Astral por Nível</h4>
+                                <ul>
+                                    <li><strong>Níveis 1-7:</strong> 180</li>
+                                    <li><strong>Níveis 8-10:</strong> 320</li>
+                                    <li><strong>Níveis 11-16:</strong> 450</li>
+                                    <li><strong>Níveis 17-18:</strong> 650</li>
+                                    <li><strong>Níveis 19-20:</strong> 1000</li>
+                                </ul>
+                            </div>
+
+                            <div class="class-stat-block">
+                                <h4>Proficiências</h4>
+                                <p><strong>Armas:</strong> Adagas, Espadas Curtas, Rapieiras, Arcos, Espadas Longas</p>
+                                <p><strong>Ferramentas:</strong> Grimórios</p>
+                                <p><strong>Escudos:</strong> Escudo Pequeno</p>
+                                <p><strong>Testes de Resistência:</strong> <span class="attr-rm">Resistência Mágica</span>, <span class="attr-destreza">Destreza</span></p>
+                            </div>
+
+                            <div class="class-stat-block">
+                                <h4>Bônus de Proficiência</h4>
+                                <ul>
+                                    <li><strong>Níveis 1-4:</strong> <span class="proficiency-bonus">+2</span></li>
+                                    <li><strong>Níveis 5-8:</strong> <span class="proficiency-bonus">+3</span></li>
+                                    <li><strong>Níveis 9-12:</strong> <span class="proficiency-bonus">+4</span></li>
+                                    <li><strong>Níveis 13-16:</strong> <span class="proficiency-bonus">+5</span></li>
+                                    <li><strong>Níveis 17-20:</strong> <span class="proficiency-bonus">+6</span></li>
+                                </ul>
+                            </div>
+
+                            <div class="class-stat-block">
+                                <h4>Equipamentos Iniciais</h4>
+                                <p><strong>Armas:</strong> Espada Curta, 2 Adagas, Rapieira, Espada Longa</p>
+                                <p><strong>Armaduras:</strong> Armadura Leve ou Média</p>
+                                <p><strong>Escudos:</strong> Escudo Pequeno ou nenhum</p>
+                            </div>
+                        </div>
+
+                        <div class="class-abilities abyssal-glow">
+                            <h4>Habilidades de Classe</h4>
+                            
+                            <p><strong>Sistema de Escolhas:</strong> A cada nível indicado abaixo, você deve escolher UMA das duas habilidades apresentadas. Sua escolha moldará seu estilo de combate e sua conexão com o abismo.</p>
+
+                            <p><strong>Habilidades Base:</strong> Além das escolhas, você também recebe as seguintes habilidades automaticamente nos níveis indicados: Mente Maligna (nível 2), Invocação do Rastejos e Elemento Abissal (nível 3), Incremento (níveis 4, 8, 12, 16, 19), Ataque Extra (níveis 5, 10, 15, 20), Troca Mente/Física (nível 13) e Julgamento do Abismo (nível 20).</p>
+
+                            <h5>Nível 1 - Escolha sua Marca Inicial</h5>
+                            <p><em>Escolha UMA das duas habilidades abaixo:</em></p>
+                            
+                            <ul>
+                                <li><strong><span class="plague-highlight">Toque Adoentado</span> (Praga):</strong> Você toca um alvo, causando 1d4 de dano de <span class="plague-highlight">Praga</span>. O alvo deve fazer um teste de Resistência Física (CD 10 + <span class="attr-intelecto">INT</span>). Se falhar, fica <strong><em>Enfraquecido</em></strong> por 1d4 turnos.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-Sem Custo-</em></li>
+                                
+                                <li><strong><span class="nightmare-highlight">Sussurro Desorientador</span> (Pesadelo):</strong> Você projeta um eco de pavor na mente de um alvo a até 9m, causando 1d4 de dano psíquico. O alvo deve fazer um teste de Resistência de <span class="attr-intelecto">Intelecto</span> (CD 10 + <span class="attr-intelecto">INT</span>). Se falhar, fica <strong><em>Confuso</em></strong> por 1 turno.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-Sem Custo-</em></li>
+                            </ul>
+
+                            <h5>Nível 6 - Escolha sua Especialização</h5>
+                            
+                            <ul>
+                                <li><strong><span class="plague-highlight">Enxame Devorador</span> (Praga):</strong> Você conjura uma névoa de insetos teleguiada contra um alvo a até 9m. O alvo deve fazer um teste de Resistência Física (CD 15). Se falhar, recebe 4d8 de dano de <span class="plague-highlight">Praga</span> e fica <strong><em>Dilacerado</em></strong> e <strong><em>Envenenado</em></strong> por 2 turnos. Em um sucesso, recebe metade do dano e nenhuma condição.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-35 de Energia Astral-</em></li>
+                                
+                                <li><strong><span class="nightmare-highlight">Imbuição Aterrorizante</span> (Pesadelo):</strong> Você imbui uma arma (sua ou de um aliado a até 3m) com a energia do <span class="nightmare-highlight">Pesadelo</span> por 3 turnos. Os ataques com essa arma causam 2d8 de dano psíquico adicional e, a cada golpe, o alvo deve fazer um teste de <span class="attr-rm">RM</span> (CD 15) ou ficará <strong><em>Amedrontado</em></strong> por 1 turno.<br><em class="action-bonus">&lt; • Ação Bônus • &gt;</em><br><em class="energy-cost">-35 de Energia Astral-</em></li>
+                            </ul>
+
+                            <h5>Nível 7 - Escolha sua Marca do Terror</h5>
+                            
+                            <ul>
+                                <li><strong><span class="plague-highlight">Toque Corrosivo</span> (Praga):</strong> Você toca um alvo, que deve fazer um teste de Resistência Física (CD 1d20 + <span class="attr-intelecto">INT</span> + Proficiência). Se falhar, o alvo sofre 3d6 de dano de <span class="plague-highlight">Praga</span> e fica <strong><em>Corroído</em></strong> por 2 turnos, sentindo sua carne e armadura se desfazerem.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-40 de Energia Astral-</em></li>
+                                
+                                <li><strong><span class="nightmare-highlight">Abraço do Terror</span> (Pesadelo):</strong> Você força um alvo ao seu alcance a olhar em seus olhos. O alvo deve fazer um teste de Esquiva (CD 1d20 + <span class="attr-destreza">DES</span> + <span class="attr-intelecto">INT</span> + Proficiência). Se falhar, ele é agarrado, recebe 3d8 + <span class="attr-intelecto">INT</span> de dano psíquico e fica <strong><em>Marcado pelo Medo</em></strong> por 2 turnos, incapaz de reagir ofensivamente.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-40 de Energia Astral-</em></li>
+                            </ul>
+
+                            <h5>Nível 9 - Escolha sua Defesa Passiva</h5>
+                            
+                            <ul>
+                                <li><strong><span class="plague-highlight">Sangue Pestilento</span> (Praga):</strong> Seu sangue é um veneno virulento. Qualquer criatura que cause dano perfurante ou cortante em você com um ataque corpo a corpo deve fazer um teste de <span class="attr-rf">RF</span> (CD 17). Em caso de falha, sofre 2d8 de dano de veneno e fica <strong><em>Envenenada</em></strong> e <strong><em>Exposta</em></strong> por 2 turnos.<br><em class="action-passive">-Passiva-</em></li>
+                                
+                                <li><strong><span class="nightmare-highlight">Manto de Fobia</span> (Pesadelo):</strong> Você ganha resistência a dano psíquico. Adicionalmente, sempre que uma criatura tentar afetá-lo com um efeito de medo ou charme, ela sofre 2d8 de dano psíquico de retaliação e fica <strong><em>Desorientada</em></strong> por 1 turno, enquanto sua própria mente é invadida.<br><em class="action-passive">-Passiva-</em></li>
+                            </ul>
+
+                            <h5>Nível 11 - Escolha seu Controle de Campo</h5>
+                            
+                            <ul>
+                                <li><strong><span class="plague-highlight">Ninho da Peste</span> (Praga):</strong> Você toca o chão e cria uma área de 4m de raio de infestação pútrida a até 12m. A área é terreno difícil. Qualquer criatura que comece seu turno na área ou entre nela sofre 3d10 de dano de <span class="plague-highlight">Praga</span> e fica <strong><em>Exposta</em></strong> enquanto permanecer no local.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-55 de Energia Astral-</em></li>
+                                
+                                <li><strong><span class="nightmare-highlight">Correntes do Desespero</span> (Pesadelo):</strong> Você invoca correntes mágicas arroxeadas do chão para prender um alvo a até 12m. O alvo sofre 2d8 de dano psíquico e deve fazer um teste de Resistência de <span class="attr-destreza">Destreza</span> (CD 18). Se falhar, fica <strong><em>Paralisado</em></strong> por 1 rodada. No nível 17, o dano aumenta para 4d8 e a paralisia dura 2 rodadas.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="life-cost">-Custa 1d6 de Pontos de Vida (1d12 no nível 17)-</em></li>
+                            </ul>
+
+                            <h5>Nível 14 - Escolha sua Devastação</h5>
+                            
+                            <ul>
+                                <li><strong><span class="plague-highlight">Peste Fulminante</span> (Praga):</strong> Você canaliza a essência da <span class="plague-highlight">Praga</span> em um alvo visível a até 12m, causando 6d10 de dano de <span class="plague-highlight">Praga</span>. O alvo deve fazer um teste de Resistência de <span class="attr-saude">Saúde</span> (CD 20). Se falhar, ele recebe a condição <strong><em>Infectado</em></strong>. Além disso, independentemente do resultado do teste, o alvo fica <strong><em>Exausto</em></strong> por 1 hora.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-150 de Energia Astral-</em></li>
+                                
+                                <li><strong><span class="nightmare-highlight">Estilhaçar Sanidade</span> (Pesadelo):</strong> Você foca sua vontade para quebrar a mente de um alvo a até 12m, causando 1d15 de dano de Sanidade. O alvo deve fazer um teste de <span class="attr-rm">RM</span> (CD 20). Se falhar, ele recebe a condição <strong><em>Assombrado</em></strong>. Você sofre dano de Sanidade igual à metade do resultado (arredondado para baixo) como ricochete.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="sanity-cost">-Custa Sanidade do usuário-</em></li>
+                            </ul>
+
+                            <h5>Nível 16 - Escolha sua Maestria</h5>
+                            
+                            <ul>
+                                <li><strong><span class="plague-highlight">Ceifa Entrópica</span> (Praga):</strong> Ao causar dano com um ataque ou habilidade de <span class="plague-highlight">Praga</span>, você pode usar sua ação bônus para sugar a vitalidade do alvo. Você recupera Pontos de Vida iguais à metade do dano causado e o alvo fica <strong><em>Enfraquecido</em></strong> por 1 turno, sentindo sua força ser drenada.<br><em class="action-bonus">&lt; • Ação Bônus • &gt;</em><br><em class="energy-cost">-180 de Energia Astral-</em></li>
+                                
+                                <li><strong><span class="nightmare-highlight">Banquete de Pavor</span> (Pesadelo):</strong> Quando um inimigo a até 9m falha em um teste de resistência contra um efeito de medo ou psíquico seu, você pode usar sua reação para se alimentar do terror dele. Isso causa 4d6 de dano psíquico no alvo e o deixa <strong><em>Atordoado</em></strong> por 1 turno. Você recupera 3d10 de Sanidade ou 50 de Energia Astral (sua escolha).<br><em class="action-reaction">&lt; • Reação • &gt;</em><br><em class="energy-cost">-Sem Custo-</em></li>
+                            </ul>
+
+                            <h5>Nível 20 - Julgamento do Abismo</h5>
+                            <ul>
+                                <li><strong>Julgamento do Abismo:</strong> Torna-se a boca do Abismo. Uma vez por combate, escolhe ponto até 8m e cria Explosão Catastrófica (5m de raio). Todas as criaturas fazem 2 testes simultâneos - Constituição CD 25 e Sanidade CD 25.
+                                    <div class="status-box abyssal-judgment">
+                                        <span class="status-label">Resultados</span>
+                                        <div class="status-content">
+                                            <p><strong>Falha nos dois:</strong> 25d10 de dano de <span class="plague-highlight">Praga</span>, <strong><em>Inconsciente</em></strong> por 1 turno, <strong><em>Exausto</em></strong> por 2 turnos. (Criaturas de Podridão: dano dobrado)</p>
+                                            <p><strong>Falha em um:</strong> 15d10 de dano (Praga ou Mental), <strong><em>Paralisada</em></strong> por 2 turnos</p>
+                                            <p><strong>Sucesso em ambos:</strong> 12d10 de dano, sem penalidades</p>
+                                        </div>
+                                    </div>
+                                    Após usar: Rastejante fica <strong><em>Marcado</em></strong> por 2 turnos.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                            </ul>
+                        </div>
+
+                        <div class="class-stat-block">
+                            <h4>Rastejantes Famosos</h4>
+                            <ul>
+                                <li><strong>Melther</strong></li>
+                                <li><strong>A Mariposa da Floresta</strong> (conhecida como uma lenda)</li>
+                                <li><strong>Anie</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                </div>
+
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 Wuitalur Sistema de RPG. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="../script/main.js"></script>
+</body>
+</html>

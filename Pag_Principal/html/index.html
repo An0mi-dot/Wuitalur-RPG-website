@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wuitalur - RPG</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+  <!-- PARTÍCULAS DE FUNDO -->
+  <div class="particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+
+  <header class="site-bar"></header>
+
+  <main class="main-content">
+
+    <!-- LOGO -->
+    <div class="logo-container">
+      <img src="../css/assets/logo.png" alt="Logo Wuitalur - RPG de Mesa" class="main-logo"/>
+    </div>
+
+    <!-- GRID DE CARDS -->
+    <section class="card-grid" role="navigation" aria-label="Seções principais do site">
+      <a href="#" class="feature-card" aria-label="Acesse o suplemento do RPG" data-modal="suplemento">
+        <img src="../css/assets/placeholder.png" alt="Ilustração representando o suplemento do RPG"/>
+        <h3>Suplemento</h3>
+      </a>
+      <a href="#" class="feature-card" aria-label="Acesse o sistema de regras do RPG" data-modal="sistema">
+        <img src="../css/assets/sistem_logo.png" alt="Logo do sistema de RPG Wuitalur"/>
+        <h3>Sistema do RPG</h3>
+      </a>
+      <a href="#" class="feature-card" aria-label="Explore a história e lore do mundo" data-modal="historia">
+        <img src="../css/assets/capa_hist.jpg" alt="Ilustração representando a história do mundo de Wuitalur"/>
+        <h3>História</h3>
+      </a>
+    </section>
+
+  </main>
+
+  <!-- MODAL -->
+  <div id="modal" class="modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <button class="modal-close">&times;</button>
+      <div class="modal-body">
+        <div class="modal-image">
+          <img id="modal-img" src="" alt="">
+        </div>
+        <div class="modal-info">
+          <h2 id="modal-title"></h2>
+          <p id="modal-description"></p>
+          <button id="modal-btn" class="modal-button">Ver</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-bar">
+    <p class="footer-text">2025 Wuitalur</p>
+    <p style="font-size: 0.75em; opacity: 0.6; margin-top: 8px;">
+      * Algumas imagens são provisórias (placeholders da internet/IA) e serão substituídas em breve por artes oficiais do RPG.
+    </p>
+  </footer>
+
+  <script>
+    // Dados dos modais
+    const modalData = {
+      suplemento: {
+        title: 'Suplemento',
+        description: 'Conteúdo adicional para o RPG Wuitalur, incluindo regras opcionais, cenários prontos, aventuras e material expandido para complementar o jogo base.',
+        image: '../css/assets/placeholder.png',
+        link: '#' // Substitua pelo link da página do suplemento
+      },
+      sistema: {
+        title: 'Sistema do RPG',
+        description: 'Regras e mecânicas do Wuitalur, sistema de elementos, criação de personagens, testes de atributos e todas as informações necessárias para jogar.',
+        image: '../css/assets/sistem_logo.png',
+        link: '../../Sistema_Padrao/html/index.html' // Link para a página do sistema
+      },
+      historia: {
+        title: 'História',
+        description: 'Lore e ambientação do mundo de Wuitalur, incluindo as civilizações, elementos, cidades, personagens e a narrativa que compõe o cenário do RPG.',
+        image: '../css/assets/capa_hist.jpg',
+        link: '../../Historia/html/index.html' // Link para a página de história
+      }
+    };
+
+    // Elementos do DOM
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDescription = document.getElementById('modal-description');
+    const modalBtn = document.getElementById('modal-btn');
+    const modalClose = document.querySelector('.modal-close');
+    const modalOverlay = document.querySelector('.modal-overlay');
+
+    // Abrir modal
+    document.querySelectorAll('.feature-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        e.preventDefault();
+        const modalType = card.dataset.modal;
+        const data = modalData[modalType];
+        
+        if (data) {
+          modalImg.src = data.image;
+          modalImg.alt = data.title;
+          modalTitle.textContent = data.title;
+          modalDescription.textContent = data.description;
+          modalBtn.onclick = () => window.location.href = data.link;
+          
+          modal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    });
+
+    // Fechar modal
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', closeModal);
+
+    // Fechar com ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeModal();
+      }
+    });
+  </script>
+
+</body>
+</html>

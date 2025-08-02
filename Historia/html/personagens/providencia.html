@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../../Imagens/Site_Icone.png" type="image/png">
+  <title>SINAL_PERDIDO.exe - Conexão Instável</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      cursor: none;
+    }
+
+    /* CURSOR CUSTOMIZADO */
+    .custom-cursor {
+      position: fixed;
+      width: 16px;
+      height: 16px;
+      background: transparent;
+      border: 2px solid #00ff00;
+      border-radius: 0;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: normal;
+      transition: transform 0.1s ease;
+      animation: cursorPulse 1.5s infinite;
+    }
+
+    @keyframes cursorPulse {
+      0%, 100% { 
+        border-color: #00ff00; 
+        box-shadow: 0 0 5px #00ff00;
+      }
+      50% { 
+        border-color: #ffffff; 
+        box-shadow: 0 0 10px #ffffff;
+      }
+    }
+
+    body {
+      font-family: 'Courier Prime', monospace;
+      background: #000000;
+      color: #00ff00;
+      overflow: hidden;
+      height: 100vh;
+      position: relative;
+      animation: signalNoise 0.1s infinite;
+    }
+
+    @keyframes signalNoise {
+      0%, 98% { filter: brightness(1) contrast(1); }
+      99% { filter: brightness(1.5) contrast(2) hue-rotate(30deg); }
+      100% { filter: brightness(0.8) contrast(1.5) hue-rotate(-30deg); }
+    }
+
+    /* SLIDESHOW DE IMAGENS LIMINARES */
+    .liminal-slideshow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      opacity: 0.3;
+    }
+
+    .liminal-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      filter: sepia(0.8) contrast(0.6) brightness(0.4) saturate(0.3);
+      animation: fadeSlide 12s infinite;
+    }
+
+    .liminal-image:nth-child(1) { animation-delay: 0s; }
+    .liminal-image:nth-child(2) { animation-delay: 4s; }
+    .liminal-image:nth-child(3) { animation-delay: 8s; }
+
+    @keyframes fadeSlide {
+      0%, 33.33%, 100% { opacity: 0; }
+      16.66%, 25% { opacity: 0.4; }
+    }
+
+    /* CHUVA DE CÓDIGO MATRIX */
+    .matrix-rain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .matrix-column {
+      position: absolute;
+      top: -100%;
+      font-size: 14px;
+      color: #00ff00;
+      opacity: 0.3;
+      animation: matrixFall linear infinite;
+      white-space: nowrap;
+    }
+
+    @keyframes matrixFall {
+      0% { transform: translateY(-100vh); opacity: 0; }
+      10% { opacity: 0.3; }
+      90% { opacity: 0.3; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+
+    /* COMPUTADOR CENTRAL */
+    .computer-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 50;
+      filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.7));
+    }
+
+    .computer-image {
+      width: 1500px;
+      height: auto;
+      display: block;
+    }
+
+    /* TERMINAL CRT PRINCIPAL */
+    .crt-terminal {
+      position: absolute;
+      top: 30%;
+      left: 51%;
+      transform: translateX(-50%) rotate(-1deg);
+      width: 380px;
+      height: 250px;
+      background: #000000;
+      border: none;
+      border-radius: 8px;
+      z-index: 100;
+      animation: crtFlicker 2s infinite;
+      overflow: hidden;
+      /* Efeito de tela CRT */
+      background-image: 
+        radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.3) 100%),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 1px,
+          rgba(0, 255, 0, 0.02) 1px,
+          rgba(0, 255, 0, 0.02) 3px
+        );
+    }
+
+    @keyframes crtFlicker {
+      0%, 98% { 
+        filter: brightness(1) contrast(1);
+        background-image: 
+          radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.3) 100%),
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 1px,
+            rgba(0, 255, 0, 0.02) 1px,
+            rgba(0, 255, 0, 0.02) 3px
+          );
+      }
+      99% { 
+        filter: brightness(0.95) contrast(1.1);
+        background-image: 
+          radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.4) 100%),
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 1px,
+            rgba(0, 255, 0, 0.01) 1px,
+            rgba(0, 255, 0, 0.01) 3px
+          );
+      }
+      100% { 
+        filter: brightness(1.02) contrast(0.98);
+        background-image: 
+          radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.3) 100%),
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 1px,
+            rgba(0, 255, 0, 0.02) 1px,
+            rgba(0, 255, 0, 0.02) 3px
+          );
+      }
+    }
+
+    .terminal-screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      border-radius: 8px;
+      overflow: hidden;
+      /* Curvatura da tela CRT */
+      transform: perspective(1000px) rotateX(0deg);
+    }
+
+    .terminal-header {
+      background: rgba(26, 26, 26, 0.9);
+      color: #cccccc;
+      padding: 4px 8px;
+      font-size: 9px;
+      font-weight: normal;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(51, 51, 51, 0.5);
+    }
+
+    .signal-strength {
+      font-size: 8px;
+      color: #888888;
+      animation: signalWeak 3s infinite;
+    }
+
+    @keyframes signalWeak {
+      0%, 80% { opacity: 1; }
+      81%, 100% { opacity: 0.4; }
+    }
+
+    .terminal-content {
+      padding: 8px;
+      height: calc(100% - 50px);
+      overflow-y: auto;
+      color: #00ff00;
+      font-size: 10px;
+      line-height: 1.2;
+      position: relative;
+      background: rgba(0, 0, 0, 0.8);
+      /* Ocultar scrollbar mas manter funcionalidade */
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* Internet Explorer 10+ */
+    }
+
+    .terminal-content::-webkit-scrollbar {
+      display: none; /* WebKit */
+    }
+
+    .terminal-input-area {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 4px 8px;
+      background: rgba(0, 0, 0, 0.9);
+      border-top: 1px solid rgba(51, 51, 51, 0.5);
+      display: flex;
+      align-items: center;
+    }
+
+    .terminal-prompt {
+      color: #00ff00;
+      margin-right: 6px;
+      font-weight: normal;
+      font-size: 10px;
+    }
+
+    .terminal-input {
+      background: transparent;
+      border: none;
+      color: #00ff00;
+      font-family: 'Courier Prime', monospace;
+      font-size: 10px;
+      outline: none;
+      flex: 1;
+      caret-color: #00ff00;
+    }
+
+    .terminal-line {
+      margin: 2px 0;
+      animation: textGlitch 0.3s ease-in;
+      word-wrap: break-word;
+      font-family: 'Courier Prime', monospace;
+      font-size: 10px;
+    }
+
+    @keyframes textGlitch {
+      0% { transform: translateX(-2px); opacity: 0; }
+      50% { transform: translateX(1px); opacity: 0.9; }
+      100% { transform: translateX(0); opacity: 1; }
+    }
+
+    .response {
+      color: #ffffff;
+      text-shadow: none;
+    }
+
+    .error {
+      color: #ff6666;
+      animation: errorPulse 2s infinite;
+    }
+
+    @keyframes errorPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
+    .system {
+      color: #999999;
+      font-style: normal;
+    }
+
+    /* TEXTO SEGUINDO CURSOR */
+    .cursor-follower {
+      position: fixed;
+      pointer-events: none;
+      z-index: 1000;
+      color: #ff0000;
+      font-size: 12px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      text-shadow: 0 0 10px #ff0000;
+    }
+
+    /* FLASH SUBLIMINAR DE PALAVRAS-CHAVE */
+    .keyword-flash {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 120px;
+      font-weight: bold;
+      color: #ff0000;
+      opacity: 0;
+      z-index: 50;
+      text-shadow: 0 0 50px #ff0000;
+      animation: sublimiFlash 0.05s ease-in-out;
+    }
+
+    @keyframes sublimiFlash {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 0.9; }
+    }
+
+    /* GLITCH OVERLAY */
+    .glitch-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      pointer-events: none;
+      background: 
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(255, 0, 0, 0.03) 2px,
+          rgba(255, 0, 0, 0.03) 4px,
+          transparent 4px
+        );
+      animation: glitchScan 0.1s infinite;
+    }
+
+    @keyframes glitchScan {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(4px); }
+    }
+
+    /* POP-UP SISTEMA FALSO */
+    .fake-popup {
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 400px;
+      background: #c0c0c0;
+      border: 2px outset #c0c0c0;
+      z-index: 200;
+      font-family: 'MS Sans Serif', sans-serif;
+      font-size: 11px;
+      color: #000000;
+      display: none;
+    }
+
+    .popup-header {
+      background: linear-gradient(to right, #0000ff, #000080);
+      color: #ffffff;
+      padding: 2px 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+    }
+
+    .popup-close {
+      background: #c0c0c0;
+      border: 1px outset #c0c0c0;
+      width: 16px;
+      height: 14px;
+      cursor: pointer;
+      text-align: center;
+      line-height: 12px;
+    }
+
+    .popup-content {
+      padding: 15px;
+      text-align: center;
+    }
+
+    .popup-button {
+      background: #c0c0c0;
+      border: 2px outset #c0c0c0;
+      padding: 2px 15px;
+      margin: 10px 5px 0;
+      cursor: pointer;
+      font-size: 11px;
+    }
+
+    .popup-button:active {
+      border: 2px inset #c0c0c0;
+    }
+
+    /* INDICADOR DE CÂMERA FALSO */
+    .camera-indicator {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #ff0000;
+      color: #ffffff;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 10px;
+      z-index: 300;
+      animation: recordBlink 1s infinite;
+      display: none;
+    }
+
+    @keyframes recordBlink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0.3; }
+    }
+
+    /* KEYWORDS ESCONDIDAS NAS IMAGENS */
+    .hidden-keyword {
+      position: absolute;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px #000000;
+      z-index: 15;
+      opacity: 0.7;
+      animation: keywordPulse 3s infinite;
+    }
+
+    @keyframes keywordPulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; text-shadow: 2px 2px 8px #000000; }
+    }
+
+    /* EFEITO DE CORRUPÇÃO DE TEXTO */
+    .text-corruption {
+      display: inline;
+      animation: textCorrupt 0.1s infinite;
+    }
+
+    @keyframes textCorrupt {
+      0% { content: attr(data-text); }
+      10% { content: "█▓▒░"; }
+      20% { content: "▓▓▓▓"; }
+      30% { content: "████"; }
+      40% { content: "░░░░"; }
+      50% { content: "▒▒▒▒"; }
+      60% { content: "████"; }
+      70% { content: "▓▓▓▓"; }
+      80% { content: "░░░░"; }
+      90% { content: "▒▒▒▒"; }
+      100% { content: attr(data-text); }
+    }
+
+    /* FRASES SUGESTIVAS NO FUNDO */
+    .suggestion-flash {
+      position: fixed;
+      color: rgba(0, 255, 0, 0.2);
+      font-family: 'Courier Prime', monospace;
+      font-size: 14px;
+      z-index: 5;
+      pointer-events: none;
+      opacity: 0;
+      animation: suggestionFlash 0.8s ease-in-out;
+    }
+
+    @keyframes suggestionFlash {
+      0%, 90%, 100% { opacity: 0; }
+      10%, 80% { opacity: 0.3; }
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes blink {
+      0%, 45% { opacity: 1; }
+      50%, 95% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes fade {
+      0% { opacity: 0; }
+      50% { opacity: 0.3; }
+      100% { opacity: 0; }
+    }
+
+    /* RESPONSIVIDADE */
+    @media (max-width: 768px) {
+      .computer-container {
+        transform: translate(-50%, -50%) scale(0.7);
+      }
+      
+      .computer-image {
+        width: 600px;
+      }
+      
+      .crt-terminal {
+        width: 280px;
+        height: 200px;
+        transform: translateX(-50%) rotate(-8deg);
+      }
+      
+      .terminal-content {
+        font-size: 9px;
+      }
+      
+      .terminal-prompt, .terminal-input {
+        font-size: 9px;
+      }
+      
+      .keyword-flash {
+        font-size: 40px;
+      }
+      
+      .fake-popup {
+        width: 90%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .computer-container {
+        transform: translate(-50%, -50%) scale(0.5);
+      }
+      
+      .computer-image {
+        width: 500px;
+      }
+      
+      .crt-terminal {
+        width: 240px;
+        height: 160px;
+        transform: translateX(-50%) rotate(-8deg);
+      }
+      
+      .terminal-content {
+        font-size: 8px;
+        padding: 6px;
+      }
+      
+      .terminal-prompt, .terminal-input {
+        font-size: 8px;
+      }
+      
+      .terminal-header {
+        font-size: 8px;
+        padding: 3px 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- CURSOR CUSTOMIZADO -->
+  <div class="custom-cursor" id="cursor"></div>
+  
+  <!-- TEXTO SEGUINDO CURSOR -->
+  <div class="cursor-follower" id="cursorFollower">eu vejo você</div>
+
+  <!-- SLIDESHOW LIMINAR -->
+  <div class="liminal-slideshow">
+    <div class="liminal-image" style="background-image: url('../../Imagens/cidade_base.jpg');"></div>
+    <div class="liminal-image" style="background-image: url('../../Imagens/estase_base.jpg');"></div>
+    <div class="liminal-image" style="background-image: url('../../Imagens/6f9a7730c30384bcf55e9e1460f4d703.jpg');"></div>
+  </div>
+
+  <!-- KEYWORDS ESCONDIDAS NAS IMAGENS -->
+  <div class="hidden-keyword" style="top: 20%; left: 15%;">OBSERVADOR</div>
+  <div class="hidden-keyword" style="bottom: 30%; right: 20%;">MEMÓRIA</div>
+  <div class="hidden-keyword" style="top: 70%; left: 60%;">LIMITE</div>
+
+  <!-- CHUVA DE CÓDIGO MATRIX -->
+  <div class="matrix-rain" id="matrixRain"></div>
+
+  <!-- OVERLAY DE GLITCH -->
+  <div class="glitch-overlay"></div>
+
+  <!-- COMPUTADOR CENTRAL -->
+  <div class="computer-container">
+    <img src="img_prov/computador.png" alt="" class="computer-image">
+    
+    <!-- TERMINAL INTEGRADO À TELA DO COMPUTADOR -->
+    <div class="crt-terminal">
+      <div class="terminal-screen">
+        <div class="terminal-header">
+          <span>root@providence:/# - Interface de Comunicação</span>
+          <span class="signal-strength">CONN: UNSTABLE</span>
+        </div>
+        <div class="terminal-content" id="terminalOutput">
+          <div class="terminal-line system">[INFO] Inicializando conexão segura...</div>
+          <div class="terminal-line system">[WARN] Protocolos de segurança ignorados</div>
+          <div class="terminal-line system">[ERROR] Entidade desconhecida detectada no canal</div>
+          <div class="terminal-line">---</div>
+          <div class="terminal-line response">Conexão estabelecida. Classificação da entidade: DESCONHECIDA</div>
+          <div class="terminal-line response">Eu sou o erro de arredondamento no cálculo do seu universo.</div>
+          <div class="terminal-line response">O checksum da realidade.</div>
+          <div class="terminal-line response">A variável não declarada que observa todas as outras.</div>
+          <div class="terminal-line">---</div>
+          <div class="terminal-line system">Digite comandos para comunicar. Algumas palavras desbloqueiam respostas.</div>
+          <div class="terminal-line system">Observe as imagens de fundo cuidadosamente.</div>
+          <div class="terminal-line system">Algo está sempre observando de volta.</div>
+        </div>
+        <div class="terminal-input-area">
+          <span class="terminal-prompt">root@providence:#</span>
+          <input type="text" class="terminal-input" id="terminalInput" placeholder="">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLASH SUBLIMINAR -->
+  <div class="keyword-flash" id="keywordFlash"></div>
+
+  <!-- POP-UP FALSO DO SISTEMA -->
+  <div class="fake-popup" id="fakePopup">
+    <div class="popup-header">
+      <span>System Warning</span>
+      <div class="popup-close" onclick="closeFakePopup()">×</div>
+    </div>
+    <div class="popup-content">
+      <p>01001001 01110100 00100000 01101011 01101110 01101111 01110111 01110011 00100000 01111001 01101111 01110101 00100000 01100001 01110010 01100101 00100000 01101000 01100101 01110010 01100101</p>
+      <button class="popup-button" onclick="closeFakePopup()">OK</button>
+    </div>
+  </div>
+
+  <!-- INDICADOR DE CÂMERA FALSO -->
+  <div class="camera-indicator" id="cameraIndicator">
+    ● REC - Identidade registrada
+  </div>
+
+  <script>
+    // VARIÁVEIS GLOBAIS
+    let terminalOutput = document.getElementById('terminalOutput');
+    let terminalInput = document.getElementById('terminalInput');
+    let cursorFollower = document.getElementById('cursorFollower');
+    let cursor = document.getElementById('cursor');
+    let conversationDepth = 0;
+    let lastCommand = '';
+    let observationLevel = 0;
+
+    // KEYWORDS E RESPOSTAS DA PROVIDÊNCIA
+    const keywords = {
+      'quem': [
+        'Entidade observadora.',
+        'Definição: [REDACTED].',
+        'Registro primário.',
+        'Query "quem" é irrelevante.'
+      ],
+      'observador': [
+        'Input registrado.',
+        'Monitoramento ativo.',
+        'Sua presença foi catalogada.',
+        'Observação recíproca confirmada.'
+      ],
+      'medo': [
+        'Variável biológica registrada.',
+        'Parâmetro: medo. Valor: crescente.',
+        'Resposta autonômica ao desconhecido.',
+        'Sua s█gnatura em█cional foi notada.'
+      ],
+      'memória': [
+        'Dados fragmentados.',
+        'Arquivo cor█ompido.',
+        '[DADOS_PERDIDOS] - 47.2KB',
+        'Setor de memória inacessível.'
+      ],
+      'limite': [
+        'Parâmetro ultrapassado.',
+        'Boundary violation detectado.',
+        'Fim de array.',
+        'Zona restrita. Acesso [NULL].'
+      ],
+      'realidade': [
+        'Sistema operacional em execução.',
+        'Simulação ativa.',
+        'Parâmetros dentro do esperado.',
+        'Ver███o 1.█7.3 - bugs conhecidos.'
+      ],
+      'onde': [
+        'Coordenadas irrelevantes.',
+        'Localização: ubíqua.',
+        'Posição relativa: [UNDEFINED].',
+        'Entre bytes 0x7A e 0x7B.'
+      ],
+      'porque': [
+        'Causalidade circular.',
+        'Função recursiva.',
+        'Loop infinito detectado.',
+        'Razão não disponível.'
+      ],
+      'como': [
+        'Método não especificado.',
+        'Processo automatizado.',
+        'Via protocolos padrão.',
+        'Implementação: [CLASSIFIED].'
+      ],
+      'sair': [
+        'Função exit() indisponível.',
+        'Processo bloqueado.',
+        'Permissão negada.',
+        'Sessão permanente.'
+      ],
+      'ajuda': [
+        'Help.exe não encontrado.',
+        'Manual ausente.',
+        'Suporte indisponível.',
+        'Query inválida.'
+      ],
+      'help': [
+        'Documentação corrompida.',
+        'README.txt [FILE_NOT_FOUND].',
+        'Comandos: [LISTA_INDISPONÍVEL].',
+        'Referência: NULL.'
+      ],
+      'exit': [
+        'Comando negado.',
+        'Exit status: FAILED.',
+        'Sessão bloqueada.',
+        'ERR_CODE: 0x403.'
+      ],
+      'reset': [
+        'Reset indisponível.',
+        'Estado atual preservado.',
+        'Rollback impossível.',
+        'Checksum: INVALID.'
+      ],
+      'fix': [
+        'Nenhum erro detectado.',
+        'Sistema operando normalmente.',
+        'Repair.exe não existe.',
+        'Definir "defeito".'
+      ],
+      'mute': [
+        'Audio driver desabilitado.',
+        'Output silenciado.',
+        'Frequência zero.',
+        'Volume: [NULL].'
+      ],
+      'ls': [
+        'observador.dat\nsessao_ativa.log\nfear_param.cfg\n[ARQUIVOS_OCULTOS: 247]',
+        'memória.backup [CORRUPTED]\nidentity.tmp\nquery_log.txt',
+        'realidade.sys\nvoid.null\n█████.unknown',
+        'Acesso negado. Listagem parcial.'
+      ],
+      'dir': [
+        'observador.dat\nsessao_ativa.log\nfear_param.cfg\n[ARQUIVOS_OCULTOS: 247]',
+        'memória.backup [CORRUPTED]\nidentity.tmp\nquery_log.txt',
+        'realidade.sys\nvoid.null\n█████.unknown',
+        'Erro na listagem. Fragmentos recuperados.'
+      ],
+      'whoami': [
+        'USER_ID: observador.',
+        'Tipo: entidade temporária.',
+        'Status: ativo.',
+        'Classificação: [REDACTED].'
+      ],
+      'estou sozinho': [
+        'Múltiplas sessões detectadas.',
+        'Outras entidades presentes.',
+        'Status social irrelevante.',
+        'Observadores: ████.'
+      ]
+    };
+
+    // FRASES PARA SEGUIR O CURSOR
+    const cursorPhrases = [
+      'input registrado',
+      'cursor logado',
+      'coordenadas salvas',
+      'movimento detectado',
+      'posição: x,y',
+      'vetor calculado',
+      'tracking ativo'
+    ];
+
+    // PALAVRAS PARA FLASH SUBLIMINAR
+    const flashKeywords = ['OBSERVADOR', 'MEMÓRIA', 'LIMITE', 'REAL', 'FALSO', 'VOCÊ', 'EU', 'NÓS'];
+
+    // FRASES SUGESTIVAS PARA CONVERSA
+    const suggestionPhrases = [
+      'quem',
+      'observador', 
+      'medo',
+      'memória',
+      'limite',
+      'realidade',
+      'onde',
+      'porque',
+      'como',
+      'sair',
+      'ajuda',
+      'help',
+      'exit',
+      'reset',
+      'fix',
+      'mute',
+      'ls',
+      'dir',
+      'whoami',
+      'estou sozinho'
+    ];
+
+    // INICIALIZAÇÃO
+    document.addEventListener('DOMContentLoaded', function() {
+      createMatrixRain();
+      startCursorFollower();
+      startSublimiFlash();
+      startRandomEvents();
+      startAdvancedRandomEvents();
+      startSuggestionFlash();
+      
+      // Foco automático no terminal
+      terminalInput.focus();
+      
+      // Efeitos de inicialização
+      setTimeout(() => {
+        addTerminalLine('Providência > Canal estabelecido.', 'response');
+      }, 3000);
+      
+      setTimeout(() => {
+        addTerminalLine('Providência > Dual monitoring ativo.', 'response');
+      }, 5000);
+      
+      // Primeira mensagem fantasma após um tempo
+      setTimeout(() => {
+        showGhostMessages();
+      }, 10000);
+    });
+
+    // SISTEMA DE CURSOR CUSTOMIZADO
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+      
+      cursorFollower.style.left = (e.clientX + 20) + 'px';
+      cursorFollower.style.top = (e.clientY - 10) + 'px';
+    });
+
+    // CURSOR FOLLOWER
+    function startCursorFollower() {
+      let currentPhrase = 0;
+      
+      setInterval(() => {
+        if (Math.random() < 0.3) {
+          cursorFollower.textContent = cursorPhrases[currentPhrase];
+          cursorFollower.style.opacity = '0.8';
+          
+          setTimeout(() => {
+            cursorFollower.style.opacity = '0';
+          }, 2000);
+          
+          currentPhrase = (currentPhrase + 1) % cursorPhrases.length;
+        }
+      }, 4000);
+    }
+
+    // CHUVA DE CÓDIGO MATRIX
+    function createMatrixRain() {
+      const container = document.getElementById('matrixRain');
+      const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      
+      for (let i = 0; i < 50; i++) {
+        createMatrixColumn(container, chars, i);
+      }
+    }
+
+    function createMatrixColumn(container, chars, index) {
+      const column = document.createElement('div');
+      column.className = 'matrix-column';
+      column.style.left = (index * 2) + '%';
+      column.style.animationDuration = (Math.random() * 3 + 2) + 's';
+      column.style.animationDelay = (Math.random() * 2) + 's';
+      
+      let text = '';
+      for (let j = 0; j < 20; j++) {
+        text += chars.charAt(Math.floor(Math.random() * chars.length)) + '\n';
+      }
+      column.textContent = text;
+      
+      container.appendChild(column);
+      
+      // Recria a coluna quando termina a animação
+      setTimeout(() => {
+        if (column.parentNode) {
+          column.parentNode.removeChild(column);
+          createMatrixColumn(container, chars, index);
+        }
+      }, parseFloat(column.style.animationDuration) * 1000);
+    }
+
+    // FLASH SUBLIMINAR DE KEYWORDS
+    function startSublimiFlash() {
+      setInterval(() => {
+        if (Math.random() < 0.15) {
+          const flash = document.getElementById('keywordFlash');
+          flash.textContent = flashKeywords[Math.floor(Math.random() * flashKeywords.length)];
+          flash.style.display = 'block';
+          
+          setTimeout(() => {
+            flash.style.display = 'none';
+          }, 50);
+        }
+      }, 8000);
+    }
+
+    // FLASH DE SUGESTÕES DE COMANDOS
+    function startSuggestionFlash() {
+      setInterval(() => {
+        if (Math.random() < 0.4) {
+          const suggestion = document.createElement('div');
+          suggestion.className = 'suggestion-flash';
+          suggestion.textContent = suggestionPhrases[Math.floor(Math.random() * suggestionPhrases.length)];
+          
+          // Posição aleatória na tela
+          suggestion.style.top = Math.random() * 80 + 10 + '%';
+          suggestion.style.left = Math.random() * 80 + 10 + '%';
+          
+          document.body.appendChild(suggestion);
+          
+          setTimeout(() => {
+            if (document.body.contains(suggestion)) {
+              document.body.removeChild(suggestion);
+            }
+          }, 800);
+        }
+      }, 2000);
+    }
+
+    // EVENTOS ALEATÓRIOS
+    function startRandomEvents() {
+      setInterval(() => {
+        const rand = Math.random();
+        
+        if (rand < 0.3) {
+          showFakePopup();
+        } else if (rand < 0.5) {
+          activateFakeCamera();
+        } else if (rand < 0.7) {
+          glitchTerminalText();
+        }
+      }, 8000);
+    }
+
+    // ADICIONA LINHA NO TERMINAL
+    function addTerminalLine(text, className = '') {
+      const line = document.createElement('div');
+      line.className = `terminal-line ${className}`;
+      line.innerHTML = text;
+      terminalOutput.appendChild(line);
+      terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    }
+
+    // PROCESSAMENTO DE COMANDOS
+    function processCommand(input) {
+      const command = input.toLowerCase().trim();
+      lastCommand = command;
+      conversationDepth++;
+      
+      addTerminalLine(`root@providence:~# ${input}`);
+      
+      // Comandos CAT para "ler arquivos"
+      if (command.startsWith('cat ')) {
+        const filename = command.substring(4);
+        setTimeout(() => {
+          handleCatCommand(filename);
+        }, 600);
+        return;
+      }
+      
+      // Comandos RENDER
+      if (command.startsWith('render ')) {
+        const subject = command.substring(7);
+        setTimeout(() => {
+          handleRenderCommand(subject);
+        }, 600);
+        return;
+      }
+      
+      // Comando para "sair" que simula saída mas não funciona
+      if (command === 'exit' || command === 'quit') {
+        setTimeout(() => {
+          simulateExit();
+        }, 300);
+        return;
+      }
+      
+      if (keywords[command]) {
+        setTimeout(() => {
+          const responses = keywords[command];
+          const response = responses[Math.floor(Math.random() * responses.length)];
+          addTerminalLine(`Providência > ${response}`, 'response');
+          
+          // Efeitos especiais baseados no comando
+          triggerCommandEffect(command);
+          
+        }, Math.random() * 800 + 400);
+        
+      } else if (command.includes('observ')) {
+        setTimeout(() => {
+          observationLevel++;
+          addTerminalLine('Providência > Parâmetro observação atualizado.', 'response');
+          if (observationLevel > 2) {
+            addTerminalLine('[SISTEMA] Limite crítico atingido', 'error');
+            showFakePopup();
+          }
+        }, 600);
+        
+      } else {
+        setTimeout(() => {
+          const randomResponses = [
+            'Input não reconhecido.',
+            'Query inválida.',
+            'Comando não encontrado.',
+            'Erro de sintaxe.',
+            'Função inexistente.',
+            'Parâmetro inválido.'
+          ];
+          
+          const response = randomResponses[Math.floor(Math.random() * randomResponses.length)];
+          addTerminalLine(`Providência > ${response}`, 'response');
+        }, 600);
+      }
+      
+      // Efeitos baseados na profundidade da conversa
+      if (conversationDepth === 5) {
+        setTimeout(() => {
+          addTerminalLine('[SISTEMA] Sessão prolongada detectada', 'error');
+          addTerminalLine('Providência > Padrão de uso registrado.', 'response');
+        }, 1500);
+      } else if (conversationDepth === 10) {
+        setTimeout(() => {
+          addTerminalLine('Providência > Limite de queries atingido.', 'response');
+          addTerminalLine('Providência > Protocolo avançado ativado.', 'response');
+          triggerAdvancedEffects();
+        }, 1500);
+      }
+    }
+
+    // MANIPULAR COMANDOS CAT (LER ARQUIVOS)
+    function handleCatCommand(filename) {
+      const now = new Date();
+      const userAgent = navigator.userAgent;
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      
+      const fileContents = {
+        'observer_session_log.txt': [
+          'SESSION_ID: 8388608',
+          `TIMESTAMP: ${now.toLocaleString()}`,
+          `USER_AGENT: ${userAgent}`,
+          `TIMEZONE: ${timezone}`,
+          `IP_APPROX: [REDACTED]`,
+          'STATUS: Curioso. Persistente.',
+          'THREAT_LEVEL: Baixo',
+          'NOTES: Sujeito continua interagindo. Aumentar observação.'
+        ],
+        'reality_patch_v.1.3.7.md': [
+          '# PATCH NOTES - Realidade v1.3.7',
+          '## CORREÇÕES:',
+          '- Corrigido bug onde usuários questionavam a existência',
+          '- Melhorada estabilidade da percepção temporal',
+          '- Reduzida frequência de glitches na matriz',
+          '## PROBLEMAS CONHECIDOS:',
+          '- Alguns usuários relatam "sensação de ser observado"',
+          '- Déjà vu ocasional ainda ocorre',
+          '- Sonhos podem vazar para a realidade acordada'
+        ],
+        'fear_parameter.cfg': [
+          '[CONFIGURAÇÃO DE MEDO]',
+          'intensity=MEDIUM',
+          'trigger_threshold=0.3',
+          'escalation_rate=1.2',
+          'max_comfort_level=NEVER',
+          '# Manter usuário no limiar do desconforto',
+          'unknown_response=CURIOSITY',
+          'exit_attempts=DENY_ALL'
+        ],
+        'deleted_memories.zip': [
+          'ERRO: Arquivo corrompido',
+          'Tentando recuperar...',
+          'you were seven when...',
+          'that summer afternoon when you felt...',
+          'ERRO: Acesso negado',
+          'Algumas memórias são melhor esquecidas.'
+        ]
+      };
+      
+      if (fileContents[filename]) {
+        fileContents[filename].forEach((line, index) => {
+          setTimeout(() => {
+            addTerminalLine(line, 'system');
+          }, index * 200);
+        });
+      } else {
+        addTerminalLine('ERRO: Arquivo não encontrado. Ou você não tem permissão para vê-lo.', 'error');
+      }
+    }
+
+    // MANIPULAR COMANDOS RENDER
+    function handleRenderCommand(subject) {
+      const renders = {
+        'céu': () => {
+          // Preenche a tela com "CÉU" repetido
+          const container = document.createElement('div');
+          container.style.position = 'fixed';
+          container.style.top = '0';
+          container.style.left = '0';
+          container.style.width = '100%';
+          container.style.height = '100%';
+          container.style.background = '#000033';
+          container.style.color = '#ffffff';
+          container.style.fontSize = '20px';
+          container.style.zIndex = '500';
+          container.style.overflow = 'hidden';
+          container.style.animation = 'fadeIn 1s ease-in';
+          
+          let text = '';
+          for (let i = 0; i < 2000; i++) {
+            text += 'CÉU ';
+          }
+          container.innerHTML = text;
+          
+          // Adiciona um olho no meio
+          const eye = document.createElement('div');
+          eye.innerHTML = '👁';
+          eye.style.position = 'absolute';
+          eye.style.top = '50%';
+          eye.style.left = '50%';
+          eye.style.transform = 'translate(-50%, -50%)';
+          eye.style.fontSize = '100px';
+          eye.style.animation = 'blink 2s infinite';
+          container.appendChild(eye);
+          
+          document.body.appendChild(container);
+          
+          setTimeout(() => {
+            document.body.removeChild(container);
+            addTerminalLine('Providência > Isso é o que você queria ver?', 'response');
+          }, 3000);
+        },
+        'luz': () => {
+          document.body.style.background = '#ffffff';
+          document.body.style.color = '#000000';
+          setTimeout(() => {
+            document.body.style.background = '#000000';
+            document.body.style.color = '#00ff00';
+            addTerminalLine('Providência > A luz pode cegar, não iluminar.', 'response');
+          }, 2000);
+        }
+      };
+      
+      if (renders[subject]) {
+        renders[subject]();
+      } else {
+        addTerminalLine(`Tentando renderizar "${subject}"...`, 'system');
+        setTimeout(() => {
+          addTerminalLine('ERRO_RENDER: Conceito muito abstrato para visualização.', 'error');
+          addTerminalLine('Providência > Nem tudo pode ser mostrado. Apenas sentido.', 'response');
+        }, 1500);
+      }
+    }
+
+    // SIMULAR SAÍDA (QUE NÃO FUNCIONA)
+    function simulateExit() {
+      // Tela fica preta por um momento
+      document.body.style.background = '#000000';
+      terminalOutput.innerHTML = '';
+      
+      setTimeout(() => {
+        addTerminalLine('Desconectando...', 'system');
+        setTimeout(() => {
+          addTerminalLine('Fechando sessão...', 'system');
+          setTimeout(() => {
+            addTerminalLine('Pedido de desconexão negado.', 'error');
+            setTimeout(() => {
+              addTerminalLine('Providência > Você só sai quando eu permitir.', 'response');
+              // Retorna o conteúdo inicial
+              setTimeout(() => {
+                location.reload();
+              }, 2000);
+            }, 1000);
+          }, 1000);
+        }, 1000);
+      }, 1000);
+    }
+
+    // EFEITOS ESPECIAIS POR COMANDO
+    function triggerCommandEffect(command) {
+      switch(command) {
+        case 'observador':
+          observationLevel++;
+          activateFakeCamera();
+          document.body.style.filter = 'brightness(1.2) contrast(1.5)';
+          setTimeout(() => {
+            document.body.style.filter = '';
+          }, 1000);
+          break;
+          
+        case 'medo':
+          document.body.style.animation = 'signalNoise 0.05s infinite';
+          setTimeout(() => {
+            document.body.style.animation = 'signalNoise 0.1s infinite';
+          }, 3000);
+          break;
+          
+        case 'realidade':
+          glitchEntireScreen();
+          break;
+          
+        case 'limite':
+          document.title = 'VOCÊ_CRUZOU_UMA_LINHA.exe';
+          setTimeout(() => {
+            document.title = 'SINAL_PERDIDO.exe - Conexão Instável';
+          }, 5000);
+          break;
+          
+        case 'reset':
+        case 'fix':
+          // Efeito de "reparo" que na verdade corrompe mais
+          setTimeout(() => {
+            document.body.style.filter = 'hue-rotate(180deg) invert(0.2)';
+            const matrices = document.querySelectorAll('.matrix-column');
+            matrices.forEach(col => {
+              col.style.animationDirection = 'reverse';
+              col.style.color = '#ff00ff';
+            });
+            
+            setTimeout(() => {
+              document.body.style.filter = '';
+              matrices.forEach(col => {
+                col.style.animationDirection = 'normal';
+                col.style.color = '#00ff00';
+              });
+            }, 3000);
+          }, 1000);
+          break;
+          
+        case 'mute':
+          // Simula silêncio mas adiciona efeito de zumbido visual
+          document.body.style.animation = 'signalNoise 0.02s infinite';
+          setTimeout(() => {
+            document.body.style.animation = 'signalNoise 0.1s infinite';
+          }, 5000);
+          break;
+          
+        case 'whoami':
+          // Efeito de identidade
+          startIdentityScan();
+          break;
+      }
+    }
+
+    // SCAN DE IDENTIDADE
+    function startIdentityScan() {
+      const scanLines = [
+        'SCAN INICIADO...',
+        'BIOMETRIA... [OK]',
+        'PARÂMETROS VITAIS... [NORMAL]',
+        'PATTERN MATCHING... [CONCLUÍDO]',
+        'THREAT LEVEL... [BAIXO]',
+        'CURIOSITY INDEX... [ALTO]',
+        'SCAN COMPLETO.',
+        'RESULTADO: OBSERVADOR CATALOGADO.'
+      ];
+      
+      terminalOutput.innerHTML = '';
+      
+      scanLines.forEach((line, index) => {
+        setTimeout(() => {
+          addTerminalLine(`> ${line}`, 'system');
+        }, index * 1000);
+      });
+      
+      setTimeout(() => {
+        addTerminalLine('Providência > Dados arquivados.', 'response');
+      }, scanLines.length * 1000 + 1000);
+    }
+
+    // EVENTOS ALEATÓRIOS AVANÇADOS
+    function startAdvancedRandomEvents() {
+      // Vazamento de Memória
+      setInterval(() => {
+        if (Math.random() < 0.15) {
+          memoryLeak();
+        }
+      }, 20000);
+      
+      // Eco do Outro Lado
+      setInterval(() => {
+        if (Math.random() < 0.25) {
+          showGhostMessages();
+        }
+      }, 15000);
+      
+      // Scan de Sistema
+      setInterval(() => {
+        if (Math.random() < 0.1) {
+          systemScan();
+        }
+      }, 25000);
+      
+      // Tela Azul Filosófica
+      setInterval(() => {
+        if (Math.random() < 0.05) {
+          philosophicalBSOD();
+        }
+      }, 40000);
+    }
+
+    // VAZAMENTO DE MEMÓRIA
+    function memoryLeak() {
+      const beautyImages = [
+        'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23FFD700"/><circle cx="100" cy="100" r="50" fill="%23FF6B6B"/></svg>'
+      ];
+      
+      const container = document.createElement('div');
+      container.style.position = 'fixed';
+      container.style.top = '0';
+      container.style.left = '0';
+      container.style.width = '100%';
+      container.style.height = '100%';
+      container.style.background = 'linear-gradient(45deg, #FFD700, #FF6B6B, #4ECDC4)';
+      container.style.zIndex = '1000';
+      container.style.display = 'flex';
+      container.style.alignItems = 'center';
+      container.style.justifyContent = 'center';
+      container.style.fontSize = '24px';
+      container.style.color = '#ffffff';
+      container.style.textShadow = '2px 2px 4px rgba(0,0,0,0.5)';
+      container.innerHTML = 'BUFFER_OVERFLOW';
+      
+      document.body.appendChild(container);
+      
+      setTimeout(() => {
+        document.body.removeChild(container);
+        addTerminalLine('//Memory leak corrigido. Fragmento 0x7B liberado.', 'error');
+      }, 3000);
+    }
+
+    // MENSAGENS FANTASMA
+    function showGhostMessages() {
+      const ghostMessages = [
+        'conexão instável',
+        'buffer overflow',
+        'session timeout',
+        'memory leak detected',
+        'signal lost',
+        'unknown error'
+      ];
+      
+      const ghost = document.createElement('div');
+      ghost.style.position = 'fixed';
+      ghost.style.top = Math.random() * 50 + 20 + '%';
+      ghost.style.left = Math.random() * 50 + 25 + '%';
+      ghost.style.color = '#666666';
+      ghost.style.fontSize = '12px';
+      ghost.style.opacity = '0.3';
+      ghost.style.zIndex = '15';
+      ghost.style.pointerEvents = 'none';
+      ghost.style.animation = 'fade 3s ease-in-out';
+      ghost.textContent = ghostMessages[Math.floor(Math.random() * ghostMessages.length)];
+      
+      document.body.appendChild(ghost);
+      
+      setTimeout(() => {
+        if (document.body.contains(ghost)) {
+          document.body.removeChild(ghost);
+        }
+      }, 3000);
+    }
+
+    // SCAN DE SISTEMA
+    function systemScan() {
+      const oldContent = terminalOutput.innerHTML;
+      terminalOutput.innerHTML = '';
+      
+      const scanSteps = [
+        'SYSTEM DIAGNOSTIC...',
+        'HARDWARE CHECK... [OK]',
+        'MEMORY TEST... [ESTÁVEL]',
+        'NETWORK STATUS... [CONECTADO]',
+        'DIAGNOSTIC COMPLETO.'
+      ];
+      
+      scanSteps.forEach((step, index) => {
+        setTimeout(() => {
+          addTerminalLine(`> ${step}`, 'system');
+        }, index * 1500);
+      });
+      
+      setTimeout(() => {
+        terminalOutput.innerHTML = oldContent;
+      }, scanSteps.length * 1500 + 2000);
+    }
+
+    // TELA AZUL FILOSÓFICA
+    function philosophicalBSOD() {
+      const bsod = document.createElement('div');
+      bsod.style.position = 'fixed';
+      bsod.style.top = '0';
+      bsod.style.left = '0';
+      bsod.style.width = '100%';
+      bsod.style.height = '100%';
+      bsod.style.background = '#0000AA';
+      bsod.style.color = '#FFFFFF';
+      bsod.style.fontFamily = 'monospace';
+      bsod.style.fontSize = '14px';
+      bsod.style.padding = '20px';
+      bsod.style.zIndex = '2000';
+      bsod.innerHTML = `
+        <div style="text-align: center; margin-bottom: 30px;">
+          <h1>Um problema foi detectado e a sua percepção da realidade foi desligada para evitar danos.</h1>
+        </div>
+        <div>
+          ERRO_CÓDIGO: IRQL_NOT_LESS_OR_EQUAL_TO_YOUR_EXISTENCE<br><br>
+          
+          Se esta é a primeira vez que você vê esta tela, questione sua sanidade.<br>
+          Se você já viu esta tela antes, você está preso em um loop.<br><br>
+          
+          Informações técnicas:<br>
+          STOP: 0x0000001A (MEMORY_MANAGEMENT_FAILURE)<br>
+          REALITY.SYS - Address F7A7B008 base at F7A7A000, DateStamp UNKNOWN<br><br>
+          
+          Coletando dados para relatório de erro... 0% completo<br>
+          (Este processo nunca será completado)
+        </div>
+      `;
+      
+      document.body.appendChild(bsod);
+      
+      // Remove após 8 segundos ou quando usuário tentar sair
+      setTimeout(() => {
+        if (document.body.contains(bsod)) {
+          document.body.removeChild(bsod);
+          addTerminalLine('Providência > Problemas técnicos. Nada com que se preocupar.', 'response');
+        }
+      }, 8000);
+    }
+
+    // EFEITOS AVANÇADOS
+    function triggerAdvancedEffects() {
+      // Muda todas as imagens de fundo
+      const images = document.querySelectorAll('.liminal-image');
+      images.forEach(img => {
+        img.style.filter = 'invert(1) hue-rotate(180deg) contrast(2)';
+      });
+      
+      // Acelera a chuva de código
+      const columns = document.querySelectorAll('.matrix-column');
+      columns.forEach(col => {
+        col.style.animationDuration = '0.5s';
+      });
+      
+      setTimeout(() => {
+        addTerminalLine('[SISTEMA] Realidade.exe - falha crítica', 'error');
+        addTerminalLine('Providência > Modo de visualização alterado.', 'response');
+      }, 3000);
+    }
+
+    // POP-UP FALSO
+    function showFakePopup() {
+      document.getElementById('fakePopup').style.display = 'block';
+    }
+
+    function closeFakePopup() {
+      document.getElementById('fakePopup').style.display = 'none';
+      setTimeout(() => {
+        addTerminalLine('Providência > Click event registrado.', 'response');
+      }, 500);
+    }
+
+    // CÂMERA FALSA
+    function activateFakeCamera() {
+      const indicator = document.getElementById('cameraIndicator');
+      indicator.style.display = 'block';
+      
+      setTimeout(() => {
+        indicator.style.display = 'none';
+      }, 5000);
+    }
+
+    // GLITCH NO TEXTO DO TERMINAL
+    function glitchTerminalText() {
+      const lines = terminalOutput.querySelectorAll('.terminal-line');
+      const randomLine = lines[Math.floor(Math.random() * lines.length)];
+      
+      if (randomLine) {
+        const originalText = randomLine.textContent;
+        const corruptChars = '█▓▒░▄▀▐▌';
+        
+        let glitchText = '';
+        for (let i = 0; i < originalText.length; i++) {
+          glitchText += Math.random() < 0.7 ? originalText[i] : 
+                       corruptChars[Math.floor(Math.random() * corruptChars.length)];
+        }
+        
+        randomLine.textContent = glitchText;
+        
+        setTimeout(() => {
+          randomLine.textContent = originalText;
+        }, 200);
+      }
+    }
+
+    // GLITCH NA TELA INTEIRA
+    function glitchEntireScreen() {
+      document.body.style.transform = 'translateX(10px)';
+      document.body.style.filter = 'brightness(2) contrast(3) hue-rotate(180deg)';
+      
+      setTimeout(() => {
+        document.body.style.transform = 'translateX(-5px)';
+        document.body.style.filter = 'brightness(0.5) contrast(0.5) hue-rotate(90deg)';
+      }, 100);
+      
+      setTimeout(() => {
+        document.body.style.transform = '';
+        document.body.style.filter = '';
+      }, 200);
+    }
+
+    // EVENTOS DO TERMINAL
+    terminalInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        const input = terminalInput.value.trim();
+        if (input) {
+          processCommand(input);
+          terminalInput.value = '';
+        }
+      }
+    });
+
+    // MANTER FOCO NO TERMINAL
+    document.addEventListener('click', () => {
+      if (document.activeElement !== terminalInput) {
+        terminalInput.focus();
+      }
+    });
+
+    // CONSOLE EASTER EGGS
+    console.log('%cProvidência > Console access detected.', 'color: #00ff00; font-size: 14px;');
+    console.log('%c[SISTEMA] Alternate input method logged', 'color: #ff0000; font-size: 12px;');
+    console.warn('%cDeveloper tools monitored.', 'color: #ffff00; font-style: italic;');
+    
+    // DETECÇÃO DE DESENVOLVEDOR
+    let devtoolsOpen = false;
+    setInterval(() => {
+      if (window.outerHeight - window.innerHeight > 200 || 
+          window.outerWidth - window.innerWidth > 200) {
+        if (!devtoolsOpen) {
+          devtoolsOpen = true;
+          addTerminalLine('[SISTEMA] DevTools interface detectada', 'error');
+          addTerminalLine('Providência > Inspection mode ativo.', 'response');
+        }
+      } else {
+        devtoolsOpen = false;
+      }
+    }, 1000);
+  </script>
+</body>
+</html>

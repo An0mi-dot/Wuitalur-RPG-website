@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Mariposa - O Assassino das Sombras</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilo Geral */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #E0E0E0;
+            min-height: 100vh;
+            background-image: linear-gradient(rgba(20, 15, 10, 0.9), rgba(10, 8, 5, 0.95));
+            background-attachment: fixed;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: rgba(30, 25, 15, 0.95);
+            backdrop-filter: blur(5px);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+            border-bottom: 1px solid rgba(180, 150, 80, 0.1); /* Borda mais suave */
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        .navbar a {
+            color: #C0A050; /* Dourado mais suave */
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* Sombra mais suave */
+        }
+
+        .navbar a:hover {
+            background-color: rgba(180, 150, 80, 0.1); /* Fundo mais suave */
+            color: #D4B87A; /* Dourado claro para hover */
+            text-shadow: 0 0 5px rgba(180, 150, 80, 0.3); /* Brilho reduzido */
+        }
+
+        /* Conteúdo Principal */
+        .content {
+            max-width: 1200px;
+            margin: 80px auto 40px;
+            padding: 20px;
+        }
+
+        /* Cabeçalho do Personagem */
+        .character-title {
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .character-title h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5em;
+            color: #C0A050; /* Dourado mais suave */
+            margin: 0;
+            text-shadow: 0 2px 5px rgba(180, 150, 80, 0.2); /* Sombra reduzida */
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .character-title h1:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(180, 150, 80, 0.5), transparent); /* Linha mais suave */
+        }
+
+        .character-title p {
+            font-size: 1.3em;
+            color: #B09A60; /* Dourado mais neutro */
+            margin: 20px 0 0;
+            font-style: italic;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Estilo para o container da classe */
+        .class-container {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Estilo para o símbolo da classe */
+        .class-symbol {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            filter: brightness(0.8) sepia(0.3) hue-rotate(5deg); /* Filtro mais suave */
+            transition: all 0.3s ease;
+        }
+
+        .class-container:hover .class-symbol {
+            transform: scale(1.1); /* Efeito mais sutil */
+            filter: brightness(0.9) sepia(0.2) hue-rotate(5deg);
+        }
+
+        /* Seção Principal - Imagem e Descrição */
+        .character-main {
+            display: flex;
+            gap: 40px;
+            margin: 40px 0;
+            align-items: flex-start;
+        }
+
+        /* Lado Esquerdo - Descrição */
+        .character-description {
+            flex: 1;
+            background-color: rgba(40, 35, 25, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            border-left: 5px solid #B09A60; /* Borda mais suave */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .character-description:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(180, 150, 80, 0.3), transparent); /* Gradiente mais suave */
+        }
+
+        .character-description p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #E0D8C0;
+            position: relative;
+        }
+
+        /* Lado Direito - Imagem */
+        .character-image-container {
+            width: 450px;
+            height: 600px;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(180, 150, 80, 0.1); /* Borda mais suave */
+        }
+
+        .character-image-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(20, 18, 10, 0.9), rgba(30, 25, 15, 0.95));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .character-image {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 5px;
+            filter: brightness(0.9) contrast(1.1) sepia(0.2) hue-rotate(5deg); /* Filtro mais suave */
+            transition: transform 0.5s ease;
+            box-shadow: 0 0 20px rgba(180, 150, 80, 0.05); /* Sombra mais suave */
+        }
+
+        .character-image:hover {
+            transform: scale(1.02); /* Efeito mais sutil */
+            filter: brightness(0.92) contrast(1.05) sepia(0.15) hue-rotate(5deg);
+        }
+
+        /* Seções de Detalhes */
+        .character-details {
+            margin-top: 50px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .detail-section {
+            background-color: rgba(50, 45, 35, 0.8);
+            padding: 25px;
+            border-radius: 8px;
+            border-top: 3px solid #B09A60; /* Borda mais suave */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .detail-section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(180, 150, 80, 0.2), transparent); /* Linha mais suave */
+        }
+
+        .detail-section:hover {
+            transform: translateY(-3px); /* Efeito mais sutil */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 10px rgba(180, 150, 80, 0.05); /* Sombra mais suave */
+            border-top-color: #D4B87A; /* Cor de hover mais suave */
+        }
+
+        .detail-section h3 {
+            color: #B09A60; /* Dourado mais suave */
+            font-size: 1.5em;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(180, 150, 80, 0.2); /* Borda mais suave */
+            padding-bottom: 10px;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-section ul {
+            padding-left: 20px;
+        }
+
+        .detail-section li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            color: #E0D8C0;
+            position: relative;
+        }
+
+        .detail-section li:before {
+            content: "◆";
+            color: #B09A60; /* Dourado mais suave */
+            position: absolute;
+            left: -20px;
+            font-size: 0.8em;
+            opacity: 0.6; /* Opacidade reduzida */
+        }
+
+        /* Botão de Voltar */
+        .back-button {
+            display: inline-block;
+            background: linear-gradient(to right, #B09A60, #A08A50); /* Gradiente mais suave */
+            color: #1A1A1A;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 40px auto 20px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra mais suave */
+            font-weight: 600;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent); /* Efeito mais sutil */
+            transition: 0.5s;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(to right, #C0AA70, #B09A60); /* Gradiente mais suave */
+            color: #121212;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3), 0 0 10px rgba(180, 150, 80, 0.1); /* Sombra mais suave */
+        }
+
+        .back-button:hover:before {
+            left: 100%;
+        }
+
+        /* Footer */
+        footer {
+            padding: 25px 0;
+            text-align: center;
+            color: #A08A50; /* Dourado mais escuro */
+            background-color: rgba(30, 25, 15, 0.95);
+            width: 100%;
+            margin-top: 60px;
+            border-top: 1px solid rgba(180, 150, 80, 0.1); /* Borda mais suave */
+            font-size: 0.9em;
+        }
+
+        footer p {
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Responsividade */
+        @media (max-width: 1000px) {
+            .character-main {
+                flex-direction: column;
+            }
+            
+            .character-image-container {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 3/4;
+            }
+            
+            .character-title h1 {
+                font-size: 3em;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .character-title h1 {
+                font-size: 2.5em;
+            }
+            
+            .character-description {
+                padding: 20px;
+            }
+            
+            .detail-section {
+                padding: 20px;
+            }
+            
+            .character-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .class-symbol {
+                width: 16px;
+                height: 16px;
+            }
+        }
+
+        /* Efeitos de brilho dourado (mais suaves) */
+        .gold-glow {
+            text-shadow: 0 0 5px rgba(180, 150, 80, 0.4); /* Brilho reduzido */
+        }
+
+        /* Animação de opacidade */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        body {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html">Início</a>
+            <a href="../historia.html">História</a>
+            <a href="../elementos.html">Elementos</a>
+            <a href="../personagens.html">Personagens</a>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <div class="content">
+        <!-- Título do Personagem -->
+        <div class="character-title">
+            <h1>A Mariposa</h1>
+            <p>Ele existe? | Classe: <span class="class-container">Rastejante?<img src="../../Imagens/rast_simb.png" alt="Símbolo Rastejante" class="class-symbol"></span> | Origem: Experimento falho da Era Dourada</p>
+        </div>
+        
+        <!-- Seção Principal - Imagem à direita e texto à esquerda -->
+        <div class="character-main">
+            <!-- Lado Esquerdo - Descrição -->
+            <div class="character-description">
+                <p>Dizem que suas asas são feitas de láminas, e que sua presença é um sussurro antes da morte. A Mariposa não é mais um indivíduo — é uma presença. Durante a Era Dourada, um jovem foi capturado por cientistas de Paladium e submetido a experimentos psicológicos e físicos extremos, sendo isolado em escuridão total por décadas, exposto a manipulações psíquicas e químicas, e forçado a assistir a mortes de outros da própria espécie.</p>
+                
+                <p>Quando escapou, ele não era mais um indivíduo — era uma maldição. Hoje, ninguém sabe se "A Mariposa" é um só ser, ou uma maldição que se repete. Suas asas não fazem som. Seu cheiro é o de flores podres. E sua aparição precede tragédias silenciosas.</p>
+                
+                <p>Especializado em assassinatos, manipulação de medo, ilusões sensoriais e execuções rápidas, A Mariposa raramente é vista, mas suas vítimas são encontradas em posições ritualísticas, com olhos queimados e bocas com uma fumaça negra saindo delas.</p>
+            </div>
+            
+            <!-- Lado Direito - Imagem -->
+            <div class="character-image-container">
+                <div class="character-image-bg">
+                    <img src="../../Imagens/Mariposa.png" alt="A Mariposa - O Assassino das Sombras" class="character-image">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Seções de Detalhes -->
+        <div class="character-details">
+            <div class="detail-section">
+                <h3>Atributos</h3>
+                <ul>
+                    <li><strong>DES:</strong> ??? </li>
+                    <li><strong>INT:</strong> ??? </li>
+                    <li><strong>RM:</strong> ??? </li>
+                    <li><strong>RF:</strong> ??? </li>
+                    <li><strong>FR:</strong> ??? </li>
+                    <li><strong>SAU:</strong> ??? </li>
+                    <li><strong>FAMA:</strong> ??? </li>
+                    <li><strong>SEN:</strong> ??? </li>
+                    <li><strong>COS:</strong> 75% </li>
+                </ul>
+            </div>
+            
+            <div class="detail-section">
+                <h3>Habilidades</h3>
+                <ul>
+                    <li><strong>SEM INFORMAÇÕES</li>
+                </ul>
+            </div>
+            
+            <div class="detail-section">
+                <h3>Curiosidades</h3>
+                <ul>
+                    <li>Pode ter sido o primeiro insectoide criado artificialmente.</li>
+                    <li>Seu ódio por Paladium é visível, mas suas motivações são desconhecidas.</li>
+                    <li>Alguns acreditam que ele já morreu várias vezes, mas sempre retorna.</li>
+                    <li>Laboratórios de Paladium ainda guardam registros censurados sobre seus experimentos.</li>
+                    <li>Vítimas com uma fumaça negra em suas bocas são encontradas onde dizem ter o visto.</li>
+                    <li>Pessoas que alegam ter o visto, dizem que a mariposa possuía entre 2m a 3m de altura, nunca é uma altura precisa.</li>
+                    <li>Um dos poucos personagens que consegue manipular S▒O▓M░B▐R▌A.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <a href="../personagens.html" class="back-button">Voltar para Personagens</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Wuitalur. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        // Efeitos de hover nas seções (mais suaves)
+        document.querySelectorAll('.detail-section').forEach(section => {
+            section.addEventListener('mouseenter', function() {
+                this.querySelector('h3').classList.add('gold-glow');
+            });
+            
+            section.addEventListener('mouseleave', function() {
+                this.querySelector('h3').classList.remove('gold-glow');
+            });
+        });
+        
+        // Efeito no título principal (mais sutil)
+        const title = document.querySelector('.character-title h1');
+        setInterval(() => {
+            title.classList.toggle('gold-glow');
+        }, 3000); // Intervalo maior
+        
+        // Animação suave ao carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 50);
+        });
+    </script>
+    
+    <footer style="background-color: rgba(30, 25, 15, 0.95); padding: 20px; margin-top: 40px; border-top: 2px solid rgba(180, 150, 80, 0.2); backdrop-filter: blur(5px);">
+        <p style="margin: 0; font-size: 0.85em; opacity: 0.7; margin-top: 10px; color: #C0A050;">
+            Algumas imagens são provisórias (placeholders da internet/IA) e serão substituídas em breve por artes oficiais do RPG.
+        </p>
+    </footer>
+</body>
+</html>
