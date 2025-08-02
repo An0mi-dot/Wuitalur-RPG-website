@@ -790,6 +790,11 @@ body {
 .attr-fama { color: var(--cor-fama); font-weight: 600; }
 .attr-sen { color: var(--cor-sen); font-weight: 600; }
 
+/* === ABREVIAÇÕES DOS ATRIBUTOS === */
+.attr-des { color: var(--cor-destreza); font-weight: 600; } /* DES = Destreza */
+.attr-dex { color: var(--cor-destreza); font-weight: 600; } /* DEX = Destreza (alternativa) */
+.attr-int { color: var(--cor-intelecto); font-weight: 600; } /* INT = Inteligência */
+
 /* === COSMO - ESTILO GLITCH/BUGADO === */
 .attr-cosmo { 
     font-family: monospace, 'Courier New', monospace;
@@ -2320,6 +2325,45 @@ body {
     text-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
 }
 
+/* === ESTILOS DOS ARQUÉTIPOS === */
+.archetype-container {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.archetype-container h5 {
+    color: var(--cor-destaque);
+    font-size: 1.4rem;
+    margin: 1.5rem 0 0.8rem 0;
+    padding: 0.6rem 1rem;
+    background: linear-gradient(135deg, rgba(149, 117, 205, 0.2), rgba(149, 117, 205, 0.1));
+    border-radius: 8px;
+    border-left: 4px solid var(--cor-destaque);
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+}
+
+.archetype-container h5:first-child {
+    margin-top: 0;
+}
+
+.archetype-container p {
+    margin: 0.8rem 0;
+    padding-left: 1rem;
+    line-height: 1.7;
+    color: var(--cor-texto);
+}
+
+.archetype-container p strong {
+    color: var(--cor-titulo);
+    font-weight: 600;
+}
+
 @keyframes fireTitle {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
@@ -2444,4 +2488,376 @@ body {
     display: block !important;
     color: var(--cor-texto-sec) !important;
     font-style: italic !important;
+}
+
+/* === ESTILOS ESPECÍFICOS PARA ARQUÉTIPOS === */
+.archetype-item {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 1.5rem 0;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+}
+
+.archetype-item:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+.archetype-item h5 {
+    color: var(--cor-titulo);
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.archetype-item.nightmare-theme {
+    border-color: rgba(204, 102, 51, 0.4);
+    background: linear-gradient(135deg, rgba(139, 69, 19, 0.2), rgba(160, 82, 45, 0.15));
+}
+
+.archetype-item.nightmare-theme:hover {
+    border-color: rgba(204, 102, 51, 0.6);
+    box-shadow: 0 8px 25px rgba(204, 102, 51, 0.3);
+}
+
+.archetype-item.nightmare-theme h5 {
+    color: #cc6633;
+    text-shadow: 0 0 10px rgba(204, 102, 51, 0.6);
+    background: linear-gradient(135deg, #cc6633, #b85c2e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.archetype-description {
+    margin-bottom: 1.5rem;
+}
+
+.archetype-description p {
+    margin: 1rem 0;
+    line-height: 1.7;
+    color: var(--cor-texto);
+}
+
+.archetype-description em {
+    color: #cc6633;
+    font-style: italic;
+    text-shadow: 0 0 5px rgba(204, 102, 51, 0.5);
+}
+
+.plague-theme .archetype-description em {
+    color: #696969;
+    font-style: italic;
+    text-shadow: 0 0 5px rgba(105, 105, 105, 0.5);
+}
+
+.archetype-mechanics {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border-left: 4px solid #cc6633;
+}
+
+.archetype-mechanics h6 {
+    color: #cc6633;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px rgba(204, 102, 51, 0.6);
+    background: linear-gradient(135deg, #cc6633, #b85c2e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.archetype-passive {
+    background: rgba(204, 102, 51, 0.1);
+    border: 1px solid rgba(204, 102, 51, 0.3);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.archetype-passive.nightmare-theme {
+    background: rgba(139, 69, 19, 0.15);
+    border-color: rgba(204, 102, 51, 0.4);
+}
+
+.archetype-passive h6 {
+    color: #cc6633;
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.archetype-abilities {
+    margin-top: 2rem;
+}
+
+.archetype-abilities h6 {
+    color: var(--cor-titulo);
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+.ability-level {
+    margin: 1.5rem 0;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 1.5rem;
+    border-left: 3px solid var(--cor-destaque);
+}
+
+.nightmare-theme .ability-level {
+    background: rgba(139, 69, 19, 0.15);
+    border-left-color: #cc6633;
+    border: 1px solid rgba(204, 102, 51, 0.2);
+}
+
+.ability-level h7 {
+    color: var(--cor-destaque);
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.nightmare-theme .ability-level h7 {
+    color: #cc6633;
+    text-shadow: 0 0 5px rgba(204, 102, 51, 0.5);
+}
+
+.ability-item {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    border-left: 2px solid rgba(255, 140, 0, 0.5);
+}
+
+.nightmare-theme .ability-item {
+    background: rgba(139, 69, 19, 0.1);
+    border-left-color: rgba(204, 102, 51, 0.6);
+    border: 1px solid rgba(204, 102, 51, 0.15);
+    box-shadow: 0 2px 8px rgba(204, 102, 51, 0.1);
+}
+
+.nightmare-theme .ability-item:hover {
+    background: rgba(139, 69, 19, 0.15);
+    border-color: rgba(204, 102, 51, 0.25);
+    box-shadow: 0 4px 12px rgba(204, 102, 51, 0.2);
+}
+
+.ability-item p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.nightmare-theme .ability-item p strong {
+    color: #cc6633;
+    text-shadow: 0 0 3px rgba(204, 102, 51, 0.4);
+}
+
+/* Ações específicas para arquétipos */
+.sanity-cost {
+    color: #ff6b6b;
+    font-weight: 600;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* Destaque especial para Dano Base */
+.damage-base-highlight {
+    background: linear-gradient(135deg, #cc6633, #b85c2e, #cc6633);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: damageBaseGlow 3s ease-in-out infinite;
+    font-weight: 800;
+    display: inline-block;
+    position: relative;
+}
+
+/* Destaque específico para Dano Base da Praga */
+.plague-theme .damage-base-highlight {
+    background: linear-gradient(135deg, #696969, #505050, #696969);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: plagueBaseGlow 3s ease-in-out infinite;
+}
+
+.damage-base-highlight::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: inherit;
+    filter: blur(3px);
+    opacity: 0.3;
+    z-index: -1;
+}
+
+@keyframes damageBaseGlow {
+    0%, 100% { 
+        background-position: 0% 50%;
+        filter: brightness(1);
+    }
+    50% { 
+        background-position: 100% 50%;
+        filter: brightness(1.3);
+    }
+}
+
+@keyframes plagueBaseGlow {
+    0%, 100% { 
+        background-position: 0% 50%;
+        filter: brightness(1);
+    }
+    50% { 
+        background-position: 100% 50%;
+        filter: brightness(1.4);
+    }
+}
+
+/* === TEMA PLAGUE (Praga) - Cores Mortas === */
+.archetype-item.plague-theme {
+    border-color: rgba(105, 105, 105, 0.4);
+    background: linear-gradient(135deg, rgba(64, 64, 64, 0.2), rgba(80, 80, 80, 0.15));
+}
+
+.archetype-item.plague-theme:hover {
+    border-color: rgba(105, 105, 105, 0.6);
+    box-shadow: 0 8px 25px rgba(105, 105, 105, 0.3);
+}
+
+.archetype-item.plague-theme h5 {
+    color: #696969;
+    text-shadow: 0 0 10px rgba(105, 105, 105, 0.6);
+    background: linear-gradient(135deg, #696969, #505050);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.archetype-passive.plague-theme {
+    background: rgba(64, 64, 64, 0.15);
+    border-color: rgba(105, 105, 105, 0.4);
+}
+
+.plague-theme .ability-level {
+    background: rgba(64, 64, 64, 0.15);
+    border-left-color: #696969;
+    border: 1px solid rgba(105, 105, 105, 0.2);
+}
+
+.plague-theme .ability-level h7 {
+    color: #696969;
+    text-shadow: 0 0 5px rgba(105, 105, 105, 0.5);
+}
+
+.plague-theme .ability-item {
+    background: rgba(64, 64, 64, 0.1);
+    border-left-color: rgba(105, 105, 105, 0.6);
+    border: 1px solid rgba(105, 105, 105, 0.15);
+    box-shadow: 0 2px 8px rgba(105, 105, 105, 0.1);
+}
+
+.plague-theme .ability-item:hover {
+    background: rgba(64, 64, 64, 0.15);
+    border-color: rgba(105, 105, 105, 0.25);
+    box-shadow: 0 4px 12px rgba(105, 105, 105, 0.2);
+}
+
+.plague-theme .ability-item p strong {
+    color: #696969;
+    text-shadow: 0 0 3px rgba(105, 105, 105, 0.4);
+}
+
+.plague-theme .archetype-mechanics {
+    border-left-color: #696969;
+}
+
+.plague-theme .archetype-mechanics h6 {
+    color: #696969;
+    background: linear-gradient(135deg, #696969, #505050);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 8px rgba(105, 105, 105, 0.6);
+}
+
+/* Cores dos atributos para tema plague */
+.plague-theme .attr-saude,
+.plague-theme .attr-rm,
+.plague-theme .attr-rf,
+.plague-theme .attr-destreza,
+.plague-theme .attr-forca,
+.plague-theme .attr-intelecto,
+.plague-theme .attr-fama,
+.plague-theme .attr-sen,
+.plague-theme .attr-cosmo {
+    color: var(--cor-saude);
+}
+
+.plague-theme .attr-rm {
+    color: var(--cor-rm);
+}
+
+.plague-theme .attr-rf {
+    color: var(--cor-rf);
+}
+
+.plague-theme .attr-destreza {
+    color: var(--cor-destreza);
+}
+
+.plague-theme .attr-forca {
+    color: var(--cor-forca);
+}
+
+.plague-theme .attr-intelecto {
+    color: var(--cor-intelecto);
+}
+
+.plague-theme .attr-fama {
+    color: var(--cor-fama);
+}
+
+.plague-theme .attr-sen {
+    color: var(--cor-sen);
+}
+
+.plague-theme .attr-cosmo {
+    color: var(--cor-cosmo);
+}
+
+/* Abreviações dos atributos para tema plague */
+.plague-theme .attr-des {
+    color: var(--cor-destreza);
+}
+
+.plague-theme .attr-dex {
+    color: var(--cor-destreza);
+}
+
+.plague-theme .attr-int {
+    color: var(--cor-intelecto);
 }

@@ -1,5 +1,14 @@
 // === SISTEMA WUITALUR - SCRIPT PRINCIPAL ===
 
+// === DEFINIÇÕES DE ATRIBUTOS ===
+// Abreviações dos atributos para referência:
+// DES = Destreza
+// DEX = Destreza (alternativa)
+// INT = Inteligência  
+// RM = Resistência Mágica
+// RF = Resistência Física
+// SAN = Sanidade
+
 // === FUNÇÕES GLOBAIS PARA NAVEGAÇÃO ===
 
 // === SELETOR DE RAÇAS ===
