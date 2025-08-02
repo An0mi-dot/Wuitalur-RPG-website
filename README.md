@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🎲 Wuitalur RPG System
 
 Um sistema completo de RPG de mesa com elementos únicos, criação de personagens detalhada e um mundo rico em lore.
