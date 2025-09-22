@@ -1077,6 +1077,18 @@ body {
     border-radius: 3px;
 }
 
+/* === ESTILO PARA O ELEMENTO ESTASE === */
+.estase-highlight {
+     background: linear-gradient(90deg, #1a2a4d 60%, #274b7a 100%);
+     color: #cce6ff;
+     padding: 2px 7px;
+     font-weight: bold;
+     border-radius: 4px;
+     box-shadow: 0 0 8px #1a2a4d44;
+     text-shadow: 0 0 4px #274b7a99;
+     border: 1px solid #274b7a;
+}
+
 /* === CENTRALIZAÇÃO DAS DESCRIÇÕES DAS RAÇAS === */
 .race-description {
     text-align: center;

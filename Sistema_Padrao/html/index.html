@@ -64,6 +64,7 @@
                     <p>Guardiões da floresta com chifres de alce</p>
                     <span class="difficulty-mini difficulty-1">1</span>
                 </div>
+                </div>
                 <div class="race-card-mini" onclick="scrollToRace('vampiros')">
                     <img src="../assets/vampiros.png" alt="Vampiros">
                     <h3>Vampiros</h3>
@@ -81,6 +82,12 @@
                     <h3>Híbridos</h3>
                     <p>Animalescos e Plantíferos modificados</p>
                     <span class="difficulty-mini difficulty-2">1-2</span>
+                </div>
+                <div class="race-card-mini" onclick="scrollToRace('dragao-anao')">
+                    <img src="../assets/dragaoanao.png" alt="Dragão Anão" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 1rem; border: 2px solid var(--cor-borda);">
+                    <h3>Dragão Anão</h3>
+                    <p>Dracônicos de Tragnor, resistentes e telepatas</p>
+                    <span class="difficulty-mini difficulty-2">2</span>
                 </div>
                 <div class="race-card-mini" onclick="scrollToRace('praguentos')">
                     <img src="../assets/praguentos.png" alt="Praguentos">
@@ -112,6 +119,8 @@
                     <p>Entidades etéreas instáveis</p>
                     <span class="difficulty-mini difficulty-6">6</span>
                 </div>
+                    <!-- Removido bloco solto da ilustração grande do Dragão Anão -->
+                </div>
             </div>
         </div>
     </div>
@@ -130,10 +139,21 @@
                     <p>Guerreiros sagrados do reino</p>
                     <span class="difficulty-mini difficulty-2">2</span>
                 </div>
-                <div class="race-card-mini" onclick="scrollToClass('rastejantes')">
                     <img src="../assets/rastejantes.png" alt="Rastejantes">
                     <h3>Rastejantes</h3>
                     <p>Canalizadores das trevas do abismo</p>
+                    <span class="difficulty-mini difficulty-3">3</span>
+                </div>
+                <div class="race-card-mini" onclick="scrollToRace('dragao-anao')">
+                    <img src="../assets/dragaoanao.png" alt="Dragão Anão">
+                    <h3>Dragão Anão</h3>
+                    <p>Dracônicos de Tragnor, resistentes e telepatas</p>
+                    <span class="difficulty-mini difficulty-2">2</span>
+                </div>
+                <div class="race-card-mini" onclick="scrollToRace('praguentos')">
+                    <img src="../assets/praguentos.png" alt="Praguentos">
+                    <h3>Praguentos</h3>
+                    <p>Seres corrompidos pela Podridão</p>
                     <span class="difficulty-mini difficulty-3">3</span>
                 </div>
             </div>
@@ -494,6 +514,53 @@
                 </div>
 
                 <!-- Raça: Humanos -->
+                <!-- Raça: Dragão Anão -->
+                <div id="dragao-anao" class="race-card">
+                    <h3>Dragão Anão</h3>
+                    <div class="race-image">
+                        <img src="../assets/dragaoanao.png" alt="Ilustração dos Dragões Anões">
+                    </div>
+                    <div class="race-description">
+                        <p>Originários do pequeno e hostil continente de Tragnor, os Dragões Anões são seres dracônicos de baixa estatura, variando entre 1,00m e 1,45m de altura. Apesar do porte diminuto, possuem corpos resistentes recobertos por escamas de cores diversas, que vão de tons vibrantes a metálicos e opacos. Sua fisionomia é um híbrido elegante entre dragão e humanoide, com chifres curvos, cauda longa e ágil, e quatro antenas peludas com cerdas sensoriais na parte de trás da cabeça.</p>
+                        <p>Essas antenas permitem uma forma única de comunicação telepática rudimentar, transmitindo emoções, impressões ou imagens simples para outros Dragões Anões ou criaturas empáticas.</p>
+                        <p>Grande parte da população de Tragnor vive em comunidades tribais espalhadas pelas florestas, cavernas ou planícies íngremes do continente. Essas comunidades, embora vistas por forasteiros como “primitivas”, mantêm uma estrutura social sofisticada, marcada por rituais de caça, danças cerimoniais e profundo respeito aos ancestrais dracônicos. Sua cultura é preservada por meio de um idioma próprio, chamado Idioma Antigo, um sistema de escrita e fala exclusivo da raça, repleto de símbolos e entonações que carregam significados complexos e muitas vezes impossíveis de traduzir completamente.</p>
+                        <p>Devido à instabilidade de Tragnor, muitos Dragões Anões migraram para o continente principal, Wuitalur, formando pequenos grupos nômades ou comunidades ocultas. Mesmo longe de sua terra natal, preservam o Idioma Antigo como forma de manter viva a conexão com suas raízes.</p>
+                        <div class="difficulty-level">
+                            <span class="difficulty-label">Nível de Dificuldade:</span>
+                            <span class="difficulty-number difficulty-2">2</span>
+                        </div>
+                    </div>
+                    <div class="race-stats">
+                        <h4>Bônus de Raça</h4>
+                        <ul>
+                            <li>+2 em <span class="attr-destreza">Destreza</span></li>
+                            <li>+1 em <span class="attr-intelecto">Inteligência</span></li>
+                            <li>-1 em <span class="attr-forca">Força</span></li>
+                            <li>-1 em <span class="attr-saude">Saúde</span></li>
+                        </ul>
+                    </div>
+                    <div class="race-resistances">
+                        <h4>Resistência Elemental</h4>
+                        <ul>
+                            <li>Escolha: <span class="attr-destreza">Solar</span>, <span class="estase-highlight">Estase</span> ou <span class="attr-forca">Ácido</span></li>
+                        </ul>
+                        <h4>Outros</h4>
+                        <ul>
+                            <li>Mente Focada: vantagem em testes para resistir a efeitos de confusão ou controle mental</li>
+                        </ul>
+                    </div>
+                    <div class="race-abilities">
+                        <h4>Habilidades de Raça</h4>
+                        <ul>
+                            <li><strong>Sopro Ancestral:</strong> Expele um cone de energia elemental correspondente à sua resistência (Fogo e Solar, <span class="estase-highlight">Estase</span> ou Ácido) em um raio de 3B à sua frente.<br>Inimigos na área devem rolar um teste de Destreza (CD 15) ou sofrer 3d10 de dano elemental.<br><em class="action-standard">-Sem custo-</em></li>
+                            <li><strong>Conexão Sensorial:</strong> As quatro antenas permitem comunicação telepática limitada com criaturas a até 10B, transmitindo emoções, intenções simples ou imagens mentais.<br><em class="action-passive">-Passiva-</em></li>
+                            <li><strong>Improvisador Nascido:</strong> Você pode gastar uma ação bônus para ativar uma engenhoca improvisada (com aval do mestre), criando distrações, faíscas, fumaça ou destrancando mecanismos frágeis.<br>Essa habilidade só pode ser usada 2 vezes e é recuperada após um descanso curto ou longo.</li>
+                            <li><strong>Instinto de Sobrevivência:</strong> Vantagem em testes de Sobrevivência e Navegação em ambientes como: florestas densas, zonas instáveis ou ruínas perigosas.</li>
+                            <li><strong>Camuflagem Natural:</strong> Recebe +2 em testes de Furtividade</li>
+                            <li><strong>Ataque Escondido:</strong> Se estiver escondido ou invisível para o inimigo, causa +1dDesx2 de dano extra em um ataque corpo a corpo ou à distância.</li>
+                        </ul>
+                    </div>
+                </div>
                 <div id="humanos" class="race-card">
                     <h3>Humanos</h3>
 
