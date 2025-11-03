@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 🎲 Wuitalur RPG System
 
 Um sistema completo de RPG de mesa com elementos únicos, criação de personagens detalhada e um mundo rico em lore.
@@ -12,11 +11,16 @@ Wuitalur é um RPG de mesa original que combina elementos fantásticos com mecâ
 - **Classes Especializadas**: Cavaleiros de Paladium, Rastejantes do Abismo
 - **Mundo Rico**: Cidades como Paladium e Cirus com histórias profundas
 
+### 🎮 Propósito do Site
+
+Este site foi criado **apenas para me divertir, aprender e explorar novas ideias**, além de servir como plataforma para **jogar RPG de mesa com meus amigos**. Não há fins comerciais; o objetivo principal é estudo, prática e entretenimento.
+
 ## 🌐 Acesso Online
 
-O site está disponível em: [https://an0mi-dot.github.io/wuitalur-rpg-system](https://an0mi-dot.github.io/wuitalur-rpg-system)
+O site está disponível em: https://an0mi-dot.github.io/wuitalur-rpg-system
 
 ## 📁 Estrutura do Projeto
+
 
 ```
 wuitalur-rpg-system/
@@ -46,31 +50,21 @@ wuitalur-rpg-system/
     └── script/
 ```
 
+
 ## 🎯 Características Principais
 
 ### Raças Jogáveis
-- **Humanos**: Versáteis e adaptáveis (Dificuldade 1)
-- **Vampiros**: Elegantes bebedores de sangue (Dificuldade 2)
-- **Akivus**: Conectados à natureza (Dificuldade 1)
-- **Abissais**: Misteriosos das profundezas (Dificuldade 4)
-- **Espectros**: Desafiadores e instáveis (Dificuldade 6)
-- **E mais...**
 
 ### Classes Especializadas
-- **Cavaleiros de Paladium**: Guerreiros solares com sistema de ranks
-- **Rastejantes**: Usuários das energias do abismo (Praga/Pesadelo)
 
 ### Sistema de Elementos
-- **Solar**: Poder da luz e energia
-- **Nulídrico**: Vazio e anulação
-- **Praga**: Corrupção e veneno
-- **Pesadelo**: Terror e psíquico
 
-## 🚀 Tecnologias Utilizadas
 
-- HTML5 semântico
-- CSS3 com animações
-- JavaScript vanilla
+## 🚀 Ferramentas Utilizadas
+
+- HTML semântico
+- CSS com animações
+- JavaScript
 - GitHub Pages para hospedagem
 
 ## 📝 Notas de Desenvolvimento
@@ -84,5 +78,9 @@ wuitalur-rpg-system/
 Este projeto é uma criação original para uso em RPG de mesa.
 
 ---
+
+## 📦 Versão do Sistema
+
+- Versão: 1.3.6-alpha
 
 **Criado por An0mi-dot** | **2025 Wuitalur RPG**
