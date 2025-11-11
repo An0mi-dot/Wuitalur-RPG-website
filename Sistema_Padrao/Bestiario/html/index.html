@@ -96,29 +96,20 @@
                         }
 
                         /* Cores por elemento (faz match com o sistema padrão quando possível) */
-                        .element-tab[data-element="podridao"] { background: linear-gradient(135deg, #20221a, #2b2f20); color:#dbe7d0; border-color:#39432e }
-                        .element-tab[data-element="podridao"][aria-pressed="true"] { background: linear-gradient(135deg, #2f3a21, #4a5d2e); color:#0f0f0f; box-shadow: 0 10px 28px rgba(34,56,24,0.35); border-color:#567239 }
+                                /* Para elementos que já possuem classes de destaque no sistema (ex.: plague-highlight, nulidrico-highlight, nightmare-highlight, estase-highlight)
+                                    prefira usar essas classes no botão (veja markup) — assim mantemos as cores centralizadas no CSS do sistema. */
 
-                        .element-tab[data-element="praga"] { background: #2c2c2c; color:#d0c0c0; border-color:#444 }
-                        .element-tab[data-element="praga"][aria-pressed="true"] { background: linear-gradient(135deg, #3a3434, #5a4f4f); color:#fff; box-shadow: 0 10px 28px rgba(80,70,70,0.28); border-color:#6b5a5a }
+                                /* SAGRADO: usa a variável central --cor-destaque para respeitar o tema ativo */
+                                .element-tab[data-element="sagrado"] { background: linear-gradient(90deg, color-mix(in srgb, var(--cor-destaque) 60%, white), color-mix(in srgb, var(--cor-destaque) 20%, black)); color:var(--cor-texto, #111); border-color: color-mix(in srgb, var(--cor-destaque), black 40%); }
+                                .element-tab[data-element="sagrado"][aria-pressed="true"] { background: linear-gradient(90deg, color-mix(in srgb, var(--cor-destaque) 80%, white), color-mix(in srgb, var(--cor-destaque) 30%, black)); color:var(--cor-texto, #111); box-shadow: 0 10px 28px rgba(0,0,0,0.18); border-color: color-mix(in srgb, var(--cor-destaque), black 20%); }
 
-                        .element-tab[data-element="sagrado"] { background: linear-gradient(90deg,#d4af37,#f0d88a); color:#111; border-color:#b58f2e }
-                        .element-tab[data-element="sagrado"][aria-pressed="true"] { background: linear-gradient(90deg,#ffd966,#f0d88a); color:#111; box-shadow: 0 10px 28px rgba(200,160,40,0.18); border-color:#e0b92f }
+                                /* ELECTRO: usa a variável de RE/energia mágica para manter coerência visual com o sistema */
+                                .element-tab[data-element="electro"] { background: linear-gradient(90deg, color-mix(in srgb, var(--cor-rm) 60%, #0a2a40), color-mix(in srgb, var(--cor-rm) 20%, #001f2f)); color: color-mix(in srgb, var(--cor-rm), black 40%); border-color: color-mix(in srgb, var(--cor-rm), black 30%); }
+                                .element-tab[data-element="electro"][aria-pressed="true"] { background: linear-gradient(90deg, color-mix(in srgb, var(--cor-rm) 80%, white), color-mix(in srgb, var(--cor-rm) 30%, black)); color: var(--cor-texto, #fff); box-shadow: 0 10px 28px rgba(0,0,0,0.18); border-color: color-mix(in srgb, var(--cor-rm), black 20%); }
 
-                        .element-tab[data-element="electro"] { background: linear-gradient(90deg,#2e8cff,#00d2ff); color:#031428; border-color:#0b6fb0 }
-                        .element-tab[data-element="electro"][aria-pressed="true"] { background: linear-gradient(90deg,#48a7ff,#00e6ff); color:#021226; box-shadow: 0 10px 28px rgba(0,150,255,0.18); border-color:#00b0e6 }
-
-                        .element-tab[data-element="nulidrico"] { background: linear-gradient(90deg,#6b0000,#8b0000); color:#fff; border-color:#5a0000 }
-                        .element-tab[data-element="nulidrico"][aria-pressed="true"] { background: linear-gradient(90deg,#8b0000,#b30000); color:#fff; box-shadow: 0 10px 28px rgba(140,0,0,0.28); border-color:#c02020 }
-
-                        .element-tab[data-element="solar"] { background: linear-gradient(90deg,#ff8c00,#ffb857); color:#111; border-color:#cc7000 }
-                        .element-tab[data-element="solar"][aria-pressed="true"] { background: linear-gradient(90deg,#ff9f1a,#ffc877); color:#0b0b0b; box-shadow: 0 10px 28px rgba(255,140,0,0.18); border-color:#e07a00 }
-
-                        .element-tab[data-element="estase"] { background: linear-gradient(90deg,#1a2a4d,#274b7a); color:#cce6ff; border-color:#183355 }
-                        .element-tab[data-element="estase"][aria-pressed="true"] { background: linear-gradient(90deg,#20395a,#365f8a); color:#eaf6ff; box-shadow: 0 10px 28px rgba(32,58,90,0.22); border-color:#2b4f7a }
-
-                        .element-tab[data-element="pesadelo"] { background: linear-gradient(90deg,#2b1a3a,#4b2a6a); color:#ffe8b8; border-color:#3a2347 }
-                        .element-tab[data-element="pesadelo"][aria-pressed="true"] { background: linear-gradient(90deg,#3a2350,#6b3a8a); color:#fff; box-shadow: 0 10px 28px rgba(90,50,140,0.25); border-color:#5a3570 }
+                                /* SOLAR: usa a variável de Destreza (laranja do sistema) para combinar com as chamadas solares no sistema padrão */
+                                .element-tab[data-element="solar"] { background: linear-gradient(90deg, color-mix(in srgb, var(--cor-destreza) 60%, #fff2e0), color-mix(in srgb, var(--cor-destreza) 20%, #8a4f00)); color: color-mix(in srgb, var(--cor-destreza), black 30%); border-color: color-mix(in srgb, var(--cor-destreza), black 20%); }
+                                .element-tab[data-element="solar"][aria-pressed="true"] { background: linear-gradient(90deg, color-mix(in srgb, var(--cor-destreza) 80%, #fffdf0), color-mix(in srgb, var(--cor-destreza) 30%, #a65e00)); color: var(--cor-texto, #0b0b0b); box-shadow: 0 10px 28px rgba(0,0,0,0.12); border-color: color-mix(in srgb, var(--cor-destreza), black 12%); }
 
                         .element-panel { display:none; margin-top:10px }
                         .element-panel[aria-hidden="false"]{ display:block }
@@ -139,14 +130,14 @@
                     </style>
 
                     <div class="elements-tabs" role="tablist" aria-label="Elementos do Bestiário">
-                        <button class="element-tab" role="tab" data-element="podridao" aria-pressed="false">PODRIDÃO</button>
-                        <button class="element-tab" role="tab" data-element="praga" aria-pressed="false">PRAGA</button>
+                        <button class="element-tab plague-highlight" role="tab" data-element="podridao" aria-pressed="false">PODRIDÃO</button>
+                        <button class="element-tab plague-highlight" role="tab" data-element="praga" aria-pressed="false">PRAGA</button>
                         <button class="element-tab" role="tab" data-element="sagrado" aria-pressed="false">SAGRADO</button>
                         <button class="element-tab" role="tab" data-element="electro" aria-pressed="false">ELECTRO</button>
-                        <button class="element-tab" role="tab" data-element="nulidrico" aria-pressed="false">NULIDRÍCO</button>
+                        <button class="element-tab nulidrico-highlight" role="tab" data-element="nulidrico" aria-pressed="false">NULIDRÍCO</button>
                         <button class="element-tab" role="tab" data-element="solar" aria-pressed="false">SOLAR</button>
-                        <button class="element-tab" role="tab" data-element="estase" aria-pressed="false">ESTASE</button>
-                        <button class="element-tab" role="tab" data-element="pesadelo" aria-pressed="false">PESADELO</button>
+                        <button class="element-tab estase-highlight" role="tab" data-element="estase" aria-pressed="false">ESTASE</button>
+                        <button class="element-tab nightmare-highlight" role="tab" data-element="pesadelo" aria-pressed="false">PESADELO</button>
                     </div>
 
                     <div class="element-panel" data-element="podridao" aria-hidden="true">
