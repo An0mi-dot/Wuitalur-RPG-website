@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Calculadora DEF / DEFe</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial; padding:24px; background:#f7f7fb; color:#111}
+    .card{background:white;border-radius:10px;padding:18px;max-width:720px;margin:18px auto;box-shadow:0 6px 20px rgba(15,15,30,0.06)}
+    label{display:block;margin-top:12px;font-weight:600}
+    input[type=number]{width:180px;padding:8px;border-radius:6px;border:1px solid #d0d6e0}
+    .row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+    button{margin-top:14px;padding:8px 12px;border-radius:8px;border:0;background:#0b5fff;color:white;font-weight:600;cursor:pointer}
+    .result{margin-top:18px;padding:12px;border-radius:8px;background:#f3f6ff;border:1px solid #dbe7ff}
+    .muted{color:#555;font-size:0.95rem}
+    .small{font-size:0.95rem}
+    .steps{margin-top:8px;font-family:monospace;background:#fff;padding:10px;border-radius:6px;border:1px dashed #e0e6f2}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Calculadora de DEF e DEFe</h2>
+    <p class="muted">Insira os valores e o cálculo será feito segundo as fórmulas do sistema:</p>
+
+    <label for="pv">PVs (Pontos de Vida)</label>
+    <input id="pv" type="number" min="1" step="1" value="100" />
+
+    <label for="rf">RF (Resistência Física)</label>
+    <input id="rf" type="number" min="0" step="1" value="10" />
+
+    <label for="re">RE (Resistência Elementar)</label>
+    <input id="re" type="number" min="0" step="1" value="12" />
+
+    <div class="row">
+      <button id="calc">Calcular</button>
+      <button id="clear" style="background:#e8eefc;color:#05306a">Limpar</button>
+    </div>
+
+    <div class="result" id="result" aria-live="polite">
+      <div class="small"><strong>DEF (Defesa Física):</strong> —</div>
+      <div class="small"><strong>DEFe (Defesa Elementar):</strong> —</div>
+      <div class="muted" style="margin-top:8px">Mostramos valor exato e valor arredondado (inteiro).</div>
+
+n    </div>
+
+    <div style="margin-top:12px">
+      <strong>Fórmulas usadas</strong>
+      <div class="steps">
+        DEF = (RF × (PVs^0.6)) / 6
+        <br>
+        DEFe = (RE × (PVs^0.5)) / 8 + DEF
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const pvEl = document.getElementById('pv');
+    const rfEl = document.getElementById('rf');
+    const reEl = document.getElementById('re');
+    const calcBtn = document.getElementById('calc');
+    const clearBtn = document.getElementById('clear');
+    const resultEl = document.getElementById('result');
+
+    function formatNumber(n){
+      return Number.isFinite(n) ? n.toLocaleString('pt-BR', {maximumFractionDigits:2}) : '-';
+    }
+
+    function compute(){
+      const PVs = Number(pvEl.value) || 0;
+      const RF = Number(rfEl.value) || 0;
+      const RE = Number(reEl.value) || 0;
+
+      if(PVs <= 0){
+        resultEl.innerHTML = '<div class="small"><strong>DEF (Defesa Física):</strong> —</div><div class="small"><strong>DEFe (Defesa Elementar):</strong> —</div><div class="muted" style="margin-top:8px">Informe um valor de PVs maior que 0.</div>';
+        return;
+      }
+
+n      // Fórmulas do sistema
+      const DEF_exact = (RF * Math.pow(PVs, 0.6)) / 6;
+      const DEF_round = Math.round(DEF_exact);
+
+      const DEFe_exact = (RE * Math.pow(PVs, 0.5)) / 8 + DEF_exact;
+      const DEFe_round = Math.round(DEFe_exact);
+
+      resultEl.innerHTML = `
+        <div class="small"><strong>DEF (Defesa Física):</strong> ${formatNumber(DEF_exact)} (arredondado: ${DEF_round})</div>
+        <div class="small"><strong>DEFe (Defesa Elementar):</strong> ${formatNumber(DEFe_exact)} (arredondado: ${DEFe_round})</div>
+        <div class="muted" style="margin-top:8px">PV: ${PVs} · RF: ${RF} · RE: ${RE}</div>
+      `;
+    }
+
+    calcBtn.addEventListener('click', compute);
+    clearBtn.addEventListener('click', ()=>{ pvEl.value=''; rfEl.value=''; reEl.value=''; resultEl.innerHTML = '<div class="small"><strong>DEF (Defesa Física):</strong> —</div><div class="small"><strong>DEFe (Defesa Elementar):</strong> —</div>'; });
+
+n    // calcular ao pressionar Enter enquanto estiver em um campo
+    [pvEl, rfEl, reEl].forEach(el => el.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); compute(); }}));
+
+n    // calcula com valores iniciais ao abrir
+    compute();
+  </script>
+</body>
+</html>
