@@ -1104,6 +1104,13 @@ body {
     .main-header h1 {
         font-size: 2.5rem;
     }
+
+    /* Evita que a navbar fique "grudada" no topo em telas pequenas; deixa flow natural */
+    .navbar {
+        position: static;
+        box-shadow: none;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
     
     .navbar .container {
         flex-wrap: wrap;
@@ -1139,7 +1146,8 @@ body {
 
 @media (max-width: 480px) {
     .main-header {
-        padding: 2.5rem 0;
+        /* reduzir bastante o header no celular para não ocupar a tela inteira */
+        padding: 1.2rem 0;
     }
     
     .main-header h1 {
