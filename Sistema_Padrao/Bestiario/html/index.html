@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wuitalur — Bestiário</title>
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-logo">
+                    <img src="../../assets/Logo W.png" alt="Logo Wuitalur" class="logo-img">
+                </div>
+                <div class="header-text">
+                    <h1>Bestiário — Wuitalur</h1>
+                    <p class="version">Coleção de Criaturas</p>
+                </div>
+                <div class="header-nav">
+                    <a href="../../html/index.html" class="btn-home">← Voltar ao Sistema</a>
+                    <div class="theme-switcher" id="theme-switcher">
+                        <button id="theme-toggle-btn" class="btn-home" aria-haspopup="true" aria-expanded="false">Trocar Tema ▾</button>
+                        <div id="theme-menu" class="theme-menu" role="menu" aria-label="Opções de Tema">
+                            <button class="theme-option" data-theme="normal" role="menuitem">Tema Normal</button>
+                            <button class="theme-option" data-theme="purification" role="menuitem">Purificação</button>
+                        </div>
+                    </div>
+
+                    <a href="../../Pag_Principal/html/index.html" class="btn-home">Página Principal</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <div class="container">
+            <a href="#introducao">Introdução</a>
+            <a href="#criaturas">Criaturas</a>
+            <a href="#busca">Buscar</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <section id="introducao" class="content-section">
+                <h2>Introdução</h2>
+                <div class="intro-text">
+                    <p>Este bestiário foi elaborado para registrar e consolidar informações sobre criaturas associadas ao universo de Wuitalur. Seu conteúdo abrange entidades que já apareceram em campanhas, aquelas que podem vir a surgir em futuras narrativas e até mesmo criaturas que talvez nunca aparecem em campanhas oficiais.</p>
+
+                    <p>Além de servir como documentação oficial, o bestiário funciona como material de apoio para narradores que desejam conduzir campanhas ou sessões com foco em criaturas específicas do cenário. As informações apresentadas buscam manter coerência temática e oferecer recursos práticos para aplicação em mesa.</p>
+
+                    <p>O documento também serve para ampliar e fortalecer o desenvolvimento do universo de Wuitalur. Ao aprofundar características, comportamentos, origens e implicações narrativas das criaturas, este bestiário contribui para a expansão contínua do cenário e de suas possibilidades narrativas.</p>
+                </div>
+            </section>
+
+            <section id="modelo-ficha" class="content-section">
+                <h2>Ficha Exemplo (Estrutura Técnica)</h2>
+                <div class="intro-text">
+                    <p>Aqui está a estrutura de ficha com os títulos menores e o layout centralizado, garantindo o visual **técnico**, sóbrio e **compacto**.</p>
+
+                    <style>
+                        /* ================================================
+                        ESTILOS DA FICHA NO LAYOUT DE DUAS COLUNAS - COMPACTA FINAL
+                        ================================================ */
+                        .stat-block { 
+                            width: 800px; 
+                            max-width: 95%; 
+                            background-color: var(--cor-fundo-ficha, #1e1e1e); 
+                            color: var(--cor-texto, #e0e0e0); 
+                            border: 2px solid var(--cor-borda, #4a4a4a); 
+                            padding: 18px; 
+                            box-shadow: 0 4px 10px rgba(0,0,0,0.5); 
+                            
+                            display: grid; 
+                            grid-template-columns: 55% 1fr; 
+                            grid-template-areas: "header header" "main aside"; 
+                            gap: 15px; 
+                            border-radius: 4px; 
+                            font-family: 'Inconsolata', 'Courier New', monospace; 
+                            font-size: 0.9em; 
+                            margin: 0 auto; /* CENTRALIZAÇÃO GARANTIDA */
+                        }
+                        
+                        /* TÍTULO DA SEÇÃO (ATRIBUTOS, AÇÕES, etc.) */
+                        .block-title { 
+                            background-color: var(--cor-primaria, #0a0a0a); 
+                            color: #f0f0f0; 
+                            padding: 3px 6px !important; /* FORÇA O PADDING */
+                            margin: 0 0 8px 0 !important; /* FORÇA A MARGEM */
+                            font-size: 0.95em !important; /* FORÇA FONTE PEQUENA */
+                            text-transform: uppercase; 
+                            font-weight: bold; 
+                            border-radius: 2px;
+                            display: inline-block; /* Garante que o fundo cubra apenas o texto */
+                        }
+                        
+                        /* TÍTULO PRINCIPAL (NOME DA CRIATURA) */
+                        .header-name h1 { 
+                            margin:0; 
+                            text-transform:uppercase; 
+                            color:var(--cor-titulo, #fff); 
+                            font-size: 1.5em !important; /* FORÇA FONTE MÉDIA/PEQUENA */
+                            letter-spacing: 0.05em; 
+                        }
+                        
+                        /* --- Demais estilos de bloco mantidos compactos --- */
+
+                        .block-content { 
+                            background-color: var(--cor-fundo-bloco, #282828); 
+                            padding: 10px; 
+                            font-size: 1.0em; 
+                            border-radius: 4px;
+                            border: 1px solid rgba(255,255,255,0.08);
+                            line-height: 1.4;
+                        }
+                        .stat-header { 
+                            grid-area: header; 
+                            display:flex; 
+                            justify-content:space-between; 
+                            align-items:flex-start; 
+                            border-bottom: 2px solid var(--cor-borda, #4a4a4a); 
+                            padding-bottom:10px 
+                        }
+                        .header-name span { 
+                            font-size:0.85em; 
+                            color:var(--cor-texto-sec, #999); 
+                            text-transform:uppercase 
+                        }
+                        .header-ndd { 
+                            background-color: var(--cor-primaria, #4a3e6c); 
+                            color: var(--cor-texto-on-primaria, #fff); 
+                            padding:8px 12px; 
+                            font-size:1.1em; 
+                            font-weight:700; 
+                            text-align:center; 
+                            min-width:60px; 
+                            border-radius: 4px; 
+                            border:1px solid var(--cor-borda) 
+                        }
+                        .attributes-grid { 
+                            display:grid; 
+                            grid-template-columns: repeat(3, 1fr); 
+                            gap:5px; 
+                        }
+                        .attributes-grid p { 
+                            font-weight:700; 
+                            background-color: rgba(255,255,255,0.03); 
+                            padding:5px; 
+                            border-radius:2px; 
+                            color:var(--cor-texto);
+                            border: 1px solid rgba(255,255,255,0.08);
+                            font-size: 0.95em;
+                        }
+                        .action-block { 
+                            margin-bottom: 10px; 
+                        }
+                        .action-block h3 { 
+                            font-size:0.95em; 
+                            color:var(--cor-titulo); 
+                            margin:0 0 4px 0; 
+                            padding-bottom:2px; 
+                            border-bottom:1px solid rgba(255,255,255,0.1); 
+                            text-transform:uppercase 
+                        }
+                        .action-block h4 { 
+                            font-size:0.9em; 
+                            color:#fff; 
+                            margin:6px 0 4px 0; 
+                            font-weight: bold;
+                        }
+                        .action-block p { 
+                            margin:1px 0 1px 12px; 
+                            font-size:0.85em; 
+                            color:var(--cor-texto-sec) 
+                        }
+                        .block-content strong {
+                            color: #fff; 
+                        }
+                        .main-stats, .aside-info { 
+                            gap: 15px; 
+                        }
+                        
+                        /* RESPONSIVIDADE */
+                        @media (max-width: 768px){
+                            .stat-block { font-size: 0.85em; }
+                            .header-name h1 { font-size: 1.4em !important; }
+                        }
+                        @media (max-width: 550px){ 
+                            .stat-block{
+                                grid-template-columns:1fr; 
+                                grid-template-areas: "header" "main" "aside"; 
+                                width:98%;
+                                padding: 10px;
+                            } 
+                            .attributes-grid {
+                                grid-template-columns: repeat(2, 1fr); 
+                            }
+                        }
+                    </style>
+
+                    <div class="stat-block">
+                        <header class="stat-header">
+                            <div class="header-name">
+                                <h1>(NOME DA CRIATURA)</h1>
+                                <span>(Elemento Principal / Tipo)</span>
+                                <br>
+                                <span>(Elemento Secundário)</span>
+                            </div>
+                            <div class="header-ndd">NDD (Valor)</div>
+                        </header>
+
+                        <div class="main-stats">
+                            <section class="attributes-section">
+                                <h2 class="block-title">Atributos</h2>
+                                <div class="block-content attributes-grid">
+                                    <p>Des: (valor)</p>
+                                    <p>Int: (valor)</p>
+                                    <p>RM: (valor)</p>
+                                    <p>RF: (valor)</p>
+                                    <p>SA: (valor)</p>
+                                    <p>Sen: (valor)</p>
+                                    <p>FM: (valor)</p>
+                                    <p>FR: (valor)</p>
+                                    <p>COS: (valor)</p>
+                                </div>
+                            </section>
+
+                            <section class="vitals-section">
+                                <h2 class="block-title">Pontos de Vida e Defesas</h2>
+                                <div class="block-content">
+                                    <p><strong>Pontos de Vida (PV):</strong> (valor)</p>
+                                    <p><strong>DEF (Defesa Física):</strong> (valor)</p>
+                                    <p><strong>DEFe (Defesa Elementar):</strong> (valor)</p>
+                                </div>
+                            </section>
+
+                            <section class="resists-section">
+                                <h2 class="block-title">Resistências e Fraquezas</h2>
+                                <div class="block-content">
+                                    <p><strong>Resistências:</strong> (lista de resistências)</p>
+                                    <p><strong>Fraquezas:</strong> (lista de fraquezas)</p>
+                                </div>
+                            </section>
+
+                            <section class="movement-section">
+                                <h2 class="block-title">Movimento</h2>
+                                <div class="block-content">
+                                    <p>(Valor de movimento, ex: 9m / 6q)</p>
+                                </div>
+                            </section>
+
+                            <section class="behavior-section">
+                                <h2 class="block-title">Comportamento em Combate</h2>
+                                <div class="block-content">
+                                    <p>(Como a criatura luta, pensa, prioriza alvos, quando foge, etc.)</p>
+                                </div>
+                            </section>
+                        </div>
+
+                        <div class="aside-info">
+                            <section class="actions-list">
+                                <h2 class="block-title">Ações</h2>
+                                <div class="block-content">
+                                    <div class="action-block">
+                                        <h3>Ação Padrão</h3>
+                                        <h4>Nome do Ataque (Tipo)</h4>
+                                        <p><strong>Alcance:</strong> (Curto/Médio/Longo/etc.)</p>
+                                        <p><strong>Dano:</strong> (Ex: 3d10+5 mental)</p>
+                                        <p><strong>Efeito Especial:</strong> (descrição)</p>
+                                        <p><strong>Falha:</strong> (descrição)</p>
+                                    </div>
+
+                                    <div class="action-block">
+                                        <h3>Ação Completa</h3>
+                                        <h4>Nome da Habilidade (Tipo)</h4>
+                                        <p><strong>Alcance:</strong> (descrição)</p>
+                                        <p><strong>Dano:</strong> (descrição)</p>
+                                        <p><strong>Efeito Especial:</strong> (descrição)</p>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="abilities-section">
+                                <h2 class="block-title">Habilidades Passivas / Ativas</h2>
+                                <div class="block-content">
+                                    <p><strong>(Nome Habilidade 1):</strong> (Descrição da habilidade)</p>
+                                    <p><strong>(Nome Habilidade 2):</strong> (Descrição da habilidade)</p>
+                                </div>
+                            </section>
+
+                            <section class="description-section">
+                                <h2 class="block-title">Descrição</h2>
+                                <div class="block-content">
+                                    <p>(Lore, aparência, origem, história, rumores, sensação ao encontrá-la, etc.)</p>
+                                </div>
+                            </section>
+
+                            <section class="scenario-section">
+                                <h2 class="block-title">Cenário</h2>
+                                <div class="block-content">
+                                    <p>(Locais onde costuma aparecer, tipos de missões, atmosferas narrativas, uso em campanha, perigos ambientais, variações da criatura, etc.)</p>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 Wuitalur Sistema de RPG. Todos os direitos reservados.</p>
+            <p style="font-size: 0.8em; opacity: 0.8; margin-top: 6px; color: #b8a1d9;">
+                Alpha 1.0.0 - 28/10/2025
+            </p>
+        </div>
+    </footer>
+
+    <script src="../../script/main.js"></script>
+</body>
+</html>

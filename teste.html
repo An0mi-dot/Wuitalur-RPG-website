@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estrutura da Ficha (Wuitalur)</title>
+    <style>
+        /* --- Configurações Gerais --- */
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* --- O Container Principal da Ficha --- */
+        .stat-block {
+            width: 850px; /* Um pouco mais largo para o conteúdo */
+            background-color: #2a2a2a; /* Fundo escuro */
+            color: #ffffff; /* Texto branco */
+            border: 1px solid #444;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            
+            /* Define o layout principal com Grid */
+            display: grid;
+            /* Coluna da esquerda 55%, direita 45% */
+            grid-template-columns: 55% 1fr; 
+            grid-template-areas: 
+                "header header"
+                "main   aside";
+            gap: 20px;
+        }
+
+        /* --- Título Padrão (Caixa Preta) --- */
+        .block-title {
+            background-color: #000;
+            color: #fff;
+            padding: 5px 8px;
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        /* --- Seção do Conteúdo Interno --- */
+        .block-content {
+            background-color: #333; /* Fundo interno */
+            padding: 12px;
+            font-size: 0.95em;
+        }
+        .block-content p {
+            margin: 0 0 5px 0;
+        }
+        .block-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* --- 1. CABEÇALHO --- */
+        .stat-header {
+            grid-area: header;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; /* Alinha no topo */
+            border-bottom: 2px solid #fff;
+            padding-bottom: 10px;
+        }
+        .header-name h1 {
+            margin: 0;
+            text-transform: uppercase;
+        }
+        .header-name span {
+            font-size: 0.9em;
+            color: #aaa;
+            text-transform: uppercase;
+        }
+        .header-ndd {
+            background-color: #000;
+            color: #fff;
+            padding: 10px 15px;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+            min-width: 80px; /* Largura mínima */
+        }
+
+        /* --- 2. COLUNA PRINCIPAL (Esquerda) --- */
+        .main-stats {
+            grid-area: main;
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Espaço entre as seções */
+        }
+
+        /* Grid para os Atributos */
+        .attributes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+            gap: 8px;
+        }
+        .attributes-grid p {
+            font-weight: bold;
+            background-color: #444;
+            padding: 5px;
+            border-radius: 3px;
+        }
+
+        /* --- 3. COLUNA SECUNDÁRIA (Direita) --- */
+        .aside-info {
+            grid-area: aside;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Estilo para Blocos de Ação */
+        .action-block {
+            margin-bottom: 15px;
+        }
+        .action-block h3 {
+            font-size: 1.1em;
+            color: #f0f0f0;
+            margin: 0 0 5px 0;
+            padding-bottom: 3px;
+            border-bottom: 1px solid #666;
+            text-transform: uppercase;
+        }
+        .action-block h4 {
+            font-size: 1.05em;
+            color: #fff;
+            margin: 8px 0 5px 0;
+        }
+        .action-block p {
+            margin: 2px 0 2px 10px; /* Pequeno recuo */
+            font-size: 0.9em;
+        }
+        .action-block p strong {
+            color: #ccc;
+        }
+        
+        /* Estilo para texto de Lore/Descrição */
+        .lore-text p {
+            color: #ddd;
+            line-height: 1.4;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="stat-block">
+        
+        <header class="stat-header">
+            <div class="header-name">
+                <h1>(NOME DA CRIATURA)</h1>
+                <span>(Elemento Principal / Tipo)</span>
+                <br>
+                <span>(Elemento Secundário)</span>
+            </div>
+            <div class="header-ndd">
+                NDD (Valor)
+            </div>
+        </header>
+
+        <div class="main-stats">
+            
+            <section class="attributes-section">
+                <h2 class="block-title">Atributos</h2>
+                <div class="block-content attributes-grid">
+                    <p>Des: (valor)</p>
+                    <p>Int: (valor)</p>
+                    <p>RM: (valor)</p>
+                    <p>RF: (valor)</p>
+                    <p>SA: (valor)</p>
+                    <p>Sen: (valor)</p>
+                    <p>FM: (valor)</p>
+                    <p>FR: (valor)</p>
+                    <p>COS: (valor)</p>
+                </div>
+            </section>
+
+            <section class="vitals-section">
+                <h2 class="block-title">Pontos de Vida e Defesas</h2>
+                <div class="block-content">
+                    <p><strong>Pontos de Vida (PV):</strong> (valor)</p>
+                    <p><strong>DEF (Defesa Física):</strong> (valor)</p>
+                    <p><strong>DEFe (Defesa Elementar):</strong> (valor)</p>
+                </div>
+            </section>
+            
+            <section class="resists-section">
+                <h2 class="block-title">Resistências e Fraquezas</h2>
+                <div class="block-content">
+                    <p><strong>Resistências:</strong> (lista de resistências)</p>
+                    <p><strong>Fraquezas:</strong> (lista de fraquezas)</p>
+                </div>
+            </section>
+            
+            <section class="movement-section">
+                <h2 class="block-title">Movimento</h2>
+                <div class="block-content">
+                    <p>(Valor de movimento, ex: 9m / 6q)</p>
+                </div>
+            </section>
+            
+            <section class="behavior-section">
+                <h2 class="block-title">Comportamento em Combate</h2>
+                <div class="block-content lore-text">
+                    <p>(Como a criatura luta, pensa, prioriza alvos, quando foge, etc.)</p>
+                </div>
+            </section>
+
+        </div>
+
+        <div class="aside-info">
+
+            <section class="actions-list">
+                <h2 class="block-title">Ações</h2>
+                <div class="block-content">
+
+                    <div class="action-block">
+                        <h3>Ação Padrão</h3>
+                        <h4>Nome do Ataque (Tipo)</h4>
+                        <p><strong>Alcance:</strong> (Curto/Médio/Longo/etc.)</p>
+                        <p><strong>Dano:</strong> (Ex: 3d10+5 mental)</p>
+                        <p><strong>Efeito Especial:</strong> (descrição)</p>
+                        <p><strong>Falha:</strong> (descrição)</p>
+                    </div>
+
+                    <div class="action-block">
+                        <h3>Ação Completa</h3>
+                        <h4>Nome da Habilidade (Tipo)</h4>
+                        <p><strong>Alcance:</strong> (descrição)</p>
+                        <p><strong>Dano:</strong> (descrição)</p>
+                        <p><strong>Efeito Especial:</strong> (descrição)</p>
+                    </div>
+                    
+                    </div>
+            </section>
+            
+            <section class="abilities-section">
+                <h2 class="block-title">Habilidades Passivas / Ativas</h2>
+                <div class="block-content lore-text">
+                    <p><strong>(Nome Habilidade 1):</strong> (Descrição da habilidade)</p>
+                    <p><strong>(Nome Habilidade 2):</strong> (Descrição da habilidade)</p>
+                </div>
+            </section>
+
+            <section class="description-section">
+                <h2 class="block-title">Descrição</h2>
+                <div class="block-content lore-text">
+                    <p>(Lore, aparência, origem, história, rumores, sensação ao encontrá-la, etc.)</p>
+                </div>
+            </section>
+
+            <section class="scenario-section">
+                <h2 class="block-title">Cenário</h2>
+                <div class="block-content lore-text">
+                    <p>(Locais onde costuma aparecer, tipos de missões, atmosferas narrativas, uso em campanha, perigos ambientais, variações da criatura, etc.)</p>
+                </div>
+            </section>
+
+        </div>
+
+    </div>
+    </body>
+</html>

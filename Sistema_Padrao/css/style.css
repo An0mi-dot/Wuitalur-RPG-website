@@ -1,4 +1,4 @@
-/* === PALETA UNIFICADA === */
+﻿/* === PALETA UNIFICADA === */
 :root {
     --cor-fundo: #1c1c1c;
     --cor-navbar: #241e2b;
@@ -131,9 +131,13 @@ body {
     background: linear-gradient(135deg, var(--cor-navbar) 0%, rgba(93, 74, 122, 0.9) 100%);
     padding: 4rem 0;
     text-align: center;
-    border-bottom: 2px solid var(--cor-borda);
+    /* remover barra vermelha: manter sem borda */
+    border-bottom: none;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
+
+/* permitir posicionamento absoluto de elementos dentro do header (ex.: theme switcher) */
+.main-header { position: relative; }
 
 .header-content {
     display: flex;
@@ -169,6 +173,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    /* aumentar espaçamento entre botões do header */
+    gap: 1rem;
 }
 
 .btn-home {
@@ -182,6 +189,11 @@ body {
     font-size: 0.9rem;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
+}
+
+.header-nav .btn-home {
+    /* margem extra para separar melhor os botões */
+    margin: 0 0.4rem;
 }
 
 .btn-home:hover {
@@ -782,7 +794,7 @@ body {
 /* === CORES DOS ATRIBUTOS === */
 .attr-saude { color: var(--cor-saude); font-weight: 600; }
 .attr-pv { color: var(--cor-saude); font-weight: 600; }
-.attr-rm { color: var(--cor-rm); font-weight: 600; }
+.attr-re { color: var(--cor-rm); font-weight: 600; }
 .attr-rf { color: var(--cor-rf); font-weight: 600; }
 .attr-destreza { color: var(--cor-destreza); font-weight: 600; }
 .attr-forca { color: var(--cor-forca); font-weight: 600; }
@@ -794,6 +806,164 @@ body {
 .attr-des { color: var(--cor-destreza); font-weight: 600; } /* DES = Destreza */
 .attr-dex { color: var(--cor-destreza); font-weight: 600; } /* DEX = Destreza (alternativa) */
 .attr-int { color: var(--cor-intelecto); font-weight: 600; } /* INT = Inteligência */
+
+/* === THEME SWITCHER (UI) === */
+.theme-switcher {
+    /* Posicionado no canto superior direito do header por padrão */
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    display: inline-block;
+    z-index: 1500;
+}
+
+.theme-switcher .btn-home {
+    padding: 0.6rem 0.9rem;
+    font-size: 0.9rem;
+}
+
+.theme-menu {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    min-width: 160px;
+    background: linear-gradient(180deg, rgba(36,30,43,0.98), rgba(58,50,70,0.98));
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+    padding: 0.5rem;
+    display: none;
+    z-index: 2000;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+}
+
+.theme-menu.open {
+    display: block;
+}
+
+.theme-menu .theme-option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.6rem 0.8rem;
+    background: transparent;
+    color: var(--cor-texto);
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.theme-menu .theme-option:hover {
+    background: rgba(149,117,205,0.08);
+}
+
+/* === TEMA PURIFICAÇÃO === */
+.purification-theme {
+    /* Paleta baseada na imagem anexada: vermelho vivo, sombras profundas e destaques brancos */
+    --cor-fundo: #ff0a0a; /* vermelho vivo de base */
+    --cor-navbar: #9b0000; /* navbar mais escuro */
+    --cor-hover: #b30000;
+    --cor-texto: #fff8f8; /* texto claro */
+    --cor-titulo: #fff0f0;
+    --cor-texto-sec: #ffecec;
+    --cor-borda: #8a0f0f;
+    --cor-primaria: #ff2a2a; /* primária vermelha intensa */
+    --cor-destaque: #ff4d4d; /* destaque vibrante */
+    --cor-saude: #ff6b4a;
+    --cor-rm: #ff88b0; /* RE - rosado suave */
+    --cor-rf: #ff1a1a; /* RF - vermelho puro */
+    --cor-destreza: #ffab66;
+    --cor-forca: #d62828;
+    --cor-intelecto: #d05a88; /* magenta avermelhado */
+    --cor-fama: #ff77aa;
+    --cor-sen: #ffe8b8;
+    --cor-cosmo: #ff66aa;
+
+    /* Camada de gradiente vermelho + lotus (exibir lotus inteira, centralizada) */
+    background-image: linear-gradient(180deg, rgba(255,10,10,0.60), rgba(140,8,8,0.28)), url('../assets/lotus.png');
+    /* gradient deve cobrir; lotus deve ser contido e inteiro (contain) e centralizado */
+    background-size: cover, contain;
+    background-repeat: no-repeat, no-repeat;
+    /* primeiro layer (gradiente) no topo; segundo layer (lotus) centralizado */
+    background-position: center top, center center;
+    background-attachment: fixed;
+    transition: background 0.6s ease, color 0.4s ease;
+}
+
+/* Ajustes visuais para cards e seções sob o tema purificação */
+.purification-theme .rules-box,
+.purification-theme .attribute-card,
+.purification-theme .race-card,
+.purification-theme .race-card-mini {
+    border-color: rgba(200,70,70,0.45);
+    background: linear-gradient(135deg, rgba(120,30,30,0.45), rgba(70,16,16,0.35));
+    box-shadow: 0 10px 30px rgba(160,40,40,0.18);
+    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Símbolo/logo menor no tema purificação */
+.purification-theme .logo-img {
+    height: 110px; /* menor que o padrão de 160px */
+    width: auto;
+    transition: height 0.3s ease;
+}
+
+/* Hover do menu de tema em modo purificação (substitui tom roxo por vermelho) */
+.purification-theme .theme-menu .theme-option:hover {
+    background: rgba(255,59,59,0.12);
+}
+
+/* Overwrites para elementos que tinham gradientes roxos; transforma em gradientes vermelhos fortes */
+.purification-theme .main-header {
+    background: linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(255,10,10,0.98) 100%);
+    /* garantir sem barra vermelha no tema purificação também */
+    border-bottom: none;
+}
+
+.purification-theme .navbar {
+    background: linear-gradient(90deg, rgba(180,20,20,0.95), rgba(80,6,6,0.95));
+    border-bottom-color: rgba(160,20,20,0.75);
+}
+
+/* Substitui o estilo ativo da navbar (inserido dinamicamente via JS) */
+.purification-theme .navbar a.active {
+    background: linear-gradient(135deg, #ff9a9a, #b30000) !important;
+    color: #fffdfd !important;
+    box-shadow: 0 6px 20px rgba(200,30,30,0.5) !important;
+}
+
+.purification-theme .navbar a.active::after {
+    background: linear-gradient(90deg, #ff9a9a, #b30000) !important;
+}
+
+/* Ajuste para o destaque cosmo (remapeando tons roxos para vermelho/branco vibrante) */
+.purification-theme .attr-cosmo {
+    background: linear-gradient(90deg, #ff0000, #ff8a8a, #fffefc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+/* Pequena suavização geral */
+.purification-theme * {
+    transition: color 0.3s ease, background 0.4s ease, border-color 0.3s ease;
+}
+
+/* Overrides para selectors que usam gradientes roxos por padrão */
+.purification-theme .special-attribute {
+    background: linear-gradient(135deg, rgba(120, 20, 20, 0.12), rgba(80, 12, 12, 0.06));
+    border-color: var(--cor-primaria);
+}
+
+.purification-theme .special-attribute:hover {
+    border-color: var(--cor-destaque);
+    box-shadow: 0 8px 25px rgba(180, 40, 40, 0.28);
+}
+
+.purification-theme .important-note {
+    background: linear-gradient(135deg, rgba(120, 30, 30, 0.12), rgba(80, 12, 12, 0.06));
+    border: 2px solid rgba(255, 59, 59, 0.18);
+}
 
 /* === COSMO - ESTILO GLITCH/BUGADO === */
 .attr-cosmo { 
@@ -916,6 +1086,14 @@ body {
     .header-nav {
         order: 3;
         margin-bottom: 0;
+    }
+
+    /* Em telas menores, devolver o theme-switcher ao fluxo para caber no header */
+    .theme-switcher {
+        position: static;
+        margin-left: 0.5rem;
+        top: auto;
+        right: auto;
     }
     
     .btn-home {
@@ -2818,7 +2996,7 @@ body {
 
 /* Cores dos atributos para tema plague */
 .plague-theme .attr-saude,
-.plague-theme .attr-rm,
+.plague-theme .attr-re,
 .plague-theme .attr-rf,
 .plague-theme .attr-destreza,
 .plague-theme .attr-forca,
@@ -2829,7 +3007,7 @@ body {
     color: var(--cor-saude);
 }
 
-.plague-theme .attr-rm {
+.plague-theme .attr-re {
     color: var(--cor-rm);
 }
 
@@ -2873,3 +3051,6 @@ body {
 .plague-theme .attr-int {
     color: var(--cor-intelecto);
 }
+
+/* (Purification theme removed: per user request no additions. */
+

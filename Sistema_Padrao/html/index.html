@@ -29,10 +29,23 @@
                 </div>
                 <div class="header-text">
                     <h1>Wuitalur – Sistema de RPG</h1>
-                    <p class="version">Versão 1.3.4</p>
+                    <p class="version">Versão 1.3.7</p>
                 </div>
                 <div class="header-nav">
                     <a href="../../Pag_Principal/html/index.html" class="btn-home">← Página Principal</a>
+
+                    <!-- Theme switcher -->
+                    <div class="theme-switcher" id="theme-switcher">
+                        <button id="theme-toggle-btn" class="btn-home" aria-haspopup="true" aria-expanded="false">Trocar Tema ▾</button>
+                        <div id="theme-menu" class="theme-menu" role="menu" aria-label="Opções de Tema">
+                            <button class="theme-option" data-theme="normal" role="menuitem">Tema Normal</button>
+                            <button class="theme-option" data-theme="purification" role="menuitem">Purificação</button>
+                        </div>
+                    </div>
+                    <!-- /Theme switcher -->
+                    
+                    <!-- Bestiário -->
+                    <a href="../Bestiario/html/index.html" class="btn-home">Bestiário</a>
                 </div>
             </div>
         </div>
@@ -173,12 +186,11 @@
                     <h3>Distribuição de Atributos</h3>
                     <div class="rules-content">
                         <p>
-                            • Todos os atributos começam sempre com 1 ponto.<br>
-                            • Você tem <strong>6 pontos</strong> para distribuir entre os atributos.<br>
-                            • É permitido <em>tirar 1 ponto de um atributo (ficando com 0)</em> para ganhar 1 ponto extra em outro.<br>
-                            • Ganha <strong>+2 pontos de atributo</strong> a cada 3 níveis.<br>
-                            • Todos os personagens <strong>começam com bônus de +3 em <span class="attr-sen">Sentidos (SEN)</span></strong>.<br>
-                            • O atributo <strong><span class="attr-cosmo">Cosmo</span></strong> é definido em porcentagem (ex: 1%) e só pode ser alterado pelo mestre.
+                            • <strong>4 pontos</strong> para distribuir entre os atributos.<br>
+                            • Todos os atributos começam sempre com 1.<br>
+                            • Você pode tirar 1 ponto de um atributo (ficando em 0) para ter 1 ponto extra em outro.<br>
+                            • Ganha <strong>1 ponto</strong> de atributos a cada 3 níveis.<br>
+                            • O máximo de pontos que dá pra ter em um atributo é <strong>8</strong>.
                         </p>
                     </div>
                 </div>
@@ -190,18 +202,20 @@
                     <div class="attribute-card">
                         <h4><span class="attr-saude">Saúde</span></h4>
                         <div class="attribute-description">
-                            <p>A saúde é um dos atributos básicos de um personagem, ele vai definir a saúde tanto física quanto mental.</p>
-                            <p><em>(Exemplo)</em> Um personagem com saúde baixa (-1) terá desvantagem em todos os testes de saúde que for fazer.</p>
-                            <p>Caso essa saúde seja 0, o personagem terá uma imunidade baixa a doenças. Quando for rolar um teste de resistência a alguma doença, terá desvantagem.</p>
+                            <p>A saúde é um dos atributos básicos de um personagem, ele vai definir a saúde do seu personagem.</p>
+                            <p>Um personagem com saúde baixa (-1) terá desvantagem em todos os testes de saúde que for fazer; caso essa saúde seja 0, o personagem terá uma saúde neutra.</p>
                         </div>
                     </div>
 
-                    <!-- Resistência Mágica -->
+                    <!-- Resistência Elementar (substituição textual conforme v1.3.7) -->
                     <div class="attribute-card">
-                        <h4><span class="attr-rm">Resistência Mágica (RM)</span></h4>
+                        <h4><span class="attr-re">Resistência Elementar (RE)</span></h4>
                         <div class="attribute-description">
-                            <p>A resistência mágica significa a força da sua Energia Astral.</p>
-                            <p><em>(Exemplo)</em>: Se um inimigo fizer um ataque mágico contra você, dependendo do ataque, você deve rolar um teste de resistência mágica (1d4 + Modificador de <span class="attr-rm">RM</span>).</p>
+                            <p>A Resistência Elemental representa a força e estabilidade da Energia Astral do personagem. Ela determina sua capacidade de suportar ou dissipar ataques de natureza elemental, como Electro, Praga, Solar, Nulídrico, entre outros.</p>
+                            <p><em>(Exemplo)</em>: Se um inimigo realizar um ataque elemental contra você, dependendo do tipo de ataque, será necessário rolar um teste de Resistência Elemental (1d20 + Modificador de <span class="attr-re">RE</span>).</p>
+                            <p>Além disso, a Resistência Elemental também influencia diretamente a defesa contra danos elementais. Sempre que o personagem for alvo de um ataque elemental, ele adicionará uma defesa extra (DEF<sub>e</sub>) calculada da seguinte forma:</p>
+                            <p><strong><span class="attr-re">DEF<sub>e</sub></span> = (RE × (PVs<sup>0.5</sup>)) / 8 + <span class="attr-rf">DEF</span></strong></p>
+                            <p>Essa defesa é <strong>SOMADA</strong> à defesa física (<span class="attr-rf">DEF</span>) apenas contra ataques de origem elemental.</p>
                         </div>
                     </div>
 
@@ -210,7 +224,9 @@
                         <h4><span class="attr-rf">Resistência Física (RF)</span></h4>
                         <div class="attribute-description">
                             <p>A resistência física define sua resistência corporal.</p>
-                            <p><em>(Exemplo)</em>: Se um inimigo fizer um ataque físico contra você, dependendo do ataque você deverá rolar um teste de <span class="attr-rf">RF</span> (1d4 + Modificador de <span class="attr-rf">RF</span>).</p>
+                            <p><em>(Exemplo)</em>: Se um inimigo fizer um ataque físico contra você, dependendo do ataque você deverá rolar um teste de RF (1d20 + Modificador de RF).</p>
+                            <p>Além disso, a RF (Resistência Física) também vai ser usada para definir a defesa do seu personagem de acordo com o seguinte cálculo (deve ser refeita a cada nível, ou mudança em seus atributos de RF e Saúde):</p>
+                            <p><strong><span class="attr-rf">DEF</span> = (RF × (PVs<sup>0.6</sup>)) / 6</strong></p>
                         </div>
                     </div>
 
@@ -305,10 +321,9 @@
                         <div class="race-stats">
                             <h4>Bônus de Raça</h4>
                             <ul>
-                                <li>+2 em <span class="attr-saude">Saúde</span></li>
-                                <li>-1 em <span class="attr-rf">Resistência Física</span></li>
-                                <li>+2 em <span class="attr-rm">Resistência Mágica</span></li>
-                                <li>-1 em <span class="attr-forca">Força</span></li>
+                                <li>Naturalmente +1 em <span class="attr-saude">Saúde</span></li>
+                                <li>Naturalmente -1 em <span class="attr-rf">Resistência Física</span></li>
+                                <li>Naturalmente +1 em <span class="attr-re">Resistência Elementar</span></li>
                             </ul>
                         </div>
 
@@ -327,11 +342,11 @@
                                 <li><strong>Criação de Vinhas:</strong> Cria vinhas que podem ser usadas para amarrar coisas.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
                                 <li><strong>Névoa Perfumada:</strong> Cria vinhas com flores que soltam pólen com cheiros fortes que podem atordoar algum alvo.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
                                 <li><strong>Cheiro do Perigo:</strong> O Akivus pode ficar parado durante um tempo para sentir o cheiro de quaisquer possíveis ameaças ao redor dentro de um raio de 8m.<br><em class="action-passive">-Passiva-</em></li>
-                                <li><strong>Regeneração Verde:</strong> Quando em contato direto com o solo ou cercado por vegetação, os Akivus podem acelerar sua regeneração natural, curando-se de ferimentos leves em um curto período de tempo. A cada 2 minutos, cura <strong>2d8</strong> de vida.<br><em class="action-passive">-Passiva-</em></li>
-                                <li><strong>Passo Silencioso:</strong> Os Akivus conseguem mover-se silenciosamente pela floresta, passando despercebidos por inimigos e evitando armadilhas naturais. Não fazem nenhum barulho ao andar. Se quiserem correr sorrateiramente, devem rolar teste de furtividade.<br><em class="action-passive">-Passiva-</em></li>
-                                <li><strong>Aura de Vitalidade:</strong> Em uma área de até 3B ao redor do Akivus, plantas e seres vivos se tornam mais resistentes e vigorosos. Aliados dentro dessa área recebem +2 em <span class="attr-saude">Saúde</span> e <span class="attr-rf">RF</span>, além de +25 de vida temporária por 2 turnos gerais.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-70 de Energia Astral-</em> (<span class="pe-cost">15 PE</span> caso <span class="survivor-text">Sobrevivente</span>)</li>
-                                <li><strong>Raízes Constritoras:</strong> Invoca raízes do solo para prender um inimigo, esmagando-o lentamente. Usa <em class="action-bonus">Ação Bônus</em>. O inimigo deve passar em um teste de <span class="attr-rf">RF</span> (CD 18). Enquanto estiver preso, sofre <strong>2d8 de dano por turno</strong>.<br><em class="energy-cost">-100 de Energia Astral-</em> (<span class="pe-cost">20 PE</span> caso <span class="survivor-text">Sobrevivente</span>)</li>
-                                <li><strong>Explosão Floral:</strong> Disponível a partir do nível 10. Cria uma flor especial usada como granada: ao contato, explode em espinhos e pólen tóxico. Atinge todos num raio de 5B, causando <strong>3d15 de dano perfurante</strong> e <strong>envenenando</strong> (teste inimigo de <span class="attr-saude">Saúde</span>). Veneno causa <strong>2d8 por turno até o fim da cena</strong>.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-100 de Energia Astral-</em></li>
+                                <li><strong>Regeneração Verde:</strong> Quando em contato direto com o solo ou cercado por vegetação, os Akivus podem acelerar sua regeneração natural, curando-se de ferimentos leves em um curto período de tempo. A cada 2min cura <strong>2d8</strong> de vida.<br><em class="action-passive">-Passiva-</em></li>
+                                <li><strong>Passo Silencioso:</strong> Os Akivus conseguem mover-se silenciosamente pela floresta, passando despercebidos por inimigos e evitando armadilhas naturais. Caso queiram correr sorrateiramente, devem rolar um teste de furtividade.<br><em class="action-passive">-Passiva-</em></li>
+                                <li><strong>Aura de Vitalidade:</strong> Em uma área de até 3B ao redor do Akivus, plantas e seres vivos se tornam mais resistentes e vigorosos. Aliados dentro dessa área recebem +2 em Saúde e RF e ganham +25 de vida temporária durante 2 turnos.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-70 de Energia Astral-</em> (<span class="pe-cost">15 PE</span> caso <span class="survivor-text">Sobrevivente</span>)</li>
+                                <li><strong>Raízes Constritoras:</strong> Invoca raízes do solo para prender um inimigo, usando <em class="action-bonus">Ação Bônus</em>. O inimigo deve passar em um teste de <span class="attr-rf">RF</span> (CD 18). Enquanto estiver preso, sofre <strong>2d8 de dano por turno</strong>.<br><em class="energy-cost">-100 de Energia Astral-</em> (<span class="pe-cost">20 PE</span> caso <span class="survivor-text">Sobrevivente</span>)</li>
+                                <li><strong>Explosão Floral:</strong> Ao alcançar o nível 10, cria uma flor especial que funciona como uma granada: ao contato, explode em espinhos e pólen tóxico. Atinge todos num raio de 5B, causando <strong>3d15 de dano perfurante</strong> e envenenando (Teste inimigo de <span class="attr-saude">Saúde</span>) — o veneno causa <strong>2d8 por turno até o fim da cena</strong>.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-100 de Energia Astral-</em></li>
                             </ul>
                         </div>
                     </div>
@@ -355,12 +370,10 @@
 
                         <div class="race-stats">
                             <h4>Bônus de Raça</h4>
-                            <ul>
-                                <li>+3 em <span class="attr-saude">Saúde</span></li>
-                                <li>+2 em <span class="attr-destreza">Destreza</span></li>
-                                <li>+1 em <span class="attr-rm">Resistência Mágica</span></li>
-                                <li>+3 em <span class="attr-fama">Fama</span></li>
-                            </ul>
+                                <ul>
+                                    <li>Naturalmente +1 em <span class="attr-saude">Saúde</span></li>
+                                    <li>Ganham +1 em <span class="attr-fama">FAMA</span></li>
+                                </ul>
                         </div>
 
                         <div class="race-resistances">
@@ -427,11 +440,8 @@
 
                             <h5>Bônus de Raça</h5>
                             <ul>
-                                <li>+3 em <span class="attr-forca">Força</span></li>
-                                <li>+2 em <span class="attr-destreza">Destreza</span></li>
-                                <li>+2 em <span class="attr-rf">Resistência Física</span></li>
-                                <li>+2 em <span class="attr-sen">Sentidos</span></li>
-                                <li>+1 em <span class="attr-intelecto">Intelecto</span></li>
+                                <li>Naturalmente +1 em <span class="attr-destreza">Destreza</span></li>
+                                <li>Naturalmente +1 em <span class="attr-sen">Sentidos</span></li>
                             </ul>
 
                             <h5>Fraqueza</h5>
@@ -441,8 +451,8 @@
 
                             <h5>Habilidades</h5>
                             <ul>
-                                <li><strong>Percepção Aprimorada:</strong> Pode rolar um teste de <span class="attr-sen">SEN</span> + 4 para tentar perceber algo interessante ou escondido.<br><em class="action-passive">-Passiva-</em></li>
-                                <li><strong>Quadrúpede:</strong> Pode usar uma <em class="action-bonus">Ação Bônus</em> para se locomover com todos os membros, ganhando +4 de <span class="attr-destreza">Destreza</span> e vantagem em testes de esquiva. Enquanto estiver nessa posição, não pode executar ações bônus nem ações completas. Pode ser ativada como Ação Bônus após uma Ação Padrão.</li>
+                                <li><strong>Percepção Aprimorada:</strong> Pode rolar um teste de <span class="attr-sen">SEN</span> + 2 para tentar perceber algo interessante ou algo escondido.<br><em class="action-passive">-Passiva-</em></li>
+                                <li><strong>Quadrúpede:</strong> Pode usar uma <em class="action-bonus">Ação Bônus</em> para usar todos os seus membros para se locomover, ganhando +4 de <span class="attr-destreza">Destreza</span> e vantagem em testes de esquiva enquanto estiver nessa posição; porém não pode executar ações bônus nem ações completas enquanto estiver na forma quadrúpede. A habilidade é ativada como Ação Bônus após uma Ação Padrão.<br><em class="action-bonus">-Ação Bônus-</em></li>
                             </ul>
                         </div>
 
@@ -463,10 +473,8 @@
 
                             <h5>Bônus de Raça</h5>
                             <ul>
-                                <li>+3 em <span class="attr-saude">Saúde</span></li>
-                                <li>-2 em <span class="attr-rf">Resistência Física</span></li>
-                                <li>+1 em <span class="attr-rm">Resistência Mágica</span></li>
-                                <li>+3 em <span class="attr-intelecto">Intelecto</span></li>
+                                <li>Naturalmente +2 de <span class="attr-saude">Saúde</span></li>
+                                <li>Naturalmente +1 em <span class="attr-fama">FAMA</span></li>
                             </ul>
 
                             <h5>Fraqueza</h5>
@@ -477,9 +485,9 @@
 
                             <h5>Habilidades</h5>
                             <ul>
-                                <li><strong>Afinidade com Plantas:</strong> Pode se comunicar com plantas.<br><em class="action-passive">-Passiva-</em></li>
+                                <li><strong>Afinidade com plantas:</strong> Pode se comunicar com plantas.<br><em class="action-passive">-Passiva-</em></li>
                                 <li><strong>Criação de Vinhas:</strong> Cria vinhas que podem ser usadas para amarrar coisas.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
-                                <li><strong>Névoa Perfumada:</strong> Cria vinhas com flores que soltam pólen atordoante. O alvo deve fazer teste de <span class="attr-rm">RM</span> com CD 18.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                                <li><strong>Névoa Perfumada:</strong> Cria vinhas com flores que soltam pólen com cheiros fortes que podem atordoar algum alvo. O alvo deve rolar um teste de <span class="attr-re">RE</span> (CD 18).<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
                                 
                                 <div class="song-of-trees-container">
                                     <li class="song-of-trees-ability"><strong><span class="wood-highlight">Canção das Árvores</span>:</strong> A partir do nível 3, pode ouvir as batidas das árvores e manipular madeira ao redor.<br><em class="action-passive">-Passiva-</em></li>
@@ -574,7 +582,7 @@
                         <h4>Bônus de Raça</h4>
                         <ul>
                             <li>+2 em todos os Atributos</li>
-                            <li>-1 em <span class="attr-rm">Resistência Mágica</span></li>
+                            <li>-1 em <span class="attr-re">Resistência Elementar</span></li>
                             <li>+2 em <span class="attr-intelecto">Intelecto</span></li>
                             <li>Fraqueza a dano de Pesadelo</li>
                         </ul>
@@ -589,7 +597,7 @@
                             <li><strong>Força de Vontade:</strong> Uma vez por descanso longo, ao falhar em um teste de resistência, pode refazê-lo com +3 de bônus.<br><em class="action-reaction">-Ação Reação-</em></li>
                             <li><strong>Inovação:</strong> Ao criar itens, armas ou estratégias, pode gastar o dobro do tempo para aprimorá-los, ganhando +2 no teste correspondente. Em combate, isso consome 2 <em class="action-standard">Ações Padrões</em>.<br><em class="action-passive">-Passiva-</em></li>
                             <li><strong>Resiliência Humana:</strong> No início de cada turno, pode realizar um teste de <span class="attr-saude">Saúde</span> (CD 14) para remover uma condição negativa (envenenamento, atordoamento, paralisia, etc).<br><em class="action-passive">-Passiva-</em></li>
-                            <li><strong>Força Interior:</strong> Em situações de perigo extremo ou emoção intensa, pode ganhar +2 temporário em qualquer atributo (exceto <span class="attr-rm">RM</span>) até o fim da cena. 1 vez por descanso longo.<br><em class="action-bonus">-Ação Bônus-</em></li>
+                            <li><strong>Força Interior:</strong> Em situações de perigo extremo ou emoção intensa, pode ganhar +2 temporário em qualquer atributo (exceto <span class="attr-re">RE</span>) até o fim da cena. 1 vez por descanso longo.<br><em class="action-bonus">-Ação Bônus-</em></li>
                         </ul>
                     </div>
                 </div>
@@ -619,7 +627,7 @@
                         <h4>Bônus de Raça</h4>
                         <ul>
                             <li>+2 em <span class="attr-destreza">Destreza</span></li>
-                            <li>+3 em <span class="attr-rm">Resistência Mágica</span></li>
+                            <li>+3 em <span class="attr-re">Resistência Elementar</span></li>
                             <li>+2 em <span class="attr-rf">Resistência Física</span></li>
                         </ul>
                     </div>
@@ -688,7 +696,7 @@
                         <h4>Bônus de Raça</h4>
                         <ul>
                             <li>+3 em <span class="attr-destreza">Destreza</span></li>
-                            <li>+2 em <span class="attr-rm">Resistência Mágica</span></li>
+                            <li>+2 em <span class="attr-re">Resistência Elementar</span></li>
                             <li>+1 em <span class="attr-intelecto">Intelecto</span></li>
                             <li>-5 em <span class="attr-fama">FAMA</span></li>
                             <li>Proficiência natural em testes de Intimidação</li>
@@ -725,13 +733,13 @@
                         <h5><span class="nightmare-highlight">Pesadelo</span></h5>
                         <ul>
                             <li><strong>Lembre-se:</strong> Causa <strong>2d10</strong> de dano mental e paralisa o alvo ao invocar visões horríveis. Alcance: 5 blocos.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
-                            <li><strong>Ilusão Amedrontadora:</strong> Cria uma ilusão visível apenas para o alvo. Se falhar no teste de <span class="attr-rm">RM</span>, ficará paralisado por 1 rodada.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                            <li><strong>Ilusão Amedrontadora:</strong> Cria uma ilusão visível apenas para o alvo. Se falhar no teste de <span class="attr-re">RE</span>, ficará paralisado por 1 rodada.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
                         </ul>
 
                         <h5><span class="shadow-highlight">Sombra</span></h5>
                         <ul>
                             <li><strong>Medo:</strong> Com <em class="action-bonus">Ação Bônus</em>, sussurra palavras de medo. Se o alvo falhar em <span class="attr-intelecto">INT</span> (CD 16), sofre <strong>4d12</strong> de dano. (Liberada no nível 10)</li>
-                            <li><strong>Toque da Maldade:</strong> Atordoa o alvo e faz ouvir vozes. Alvo deve passar em um teste de <span class="attr-rm">RM</span>.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
+                            <li><strong>Toque da Maldade:</strong> Atordoa o alvo e faz ouvir vozes. Alvo deve passar em um teste de <span class="attr-re">RE</span>.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em></li>
                         </ul>
                     </div>
                 </div>
@@ -760,7 +768,7 @@
                     <div class="race-stats">
                         <h4>Bônus de Raça</h4>
                         <ul>
-                            <li>+1 em <span class="attr-rm">Resistência Mágica</span></li>
+                            <li>+1 em <span class="attr-re">Resistência Elementar</span></li>
                             <li>+3 em <span class="attr-intelecto">Intelecto</span></li>
                             <li>+1 em <span class="attr-fama">FAMA</span></li>
                             <li>+1 em <span class="attr-rf">Resistência Física</span></li>
@@ -797,14 +805,14 @@
                         <p>Feitos com materiais resistentes, fortes e parrudos, sempre à frente do combate:</p>
                         <ul>
                             <li>+1 em <span class="attr-forca">Força</span></li>
-                            <li>+2 em <span class="attr-rf">Resistência Física</span> e <span class="attr-rm">Mágica</span></li>
+                            <li>+2 em <span class="attr-rf">Resistência Física</span> e <span class="attr-re">Resistência Elementar</span></li>
                             <li>–3 em <span class="attr-destreza">Destreza</span></li>
                         </ul>
 
                         <h5>Segurança</h5>
                         <p>Projetados para proteger figuras importantes como os ricos de Paladium:</p>
                         <ul>
-                            <li>+2 em <span class="attr-rm">Resistência Mágica</span></li>
+                            <li>+2 em <span class="attr-re">Resistência Elementar</span></li>
                             <li>+3 em <span class="attr-rf">Resistência Física</span></li>
                             <li>+1 em <span class="attr-intelecto">Intelecto</span></li>
                         </ul>
@@ -822,11 +830,11 @@
                     <h3>Abissais</h3>
 
                     <div id="abissais-image" class="race-image">
-                        <img src="../assets/abissais.png" alt="Ilustração dos Abissais">
+                        <img src="../assets/abissais.png" alt="Ilustração dos Abissais - Janna">
                     </div>
 
                     <div class="race-description">
-                        <p>Os Abissais são uma raça originária das profundezas. Vivem em grandes colônias, são ágeis e frágeis, mas também misteriosos. Com olhos sem íris ou pupilas, veem claramente no escuro. Sua pele é sem vida, pálida e marcada por veias escuras que percorrem o corpo.</p>
+                        <p>Seres que vivem no abismo abaixo da terra com corpos totalmente tomados pela praga, com a pele pálida, veias negras e olhos completamente pretos como um vazio. Com antenas bioluminescentes fortes como uma lâmpada fluorescente que também podem ser usadas como comunicação com outros abissais.</p>
                         
                         <div class="difficulty-level">
                             <span class="difficulty-label">Nível de Dificuldade:</span>
@@ -837,40 +845,33 @@
                     <div class="race-stats">
                         <h4>Bônus de Raça</h4>
                         <ul>
-                            <li>-1 em <span class="attr-saude">Saúde</span></li>
-                            <li>+3 em <span class="attr-destreza">Destreza</span></li>
-                            <li>+1 em <span class="attr-rf">Resistência Física</span></li>
-                            <li>+2 em <span class="attr-intelecto">Intelecto</span></li>
+                            <li>Naturalmente tem -1 de <span class="attr-saude">Saúde</span></li>
+                            <li>Ganham +1 em <span class="attr-destreza">Destreza</span></li>
+                            <li>Ganham +1 em <span class="attr-intelecto">Inteligência</span></li>
                             <li>Desvantagem em testes de percepção em locais com luz forte</li>
+                            <li>Imunidade a <span class="plague-highlight">Praga</span></li>
+                            <li>Fraqueza contra <strong>Podridão</strong></li>
+                            <li>Resistência contra Solar, dano Gélido e Pesadelo</li>
                         </ul>
                     </div>
 
                     <div class="race-resistances">
-                        <h4>Fraquezas e Resistências</h4>
-                        <ul>
-                            <li><strong>Imunidade:</strong> Praga</li>
-                            <li><strong>Fraqueza:</strong> Podridão</li>
-                            <li><strong>Resistência:</strong> Solar, Dano Gélido, Pesadelo</li>
-                        </ul>
-                    </div>
-
-                    <div class="race-abilities">
                         <h4>Habilidades de Raça</h4>
                         <ul>
-                            <li><strong>Visão no Escuro:</strong> Enxerga perfeitamente no escuro, mesmo sem fontes de luz.</li>
-                            <li><strong>Luz Amiga:</strong> Pode liberar uma bioluminescência suave pelas veias, iluminando o ambiente ao redor.</li>
-                            <li><strong>Pressentimento:</strong> Rola 1d20 para detectar emboscadas nas proximidades (CD definida pelo mestre).</li>
-                            <li><strong>Telepatia:</strong> Consegue se comunicar mentalmente com outros Abissais próximos.</li>
-                            <li><strong>Confusão:</strong> Usa a telepatia para induzir confusão em um inimigo. Realiza-se um teste de <span class="attr-intelecto">Intelecto</span> contra <span class="attr-intelecto">Intelecto</span>. Se vencer, o inimigo fica confuso por 1 turno.</li>
-                            <li><strong>A Fome de Vinhas:</strong> Abissais consomem vinhas corrompidas pela Praga para gerar efeitos instáveis. O jogador pode consumir 1 vinha e rolar 1d7:
+                            <li><strong>Visão no Escuro:</strong> Alcance ilimitado; enxerga perfeitamente no escuro.</li>
+                            <li><strong>Luz Amiga:</strong> Espalha esporos brilhantes com suas antenas que podem auxiliar as pessoas ao redor.</li>
+                            <li><strong>Pressentimento:</strong> Pode rolar 1d20 de percepção para perceber possíveis emboscadas ao redor.</li>
+                            <li><strong>Telepatia:</strong> Consegue usar suas antenas para se comunicar mentalmente com aliados.</li>
+                            <li><strong>Confusão:</strong> Usa sua telepatia para confundir um alvo imitando vozes ou fazendo barulhos ensurdecedores. O alvo deve rolar um teste de <span class="attr-intelecto">INT</span> contra um teste de <span class="attr-intelecto">INT</span> do Abissal (Atuação do Abissal); se o alvo falhar, fica impossibilitado de agir por 1 rodada.</li>
+                            <li><strong>A Fome de Vinhas:</strong> O Abissal pode consumir vinhas de praga para ganhar bônus ou penalidades aleatórias até que ocorra um descanso longo ou curto. Todo Abissal começa com <strong>8 vinhas</strong> e pode adquirir mais por meio de descansos longos. O jogador deve rolar 1d7 para determinar o efeito:
                                 <ul class="vine-effects">
-                                    <li>7: +2 em <span class="attr-destreza">Destreza</span></li>
-                                    <li>6: +2 em <span class="attr-rf">RF</span></li>
-                                    <li>5: +1 em <span class="attr-sen">SEN</span></li>
-                                    <li>4: +2 em <span class="attr-saude">Saúde</span></li>
-                                    <li>3: -3 em <span class="attr-saude">Saúde</span></li>
-                                    <li>2: -2 em <span class="attr-destreza">Destreza</span></li>
-                                    <li>1: -4 em <span class="attr-rm">RM</span></li>
+                                    <li>7: +2 de Destreza</li>
+                                    <li>6: +2 de RF</li>
+                                    <li>5: +1 de Sentidos</li>
+                                    <li>4: +2 de Saúde</li>
+                                    <li>3: -3 de Saúde</li>
+                                    <li>2: -2 de Destreza</li>
+                                    <li>1: -4 de RE</li>
                                 </ul>
                             </li>
                         </ul>
@@ -904,7 +905,7 @@
                         <ul>
                             <li><span class="spectral-error">Naturalmente -5</span> em <span class="attr-saude">Saúde</span></li>
                             <li><span class="spectral-corruption" data-text="Naturalmente">Naturalmente</span> +3 em <span class="attr-destreza">Destreza</span></li>
-                            <li><span class="spectral-glitch" data-text="Naturalmente">Nat◊ralmente</span> +1 em <span class="attr-rm">Resistência Mágica</span></li>
+                            <li><span class="spectral-glitch" data-text="Naturalmente">Nat◊ralmente</span> +1 em <span class="attr-re">Resistência Elementar</span></li>
                             <li>Na<span class="spectral-error">◊</span>turalmente -2 em <span class="attr-forca">Força</span></li>
                             <li><span class="spectral-error">Naturalmente -1 em Intelecto</span></li>
                             <li><span class="spectral-unstable">Naturalmente</span> +3 em <span class="attr-rf">Resistência Física</span></li>
@@ -1860,27 +1861,27 @@
                             
                             <div class="rank-item">
                                 <h5>RANK 1</h5>
-                                <p>Ganha +1 de <span class="attr-fama">FAMA</span> e +1 de <span class="attr-rm">Resistência Mágica</span></p>
+                                <p>Ganha +1 de <span class="attr-fama">FAMA</span> e +1 de <span class="attr-re">Resistência Elementar</span></p>
                             </div>
                             
                             <div class="rank-item">
                                 <h5>RANK 2</h5>
-                                <p>Ganha +1 de <span class="attr-fama">FAMA</span>, +1 de <span class="attr-rm">Resistência Mágica</span> e +1 <span class="attr-rf">Resistência Física</span></p>
+                                <p>Ganha +1 de <span class="attr-fama">FAMA</span>, +1 de <span class="attr-re">Resistência Elementar</span> e +1 <span class="attr-rf">Resistência Física</span></p>
                             </div>
                             
                             <div class="rank-item">
                                 <h5>RANK 3</h5>
-                                <p>Ganha +1 em <span class="attr-rm">Resistência Mágica</span> e <span class="attr-rf">Resistência Física</span></p>
+                                <p>Ganha +1 em <span class="attr-re">Resistência Elementar</span> e <span class="attr-rf">Resistência Física</span></p>
                             </div>
                             
                             <div class="rank-item">
                                 <h5>RANK 4</h5>
-                                <p>Ganha +1 em <span class="attr-rm">Resistência Mágica</span> e <span class="attr-rf">Resistência Física</span></p>
+                                <p>Ganha +1 em <span class="attr-re">Resistência Elementar</span> e <span class="attr-rf">Resistência Física</span></p>
                             </div>
                             
                             <div class="rank-item">
                                 <h5>RANK 5</h5>
-                                <p>Ganha +1 em <span class="attr-rm">Resistência Mágica</span> e <span class="attr-rf">Resistência Física</span></p>
+                                <p>Ganha +1 em <span class="attr-re">Resistência Elementar</span> e <span class="attr-rf">Resistência Física</span></p>
                             </div>
                         </div>
 
@@ -2028,7 +2029,7 @@
                                 <p><strong>Armas:</strong> Adagas, Espadas Curtas, Rapieiras, Arcos, Espadas Longas</p>
                                 <p><strong>Ferramentas:</strong> Grimórios</p>
                                 <p><strong>Escudos:</strong> Escudo Pequeno</p>
-                                <p><strong>Testes de Resistência:</strong> <span class="attr-rm">Resistência Mágica</span>, <span class="attr-destreza">Destreza</span></p>
+                                <p><strong>Testes de Resistência:</strong> <span class="attr-re">Resistência Elementar</span>, <span class="attr-destreza">Destreza</span></p>
                             </div>
 
                             <div class="class-stat-block">

@@ -5,7 +5,7 @@
 // DES = Destreza
 // DEX = Destreza (alternativa)
 // INT = Inteligência  
-// RM = Resistência Mágica
+// RE = Resistência Elementar
 // RF = Resistência Física
 // SAN = Sanidade
 
@@ -394,8 +394,50 @@ document.addEventListener('DOMContentLoaded', function() {
     document.head.appendChild(style);
     
     console.log('🎲 Sistema Wuitalur carregado com sucesso!');
-    console.log('✨ Versão 1.3.4 - Todos os sistemas operacionais');
+    console.log('✨ Versão 1.3.7 - Todos os sistemas operacionais');
     console.log('🔧 Funções globais disponíveis: openRaceSelector, closeRaceSelector, scrollToRace');
+
+    // === THEME SWITCHER ===
+    const themeToggleBtn = document.getElementById('theme-toggle-btn');
+    const themeMenu = document.getElementById('theme-menu');
+
+    if (themeToggleBtn && themeMenu) {
+        themeToggleBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isOpen = themeMenu.classList.toggle('open');
+            themeToggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+
+        // Selecionar opção de tema
+        const themeOptions = document.querySelectorAll('.theme-option');
+        themeOptions.forEach(opt => {
+            opt.addEventListener('click', function(e) {
+                const theme = this.dataset.theme;
+                if (theme === 'purification') {
+                    document.body.classList.add('purification-theme');
+                } else {
+                    document.body.classList.remove('purification-theme');
+                }
+                localStorage.setItem('wuitalur-theme', theme);
+                themeMenu.classList.remove('open');
+                themeToggleBtn.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // Fecha o menu clicando fora
+        document.addEventListener('click', function() {
+            if (themeMenu.classList.contains('open')) {
+                themeMenu.classList.remove('open');
+                themeToggleBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Carrega tema salvo
+        const savedTheme = localStorage.getItem('wuitalur-theme');
+        if (savedTheme === 'purification') {
+            document.body.classList.add('purification-theme');
+        }
+    }
 });
 
 // === FECHA OVERLAY CLICANDO FORA ===
@@ -424,7 +466,7 @@ window.WuitalurSystem = {
     openRaceSelector,
     closeRaceSelector,
     scrollToRace,
-    version: '1.3.4',
+    version: '1.3.7',
     author: 'Sistema Autoral',
     
     // Função de debug para testar navegação
@@ -465,14 +507,5 @@ window.WuitalurSystem = {
     }
 };
 
-// Teste de depuração
-console.log('📝 Script carregado! Testando funções...');
-console.log('openRaceSelector disponível:', typeof openRaceSelector);
-console.log('closeRaceSelector disponível:', typeof closeRaceSelector);
-console.log('scrollToRace disponível:', typeof scrollToRace);
-
-// Teste imediato após carregamento
-setTimeout(() => {
-    console.log('🔍 Verificando elementos após carregamento...');
-    window.WuitalurSystem.listRaceElements();
-}, 1000);
+// === DEBUG: Detecção/Depuração de Tema ===
+// Debug/test helpers removed to comply with 'no additions' policy; exports above remain available.

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de Personagem</title>
+    <style>
+        /* --- Configurações Gerais --- */
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f0f0f0;
+            color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* --- Container Principal da Ficha --- */
+        .character-sheet {
+            width: 500px;
+            background: #fff;
+            border: 1px solid #000;
+            padding: 25px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- Utilitários de Título --- */
+        h2 {
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Título com caixa preta (Atributos, Ações) */
+        .title-box {
+            background-color: #000;
+            color: #fff;
+            padding: 6px 10px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        /* Título com linha (Pontos de Vida) */
+        .title-line-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 2px solid #000;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+
+        .title-line-wrapper .status {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        /* --- Cabeçalho (Nome) --- */
+        .sheet-header {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 10px;
+        }
+
+        .name-block {
+            background: #000;
+            color: #fff;
+            padding: 10px 20px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 1.8em;
+            display: inline-flex;
+            align-items: baseline;
+        }
+
+        .name-block .value {
+            margin-left: 20px;
+            font-size: 1.1em;
+        }
+
+        .ndd-label {
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-left: 15px;
+        }
+
+        /* --- Elementos --- */
+        .elements {
+            margin-bottom: 20px;
+        }
+
+        .elements p {
+            margin: 2px 0;
+            font-size: 0.9em;
+        }
+
+        /* --- Atributos --- */
+        .attributes-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .attribute-col {
+            display: flex;
+            flex-direction: column;
+            gap: 8px; /* Espaçamento entre os atributos */
+        }
+
+        .attribute-col span {
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .attribute-box {
+            background: #000;
+            color: #fff;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        /* --- Seção de Vida (PV, Defesa) --- */
+        .vitals {
+            margin-top: 25px;
+        }
+
+        .defense-stats {
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        /* --- Outras Estatísticas (Resist, Fraq, Mov) --- */
+        .other-stats {
+            margin-top: 15px;
+        }
+
+        .other-stats p {
+            margin: 8px 0;
+            font-size: 1em;
+        }
+
+        .other-stats p.movement {
+            border-bottom: 2px solid #000;
+            padding-bottom: 5px;
+            display: inline-block; /* Faz a linha ter o tamanho do texto */
+        }
+        
+        /* --- Seção de Ações --- */
+        .actions {
+            margin-top: 25px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="character-sheet">
+
+        <header class="sheet-header">
+            <div class="name-block">
+                <span class="label">NOME</span>
+                <span class="value">(X)</span>
+            </div>
+            <span class="ndd-label">NDD</span>
+        </header>
+
+        <section class="elements">
+            <p>(Elemento) . (Tipo)</p>
+            <p>(Elemento 2)</p>
+        </section>
+
+        <section class="attributes">
+            <h2 class="title-box">ATRIBUTOS</h2>
+            <div class="attributes-grid">
+                <div class="attribute-col">
+                    <span>DES</span>
+                    <span>INT</span>
+                    <span>RE</span>
+                    <span>RF</span>
+                </div>
+                <div class="attribute-col">
+                    <span>SA</span>
+                    <span>SEN</span>
+                    <span>FM</span>
+                    <span>FR</span>
+                </div>
+                <div class="attribute-box">
+                    <span>COS</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="vitals">
+            <div class="title-line-wrapper">
+                <h2 class="title-line">PONTOS DE VIDA</h2>
+                <span class="status">Machucado</span>
+            </div>
+            <div class="defense-stats">
+                <span>DEF</span> | <span>DEFe</span>
+            </div>
+        </section>
+
+        <section class="other-stats">
+            <p>Resistências(resistências)</p>
+            <p>Fraquezas(fraquezas)</p>
+            <p class="movement">Movimento - (x)B</p>
+        </section>
+
+        <section class="actions">
+            <h2 class="title-box">AÇÕES</h2>
+            </section>
+
+    </div>
+
+</body>
+</html>
