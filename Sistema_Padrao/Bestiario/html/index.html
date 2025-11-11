@@ -27,7 +27,7 @@
                         </div>
                     </div>
 
-                    <a href="../../Pag_Principal/html/index.html" class="btn-home">Página Principal</a>
+                    <a href="../../../Pag_Principal/html/index.html" class="btn-home">Página Principal</a>
                 </div>
             </div>
         </div>
@@ -54,11 +54,148 @@
                 </div>
             </section>
 
+            <section id="elementos" class="content-section">
+                <h2>Elementos</h2>
+                <div class="intro-text">
+                    <p>As criaturas do bestiário estão organizadas por elementos. Use as abas abaixo para navegar entre os elementos e ver as criaturas de cada um. No momento não há criaturas cadastradas — cada painel traz a descrição do elemento e um placeholder para futuras entradas.</p>
+
+                    <style>
+                        /* Estilos locais para navegação por elementos + animações suaves */
+                        .elements-tabs { display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 18px 0 }
+
+                        /* Abas dos elementos */
+                        .element-tab {
+                            background:var(--cor-navbar, #2b2b2b);
+                            color:var(--cor-texto, #eee);
+                            border:1px solid var(--cor-borda, #444);
+                            padding:8px 12px;
+                            border-radius:6px;
+                            cursor:pointer;
+                            transition: background-color 240ms cubic-bezier(.2,.9,.3,1),
+                                        color 180ms ease,
+                                        transform 160ms cubic-bezier(.2,.9,.3,1),
+                                        box-shadow 240ms cubic-bezier(.2,.9,.3,1),
+                                        border-color 180ms ease;
+                            will-change: transform, background-color, box-shadow;
+                            outline: none;
+                            -webkit-tap-highlight-color: transparent;
+                        }
+
+                        /* Hover/focus states */
+                        .element-tab:hover { transform: translateY(-3px); }
+                        .element-tab:active { transform: translateY(-1px) scale(0.995); }
+                        .element-tab:focus-visible { box-shadow: 0 6px 18px rgba(90,76,138,0.18); border-color: var(--cor-primaria, #5a4c8a); }
+
+                        /* Aba ativa (padrão) */
+                        .element-tab[aria-pressed="true"]{
+                            background:var(--cor-primaria, #5a4c8a);
+                            color:var(--cor-texto-on-primaria, #fff);
+                            box-shadow:0 8px 24px rgba(0,0,0,0.28);
+                            transform: translateY(-2px) scale(1.01);
+                            border-color: color-mix(in srgb, var(--cor-primaria, #5a4c8a) 60%, black);
+                        }
+
+                        /* Cores por elemento (faz match com o sistema padrão quando possível) */
+                        .element-tab[data-element="podridao"] { background: linear-gradient(135deg, #20221a, #2b2f20); color:#dbe7d0; border-color:#39432e }
+                        .element-tab[data-element="podridao"][aria-pressed="true"] { background: linear-gradient(135deg, #2f3a21, #4a5d2e); color:#0f0f0f; box-shadow: 0 10px 28px rgba(34,56,24,0.35); border-color:#567239 }
+
+                        .element-tab[data-element="praga"] { background: #2c2c2c; color:#d0c0c0; border-color:#444 }
+                        .element-tab[data-element="praga"][aria-pressed="true"] { background: linear-gradient(135deg, #3a3434, #5a4f4f); color:#fff; box-shadow: 0 10px 28px rgba(80,70,70,0.28); border-color:#6b5a5a }
+
+                        .element-tab[data-element="sagrado"] { background: linear-gradient(90deg,#d4af37,#f0d88a); color:#111; border-color:#b58f2e }
+                        .element-tab[data-element="sagrado"][aria-pressed="true"] { background: linear-gradient(90deg,#ffd966,#f0d88a); color:#111; box-shadow: 0 10px 28px rgba(200,160,40,0.18); border-color:#e0b92f }
+
+                        .element-tab[data-element="electro"] { background: linear-gradient(90deg,#2e8cff,#00d2ff); color:#031428; border-color:#0b6fb0 }
+                        .element-tab[data-element="electro"][aria-pressed="true"] { background: linear-gradient(90deg,#48a7ff,#00e6ff); color:#021226; box-shadow: 0 10px 28px rgba(0,150,255,0.18); border-color:#00b0e6 }
+
+                        .element-tab[data-element="nulidrico"] { background: linear-gradient(90deg,#6b0000,#8b0000); color:#fff; border-color:#5a0000 }
+                        .element-tab[data-element="nulidrico"][aria-pressed="true"] { background: linear-gradient(90deg,#8b0000,#b30000); color:#fff; box-shadow: 0 10px 28px rgba(140,0,0,0.28); border-color:#c02020 }
+
+                        .element-tab[data-element="solar"] { background: linear-gradient(90deg,#ff8c00,#ffb857); color:#111; border-color:#cc7000 }
+                        .element-tab[data-element="solar"][aria-pressed="true"] { background: linear-gradient(90deg,#ff9f1a,#ffc877); color:#0b0b0b; box-shadow: 0 10px 28px rgba(255,140,0,0.18); border-color:#e07a00 }
+
+                        .element-tab[data-element="estase"] { background: linear-gradient(90deg,#1a2a4d,#274b7a); color:#cce6ff; border-color:#183355 }
+                        .element-tab[data-element="estase"][aria-pressed="true"] { background: linear-gradient(90deg,#20395a,#365f8a); color:#eaf6ff; box-shadow: 0 10px 28px rgba(32,58,90,0.22); border-color:#2b4f7a }
+
+                        .element-tab[data-element="pesadelo"] { background: linear-gradient(90deg,#2b1a3a,#4b2a6a); color:#ffe8b8; border-color:#3a2347 }
+                        .element-tab[data-element="pesadelo"][aria-pressed="true"] { background: linear-gradient(90deg,#3a2350,#6b3a8a); color:#fff; box-shadow: 0 10px 28px rgba(90,50,140,0.25); border-color:#5a3570 }
+
+                        .element-panel { display:none; margin-top:10px }
+                        .element-panel[aria-hidden="false"]{ display:block }
+                        .creature-list { display:flex; flex-direction:column; gap:8px }
+                        .creature-item { background:var(--cor-fundo-bloco, #2a2a2a); padding:8px 10px; border-radius:6px; border:1px solid rgba(255,255,255,0.04); display:flex; justify-content:space-between; align-items:center }
+                        .creature-item a { color:var(--cor-texto, #fff); text-decoration:none }
+                        .creature-item small { color:var(--cor-texto-sec, #bbb) }
+                        .element-desc { margin:10px 0 12px 0; color:var(--cor-texto-sec); line-height:1.45 }
+                        .placeholder { font-style:italic; color:var(--cor-texto-sec); padding:8px; border:1px dashed rgba(255,255,255,0.04); border-radius:6px; background:transparent }
+
+                        /* Transição suave também para os botões de navegação gerais */
+                        .btn-home {
+                            transition: background-color 180ms ease, color 180ms ease, transform 140ms cubic-bezier(.2,.9,.3,1), box-shadow 240ms ease;
+                            will-change: transform, background-color, color;
+                        }
+                        .btn-home:hover { transform: translateY(-2px); }
+                        .btn-home:active { transform: translateY(0) scale(0.995); }
+                    </style>
+
+                    <div class="elements-tabs" role="tablist" aria-label="Elementos do Bestiário">
+                        <button class="element-tab" role="tab" data-element="podridao" aria-pressed="false">PODRIDÃO</button>
+                        <button class="element-tab" role="tab" data-element="praga" aria-pressed="false">PRAGA</button>
+                        <button class="element-tab" role="tab" data-element="sagrado" aria-pressed="false">SAGRADO</button>
+                        <button class="element-tab" role="tab" data-element="electro" aria-pressed="false">ELECTRO</button>
+                        <button class="element-tab" role="tab" data-element="nulidrico" aria-pressed="false">NULIDRÍCO</button>
+                        <button class="element-tab" role="tab" data-element="solar" aria-pressed="false">SOLAR</button>
+                        <button class="element-tab" role="tab" data-element="estase" aria-pressed="false">ESTASE</button>
+                        <button class="element-tab" role="tab" data-element="pesadelo" aria-pressed="false">PESADELO</button>
+                    </div>
+
+                    <div class="element-panel" data-element="podridao" aria-hidden="true">
+                        <h3>PODRIDÃO</h3>
+                        <div class="placeholder">Nenhuma criatura cadastrada neste elemento.</div>
+                    </div>
+
+                    <div class="element-panel" data-element="praga" aria-hidden="true">
+                        <h3>PRAGA</h3>
+                        <div class="placeholder">Nenhuma criatura cadastrada neste elemento.</div>
+                    </div>
+
+                    <div class="element-panel" data-element="sagrado" aria-hidden="true">
+                        <h3>SAGRADO</h3>
+                        <div class="placeholder">Nenhuma criatura cadastrada neste elemento.</div>
+                    </div>
+
+                    <div class="element-panel" data-element="electro" aria-hidden="true">
+                        <h3>ELECTRO</h3>
+                        <div class="placeholder">Nenhuma criatura cadastrada neste elemento.</div>
+                    </div>
+
+                    <div class="element-panel" data-element="nulidrico" aria-hidden="true">
+                        <h3>NULIDRÍCO</h3>
+                        <div class="placeholder">Nenhuma criatura cadastrada neste elemento.</div>
+                    </div>
+
+                    <div class="element-panel" data-element="solar" aria-hidden="true">
+                        <h3>SOLAR</h3>
+                        <div class="placeholder">Nenhuma criatura cadastrada neste elemento.</div>
+                    </div>
+
+                    <div class="element-panel" data-element="estase" aria-hidden="true">
+                        <h3>ESTASE</h3>
+                        <div class="placeholder">Nenhuma criatura cadastrada neste elemento.</div>
+                    </div>
+
+                    <div class="element-panel" data-element="pesadelo" aria-hidden="true">
+                        <h3>PESADELO</h3>
+                        <div class="placeholder">Nenhuma criatura cadastrada neste elemento.</div>
+                    </div>
+
+                </div>
+            </section>
+
             <section id="modelo-ficha" class="content-section">
                 <h2>Ficha Exemplo (Estrutura Técnica)</h2>
                 <div class="intro-text">
-                    <p>Aqui está a estrutura de ficha com os títulos menores e o layout centralizado, garantindo o visual **técnico**, sóbrio e **compacto**.</p>
-
+                    <p>Abaixo está um modelo de ficha técnica para criaturas do bestiário de Wuitalur.</p>
                     <style>
                         /* ================================================
                         ESTILOS DA FICHA NO LAYOUT DE DUAS COLUNAS - COMPACTA FINAL
@@ -216,7 +353,7 @@
                                 <div class="block-content attributes-grid">
                                     <p>Des: (valor)</p>
                                     <p>Int: (valor)</p>
-                                    <p>RM: (valor)</p>
+                                    <p>RE: (valor)</p>
                                     <p>RF: (valor)</p>
                                     <p>SA: (valor)</p>
                                     <p>Sen: (valor)</p>
@@ -319,5 +456,44 @@
     </footer>
 
     <script src="../../script/main.js"></script>
+    <script>
+        // Inicializa navegação por elementos do Bestiário
+        (function(){
+            const tabs = document.querySelectorAll('.element-tab');
+            const panels = document.querySelectorAll('.element-panel');
+
+            function showElement(name, pushHash=true){
+                tabs.forEach(t=>{
+                    const is = t.dataset.element === name;
+                    t.setAttribute('aria-pressed', is ? 'true' : 'false');
+                });
+                panels.forEach(p=>{
+                    const match = p.dataset.element === name;
+                    p.setAttribute('aria-hidden', match ? 'false' : 'true');
+                });
+                if(pushHash){
+                    try { history.replaceState(null,'', '#element-'+name); } catch(e){}
+                }
+            }
+
+            tabs.forEach(t=>{
+                t.addEventListener('click', ()=> showElement(t.dataset.element));
+                t.addEventListener('keydown', (e)=>{
+                    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); t.click(); }
+                });
+            });
+
+            // Se veio com hash, tenta abrir
+            const hash = location.hash.replace(/^#/, '');
+            if(hash && hash.startsWith('element-')){
+                const el = hash.replace('element-','');
+                const found = Array.from(tabs).some(t=>t.dataset.element === el);
+                if(found) showElement(el,false);
+            } else if(tabs.length){
+                // ativa o primeiro por padrão
+                showElement(tabs[0].dataset.element,false);
+            }
+        })();
+    </script>
 </body>
 </html>
