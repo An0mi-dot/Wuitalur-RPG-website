@@ -40,8 +40,7 @@
       <div class="small"><strong>DEF (Defesa Física):</strong> —</div>
       <div class="small"><strong>DEFe (Defesa Elementar):</strong> —</div>
       <div class="muted" style="margin-top:8px">Mostramos valor exato e valor arredondado (inteiro).</div>
-
-n    </div>
+    </div>
 
     <div style="margin-top:12px">
       <strong>Fórmulas usadas</strong>
@@ -75,7 +74,7 @@ n    </div>
         return;
       }
 
-n      // Fórmulas do sistema
+      // Fórmulas do sistema
       const DEF_exact = (RF * Math.pow(PVs, 0.6)) / 6;
       const DEF_round = Math.round(DEF_exact);
 
@@ -92,10 +91,10 @@ n      // Fórmulas do sistema
     calcBtn.addEventListener('click', compute);
     clearBtn.addEventListener('click', ()=>{ pvEl.value=''; rfEl.value=''; reEl.value=''; resultEl.innerHTML = '<div class="small"><strong>DEF (Defesa Física):</strong> —</div><div class="small"><strong>DEFe (Defesa Elementar):</strong> —</div>'; });
 
-n    // calcular ao pressionar Enter enquanto estiver em um campo
+    // calcular ao pressionar Enter enquanto estiver em um campo
     [pvEl, rfEl, reEl].forEach(el => el.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); compute(); }}));
 
-n    // calcula com valores iniciais ao abrir
+    // calcula com valores iniciais ao abrir
     compute();
   </script>
 </body>
