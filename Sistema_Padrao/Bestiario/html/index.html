@@ -830,6 +830,114 @@
 
                         <!-- Subtópico: criaturas do elemento Podridão (aparece antes das fichas específicas) -->
                         <h3 class="block-title element-section-title podridao" style="margin:10px 0 6px 0">Criaturas de Podridão</h3>
+
+                        <!-- Zumbi Pútrido (Podridão) — criatura mais fraca, aparece antes do Carniceiro -->
+                        <div id="zumbi-putrido" class="creature-item element-podridao column zumbi-putrido">
+
+                            <div class="creature-header">
+                                <h2 class="creature-title">Zumbi Pútrido</h2>
+                                <small>Elemento: <span class="element-label element-badge podridao">Podridão</span> — Tipo: Morto-Vivo / Subcategoria: Nenhum — NDD: 4</small>
+                            </div>
+
+                            <!-- Ilustração -->
+                            <div class="illustration">
+                                <img src="../../assets/zumbi.png" alt="Ilustração Zumbi Pútrido" onerror="this.style.display='none'">
+                            </div>
+
+                            <div class="block-content description-above">
+                                <p>Cadáveres reanimados pela gosma viva da Podridão. Suas carnes pingam lodo negro, e seus olhos vazios refletem apenas o instinto de espalhar a infecção. Cada passo deixa um rastro de sangue dissolvido, e o ar ao redor cheira a carne podre e ferro oxidado.</p>
+                            </div>
+
+                            <div class="stat-block">
+                                <header class="stat-header">
+                                    <div class="header-name">
+                                        <h1>Zumbi Pútrido</h1>
+                                        <span><span class="element-label element-badge podridao">Podridão</span> / Morto-Vivo</span>
+                                    </div>
+                                    <div class="header-ndd">4</div>
+                                </header>
+
+                                <div class="main-stats">
+                                    <section class="attributes-section">
+                                        <h2 class="block-title">Atributos</h2>
+                                        <div class="block-content attributes-grid">
+                                            <p>Des: 4</p>
+                                            <p>Int: 2</p>
+                                            <p>RE: 5</p>
+                                            <p>RF: 6</p>
+                                            <p>SA: 3</p>
+                                            <p>Sen: 2</p>
+                                            <p>FM: 5</p>
+                                            <p>FR: 5</p>
+                                            <p>COS: 6</p>
+                                        </div>
+                                    </section>
+
+                                    <section class="vitals-section">
+                                        <h2 class="block-title">Pontos de Vida e Defesas</h2>
+                                        <div class="block-content">
+                                            <p><strong>Pontos de Vida (PV):</strong> 50</p>
+                                            <p><strong>DEF (Defesa Física):</strong> 9</p>
+                                            <p><strong>DEFe (Defesa Elementar):</strong> 14</p>
+                                        </div>
+                                    </section>
+
+                                    <section class="resists-section">
+                                        <h2 class="block-title">Resistências e Fraquezas</h2>
+                                        <div class="block-content">
+                                            <p><strong>Resistências:</strong> Podridão, Veneno, Físico leve</p>
+                                            <p><strong>Fraquezas:</strong> Solar, Fogo</p>
+                                        </div>
+                                    </section>
+
+                                    <section class="movement-section">
+                                        <h2 class="block-title">Movimento</h2>
+                                        <div class="block-content">
+                                            <p>6B</p>
+                                        </div>
+                                    </section>
+
+                                    <section class="behavior-section">
+                                        <h2 class="block-title">Comportamento em Combate</h2>
+                                        <div class="block-content">
+                                            <p>Move-se de forma lenta e irregular, guiado pelo instinto de espalhar a infecção. Prioriza alvos feridos ou isolados e não cede até ser destruído ou queimado.</p>
+                                        </div>
+                                    </section>
+                                </div>
+
+                                <div class="aside-info">
+                                    <section class="actions-list">
+                                        <h2 class="block-title">Ações</h2>
+                                        <div class="block-content">
+                                            <div class="action-block">
+                                                <h3>Garras Enlameadas</h3>
+                                                <p><strong>Tipo:</strong> Corpo a corpo (Físico / Podridão)</p>
+                                                <p><strong>Alcance:</strong> Curto</p>
+                                                <p><strong>Dano:</strong> 2d8 + FM (Podridão)</p>
+                                                <p><strong>Efeito Especial:</strong> Se causar dano, o alvo faz <strong>RE (CT 15)</strong> ou fica <em>Amalgamado</em>. Em caso de falha do zumbi no ataque, cria uma <strong>área escorregadia</strong> de 2B x 1B à frente (DES CT 12 para não cair). Seca após 2 turnos.</p>
+                                            </div>
+
+                                            <div class="action-block">
+                                                <h3>Vômito Pestilento (Ação Completa)</h3>
+                                                <p><strong>Alcance:</strong> Cone de 3B à frente</p>
+                                                <p><strong>Dano:</strong> 2d10 + 3 (Podridão)</p>
+                                                <p><strong>Efeito Especial:</strong> Alvos que falharem em <strong>RE (CT 13)</strong> ficam <em>Amalgamados</em>. Em falha do zumbi, sofre 1d6 de dano.</p>
+                                            </div>
+                                        </div>
+                                    </section>
+
+                                    <section class="abilities-section">
+                                        <h2 class="block-title">Habilidades Especiais</h2>
+                                        <div class="block-content">
+                                            <p><strong>Carne Infecta:</strong> Sempre que sofre dano físico corpo a corpo, o atacante faz <strong>RE (CT 12)</strong> ou fica <em>Amalgamado</em>.</p>
+
+                                            <p><strong>Miasma de Decomposição:</strong> Criaturas até 2B do zumbi têm desvantagem em testes de Cura e Suporte.</p>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Carniceiro (Podridão) — ficha atualizada com conteúdo do usuário -->
                         <div id="carniceiro-da-agonia" class="creature-item element-podridao column debug-force-theme carniceiro" style="background: linear-gradient(180deg,#2a0606 0%, #580808 50%, #160404 100%); border:3px solid #9b1111; color:#fff;">
 
@@ -859,7 +967,7 @@
                                         <h1>Carniceiro da Agonia</h1>
                                         <span><span class="element-label element-badge podridao">Podridão</span> / Criatura (<span class="element-badge pesadelo">Pesadelo</span>)</span>
                                     </div>
-                                    <div class="header-ndd">96</div>
+                                    <div class="header-ndd">64</div>
                                 </header>
 
                                 <div class="main-stats">
