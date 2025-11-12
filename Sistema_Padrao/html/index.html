@@ -80,37 +80,78 @@
                 </div>
                 <div class="race-card-mini" onclick="scrollToRace('vampiros')">
                     <img src="../assets/vampiros.png" alt="Vampiros">
-                    <h3>Vampiros</h3>
-                    <p>Elegantes bebedores de sangue</p>
-                    <span class="difficulty-mini difficulty-1">1</span>
-                </div>
-                <div class="race-card-mini" onclick="scrollToRace('humanos')">
-                    <img src="../assets/humanos.png" alt="Humanos">
-                    <h3>Humanos</h3>
-                    <p>Resilientes e adaptáveis</p>
-                    <span class="difficulty-mini difficulty-1">1</span>
-                </div>
-                <div class="race-card-mini" onclick="scrollToRace('hibridos')">
-                    <img src="../assets/animalescos.png" alt="Híbridos">
-                    <h3>Híbridos</h3>
-                    <p>Animalescos e Plantíferos modificados</p>
-                    <span class="difficulty-mini difficulty-2">1-2</span>
-                </div>
-                <div class="race-card-mini" onclick="scrollToRace('dragao-anao')">
-                    <img src="../assets/dragaoanao.png" alt="Dragão Anão" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 1rem; border: 2px solid var(--cor-borda);">
-                    <h3>Dragão Anão</h3>
-                    <p>Dracônicos de Tragnor, resistentes e telepatas</p>
-                    <span class="difficulty-mini difficulty-2">2</span>
-                </div>
-                <div class="race-card-mini" onclick="scrollToRace('praguentos')">
-                    <img src="../assets/praguentos.png" alt="Praguentos">
-                    <h3>Praguentos</h3>
-                    <p>Seres corrompidos pela Podridão</p>
-                    <span class="difficulty-mini difficulty-3">3</span>
-                </div>
-                <div class="race-card-mini" onclick="scrollToRace('insectoides')">
-                    <img src="../assets/insectoides.png" alt="Insectóides">
-                    <h3>Insectóides</h3>
+                            <h5>Nível 4</h5>
+                            
+                            <ul>
+                                <li><strong>Olhar Julgador</strong> - Ganha Naturalmente<br>
+                                Os olhos do Cavaleiro ardem como duas brasas de Cadamor, revelando a corrupção e a mentira.<br>
+                                Você enxerga e detecta intenções falsas. Qualquer criatura dentro de 9B que minta para você ou esconda sua natureza brilha com uma aura dourada visível apenas para você.<br>
+                                -<em class="action-standard">Ação Padrão</em>-<br>
+                                -<em class="energy-cost">35 de Energia Astral</em>-
+                                </li>
+
+                                <li><strong>Julgamento Ardente</strong><br>
+                                Marca um inimigo com um sigilo solar (3B). O alvo sofre <em>Queimando</em> igual à metade dos dados do seu Dano Base Solar (ex: no nível 4, o DBS é 3d10, então o dano seria 2d10 arredondando para cima) por 3 rodadas.<br>
+                                -<em class="action-standard">Ação Padrão</em>-<br>
+                                -<em class="energy-cost">100 de Energia Astral</em>-
+                                </li>
+
+                                <li><strong>Solo Sagrado</strong><br>
+                                Bate com a arma no chão, consagrando uma área de 6B. Inimigos na área sofrem 2d6 de dano Solar por turno. Aliados na área recebem +1 em resistências e testes de esquiva. Dura 3 rodadas.<br>
+                                -<em class="action-standard">Ação Padrão</em>-<br>
+                                -<em class="energy-cost">85 de Energia Astral</em>-
+                                </li>
+                            </ul>
+
+                            <h5>Nível 8</h5>
+
+                            <ul>
+                                <li><strong>Julgamento Silencioso</strong> - Ganha Naturalmente<br>
+                                Sem dizer uma palavra, você pode transmitir autoridade e culpa através do olhar. Uma criatura a até 6B deve fazer um teste de <span class="attr-fama">FAMA</span> (CT 18). Se falhar, ela sente medo, arrependimento ou vergonha intensos, ficando <em>intimidada</em>.<br>
+                                -<em class="action-bonus">Ação Bônus</em>-<br>
+                                -<em class="energy-cost">60 de Energia Astral</em>-
+                                </li>
+
+                                <li><strong>Coroa de Chamas</strong><br>
+                                Por 2 turnos, você gera 1 ponto de <span class="solar-charge">Carga Solar</span> extra no início de cada um de seus turnos. Sua aura de calor (do efeito de 3+ Cargas) também cura aliados adjacentes na mesma quantidade que causa dano a inimigos.<br>
+                                -<em class="action-bonus">Ação Bônus</em>-<br>
+                                -<em class="energy-cost">70 de Energia Astral</em>-
+                                </li>
+
+                                <li><strong>Fincada Chamuscante</strong><br>
+                                O Cavaleiro canaliza uma espetada forte para frente com sua arma (3B para frente) causando 3d15 e causando <em>Paralisado</em> por 2 turnos + <em>Queimando</em>.<br>
+                                -<em class="action-bonus">Ação Bônus</em>-<br>
+                                -<em class="energy-cost">185 de Energia Astral</em>-
+                                </li>
+                            </ul>
+
+                            <h5>Nível 10</h5>
+
+                            <ul>
+                                <li><strong>Memória das Cinzas</strong> - Ganha Naturalmente<br>
+                                Ao tocar as cinzas de um cadáver, o Cavaleiro revive os últimos fragmentos de memória espiritual. Você pode ver uma breve visão (10–15 segundos) dos últimos momentos de vida do cadáver — o que viu, ouviu ou sentiu antes de morrer.<br>
+                                -<em class="action-standard">Ação Padrão</em>-<br>
+                                -<em class="energy-cost">35 de Energia Astral</em>-
+                                </li>
+
+                                <li><strong>Lança do Sol</strong><br>
+                                Consome toda a sua <span class="solar-charge">Carga Solar</span> para arremessar uma lança de luz pura em um alvo a até 18B. O ataque causa dano igual ao seu Dano Base Solar completo e ignora resistências. (Requer no mínimo 3 Cargas acumuladas (Não gasta)).<br>
+                                -<em class="action-bonus">Ação Bônus</em>-<br>
+                                -<em class="energy-cost">90 de Energia Astral</em>-
+                                </li>
+
+                                <li><strong>Erupção Solar</strong><br>
+                                Você consome toda a sua <span class="solar-charge">Carga Solar</span> (Max) em um surto de energia que transforma seu corpo em uma extensão viva do sol.<br>
+                                Por 2 turnos, você recebe os seguintes efeitos:
+                                <ul>
+                                    <li>Seus ataques corpo a corpo causam +1 dado do seu Dano Base Solar para cada ponto de Carga consumido.</li>
+                                    <li>Você se torna imune a efeitos de empurrão, medo e atordoamento.</li>
+                                    <li>Você se torna uma fonte de luz intensa. Inimigos a até 6B têm desvantagem em ataques contra você se dependerem de visão.</li>
+                                </ul>
+                                -<em class="action-bonus">Ação Bônus</em>-<br>
+                                -<em class="energy-cost">Toda carga solar + 120 de Energia Astral</em>-
+                                </li>
+                            </ul>
                     <p>Experimentos da Era Dourada</p>
                     <span class="difficulty-mini difficulty-3">3</span>
                 </div>
@@ -1924,6 +1965,10 @@
                                 <li><strong>Olhar Julgador:</strong> Os olhos do Cavaleiro ardem como duas brasas de Cadamor, revelando a corrupção e a mentira.<br>Você enxerga e detecta intenções falsas. Qualquer criatura dentro de 9B que minta para você ou esconda sua natureza brilha com uma aura dourada visível apenas para você.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-35 de Energia Astral-</em></li>
                                 
                                 <li><strong>Memória das Cinzas:</strong> Ao tocar as cinzas de um cadáver, o Cavaleiro revive os últimos fragmentos de memória espiritual.<br>Você pode ver uma breve visão (10–15 segundos) dos últimos momentos de vida da criatura — o que viu, ouviu ou sentiu antes de morrer.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-Sem Custo-</em></li>
+
+                                <li><strong>Julgamento Ardente:</strong> Marca um inimigo com um sigilo solar (3B). O alvo sofre <em>Queimando</em> igual à metade dos dados do seu Dano Base Solar (ex: no nível 4, o DBS é 3d10, então o dano seria 2d10 arredondando para cima) por 3 rodadas.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-100 de Energia Astral-</em></li>
+
+                                <li><strong>Solo Sagrado:</strong> Bate com a arma no chão, consagrando uma área de 6B. Inimigos na área sofrem 2d6 de dano Solar por turno. Aliados na área recebem +1 em resistências e testes de esquiva. Dura 3 rodadas.<br><em class="action-standard">&lt; • Ação Padrão • &gt;</em><br><em class="energy-cost">-85 de Energia Astral-</em></li>
                             </ul>
 
                             <h5>Nível 8</h5>
@@ -1934,6 +1979,9 @@
                                 <li><strong>Coroa de Chamas:</strong> Por 2 turnos, você gera 1 ponto de <span class="solar-charge">Carga Solar</span> extra no início de cada um de seus turnos. Sua aura de calor também cura aliados adjacentes na mesma quantidade que causa dano a inimigos.<br><em class="action-bonus">&lt; • Ação Bônus • &gt;</em><br><em class="energy-cost">-70 de Energia Astral-</em></li>
                                 
                                 <li><strong>Julgamento Silencioso:</strong> Sem dizer uma palavra, você pode transmitir autoridade e culpa através do olhar. Uma criatura a até 6B deve fazer um teste de <span class="attr-fama">FAMA</span> (CT 18). Se falhar, ela sente medo, arrependimento ou vergonha intensos, ficando <em>intimidada</em>.<br><em class="action-bonus">&lt; • Ação Bônus • &gt;</em><br><em class="energy-cost">-60 de Energia Astral-</em></li>
+                                <li><strong>Julgamento Silencioso:</strong> Sem dizer uma palavra, você pode transmitir autoridade e culpa através do olhar. Uma criatura a até 6B deve fazer um teste de <span class="attr-fama">FAMA</span> (CT 18). Se falhar, ela sente medo, arrependimento ou vergonha intensos, ficando <em>intimidada</em>.<br><em class="action-bonus">&lt; • Ação Bônus • &gt;</em><br><em class="energy-cost">-60 de Energia Astral-</em></li>
+
+                                <li><strong>Fincada Chamuscante:</strong> O Cavaleiro canaliza uma espetada forte para frente com sua arma (3B para frente) causando 3d15 e aplicando <em>Paralisado</em> por 2 turnos; além disso aplica <em>Queimando</em> (duração/valor conforme mestre).<br><em class="action-bonus">&lt; • Ação Bônus • &gt;</em><br><em class="energy-cost">-185 de Energia Astral-</em></li>
                             </ul>
 
                             <h5>Nível 10</h5>
