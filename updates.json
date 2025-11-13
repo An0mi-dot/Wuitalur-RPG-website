@@ -1,6 +1,10 @@
 ﻿[
     {
         "date":  "13-11-2025",
+        "message":  "chore: gerar version.json e updates.json ap├│s adicionar se├º├uo Equipamentos"
+    },
+    {
+        "date":  "13-11-2025",
         "message":  "feat: adicionar se├º├uo \u0027EQUIPAMENTOS\u0027 (sistema de carga, armas e itens)"
     },
     {
