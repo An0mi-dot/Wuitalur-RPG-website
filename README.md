@@ -81,6 +81,6 @@ Este projeto é uma criação original para uso em RPG de mesa.
 
 ## 📦 Versão do Sistema
 
-- Versão: 1.3.6-alpha
+- Versão: Alpha 1.0.38
 
 **Criado por An0mi-dot** | **2025 Wuitalur RPG**

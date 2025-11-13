@@ -943,6 +943,7 @@
     }
     
   </style>
+  <link rel="stylesheet" href="../../assets/css/version-popup.css">
 </head>
 <body>
   <!-- PARTÍCULAS DE FUNDO -->
@@ -1008,7 +1009,8 @@
   <footer>
     <p>&copy; 2025 Wuitalur. Todos os direitos reservados.</p>
     <p style="font-size: 0.8em; opacity: 0.8; margin-top: 6px; color: #c9b6e8;">
-      Alpha 1.0.0 - 28/10/2025
+      <button id="version-btn" style="background:transparent;border:none;color:inherit;font-weight:700;cursor:pointer;padding:0;">Alpha 1.0.0</button>
+      <span id="version-date" style="margin-left:8px; font-size:0.9em; opacity:0.8;">- 28/10/2025</span>
     </p>
     <p style="font-size: 0.85em; opacity: 0.7; margin-top: 10px;">
       * Algumas imagens são provisórias (placeholders da internet/IA) e serão substituídas em breve por artes oficiais do RPG.
@@ -1189,5 +1191,90 @@
     console.log('%cStack trace: 0x000000 -> 0xDEADBEEF -> 0xCAFEBABE', 'color: #666666; font-size: 9px; font-family: monospace;');
     console.log('%c> Segmentation fault (core dumped)', 'color: #ff0000; font-size: 11px; font-family: monospace; background: #000000; padding: 2px;');
   </script>
+  <script>
+    (async function(){
+      function escapeHtml(s){
+        return s ? String(s).replace(/[&<>"']/g, function(c){
+          return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+        }) : '';
+      }
+
+      async function tryFetchJSON(name){
+        for(let depth=0; depth<5; depth++){
+          const path = Array(depth+1).join('../') + name;
+          try{
+            const res = await fetch(path, {cache: 'no-store'});
+            if(res.ok) return await res.json();
+          }catch(e){/* ignore and try upper folder */}
+        }
+        return null;
+      }
+
+      const verBtn = document.getElementById('version-btn');
+      const verDate = document.getElementById('version-date');
+      if(!verBtn) return;
+
+      const ver = await tryFetchJSON('version.json');
+      if(ver && ver.display) verBtn.textContent = ver.display;
+      if(ver && ver.date) verDate.textContent = '- ' + ver.date;
+
+      verBtn.addEventListener('click', async function(){
+        const updates = await tryFetchJSON('updates.json') || [];
+
+        const overlay = document.createElement('div');
+        Object.assign(overlay.style, {
+          position: 'fixed', left: 0, top: 0, width: '100%', height: '100%',
+          background: 'rgba(0,0,0,0.65)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2000
+        });
+
+        const modal = document.createElement('div');
+        Object.assign(modal.style, {
+          background: '#161216', color: '#eee', padding: '20px', maxWidth: '900px', width: '92%', borderRadius: '10px',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.5)', maxHeight: '80%', overflowY: 'auto'
+        });
+
+        modal.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">'
+          + '<strong>Versão & Informações</strong>'
+          + '<button id="vp-close" style="background:transparent;border:none;color:#eee;font-size:1.2em;cursor:pointer">✕</button>'
+          + '</div>';
+
+        const pageInfo = document.createElement('div');
+        pageInfo.innerHTML = '<p><strong>Página:</strong> '+ escapeHtml(document.title) + '</p>'
+          + '<p><strong>Caminho:</strong> ' + escapeHtml(location.pathname) + '</p>'
+          + '<p><strong>Última modificação:</strong> ' + escapeHtml(document.lastModified) + '</p>';
+
+        modal.appendChild(pageInfo);
+
+        const updDiv = document.createElement('div');
+        updDiv.style.marginTop = '12px';
+        updDiv.innerHTML = '<h4>Registro de atualizações</h4>';
+        if(Array.isArray(updates) && updates.length){
+          const ul = document.createElement('ul');
+          updates.slice(0,20).forEach(u => {
+            const li = document.createElement('li');
+            li.textContent = (u.date ? (u.date + ' - ') : '') + (u.message || u.msg || u.text || '');
+            ul.appendChild(li);
+          });
+          updDiv.appendChild(ul);
+        } else {
+          updDiv.innerHTML += '<p>Nenhuma atualização registrada.</p>';
+        }
+
+        modal.appendChild(updDiv);
+        overlay.appendChild(modal);
+        document.body.appendChild(overlay);
+        document.body.style.overflow = 'hidden';
+
+        function close(){
+          if(overlay.parentNode) overlay.parentNode.removeChild(overlay);
+          document.body.style.overflow = '';
+        }
+
+        overlay.addEventListener('click', function(e){ if(e.target === overlay) close(); });
+        modal.querySelector('#vp-close').addEventListener('click', close);
+      });
+    })();
+  </script>
+  <script src="../../assets/js/version-popup.js" defer></script>
 </body>
 </html>

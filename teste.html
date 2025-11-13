@@ -6,6 +6,7 @@
     <title>Wuitalur — Bestiário</title>
     <link rel="icon" href="Historia/Imagens/Site_Icone.png" type="image/png">
     <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="assets/css/version-popup.css">
 </head>
 <body>
     <header class="main-header">
@@ -725,8 +726,9 @@
     <footer class="main-footer">
         <div class="container">
             <p>&copy; 2025 Wuitalur Sistema de RPG. Todos os direitos reservados.</p>
-            <p style="font-size: 0.8em; opacity: 0.8; margin-top: 6px; color: #b8a1d9;">
-                Alpha 1.0.0 - 28/10/2025
+            <p id="site-version" style="font-size: 0.8em; opacity: 0.9; margin-top: 6px; color: #b8a1d9;">
+                <button id="version-btn" class="version-button" type="button"><span id="build-version">Alpha 1.0.0</span></button>
+                &nbsp;-&nbsp;<span id="build-date">28/10/2025</span>
             </p>
         </div>
     </footer>
@@ -771,5 +773,6 @@
             }
         })();
     </script>
+        <script src="assets/js/version-popup.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,13 @@
+:root{--vp-bg: #161216; --vp-accent:#b8a1d9; --vp-text:#ededed}
+.vp-version-btn{background:transparent;border:1px solid rgba(184,161,217,0.12);color:var(--vp-accent);padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:700}
+.vp-version-btn:hover{box-shadow:0 6px 18px rgba(120,90,160,0.12);transform:translateY(-2px)}
+.vp-modal{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center}
+.vp-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px)}
+.vp-content{position:relative;width:92%;max-width:900px;max-height:90vh;overflow:auto;background:linear-gradient(145deg,#2e2537,#241e2b);border:2px solid rgba(93,74,122,0.6);border-radius:12px;box-shadow:0 30px 60px rgba(0,0,0,0.6);padding:18px;color:var(--vp-text)}
+.vp-close{position:absolute;right:12px;top:12px;background:none;border:none;color:var(--vp-text);font-size:1.6rem;cursor:pointer}
+.vp-body{display:flex;gap:18px;flex-direction:column}
+.vp-section h2{margin:0 0 8px 0;color:var(--vp-accent)}
+.vp-updates .vp-update{padding:10px;border-radius:8px;background:rgba(0,0,0,0.08);margin-bottom:8px}
+.vp-update .u-date{font-size:0.85rem;opacity:0.8;margin-bottom:4px}
+/* responsive */
+@media (min-width:720px){.vp-body{flex-direction:row}.vp-section{flex:1}}

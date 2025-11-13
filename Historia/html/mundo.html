@@ -38,6 +38,7 @@
         @media (max-width:480px){ .navbar a, .dropdown .dropbtn{padding:14px 12px; font-size:1em} .title{font-size:2.2em} .card{height:300px} }
         footer{ padding:25px 0; text-align:center; color:#EDEDED; background-color:#241E2B; width:100%; margin-top:auto }
     </style>
+    <link rel="stylesheet" href="../../assets/css/version-popup.css">
 </head>
 <body>
     <div class="particles">
@@ -86,7 +87,7 @@
 
     <footer>
         <p>&copy; 2025 Wuitalur. Todos os direitos reservados.</p>
-        <p style="font-size: 0.8em; opacity: 0.8; margin-top: 6px; color: #c9b6e8;">Alpha 1.0.0 - 28/10/2025</p>
+        <p id="site-version" style="font-size: 0.8em; opacity: 0.9; margin-top: 6px; color: #c9b6e8;"> <button id="version-btn" class="version-button" type="button"><span id="build-version">Alpha 1.0.0</span></button> &nbsp;-&nbsp;<span id="build-date">28/10/2025</span></p>
         <p style="font-size: 0.85em; opacity: 0.7; margin-top: 10px;">* Algumas imagens são provisórias (placeholders da internet/IA) e serão substituídas em breve por artes oficiais do RPG.</p>
     </footer>
 
@@ -97,5 +98,6 @@
             cards.forEach((card, index) => { card.style.animationDelay = `${0.8 + (index * 0.2)}s`; card.style.animation = 'fadeInUp 0.8s ease-out both'; });
         });
     </script>
+        <script src="../../assets/js/version-popup.js" defer></script>
 </body>
 </html>

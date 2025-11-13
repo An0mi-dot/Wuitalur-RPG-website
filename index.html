@@ -37,6 +37,7 @@
             to { transform: rotate(360deg); }
         }
     </style>
+    <link rel="stylesheet" href="assets/css/version-popup.css">
 </head>
 <body>
     <div class="redirect-message">
@@ -44,9 +45,8 @@
         <div class="loading"></div>
         <p>Redirecionando para o site principal...</p>
         <p><a href="./Pag_Principal/html/index.html" style="color: #64ffda; text-decoration: none;">Clique aqui se não for redirecionado automaticamente</a></p>
-        <p style="font-size: 0.8em; opacity: 0.7; margin-top: 15px; color: #b8a1d9;">
-            Alpha 1.0.0 - 28/10/2025
-        </p>
+        <p id="site-version" style="font-size: 0.8em; opacity: 0.9; margin-top: 15px; color: #b8a1d9;"> <button id="version-btn" class="version-button" type="button"><span id="build-version">Alpha 1.0.0</span></button> &nbsp;-&nbsp;<span id="build-date">28/10/2025</span></p>
     </div>
+    <script src="assets/js/version-popup.js" defer></script>
 </body>
 </html>

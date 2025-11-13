@@ -100,6 +100,11 @@ html, body {
   height: 100%;
 }
 
+/* Garante que o body ocupe a altura da janela e permita o footer colado abaixo */
+body {
+  min-height: 100vh;
+}
+
 body {
   background: var(--cor-fundo-principal);
   background-image: 
@@ -135,11 +140,16 @@ body::before {
 }
 
 .site-bar {
-  height: 40px;
-  background: #000000; /* Preto sólido */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  height: 80px; /* aumentado para mais presença */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  background: linear-gradient(180deg, rgba(18,16,20,0.88), rgba(28,24,34,0.98));
+  backdrop-filter: blur(8px) saturate(1.05);
+  border-bottom: 1px solid rgba(93,74,122,0.14);
+  box-shadow: 0 8px 26px rgba(0,0,0,0.6);
   position: relative;
-  /* Remove todas as animações */
 }
 
 /* Remove o pseudo-elemento que criava o brilho */
@@ -152,17 +162,61 @@ body::before {
 /* Remove o pseudo-elemento que criava o brilho */
 
 footer.site-bar {
-  height: 40px;
+  background: linear-gradient(180deg, rgba(22,18,28,0.96), rgba(18,16,20,0.99));
+  padding: 28px 20px; /* maior padding para um footer mais alto */
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
   align-items: center;
-  font-size: 0.9rem;
+  justify-content: center;
+  font-size: 1rem;
   color: var(--cor-texto);
-  opacity: 0.9;
-  background: #000000; /* Preto sólido */
-  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.5);
-  animation: none;
+  opacity: 0.96;
+  border-top: 1px solid rgba(93,74,122,0.1);
+  box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.7);
   position: relative;
+}
+
+/* Força o footer a empurrar para o final quando o conteúdo for curto */
+footer.site-bar {
+  margin-top: auto;
+}
+
+/* Pequeno detalhe decorativo no footer */
+footer.site-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(93,74,122,0.12), transparent);
+  pointer-events: none;
+}
+
+footer.site-bar p {
+  margin: 0;
+  text-align: center;
+  color: var(--cor-texto);
+}
+
+footer.site-bar p.footer-text {
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--cor-titulo-destaque);
+  font-size: 1.05rem;
+}
+
+/* Garante que o footer fique no final quando o conteúdo for curto */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+footer.site-bar {
+  margin-top: auto;
 }
 
 /* Remove o elemento decorativo do footer */
@@ -252,6 +306,50 @@ footer.site-bar {
   z-index: -1;
 }
 
+/* Estilos para o título textual que substitui o logo */
+.main-title {
+  font-family: var(--font-family-titulo);
+  font-size: 4.8rem;
+  color: var(--cor-titulo-destaque);
+  letter-spacing: 2px;
+  text-align: center;
+  margin: 0;
+  padding: 6px 12px;
+  text-shadow: 0 6px 18px rgba(0,0,0,0.6);
+}
+
+.main-subtitle {
+  font-family: var(--font-family-texto);
+  font-size: 1.2rem;
+  color: var(--cor-texto-secundario);
+  text-align: center;
+  margin-top: 6px;
+  opacity: 0.95;
+}
+
+/* Sotaque visual sob o título */
+.logo-container {
+  text-align: center;
+}
+.logo-container .main-title {
+  position: relative;
+}
+.logo-container .main-title::after {
+  content: '';
+  display: block;
+  width: 140px;
+  height: 6px;
+  margin: 12px auto 0 auto;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgba(184,161,217,0.9), rgba(58,50,70,0.6));
+  box-shadow: 0 6px 18px rgba(120, 90, 160, 0.18);
+  transform-origin: center;
+  transition: width 0.28s ease;
+}
+.logo-container .main-title:hover::after {
+  width: 200px;
+}
+
 @keyframes logoRing {
   0% { transform: translate(-50%, -50%) rotate(0deg); opacity: 0.3; }
   50% { opacity: 0.1; }
@@ -263,34 +361,15 @@ footer.site-bar {
   100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.1; }
 }
 
-.main-logo {
-  width: 220px;
-  max-width: 90%;
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-  animation: logoFloat 6s ease-in-out infinite;
-}
-
-@keyframes logoFloat {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  25% { transform: translateY(-3px) rotate(0.5deg); }
-  50% { transform: translateY(-6px) rotate(0deg); }
-  75% { transform: translateY(-3px) rotate(-0.5deg); }
-}
-
-.main-logo:hover {
-  transform: scale(1.08) translateY(-5px);
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 20px var(--cor-acento-hover-glow));
-}
-
 .card-grid {
   display: flex;
-  gap: 40px;
-  flex-wrap: wrap;
+  gap: 36px;
+  flex-wrap: nowrap; /* manter 3 cards em linha quando couber */
   justify-content: center;
   max-width: 1200px;
   width: 100%;
   animation: cardsAppear 1s ease-out 0.3s both;
+  overflow-x: auto; /* permitir rolagem horizontal se a tela for menor */
 }
 
 @keyframes cardsAppear {
@@ -302,8 +381,8 @@ footer.site-bar {
 .feature-card {
   background: linear-gradient(145deg, var(--cor-fundo-card), var(--cor-fundo-secundario));
   border: 1px solid var(--cor-borda);
-  width: 200px; /* Reduzido de 250px para 200px */
-  height: 280px; /* Reduzido de 350px para 280px */
+  width: 340px; /* aumentado para dar presença */
+  height: 380px; /* aumentado para preencher visualmente */
   text-align: center;
   text-decoration: none;
   color: var(--cor-texto);
@@ -321,6 +400,35 @@ footer.site-bar {
   /* Sombra inicial sutil */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+/* Conteúdo interno dos cards */
+.feature-card .card-content {
+  position: relative;
+  padding: 14px 16px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  height: 28%;
+  box-sizing: border-box;
+}
+
+/* Centraliza apenas o título (nome) dos cards */
+.feature-card .card-content h3 {
+  width: 100%;
+  text-align: center;
+  margin: 0;
+}
+
+.card-desc {
+  font-family: var(--font-family-texto);
+  font-size: 0.96rem;
+  color: var(--cor-texto-secundario);
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* Badges removed — visual simplified */
 
 /* Adiciona um brilho sutil nos cards */
 .feature-card::before {
@@ -395,10 +503,15 @@ footer.site-bar {
 
 .feature-card img {
   width: 100%;
-  height: 75%;
+  height: 72%;
   object-fit: cover; /* Essencial para a imagem preencher sem distorcer */
   transition: transform 0.4s ease;
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+/* Pequeno efeito extra no hover: levanta e rotaciona sutilmente */
+.feature-card:hover {
+  transform: translateY(-18px) scale(1.06) rotateY(1deg);
 }
 
 /* Ajuste específico para a imagem do sistema */
@@ -415,7 +528,7 @@ footer.site-bar {
 }
 
 .feature-card h3 {
-  height: 25%;
+  height: 28%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -453,13 +566,15 @@ footer.site-bar {
 /* Responsividade aprimorada */
 @media (max-width: 768px) {
   .card-grid {
-    gap: 30px;
+    gap: 20px;
     padding: 0 10px;
+    flex-wrap: wrap; /* permitir quebra no mobile */
   }
   
   .feature-card {
-    width: 250px; /* Maior no mobile para melhor legibilidade */
-    height: 300px;
+    width: 90%; /* ocupa a largura disponível no mobile */
+    height: auto;
+    min-height: 320px;
     max-width: 90vw;
   }
   
@@ -474,8 +589,8 @@ footer.site-bar {
 
 @media (max-width: 480px) {
   .feature-card {
-    width: 230px;
-    height: 280px;
+    width: 92%;
+    min-height: 300px;
   }
   
   .feature-card h3 {
@@ -784,4 +899,25 @@ footer.site-bar {
   .modal-info p {
     font-size: 1rem;
   }
+}
+
+/* Quando o modal estiver ativo, ofusca e desfoca o restante da página */
+body.modal-open .main-content,
+body.modal-open .site-bar,
+body.modal-open footer.site-bar {
+  filter: blur(4px) brightness(0.55);
+  transition: filter 0.28s ease, opacity 0.28s ease;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body.modal-open .particles {
+  opacity: 0.25;
+  transition: opacity 0.28s ease;
+}
+
+/* Mantém o modal interativo por cima */
+.modal {
+  pointer-events: auto;
 }

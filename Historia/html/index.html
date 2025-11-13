@@ -270,21 +270,19 @@
     </div>
 
     <footer>
-      <p>&copy; 2025 Wuitalur.</p>
-      <p style="font-size: 0.8em; opacity: 0.8; margin-top: 6px; color: #c9b6e8;">
-        Alpha 1.0.0 - 28/10/2025
+      <p>&copy; 2025 Wuitalur — Todos os direitos reservados.</p>
+      <p id="site-version" style="font-size: 0.8em; opacity: 0.9; margin-top: 6px; color: #c9b6e8;">
+        <button id="version-btn" class="version-button" type="button">Alpha 1.0.0</button>
+        &nbsp;-&nbsp;<span id="build-date">28/10/2025</span>
       </p>
-      <p style="font-size: 0.85em; opacity: 0.7; margin-top: 10px;">
-        * Algumas imagens são provisórias (placeholders da internet/IA) e serão substituídas em breve por artes oficiais do RPG.
-      </p>
+      <p style="font-size: 0.85em; opacity: 0.7; margin-top: 10px;">* Algumas imagens são provisórias (placeholders da internet/IA) e serão substituídas em breve por artes oficiais do RPG.</p>
+      <link rel="stylesheet" href="../../assets/css/version-popup.css">
     </footer>
 
-    <script src="../Js/transicao.js"></script>
     <script>
-      function navigateTo(page) {
-        // lógica de transição (se necessário)
-        window.location.href = page;
-      }
+      function navigateTo(page) { window.location.href = page; }
     </script>
+
+    <script src="../../assets/js/version-popup.js" defer></script>
   </body>
 </html>

@@ -6,6 +6,7 @@
   <title>Wuitalur - RPG</title>
   <link rel="icon" href="../../Historia/Imagens/Site_Icone.png" type="image/png">
   <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../../assets/css/version-popup.css">
 </head>
 <body>
 
@@ -22,24 +23,34 @@
 
   <main class="main-content">
 
-    <!-- LOGO -->
+    <!-- TÍTULO (substitui a imagem do logo) -->
     <div class="logo-container">
-      <img src="../css/assets/logo.png" alt="Logo Wuitalur - RPG de Mesa" class="main-logo"/>
+      <h1 class="main-title">Wuitalur</h1>
+      <p class="main-subtitle">RPG</p>
     </div>
 
     <!-- GRID DE CARDS -->
     <section class="card-grid" role="navigation" aria-label="Seções principais do site">
       <a href="#" class="feature-card" aria-label="Acesse o suplemento do RPG" data-modal="suplemento">
         <img src="../css/assets/placeholder.png" alt="Ilustração representando o suplemento do RPG"/>
-        <h3>Suplemento</h3>
+        <div class="card-content">
+          <h3>Suplemento</h3>
+          <p class="card-desc">Regras opcionais, aventuras prontas e materiais extras.</p>
+        </div>
       </a>
       <a href="#" class="feature-card" aria-label="Acesse o sistema de regras do RPG" data-modal="sistema">
         <img src="../css/assets/sistem_logo.png" alt="Logo do sistema de RPG Wuitalur"/>
-        <h3>Sistema do RPG</h3>
+        <div class="card-content">
+          <h3>Sistema do RPG</h3>
+          <p class="card-desc">Mecânicas, criação de personagens e tabelas essenciais.</p>
+        </div>
       </a>
       <a href="#" class="feature-card" aria-label="Explore a história e lore do mundo" data-modal="historia">
         <img src="../css/assets/capa_hist.jpg" alt="Ilustração representando a história do mundo de Wuitalur"/>
-        <h3>História</h3>
+        <div class="card-content">
+          <h3>História</h3>
+          <p class="card-desc">Lore, cidades, personagens e eventos que moldam o mundo.</p>
+        </div>
       </a>
     </section>
 
@@ -65,14 +76,16 @@
 
   <footer class="site-bar">
     <p class="footer-text">2025 Wuitalur</p>
-    <p style="font-size: 0.8em; opacity: 0.8; margin-top: 6px; color: #b8a1d9;">
-      Alpha 1.0.0 - 28/10/2025
+    <p id="site-version" style="font-size: 0.8em; opacity: 0.9; margin-top: 6px; color: #b8a1d9;">
+      <button id="version-btn" class="version-button" type="button"><span id="build-version">Alpha 1.0.0</span></button>
+      &nbsp;-&nbsp;<span id="build-date">28/10/2025</span>
     </p>
     <p style="font-size: 0.75em; opacity: 0.6; margin-top: 8px;">
       * Algumas imagens são provisórias (placeholders da internet/IA) e serão substituídas em breve por artes oficiais do RPG.
     </p>
   </footer>
 
+  
   <script>
     // Dados dos modais
     const modalData = {
@@ -121,6 +134,7 @@
           
           modal.classList.add('active');
           document.body.style.overflow = 'hidden';
+          document.body.classList.add('modal-open');
         }
       });
     });
@@ -129,6 +143,7 @@
     function closeModal() {
       modal.classList.remove('active');
       document.body.style.overflow = 'auto';
+      document.body.classList.remove('modal-open');
     }
 
     modalClose.addEventListener('click', closeModal);
@@ -142,5 +157,6 @@
     });
   </script>
 
+  <script src="../../assets/js/version-popup.js" defer></script>
 </body>
 </html>
