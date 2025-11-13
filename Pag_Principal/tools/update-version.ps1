@@ -110,6 +110,10 @@ if ($rawLog) {
             try {
                 $norm = $m.Normalize([System.Text.NormalizationForm]::FormD)
                 $m = ([regex]'\p{Mn}').Replace($norm, '')
+            
+                # Garantia extra: substituir cedilha remanescente (caso a normalização não cubra alguns encodings)
+                $m = $m -replace 'Ç','C'
+                $m = $m -replace 'ç','c'
             } catch {
                 # se falhar, mantém a mensagem original
             }
