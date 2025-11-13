@@ -5,6 +5,34 @@
   --sel-border-active: rgba(175,110,230,0.72);
 }
 
+/* Theme-specific overrides: quando o `body` ganha uma classe de tema, a
+   cor de seleção acompanha a paleta do tema. Use baixa opacidade para
+   não obstruir o texto (apenas realçar). */
+body.purification-theme {
+  --sel-accent: rgba(255,80,80,0.12); /* vermelho suave */
+  --sel-accent-2: rgba(255,120,120,0.16);
+  --sel-border: rgba(255,80,80,0.28);
+}
+
+/* Possíveis variações de tema — caso adicione classes de tema globais */
+body.nightmare-theme {
+  --sel-accent: rgba(204,102,51,0.10); /* laranja/terra */
+  --sel-accent-2: rgba(255,140,60,0.14);
+  --sel-border: rgba(204,102,51,0.28);
+}
+
+body.plague-theme {
+  --sel-accent: rgba(60,180,90,0.10); /* verde "praga" suave */
+  --sel-accent-2: rgba(90,210,120,0.14);
+  --sel-border: rgba(60,180,90,0.28);
+}
+
+body.purification-theme ::selection,
+body.nightmare-theme ::selection,
+body.plague-theme ::selection {
+  color: #fff; /* mantém contraste para esses temas escuros/vibrantes */
+}
+
 /* Retângulos que aparecem atrás do texto selecionado (mais visíveis) */
 .sel-rect{
   position: absolute;
