@@ -97,11 +97,30 @@
         }, 2000);
     }
     
-    // Desabilitar seleção de texto
+    // Controle de seleção de texto
+    // Alterado: permitir seleção por padrão; bloquear apenas em elementos explicitamente marcados
+    // agora usa a classe `.no-select` ou atributo `[data-no-select]` para impedir seleção.
     document.addEventListener('selectstart', function(e) {
-        if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
-            e.preventDefault();
-            return false;
+        try {
+            // Permitir em campos editáveis
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+                return;
+            }
+
+            // Se algum ancestral tiver a classe ou atributo que indica bloqueio, previne a seleção
+            var blocked = false;
+            if (e.target.closest) {
+                blocked = !!e.target.closest('.no-select, [data-no-select]');
+            }
+
+            if (blocked) {
+                e.preventDefault();
+                return false;
+            }
+            // Caso contrário, permite seleção normalmente
+        } catch (err) {
+            // Falha segura: não bloquear seleção se houver erro
+            return;
         }
     });
     

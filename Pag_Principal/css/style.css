@@ -921,3 +921,20 @@ body.modal-open .particles {
 .modal {
   pointer-events: auto;
 }
+
+/* Permitir seleção/cópia de texto mesmo com modal aberto.
+   Alguns modais aplicam `body.modal-open` e desativam interações
+   globalmente; aqui reabilitamos seleção e eventos apenas para o
+   conteúdo textual para permitir copiar trechos. */
+body.modal-open .main-content,
+body.modal-open .main-content * {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
+  pointer-events: auto !important;
+}
+
+/* Seleção visual do texto (cor consistente com tema) */
+::selection { background: #ff4d4d; color: #fff; }
+::-moz-selection { background: #ff4d4d; color: #fff; }

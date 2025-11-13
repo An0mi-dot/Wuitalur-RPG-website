@@ -11,6 +11,8 @@
     <script src="../script/security.js" defer></script>
     <script src="../script/conditions.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/version-popup.css">
+    <link rel="stylesheet" href="../../assets/css/selection-anim.css">
+    <script src="../../assets/js/selection-anim.js" defer></script>
 </head>
 <body>
     <!-- Partículas de fundo -->
@@ -2393,151 +2395,321 @@
 
             </section>
 
-            <!-- Seção: Equipamentos -->
+            <!-- Seção: Equipamentos (VERSÃO REFORMULADA) -->
             <section id="equipamentos" class="content-section">
-                <h2>EQUIPAMENTOS</h2>
+                <h2>Equipamentos</h2>
 
-                <div class="section-intro">
+                <!-- Caixa de Regras para o Sistema de Carga -->
+                <div class="rules-box">
                     <h3>Sistema de Carga</h3>
-                    <p>Cada personagem possui Espaços de Carga, determinados pelo atributo <strong>Força (FR)</strong>.</p>
-                    <p><strong>Espaços de Carga</strong> = (FR x 3) + 5.</p>
-                    <p>Esses espaços representam o total de peso que o personagem pode carregar. A cada 1 ponto em FR, o personagem recebe +1 ponto em Espaços de Carga adicionalmente.</p>
+                    <div class="rules-content">
+                        <p>Cada personagem possui Espaços de Carga, determinados pelo atributo <strong><span class="attr-forca">Força (FR)</span></strong>.</p>
+                        <p><strong>Espaços de Carga = (FR × 3) + 5</strong></p>
+                        <p>A cada 1 ponto em FR, o personagem recebe +1 ponto em Espaços de Carga adicionalmente. Cada item ocupa espaços conforme seu nível de peso, e o total não pode exceder seus Espaços de Carga sem causar penalidades.</p>
+                        
+                        <h4>Níveis de Peso dos Itens</h4>
+                        <ul>
+                            <li><strong>Peso I:</strong> Itens muito leves (poções, facas pequenas).</li>
+                            <li><strong>Peso II:</strong> Itens leves (pistolas, espadas curtas).</li>
+                            <li><strong>Peso III:</strong> Itens médios (espadas longas, escudos médios).</li>
+                            <li><strong>Peso IV:</strong> Itens pesados (armas de fogo pesadas, mochilas).</li>
+                            <li><strong>Peso V:</strong> Itens muito pesados (armaduras completas, armas de duas mãos).</li>
+                        </ul>
 
-                    <h4>Carregar Itens</h4>
-                    <p>Cada item ocupa espaços de carga conforme seu nível de peso. O total dos pesos dos itens não pode exceder os Espaços de Carga do personagem sem causar penalidades.</p>
+                        <h4>Sobrecarga</h4>
+                        <ul>
+                            <li><strong>Dentro do limite:</strong> Sem penalidades.</li>
+                            <li><strong>1 a 3 espaços além:</strong> -2 em <span class="attr-destreza">Destreza</span>, movimentação reduzida pela metade.</li>
+                            <li><strong>4+ espaços além:</strong> Desvantagem em testes físicos e ações ágeis.</li>
+                        </ul>
+                         <p><em>Itens em uso ativo (equipados) não ocupam carga.</em></p>
 
-                    <h5>Níveis de Peso dos Itens</h5>
-                    <ul>
-                        <li><strong>Peso 1:</strong> Itens muito leves, como poções, facas pequenas, munições.</li>
-                        <li><strong>Peso 2:</strong> Itens leves, como pistolas, espadas curtas, livros médios.</li>
-                        <li><strong>Peso 3:</strong> Itens médios, como espadas longas, escudos médios, kits médicos grandes.</li>
-                        <li><strong>Peso 4:</strong> Itens pesados, como armas de fogo pesadas, mochilas cheias, escudos grandes.</li>
-                        <li><strong>Peso 5:</strong> Itens muito pesados, como armaduras completas, armas de duas mãos, barris.</li>
-                    </ul>
-
-                    <h4>Sobrecarga</h4>
-                    <p><strong>Dentro do limite:</strong> Sem penalidades.</p>
-                    <p><strong>1 a 3 espaços além do limite:</strong></p>
-                    <ul>
-                        <li>-2 em Destreza.</li>
-                        <li>Movimentação reduzida pela metade.</li>
-                    </ul>
-                    <p><strong>4+ espaços além do limite:</strong></p>
-                    <ul>
-                        <li>Desvantagem em testes físicos e impossibilidade de realizar ações que dependem de movimentação ágil.</li>
-                    </ul>
-
-                    <p><em>Itens em uso ativo</em> (equipados) não ocupam carga, mas há limite de quantos podem ser equipados ao mesmo tempo conforme regras da mesa.</p>
-
-                    <h4>Exemplo de Aplicação</h4>
-                    <p>Um personagem com FR 3 possui: (3 x 3) + 5 = 14 espaços de carga.</p>
-                    <p>Itens carregados:</p>
-                    <ul>
-                        <li>Espada longa (Peso 3)</li>
-                        <li>Mochila com suprimentos (Peso 4)</li>
-                        <li>Pistola (Peso 2)</li>
-                        <li>Poções x2 (Peso 2)</li>
-                        <li>Marreta Longa (Peso 3)</li>
-                    </ul>
-                    <p><strong>Total:</strong> 14/14 espaços ocupados (limite alcançado).</p>
-
-                    <h4>Itens Iniciais</h4>
-                    <p>Cada personagem pode escolher <strong>3 + FR</strong> itens iniciais para começar sua jornada. Esses itens podem incluir armas, utilitários e suprimentos.</p>
-                </div>
-
-                <hr/>
-
-                <div class="weapons-section">
-                    <h3>ARMAS BRANCAS</h3>
-
-                    <div class="weapon">
-                        <h4>Martelo de Guerra</h4>
-                        <p>Dano: 4d6 + FR &nbsp;|&nbsp; Peso: III &nbsp;|&nbsp; Crítico: 20x3</p>
-                        <p>Efeito: Golpes bem-sucedidos (Acerto 17+) reduzem o movimento do inimigo pela metade no próximo turno.</p>
-                    </div>
-
-                    <div class="weapon">
-                        <h4>Faca de Caça</h4>
-                        <p>Dano: 1d8 + DES &nbsp;|&nbsp; Peso: I &nbsp;|&nbsp; Crítico: 19x2</p>
-                        <p>Efeito: Causa sangramento leve (+1d4 de dano por turno por 2 turnos).</p>
-                    </div>
-
-                    <div class="weapon">
-                        <h4>Espada Curta</h4>
-                        <p>Dano: 1d10 + DES &nbsp;|&nbsp; Peso: I &nbsp;|&nbsp; Crítico: 20x2</p>
-                        <p>Efeito: Contra-ataque — Se bloquear um ataque corpo a corpo, pode atacar imediatamente com metade do dano.</p>
-                    </div>
-
-                    <div class="weapon">
-                        <h4>Lança</h4>
-                        <p>Dano: 1d10 + FR &nbsp;|&nbsp; Peso: II &nbsp;|&nbsp; Crítico: 20x2</p>
-                        <p>Efeito: Ataques podem atingir inimigos a até 2B de distância.</p>
-                    </div>
-
-                    <div class="weapon">
-                        <h4>Espada Longa</h4>
-                        <p>Dano: 1d10 + FR &nbsp;|&nbsp; Peso: II &nbsp;|&nbsp; Crítico: 19x2</p>
-                        <p>Efeito: Se usada com as duas mãos, aumenta o dano para 2d8 + FR.</p>
-                    </div>
-
-                    <div class="weapon">
-                        <h4>Clava de Ferro</h4>
-                        <p>Dano: 2d8 + FR &nbsp;|&nbsp; Peso: IV &nbsp;|&nbsp; Crítico: 20x2</p>
-                        <p>Efeito: Pode causar atordoamento (Teste de FR, falha = perde um turno).</p>
-                    </div>
-
-                    <div class="weapon">
-                        <h4>Foice</h4>
-                        <p>Dano: 3d6 + DES &nbsp;|&nbsp; Peso: III &nbsp;|&nbsp; Crítico: 20x3</p>
-                        <p>Efeito: Acerta todos os inimigos em um raio de 1B ao redor.</p>
-                    </div>
-
-                    <div class="weapon">
-                        <h4>Outras Armas</h4>
-                        <p>Inclui Machadinha, Bastão de Madeira, Adaga Dupla, Mangual, Lâmina Curva, Pique, Punhal Serrilhado, entre outras. Consulte o mestre para efeitos específicos.</p>
+                         <h4>Itens Iniciais</h4>
+                         <p>Cada personagem pode escolher <strong>3 + <span class="attr-forca">FR</span></strong> itens iniciais para começar sua jornada.</p>
                     </div>
                 </div>
 
-                <hr/>
+                <!-- Categoria de Armas Brancas -->
+                <div class="equipment-category">
+                    <h3>Armas Brancas</h3>
+                    <div class="equipment-grid">
+                        
+                        <div class="item-card">
+                            <h4>Martelo de Guerra</h4>
+                            <div class="item-stats">
+                                <span><strong>Dano:</strong> 4d6 + <span class="attr-forca">FR</span></span>
+                                <span><strong>Peso:</strong> III</span>
+                                <span><strong>Crítico:</strong> 20x3</span>
+                            </div>
+                            <p class="item-effect">Golpes bem-sucedidos (Acerto 17+) reduzem o movimento do inimigo pela metade no próximo turno.</p>
+                        </div>
 
-                <div class="weapons-firearm">
-                    <h3>ARMAS DE FOGO</h3>
-                    <p>Revólver, Pistola Semiautomática, Escopeta, Rifle de Assalto, Sniper, Submetralhadora, Lança-chamas, Lança-granadas, Arco Tático, Metralhadora Pesada. Cada arma tem alcance, munição e recarga específicos descritos no item.</p>
+                        <div class="item-card">
+                            <h4>Faca de Caça</h4>
+                            <div class="item-stats">
+                                <span><strong>Dano:</strong> 1d8 + <span class="attr-destreza">DES</span></span>
+                                <span><strong>Peso:</strong> I</span>
+                                <span><strong>Crítico:</strong> 19x2</span>
+                            </div>
+                            <p class="item-effect">Causa sangramento leve (+1d4 de dano por 2 turnos).</p>
+                        </div>
+
+                        <div class="item-card">
+                            <h4>Espada Curta</h4>
+                            <div class="item-stats">
+                                <span><strong>Dano:</strong> 1d10 + <span class="attr-destreza">DES</span></span>
+                                <span><strong>Peso:</strong> I</span>
+                                <span><strong>Crítico:</strong> 20x2</span>
+                            </div>
+                            <p class="item-effect">Se bloquear um ataque, pode contra-atacar com metade do dano.</p>
+                        </div>
+
+                        <div class="item-card">
+                            <h4>Lança</h4>
+                            <div class="item-stats">
+                                <span><strong>Dano:</strong> 1d10 + <span class="attr-forca">FR</span></span>
+                                <span><strong>Peso:</strong> II</span>
+                                <span><strong>Crítico:</strong> 20x2</span>
+                            </div>
+                            <p class="item-effect">Ataques podem atingir inimigos a até 2B de distância.</p>
+                        </div>
+
+                        <div class="item-card">
+                            <h4>Espada Longa</h4>
+                            <div class="item-stats">
+                                <span><strong>Dano:</strong> 1d10 + <span class="attr-forca">FR</span></span>
+                                <span><strong>Peso:</strong> II</span>
+                                <span><strong>Crítico:</strong> 19x2</span>
+                            </div>
+                            <p class="item-effect">Se usada com as duas mãos, o dano aumenta para 2d8 + <span class="attr-forca">FR</span>.</p>
+                        </div>
+
+                        <div class="item-card">
+                            <h4>Clava de Ferro</h4>
+                            <div class="item-stats">
+                                <span><strong>Dano:</strong> 2d8 + <span class="attr-forca">FR</span></span>
+                                <span><strong>Peso:</strong> IV</span>
+                                <span><strong>Crítico:</strong> 20x2</span>
+                            </div>
+                            <p class="item-effect">Pode causar atordoamento (Teste de <span class="attr-forca">FR</span>, falha = perde um turno).</p>
+                        </div>
+
+                        <div class="item-card">
+                            <h4>Foice</h4>
+                            <div class="item-stats">
+                                <span><strong>Dano:</strong> 3d6 + <span class="attr-destreza">DES</span></span>
+                                <span><strong>Peso:</strong> III</span>
+                                <span><strong>Crítico:</strong> 20x3</span>
+                            </div>
+                            <p class="item-effect">Acerta todos os inimigos em um raio de 1B ao redor.</p>
+                        </div>
+                        
+                    </div>
                 </div>
 
-                <hr/>
+                <!-- Categoria de Armas de Fogo -->
+                <div class="equipment-category">
+                    <h3>Armas de Fogo</h3>
+                    <div class="equipment-grid">
 
-                <div class="utils">
-                    <h3>UTILITÁRIOS</h3>
-                    <ul>
-                        <li><strong>Granada de Fragmentação:</strong> Explode em raio de 2B, 4d6 de dano. Peso: I. Uso único.</li>
-                        <li><strong>Granada de Fumaça:</strong> Área 3B, obscurece por 3 turnos. Peso: I. Uso único.</li>
-                        <li><strong>Kit Médico:</strong> Recupera 3d6 de PV e remove efeitos leves. Peso: II.</li>
-                        <li><strong>Adrenalina:</strong> +2 em testes físicos (uso único). Peso: I.</li>
-                        <li><strong>Corda Resistentes, Lanterna, Trampolim Dobrável, Dispositivo de Hack, Máscara de Gás</strong> — itens reutilizáveis com usos específicos.</li>
-                    </ul>
+                        <div class="item-card">
+                            <h4>Revólver</h4>
+                            <div class="item-stats">
+                                <span><strong>Dano:</strong> 2d6 + <span class="attr-destreza">DES</span></span>
+                                <span><strong>Peso:</strong> I</span>
+                                <span><strong>Crítico:</strong> 19x3</span>
+                                <span><strong>Alcance:</strong> 8B</span>
+                            </div>
+                            <p class="item-effect"><strong>Munição:</strong> 6 tiros • <strong>Recarga:</strong> 1 turno. Pode gastar uma ação inteira para Concentrar Mira e causar +1d6 no próximo disparo.</p>
+                            <p class="item-effect">Descrição: Um revólver clássico, confiável e fácil de usar.</p>
+                        </div>
+
+                        <div class="item-card">
+                            <h4>Pistola Semiautomática</h4>
+                            <div class="item-stats">
+                                <span><strong>Dano:</strong> 2d4 + <span class="attr-destreza">DES</span></span>
+                                <span><strong>Peso:</strong> I</span>
+                                <span><strong>Crítico:</strong> 19x2</span>
+                                <span><strong>Alcance:</strong> 10B</span>
+                            </div>
+                            <p class="item-effect"><strong>Munição:</strong> 12 tiros • <strong>Recarga:</strong> 1 turno. Pode disparar duas vezes no mesmo turno com -2 no segundo tiro.</p>
+                            <p class="item-effect">Descrição: Uma arma moderna e de rápido disparo, ideal para confronto ágil.</p>
+                        </div>
+
+                        <div class="item-card">
+                            <h4>Escopeta</h4>
+                            <div class="item-stats">
+                                <span><strong>Dano:</strong> 3d8 + <span class="attr-forca">FR</span></span>
+                                <span><strong>Peso:</strong> III</span>
+                                <span><strong>Crítico:</strong> 20x2</span>
+                                <span><strong>Alcance:</strong> 4B</span>
+                            </div>
+                            <p class="item-effect"><strong>Munição:</strong> 2 tiros • <strong>Recarga:</strong> 1 turno. Atinge todos os inimigos em um cone de 2B; inimigos próximos a 2B recebem dano x2.</p>
+                            <p class="item-effect">Descrição: Devastadora a curta distância, mas ineficaz de longe.</p>
+                        </div>
+
+                        <div class="item-card">
+                            <h4>Rifle de Assalto</h4>
+                            <div class="item-stats">
+                                <span><strong>Dano:</strong> 2d6 + <span class="attr-destreza">DES</span></span>
+                                <span><strong>Peso:</strong> III</span>
+                                <span><strong>Crítico:</strong> 20x2</span>
+                                <span><strong>Alcance:</strong> 15B</span>
+                            </div>
+                            <p class="item-effect"><strong>Munição:</strong> 30 tiros • <strong>Recarga:</strong> 1 turno. Pode disparar em rajada (3 tiros no mesmo turno, com -3 em cada tiro).</p>
+                            <p class="item-effect">Descrição: Uma arma versátil, eficiente em combate tático e ofensivo.</p>
+                        </div>
+
+                        <div class="item-card">
+                            <h4>Sniper</h4>
+                            <div class="item-stats">
+                                <span><strong>Dano:</strong> 4d10 + <span class="attr-destreza">DES</span></span>
+                                <span><strong>Peso:</strong> IV</span>
+                                <span><strong>Crítico:</strong> 18x3</span>
+                                <span><strong>Alcance:</strong> 25B</span>
+                            </div>
+                            <p class="item-effect"><strong>Munição:</strong> 5 tiros • <strong>Recarga:</strong> 2 turnos. Ataques ignoram 2 pontos de Esquiva do alvo.</p>
+                            <p class="item-effect">Descrição: Arma de precisão extrema, usada para eliminar inimigos à distância.</p>
+                        </div>
+
+                        <div class="item-card">
+                            <h4>Submetralhadora</h4>
+                            <div class="item-stats">
+                                <span><strong>Dano:</strong> 2d4 + <span class="attr-destreza">DES</span></span>
+                                <span><strong>Peso:</strong> II</span>
+                                <span><strong>Crítico:</strong> 19x2</span>
+                                <span><strong>Alcance:</strong> 8B</span>
+                            </div>
+                            <p class="item-effect"><strong>Munição:</strong> 25 tiros • <strong>Recarga:</strong> 1 turno. Pode disparar 3 vezes no mesmo turno, cada tiro com -2 de penalidade.</p>
+                            <p class="item-effect">Descrição: Leve e de disparo rápido, excelente para curta e média distância.</p>
+                        </div>
+
+                        <div class="item-card">
+                            <h4>Lança-chamas</h4>
+                            <div class="item-stats">
+                                <span><strong>Dano:</strong> 4d6 + <span class="attr-forca">FR</span></span>
+                                <span><strong>Peso:</strong> IV</span>
+                                <span><strong>Crítico:</strong> 20x2</span>
+                                <span><strong>Alcance:</strong> 6B (cone)</span>
+                            </div>
+                            <p class="item-effect"><strong>Munição:</strong> 5 usos • <strong>Recarga:</strong> 2 turnos. Atinge inimigos em cone de 3B e causa queimadura (+1d6 por 3 turnos).</p>
+                            <p class="item-effect">Descrição: Uma arma brutal que incinera tudo no caminho.</p>
+                        </div>
+
+                        <div class="item-card">
+                            <h4>Lança-granadas</h4>
+                            <div class="item-stats">
+                                <span><strong>Dano:</strong> 6d8</span>
+                                <span><strong>Peso:</strong> IV</span>
+                                <span><strong>Crítico:</strong> 20x2</span>
+                                <span><strong>Alcance:</strong> 12B</span>
+                            </div>
+                            <p class="item-effect"><strong>Munição:</strong> 1 granada • <strong>Recarga:</strong> 2 turnos. Explosão atinge inimigos em 2B de raio.</p>
+                            <p class="item-effect">Descrição: Arma destrutiva usada para aniquilar grupos de inimigos.</p>
+                        </div>
+
+                        <div class="item-card">
+                            <h4>Arco Tático</h4>
+                            <div class="item-stats">
+                                <span><strong>Dano:</strong> 2d8 + <span class="attr-destreza">DES</span></span>
+                                <span><strong>Peso:</strong> II</span>
+                                <span><strong>Crítico:</strong> 19x3</span>
+                                <span><strong>Alcance:</strong> 12B</span>
+                            </div>
+                            <p class="item-effect"><strong>Munição:</strong> 1 flecha por turno • <strong>Recarga:</strong> 1 turno. Pode usar flechas especiais (incendiárias, explosivas, envenenadas).</p>
+                            <p class="item-effect">Descrição: Um arco moderno e letal nas mãos certas.</p>
+                        </div>
+
+                        <div class="item-card">
+                            <h4>Metralhadora Pesada</h4>
+                            <div class="item-stats">
+                                <span><strong>Dano:</strong> 3d6 + <span class="attr-forca">FR</span></span>
+                                <span><strong>Peso:</strong> V</span>
+                                <span><strong>Crítico:</strong> 20x2</span>
+                                <span><strong>Alcance:</strong> 20B</span>
+                            </div>
+                            <p class="item-effect'><strong>Munição:</strong> 100 tiros • <strong>Recarga:</strong> 2 turnos. Pode disparar até 5 tiros no mesmo turno, cada tiro com -3 de penalidade.</p>
+                            <p class="item-effect">Descrição: Arma de guerra, capaz de devastar qualquer alvo com puro poder de fogo.</p>
+                        </div>
+
+                    </div>
                 </div>
 
-                <hr/>
+                <!-- Categoria de Utilitários -->
+                <div class="equipment-category">
+                    <h3>Utilitários</h3>
+                    <div class="equipment-grid">
 
-                <div class="elemental-items">
-                    <h3>ITENS ELEMENTAIS</h3>
-                    <p>(Custo: 3 pontos de item inicial cada)</p>
-                    <div class="elemental-item">
-                        <h4>Fragmento de Podridão</h4>
-                        <p>Elemento: Podridão — Peso: II. Efeito: Enquanto estiver consigo, seus ataques corpo a corpo aplicam sangramento leve (+1d4 por turno por 2 turnos). Você sofre -1 em testes de Saúde.</p>
-                    </div>
+                        <div class="item-card">
+                            <h4>Granada de Fragmentação</h4>
+                            <div class="item-stats">
+                                <span><strong>Dano:</strong> 4d6</span>
+                                <span><strong>Peso:</strong> I</span>
+                                <span><strong>Área:</strong> Raio de 2B</span>
+                            </div>
+                            <p class="item-effect">Uso único. Explode causando dano perfurante em área.</p>
+                        </div>
 
-                    <div class="elemental-item">
-                        <h4>Lâmina Espectral de Cadamor</h4>
-                        <p>Elemento: Solar — Dano: 1d8 + FR. Peso: I. Efeito: Em ambientes escuros, causa +1d4 adicional.</p>
-                    </div>
+                        <div class="item-card">
+                            <h4>Granada de Fumaça</h4>
+                            <div class="item-stats">
+                                <span><strong>Duração:</strong> 3 turnos</span>
+                                <span><strong>Peso:</strong> I</span>
+                                <span><strong>Área:</strong> Raio de 3B</span>
+                            </div>
+                            <p class="item-effect">Uso único. Cria uma área que bloqueia a visão.</p>
+                        </div>
 
-                    <div class="elemental-item">
-                        <h4>Núcleo Instável de Electro</h4>
-                        <p>Elemento: Electro — Peso: III. Efeito: Ao ser arremessado gera descarga elétrica que paralisa em 2 blocos por 1 turno (Teste de RE para resistir).</p>
+                        <div class="item-card">
+                            <h4>Kit Médico</h4>
+                            <div class="item-stats">
+                                <span><strong>Cura:</strong> 3d6 PV</span>
+                                <span><strong>Peso:</strong> II</span>
+                                <span><strong>Usos:</strong> 2</span>
+                            </div>
+                            <p class="item-effect">Remove condições leves (sangramento, veneno fraco).</p>
+                        </div>
+                        
                     </div>
                 </div>
+
+                <!-- Categoria de Itens Elementais -->
+                <div class="equipment-category">
+                    <h3>Itens Elementais</h3>
+                    <p class="category-description">Itens raros com poder elemental. Custam 3 pontos de item inicial cada.</p>
+                    <div class="equipment-grid">
+
+                        <div class="item-card elemental-podridao">
+                            <h4>Fragmento de Podridão</h4>
+                            <div class="item-stats">
+                                <span><strong>Elemento:</strong> Podridão</span>
+                                <span><strong>Peso:</strong> II</span>
+                            </div>
+                            <p class="item-effect">Enquanto equipado, seus ataques corpo a corpo aplicam sangramento leve (+1d4 por 2 turnos). Você sofre -1 em testes de <span class="attr-saude">Saúde</span>.</p>
+                        </div>
+
+                        <div class="item-card elemental-solar">
+                            <h4>Lâmina Espectral de Cadamor</h4>
+                            <div class="item-stats">
+                                <span><strong>Elemento:</strong> Solar</span>
+                                <span><strong>Peso:</strong> I</span>
+                                <span><strong>Dano:</strong> 1d8 + <span class="attr-forca">FR</span></span>
+                            </div>
+                            <p class="item-effect">Em ambientes escuros, causa +1d4 de dano Solar adicional.</p>
+                        </div>
+                        
+                        <div class="item-card elemental-electro">
+                            <h4>Núcleo Instável de Electro</h4>
+                            <div class="item-stats">
+                                <span><strong>Elemento:</strong> Electro</span>
+                                <span><strong>Peso:</strong> III</span>
+                            </div>
+                            <p class="item-effect">Ao ser arremessado, gera descarga elétrica que paralisa em 2B por 1 turno (Teste de <span class="attr-re">RE</span> para resistir).</p>
+                        </div>
+                        
+                    </div>
+                </div>
+
             </section>
 
         </div>

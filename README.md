@@ -1,6 +1,7 @@
 # 🎲 Wuitalur RPG System
 
 Um sistema completo de RPG de mesa com elementos únicos, criação de personagens detalhada e um mundo rico em lore.
+## **Caso de interesse em usar em sua mesa, por favor fale comigo antes.**
 
 ## 📖 Sobre o Projeto
 

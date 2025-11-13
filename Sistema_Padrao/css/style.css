@@ -3149,3 +3149,114 @@ body {
 
 /* (Purification theme removed: per user request no additions. */
 
+/* === EQUIPAMENTOS - LAYOUT EM CARDS (ADICIONAL) === */
+.equipment-category {
+    margin: 2.5rem 0;
+}
+
+.category-description {
+    color: var(--cor-texto-sec);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.equipment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.item-card {
+    background: linear-gradient(135deg, rgba(36,30,43,0.7), rgba(58,50,70,0.6));
+    border: 1px solid var(--cor-borda);
+    border-radius: 12px;
+    padding: 1.2rem;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.item-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+    border-color: var(--cor-destaque);
+}
+
+.item-card h4 {
+    font-family: 'Playfair Display', serif;
+    color: var(--cor-titulo);
+    margin-bottom: 0.6rem;
+}
+
+.item-stats {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    color: var(--cor-texto-sec);
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+}
+
+.item-stats span {
+    background: rgba(124,111,139,0.06);
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    border: 1px solid rgba(124,111,139,0.04);
+}
+
+.item-effect {
+    color: var(--cor-texto);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.elemental-podridao .item-effect { color: #c8d6a7; }
+.elemental-solar .item-effect { color: #ffe7a3; }
+.elemental-electro .item-effect { color: #a3e7ff; }
+
+@media (max-width: 768px) {
+    .equipment-grid { grid-template-columns: 1fr; }
+    .item-stats { font-size: 0.92rem; }
+}
+
+/* Pequena animação de entrada para cards (suave) */
+.item-card { opacity: 0; transform: translateY(10px); animation: cardFadeIn 0.6s ease-out forwards; }
+.item-card:nth-child(1) { animation-delay: 0.06s; }
+.item-card:nth-child(2) { animation-delay: 0.12s; }
+.item-card:nth-child(3) { animation-delay: 0.18s; }
+.item-card:nth-child(4) { animation-delay: 0.24s; }
+.item-card:nth-child(5) { animation-delay: 0.30s; }
+
+@keyframes cardFadeIn {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* === SELEÇÃO DE TEXTO (permite cópia com destaque colorido) === */
+::selection { background: var(--cor-destaque); color: #fff; }
+::-moz-selection { background: var(--cor-destaque); color: #fff; }
+
+/* Garante que elementos interativos possam ser selecionados/copiados */
+body, p, h1, h2, h3, h4, h5, h6, li, span, .item-card, .rules-box, .equipment-grid, .item-effect {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* Override genérico para quando classes de modal bloquearem seleção
+   Alguns estilos globais adicionam `user-select: none` enquanto o modal
+   está aberto (ex.: `body.modal-open .main-content`). Forçamos seleção
+   apenas para o conteúdo principal do sistema para permitir cópia.
+*/
+body.modal-open .main-content,
+html.modal-open .main-content,
+body.modal-open .main-content *,
+html.modal-open .main-content * {
+    -webkit-user-select: text !important;
+    -moz-user-select: text !important;
+    -ms-user-select: text !important;
+    user-select: text !important;
+}
+
+
+
