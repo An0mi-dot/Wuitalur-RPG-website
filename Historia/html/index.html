@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
@@ -260,7 +260,7 @@
         <div class="card" onclick="navigateTo('elementos.html')">
           <h3>Elementos</h3>
         </div>
-        <div class="card" onclick="showDevelopmentMessage()">
+        <div class="card" onclick="navigateTo('mundo.html')">
           <h3>Mundo</h3>
         </div>
         <div class="card" onclick="navigateTo('personagens.html')">
@@ -279,23 +279,10 @@
       </p>
     </footer>
 
-    <div id="development-message" class="message">
-      Ainda está sendo desenvolvido!
-    </div>
-
     <script src="../Js/transicao.js"></script>
     <script>
-      function showDevelopmentMessage() {
-        const message = document.getElementById("development-message");
-        message.classList.add("show");
-
-        setTimeout(() => {
-          message.classList.remove("show");
-        }, 3000);
-      }
-
       function navigateTo(page) {
-        // Adicione aqui a lógica de transição se necessário
+        // lógica de transição (se necessário)
         window.location.href = page;
       }
     </script>
