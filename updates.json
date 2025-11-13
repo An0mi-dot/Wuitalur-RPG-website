@@ -1,5 +1,25 @@
 ﻿[
     {
+        "date":  "13-11-2025",
+        "message":  "feat: adicionar se├º├uo \u0027EQUIPAMENTOS\u0027 (sistema de carga, armas e itens)"
+    },
+    {
+        "date":  "13-11-2025",
+        "message":  "chore: adicionar script sanitize-updates (remover acentos / corrigir encoding)"
+    },
+    {
+        "date":  "13-11-2025",
+        "message":  "chore: estilizar scrollbar do modal e evitar scrollbar transit├│rio na p├igina principal"
+    },
+    {
+        "date":  "13-11-2025",
+        "message":  "chore: gerar updates.sanitized.json (mensagens sem acentos)"
+    },
+    {
+        "date":  "13-11-2025",
+        "message":  "chore: centralizar assets do popup de vers├uo, propagar includes, remover scripts inline duplicados, atualizar README com vers├uo"
+    },
+    {
         "date":  "12-11-2025",
         "message":  "chore(historia): mover cards de cidades para mundo e ativar acesso"
     },
