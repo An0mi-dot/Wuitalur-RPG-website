@@ -7,6 +7,38 @@
   <link rel="icon" href="../../Historia/Imagens/Site_Icone.png" type="image/png">
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../../assets/css/version-popup.css">
+  <script>
+    // Evita que a barra de rolagem apareça brevemente durante a animação de entrada
+    // Adiciona a classe `no-scroll` imediatamente e remove-a quando as animações terminarem.
+    document.documentElement.classList.add('no-scroll');
+    if (document.body) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.addEventListener('DOMContentLoaded', function(){ document.body.classList.add('no-scroll'); }, { once: true });
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      const cards = document.querySelectorAll('.feature-card');
+      if (!cards || cards.length === 0) {
+        // fallback: remove depois de curto tempo
+        setTimeout(() => { document.documentElement.classList.remove('no-scroll'); document.body.classList.remove('no-scroll'); }, 700);
+        return;
+      }
+      let finished = 0;
+      const onEnd = () => {
+        finished++;
+        if (finished >= cards.length) {
+          document.documentElement.classList.remove('no-scroll');
+          document.body.classList.remove('no-scroll');
+        }
+      };
+      cards.forEach(card => {
+        card.addEventListener('animationend', onEnd, { once: true });
+        card.addEventListener('transitionend', onEnd, { once: true });
+      });
+      // safety timeout
+      setTimeout(() => { document.documentElement.classList.remove('no-scroll'); document.body.classList.remove('no-scroll'); }, 1200);
+    });
+  </script>
 </head>
 <body>
 

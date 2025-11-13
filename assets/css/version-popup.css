@@ -9,5 +9,18 @@
 .vp-section h2{margin:0 0 8px 0;color:var(--vp-accent)}
 .vp-updates .vp-update{padding:10px;border-radius:8px;background:rgba(0,0,0,0.08);margin-bottom:8px}
 .vp-update .u-date{font-size:0.85rem;opacity:0.8;margin-bottom:4px}
+/* Scrollbar styling: thin, themed and rounded */
+.vp-content::-webkit-scrollbar{width:10px}
+.vp-content::-webkit-scrollbar-track{background:rgba(255,255,255,0.03);border-radius:10px}
+.vp-content::-webkit-scrollbar-thumb{background:linear-gradient(180deg,rgba(184,161,217,0.35),rgba(120,90,160,0.45));border-radius:10px;border:2px solid rgba(0,0,0,0.08)}
+.vp-content::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,rgba(184,161,217,0.5),rgba(120,90,160,0.6))}
+/* Firefox */
+.vp-content{scrollbar-width:thin;scrollbar-color:rgba(184,161,217,0.45) rgba(255,255,255,0.03);scrollbar-gutter:stable}
+
+/* Prevent page scroll when a class is applied (used during animations or modal-open) */
+html.no-scroll, body.no-scroll{overflow:hidden !important;height:100%}
+
+/* Keep layout stable when scrollbars appear/disappear */
+body{scrollbar-gutter:stable}
 /* responsive */
 @media (min-width:720px){.vp-body{flex-direction:row}.vp-section{flex:1}}
