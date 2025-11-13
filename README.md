@@ -17,7 +17,7 @@ Este site foi criado **apenas para me divertir, aprender e explorar novas ideias
 
 ## 🌐 Acesso Online
 
-O site está disponível em: https://an0mi-dot.github.io/wuitalur-rpg-system
+O site está disponível em: [https://an0mi-dot.github.io/Wuitalur-RPG-website/](https://an0mi-dot.github.io/Wuitalur-RPG-website/)
 
 ## 📁 Estrutura do Projeto
 
