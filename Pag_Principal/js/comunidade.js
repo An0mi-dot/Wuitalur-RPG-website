@@ -19,7 +19,7 @@ async function loadCommunityUsers() {
             .get();
 
         if (snapshot.empty) {
-            grid.innerHTML = '<p style="color: #aaa; grid-column: 1/-1; text-align: center;">Nenhum viajante encontrado.</p>';
+            grid.innerHTML = '<p style="color: #aaa; grid-column: 1/-1; text-align: center;">Nenhum proscrito encontrado.</p>';
             return;
         }
 
@@ -30,7 +30,7 @@ async function loadCommunityUsers() {
             const data = doc.data();
             const user = {
                 id: doc.id,
-                username: data.username || 'Viajante Desconhecido',
+                username: data.username || 'Proscrito Desconhecido',
                 title: data.title || 'Novato',
                 avatar: data.avatar || 'default',
                 banner: data.banner || 'default',
@@ -46,7 +46,7 @@ async function loadCommunityUsers() {
         grid.innerHTML = `
             <div style="grid-column: 1/-1; text-align: center; color: #ff6b6b; background: rgba(255,0,0,0.1); padding: 20px; border-radius: 8px;">
                 <h3>Acesso Restrito</h3>
-                <p>Você não tem permissão para ver a lista de todos os viajantes ou ocorreu um erro de conexão.</p>
+                <p>Você não tem permissão para ver a lista de todos os proscritos ou ocorreu um erro de conexão.</p>
                 <p style="font-size: 0.8rem; opacity: 0.7;">Erro: ${error.message}</p>
             </div>
         `;
@@ -94,7 +94,7 @@ function filterUsers() {
     const filtered = allUsers.filter(u => u.username.toLowerCase().includes(term));
 
     if (filtered.length === 0) {
-        grid.innerHTML = '<p style="color: #aaa; grid-column: 1/-1; text-align: center;">Nenhum viajante encontrado com esse nome.</p>';
+        grid.innerHTML = '<p style="color: #aaa; grid-column: 1/-1; text-align: center;">Nenhum proscrito encontrado com esse nome.</p>';
         return;
     }
 
@@ -112,7 +112,7 @@ function openPublicProfile(user) {
     // Preencher dados
     document.getElementById('public-username').innerText = user.username;
     document.getElementById('public-title').innerText = user.title;
-    document.getElementById('public-bio').innerText = user.bio || "Este viajante ainda não escreveu sua história.";
+    document.getElementById('public-bio').innerText = user.bio || "Este proscrito ainda não escreveu sua história.";
     
     // Data de entrada
     if (user.createdAt && user.createdAt.seconds) {

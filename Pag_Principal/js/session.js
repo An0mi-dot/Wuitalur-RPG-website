@@ -63,7 +63,7 @@ function createDefaultProfile(uid) {
     const email = user ? user.email : "sem-email";
     
     const defaultData = {
-        username: "Viajante",
+        username: "Proscrito",
         title: "Novato",
         bio: "",
         avatar: "default",
