@@ -33,8 +33,21 @@ document.addEventListener('DOMContentLoaded', () => {
         "Assombrado": `Pesadelo – Mente invadida por ilusões.\n\nEfeitos: Sofre 1d6 de dano mental por turno; -2 em testes mentais; desvantagem em esquiva.\nDuração: Turnos definidos ou até superar teste de Resistência Mental.\nAcumulação: Não acumulável.`,
         "Infectado": `Praga – A vítima é contaminada por doença viva.\n\nEfeitos: Sofre 1% da Vida Máxima por turno; reduz FR e Movimento em 2; testes físicos com desvantagem; morte transforma em criatura de Praga em 1d4h.\nDuração: Permanente até regredir.\nAcumulação: Não acumulável.`,
         "Congelado": `Estase – O alvo é preso em gelo cósmico.\n\nEfeitos: Perde turno; Movimento 0; após sair, -2 em ações físicas por 2 turnos.\n\nDuração: 1 rodada.\nAcumulação: Não acumulável.`,
-        "Amalgamado": `Podridão – Parasita pútrido se aloja no corpo.\n\nEfeitos: 1d8 de dano por turno (ignora resistências); se permanecer até fim da cena, entra em estado Morrendo.\nDuração: até remoção.\nAcumulação: Não acumulável.`
+        "Amalgamado": `Podridão – Parasita pútrido se aloja no corpo.\n\nEfeitos: 1d8 de dano por turno (ignora resistências); se permanecer até fim da cena, entra em estado Morrendo.\nDuração: até remoção.\nAcumulação: Não acumulável.`,
+        // Termos Globais (apenas estilização, sem tooltip obrigatório)
+        "EA": "Energia Astral",
+        "Energia Astral": "Energia Astral",
+        // Elementos (apenas estilização com cores específicas)
+        "Podridão": "Elemento Podridão",
+        "Solar": "Elemento Solar",
+        "Sagrado": "Elemento Sagrado",
+        "Electro": "Elemento Electro",
+        "Nulídrico": "Elemento Nulídrico",
+        "Pesadelo": "Elemento Pesadelo"
     };
+
+    // Especial: Se o termo for EA ou Energia Astral, não mostramos tooltip se a descrição for igual ao nome
+    const noTooltipTerms = ["EA", "Energia Astral", "Podridão", "Solar", "Sagrado", "Electro", "Nulídrico", "Pesadelo"];
 
     // Build a map of variant -> canonical name to cover flexions (feminino/plural)
     const canonicalNames = Object.keys(conditions);
@@ -73,12 +86,53 @@ document.addEventListener('DOMContentLoaded', () => {
     // Phrases to ignore entirely (do not convert their internal words into tooltips)
     // Add phrases here when they refer to special class-specific mechanics, ex:
     const ignorePhrases = [
-        'marcado pelo medo'
+        'marcado pelo medo',
+        // Nomes de itens que contêm palavras de condição
+        'lâmina espectral',
+        'espectral cadamor',
+        'cadamor espectral',
+        'atirador espectral',
+        // Formas verbais descritivas (não são a condição em si)
+        'é infectado por',
+        'fica infectado',
+        'foi infectado',
+        'ser infectado',
+        'está infectado',
+        'são infectados',
+        'ficam infectados',
+        'foram infectados',
+        // Outros contextos descritivos comuns
+        'é queimado',
+        'fica queimado',
+        'é envenenado',
+        'fica envenenado',
+        'é atordoado',
+        'fica atordoado',
+        'é paralisado',
+        'fica paralisado',
+        'é cegado',
+        'fica cegado',
+        'é enfraquecido',
+        'fica enfraquecido',
+        'é amedrontado',
+        'fica amedrontado',
+        'é confuso',
+        'fica confuso',
+        'é marcado',
+        'fica marcado',
+        'é corroído',
+        'fica corroído',
+        'é exposto',
+        'fica exposto',
+        'é desorientado',
+        'fica desorientado',
+        'é dilacerado',
+        'fica dilacerado'
     ].map(s => s.toLowerCase());
     const maxIgnoreLen = ignorePhrases.reduce((m, p) => Math.max(m, p.length), 0);
 
     // Build regex from all variant keys (longer first to avoid partial matches)
-    const names = Object.keys(variantMap).sort((a,b)=>b.length-a.length).map(n => escapeRegExp(n));
+    const names = Object.keys(variantMap).sort((a, b) => b.length - a.length).map(n => escapeRegExp(n));
     const regex = new RegExp('\\b(' + names.join('|') + ')\\b', 'gi');
 
     function escapeRegExp(string) {
@@ -116,12 +170,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Walk DOM and replace text nodes
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
-        acceptNode: function(node) {
+        acceptNode: function (node) {
             if (!node.nodeValue || node.nodeValue.trim().length === 0) return NodeFilter.FILTER_REJECT;
             // Avoid replacing inside script/style or already replaced
             const parent = node.parentElement;
             if (!parent) return NodeFilter.FILTER_REJECT;
             if (parent.closest('script, style, .condition')) return NodeFilter.FILTER_REJECT;
+
+            // NUNCA processar texto dentro de <strong> em listas de habilidades (nomes de habilidades)
+            if (parent.tagName === 'STRONG' && parent.closest('.class-abilities, .archetype-abilities, ul li')) {
+                return NodeFilter.FILTER_REJECT;
+            }
+
+            // NUNCA processar texto dentro de <h4> (títulos de itens/selos/habilidades)
+            if (parent.closest('h4, h3, h2, h1')) {
+                return NodeFilter.FILTER_REJECT;
+            }
+
             return NodeFilter.FILTER_ACCEPT;
         }
     });
@@ -139,6 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (offset > lastIndex) {
                 frag.appendChild(document.createTextNode(text.slice(lastIndex, offset)));
             }
+
             // check if this match is inside an ignored phrase (case-insensitive)
             const contextStart = Math.max(0, offset - maxIgnoreLen);
             const contextEnd = Math.min(text.length, offset + match.length + maxIgnoreLen);
@@ -147,7 +213,6 @@ document.addEventListener('DOMContentLoaded', () => {
             for (const ip of ignorePhrases) {
                 const idx = context.indexOf(ip);
                 if (idx !== -1) {
-                    // ensure that the match range overlaps the ignore phrase range
                     const ignoreGlobalStart = contextStart + idx;
                     const ignoreGlobalEnd = ignoreGlobalStart + ip.length;
                     const matchGlobalStart = offset;
@@ -159,26 +224,52 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
+
             if (insideIgnored) {
-                // keep original text for this match (no tooltip)
                 frag.appendChild(document.createTextNode(match));
                 lastIndex = offset + match.length;
                 return match;
             }
-            // create span
-            const span = document.createElement('span');
-            span.className = 'condition';
+
             const canonical = variantMap[match.toLowerCase()];
-            if (canonical) span.setAttribute('data-desc', conditions[canonical]);
-            // inner content keep original casing
+            const span = document.createElement('span');
+
+            // Estilização especial para EA
+            if (canonical === "EA" || canonical === "Energia Astral") {
+                span.classList.add('attr-ea');
+            } else if (canonical === "Podridão") {
+                span.classList.add('element-name-podridao');
+            } else if (canonical === "Solar") {
+                span.classList.add('element-name-solar');
+            } else if (canonical === "Sagrado") {
+                span.classList.add('element-name-sagrado');
+            } else if (canonical === "Electro") {
+                span.classList.add('element-name-electro');
+            } else if (canonical === "Nulídrico") {
+                span.classList.add('element-name-nulidrico');
+            } else if (canonical === "Pesadelo") {
+                span.classList.add('element-name-pesadelo');
+            } else {
+                span.className = 'condition';
+                if (canonical && conditions[canonical]) span.setAttribute('data-desc', conditions[canonical]);
+            }
+
             const strong = document.createElement('strong');
-            const em = document.createElement('em');
-            em.textContent = match;
-            strong.appendChild(em);
+            // Elementos e EA não recebem itálico
+            const isElement = ["Podridão", "Solar", "Sagrado", "Electro", "Nulídrico", "Pesadelo", "EA", "Energia Astral"].includes(canonical);
+            if (isElement) {
+                strong.textContent = match;
+            } else {
+                const em = document.createElement('em');
+                em.textContent = match;
+                strong.appendChild(em);
+            }
             span.appendChild(strong);
+
             // events
             span.addEventListener('mouseenter', (e) => {
-                showTooltip(span.getAttribute('data-desc') || '', e.clientX, e.clientY);
+                const desc = span.getAttribute('data-desc');
+                if (desc) showTooltip(desc, e.clientX, e.clientY);
             });
             span.addEventListener('mousemove', (e) => {
                 tooltip.style.left = (e.clientX + 14) + 'px';

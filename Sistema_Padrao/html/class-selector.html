@@ -1,0 +1,53 @@
+<!-- SELETOR DE CLASSES - Adicionar após o seletor de raças (linha ~150) -->
+
+<div id="class-selector-overlay" class="race-selector-overlay">
+    <div class="race-selector-container">
+        <div class="race-selector-header">
+            <h2>Escolha uma Classe</h2>
+            <button class="close-btn" onclick="closeClassSelector()">×</button>
+        </div>
+        <div class="race-cards-grid">
+
+            <!-- Cavaleiros de Paladium -->
+            <div class="race-card-mini" onclick="scrollToClass('cavaleiros')">
+                <img src="../assets/cavaleiros_paladium.png" alt="Cavaleiros de Paladium">
+                <h3>Cavaleiros de Paladium</h3>
+                <p>Força máxima de imposição de Paladium</p>
+                <span class="difficulty-mini difficulty-2">2</span>
+            </div>
+
+            <!-- Rastejantes -->
+            <div class="race-card-mini" onclick="scrollToClass('rastejantes')">
+                <img src="../assets/rastejantes.png" alt="Rastejantes">
+                <h3>Rastejantes</h3>
+                <p>Canalizadores das trevas do abismo</p>
+                <span class="difficulty-mini difficulty-3">3</span>
+            </div>
+
+            <!-- Protegidos -->
+            <div class="race-card-mini" onclick="scrollToClass('protegidos')">
+                <img src="../assets/protegidos.png" alt="Protegidos">
+                <h3>Protegidos</h3>
+                <p>Portadores de Criaturas Guardiãs</p>
+                <span class="difficulty-mini difficulty-3">3</span>
+            </div>
+
+            <!-- Consagrados -->
+            <div class="race-card-mini" onclick="scrollToClass('consagrados')">
+                <img src="../assets/consagrados.png" alt="Consagrados">
+                <h3>Consagrados</h3>
+                <p>Agentes poderosos de suas divindades</p>
+                <span class="difficulty-mini difficulty-1">1</span>
+            </div>
+
+            <!-- Furtassaltantes -->
+            <div class="race-card-mini" onclick="scrollToClass('furtassaltante')">
+                <img src="../assets/furtassaltante.png" alt="Furtassaltantes">
+                <h3>Furtassaltantes</h3>
+                <p>Mestres da furtividade e sobrivência nas sombras</p>
+                <span class="difficulty-mini difficulty-3">3</span>
+            </div>
+
+        </div>
+    </div>
+</div>

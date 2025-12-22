@@ -5,11 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wuitalur — Bestiário</title>
     <link rel="stylesheet" href="../../css/style.css">
-    <link rel="stylesheet" href="../../css/conditions.css">
-    <link rel="icon" href="../../Historia/Imagens/Site_Icone.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Jim+Nightshade&display=swap" rel="stylesheet">
-    <!-- Fonte do título específico: Bahiana (via Google Fonts) -->
-    <link href="https://fonts.googleapis.com/css2?family=Bahiana&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Declaração @font-face para Amhole (fontes devem ser colocadas em ../../fonts/) -->
+    <style>
+        /* Coloque os arquivos da fonte Amhole em: Sistema_Padrao/Bestiario/fonts/
+           Exemplos de nomes esperados: Amhole-Regular.woff2, Amhole-Regular.woff, Amhole-Regular.ttf
+           Se preferir outro caminho, atualize as URLs abaixo. */
+        @font-face {
+            font-family: 'Amhole';
+            src: url('../../fonts/Amhole-Regular.woff2') format('woff2'),
+                 url('../../fonts/Amhole-Regular.woff') format('woff'),
+                 url('../../fonts/Amhole-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
     <style>
         /* Mínima alteração: aumentar apenas o tamanho do NDD (sem mudar tema) */
         /* NDD maior e mais visível: regras com maior especificidade para evitar overrides */
@@ -38,21 +50,7 @@
         @media (max-width: 550px){
             .stat-block .header-ndd { font-size: 1.3rem !important; padding: 7px 9px !important; min-width: 64px !important }
         }
-
-        /* Suaviza a rolagem para links internos (âncoras) — usado para navegação do catálogo */
-        html { scroll-behavior: smooth; }
-
-    /* Catalog list styles */
-    .catalog-list ul { list-style: none; padding-left: 0; margin: 6px 0; }
-    .catalog-list li { margin: 4px 0; }
-    .catalog-link { color: #ffdcdc; text-decoration: none; padding:4px 8px; border-radius:4px; display:inline-block; transition: transform .14s, box-shadow .14s, background .14s; }
-    .catalog-link:hover, .catalog-link:focus { transform: translateX(4px); box-shadow: 0 6px 18px rgba(0,0,0,0.35); background: rgba(255,255,255,0.03); outline:none; }
-    .catalog-link.active { background: linear-gradient(90deg,#7a1010,#b61b1b); color: #fff; box-shadow: 0 8px 28px rgba(182,27,27,0.28); }
-
-    /* Temporary highlight applied to target cards when navigated from catalog */
-    .highlight-target { box-shadow: 0 0 0 4px rgba(182,27,27,0.22), 0 12px 36px rgba(40,8,8,0.28) inset !important; transform: translateY(-4px); transition: box-shadow .4s, transform .2s; }
     </style>
-    <link rel="stylesheet" href="../../../assets/css/version-popup.css">
 </head>
 <body>
     <header class="main-header">
@@ -66,6 +64,17 @@
                     <p class="version">Coleção de Criaturas</p>
                 </div>
                 <div class="header-nav">
+                    <!-- User Profile Header -->
+                    <div id="user-profile-header" style="display: flex; align-items: center; gap: 10px; margin-right: 15px; cursor: pointer;" onclick="openProfileModal()">
+                        <div style="text-align: right; display: none;" id="header-user-info">
+                            <span id="header-username" style="display: block; font-weight: bold; color: #b8a1d9; font-size: 0.9rem;">Viajante</span>
+                            <span id="header-title" style="display: block; font-size: 0.75rem; color: #888;">Desconhecido</span>
+                        </div>
+                        <div id="header-profile-img" style="width: 40px; height: 40px; background: linear-gradient(45deg, #6a11cb, #2575fc); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #b8a1d9; box-shadow: 0 2px 10px rgba(0,0,0,0.3); background-size: cover; background-position: center;">
+                            <i class="fas fa-user" style="color: white;"></i>
+                        </div>
+                    </div>
+
                     <a href="../../html/index.html" class="btn-home">← Voltar ao Sistema</a>
                     <div class="theme-switcher" id="theme-switcher">
                         <button id="theme-toggle-btn" class="btn-home" aria-haspopup="true" aria-expanded="false">Trocar Tema ▾</button>
@@ -108,13 +117,11 @@
             <section id="elementos" class="content-section">
                 <h2>Elementos</h2>
                 <div class="intro-text">
-                    <p>As criaturas do bestiário estão organizadas por elementos. Use as abas abaixo para navegar entre os elementos e ver as criaturas de cada um.</p>
+                    <p>As criaturas do bestiário estão organizadas por elementos. Use as abas abaixo para navegar entre os elementos e ver as criaturas de cada um. No momento não há criaturas cadastradas — cada painel traz a descrição do elemento e um placeholder para futuras entradas.</p>
 
                     <style>
                         /* Estilos locais para navegação por elementos + animações suaves */
-                                /* Use inline-flex para que o grupo ocupe apenas a largura do conteúdo
-                                    e possa ser centralizado com margin:auto / text-align do pai. */
-                                .elements-tabs { display:inline-flex; gap:8px; flex-wrap:wrap; margin:12px auto 18px auto; justify-content: center; align-items: center; text-align: center; }
+                        .elements-tabs { display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 18px 0; justify-content: center; }
 
                         /* Abas dos elementos */
                         .element-tab {
@@ -200,35 +207,6 @@
                             background: linear-gradient(135deg,#2b0a0a,#3a0f0f) !important;
                             color: #ffecec !important;
                             border: 1px solid #4a0f0f !important;
-                        }
-
-                        /* Tornar o subtópico "Criaturas de Podridão" MUITO maior e mais destacado */
-                        .element-section-title.podridao {
-                            /* AINDA MAIOR: forte presença no topo da lista */
-                            font-size: 4.8em !important; /* aumentado significativamente */
-                            padding: 18px 28px !important;
-                            border-radius: 8px !important;
-                            display: inline-block !important;
-                            line-height: 0.98 !important;
-                            /* Usa a mesma fonte do título 'Carniceiro da Agonia' (Bahiana) */
-                            font-family: 'Bahiana', 'Cinzel', serif !important;
-                            font-weight: 900 !important;
-                            letter-spacing: 0.06em !important;
-                            text-transform: uppercase !important;
-                            text-shadow: 0 8px 30px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.02) !important;
-                            margin: 22px 0 14px 0 !important; /* substitui o inline margin caso necessário */
-                            transform: translateY(-4px) !important; /* ligeiro destaque vertical */
-                        }
-
-                        /* Responsividade: continua grande em telas médias, menor em mobile */
-                        @media (max-width: 1200px) {
-                            .element-section-title.podridao { font-size: 4.0em !important; padding: 16px 22px !important; }
-                        }
-                        @media (max-width: 900px) {
-                            .element-section-title.podridao { font-size: 3.2em !important; padding: 12px 18px !important; }
-                        }
-                        @media (max-width: 550px) {
-                            .element-section-title.podridao { font-size: 2.0em !important; padding: 8px 10px !important; display: block !important; }
                         }
 
                         /* IDs que aplicam automaticamente a aparência do elemento quando usados em frases/textos */
@@ -325,11 +303,9 @@
                         <div class="element-desc">
                             <p>O elemento Podridão agrupa criaturas que corrompem, apodrecem e trazem decadência ao ambiente. Essas entidades costumam exalar toxinas, atrair pragas e alterar ecossistemas locais. São perigosas em aglomerações e muitas vezes servem como fontes de contágio narrativo.</p>
                         </div>
-                        <div class="catalog-list">
-                            <p class="placeholder">Criaturas cadastradas:</p>
-                            <ul>
-                                <li><a href="#carniceiro-da-agonia" class="catalog-link">Carniceiro da Agonia</a></li>
-                            </ul>
+                        <div class="creature-list-links" style="display: flex; flex-direction: column; gap: 8px;">
+                            <a href="#zumbi-putrido" class="creature-link" style="color: #b61b1b; font-weight: bold; text-decoration: none; padding: 8px; border-left: 3px solid #b61b1b; background: rgba(182, 27, 27, 0.1); border-radius: 0 4px 4px 0; transition: all 0.2s ease;">Zumbi Pútrido</a>
+                            <a href="#carniceiro" class="creature-link" style="color: #b61b1b; font-weight: bold; text-decoration: none; padding: 8px; border-left: 3px solid #b61b1b; background: rgba(182, 27, 27, 0.1); border-radius: 0 4px 4px 0; transition: all 0.2s ease;">Carniceiro da Agonia</a>
                         </div>
                     </div>
 
@@ -412,38 +388,6 @@
                             font-weight: bold; 
                             border-radius: 2px;
                             display: inline-block; /* Garante que o fundo cubra apenas o texto */
-                        }
-
-                        /* Destaque visual para subtópicos dentro da ficha (.stat-block):
-                           aplica fundo, padding e borda para melhorar legibilidade e foco.
-                           Escopo: apenas dentro de .stat-block para não impactar outros títulos. */
-                        .stat-block .block-title {
-                            display: block;
-                            width: 100%;
-                            background: linear-gradient(90deg, rgba(18,18,18,0.82), rgba(38,38,38,0.82));
-                            color: #fff;
-                            padding: 8px 12px !important;
-                            border-radius: 6px !important;
-                            margin: 0 0 10px 0 !important;
-                            font-size: 1.0em !important;
-                            box-shadow: 0 6px 18px rgba(0,0,0,0.45) inset;
-                            border: 1px solid rgba(255,255,255,0.03);
-                            text-transform: uppercase;
-                            letter-spacing: 0.04em;
-                        }
-
-                        /* Variação temática: quando a ficha pertence ao elemento Podridão, usar tons vermelhos */
-                        .element-podridao .stat-block .block-title {
-                            background: linear-gradient(90deg, rgba(160,30,30,0.20), rgba(110,18,18,0.18)) !important;
-                            color: #fff !important;
-                            border: 1px solid rgba(182,27,27,0.14) !important;
-                            box-shadow: 0 6px 20px rgba(90,12,12,0.18) inset !important;
-                        }
-
-                        /* Mobile: reduzir um pouco o padding para telas pequenas */
-                        @media (max-width: 550px) {
-                            .stat-block .block-title { padding: 6px 8px !important; font-size: 0.95em !important }
-                            .element-podridao .stat-block .block-title { padding: 6px 8px !important }
                         }
                         
                         /* TÍTULO PRINCIPAL (NOME DA CRIATURA) */
@@ -572,8 +516,7 @@
                         .creature-header { text-align:center; margin-bottom:6px }
                         .creature-title { 
                             margin:0; 
-                            /* Tornar a fonte dos nomes das criaturas igual à do Carniceiro: Bahiana (via Google Fonts) */
-                            font-family: 'Bahiana', 'Cinzel', 'Times New Roman', serif !important; 
+                            font-family: 'Cinzel', 'Times New Roman', serif; 
                             font-size:1.6em; 
                             letter-spacing:0.06em; 
                             text-transform:uppercase; 
@@ -583,8 +526,8 @@
 
                         /* Fonte específica apenas para o título do Carniceiro da Agonia */
                         .creature-item.carniceiro .creature-title {
-                            /* Usa a fonte Bahiana (via Google Fonts) */
-                            font-family: 'Bahiana', 'Cinzel', serif !important;
+                            /* Aplica Amhole ao título específico; adicione @font-face ou <link> no head se quiser carregar a fonte */
+                            font-family: 'Amhole', sans-serif !important;
                         }
 
                         /* Temas por elemento/subcategoria - exemplos: PODRIDÃO e PESADELO */
@@ -823,24 +766,15 @@
                     <p>Lista de criaturas do bestiário. As fichas completas ficam abaixo — use os filtros por elemento acima para localizar rapidamente.</p>
 
                     <div class="creature-list">
-                        <!-- DEBUG: regras locais de alta prioridade para forçar o tema vermelho neste card (apenas temporário) -->
-                        <style>
-                            /* Debug: degradê mais escuro, coerente com o tema reforçado acima */
-                            .creature-item.element-podridao.debug-force-theme { background: linear-gradient(180deg,#2a0606 0%, #580808 50%, #160404 100%) !important; border: 3px solid #9b1111 !important; color: #fff !important; box-shadow: 0 10px 36px rgba(40,8,8,0.26) inset !important; }
-                            .creature-item.element-podridao.debug-force-theme .block-content { background: transparent !important; border: none !important; }
-                            .creature-item.element-podridao.debug-force-theme .description-above { background: transparent !important; border: none !important; }
-                            .creature-item.element-podridao.debug-force-theme .illustration { background: transparent !important; }
-                        </style>
-
                         <!-- Subtópico: criaturas do elemento Podridão (aparece antes das fichas específicas) -->
                         <h3 class="block-title element-section-title podridao" style="margin:10px 0 6px 0">Criaturas de Podridão</h3>
 
-                        <!-- Zumbi Pútrido (Podridão) — criatura mais fraca, aparece antes do Carniceiro -->
-                        <div id="zumbi-putrido" class="creature-item element-podridao column zumbi-putrido debug-force-theme" style="background: linear-gradient(180deg,#2a0606 0%, #580808 50%, #160404 100%); border:3px solid #9b1111; color:#fff;">
+                        <!-- Zumbi Pútrido (Podridão) -->
+                        <div id="zumbi-putrido" class="creature-item element-podridao column zumbi-putrido" style="background: linear-gradient(180deg,#2a0606 0%, #580808 50%, #160404 100%); border:3px solid #9b1111; color:#fff; margin-bottom: 40px;">
 
                             <div class="creature-header">
                                 <h2 class="creature-title">Zumbi Pútrido</h2>
-                                <small>Elemento: <span class="element-label element-badge podridao">Podridão</span> — Tipo: Morto-Vivo / Subcategoria: nenhuma</small>
+                                <small>Elemento: <span class="element-label element-badge podridao">Podridão</span> — Tipo: Morto-Vivo / Subcategoria: Nenhum</small>
                             </div>
 
                             <!-- Ilustração -->
@@ -848,17 +782,19 @@
                                 <img src="../../assets/zumbi.png" alt="Ilustração Zumbi Pútrido" onerror="this.style.display='none'">
                             </div>
 
+                            <!-- Descrição (colocada antes da ficha) -->
                             <div class="block-content description-above">
-                                <p>Cadáveres reanimados pela gosma viva da Podridão. Suas carnes pingam lodo negro, e seus olhos vazios refletem apenas o instinto de espalhar a infecção. Cada passo deixa um rastro de sangue dissolvido, e o ar ao redor cheira a carne podre e ferro oxidado.</p>
+                                <p>Cadáveres reanimados pela gosma viva da Podridão. Suas carnes pingam lodo negro, e seus olhos vazios refletem apenas o instinto de espalhar a infecção. Cada passo deixa um rastro de sangue dissolvido, e o ar ao redor cheira a carne podre e ferro oxidado. O parasita dentro deles os mantém “vivos”, pulsando sob a pele necrosada.</p>
                             </div>
 
+                            <!-- Ficha técnica -->
                             <div class="stat-block">
                                 <header class="stat-header">
                                     <div class="header-name">
                                         <h1>Zumbi Pútrido</h1>
                                         <span><span class="element-label element-badge podridao">Podridão</span> / Morto-Vivo</span>
                                     </div>
-                                    <div class="header-ndd">4</div>
+                                    <div class="header-ndd">38</div>
                                 </header>
 
                                 <div class="main-stats">
@@ -873,7 +809,7 @@
                                             <p>Sen: 2</p>
                                             <p>FM: 5</p>
                                             <p>FR: 5</p>
-                                            <p>COS: 90%</p>
+                                            <p>COS: 6</p>
                                         </div>
                                     </section>
 
@@ -904,7 +840,7 @@
                                     <section class="behavior-section">
                                         <h2 class="block-title">Comportamento em Combate</h2>
                                         <div class="block-content">
-                                            <p>Move-se de forma lenta e irregular, guiado pelo instinto de espalhar a infecção. Prioriza alvos feridos ou isolados e não cede até ser destruído ou queimado.</p>
+                                            <p>O Zumbi Pútrido se move de forma lenta e irregular, guiado apenas pelo instinto de espalhar a infecção. Ele prioriza alvos feridos ou isolados, tentando agarrá-los para contaminá-los. Não sente dor, não foge e continua lutando mesmo com o corpo parcialmente destruído. Só cessa quando é completamente despedaçado ou queimado.</p>
                                         </div>
                                     </section>
                                 </div>
@@ -914,28 +850,37 @@
                                         <h2 class="block-title">Ações</h2>
                                         <div class="block-content">
                                             <div class="action-block">
-                                                <h3>Garras Enlameadas</h3>
-                                                <p><strong>Tipo:</strong> Corpo a corpo (Físico / Podridão)</p>
+                                                <h3>Ação Padrão</h3>
+                                                <h4>Garras Enlameadas (Físico / Podridão)</h4>
                                                 <p><strong>Alcance:</strong> Curto</p>
-                                                <p><strong>Dano:</strong> 2d8 + FM (Podridão)</p>
-                                                <p><strong>Efeito Especial:</strong> Se causar dano, o alvo faz <strong>RE (CT 15)</strong> ou fica <em>Amalgamado</em>. Em caso de falha do zumbi no ataque, cria uma <strong>área escorregadia</strong> de 2B x 1B à frente (DES CT 12 para não cair). Seca após 2 turnos.</p>
+                                                <p><strong>Dano:</strong> 2d8 + 5 (Podridão)</p>
+                                                <p><strong>Efeito Especial:</strong> Se o ataque causar dano, o alvo deve realizar um teste de <strong>RE (CT 15)</strong>. Em falha, é afetado pela condição <strong>Amalgamado</strong>.</p>
+                                                <p><strong>Falha:</strong> O zumbi erra o golpe e sua gosma salpica o chão, criando uma <strong>área escorregadia de 2B de largura e 1B de profundidade à frente dele</strong>. Criaturas que entrarem ou terminarem seu turno nessa área devem realizar um teste de <strong>DES (CT 12)</strong> ou cair <strong>derrubadas</strong>. A área seca após 2 turnos.</p>
                                             </div>
 
                                             <div class="action-block">
-                                                <h3>Vômito Pestilento (Ação Completa)</h3>
+                                                <h3>Ação Completa</h3>
+                                                <h4>Vômito Pestilento (Podridão)</h4>
                                                 <p><strong>Alcance:</strong> Cone de 3B à frente</p>
                                                 <p><strong>Dano:</strong> 2d10 + 3 (Podridão)</p>
-                                                <p><strong>Efeito Especial:</strong> Alvos que falharem em <strong>RE (CT 13)</strong> ficam <em>Amalgamados</em>. Em falha do zumbi, sofre 1d6 de dano.</p>
+                                                <p><strong>Efeito Especial:</strong> Criaturas atingidas que falharem em <strong>RE (CT 13)</strong> ficam <strong>Amalgamadas</strong>.</p>
+                                                <p><strong>Falha:</strong> O zumbi regurgita apenas bile e se enfraquece, sofrendo 1d6 de dano.</p>
                                             </div>
                                         </div>
                                     </section>
 
                                     <section class="abilities-section">
-                                        <h2 class="block-title">Habilidades Especiais</h2>
+                                        <h2 class="block-title">Habilidades Passivas / Ativas</h2>
                                         <div class="block-content">
-                                            <p><strong>Carne Infecta:</strong> Sempre que sofre dano físico corpo a corpo, o atacante faz <strong>RE (CT 12)</strong> ou fica <em>Amalgamado</em>.</p>
+                                            <p><strong>Carne Infecta:</strong> Sempre que o Zumbi Pútrido sofre dano físico corpo a corpo, o atacante deve realizar um teste de <strong>RE (CT 12)</strong> ou ficar <strong>Amalgamado</strong>.</p>
+                                            <p><strong>Miasma de Decomposição:</strong> Criaturas a até <strong>2B</strong> do zumbi têm desvantagem em testes de Cura e Suporte devido ao ar tóxico que o proprio exala.</p>
+                                        </div>
+                                    </section>
 
-                                            <p><strong>Miasma de Decomposição:</strong> Criaturas até 2B do zumbi têm desvantagem em testes de Cura e Suporte.</p>
+                                    <section class="scenario-section">
+                                        <h2 class="block-title">Cenário</h2>
+                                        <div class="block-content">
+                                            <p>Comuns nas fronteiras da <strong>Área da Podridão</strong>, ou em ruínas tomadas por sua influência. Costumam aparecer em grupos pequenos, movidos pelo mesmo parasita que os originou. São frequentemente a <strong>primeira forma de contato direto</strong> de aventureiros inexperientes com a infecção da Podridão, testando sua resistência e capacidade de sobrevivência. Em locais de longa exposição, podem surgir <strong>Zumbis Pútridos Maiores</strong>, com corpos fusionados e múltiplos parasitas.</p>
                                         </div>
                                     </section>
                                 </div>
@@ -943,7 +888,7 @@
                         </div>
 
                         <!-- Carniceiro (Podridão) — ficha atualizada com conteúdo do usuário -->
-                        <div id="carniceiro-da-agonia" class="creature-item element-podridao column debug-force-theme carniceiro" style="background: linear-gradient(180deg,#2a0606 0%, #580808 50%, #160404 100%); border:3px solid #9b1111; color:#fff;">
+                        <div id="carniceiro" class="creature-item element-podridao column carniceiro" style="background: linear-gradient(180deg,#2a0606 0%, #580808 50%, #160404 100%); border:3px solid #9b1111; color:#fff;">
 
                             <div class="creature-header">
                                 <h2 class="creature-title">Carniceiro da Agonia</h2>
@@ -971,21 +916,21 @@
                                         <h1>Carniceiro da Agonia</h1>
                                         <span><span class="element-label element-badge podridao">Podridão</span> / Criatura (<span class="element-badge pesadelo">Pesadelo</span>)</span>
                                     </div>
-                                    <div class="header-ndd">64</div>
+                                    <div class="header-ndd">96</div>
                                 </header>
 
                                 <div class="main-stats">
                                     <section class="attributes-section">
                                         <h2 class="block-title">Atributos</h2>
                                         <div class="block-content attributes-grid">
-                                            <p>Des: 4</p>
+                                            <p>Des: 8</p>
                                             <p>Int: 6</p>
                                             <p>RE: 7</p>
                                             <p>RF: 5</p>
                                             <p>SA: 5</p>
                                             <p>Sen: 8</p>
                                             <p>FM: 1</p>
-                                            <p>FR: 8</p>
+                                            <p>FR: 3</p>
                                             <p>COS: 90%</p>
                                         </div>
                                     </section>
@@ -995,7 +940,7 @@
                                         <div class="block-content">
                                             <p><strong>Pontos de Vida (PV):</strong> 7120</p>
                                             <p><strong>DEF (Defesa Física):</strong> 239</p>
-                                            <p><strong>DEFe (Defesa Elementar):</strong> 313</p>
+                                            <p><strong>DEFe (Defesa Elementar):</strong> 13</p>
                                         </div>
                                     </section>
 
@@ -1010,7 +955,7 @@
                                     <section class="movement-section">
                                         <h2 class="block-title">Movimento</h2>
                                         <div class="block-content">
-                                            <p>9B - Locais abertos troca para 15B</p>
+                                            <p>9B</p>
                                         </div>
                                     </section>
 
@@ -1030,15 +975,15 @@
                                                 <h3>Padrão — Garras</h3>
                                                 <p><strong>Tipo:</strong> Corpo a corpo</p>
                                                 <p><strong>Ataques:</strong> 2 ataques por turno</p>
-                                                <p><strong>Dano:</strong> 3d15 + 2 + FR de dano físico por ataque</p>
-                                                <p><strong>Efeito:</strong> Chance de aplicar <em>Sangramento Leve [Escala somente até o médio]</em> (1d20 + RF do alvo | CD: 18)</p>
+                                                <p><strong>Dano:</strong> 1d8 + 2 de dano físico por ataque</p>
+                                                <p><strong>Efeito:</strong> Chance de aplicar <em>Sangramento Leve</em> (1d20 + FR | CD: 18). Sangramento: 1d3 por turno por 2 turnos.</p>
                                             </div>
 
                                             <div class="action-block">
                                                 <h3>Especial — Arremesso de Braços</h3>
-                                                <p><strong>Descrição:</strong> Projeta dois de seus braços para atacar um alvo à distância (alcance de até 4 Blocos).</p>
-                                                <p><strong>Dano:</strong> 2d6 + 2 + FR</p>
-                                                <p><strong>Efeito:</strong> Chance de aplicar <em>Sangramento Leve [Escala somente até o médio]</em> (1d20 + RF do alvo | CD: 18)</p>
+                                                <p><strong>Descrição:</strong> Projeta dois de seus braços para atacar um alvo à distância (alcance de até 10 Blocos).</p>
+                                                <p><strong>Dano:</strong> 2d6</p>
+                                                <p><strong>Efeito:</strong> Prende o alvo por 1 turno. (RF: CD 16)</p>
                                             </div>
 
                                             <div class="action-block">
@@ -1048,9 +993,8 @@
                                                 <p><strong>Teste:</strong> FR do Carniceiro vs RF do alvo (CD 20)</p>
                                                 <p><strong>Efeito:</strong> Se acertar, o alvo fica <em>Agarrado</em> e começa a ser puxado em direção ao Carniceiro. Enquanto estiver Agarrado: –1 DES e suas esquivas ganham desvantagem. A cada turno do Carniceiro, o alvo é puxado mais 2B.</p>
                                                 <p><strong>Execução:</strong> Se o alvo for puxado até 1 Bloco de distância do Carniceiro enquanto ainda estiver agarrado por este tentáculo, ele é <strong>EXECUTADO</strong> instantaneamente.</p>
-                                                <p><strong>Execução de oportunidade:</strong> Qualquer alvo até 1 Bloco de distância do Carniceiro é agarrado instantaneamente, ele é <strong>EXECUTADO</strong> instantaneamente.</p>
-                                                <p><strong>Como se soltar:</strong> O alvo pode usar ação padrão para tentar escapar do tentáculo (RF ou INT | CD 18). Aliados podem cortar o tentáculo (PV 20).</p>
-                                                <p><strong>Reação:</strong> Carniceiro pode realizar um agarrão como reação. [4B]</p>
+                                                <p><strong>Como se soltar:</strong> O alvo pode usar ação padrão para tentar escapar (RF ou INT | CD 18). Aliados podem cortar o tentáculo (PV 20).</p>
+                                                <p><strong>Reação:</strong> Caso um aliado ataque o alvo do Carniceiro, o Carniceiro pode realizar um agarrão como reação.</p>
                                             </div>
                                         </div>
                                     </section>
@@ -1060,7 +1004,7 @@
                                         <div class="block-content">
                                             <p><strong>Medo Instintivo:</strong> A presença do Carniceiro é tão avassaladora que presas próximas devem realizar um teste de resistência mental (INT: CD 15) ao entrar em sua área (9 Blocos) ou ficar <em>Aterrorizadas</em> até o fim do combate, reduzindo sua capacidade de reação em -1 de DES.</p>
 
-                                            <p><strong>Regeneração Carnicenta:</strong> Recupera 1d10 pontos de vida ao final de cada turno se estiver em combate e se, em seu turno passado, tiver causado dano corpo a corpo a um alvo.</p>
+                                            <p><strong>Regeneração Carnicenta:</strong> Recupera 1d10 pontos de vida ao final de cada turno se estiver em combate e se, em seu turno passado, tiver causado dano a um alvo.</p>
 
                                             <p><strong>Olhar Onipresente:</strong> Sua máscara com inúmeros olhos permite que ele detecte alvos escondidos ou invisíveis em um raio de 7 Blocos, anulando furtividade.</p>
                                         </div>
@@ -1071,7 +1015,7 @@
                                         <div class="block-content">
                                             <p><strong>Carniceiro Voraz:</strong> Em combate, o Carniceiro se adapta ao ambiente para caçar suas presas. Em áreas densas como florestas, ele recebe +1 em acerto.</p>
                                             <p><strong>Ilusões:</strong> O Carniceiro consegue criar ilusões de passos e sons ao redor do cenário, sem origem necessária.</p>
-                                            <p><strong>Manto das Lâminas:</strong> Seu manto avermelhado e preto, coberto por pequenos espinhos, proporciona proteção natural. Quando receber ataques corpo a corpo, o carniceiro causa 1d8 de dano cortante ao seu atacante..</p>
+                                            <p><strong>Manto das Lâminas:</strong> Seu manto avermelhado e preto, coberto por pequenos espinhos, proporciona proteção natural. Quando usado ofensivamente, o manto causa 1d15 + 2 de dano em todos os inimigos próximos (raio de 3 metros).</p>
                                         </div>
                                     </section>
 
@@ -1097,12 +1041,13 @@
     <footer class="main-footer">
         <div class="container">
             <p>&copy; 2025 Wuitalur Sistema de RPG. Todos os direitos reservados.</p>
-            <p id="site-version" style="font-size: 0.8em; opacity: 0.9; margin-top: 6px; color: #b8a1d9;"> <button id="version-btn" class="version-button" type="button"><span id="build-version">Alpha 1.0.0</span></button> &nbsp;-&nbsp;<span id="build-date">28/10/2025</span></p>
+            <p style="font-size: 0.8em; opacity: 0.8; margin-top: 6px; color: #b8a1d9;">
+                Alpha 1.0.0 - 28/10/2025
+            </p>
         </div>
     </footer>
 
     <script src="../../script/main.js"></script>
-    <script src="../../script/conditions.js" defer></script>
     <script>
         // Inicializa navegação por elementos do Bestiário
         (function(){
@@ -1142,63 +1087,81 @@
             }
         })();
     </script>
-    <script>
-    // Catalog navigation: abre painel, faz scroll e destaca o cartão alvo
-    (function(){
-        function openElementPanel(name){
-            document.querySelectorAll('.element-panel').forEach(p=> p.setAttribute('aria-hidden','true'));
-            const panel = document.querySelector('.element-panel[data-element="'+name+'"]');
-            if(panel) panel.setAttribute('aria-hidden','false');
-            document.querySelectorAll('.element-tab').forEach(btn=>{
-                btn.setAttribute('aria-pressed', btn.dataset.element===name ? 'true' : 'false');
-            });
-        }
+  <script>
+    window.LOGIN_PATH = '../../../Pag_Principal/html/index.html';
+  </script>
 
-        document.addEventListener('click', function(e){
-            const a = e.target.closest && e.target.closest('.catalog-link');
-            if(!a) return;
-            e.preventDefault();
-            const href = a.getAttribute('href');
-            const id = href && href.startsWith('#') ? href.slice(1) : null;
-            // Abre painel de Podridão
-            openElementPanel('podridao');
-            // Scroll e destaque
-            if(id){
-                const target = document.getElementById(id);
-                if(target){
-                    // permitir time para o painel abrir (se necessário)
-                    setTimeout(()=>{
-                        try{ target.scrollIntoView({behavior:'smooth', block:'start'}); }catch(e){ target.scrollIntoView(); }
-                        target.setAttribute('tabindex','-1');
-                        try{ target.focus({preventScroll:true}); }catch(e){ target.focus(); }
-                        target.classList.add('highlight-target');
-                        setTimeout(()=> target.classList.remove('highlight-target'), 2400);
-                    }, 60);
-                }
-            }
-            // marca link ativo
-            document.querySelectorAll('.catalog-link').forEach(l=> l.classList.remove('active'));
-            a.classList.add('active');
-        });
+  <!-- MODAL DE PERFIL -->
+  <div id="profile-modal" class="modal" style="display:none; z-index: 2000; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%;">
+    <div class="modal-overlay" onclick="closeProfileModal()" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8);"></div>
+    <div class="modal-content" style="width: 600px; max-width: 90%; background: #1a1a2e; padding: 30px; border-radius: 12px; position: relative; border: 1px solid #444; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+      <button class="modal-close" onclick="closeProfileModal()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; z-index: 10;">&times;</button>
+      
+      <div class="modal-body" style="color: #ededed;">
+        <h2 style="color: #b8a1d9; margin-top: 0; font-size: 2rem; text-align: center; margin-bottom: 30px; font-family: 'Playfair Display', serif;">Perfil do Viajante</h2>
+        
+        <div style="display:flex; flex-direction:column; gap:20px;">
+            
+            <!-- Avatar Section (Centered & Big) -->
+            <div style="display:flex; flex-direction:column; align-items:center; gap:15px;">
+                <div style="position: relative; width: 120px; height: 120px;">
+                    <img id="profile-avatar-preview" src="" style="width:100%; height:100%; border-radius:50%; object-fit:cover; border: 3px solid #b8a1d9; box-shadow: 0 0 20px rgba(184, 161, 217, 0.3); background: #2a2a40;">
+                    <label for="profile-avatar-upload" style="position: absolute; bottom: 0; right: 0; background: #6a11cb; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">
+                        <i class="fas fa-camera" style="color: white; font-size: 14px;"></i>
+                    </label>
+                </div>
+                <input type="file" id="profile-avatar-upload" accept="image/*" style="display: none;">
+                <input type="hidden" id="profile-avatar-url">
+                <p style="margin:0; color:#aaa; font-size:0.9rem;">Clique na câmera para alterar</p>
+            </div>
 
-        // Ao carregar com hash, tenta abrir o painel e destacar
-        window.addEventListener('load', function(){
-            const hash = location.hash;
-            if(hash){
-                const id = hash.slice(1);
-                const target = document.getElementById(id);
-                if(target){
-                    openElementPanel('podridao');
-                    setTimeout(()=>{
-                        try{ target.scrollIntoView({behavior:'smooth', block:'start'}); }catch(e){ target.scrollIntoView(); }
-                        target.classList.add('highlight-target');
-                        setTimeout(()=> target.classList.remove('highlight-target'),2400);
-                    }, 60);
-                }
-            }
-        });
-    })();
-    </script>
-    <script src="../../../assets/js/version-popup.js" defer></script>
+            <!-- Info Grid -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <label style="display:block; margin-bottom:8px; color:#b8a1d9; font-weight: bold; font-size: 0.9rem;">Nome Exibido</label>
+                    <input type="text" id="profile-username" style="width:100%; padding:12px; background:#241e2b; border:1px solid #5d4a7a; color:#fff; border-radius:8px; outline:none;">
+                </div>
+                <div>
+                    <label style="display:block; margin-bottom:8px; color:#b8a1d9; font-weight: bold; font-size: 0.9rem;">Título</label>
+                    <input type="text" id="profile-title" placeholder="Ex: Guardião" style="width:100%; padding:12px; background:#241e2b; border:1px solid #5d4a7a; color:#fff; border-radius:8px; outline:none;">
+                </div>
+            </div>
+
+            <!-- Banner -->
+            <div>
+                <label style="display:block; margin-bottom:8px; color:#b8a1d9; font-weight: bold; font-size: 0.9rem;">Banner do Perfil</label>
+                <select id="profile-banner" style="width:100%; padding:12px; background:#241e2b; border:1px solid #5d4a7a; color:#fff; border-radius:8px; outline:none; cursor:pointer;">
+                    <option value="default">Padrão</option>
+                    <option value="forest">Floresta Negra</option>
+                    <option value="rot">Podridão</option>
+                    <option value="paladium">Paladium</option>
+                    <option value="cirus">Cirus</option>
+                </select>
+            </div>
+
+            <!-- Bio -->
+            <div>
+                <label style="display:block; margin-bottom:8px; color:#b8a1d9; font-weight: bold; font-size: 0.9rem;">Biografia</label>
+                <textarea id="profile-bio" rows="4" placeholder="Conte sua história..." style="width:100%; padding:12px; background:#241e2b; border:1px solid #5d4a7a; color:#fff; border-radius:8px; resize: vertical; font-family: inherit; outline:none;"></textarea>
+            </div>
+
+            <!-- Actions -->
+            <div style="display: flex; gap: 15px; margin-top: 10px;">
+                <button id="btn-save-profile" onclick="saveProfile()" style="flex: 2; padding:14px; background:linear-gradient(45deg, #6a11cb, #2575fc); color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold; font-size: 1rem; transition: transform 0.2s;">Salvar Alterações</button>
+                <button onclick="logout()" style="flex: 1; padding:14px; background:transparent; border:1px solid #ff6b6b; color:#ff6b6b; border-radius:8px; cursor:pointer; font-weight:bold; font-size: 1rem; transition: background 0.2s;">Sair</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts do Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  
+  <script src="../../../Pag_Principal/js/firebase-config.js"></script>
+  <script src="../../../Pag_Principal/js/session.js"></script>
 </body>
 </html>

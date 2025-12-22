@@ -6,6 +6,7 @@
     <title>Cirus - A Cidade Perdida</title>
     <link rel="icon" href="../../Imagens/Site_Icone.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* === PALETA DE CIRUS - CIDADE PERDIDA === */
         :root {
@@ -752,5 +753,82 @@
         });
     </script>
     <script src="../../../assets/js/version-popup.js" defer></script>
+
+  <script>
+    window.LOGIN_PATH = '../../../Pag_Principal/html/index.html';
+  </script>
+
+  <!-- MODAL DE PERFIL -->
+  <div id="profile-modal" class="modal" style="display:none; z-index: 2000; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%;">
+    <div class="modal-overlay" onclick="closeProfileModal()" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8);"></div>
+    <div class="modal-content" style="width: 600px; max-width: 90%; background: #1a1a2e; padding: 30px; border-radius: 12px; position: relative; border: 1px solid #444; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+      <button class="modal-close" onclick="closeProfileModal()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; z-index: 10;">&times;</button>
+      
+      <div class="modal-body" style="color: #ededed;">
+        <h2 style="color: #b8a1d9; margin-top: 0; font-size: 2rem; text-align: center; margin-bottom: 30px; font-family: 'Playfair Display', serif;">Perfil do Viajante</h2>
+        
+        <div style="display:flex; flex-direction:column; gap:20px;">
+            
+            <!-- Avatar Section (Centered & Big) -->
+            <div style="display:flex; flex-direction:column; align-items:center; gap:15px;">
+                <div style="position: relative; width: 120px; height: 120px;">
+                    <img id="profile-avatar-preview" src="" style="width:100%; height:100%; border-radius:50%; object-fit:cover; border: 3px solid #b8a1d9; box-shadow: 0 0 20px rgba(184, 161, 217, 0.3); background: #2a2a40;">
+                    <label for="profile-avatar-upload" style="position: absolute; bottom: 0; right: 0; background: #6a11cb; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">
+                        <i class="fas fa-camera" style="color: white; font-size: 14px;"></i>
+                    </label>
+                </div>
+                <input type="file" id="profile-avatar-upload" accept="image/*" style="display: none;">
+                <input type="hidden" id="profile-avatar-url">
+                <p style="margin:0; color:#aaa; font-size:0.9rem;">Clique na câmera para alterar</p>
+            </div>
+
+            <!-- Info Grid -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <label style="display:block; margin-bottom:8px; color:#b8a1d9; font-weight: bold; font-size: 0.9rem;">Nome Exibido</label>
+                    <input type="text" id="profile-username" style="width:100%; padding:12px; background:#241e2b; border:1px solid #5d4a7a; color:#fff; border-radius:8px; outline:none;">
+                </div>
+                <div>
+                    <label style="display:block; margin-bottom:8px; color:#b8a1d9; font-weight: bold; font-size: 0.9rem;">Título</label>
+                    <input type="text" id="profile-title" placeholder="Ex: Guardião" style="width:100%; padding:12px; background:#241e2b; border:1px solid #5d4a7a; color:#fff; border-radius:8px; outline:none;">
+                </div>
+            </div>
+
+            <!-- Banner -->
+            <div>
+                <label style="display:block; margin-bottom:8px; color:#b8a1d9; font-weight: bold; font-size: 0.9rem;">Banner do Perfil</label>
+                <select id="profile-banner" style="width:100%; padding:12px; background:#241e2b; border:1px solid #5d4a7a; color:#fff; border-radius:8px; outline:none; cursor:pointer;">
+                    <option value="default">Padrão</option>
+                    <option value="forest">Floresta Negra</option>
+                    <option value="rot">Podridão</option>
+                    <option value="paladium">Paladium</option>
+                    <option value="cirus">Cirus</option>
+                </select>
+            </div>
+
+            <!-- Bio -->
+            <div>
+                <label style="display:block; margin-bottom:8px; color:#b8a1d9; font-weight: bold; font-size: 0.9rem;">Biografia</label>
+                <textarea id="profile-bio" rows="4" placeholder="Conte sua história..." style="width:100%; padding:12px; background:#241e2b; border:1px solid #5d4a7a; color:#fff; border-radius:8px; resize: vertical; font-family: inherit; outline:none;"></textarea>
+            </div>
+
+            <!-- Actions -->
+            <div style="display: flex; gap: 15px; margin-top: 10px;">
+                <button id="btn-save-profile" onclick="saveProfile()" style="flex: 2; padding:14px; background:linear-gradient(45deg, #6a11cb, #2575fc); color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold; font-size: 1rem; transition: transform 0.2s;">Salvar Alterações</button>
+                <button onclick="logout()" style="flex: 1; padding:14px; background:transparent; border:1px solid #ff6b6b; color:#ff6b6b; border-radius:8px; cursor:pointer; font-weight:bold; font-size: 1rem; transition: background 0.2s;">Sair</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts do Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  
+  <script src="../../../Pag_Principal/js/firebase-config.js"></script>
+  <script src="../../../Pag_Principal/js/session.js"></script>
 </body>
 </html>
