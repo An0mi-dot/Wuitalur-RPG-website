@@ -94,6 +94,15 @@
           <p class="card-desc">Lore, cidades, personagens e eventos que moldam o mundo.</p>
         </div>
       </a>
+      <a href="comunidade.html" class="feature-card" aria-label="Veja a comunidade de viajantes">
+        <div style="width: 100%; height: 150px; background: linear-gradient(45deg, #2a2a40, #1a1a2e); display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-users" style="font-size: 50px; color: #b8a1d9;"></i>
+        </div>
+        <div class="card-content">
+          <h3>Comunidade</h3>
+          <p class="card-desc">Conheça outros viajantes e veja seus perfis.</p>
+        </div>
+      </a>
     </section>
 
   </main>
@@ -164,20 +173,24 @@
     // Abrir modal
     document.querySelectorAll('.feature-card').forEach(card => {
       card.addEventListener('click', (e) => {
-        e.preventDefault();
         const modalType = card.dataset.modal;
-        const data = modalData[modalType];
+        
+        // Se tiver data-modal, abre o modal. Se não, segue o link normal (href)
+        if (modalType) {
+            e.preventDefault();
+            const data = modalData[modalType];
 
-        if (data) {
-          modalImg.src = data.image;
-          modalImg.alt = data.title;
-          modalTitle.textContent = data.title;
-          modalDescription.textContent = data.description;
-          modalBtn.onclick = () => window.location.href = data.link;
+            if (data) {
+              modalImg.src = data.image;
+              modalImg.alt = data.title;
+              modalTitle.textContent = data.title;
+              modalDescription.textContent = data.description;
+              modalBtn.onclick = () => window.location.href = data.link;
 
-          modal.classList.add('active');
-          document.body.style.overflow = 'hidden';
-          document.body.classList.add('modal-open');
+              modal.classList.add('active');
+              document.body.style.overflow = 'hidden';
+              document.body.classList.add('modal-open');
+            }
         }
       });
     });
@@ -239,13 +252,17 @@
 
             <!-- Banner -->
             <div>
-                <label style="display:block; margin-bottom:8px; color:#b8a1d9; font-weight: bold; font-size: 0.9rem;">Banner do Perfil</label>
+                <label style="display:block; margin-bottom:8px; color:#b8a1d9; font-weight: bold; font-size: 0.9rem;">Banner do Perfil (Elemento)</label>
                 <select id="profile-banner" style="width:100%; padding:12px; background:#241e2b; border:1px solid #5d4a7a; color:#fff; border-radius:8px; outline:none; cursor:pointer;">
                     <option value="default">Padrão</option>
-                    <option value="forest">Floresta Negra</option>
-                    <option value="rot">Podridão</option>
-                    <option value="paladium">Paladium</option>
-                    <option value="cirus">Cirus</option>
+                    <option value="nulidrico">Nulídrico</option>
+                    <option value="solar">Solar</option>
+                    <option value="estase">Estase</option>
+                    <option value="praga">Praga</option>
+                    <option value="pesadelo">Pesadelo</option>
+                    <option value="sagrado">Sagrado</option>
+                    <option value="electro">Electro</option>
+                    <option value="podridao">Podridão</option>
                 </select>
             </div>
 

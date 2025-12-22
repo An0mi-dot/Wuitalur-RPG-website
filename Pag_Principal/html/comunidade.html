@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wuitalur - Comunidade</title>
+  <link rel="icon" href="../../Historia/Imagens/Site_Icone.png" type="image/png">
+  <link rel="stylesheet" href="../css/style.css?v=2.3" />
+  <link rel="stylesheet" href="../../assets/css/version-popup.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  <style>
+    /* Estilos específicos da Comunidade */
+    .community-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .user-card {
+        background: rgba(30, 30, 40, 0.8);
+        border: 1px solid #444;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .user-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
+        border-color: #6a11cb;
+    }
+
+    .user-card-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin: 0 auto 15px;
+        border: 2px solid #b8a1d9;
+        object-fit: cover;
+        background-color: #2a2a40;
+    }
+
+    .user-card-name {
+        color: #fff;
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+    }
+
+    .user-card-title {
+        color: #aaa;
+        font-size: 0.9rem;
+    }
+
+    .search-container {
+        text-align: center;
+        margin: 100px auto 30px; /* Margem superior para compensar o header fixo se houver, ou apenas espaçamento */
+        max-width: 600px;
+        padding: 0 20px;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 15px;
+        border-radius: 30px;
+        border: 1px solid #555;
+        background: rgba(0,0,0,0.5);
+        color: #fff;
+        font-size: 1rem;
+        outline: none;
+        transition: border-color 0.3s;
+    }
+
+    .search-input:focus {
+        border-color: #6a11cb;
+    }
+
+    /* Modal Público */
+    .public-profile-content {
+        background: #151520;
+        border: 1px solid #6a11cb;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- PARTÍCULAS DE FUNDO -->
+  <div class="particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+
+  <header class="site-bar">
+      <div style="position: absolute; left: 20px; top: 20px;">
+          <a href="index.html" style="color: #fff; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+              <i class="fas fa-arrow-left"></i> Voltar
+          </a>
+      </div>
+
+      <div class="user-profile-area" style="position: absolute; right: 20px; top: 20px; display: flex; align-items: center; gap: 10px; cursor: pointer; z-index: 1000;" onclick="openProfileModal()">
+          <span id="user-name-display" style="color: #fff; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Carregando...</span>
+          <div id="header-profile-img" style="width: 35px; height: 35px; background: linear-gradient(45deg, #6a11cb, #2575fc); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.3); background-size: cover; background-position: center;">
+              <i class="fas fa-user" style="color: white;"></i>
+          </div>
+      </div>
+  </header>
+
+  <main class="main-content">
+
+    <div class="search-container">
+        <h1 style="color: #b8a1d9; font-family: 'Playfair Display', serif; margin-bottom: 20px;">Guilda de Viajantes</h1>
+        <input type="text" id="search-users" class="search-input" placeholder="Buscar viajante por nome..." onkeyup="filterUsers()">
+    </div>
+
+    <div id="users-grid" class="community-grid">
+        <!-- Os cards serão injetados aqui via JS -->
+        <p style="color: #aaa; text-align: center; grid-column: 1/-1;">Carregando viajantes...</p>
+    </div>
+
+  </main>
+
+  <!-- MODAL DE PERFIL PÚBLICO (READ-ONLY) -->
+  <div id="public-profile-modal" class="modal" style="display:none; z-index: 2000; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%;">
+    <div class="modal-overlay" onclick="closePublicModal()" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8);"></div>
+    <div class="modal-content public-profile-content" style="width: 800px; max-width: 95%; padding: 40px; border-radius: 12px; position: relative; box-shadow: 0 0 30px rgba(106, 17, 203, 0.2); top: auto; left: auto; transform: none; margin: auto;">
+      <button class="modal-close" onclick="closePublicModal()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; z-index: 10;">&times;</button>
+      
+      <div class="modal-body" style="color: #ededed; text-align: center; display: block; padding: 0;">
+        
+        <!-- Banner/Header Visual -->
+        <div id="public-banner" style="height: 180px; background: #333; border-radius: 12px 12px 0 0; margin: -40px -40px 60px -40px; position: relative;">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent 0%, rgba(21, 21, 32, 0.8) 100%); border-radius: 12px 12px 0 0;"></div>
+            <div style="position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); width: 130px; height: 130px;">
+                <!-- Imagem do Avatar (se existir) -->
+                <img id="public-avatar" src="" style="width: 100%; height: 100%; border-radius: 50%; border: 5px solid #151520; object-fit: cover; background: #2a2a40; box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: none;">
+                
+                <!-- Ícone Padrão (se não tiver avatar) -->
+                <div id="public-avatar-default" style="width: 100%; height: 100%; border-radius: 50%; border: 5px solid #151520; background: linear-gradient(45deg, #6a11cb, #2575fc); box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center;">
+                    <i class="fas fa-user" style="font-size: 50px; color: white;"></i>
+                </div>
+            </div>
+        </div>
+
+        <h2 id="public-username" style="color: #fff; margin: 10px 0 5px; font-size: 2.2rem; font-family: 'Playfair Display', serif; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Nome</h2>
+        
+        <div style="display: inline-block; background: rgba(106, 17, 203, 0.2); padding: 5px 15px; border-radius: 20px; border: 1px solid rgba(106, 17, 203, 0.4); margin-bottom: 30px;">
+            <p id="public-title" style="color: #b8a1d9; margin: 0; font-size: 0.95rem; font-weight: 500; letter-spacing: 0.5px;">Título</p>
+        </div>
+
+        <div style="background: rgba(30, 30, 40, 0.6); padding: 25px; border-radius: 12px; text-align: left; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 0 20px rgba(0,0,0,0.2);">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                <i class="fas fa-book-open" style="color: #6a11cb;"></i>
+                <label style="color: #b8a1d9; font-size: 0.9rem; font-weight: bold; letter-spacing: 1px;">BIOGRAFIA</label>
+            </div>
+            <p id="public-bio" style="color: #e0e0e0; font-size: 1rem; line-height: 1.6; white-space: pre-wrap; font-family: 'Roboto', sans-serif;">...</p>
+        </div>
+
+        <div style="display: flex; justify-content: center; align-items: center; gap: 8px; opacity: 0.7;">
+            <i class="far fa-calendar-alt" style="font-size: 0.9rem;"></i>
+            <p id="public-joined" style="color: #aaa; font-size: 0.9rem; margin: 0;">Entrou em: ...</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE PERFIL (DO PRÓPRIO USUÁRIO - REUTILIZADO DO INDEX) -->
+  <div id="profile-modal" class="modal" style="display:none; z-index: 2000; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%;">
+    <div class="modal-overlay" onclick="closeProfileModal()" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8);"></div>
+    <div class="modal-content" style="width: 600px; max-width: 90%; background: #1a1a2e; padding: 30px; border-radius: 12px; position: relative; border: 1px solid #444; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+      <button class="modal-close" onclick="closeProfileModal()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; z-index: 10;">&times;</button>
+      <div class="modal-body" style="color: #ededed;">
+        <h2 style="color: #b8a1d9; margin-top: 0; font-size: 2rem; text-align: center; margin-bottom: 30px; font-family: 'Playfair Display', serif;">Seu Perfil</h2>
+        <div style="display:flex; flex-direction:column; gap:20px;">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:15px;">
+                <div style="position: relative; width: 120px; height: 120px;">
+                    <img id="profile-avatar-preview" src="" style="width:100%; height:100%; border-radius:50%; object-fit:cover; border: 3px solid #b8a1d9; box-shadow: 0 0 20px rgba(184, 161, 217, 0.3); background: #2a2a40;">
+                    <label for="profile-avatar-upload" style="position: absolute; bottom: 0; right: 0; background: #6a11cb; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">
+                        <i class="fas fa-camera" style="color: white; font-size: 14px;"></i>
+                    </label>
+                </div>
+                <input type="file" id="profile-avatar-upload" accept="image/*" style="display: none;">
+                <input type="hidden" id="profile-avatar-url">
+                <p style="margin:0; color:#aaa; font-size:0.9rem;">Clique na câmera para alterar</p>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <label style="display:block; margin-bottom:8px; color:#b8a1d9; font-weight: bold; font-size: 0.9rem;">Nome Exibido</label>
+                    <input type="text" id="profile-username" style="width:100%; padding:12px; background:#241e2b; border:1px solid #5d4a7a; color:#fff; border-radius:8px; outline:none;">
+                </div>
+                <div>
+                    <label style="display:block; margin-bottom:8px; color:#b8a1d9; font-weight: bold; font-size: 0.9rem;">Título</label>
+                    <input type="text" id="profile-title" placeholder="Ex: Guardião" style="width:100%; padding:12px; background:#241e2b; border:1px solid #5d4a7a; color:#fff; border-radius:8px; outline:none;">
+                </div>
+            </div>
+            <div>
+                <label style="display:block; margin-bottom:8px; color:#b8a1d9; font-weight: bold; font-size: 0.9rem;">Banner do Perfil (Elemento)</label>
+                <select id="profile-banner" style="width:100%; padding:12px; background:#241e2b; border:1px solid #5d4a7a; color:#fff; border-radius:8px; outline:none; cursor:pointer;">
+                    <option value="default">Padrão</option>
+                    <option value="nulidrico">Nulídrico</option>
+                    <option value="solar">Solar</option>
+                    <option value="estase">Estase</option>
+                    <option value="praga">Praga</option>
+                    <option value="pesadelo">Pesadelo</option>
+                    <option value="sagrado">Sagrado</option>
+                    <option value="electro">Electro</option>
+                    <option value="podridao">Podridão</option>
+                </select>
+            </div>
+            <div>
+                <label style="display:block; margin-bottom:8px; color:#b8a1d9; font-weight: bold; font-size: 0.9rem;">Biografia</label>
+                <textarea id="profile-bio" rows="4" placeholder="Conte sua história..." style="width:100%; padding:12px; background:#241e2b; border:1px solid #5d4a7a; color:#fff; border-radius:8px; resize: vertical; font-family: inherit; outline:none;"></textarea>
+            </div>
+            <div style="display: flex; gap: 15px; margin-top: 10px;">
+                <button id="btn-save-profile" onclick="saveProfile()" style="flex: 2; padding:14px; background:linear-gradient(45deg, #6a11cb, #2575fc); color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold; font-size: 1rem; transition: transform 0.2s;">Salvar Alterações</button>
+                <button onclick="logout()" style="flex: 1; padding:14px; background:transparent; border:1px solid #ff6b6b; color:#ff6b6b; border-radius:8px; cursor:pointer; font-weight:bold; font-size: 1rem; transition: background 0.2s;">Sair</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts do Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  
+  <script>
+    window.LOGIN_PATH = "login.html";
+  </script>
+  <script src="../js/firebase-config.js"></script>
+  <script src="../js/session.js"></script>
+  <script src="../js/comunidade.js"></script>
+</body>
+</html>
