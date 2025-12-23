@@ -2,26 +2,12 @@
 (function() {
     'use strict';
     
-    // Desabilitar menu de contexto (botão direito), mas permitir copiar se houver seleção
+    // Menu de contexto (botão direito) liberado para permitir copiar e colar nativamente
+    /*
     document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-        
-        const selection = window.getSelection().toString();
-        
-        if (selection && selection.length > 0) {
-            // Tenta copiar para a área de transferência
-            navigator.clipboard.writeText(selection).then(() => {
-                showSecurityAlert('Texto copiado!');
-            }).catch(err => {
-                console.error('Erro ao copiar: ', err);
-                showSecurityAlert('Erro ao copiar');
-            });
-        } else {
-            showSecurityAlert('Acesso negado');
-        }
-        
-        return false;
+        // Código removido para permitir uso normal do botão direito
     });
+    */
     
     // Desabilitar teclas de desenvolvedor
     document.addEventListener('keydown', function(e) {
