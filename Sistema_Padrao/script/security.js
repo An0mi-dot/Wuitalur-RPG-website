@@ -2,12 +2,80 @@
 (function() {
     'use strict';
     
-    // Menu de contexto (botão direito) liberado para permitir copiar e colar nativamente
-    /*
+    // Menu de contexto personalizado (botão direito)
     document.addEventListener('contextmenu', function(e) {
-        // Código removido para permitir uso normal do botão direito
+        e.preventDefault();
+        
+        // Remove qualquer menu existente
+        const existingMenu = document.getElementById('custom-context-menu');
+        if (existingMenu) existingMenu.remove();
+
+        const selection = window.getSelection().toString();
+        
+        if (selection && selection.length > 0) {
+            // Criar menu personalizado
+            const menu = document.createElement('div');
+            menu.id = 'custom-context-menu';
+            menu.style.cssText = `
+                position: fixed;
+                top: ${e.clientY}px;
+                left: ${e.clientX}px;
+                background: #2e2537;
+                border: 1px solid #5d4a7a;
+                border-radius: 6px;
+                padding: 4px;
+                z-index: 100000;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+                min-width: 120px;
+                animation: fadeIn 0.1s ease-out;
+            `;
+            
+            const copyBtn = document.createElement('div');
+            copyBtn.innerHTML = '<i class="fas fa-copy" style="margin-right: 8px;"></i>Copiar';
+            copyBtn.style.cssText = `
+                color: #ededed;
+                padding: 8px 12px;
+                font-family: 'Roboto', sans-serif;
+                font-size: 14px;
+                cursor: pointer;
+                border-radius: 4px;
+                display: flex;
+                align-items: center;
+                transition: background 0.2s;
+            `;
+            
+            copyBtn.onmouseover = () => copyBtn.style.background = '#3a3246';
+            copyBtn.onmouseout = () => copyBtn.style.background = 'transparent';
+            
+            copyBtn.onclick = function() {
+                navigator.clipboard.writeText(selection).then(() => {
+                    showSecurityAlert('Texto copiado!');
+                }).catch(err => {
+                    console.error('Erro ao copiar: ', err);
+                    showSecurityAlert('Erro ao copiar');
+                });
+                menu.remove();
+            };
+            
+            menu.appendChild(copyBtn);
+            document.body.appendChild(menu);
+            
+            // Fechar menu ao clicar fora
+            const closeMenu = (evt) => {
+                if (!menu.contains(evt.target)) {
+                    menu.remove();
+                    document.removeEventListener('click', closeMenu);
+                }
+            };
+            // Timeout para evitar que o próprio clique abra e feche
+            setTimeout(() => document.addEventListener('click', closeMenu), 10);
+            
+        } else {
+            showSecurityAlert('Acesso negado');
+        }
+        
+        return false;
     });
-    */
     
     // Desabilitar teclas de desenvolvedor
     document.addEventListener('keydown', function(e) {
