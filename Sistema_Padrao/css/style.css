@@ -31,6 +31,8 @@
     --cor-electro-seal: #05d9fa;
     --cor-nulidrico: #fa0000;
     --cor-pesadelo: #6e310d;
+    --cor-estase: #4a49ff;
+    --cor-praga: #505050;
 }
 
 /* === RESET E BASE === */
@@ -4086,6 +4088,14 @@ html.modal-open .main-content * {
     border-left: 5px solid var(--cor-pesadelo) !important;
 }
 
+.element-estase {
+    border-left: 5px solid var(--cor-estase) !important;
+}
+
+.element-praga {
+    border-left: 5px solid var(--cor-praga) !important;
+}
+
 .element-podridao h4 {
     color: var(--cor-podridao) !important;
 }
@@ -4108,6 +4118,14 @@ html.modal-open .main-content * {
 
 .element-pesadelo h4 {
     color: var(--cor-pesadelo) !important;
+}
+
+.element-estase h4 {
+    color: var(--cor-estase) !important;
+}
+
+.element-praga h4 {
+    color: var(--cor-praga) !important;
 }
 
 /* Estilização de nomes de elementos em texto */
