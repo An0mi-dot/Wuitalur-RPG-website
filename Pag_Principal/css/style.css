@@ -1044,3 +1044,120 @@ body.modal-open .main-content * {
   background: #ff4d4d;
   color: #fff;
 }
+
+/* === RESPONSIVIDADE MOBILE ADICIONAL === */
+@media (max-width: 768px) {
+  /* Ajustes do Header */
+  .main-header {
+    padding: 2rem 0;
+  }
+
+  .main-header h1 {
+    font-size: 2rem;
+    padding: 0 1rem;
+  }
+
+  .logo-img {
+    height: 100px;
+  }
+
+  /* Ajustes da Navbar */
+  .site-bar {
+    flex-direction: column;
+    height: auto;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  /* Ajustes da Grid de Comunidade */
+  .community-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+
+  .search-container {
+    margin-top: 20px !important;
+    flex-direction: column;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #search-input {
+    width: 100%;
+  }
+
+  /* Ajustes do Modal de Perfil Público */
+  .public-profile-content {
+    width: 95% !important;
+    margin: 10px auto;
+    max-height: 90vh;
+    border-radius: 10px;
+  }
+
+  .profile-banner {
+    height: 120px !important;
+  }
+
+  .profile-header {
+    margin-top: -40px !important;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 1rem;
+  }
+
+  .profile-avatar {
+    width: 100px !important;
+    height: 100px !important;
+    margin-right: 0 !important;
+    margin-bottom: 1rem;
+    border: 3px solid var(--cor-borda) !important;
+  }
+
+  .profile-info {
+    width: 100%;
+  }
+
+  .profile-stats {
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    min-width: auto;
+    flex: 1;
+  }
+
+  /* Ajustes Gerais de Layout */
+  .container {
+    padding: 0 1rem;
+  }
+
+  .feature-card {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-header h1 {
+    font-size: 1.6rem;
+  }
+
+  .community-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-button {
+    width: 100%;
+    padding: 12px;
+  }
+}

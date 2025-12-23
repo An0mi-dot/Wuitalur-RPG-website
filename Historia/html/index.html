@@ -202,6 +202,38 @@
         bottom: 0;
       }
 
+      /* Responsividade Mobile */
+      @media (max-width: 768px) {
+        .navbar a {
+          float: none;
+          display: block;
+          text-align: left;
+          padding: 10px 15px;
+        }
+        
+        .content {
+          padding: 40px 15px;
+        }
+
+        .title {
+          font-size: 1.8em;
+        }
+
+        .description {
+          font-size: 1em;
+          padding: 0 10px;
+        }
+
+        .cards {
+          gap: 15px;
+        }
+
+        .card {
+          width: 100%;
+          max-width: 280px;
+        }
+      }
+
       .message {
         display: none;
         position: fixed;

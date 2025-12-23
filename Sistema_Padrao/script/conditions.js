@@ -162,7 +162,9 @@ document.addEventListener('DOMContentLoaded', () => {
         tooltip.classList.remove('visible');
         // after transition ends, hide from layout
         const onEnd = () => {
-            tooltip.style.display = 'none';
+            if (!tooltip.classList.contains('visible')) {
+                tooltip.style.display = 'none';
+            }
             tooltip.removeEventListener('transitionend', onEnd);
         };
         tooltip.addEventListener('transitionend', onEnd);

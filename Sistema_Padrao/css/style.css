@@ -4300,3 +4300,50 @@ html.modal-open .main-content * {
         font-size: 1rem;
     }
 }
+
+/* === RESPONSIVIDADE GERAL DO SISTEMA === */
+@media (max-width: 768px) {
+    /* Header */
+    .main-header {
+        padding: 2rem 0;
+    }
+
+    .main-header h1 {
+        font-size: 2rem;
+        padding: 0 1rem;
+    }
+
+    .logo-img {
+        height: 100px;
+    }
+
+    /* Navbar */
+    .navbar .container {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .navbar a {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Container Principal */
+    .container {
+        padding: 0 1rem;
+    }
+
+    /* Tabelas Responsivas */
+    .san-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-header h1 {
+        font-size: 1.6rem;
+    }
+}

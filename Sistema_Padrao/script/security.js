@@ -2,10 +2,24 @@
 (function() {
     'use strict';
     
-    // Desabilitar menu de contexto (botão direito)
+    // Desabilitar menu de contexto (botão direito), mas permitir copiar se houver seleção
     document.addEventListener('contextmenu', function(e) {
         e.preventDefault();
-        showSecurityAlert('Acesso negado');
+        
+        const selection = window.getSelection().toString();
+        
+        if (selection && selection.length > 0) {
+            // Tenta copiar para a área de transferência
+            navigator.clipboard.writeText(selection).then(() => {
+                showSecurityAlert('Texto copiado!');
+            }).catch(err => {
+                console.error('Erro ao copiar: ', err);
+                showSecurityAlert('Erro ao copiar');
+            });
+        } else {
+            showSecurityAlert('Acesso negado');
+        }
+        
         return false;
     });
     
