@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wuitalur - Ficha Interativa</title>
+    <link rel="icon" href="../../Historia/Imagens/Site_Icone.png" type="image/png">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@400;700&family=Creepster&family=Butcherman&family=Permanent+Marker&family=Griffy&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css?v=1.4">
+    <link rel="stylesheet" href="../css/ficha.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="../script/abilities_db.js"></script>
+    <script src="../script/items_db.js"></script>
+</head>
+
+<body>
+    <!-- Partículas de fundo -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Header Principal -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-logo">
+                    <img src="../assets/Logo W.png" alt="Logo Wuitalur" class="logo-img">
+                </div>
+                <div class="header-text">
+                    <h1>Ficha de Personagem</h1>
+                    <p class="version">Wuitalur RPG</p>
+                </div>
+                <div class="header-nav">
+                    <a href="index.html" class="btn-home">← Voltar ao Sistema</a>
+                    <button id="btn-save" class="btn-home"><i class="fas fa-save"></i> Salvar</button>
+                    <button id="btn-load" class="btn-home"><i class="fas fa-upload"></i> Carregar</button>
+                    <button id="btn-clear" class="btn-home" style="background: rgba(200, 50, 50, 0.3);"><i class="fas fa-trash"></i> Limpar</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            
+            <!-- Informações Básicas -->
+            <section class="sheet-section" id="basic-info">
+                <input type="hidden" id="sheet-id">
+                <h3>Informações Básicas</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="char-name">Nome do Personagem</label>
+                        <input type="text" id="char-name" placeholder="Nome">
+                    </div>
+                    <div class="form-group">
+                        <label for="player-name">Jogador</label>
+                        <input type="text" id="player-name" placeholder="Seu Nome">
+                    </div>
+                    <div class="form-group">
+                        <label for="char-level">Nível</label>
+                        <input type="number" id="char-level" value="1" min="1" max="20">
+                    </div>
+                    <div class="form-group">
+                        <label for="char-class">Classe</label>
+                        <input type="text" id="char-class" list="class-list" placeholder="Escolha ou digite">
+                        <datalist id="class-list">
+                            <option value="Cavaleiros de Paladium">
+                            <option value="Rastejantes">
+                            <option value="Protegidos">
+                            <option value="Consagrados">
+                            <option value="Furtassaltantes">
+                        </datalist>
+                    </div>
+                    <div class="form-group">
+                        <label for="char-race">Raça</label>
+                        <input type="text" id="char-race" list="race-list" placeholder="Escolha ou digite">
+                        <datalist id="race-list">
+                            <option value="Akivus">
+                            <option value="Vampiros">
+                            <option value="E.X.Os (Doméstico)">
+                            <option value="E.X.Os (Guerra)">
+                            <option value="E.X.Os (Segurança)">
+                            <option value="Abissais">
+                            <option value="Espectros">
+                            <option value="Humanos">
+                            <option value="Praguentos">
+                            <option value="Insectóides">
+                            <option value="Híbridos (Animalescos)">
+                            <option value="Híbridos (Plantíferos)">
+                            <option value="Dragão Anão">
+                        </datalist>
+                    </div>
+                    <div class="form-group">
+                        <label for="char-origin">Origem</label>
+                        <input type="text" id="char-origin" list="origin-list" placeholder="Escolha ou digite">
+                        <datalist id="origin-list">
+                            <option value="Filho do Abismo">
+                            <option value="Guardião da Floresta">
+                            <option value="Herdeiro de Paladium">
+                            <option value="Experimento falho da Era Dourada">
+                            <option value="Descendente Croma">
+                            <option value="Descendente Floralis">
+                            <option value="Mercenário">
+                            <option value="Camponês">
+                            <option value="Nerd">
+                            <option value="Herdeiro da Forja">
+                            <option value="Morador da Cidade Inexistente">
+                            <option value="Médico">
+                            <option value="Guaraciense">
+                            <option value="Realeza Vampírica">
+                            <option value="Medroso">
+                            <option value="Celebridade">
+                            <option value="Ciborgue">
+                            <option value="Monstro do Mar">
+                            <option value="INSANO">
+                        </datalist>
+                    </div>
+                </div>
+            </section>
+
+            <div class="sheet-columns">
+                <!-- Coluna Esquerda: Atributos e Status -->
+                <div class="sheet-column-left">
+                    
+                    <!-- Status Principais -->
+                    <section class="sheet-section" id="status-stats">
+                        <h3>Status</h3>
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <label>PV (Vida)</label>
+                                <div class="stat-inputs">
+                                    <input type="number" id="hp-current" placeholder="Atual">
+                                    <span>/</span>
+                                    <input type="number" id="hp-max" placeholder="Máx">
+                                </div>
+                            </div>
+                            <div class="stat-box">
+                                <label>Sanidade</label>
+                                <div class="stat-inputs">
+                                    <input type="number" id="san-current" placeholder="Atual">
+                                    <span>/</span>
+                                    <input type="number" id="san-max" placeholder="Máx">
+                                </div>
+                            </div>
+                            <div class="stat-box">
+                                <label>PE (Energia)</label>
+                                <div class="stat-inputs">
+                                    <input type="number" id="pe-current" placeholder="Atual">
+                                    <span>/</span>
+                                    <input type="number" id="pe-max" placeholder="Máx">
+                                </div>
+                            </div>
+                            <div class="stat-box highlight">
+                                <label>Defesa (RF)</label>
+                                <input type="number" id="def-total" readonly>
+                                <span class="calc-info">Auto</span>
+                            </div>
+                            <div class="stat-box highlight">
+                                <label>Defesa Elem. (RE)</label>
+                                <input type="number" id="def-elem-total" readonly>
+                                <span class="calc-info">Auto</span>
+                            </div>
+                            <div class="stat-box">
+                                <label>Proficiência</label>
+                                <input type="number" id="proficiency" value="2">
+                            </div>
+                            <div class="stat-box">
+                                <label>Deslocamento</label>
+                                <input type="number" id="movement" value="9">
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Atributos -->
+                    <section class="sheet-section" id="attributes">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3>Atributos</h3>
+                            <div id="points-display" style="font-size: 0.9rem; font-weight: bold; color: #b8a1d9;">
+                                Pontos Restantes: <span id="points-remaining">4</span>
+                            </div>
+                        </div>
+                        <p class="hint">Valores de 1 a 8. Modificador é igual ao valor.</p>
+                        <div class="attributes-list">
+                            <!-- Gerado via JS ou Hardcoded -->
+                            <div class="attr-row">
+                                <label for="attr-for">Força (FR)</label>
+                                <input type="number" id="attr-for" class="attr-input" value="1" min="-10" max="8">
+                            </div>
+                            <div class="attr-row">
+                                <label for="attr-des">Destreza (DES)</label>
+                                <input type="number" id="attr-des" class="attr-input" value="1" min="-10" max="8">
+                            </div>
+                            <div class="attr-row">
+                                <label for="attr-int">Intelecto (INT)</label>
+                                <input type="number" id="attr-int" class="attr-input" value="1" min="-10" max="8">
+                            </div>
+                            <div class="attr-row">
+                                <label for="attr-rf">Res. Física (RF)</label>
+                                <input type="number" id="attr-rf" class="attr-input" value="1" min="-10" max="8">
+                            </div>
+                            <div class="attr-row">
+                                <label for="attr-re">Res. Elem. (RE)</label>
+                                <input type="number" id="attr-re" class="attr-input" value="1" min="-10" max="8">
+                            </div>
+                            <div class="attr-row">
+                                <label for="attr-sau">Saúde (SAU)</label>
+                                <input type="number" id="attr-sau" class="attr-input" value="1" min="-10" max="8">
+                            </div>
+                            <div class="attr-row">
+                                <label for="attr-sen">Sentidos (SEN)</label>
+                                <input type="number" id="attr-sen" class="attr-input" value="1" min="-10" max="8">
+                            </div>
+                            <div class="attr-row">
+                                <label for="attr-fam">Fama (FAM)</label>
+                                <input type="number" id="attr-fam" class="attr-input" value="1" min="-10" max="8">
+                            </div>
+                            <div class="attr-row special">
+                                <label for="attr-cosmo">COSMO (%)</label>
+                                <input type="number" id="attr-cosmo" class="attr-input" value="1" min="1" max="100">
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+
+                <!-- Coluna Direita: Perícias e Outros -->
+                <div class="sheet-column-right">
+                    
+                    <!-- Perícias -->
+                    <section class="sheet-section" id="skills">
+                        <h3>Perícias</h3>
+                        <div class="skills-header">
+                            <span>Treinado?</span>
+                            <span>Nome</span>
+                            <span>Attr</span>
+                            <span>Total</span>
+                        </div>
+                        <div id="skills-list-container">
+                            <!-- Preenchido via JS -->
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+
+            <!-- Habilidades de Raça (Automático) -->
+            <section class="sheet-section" id="race-abilities-section" style="display:none; margin-bottom: 20px;">
+                <h3>Habilidades de Raça</h3>
+                <div id="race-abilities-content" style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; border: 1px solid #444;">
+                    <!-- Preenchido via JS -->
+                </div>
+            </section>
+
+            <!-- Habilidades de Classe (Manual) -->
+            <section class="sheet-section" id="manual-class-system">
+                <div class="manual-section-header">
+                    <h3>Habilidades de Classe</h3>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="btn-open-library" class="btn-add" style="background: linear-gradient(45deg, #6a11cb, #2575fc);">📖 Grimório</button>
+                        <button id="btn-add-class-ability" class="btn-add">+ Adicionar</button>
+                    </div>
+                </div>
+                <div id="class-abilities-list" class="manual-list">
+                    <!-- Itens inseridos via JS -->
+                </div>
+
+                <div class="manual-section-header" style="margin-top: 20px; border-top: 1px solid #444; padding-top: 15px;">
+                    <h3>Habilidades de Arquétipo</h3>
+                    <button id="btn-add-archetype-ability" class="btn-add">+ Adicionar</button>
+                </div>
+                <div id="archetype-abilities-list" class="manual-list">
+                    <!-- Itens inseridos via JS -->
+                </div>
+
+                <div class="manual-section-header" style="margin-top: 20px; border-top: 1px solid #444; padding-top: 15px;">
+                    <h3>Habilidades de Selos</h3>
+                    <button id="btn-add-selo-ability" class="btn-add">+ Adicionar Selo</button>
+                </div>
+                <!-- Container usando grid para os cards de selos -->
+                <div id="selos-abilities-list" class="seal-grid-manual">
+                    <!-- Cards inseridos via JS -->
+                </div>
+            </section>
+
+            <!-- Habilidades de Origem (Automático) -->
+            <section class="sheet-section" id="origin-abilities-section" style="display:none; margin-bottom: 20px;">
+                <h3>Habilidades de Origem</h3>
+                <div id="origin-abilities-content" style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; border: 1px solid #444;">
+                    <!-- Preenchido via JS -->
+                </div>
+            </section>
+
+            <!-- Inventário e Ataques -->
+            <section class="sheet-section" id="inventory">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3>Inventário & Equipamentos</h3>
+                    <button id="btn-open-shop" class="btn-import-ability" style="background: linear-gradient(45deg, #FFC107, #FF9800); color: #000; font-weight: bold;">� Listar Itens</button>
+                </div>
+
+                <div class="inventory-stats" style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 6px; margin-bottom: 15px; display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.9rem;">
+                    <div title="Capacidade de Carga = (Força x 3) + 5">
+                        <i class="fas fa-weight-hanging"></i> Carga: <span id="weight-current" style="color: #fff; font-weight: bold;">0</span> / <span id="weight-max">?</span>
+                    </div>
+                    <div title="Itens Iniciais Gratuitos = 3 + Força">
+                        <i class="fas fa-gift"></i> Slots Iniciais: <span id="initial-items-current" style="color: #fff; font-weight: bold;">0</span> / <span id="initial-items-max">?</span>
+                    </div>
+                </div>
+
+                <div id="inventory-list" class="inventory-grid">
+                    <!-- Itens serão adicionados aqui -->
+                </div>
+                
+                <button id="btn-add-custom-item" class="btn-add" style="margin-top: 15px;">+ Item Personalizado</button>
+            </section>
+
+            <section class="sheet-section" id="abilities">
+                <h3>Inventário</h3>
+                <textarea id="abilities-text" rows="6" placeholder="Liste seus itens..."></textarea>
+            </section>
+
+        </div>
+    </main>
+
+    <script src="../script/abilities_db.js"></script>
+    <script src="../script/items_db.js"></script>
+    <script src="../script/ficha.js"></script>
+</body>
+
+</html>

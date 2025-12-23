@@ -2867,7 +2867,6 @@ body {
     padding: 0.8rem 1.2rem;
     background: rgba(135, 206, 235, 0.15);
     border-radius: 8px;
-    border-left: 4px solid var(--cor-destaque);
     font-weight: 600;
 }
 
@@ -2909,7 +2908,6 @@ body {
     padding: 0.6rem 1rem;
     background: linear-gradient(135deg, rgba(149, 117, 205, 0.2), rgba(149, 117, 205, 0.1));
     border-radius: 8px;
-    border-left: 4px solid var(--cor-destaque);
     font-weight: 600;
     position: relative;
     overflow: hidden;
@@ -3192,7 +3190,6 @@ body {
     background: rgba(0, 0, 0, 0.2);
     border-radius: 8px;
     padding: 1.5rem;
-    border-left: 3px solid var(--cor-destaque);
 }
 
 .nightmare-theme .ability-level {
@@ -4364,4 +4361,415 @@ html.modal-open .main-content * {
     .main-header h1 {
         font-size: 1.6rem;
     }
+}
+
+
+/* Utility classes for element colors */
+
+.color-podridao { color: var(--cor-podridao); }
+
+.color-solar { color: var(--cor-solar); }
+
+.color-sagrado { color: var(--cor-sagrado); }
+
+.color-electro { color: var(--cor-electro-seal); }
+
+.color-nulidrico { color: var(--cor-nulidrico); }
+
+.color-pesadelo { color: var(--cor-pesadelo); }
+
+.color-estase { color: var(--cor-estase); }
+
+.color-praga { color: var(--cor-praga); }
+
+/* === CONDIÇÕES === */
+.conditions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.condition-card {
+    background: rgba(36, 30, 43, 0.6);
+    border: 1px solid rgba(124, 111, 139, 0.2);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.condition-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border-color: var(--cor-destaque);
+}
+
+.condition-card h4 {
+    color: #d8b4fe; /* Roxo fraco */
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+}
+
+.condition-card p {
+    font-size: 0.95rem;
+    color: var(--cor-texto);
+    margin-bottom: 0.8rem;
+}
+
+.condition-card strong {
+    color: var(--cor-negrito);
+}
+
+.condition-card ul {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+    color: var(--cor-texto-sec);
+}
+
+/* Cores específicas para condições elementais */
+.condition-card.element-nulidrico { border-left: 4px solid var(--cor-nulidrico); }
+.condition-card.element-pesadelo { border-left: 4px solid var(--cor-pesadelo); }
+.condition-card.element-praga { border-left: 4px solid var(--cor-praga); }
+.condition-card.element-estase { border-left: 4px solid var(--cor-estase); }
+.condition-card.element-podridao { border-left: 4px solid var(--cor-podridao); }
+
+/* Estilo de destaque para condições elementais */
+.condition-card[class*="element-"] {
+    background: linear-gradient(135deg, rgba(40, 35, 50, 0.9), rgba(25, 20, 30, 0.95));
+    border-width: 1px 1px 1px 4px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.condition-card[class*="element-"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.05), transparent);
+    pointer-events: none;
+}
+
+.condition-card[class*="element-"] h4 {
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+
+/* === PERÍCIAS === */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.skill-card {
+    background: rgba(36, 30, 43, 0.6);
+    border: 1px solid rgba(124, 111, 139, 0.2);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.skill-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border-color: var(--cor-destaque);
+}
+
+.skill-card h4 {
+    color: #d8b4fe;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+}
+
+.skill-card p {
+    font-size: 0.95rem;
+    color: var(--cor-texto);
+    margin-bottom: 0.5rem;
+}
+
+
+/* === MECÂNICAS === */
+.mechanic-block {
+    background: rgba(36, 30, 43, 0.6);
+    border: 1px solid rgba(124, 111, 139, 0.2);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mechanic-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border-color: var(--cor-destaque);
+}
+
+.mechanic-block h4 {
+    color: var(--cor-titulo);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(149, 117, 205, 0.3);
+    padding-bottom: 0.5rem;
+}
+
+.mechanic-block h5 {
+    color: var(--cor-destaque);
+    font-size: 1.2rem;
+    margin: 1.5rem 0 0.8rem 0;
+    font-weight: 600;
+}
+
+.mechanic-block p {
+    margin-bottom: 1rem;
+    color: var(--cor-texto);
+    line-height: 1.7;
+}
+
+.mechanic-block strong {
+    color: var(--cor-negrito);
+}
+
+.reaction-option {
+    background: rgba(20, 20, 25, 0.3);
+    border-left: 3px solid var(--cor-destaque);
+    padding: 1.2rem;
+    margin: 1rem 0;
+    border-radius: 0 6px 6px 0;
+}
+
+.reaction-option h6 {
+    color: var(--cor-texto-sec);
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    font-weight: 700;
+}
+
+
+/* === MECÃ‚NICAS === */
+.mechanic-block {
+    background: rgba(36, 30, 43, 0.6);
+    border: 1px solid rgba(124, 111, 139, 0.2);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mechanic-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border-color: var(--cor-destaque);
+}
+
+.mechanic-block h4 {
+    color: var(--cor-titulo);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(149, 117, 205, 0.3);
+    padding-bottom: 0.5rem;
+}
+
+.mechanic-block h5 {
+    color: var(--cor-destaque);
+    font-size: 1.2rem;
+    margin: 1.5rem 0 0.8rem 0;
+    font-weight: 600;
+}
+
+.mechanic-block p {
+    margin-bottom: 1rem;
+    color: var(--cor-texto);
+    line-height: 1.7;
+}
+
+.mechanic-block strong {
+    color: var(--cor-negrito);
+}
+
+.reaction-option {
+    background: rgba(20, 20, 25, 0.3);
+    border-left: 3px solid var(--cor-destaque);
+    padding: 1.2rem;
+    margin: 1rem 0;
+    border-radius: 0 6px 6px 0;
+}
+
+.reaction-option h6 {
+    color: var(--cor-texto-sec);
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    font-weight: 700;
+}
+
+.mechanic-block ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--cor-texto);
+}
+
+.mechanic-block li {
+    margin-bottom: 0.5rem;
+}
+
+/* === TEMA CHAMPION (Doutrina do CampeÃ£o) - Fogo e Guerra === */
+.archetype-item.champion-theme {
+    border-color: rgba(231, 76, 60, 0.4);
+    background: linear-gradient(135deg, rgba(80, 20, 10, 0.3), rgba(120, 30, 15, 0.2));
+}
+
+.archetype-item.champion-theme:hover {
+    border-color: rgba(231, 76, 60, 0.8);
+    box-shadow: 0 8px 25px rgba(231, 76, 60, 0.2);
+}
+
+.archetype-item.champion-theme h5 {
+    color: #e74c3c;
+    text-shadow: 0 0 10px rgba(231, 76, 60, 0.6);
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.champion-theme .archetype-description em {
+    color: #e74c3c;
+    font-style: italic;
+    text-shadow: 0 0 5px rgba(231, 76, 60, 0.4);
+}
+
+.champion-theme .archetype-mechanics {
+    border-left: 4px solid #e74c3c;
+}
+
+.champion-theme .archetype-mechanics h6 {
+    color: #e74c3c;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 8px rgba(231, 76, 60, 0.5);
+}
+
+.archetype-passive.champion-theme {
+    background: rgba(231, 76, 60, 0.1);
+    border-color: rgba(231, 76, 60, 0.3);
+}
+
+.champion-theme .ability-level {
+    background: rgba(231, 76, 60, 0.1);
+    border-left-color: #e74c3c;
+    border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+.champion-theme .ability-level h7 {
+    color: #e74c3c;
+    text-shadow: 0 0 5px rgba(231, 76, 60, 0.4);
+}
+
+.champion-theme .ability-item {
+    background: rgba(200, 50, 50, 0.05);
+    border-left-color: rgba(231, 76, 60, 0.6);
+    border: 1px solid rgba(231, 76, 60, 0.15);
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.1);
+}
+
+.champion-theme .ability-item:hover {
+    background: rgba(200, 50, 50, 0.1);
+    border-color: rgba(231, 76, 60, 0.4);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.2);
+}
+
+.champion-theme .ability-item p strong {
+    color: #e74c3c;
+    text-shadow: 0 0 3px rgba(231, 76, 60, 0.3);
+}
+
+/* === TEMA PROPHET (Doutrina do Profeta) - Conhecimento e Magia === */
+.archetype-item.prophet-theme {
+    border-color: rgba(52, 152, 219, 0.4);
+    background: linear-gradient(135deg, rgba(10, 40, 80, 0.3), rgba(15, 50, 100, 0.2));
+}
+
+.archetype-item.prophet-theme:hover {
+    border-color: rgba(52, 152, 219, 0.8);
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.2);
+}
+
+.archetype-item.prophet-theme h5 {
+    color: #3498db;
+    text-shadow: 0 0 10px rgba(52, 152, 219, 0.6);
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.prophet-theme .archetype-description em {
+    color: #3498db;
+    font-style: italic;
+    text-shadow: 0 0 5px rgba(52, 152, 219, 0.4);
+}
+
+.prophet-theme .archetype-mechanics {
+    border-left: 4px solid #3498db;
+}
+
+.prophet-theme .archetype-mechanics h6 {
+    color: #3498db;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
+}
+
+.archetype-passive.prophet-theme {
+    background: rgba(52, 152, 219, 0.1);
+    border-color: rgba(52, 152, 219, 0.3);
+}
+
+.prophet-theme .ability-level {
+    background: rgba(52, 152, 219, 0.1);
+    border-left-color: #3498db;
+    border: 1px solid rgba(52, 152, 219, 0.2);
+}
+
+.prophet-theme .ability-level h7 {
+    color: #3498db;
+    text-shadow: 0 0 5px rgba(52, 152, 219, 0.4);
+}
+
+.prophet-theme .ability-item {
+    background: rgba(50, 100, 200, 0.05);
+    border-left-color: rgba(52, 152, 219, 0.6);
+    border: 1px solid rgba(52, 152, 219, 0.15);
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.1);
+}
+
+.prophet-theme .ability-item:hover {
+    background: rgba(50, 100, 200, 0.1);
+    border-color: rgba(52, 152, 219, 0.4);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+}
+
+.prophet-theme .ability-item p strong {
+    color: #3498db;
+    text-shadow: 0 0 3px rgba(52, 152, 219, 0.3);
 }
