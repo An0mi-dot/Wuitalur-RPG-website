@@ -26,8 +26,12 @@ async function loadCommunityUsers() {
         allUsers = [];
         grid.innerHTML = ''; // Limpa o "Carregando..."
 
+        // Calcular riqueza para encontrar o mais rico
+        const usersList = [];
+
         snapshot.forEach(doc => {
             const data = doc.data();
+            
             const user = {
                 id: doc.id,
                 username: data.username || 'Proscrito Desconhecido',
@@ -37,7 +41,12 @@ async function loadCommunityUsers() {
                 bio: data.bio || '',
                 createdAt: data.createdAt
             };
-            allUsers.push(user);
+            
+            usersList.push(user);
+        });
+
+        // Renderizar cards
+        usersList.forEach(user => {
             grid.appendChild(createUserCard(user));
         });
 
@@ -61,16 +70,8 @@ function createUserCard(user) {
     // Avatar Logic
     let avatarSrc = user.avatar;
     if (!avatarSrc || avatarSrc === 'default') {
-        // Placeholder visual se não tiver imagem
-        // Como é difícil gerar imagem dinâmica sem canvas aqui, vamos usar um ícone ou imagem padrão
-        // Mas o CSS espera um src. Vamos usar um placeholder transparente e background color
-        avatarSrc = '../../Pag_Principal/assets/default-avatar.png'; // Fallback se existir
-        // Ou melhor, usar o mesmo truque do header se for default
+        avatarSrc = '../../Pag_Principal/assets/default-avatar.png'; 
     }
-
-    // Se for default, o src vai falhar se a imagem não existir. 
-    // Vamos usar um truque: se for default, não põe img tag, põe div.
-    // Mas para manter consistência com o layout proposto:
     
     let imgHTML = `<img src="${avatarSrc}" class="user-card-avatar" onerror="this.src='https://via.placeholder.com/80?text=?'">`;
     if (user.avatar === 'default' || !user.avatar) {
