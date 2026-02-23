@@ -94,11 +94,32 @@
 
     async function loadSelosFromDB() {
         console.log("Selos Manager: Tentando carregar do Firestore...");
+        
+        // DEBUG: Force load from HTML locally to see new static content
+        const isLocal = window.location.protocol === 'file:' || 
+                       window.location.hostname === 'localhost' || 
+                       window.location.hostname === '127.0.0.1' ||
+                       window.location.hostname.startsWith('192.168.');
+
+        if (isLocal) {
+             console.warn("⚠️ Ambiente LOCAL (IP/File): Carregando selos do HTML estático para validação.");
+             scrapeSelosFromHTML();
+             return;
+        }
+
         try {
             const doc = await db.collection(DB_COLLECTION).doc(DB_DOC).get();
             if (doc.exists) {
                 const data = doc.data();
                 if (data.selos && Array.isArray(data.selos) && data.selos.length > 0) {
+                    // SE O HTML TIVER MAIS SELOS, PREFERIR O HTML (PARA DESENVOLVIMENTO)
+                    const htmlCount = document.querySelectorAll('.seal-card').length;
+                    if (htmlCount > data.selos.length) {
+                         console.warn(`⚠️ HTML local tem MAIS selos (${htmlCount}) que o DB (${data.selos.length}). Ignorando DB.`);
+                         scrapeSelosFromHTML();
+                         return;
+                    }
+
                     console.log("Selos Manager: Dados carregados do banco com sucesso.");
                     currentSelosData = data.selos;
                     renderSelos(currentSelosData);

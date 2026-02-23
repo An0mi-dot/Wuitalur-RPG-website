@@ -18,6 +18,13 @@ auth.onAuthStateChanged((user) => {
     clearTimeout(authCheckTimeout);
     if (!user) {
         console.log("Usuário não logado. Redirecionando...");
+
+        // FIX: Allow local testing without login
+        if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            console.warn("⚠️ Ambiente LOCAL detectado. Login ignorado para debug.");
+            return;
+        }
+
         // Não logado, redirecionar para login
         if (!window.location.pathname.includes('login.html')) {
              // Usa o caminho definido na página ou tenta adivinhar
