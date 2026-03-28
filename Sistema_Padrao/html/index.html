@@ -357,6 +357,12 @@
                     <span class="difficulty-mini difficulty-3">3</span>
 
                 </div>
+                <div class="race-card-mini" onclick="scrollToClass('compactador')">
+                    <img src="../assets/compactador.png" alt="Compactador" onerror="this.src='../assets/default.png'; this.onerror=null;">
+                    <h3>Compactador</h3>
+                    <p>Dobradores da vida, manipuladores da essência astral.</p>
+                    <span class="difficulty-mini difficulty-2">2</span>
+                </div>
 
             </div>
 
@@ -9272,9 +9278,161 @@
 
                     </div>
 
-                </div>
+                
 
-            </section>
+                    <!-- Classe: Compactador -->
+                    <div id="compactador" class="class-card estase-highlight">
+                        <h3>Compactador</h3>
+
+                        <div id="compactador-image" class="class-image">     
+                            <!-- Opcional: Imagem do compactador -->
+                            <img src="../assets/compactador.png" alt="Compactadores"
+                                style="width: 100%; max-width: 400px; height: auto; border-radius: 16px; margin: 0 auto; display: block;" onerror="this.style.display='none'">
+                        </div>
+
+                        <div class="class-description">
+                            <p><em>"Essa especialização, porém, cobra um preço alto. Por armazenarem quantidades absurdas de Energia Astral em seus corpos, seus corpos estão sob constante pressão."</em></p>
+                            <p>Devido a suas habilidades excepcionais e peculiaridades físicas, os Compactadores são frequentemente chamados de “Dobradores da Vida”. Esse título reflete sua capacidade de moldar não apenas a energia astral, mas também a essência espiritual de outros seres. Essa prática exige um imenso esforço e disciplina, sendo um caminho repleto de desafios tanto mentais quanto físicos. No campo de batalha ou em situações críticas, os Compactadores se destacam como manipuladores estratégicos da essência astral. Sua habilidade de interferir nas formas astrais dos inimigos ou aliados os torna imprevisíveis e incrivelmente versáteis. Contudo, a prática excessiva de seus dons pode trazer graves consequências, como o desgaste energético e mental, exigindo que equilibrem cuidadosamente o uso de seu poder. Ser um Compactador é abraçar a complexidade da existência astral, explorando as nuances entre poder e sacrifício.</p>
+                            
+                            <p><em>(Essa classe ganha +2 em <span class="attr-saude">Saúde</span> naturalmente)</em></p>
+
+                            <div class="difficulty-level">
+                                <span class="difficulty-label">Nível de Dificuldade:</span>
+                                <span class="difficulty-number difficulty-2">2</span>
+                            </div>
+                        </div>
+
+                        <div class="class-stats">
+                            <div class="class-stat-block">
+                                <h4>Características da Classe</h4>
+                                <p><strong>Vida da Classe (1º Nível):</strong> 14 + <span class="attr-saude">Saúde</span></p>
+                                <p><strong>Dado de Vida (níveis posteriores):</strong> 1d14 + <span class="attr-saude">Saúde</span></p>
+                            </div>
+
+                            <div class="class-stat-block">
+                                <h4>Dano Base de Energia Astral</h4>
+                                <ul>
+                                    <li><strong>Nível 1 ao 6:</strong> 2d10</li>
+                                    <li><strong>Nível 7 ao 10:</strong> 4d12</li>
+                                    <li><strong>Nível 11 ao 16:</strong> 5d12</li>
+                                    <li><strong>Nível 16 ao 18:</strong> 6d12</li>
+                                    <li><strong>Nível 19 e 20:</strong> 7d15</li>
+                                </ul>
+                            </div>
+
+                            <div class="class-stat-block">
+                                <h4>Energia Astral por Nível</h4>
+                                <ul>
+                                    <li><strong>Níveis 1-7:</strong> 100</li>
+                                    <li><strong>Níveis 8-10:</strong> 150</li>
+                                    <li><strong>Níveis 11-16:</strong> 185</li>
+                                    <li><strong>Níveis 17-18:</strong> 235</li>
+                                    <li><strong>Níveis 19-20:</strong> 325</li>
+                                </ul>
+                            </div>
+
+                            <div class="class-stat-block">
+                                <h4>Proficiências</h4>
+                                <p><strong>Armas:</strong> Luvas, Espada grande, Espada média</p>
+                                <p><strong>Armaduras:</strong> Todas</p>
+                                <p><strong>Ferramentas:</strong> Nenhuma</p>
+                                <p><strong>Escudos:</strong> Todos (Leve, Médio e Pesado)</p>
+                                <p><strong>Testes de Resistência:</strong> <span class="attr-rf">RF</span>, <span class="attr-saude">Saúde</span></p>
+                            </div>
+
+                            <div class="class-stat-block">
+                                <h4>Bônus de Proficiência</h4>
+                                <ul>
+                                    <li><strong>Níveis 1-4:</strong> <span class="proficiency-bonus">+2</span></li>
+                                    <li><strong>Níveis 5-8:</strong> <span class="proficiency-bonus">+3</span></li>
+                                    <li><strong>Níveis 9-12:</strong> <span class="proficiency-bonus">+4</span></li>
+                                    <li><strong>Níveis 13-16:</strong> <span class="proficiency-bonus">+5</span></li>
+                                    <li><strong>Níveis 17-20:</strong> <span class="proficiency-bonus">+6</span></li>
+                                </ul>
+                            </div>
+
+                            <div class="class-stat-block">
+                                <h4>Equipamentos Iniciais</h4>
+                                <p>Você começa com o seguinte equipamento (escolha uma opção):</p>
+                                <ul>
+                                    <li><strong>Opção 1:</strong> Luvas de couro, escudo médio, armadura leve, poção de vida simples (2d4)</li>
+                                    <li><strong>Opção 2:</strong> Espada grande, Escudo leve, Pedras de Energia Astral, Kit de Saúde</li>
+                                    <li><strong>Opção 3:</strong> Luvas de ferro, Máscara de mordida, corda grossa, Kit de Ferramentas</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="class-stat-block">
+                            <h4>Compactadores Famosos</h4>
+                            <p>Nenhum (Ainda...)</p>
+                        </div>
+
+                        <div class="class-abilities">
+                            <h4 style="font-size: 1.5rem; margin-bottom: 1rem;">Mecânica de Classe — "Massa Crítica"</h4>
+                            <p>No 1° nível, o Compactador emana uma gravidade astral. Inimigos que tentarem se mover para fora de um bloco adjacente a você devem passar em um teste de <span class="attr-rf">RF</span> ou terão seu movimento reduzido a 0 naquele turno.<br><em class="action-passive">-Passiva-</em></p>
+
+                            <!-- Seção de Arquétipos (Nível 5) -->
+                            <h4 style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;">Os Três Caminhos (Nível 5)</h4>
+                            <p>No 5° nível, o Compactador poderá escolher um caminho Astral para seguir:</p>
+                            
+                            <div class="sub-ability" style="margin-left: 1rem; border-left: 2px solid #05d9fa; padding-left: 1rem; margin-bottom: 1rem;">
+                                <h5>Mente</h5>
+                                <p>Você busca o entendimento da existência de tudo. Ganha +2 em <span class="attr-saude">Saúde</span>, +1 em <span class="attr-intelecto">INT</span>, Proficiência em testes de defesa mental, +10 de sanidade. Seu aliado espectral (Nuvem de Olhos) concede +2 de Defesa para o aliado mais próximo de você.</p>
+                            </div>
+                            <div class="sub-ability" style="margin-left: 1rem; border-left: 2px solid #05d9fa; padding-left: 1rem; margin-bottom: 1rem;">
+                                <h5>Corpo</h5>
+                                <p>Você busca entender a composição física. Ganha +2 em <span class="attr-saude">Saúde</span>, +1 em <span class="attr-forca">FR</span>, +1 em <span class="attr-rf">RF</span> e imunidade ao efeito de amedrontado. Perde a capacidade de ficar FURTIVO. Sua Harpia espectral causa seu Dano Base Astral em área (1 bloco) sempre que você recebe dano.</p>
+                            </div>
+                            <div class="sub-ability" style="margin-left: 1rem; border-left: 2px solid #05d9fa; padding-left: 1rem; margin-bottom: 1rem;">
+                                <h5>Existência</h5>
+                                <p>Você busca a lógica da Lotus. Ganha +2 em <span class="attr-saude">Saúde</span>, +1 em <span class="attr-forca">FR</span>, +1 em <span class="attr-intelecto">INT</span>, +1 em <span class="attr-rf">RF</span>, +5 de sanidade e 25% de <span class="attr-cosmo">Cosmos</span>. Seu Polvo espectral pode agarrar alvos a até 3 blocos como Ação Bônus.</p>
+                            </div>
+
+                            <h4 style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;">Habilidades</h4>
+                            <div class="ability-group">
+                                <h5>Nível 1 - Escavadeira (+1 em Saúde)</h5>
+                                <p>O Compactador avança 4,5 B destruindo tudo no caminho. Inimigos atingidos devem passar em <span class="attr-rf">RF</span> ou ficam Atordoados por 1 turno e sofrem o Dano Base de Energia Astral.<br>
+                                <em class="energy-cost">-15 de Energia Astral-</em> <br>
+                                <em class="action-bonus">&lt; • Ação Bônus • &gt;</em></p>
+
+                                <h5>Nível 2 - Pele de Ferro (+1 em Saúde)</h5>
+                                <p>O Compactador ganha 25 + <span class="attr-saude">Saúde</span> de Vida Astral. Se reativar enquanto ainda possuir Vida Astral anterior, o Compactador sofrerá Náusea por 1 turno (desvantagem em acertos e esquivas). Pode ser usada em um aliado.<br>
+                                <em class="energy-cost">-35 de Energia Astral-</em> <br>
+                                <em class="action-bonus">&lt; • Ação Bônus • &gt;</em></p>
+
+                                <h5>Nível 3 - Pedras Astrais (+1 em Saúde)</h5>
+                                <p>Você cria cristais de energia. Ao destruir um cristal, ganha por 5 turnos: +2 de <span class="attr-saude">Saúde</span>, +1 de <span class="attr-rf">RF</span>, Recupera 50 de Energia Astral e Imunidade a Atordoamento.<br>
+                                <em class="energy-cost">-70 de Energia Astral por cristal-</em> <br>
+                                <em class="action-free">&lt; • Ação Livre • &gt;</em></p>
+
+                                <h5>Nível 7 - Muralha (+1 em PDT - Pontos de Atributo)</h5>
+                                <p>Você medita por 2 Turnos (sem ações). Nesse estado, ganha +80 de Vida Astral e todo dano direcionado a aliados em raio de 3 blocos é transferido para você. Após os 2 turnos, ganha +1 em todos os atributos até o fim da cena.<br>
+                                <em class="energy-cost">-80 de Energia Astral-</em> <br>
+                                <em class="action-standard">&lt; • Ação Padrão • &gt;</em></p>
+
+                                <h5>Nível 11 - Vigor de Ferro (+1 em PDT - Pontos de Atributo)</h5>
+                                <p>Seu corpo é inamovível. Você ganha imunidade a efeitos de Lentidão, Paralisia e condições que forcem seu movimento.<br>
+                                <em class="action-passive">-Passiva-</em></p>
+
+                                <h5>Nível 14 - Colapso Astral (+1 em PDT - Pontos de Atributo)</h5>
+                                <p>Você foca a pressão em um alvo a 6 Blocos. Você e o alvo rolam 1d100 (+ modificadores de Saúde/Resistência). Caso vença, o alvo fica Imobilizado e recebe 15d15 de dano. Se o alvo for um lacaio comum, morre instantaneamente.<br>
+                                <em class="energy-cost">-100 de Energia Astral-</em> <br>
+                                <em class="action-standard">&lt; • Ação Padrão • &gt;</em></p>
+
+                                <h5>Nível 16 - Ajuda Espectral (+1 em PDT - Pontos de Atributo)</h5>
+                                <p>Seu aliado espectral ataca junto com você. Adicione o seu Dano Base de Energia Astral a qualquer ataque ou habilidade ofensiva que você realizar.<br>
+                                <em class="energy-cost">-Sem custo-</em> <br>
+                                <em class="action-passive">-Passiva-</em></p>
+
+                                <h5>Nível 20 - Fortaleza (+1 em PDT - Pontos de Atributo)</h5>
+                                <p>Você se funde ao caminho astral. Ganha +4 em todos os atributos e +3 ataques extras (Dano Base Astral) por turno até o fim da batalha. Inimigos próximos sofrem metade do dano astral por turno. Ao final, fica com 1 de vida e exausto.<br>
+                                <em class="energy-cost">-250 de Energia Astral-</em> <br>
+                                <em class="action-standard">&lt; • Ação Padrão • &gt;</em></p>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </section>
 
 
 
