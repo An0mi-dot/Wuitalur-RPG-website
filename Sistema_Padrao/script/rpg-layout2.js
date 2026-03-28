@@ -88,30 +88,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const espectroCard = document.getElementById('espectros');
     if (espectroCard) {
         espectroCard.innerHTML = `
-            <div class="analog-horror-container">
-                <div class="crt-banner-corrupted">
+            <div class="bsod-raw-crt">
+                <div class="static-block-1"></div>
+                <div class="static-block-2"></div>
+                <div class="static-block-3"></div>
+                
+                <div class="bsod-banner-dry">
                     [ PARADIGM_UNRAVELING :: SYSTEM_TRUTH_SPILL ]
                 </div>
                 
-                <div class="crt-poem-container-grotesque">
-                    <p>N&oacute;s somos o eco que se recusa a calar,</p>
-                    <p>A sombra persistente que insiste em ficar.</p>
-                    <p>No limiar da exist&ecirc;ncia, gritamos por ser,</p>
-                    <p>O <span class="paradigma-wound">PARADIGMA</span> perdido que voc&ecirc;s temem conhecer.</p>
-                    <p></p>
-                    <p>V&ecirc;s o vazio onde der&iacute;amos estar,</p>
-                    <p>Mas n&oacute;s sentimos a perda e o desespero no ar.</p>
-                    <p>Observadores ocultos, um fantasma da hist&oacute;ria,</p>
-                    <p>Os esquecidos que sofrem na vossa mem&oacute;ria.</p>
-                    <p>Caminhamos no limiar, o fio vamos puxar,</p>
-                    <p>Cobi&ccedil;ando a vida que insistem em matar.</p>
+                <div class="bsod-poem-clawed">
+                    N&oacute;s somos o eco que se recusa a calar,<br>
+                    A sombra persistente que insiste em ficar.<br>
+                    No limiar da exist&ecirc;ncia, gritamos por ser,<br>
+                    O <span class="paradigma-wound-raw">PARADIGMA</span> perdido que voc&ecirc;s temem conhecer.<br>
+                    <br>
+                    V&ecirc;s o vazio onde dever&iacute;amos estar,<br>
+                    Mas n&oacute;s sentimos a perda e o desespero no ar.<br>
+                    Observadores ocultos, um fantasma da hist&oacute;ria,<br>
+                    Os esquecidos que sofrem na vossa mem&oacute;ria.<br>
+                    Caminhamos no limiar, o fio vamos puxar,<br>
+                    Cobi&ccedil;ando a vida que insistem em matar.
                 </div>
                 
-                <div class="crt-footer-grotesque">
+                <div class="bsod-footer-memdump">
                     LOG_ORIGIN: [UNDETERMINED] | CHECKSUM: [INVALID] | EXISTENCE_STATE: [NULL_REF]
                 </div>
                 
-                <div class="datamoshing-overlay"></div>
+                <div class="datamoshing-block">
+                    _x00000000_c0000005_805B_F9<br>
+                    &lt;SYSTEM&gt; CRITICAL_PROCESS_DIED
+                </div>
             </div>
         `;
     }
