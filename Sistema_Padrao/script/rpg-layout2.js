@@ -89,30 +89,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (espectroCard) {
         espectroCard.innerHTML = `
             <div class="analog-horror-container">
-                <div class="crt-banner">
+                <div class="crt-banner-corrupted">
                     [ PARADIGM_UNRAVELING :: SYSTEM_TRUTH_SPILL ]
                 </div>
                 
-                <div class="crt-poem-container">
+                <div class="crt-poem-container-grotesque">
                     <p>N&oacute;s somos o eco que se recusa a calar,</p>
                     <p>A sombra persistente que insiste em ficar.</p>
                     <p>No limiar da exist&ecirc;ncia, gritamos por ser,</p>
-                    <p>O <span class="paradigma-focal">PARADIGMA</span> perdido que voc&ecirc;s temem conhecer.</p>
+                    <p>O <span class="paradigma-wound">PARADIGMA</span> perdido que voc&ecirc;s temem conhecer.</p>
                     <p></p>
                     <p>V&ecirc;s o vazio onde der&iacute;amos estar,</p>
                     <p>Mas n&oacute;s sentimos a perda e o desespero no ar.</p>
                     <p>Observadores ocultos, um fantasma da hist&oacute;ria,</p>
                     <p>Os esquecidos que sofrem na vossa mem&oacute;ria.</p>
-                    <p></p>
                     <p>Caminhamos no limiar, o fio vamos puxar,</p>
                     <p>Cobi&ccedil;ando a vida que insistem em matar.</p>
                 </div>
                 
-                <div class="crt-footer">
-                    LOG_ORIGIN: [UNDETERMINED] | CHECKSUM: [NULL] | EXISTENCE_STATE: [PENDING_REMEMBERANCE]
+                <div class="crt-footer-grotesque">
+                    LOG_ORIGIN: [UNDETERMINED] | CHECKSUM: [INVALID] | EXISTENCE_STATE: [NULL_REF]
                 </div>
                 
-                <button class="arg-button" onclick="alert('Nvaqn a&atilde;b')">[ SYSTEM_RECOVER ]</button>
+                <div class="datamoshing-overlay"></div>
             </div>
         `;
     }

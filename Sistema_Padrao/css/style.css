@@ -1418,20 +1418,19 @@ body {
 /* === ESTILOS ESPECTROS - EFEITOS GLITCH === */
 /* === ESTÉTICA ESPECTRAL CORROMPIDA === */
 
-/* === ARG INTERFACE: ANALOG HORROR MODE === */
+/* === ARG INTERFACE: GROTESQUE BROKEN CRT MODE === */
 
 #espectros.race-card {
-    background: linear-gradient(180deg, #050505 0%, #0a0a0a 50%, #000 100%);
-    border: 2px solid #1a1a1a;
-    color: #0f0;
+    background: linear-gradient(180deg, #1a1a0f 0%, #0d0d08 50%, #050505 100%);
+    border: 2px dashed #3a3a2a;
+    color: #5a6930;
     font-family: 'Courier New', monospace;
     position: relative;
     overflow: hidden;
     box-shadow: 
-        0 0 30px rgba(0, 0, 0, 0.95),
-        inset 0 0 40px rgba(0, 255, 0, 0.02),
-        inset 0 0 80px rgba(255, 0, 0, 0.01);
-    animation: system-pulse 3s ease-in-out infinite;
+        0 0 0 1px #2a2a1a inset,
+        0 0 0 2px #1a1a0a;
+    animation: screen-death 6s ease-in-out infinite;
 }
 
 #espectros.race-card::before {
@@ -1444,21 +1443,23 @@ body {
     background: 
         repeating-linear-gradient(
             0deg,
-            rgba(0, 0, 0, 0.15),
-            rgba(0, 0, 0, 0.15) 1px,
+            rgba(90, 105, 48, 0.08) 0px,
+            rgba(90, 105, 48, 0.08) 1px,
             transparent 1px,
-            transparent 2px
+            transparent 3px,
+            rgba(0, 0, 0, 0.4) 3px,
+            rgba(0, 0, 0, 0.4) 4px
         ),
         repeating-linear-gradient(
             90deg,
-            rgba(255, 0, 0, 0.03),
-            rgba(255, 0, 0, 0.03) 1px,
-            transparent 1px,
-            transparent 3px
+            transparent 0px,
+            transparent 2px,
+            rgba(92, 26, 26, 0.15) 2px,
+            rgba(92, 26, 26, 0.15) 3px
         );
     pointer-events: none;
     z-index: 1;
-    animation: scanlines-drift 8s linear infinite;
+    animation: violent-scanlines 0.8s linear infinite;
 }
 
 #espectros.race-card::after {
@@ -1469,186 +1470,287 @@ body {
     width: 100%;
     height: 100%;
     background: 
-        radial-gradient(circle at 30% 50%, rgba(255, 0, 0, 0.05) 0%, transparent 50%),
-        radial-gradient(circle at 70% 30%, rgba(0, 255, 0, 0.02) 0%, transparent 50%);
+        radial-gradient(circle at 15% 20%, rgba(92, 26, 26, 0.12) 0%, transparent 30%),
+        radial-gradient(circle at 85% 80%, rgba(90, 105, 48, 0.08) 0%, transparent 35%),
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            transparent 40px,
+            rgba(92, 26, 26, 0.06) 40px,
+            rgba(92, 26, 26, 0.06) 41px
+        );
     pointer-events: none;
     z-index: 1;
-    animation: dimension-shift 2.5s ease-in-out infinite;
+    animation: crt-rot 3s ease-in-out infinite;
 }
 
 .analog-horror-container {
     position: relative;
     z-index: 2;
-    padding: 2.5rem;
-    animation: screen-flicker-main 4s ease-in-out infinite;
+    padding: 2rem 2.5rem;
+    animation: monitor-flicker-death 5s ease-in-out infinite;
 }
 
-.crt-banner {
+.crt-banner-corrupted {
     text-align: center;
-    color: #0f0;
-    font-size: 1.05rem;
-    letter-spacing: 4px;
+    color: #5a6930;
+    font-size: 1.15rem;
+    letter-spacing: 2px;
     margin-bottom: 2.5rem;
     text-shadow: 
-        0 0 8px rgba(0, 255, 0, 0.5),
-        2px 2px 0 rgba(255, 0, 0, 0.15),
-        -2px -2px 0 rgba(0, 0, 255, 0.1);
+        -2px -2px 0 rgba(0, 0, 0, 0.8),
+        2px 2px 0 rgba(92, 26, 26, 0.5),
+        -1px 1px 0 rgba(0, 0, 0, 0.6);
     font-weight: bold;
-    animation: chromatic-aberration 1.8s ease-in-out infinite;
-}
-
-.crt-poem-container {
-    background: rgba(0, 0, 0, 0.9);
-    border: 1px solid rgba(0, 255, 0, 0.4);
-    border-left: 3px solid rgba(255, 0, 0, 0.3);
-    padding: 2rem;
-    margin: 2rem 0;
-    line-height: 2.2;
-    color: #0f0;
-    font-size: 0.95rem;
-    text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
-    position: relative;
-}
-
-.crt-poem-container p {
-    margin: 1rem 0;
-    text-shadow: 0 0 3px rgba(0, 255, 0, 0.2);
-}
-
-.paradigma-focal {
-    color: #ff0000;
-    font-weight: bold;
-    text-shadow: 
-        0 0 20px rgba(255, 0, 0, 0.9),
-        0 0 40px rgba(255, 0, 0, 0.6),
-        0 0 60px rgba(255, 0, 0, 0.3);
-    animation: paradigma-burn 1.2s ease-in-out infinite;
-    letter-spacing: 3px;
-}
-
-@keyframes paradigma-burn {
-    0%, 100% { 
-        text-shadow: 
-            0 0 20px rgba(255, 0, 0, 0.9),
-            0 0 40px rgba(255, 0, 0, 0.6),
-            0 0 60px rgba(255, 0, 0, 0.3);
-        opacity: 1;
-    }
-    50% { 
-        text-shadow: 
-            0 0 30px rgba(255, 0, 0, 1),
-            0 0 50px rgba(255, 0, 0, 0.8),
-            0 0 80px rgba(255, 0, 0, 0.5);
-        opacity: 1.05;
-    }
-}
-
-.crt-footer {
-    font-size: 0.7rem;
-    color: #333;
-    text-align: center;
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(0, 255, 0, 0.15);
-    letter-spacing: 1px;
-    text-shadow: 0 0 2px rgba(0, 255, 0, 0.1);
+    font-family: 'Courier New', monospace;
+    animation: text-bleed 1.2s ease-in-out infinite;
+    transform: skewX(-2deg);
     word-break: break-word;
 }
 
-.arg-button {
-    background: #000;
-    border: 1px solid #0f0;
-    color: #0f0;
-    padding: 0.8rem 1.5rem;
-    font-family: 'Courier New', monospace;
-    font-size: 0.85rem;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 1.5rem;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    transition: all 0.2s;
-    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+.crt-poem-container-grotesque {
+    background: rgba(0, 0, 0, 0.95);
+    border: 1px solid #3a3a2a;
+    border-left: 4px solid rgba(92, 26, 26, 0.6);
+    padding: 2rem 2rem;
+    margin: 2rem 0;
+    line-height: 1.8;
+    color: #5a6930;
+    font-size: 0.93rem;
+    text-shadow: 
+        1px 1px 0 rgba(0, 0, 0, 0.8),
+        -1px -1px 0 rgba(92, 26, 26, 0.2);
+    position: relative;
+    overflow: hidden;
 }
 
-.arg-button:hover {
-    background: #0f0;
-    color: #000;
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.9);
-    text-shadow: 0 0 10px rgba(0, 255, 0, 0.9);
+.crt-poem-container-grotesque::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            rgba(92, 26, 26, 0.03) 0px,
+            rgba(92, 26, 26, 0.03) 1px,
+            transparent 1px,
+            transparent 2px
+        );
+    pointer-events: none;
+    z-index: 1;
 }
 
-.arg-button:active {
-    transform: translate(1px, 1px);
+.crt-poem-container-grotesque p {
+    margin: 0.9rem 0;
+    text-shadow: 
+        1px 0 0 rgba(0, 0, 0, 0.5),
+        0 1px 0 rgba(92, 26, 26, 0.15);
+    animation: text-corruption 2.5s ease-in-out infinite;
 }
 
-/* === KEYFRAME ANIMATIONS FOR ARG INTERFACE === */
-
-@keyframes system-pulse {
-    0%, 100% { 
-        opacity: 1; 
-        box-shadow: 
-            0 0 30px rgba(0, 0, 0, 0.95),
-            inset 0 0 40px rgba(0, 255, 0, 0.02),
-            inset 0 0 80px rgba(255, 0, 0, 0.01);
-    }
-    50% { 
-        opacity: 0.98; 
-        box-shadow: 
-            0 0 40px rgba(0, 0, 0, 0.9),
-            inset 0 0 50px rgba(0, 255, 0, 0.03),
-            inset 0 0 100px rgba(255, 0, 0, 0.02);
-    }
+.paradigma-wound {
+    color: #4a0f0f;
+    font-weight: bold;
+    text-shadow: 
+        0 0 0 #5c1a1a,
+        1px 1px 0 rgba(92, 26, 26, 0.8),
+        -1px -1px 0 rgba(0, 0, 0, 0.9),
+        2px 2px 0 rgba(92, 26, 26, 0.4),
+        -2px -2px 0 rgba(0, 0, 0, 0.8);
+    animation: paradigma-claw 0.9s ease-in-out infinite;
+    letter-spacing: 2px;
+    font-style: italic;
 }
 
-@keyframes scanlines-drift {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(2px); }
-}
-
-@keyframes dimension-shift {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 1.02; transform: scale(1.001); }
-}
-
-@keyframes screen-flicker-main {
-    0%, 100% { opacity: 1; }
-    5% { opacity: 0.96; }
-    10% { opacity: 1; }
-    15% { opacity: 0.97; }
-    20% { opacity: 1; }
-    25% { opacity: 0.98; }
-    50% { opacity: 1; }
-    75% { opacity: 0.99; }
-}
-
-@keyframes chromatic-aberration {
+@keyframes paradigma-claw {
     0%, 100% { 
         text-shadow: 
-            0 0 8px rgba(0, 255, 0, 0.5),
-            2px 2px 0 rgba(255, 0, 0, 0.15),
-            -2px -2px 0 rgba(0, 0, 255, 0.1);
+            0 0 0 #5c1a1a,
+            1px 1px 0 rgba(92, 26, 26, 0.8),
+            -1px -1px 0 rgba(0, 0, 0, 0.9),
+            2px 2px 0 rgba(92, 26, 26, 0.4),
+            -2px -2px 0 rgba(0, 0, 0, 0.8);
+        transform: skewX(-1deg);
     }
     25% { 
         text-shadow: 
-            -1px 1px 8px rgba(0, 255, 0, 0.4),
-            2px 2px 0 rgba(255, 0, 0, 0.2),
-            -3px -1px 0 rgba(0, 0, 255, 0.15);
+            0 0 0 #5c1a1a,
+            2px 0px 0 rgba(92, 26, 26, 0.9),
+            -1px 1px 0 rgba(0, 0, 0, 0.8),
+            3px 1px 0 rgba(92, 26, 26, 0.5);
+        transform: skewX(2deg) scaleX(0.98);
     }
     50% { 
         text-shadow: 
-            1px -1px 8px rgba(0, 255, 0, 0.6),
-            3px 1px 0 rgba(255, 0, 0, 0.1),
-            -1px -3px 0 rgba(0, 0, 255, 0.05);
+            0 0 0 #5c1a1a,
+            1px 2px 0 rgba(92, 26, 26, 0.7),
+            -2px -1px 0 rgba(0, 0, 0, 0.9);
+        transform: skewX(-2deg) scaleX(1.02);
     }
     75% { 
         text-shadow: 
-            -2px 0 8px rgba(0, 255, 0, 0.45),
-            1px 3px 0 rgba(255, 0, 0, 0.18),
-            -2px 1px 0 rgba(0, 0, 255, 0.12);
+            0 0 0 #5c1a1a,
+            0px 1px 0 rgba(92, 26, 26, 0.8),
+            -2px 0px 0 rgba(0, 0, 0, 0.95),
+            1px 2px 0 rgba(92, 26, 26, 0.3);
+        transform: skewX(1deg) scaleY(0.99);
     }
+}
+
+.crt-footer-grotesque {
+    font-size: 0.65rem;
+    color: #2a2a20;
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #3a3a2a;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.9);
+    word-break: break-word;
+    font-family: 'Courier New', monospace;
+    opacity: 0.7;
+}
+
+.datamoshing-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    background: 
+        linear-gradient(90deg, transparent 0%, rgba(92, 26, 26, 0.05) 20%, transparent 40%),
+        linear-gradient(90deg, transparent 60%, rgba(90, 105, 48, 0.04) 80%, transparent 100%),
+        repeating-linear-gradient(
+            45deg,
+            transparent 0px,
+            transparent 2px,
+            rgba(92, 26, 26, 0.02) 2px,
+            rgba(92, 26, 26, 0.02) 4px
+        );
+    animation: datamosh-shift 7s ease-in-out infinite;
+}
+
+/* === GROTESQUE CRT ANIMATIONS === */
+
+@keyframes screen-death {
+    0%, 100% { 
+        opacity: 1;
+        box-shadow: 
+            0 0 0 1px #2a2a1a inset,
+            0 0 0 2px #1a1a0a;
+    }
+    25% { 
+        opacity: 0.98;
+        box-shadow: 
+            0 0 0 1px #3a3a2a inset,
+            0 0 0 2px #1a1a0a;
+    }
+    50% { 
+        opacity: 0.96;
+        box-shadow: 
+            0 0 0 1px #2a2a1a inset,
+            0 0 2px 2px rgba(92, 26, 26, 0.3);
+    }
+    75% { 
+        opacity: 0.98;
+        box-shadow: 
+            0 0 0 1px #2a2a1a inset,
+            0 0 1px 2px #1a1a0a;
+    }
+}
+
+@keyframes violent-scanlines {
+    0% { transform: translateY(-2px) scaleY(0.98); }
+    25% { transform: translateY(1px) scaleY(1.02); }
+    50% { transform: translateY(-1px) scaleY(0.99); }
+    75% { transform: translateY(2px) scaleY(1.01); }
+    100% { transform: translateY(0px) scaleY(1); }
+}
+
+@keyframes crt-rot {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0.8; }
+}
+
+@keyframes monitor-flicker-death {
+    0%, 10%, 20%, 100% { opacity: 1; }
+    5% { opacity: 0.92; }
+    15% { opacity: 0.94; }
+    25% { opacity: 0.97; }
+    35% { opacity: 0.95; }
+    50% { opacity: 1; }
+    75% { opacity: 0.98; }
+    90% { opacity: 0.96; }
+}
+
+@keyframes text-bleed {
+    0%, 100% { 
+        text-shadow: 
+            -2px -2px 0 rgba(0, 0, 0, 0.8),
+            2px 2px 0 rgba(92, 26, 26, 0.5),
+            -1px 1px 0 rgba(0, 0, 0, 0.6);
+        transform: skewX(-2deg);
+    }
+    25% { 
+        text-shadow: 
+            -3px -1px 0 rgba(0, 0, 0, 0.9),
+            2px 3px 0 rgba(92, 26, 26, 0.6),
+            -2px 1px 0 rgba(0, 0, 0, 0.7);
+        transform: skewX(1deg) scaleX(0.99);
+    }
+    50% { 
+        text-shadow: 
+            -1px -2px 0 rgba(0, 0, 0, 0.85),
+            3px 1px 0 rgba(92, 26, 26, 0.5),
+            1px -1px 0 rgba(0, 0, 0, 0.6);
+        transform: skewX(-1deg) scaleY(1.01);
+    }
+    75% { 
+        text-shadow: 
+            -2px 1px 0 rgba(0, 0, 0, 0.8),
+            1px 2px 0 rgba(92, 26, 26, 0.55),
+            -1px -2px 0 rgba(0, 0, 0, 0.65);
+        transform: skewX(0deg);
+    }
+}
+
+@keyframes text-corruption {
+    0%, 100% { 
+        opacity: 1;
+        text-shadow: 
+            1px 0 0 rgba(0, 0, 0, 0.5),
+            0 1px 0 rgba(92, 26, 26, 0.15);
+    }
+    20% { 
+        opacity: 0.96;
+        letter-spacing: -0.5px;
+    }
+    40% { 
+        opacity: 1;
+        letter-spacing: 0px;
+    }
+    60% { 
+        opacity: 0.98;
+        text-shadow: 
+            1px 1px 0 rgba(0, 0, 0, 0.6),
+            -1px 0 0 rgba(92, 26, 26, 0.1);
+    }
+    80% { 
+        opacity: 0.97;
+    }
+}
+
+@keyframes datamosh-shift {
+    0%, 100% { opacity: 0.3; }
+    20% { opacity: 0.5; }
+    40% { opacity: 0.25; }
+    60% { opacity: 0.4; }
+    80% { opacity: 0.2; }
 }
 
 /* === HABILIDADES ÚNICAS PLANTÍFEROS === */
