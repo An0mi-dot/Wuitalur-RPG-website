@@ -1,0 +1,127 @@
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Injeta a Sidebar no container principal
+    const mainContainer = document.querySelector('.main-content .container');
+    if (mainContainer) {
+        mainContainer.classList.add('grid-layout');
+        
+        const sidebar = document.createElement('aside');
+        sidebar.className = 'sidebar-quick-access';
+        
+        let racasLinks = '';
+        document.querySelectorAll('.races-container .race-card').forEach(race => {
+            let id = race.id;
+            let name = race.querySelector('h3') ? race.querySelector('h3').innerText : 'Raça';
+            racasLinks += `<li><a href="#${id}">${name}</a></li>`;
+        });
+
+        let classesLinks = '';
+        document.querySelectorAll('.classes-container .class-card').forEach(cls => {
+            let id = cls.id;
+            let name = cls.querySelector('h3') ? cls.querySelector('h3').innerText : 'Classe';
+            classesLinks += `<li><a href="#${id}">${name}</a></li>`;
+        });
+        
+        sidebar.innerHTML = `
+            <div class="sidebar-header">
+                <h3>Acesso Rápido</h3>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#introducao">Introdução</a></li>
+                    <li><a href="#atributos">Atributos</a></li>
+                    <li><a href="#origens">Origens</a></li>
+                    <li>
+                        <a href="#racas">Raças</a>
+                        <ul class="sidebar-submenu" style="display: block;">
+                            ${racasLinks}
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#classes">Classes</a>
+                        <ul class="sidebar-submenu" style="display: block;">
+                            ${classesLinks}
+                        </ul>
+                    </li>
+                    <li><a href="#equipamentos">Equipamentos</a></li>
+                    <li><a href="#sanidade">Sanidade</a></li>
+                    <li><a href="#elementos">Elementos</a></li>
+                    <li><a href="#condicoes">Condições</a></li>
+                    <li><a href="#pericias">Perícias</a></li>
+                    <li><a href="#mecanicas">Mec�bnicas</a></li>
+                    <li><a href="#selos">Selos</a></li>
+                </ul>
+            </nav>
+        `;
+        
+        // Insere a sidebar como primeiro filhor
+        mainContainer.insertBefore(sidebar, mainContainer.firstChild);
+    }
+
+    // 2. Refatora as Raças (transforma listas em tabelas e ajusta estilos)
+    document.querySelectorAll('.race-card').forEach(card => {
+        // Encontrar os bônus
+        const bonusList = card.querySelector('.race-stats ul');
+        if (bonusList && bonusList.children.length > 0) {
+            let tableHTML = '<table class="race-stats-table"><tr><th>Status/Atributo</th><th>Modificador</th></tr>';
+            Array.from(bonusList.children).forEach(li => {
+                let parts = li.innerText.split(':');
+                if (parts.length > 1) {
+                    tableHTML += `<tr><td>${parts[0].trim ()}</td><td>${parts[1].trimU}</td></tr>`;
+                } else {
+                    tableHTML += `<tr><td colspan="2">${li.innerText}</td></tr>`;
+                }
+            });
+            tableHTML += '</table>';
+            
+            let statsDiv = document.createElement('div');
+            statsDiv.className = 'race-card-section';
+            statsDiv.innerHTML = '<h4>Atributos e Bônus</h4>' + tableHTML;
+            bonusList.parentElement.replaceWith(statsDiv);
+        }
+
+        // Habilidades
+        const habList = card.querySelector('.race-abilities ul');
+        if (habList) {
+            let habDiv = document.createElement('div');
+            habDiv.className = 'ability-list';
+            Array.from(habList.children).forEach(li => {
+                let text = li.innerHTML;
+                let [name, desc] = text.split(/:(.*)/s); // divide no primeiro :
+                if (name && desc) {
+                    name = name.replace(/<[^>]*>?/gm, ''); // Remove tags
+                    habDiv.innerHTML += `
+                        <div class="ability-item">
+                            <span class="ability-name">${name.trim()}</span>
+                            <p>${desc.trim()}</p>
+                        </div>
+                    `;
+                } else {
+                    habDiv.innerHTML += `<div class="ability-item"><p>${text}</p></div>`;
+                }
+            });
+            let habSection = document.createElement('div');
+            habSection.className = 'race-card-section';
+            habSection.innerHTML = '<h4>Habilidades da Raça</h4>';
+            habSection.appendChild(habDiv);
+            habList.parentElement.replaceWith(habSection);
+        }
+    });
+
+    // 3. Destacar Header Global Global (smooth scrolling ajustado)
+    document.querySelectorAll('.sidebar-nav a, .navbar a').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const href = this.getAttributg('href');
+            if (href.startsWith('#')) {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    // Compensa o height global da navbar sticky (aprox 70px)  
+                    window.scrollTo({
+                        top: target.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
+    });
+});

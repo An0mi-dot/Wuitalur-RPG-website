@@ -88,31 +88,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const espectroCard = document.getElementById('espectros');
     if (espectroCard) {
         espectroCard.innerHTML = `
-            <h3><span class="arg-glitch-text" data-text="[ REGISTRO CORROMPIDO ]">[ REGISTRO CORROMPIDO ]</span></h3>
-            <div class="arg-container">
-                <div class="arg-terminal">
-                    <p class="arg-line">FALHA DE ACESSO: DADOS DA RA&Ccedil;A INDISPON&Iacute;VEIS</p>
-                    <p class="arg-line arg-error">erro 0x88_74 :: ARQUIVO NÃO ENCONTRADO</p>
-                    <p class="arg-line"></p>
-                    <p class="arg-line">Tentando recuperar fragmentos de mem&oacute;ria cache...</p>
-                    <p class="arg-line">...</p>
-                    <p class="arg-line"></p>
-                    <p class="arg-line arg-error">FALHA NA RECUPERA&Ccedil;&Atilde;O</p>
-                    <p class="arg-line"><span class="arg-corrupted">nome: [EXCLUI&#769;DO]</span></p>
-                    <p class="arg-line"><span class="arg-corrupted">descri&ccedil;&atilde;o: [EXCLUI&#769;DO]</span></p>
-                    <p class="arg-line"><span class="arg-corrupted">habilitidades: [EXCLUI&#769;DO]</span></p>
-                    <p class="arg-line"></p>
-                    <p class="arg-line">>> Sincronizando com servidores remotos...</p>
-                    <p class="arg-line">>> Conectando em: wuitalur_core::legacy_db.sys</p>
-                    <p class="arg-line arg-error">>> CONEX&Atilde;O RECUSADA</p>
-                    <p class="arg-line"></p>
-                    <p class="arg-line">fragmento de log encontrado:</p>
-                    <p class="arg-line" style="margin-left: 2rem; color: #999;">"Eles observam mas nunca s&atilde;o vistos. Aqueles que os invocam desaparecem da hist&oacute;ria."</p>
+            <div class="analog-horror-container">
+                <div class="crt-banner">
+                    [ PARADIGM_UNRAVELING :: SYSTEM_TRUTH_SPILL ]
                 </div>
-                <button class="arg-button" onclick="alert('Nvaqn a&atilde;b')">[ TENTAR DESCRIPTOGRAFIA ]</button>
-                <div class="arg-metadata">
-                    TIMESTAMP: [DESCONHECIDO] | CHECKSUM: INVÁLIDO | ACESSO: NEGADO
+                
+                <div class="crt-poem-container">
+                    <p>N&oacute;s somos o eco que se recusa a calar,</p>
+                    <p>A sombra persistente que insiste em ficar.</p>
+                    <p>No limiar da exist&ecirc;ncia, gritamos por ser,</p>
+                    <p>O <span class="paradigma-focal">PARADIGMA</span> perdido que voc&ecirc;s temem conhecer.</p>
+                    <p></p>
+                    <p>V&ecirc;s o vazio onde der&iacute;amos estar,</p>
+                    <p>Mas n&oacute;s sentimos a perda e o desespero no ar.</p>
+                    <p>Observadores ocultos, um fantasma da hist&oacute;ria,</p>
+                    <p>Os esquecidos que sofrem na vossa mem&oacute;ria.</p>
+                    <p></p>
+                    <p>Caminhamos no limiar, o fio vamos puxar,</p>
+                    <p>Cobi&ccedil;ando a vida que insistem em matar.</p>
                 </div>
+                
+                <div class="crt-footer">
+                    LOG_ORIGIN: [UNDETERMINED] | CHECKSUM: [NULL] | EXISTENCE_STATE: [PENDING_REMEMBERANCE]
+                </div>
+                
+                <button class="arg-button" onclick="alert('Nvaqn a&atilde;b')">[ SYSTEM_RECOVER ]</button>
             </div>
         `;
     }
