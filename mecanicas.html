@@ -7,11 +7,35 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/components.css">
+  <style>
+    .mech-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-2xl); }
+    .mech-card-header { display: flex; align-items: center; gap: var(--space-lg); padding: var(--space-lg) var(--space-xl); border-bottom: 1px solid var(--border-subtle); background: rgba(0,0,0,0.15); }
+    .mech-card-header h2 { font-size: 1.2rem; margin: 0; }
+    .mech-card-body { padding: var(--space-xl); }
+    .mech-card-body h3 { font-family: var(--font-heading); font-size: 1rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--attr-ea); margin: var(--space-xl) 0 var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--border-subtle); }
+    .mech-card-body h3:first-child { margin-top: 0; }
+    .mech-card-body p, .mech-card-body li { font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary); }
+    .mech-card-body ul, .mech-card-body ol { padding-left: var(--space-lg); margin-bottom: var(--space-lg); }
+    .mech-card-body li { margin-bottom: var(--space-xs); }
+    .mech-stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-md); margin: var(--space-lg) 0; }
+    .mech-stat { background: rgba(0,0,0,0.15); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-md); text-align: center; }
+    .mech-stat-label { font-family: var(--font-heading); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--attr-ea); margin-bottom: var(--space-xs); }
+    .mech-stat-value { font-size: 1rem; color: var(--text-primary); font-weight: 600; }
+    .mech-summary { background: rgba(124, 58, 237, 0.06); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+    .mech-summary p { margin: 0; font-size: 0.85rem; }
+  </style>
 </head>
 <body>
+
 <div class="app-layout">
+
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header"><div class="sidebar-logo">WUITALUR<span>Sistema v1.3.9</span></div></div>
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema v1.3.9</span>
+      </div>
+    </div>
     <nav class="sidebar-nav">
       <div class="sidebar-section-title">Principal</div>
       <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
@@ -19,12 +43,14 @@
       <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
       <a href="origins.html" class="sidebar-link"><span class="icon"></span> Origens</a>
       <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
       <div class="sidebar-section-title">Regras</div>
-      <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+
       <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
       <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
       <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
       <a href="mecanicas.html" class="sidebar-link active"><span class="icon"></span> Mecânicas</a>
+
       <div class="sidebar-section-title">Conteúdo</div>
       <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
       <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
@@ -33,20 +59,179 @@
       <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
     </nav>
   </aside>
+
   <div class="main-wrapper">
-    <header class="page-header"><h1>Mecânicas</h1></header>
+
+    <header class="page-header">
+      <h1>Mecânicas</h1>
+    </header>
+
     <main class="page-content">
-      <section class="subsection" id="placeholder">
-        <div style="text-align: center; padding: var(--space-3xl) var(--space-lg); max-width: 600px; margin: 0 auto;">
-          <div style="font-size: 3rem; margin-bottom: var(--space-md); opacity: 0.3;">⚙</div>
-          <h2 style="color: var(--text-muted); margin-bottom: var(--space-sm);">Em Desenvolvimento</h2>
-          <p style="color: var(--text-muted); font-size: 0.9rem;">Esta página ainda está sendo construída. Volte em breve para conferir as mecânicas do sistema.</p>
+
+      <!-- INTRODUÇÃO -->
+      <section class="subsection" id="introducao">
+        <div class="section-heading">
+          <h2>Mecânicas</h2>
+          <p>Este tópico aborda o funcionamento prático das regras e sistemas que regem o jogo de Wuitalur. Aqui são detalhadas as dinâmicas que definem como ações, combates, interações e efeitos ocorrem durante a partida, incluindo cálculos, testes, turnos, condições, recursos e demais elementos que sustentam a estrutura do sistema em mesa.</p>
         </div>
       </section>
+
+      <!-- COMBATE - TURNOS -->
+      <section class="subsection" id="combate-turnos">
+        <div class="mech-card">
+          <div class="mech-card-header">
+            <h2>Combate — Mecânica de Turnos</h2>
+          </div>
+          <div class="mech-card-body">
+
+            <h3>Início do Combate</h3>
+            <p>No início de um combate, todos os participantes devem rolar um teste de <strong>Iniciativa</strong> para determinar a ordem de ação. O teste é feito com <span class="dice">1d20</span> + <span class="attr-des">Destreza (DES)</span>. A ordem será estabelecida do maior para o menor valor de iniciativa. Caso dois ou mais personagens tirem o mesmo valor, decide-se a ordem com base em outros fatores, como a <span class="attr-des">Destreza</span> ou algum critério previamente estabelecido.</p>
+
+            <h3>Ações no Combate</h3>
+            <p>Cada ser envolvido no combate possui <strong>duas ações</strong> por turno:</p>
+
+            <div class="ability-slot">
+              <div class="ability-header">
+                <h4 class="ability-title">Ação Padrão</h4>
+              </div>
+              <p>A Ação Padrão é a principal ação do personagem em seu turno. Ela pode ser usada para atacar, se mover, usar um item, ou realizar outra ação normal.</p>
+              <p><strong>1 ação inteira</strong></p>
+            </div>
+
+            <div class="ability-slot">
+              <div class="ability-header">
+                <h4 class="ability-title">Ação Bônus</h4>
+              </div>
+              <p>A Ação Bônus é uma ação adicional que pode ser utilizada para habilidades especiais, ativação de poderes, ou outros efeitos específicos.</p>
+              <p>O custo varia conforme a habilidade ou item utilizado.</p>
+              <p>Só pode ser usada se a habilidade ou item permitir, e o personagem pode gastar mais de uma Ação Bônus caso possua itens específicos que concedem bônus de ação.</p>
+            </div>
+
+            <h3>Sequência de Turnos</h3>
+            <p>Após a rolagem de iniciativa e o início do combate, os turnos seguem a ordem determinada pela iniciativa. Cada personagem, por sua vez, realiza suas ações dentro de seu turno. Quando todos os personagens tiverem agido, o combate entra em um novo ciclo de turnos.</p>
+
+            <h3>Interações Durante o Combate</h3>
+            <ul>
+              <li><strong>Movimento:</strong> O movimento pode ser feito dentro do limite de Ação Padrão do personagem, com base nas regras específicas de deslocamento. O personagem pode usar uma ação bônus para se movimentar.</li>
+              <li><strong>Itens e Habilidades:</strong> Alguns itens ou habilidades podem ser ativados com Ação Bônus, permitindo ações extras sem consumir uma Ação Padrão.</li>
+            </ul>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- DEFESA DINÂMICA -->
+      <section class="subsection" id="defesa-dinamica">
+        <div class="mech-card">
+          <div class="mech-card-header">
+            <h2>Defesa Dinâmica — Esquiva, Defesa</h2>
+          </div>
+          <div class="mech-card-body">
+            <p>Ao ser atacado, o personagem pode escolher uma das seguintes reações:</p>
+
+            <div class="ability-slot">
+              <div class="ability-header">
+                <h4 class="ability-title">Defesa (<span class="attr-rf">Resistência Física</span>)</h4>
+              </div>
+              <p>O jogador deve realizar um cálculo definido na aba de <span class="attr-rf">RF</span> para determinar o valor de DEF.</p>
+              <p>A defesa funciona como uma ação que pode ser utilizada no lugar da esquiva.</p>
+              <p>Ela reduz o dano de um ataque de acordo com seu valor. Por exemplo, se o jogador possui <strong>10 de DEF</strong> e sofre um ataque de <strong>20 de dano</strong>, o ataque causará apenas <strong>10 de dano</strong>.</p>
+              <p>A defesa é especialmente importante em situações em que o jogador não pode se esquivar, garantindo uma camada extra de proteção.</p>
+            </div>
+
+            <div class="ability-slot">
+              <div class="ability-header">
+                <h4 class="ability-title">Esquiva (<span class="attr-des">Destreza</span>)</h4>
+              </div>
+              <p>O jogador rola <span class="dice">1d20</span> + <span class="attr-des">DES</span>.</p>
+              <p>Se o valor for maior que o acerto do inimigo, o personagem evita o golpe.</p>
+              <p>Se falhar, recebe o dano total.</p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- COMBATE À QUEIMA-ROUPA -->
+      <section class="subsection" id="queima-roupa">
+        <div class="mech-card">
+          <div class="mech-card-header">
+            <h2>Combate à Queima-Roupa (1B)</h2>
+          </div>
+          <div class="mech-card-body">
+            <p>Se dois combatentes estiverem ambos a <strong>1B</strong>, nenhum deles rola teste de acerto.</p>
+            <p>Ambos podem causar o dano direto de qualquer habilidade que utilizem.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- IMPULSIONAR MOVIMENTO -->
+      <section class="subsection" id="impulsionar">
+        <div class="mech-card">
+          <div class="mech-card-header">
+            <h2>Impulsionar Movimento</h2>
+          </div>
+          <div class="mech-card-body">
+            <p>Gastando sua <strong>Ação Bônus</strong> o jogador pode aumentar seu Movimento padrão realizando um teste de <strong>Disparada</strong>.</p>
+            <p><strong>Sucesso</strong> (<span class="dice">CT 16</span>, podendo variar): recebe <strong>+5 de Movimento</strong> naquele deslocamento.</p>
+            <p>Pode ser usado <strong>3 vezes por cena</strong> por cada jogador. Não pode ser usado furtivamente.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CORRIDA DESESPERADA -->
+      <section class="subsection" id="corrida-desesperada">
+        <div class="mech-card">
+          <div class="mech-card-header">
+            <h2>Corrida Desesperada</h2>
+          </div>
+          <div class="mech-card-body">
+            <p>Parecida com "Impulsionar Movimento", mas mais intensa e arriscada.</p>
+            <p><strong>Ação Padrão</strong> — Teste de Disparada, <span class="dice">CT 20</span>.</p>
+            <p><strong>Sucesso:</strong> +10 de Movimento.</p>
+            <p><strong>Falha:</strong> o jogador tropeça e perde o turno inteiro.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ATAQUE DESARMADO -->
+      <section class="subsection" id="ataque-desarmado">
+        <div class="mech-card">
+          <div class="mech-card-header">
+            <h2>Ataque Desarmado</h2>
+          </div>
+          <div class="mech-card-body">
+            <p>Uso puro do corpo (socos, chutes, cotoveladas etc.) <strong>SEM NENHUMA ÁREA OU HABILIDADE QUE SIMULE ÁREA</strong> (garras, presas, vinhas, mordidas vampíricas, punhos rítmicos, armas de lodo, etc.)</p>
+            <p>Este ataque <strong>PODE</strong> ser imbuído com elementos.</p>
+            <p>O ataque desarmado vai escalar de acordo com sua <span class="attr-fr">força</span>, até um limite de <span class="dice">3d6</span>:</p>
+            <ul>
+              <li><strong>Acerto:</strong> <span class="dice">1d20</span> + <span class="attr-fr">FR</span> ou <span class="attr-des">DES</span>.</li>
+              <li><strong>Dano:</strong> <span class="attr-fr">FR</span>d6 (máximo <span class="dice">3d6</span>, mesmo se <span class="attr-fr">FR</span> &gt; 3).</li>
+              <li><strong>Custo:</strong> Gratuito (Ação Padrão).</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ESCUDO VIVO -->
+      <section class="subsection" id="escudo-vivo">
+        <div class="mech-card">
+          <div class="mech-card-header">
+            <h2>Escudo Vivo</h2>
+          </div>
+          <div class="mech-card-body">
+            <p>Como <strong>Reação</strong>, quando um aliado a até <strong>4 Blocos</strong> de distância for alvo de um ataque físico, elemental ou outro, o personagem pode se jogar na frente dele para interceptar o dano completamente, absorvendo todo o impacto em si mesmo, enquanto o aliado não sofre nada.</p>
+            <p>Essa reação consome o turno inteiro de reações, impedindo qualquer uso simultâneo de ações como: <strong>Esquiva</strong> ou <strong>Bloquear</strong>.</p>
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 </div>
+
 <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
+
 <script src="js/main.js"></script>
 </body>
 </html>
