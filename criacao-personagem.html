@@ -10,10 +10,10 @@
   <style>
     .step-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-2xl); }
     .step-header { display: flex; align-items: center; gap: var(--space-lg); padding: var(--space-lg) var(--space-xl); border-bottom: 1px solid var(--border-subtle); background: rgba(0,0,0,0.15); }
-    .step-number { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; background: rgba(124, 58, 237, 0.2); color: #a78bfa; font-family: var(--font-heading); font-size: 1.3rem; font-weight: 900; flex-shrink: 0; }
+    .step-number { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; background: rgba(124, 58, 237, 0.2); color: #a78bfa; font-family: var(--font-mono); font-weight: bold; }
     .step-header h2 { font-size: 1.3rem; margin: 0; }
     .step-body { padding: var(--space-xl); }
-    .step-body h3 { font-family: var(--font-heading); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--attr-ea); margin: var(--space-xl) 0 var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--border-subtle); }
+    .step-body h3 { font-family: var(--font-heading); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--attr-ea); margin: var(--space-xl) 0 var(--space-md); }
     .step-body h3:first-child { margin-top: 0; }
     .step-body p, .step-body li { font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary); }
     .step-body ul, .step-body ol { padding-left: var(--space-lg); margin-bottom: var(--space-lg); }
@@ -85,21 +85,19 @@
             <h2>Escolha sua Raça</h2>
           </div>
           <div class="step-body">
-            <p>A raça define a base biológica e cultural do seu personagem. Cada raça concede bônus de atributos, resistências elementais e habilidades raciais únicas. Consulte a página de <a href="races.html">Raças</a> para detalhes completos.</p>
+            <p>A raça define a base biológica e cultural do seu personagem. Cada raça concede bônus de atributos, resistências elementais e habilidades raciais únicas. Consulte a página de <a href="races.html">Raças</a> para mais detalhes.</p>
 
             <h3>Raças Disponíveis</h3>
             <ul>
-              <li><strong>Abissal</strong> — Seres das profundezas tomados pela <span class="elem-praga">praga</span>. +1 Des, +1 Int, -1 <span class="attr-saude">Saúde</span>, visão no escuro, telepatia.</li>
-              <li><strong>Anjo</strong> — Seres celestiais decaídos. Voo, cura, resistência a <span class="elem-sagrado">Sagrado</span>.</li>
-              <li><strong>Constructo</strong> — Autômatos ou seres artificiais. Alta resistência física, sem <span class="attr-saude">Saúde</span> natural.</li>
-              <li><strong>Costurado</strong> — Seres remendados com partes de outros corpos. Alta durabilidade.</li>
-              <li><strong>Demoníaco</strong> — Criaturas infernais. Resistência a fogo e <span class="elem-pesadelo">Pesadelo</span>.</li>
-              <li><strong>Elfo</strong> — Seres élficos de longa vida. +1 <span class="attr-sen">SEN</span>, afinidade com magia.</li>
-              <li><strong>Humano</strong> — Versáteis e adaptáveis. Bônus flexível de atributo.</li>
-              <li><strong>Minotauro</strong> — Bestas imponentes. +1 <span class="attr-fr">FR</span>, força bruta e intimidação.</li>
-              <li><strong>Múmia</strong> — Corpos reanimados por rituais. Imunidade a veneno e doenças.</li>
-              <li><strong>Vampiro</strong> — Criaturas notívagas sedentas por sangue. +1 <span class="attr-des">Des</span>, <span class="attr-fama">Fama</span>, fraqueza a <span class="elem-solar">Solar</span>.</li>
-              <li><strong>Zumbi de Laboratório</strong> — Experimentos reanimados. Resistência física extrema, -1 Int.</li>
+              <li><strong>Abissais</strong></li>
+              <li><strong>Akivus</strong></li>
+              <li><strong>Vampiros</strong></li>
+              <li><strong>Híbridos</strong></li>
+              <li><strong>Dragões Anões</strong></li>
+              <li><strong>Praguentos</strong></li>
+              <li><strong>Humanos</strong></li>
+              <li><strong>Insectoides</strong></li>
+              <li><strong>EXOs</strong></li>
             </ul>
 
             <div class="step-summary">
@@ -117,7 +115,7 @@
             <h2>Escolha sua Origem</h2>
           </div>
           <div class="step-body">
-            <p>A origem representa o passado do seu personagem antes de se tornar um aventureiro. Ela concede perícias, ferramentas, idiomas, equipamento inicial, um poder único e um traço de personalidade. Consulte a página de <a href="origins.html">Origens</a> para detalhes completos.</p>
+            <p>A origem representa o passado do seu personagem antes de se tornar um aventureiro. Ela concede perícias, ferramentas, idiomas, equipamento inicial, um poder único e um traço de personalidade.</p>
 
             <h3>O que uma Origem Fornece</h3>
             <ul>
@@ -146,7 +144,7 @@
             <h2>Distribua seus Atributos</h2>
           </div>
           <div class="step-body">
-            <p>Atributos representam as capacidades fundamentais do seu personagem. Eles influenciam testes, combates e resistências. Consulte a página de <a href="atributos.html">Atributos</a> para detalhes completos.</p>
+            <p>Atributos representam as capacidades fundamentais do seu personagem. Eles influenciam testes, combates e resistências. Consulte a página de <a href="atributos.html">Atributos</a> para mais informações.</p>
 
             <h3>Regras de Distribuição</h3>
             <ul>
@@ -228,12 +226,12 @@
             <h2>Escolha sua Classe</h2>
           </div>
           <div class="step-body">
-            <p>A classe define o estilo de jogo e as habilidades especiais do seu personagem. Cada classe possui um Nível de Dificuldade (ND), uma progressão única e acesso a habilidades específicas. Consulte a página de <a href="classes.html">Classes</a> para detalhes completos.</p>
+            <p>A classe define o estilo de jogo e as habilidades especiais do seu personagem. Cada classe possui um Nível de Dificuldade (ND), uma progressão única e acesso a habilidades específicas.</p>
 
             <h3>Classes Disponíveis</h3>
             <ul>
               <li><strong>Cavaleiros de Paladium</strong> <span class="badge difficulty-4">ND 5</span> — Guerreiros sagrados, tanques e protetores.</li>
-              <li><strong>Rastejantes</strong> <span class="badge difficulty-4">ND 5</span> — Infectados pela <span class="elem-praga">praga</span>. Subclasses: Coletor de Angústias, Herdeiro da Praga Abissal.</li>
+              <li><strong>Rastejantes</strong> <span class="badge difficulty-4">ND 5</span> — Infectados pela <span class="elem-praga">praga</span>. Subclasses: Coletor de Angústias, Herdeiro da Praga.</li>
               <li><strong>Protegidos</strong> <span class="badge difficulty-4">ND 5</span> — Escolhidos por entidades superiores.</li>
               <li><strong>Anômalo</strong> <span class="badge difficulty-3">ND 4</span> — Distorcidos por energia caótica. Subclasses: Suicida, Caminhante do Vazio.</li>
               <li><strong>Compactador</strong> <span class="badge difficulty-1">ND 1</span> — Negociadores e seladores de pactos.</li>
@@ -259,7 +257,7 @@
             <h2>Escolha suas Perícias</h2>
           </div>
           <div class="step-body">
-            <p>Perícias representam treinamentos e conhecimentos específicos do seu personagem. Cada classe e origem concede perícias iniciais. Consulte a página de <a href="pericias.html">Perícias</a> para detalhes completos.</p>
+            <p>Perícias representam treinamentos e conhecimentos específicos do seu personagem. Cada classe e origem concede perícias iniciais. Consulte a página de <a href="pericias.html">Perícias</a> para detalhes.</p>
 
             <h3>Como Funcionam</h3>
             <ul>
@@ -284,7 +282,7 @@
             <h2>Equipamento Inicial</h2>
           </div>
           <div class="step-body">
-            <p>Seu equipamento inicial vem de duas fontes: sua origem (itens narrativos e ferramentas) e sua classe (armas, armaduras e itens de combate). Consulte as páginas de <a href="equipamentos.html">Equipamentos</a> e <a href="conclave.html">O Conclave</a> para detalhes completos.</p>
+            <p>Seu equipamento inicial vem de duas fontes: sua origem (itens narrativos e ferramentas) e sua classe (armas, armaduras e itens de combate). Consulte as páginas de <a href="equipamentos.html">Equipamentos</a>.</p>
 
             <h3>Categorias de Equipamento</h3>
             <ul>
@@ -297,7 +295,7 @@
             </ul>
 
             <h3>O Conclave</h3>
-            <p>O <a href="conclave.html">Conclave</a> é um mercado negro místico onde personagens podem comprar, vender e recarregar itens usando <strong>Sincronia de Inventário</strong>. Quanto maior sua patente (Bronze, Prata, Ouro, Platina), mais itens poderosos estão disponíveis.</p>
+            <p>O <a href="conclave.html">Conclave</a> é um mercado negro místico onde personagens podem comprar, vender e recarregar itens usando <strong>Sincronia de Inventário</strong>. Quanto mais itens você usa, maior sua sincronização.</p>
 
             <div class="step-summary">
               <p><strong>✓ Anote:</strong> Armas, armaduras, itens utilitários e equipamentos iniciais.</p>
@@ -327,7 +325,7 @@
             <h3>Pontos Finais</h3>
             <ul>
               <li><span class="attr-cosmo" data-text="COSMO">COSMO</span> começa em <strong>1%</strong> para todos os personagens. Apenas o mestre pode alterar este valor durante o jogo.</li>
-              <li>A <strong>Sanidade</strong> é calculada como <span class="attr-int">INT</span> + Bônus de Classe, e a <strong>Barra de Estresse</strong> como Classe + <span class="attr-int">INT</span>. Consulte a página de <a href="sanidade.html">Sanidade</a>.</li>
+              <li>A <strong>Sanidade</strong> é calculada como <span class="attr-int">INT</span> + Bônus de Classe, e a <strong>Barra de Estresse</strong> como Classe + <span class="attr-int">INT</span>.</li>
               <li>Personagens começam no <strong>Nível 1</strong>.</li>
               <li>Atributos podem ser aumentados em +1 a cada <strong>3 níveis</strong>.</li>
             </ul>
