@@ -7,11 +7,36 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/components.css">
+  <style>
+    .step-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-2xl); }
+    .step-header { display: flex; align-items: center; gap: var(--space-lg); padding: var(--space-lg) var(--space-xl); border-bottom: 1px solid var(--border-subtle); background: rgba(0,0,0,0.15); }
+    .step-number { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; background: rgba(124, 58, 237, 0.2); color: #a78bfa; font-family: var(--font-heading); font-size: 1.3rem; font-weight: 900; flex-shrink: 0; }
+    .step-header h2 { font-size: 1.3rem; margin: 0; }
+    .step-body { padding: var(--space-xl); }
+    .step-body h3 { font-family: var(--font-heading); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--attr-ea); margin: var(--space-xl) 0 var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--border-subtle); }
+    .step-body h3:first-child { margin-top: 0; }
+    .step-body p, .step-body li { font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary); }
+    .step-body ul, .step-body ol { padding-left: var(--space-lg); margin-bottom: var(--space-lg); }
+    .step-body li { margin-bottom: var(--space-xs); }
+    .derived-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-md); margin: var(--space-lg) 0; }
+    .derived-card { background: rgba(0,0,0,0.15); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-md); }
+    .derived-card h4 { font-family: var(--font-heading); font-size: 0.85rem; color: var(--text-primary); margin-bottom: var(--space-sm); }
+    .derived-card .formula { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; }
+    .step-summary { background: rgba(124, 58, 237, 0.06); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md); }
+    .step-summary p { margin: 0; font-size: 0.85rem; }
+  </style>
 </head>
 <body>
+
 <div class="app-layout">
+
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header"><div class="sidebar-logo">WUITALUR<span>Sistema v1.3.9</span></div></div>
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema v1.3.9</span>
+      </div>
+    </div>
     <nav class="sidebar-nav">
       <div class="sidebar-section-title">Principal</div>
       <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
@@ -19,12 +44,14 @@
       <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
       <a href="origins.html" class="sidebar-link"><span class="icon"></span> Origens</a>
       <a href="criacao-personagem.html" class="sidebar-link active"><span class="icon"></span> Criação de Personagem</a>
+
       <div class="sidebar-section-title">Regras</div>
       <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
       <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
       <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
       <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
       <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+
       <div class="sidebar-section-title">Conteúdo</div>
       <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
       <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
@@ -33,20 +60,291 @@
       <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
     </nav>
   </aside>
+
   <div class="main-wrapper">
-    <header class="page-header"><h1>Criação de Personagem</h1></header>
+
+    <header class="page-header">
+      <h1>Criação de Personagem</h1>
+    </header>
+
     <main class="page-content">
-      <section class="subsection" id="placeholder">
-        <div style="text-align: center; padding: var(--space-3xl) var(--space-lg); max-width: 600px; margin: 0 auto;">
-          <div style="font-size: 3rem; margin-bottom: var(--space-md); opacity: 0.3;">📝</div>
-          <h2 style="color: var(--text-muted); margin-bottom: var(--space-sm);">Em Desenvolvimento</h2>
-          <p style="color: var(--text-muted); font-size: 0.9rem;">Esta página ainda está sendo construída. Volte em breve para conferir o guia de criação de personagem.</p>
+
+      <!-- INTRODUÇÃO -->
+      <section class="subsection" id="introducao">
+        <div class="section-heading">
+          <h2>Guia de Criação de Personagem</h2>
+          <p>Siga os passos abaixo para construir seu personagem em Wuitalur. Cada etapa representa uma escolha importante que definirá quem você é neste mundo sombrio.</p>
         </div>
       </section>
+
+      <!-- PASSO 1: RAÇA -->
+      <section class="subsection" id="passo-1">
+        <div class="step-card">
+          <div class="step-header">
+            <div class="step-number">1</div>
+            <h2>Escolha sua Raça</h2>
+          </div>
+          <div class="step-body">
+            <p>A raça define a base biológica e cultural do seu personagem. Cada raça concede bônus de atributos, resistências elementais e habilidades raciais únicas. Consulte a página de <a href="races.html">Raças</a> para detalhes completos.</p>
+
+            <h3>Raças Disponíveis</h3>
+            <ul>
+              <li><strong>Abissal</strong> — Seres das profundezas tomados pela <span class="elem-praga">praga</span>. +1 Des, +1 Int, -1 <span class="attr-saude">Saúde</span>, visão no escuro, telepatia.</li>
+              <li><strong>Anjo</strong> — Seres celestiais decaídos. Voo, cura, resistência a <span class="elem-sagrado">Sagrado</span>.</li>
+              <li><strong>Constructo</strong> — Autômatos ou seres artificiais. Alta resistência física, sem <span class="attr-saude">Saúde</span> natural.</li>
+              <li><strong>Costurado</strong> — Seres remendados com partes de outros corpos. Alta durabilidade.</li>
+              <li><strong>Demoníaco</strong> — Criaturas infernais. Resistência a fogo e <span class="elem-pesadelo">Pesadelo</span>.</li>
+              <li><strong>Elfo</strong> — Seres élficos de longa vida. +1 <span class="attr-sen">SEN</span>, afinidade com magia.</li>
+              <li><strong>Humano</strong> — Versáteis e adaptáveis. Bônus flexível de atributo.</li>
+              <li><strong>Minotauro</strong> — Bestas imponentes. +1 <span class="attr-fr">FR</span>, força bruta e intimidação.</li>
+              <li><strong>Múmia</strong> — Corpos reanimados por rituais. Imunidade a veneno e doenças.</li>
+              <li><strong>Vampiro</strong> — Criaturas notívagas sedentas por sangue. +1 <span class="attr-des">Des</span>, <span class="attr-fama">Fama</span>, fraqueza a <span class="elem-solar">Solar</span>.</li>
+              <li><strong>Zumbi de Laboratório</strong> — Experimentos reanimados. Resistência física extrema, -1 Int.</li>
+            </ul>
+
+            <div class="step-summary">
+              <p><strong>✓ Anote:</strong> Bônus de atributos, resistências, fraquezas e habilidades raciais do seu personagem.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PASSO 2: ORIGEM -->
+      <section class="subsection" id="passo-2">
+        <div class="step-card">
+          <div class="step-header">
+            <div class="step-number">2</div>
+            <h2>Escolha sua Origem</h2>
+          </div>
+          <div class="step-body">
+            <p>A origem representa o passado do seu personagem antes de se tornar um aventureiro. Ela concede perícias, ferramentas, idiomas, equipamento inicial, um poder único e um traço de personalidade. Consulte a página de <a href="origins.html">Origens</a> para detalhes completos.</p>
+
+            <h3>O que uma Origem Fornece</h3>
+            <ul>
+              <li><strong>Perícias:</strong> Duas perícias adicionais treinadas.</li>
+              <li><strong>Ferramentas:</strong> Proficiência com ferramentas específicas.</li>
+              <li><strong>Idiomas:</strong> Idiomas adicionais conhecidos.</li>
+              <li><strong>Equipamento:</strong> Itens iniciais concedidos pela origem.</li>
+              <li><strong>Poder:</strong> Uma habilidade especial única.</li>
+              <li><strong>Traço:</strong> Uma característica narrativa para interpretação.</li>
+            </ul>
+
+            <p>São 19 origens disponíveis, como <em>Filho do Abismo</em>, <em>Médico de Guerra</em>, <em>Marcado pelo Medo</em>, <em>Herdeiro Perdido</em> e muitas outras.</p>
+
+            <div class="step-summary">
+              <p><strong>✓ Anote:</strong> Perícias, ferramentas, idiomas, equipamento, poder e traço da sua origem.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PASSO 3: ATRIBUTOS -->
+      <section class="subsection" id="passo-3">
+        <div class="step-card">
+          <div class="step-header">
+            <div class="step-number">3</div>
+            <h2>Distribua seus Atributos</h2>
+          </div>
+          <div class="step-body">
+            <p>Atributos representam as capacidades fundamentais do seu personagem. Eles influenciam testes, combates e resistências. Consulte a página de <a href="atributos.html">Atributos</a> para detalhes completos.</p>
+
+            <h3>Regras de Distribuição</h3>
+            <ul>
+              <li>Você tem <strong>4 pontos</strong> para distribuir entre os 9 atributos.</li>
+              <li>Todos os atributos começam em <strong>1</strong>.</li>
+              <li>Você pode <strong>reduzir</strong> um atributo para 0 para ganhar 1 ponto extra.</li>
+              <li>O <strong>máximo</strong> inicial em um atributo é <strong>8</strong>.</li>
+              <li>Você ganha <strong>+1 ponto</strong> de atributo a cada <strong>3 níveis</strong>.</li>
+              <li><span class="attr-sen">Sentidos (SEN)</span> começa com bônus de +3 para todos.</li>
+              <li><span class="attr-cosmo" data-text="COSMO">COSMO</span> <strong>não pode</strong> ser modificado pelo jogador — começa em 1% e apenas o mestre altera.</li>
+            </ul>
+
+            <h3>Os Atributos</h3>
+            <ul>
+              <li><span class="attr-saude">Saúde</span> — Define os PVs do personagem.</li>
+              <li><span class="attr-re">RE</span> — Resistência Elemental. Usada em DEFe contra ataques elementais.</li>
+              <li><span class="attr-rf">RF</span> — Resistência Física. Usada no cálculo de DEF física.</li>
+              <li><span class="attr-des">Destreza</span> — Iniciativa, esquiva, acerto e contra-ataques.</li>
+              <li><span class="attr-fr">Força</span> — Força física, carregar peso, testes de FR.</li>
+              <li><span class="attr-int">Intelecto</span> — Conhecimento, memória, medicina, tecnologia.</li>
+              <li><span class="attr-fama">Fama</span> — Carisma, aparência, persuasão, enganação.</li>
+              <li><span class="attr-sen">Sentidos</span> — Percepção, investigação, encontrar coisas.</li>
+              <li><span class="attr-cosmo" data-text="COSMO">COSMO</span> — Conexão com o além. Apenas o mestre mexe.</li>
+            </ul>
+
+            <div class="step-summary">
+              <p><strong>✓ Anote:</strong> Valores finais de cada atributo, incluindo bônus raciais e reduções.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PASSO 4: DERIVADOS -->
+      <section class="subsection" id="passo-4">
+        <div class="step-card">
+          <div class="step-header">
+            <div class="step-number">4</div>
+            <h2>Calcule os Derivados</h2>
+          </div>
+          <div class="step-body">
+            <p>Com os atributos definidos, calcule as estatísticas derivadas do seu personagem. Refaça esses cálculos sempre que subir de nível ou alterar atributos.</p>
+
+            <div class="derived-grid">
+              <div class="derived-card">
+                <h4>PVs (Pontos de Vida)</h4>
+                <p class="formula">Consulte a página da sua <a href="classes.html">classe</a> para ver os PVs iniciais e por nível.</p>
+              </div>
+              <div class="derived-card">
+                <h4>DEF (Defesa Física)</h4>
+                <p class="formula">DEF = (<span class="attr-rf">RF</span> × PVs<sup>0.6</sup>) ÷ 6</p>
+              </div>
+              <div class="derived-card">
+                <h4>DEFe (Defesa Elemental)</h4>
+                <p class="formula">DEFe = (<span class="attr-re">RE</span> × √PVs) ÷ 8 + DEF</p>
+              </div>
+
+              <div class="derived-card">
+                <h4>Sanidade</h4>
+                <p class="formula">Sanidade = <span class="attr-int">INT</span> + Bônus de Classe</p>
+              </div>
+              <div class="derived-card">
+                <h4>Estresse</h4>
+                <p class="formula">Barra de Estresse = Classe + <span class="attr-int">INT</span></p>
+              </div>
+            </div>
+
+            <div class="step-summary">
+              <p><strong>✓ Anote:</strong> PVs, DEF, DEFe, Iniciativa, Sanidade e Estresse do seu personagem.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PASSO 5: CLASSE -->
+      <section class="subsection" id="passo-5">
+        <div class="step-card">
+          <div class="step-header">
+            <div class="step-number">5</div>
+            <h2>Escolha sua Classe</h2>
+          </div>
+          <div class="step-body">
+            <p>A classe define o estilo de jogo e as habilidades especiais do seu personagem. Cada classe possui um Nível de Dificuldade (ND), uma progressão única e acesso a habilidades específicas. Consulte a página de <a href="classes.html">Classes</a> para detalhes completos.</p>
+
+            <h3>Classes Disponíveis</h3>
+            <ul>
+              <li><strong>Cavaleiros de Paladium</strong> <span class="badge difficulty-4">ND 5</span> — Guerreiros sagrados, tanques e protetores.</li>
+              <li><strong>Rastejantes</strong> <span class="badge difficulty-4">ND 5</span> — Infectados pela <span class="elem-praga">praga</span>. Subclasses: Coletor de Angústias, Herdeiro da Praga Abissal.</li>
+              <li><strong>Protegidos</strong> <span class="badge difficulty-4">ND 5</span> — Escolhidos por entidades superiores.</li>
+              <li><strong>Anômalo</strong> <span class="badge difficulty-3">ND 4</span> — Distorcidos por energia caótica. Subclasses: Suicida, Caminhante do Vazio.</li>
+              <li><strong>Compactador</strong> <span class="badge difficulty-1">ND 1</span> — Negociadores e seladores de pactos.</li>
+              <li><strong>Bestial</strong> <span class="badge difficulty-2">ND 2</span> — Híbridos animalescos. Subclasses: Cobra, Tubarão, Touro.</li>
+              <li><strong>Atirador Espectral</strong> <span class="badge difficulty-3">ND 4</span> — Atiradores de elite com munição amaldiçoada. Subclasse: Eco Silente.</li>
+              <li><strong>Furtassaltante</strong> <span class="badge difficulty-3">ND 3</span> — Assassinos furtivos com dano adicional furtivo.</li>
+              <li><strong>Sobrevivente</strong> <span class="badge difficulty-locked">ND N/A</span> — Adaptável, sem progressão fixa. Usa Pontos de Esforço e 4 Meios de Sobrevivência.</li>
+              <li><strong>Consagrados</strong> <span class="badge difficulty-1">ND 1</span> — Devotos elementais com Selos Divinos. Doutrinas: Campeão, Profeta.</li>
+            </ul>
+
+            <div class="step-summary">
+              <p><strong>✓ Anote:</strong> Classe, ND, habilidades de classe, progressão e equipamento inicial da classe.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PASSO 6: PERÍCIAS -->
+      <section class="subsection" id="passo-6">
+        <div class="step-card">
+          <div class="step-header">
+            <div class="step-number">6</div>
+            <h2>Escolha suas Perícias</h2>
+          </div>
+          <div class="step-body">
+            <p>Perícias representam treinamentos e conhecimentos específicos do seu personagem. Cada classe e origem concede perícias iniciais. Consulte a página de <a href="pericias.html">Perícias</a> para detalhes completos.</p>
+
+            <h3>Como Funcionam</h3>
+            <ul>
+              <li>Perícias são vinculadas a um atributo específico (ex: Atletismo usa <span class="attr-fr">FR</span>, Furtividade usa <span class="attr-des">Des</span>).</li>
+              <li>Testes de perícia: <span class="dice">1d20</span> + Modificador do atributo vinculado.</li>
+              <li>São 36 perícias no total, cobrindo áreas como combate, conhecimento, interação e sobrevivência.</li>
+              <li>Sua classe e origem determinam quantas e quais perícias você começa treinado.</li>
+            </ul>
+
+            <div class="step-summary">
+              <p><strong>✓ Anote:</strong> Perícias treinadas e seus atributos vinculados.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PASSO 7: EQUIPAMENTO -->
+      <section class="subsection" id="passo-7">
+        <div class="step-card">
+          <div class="step-header">
+            <div class="step-number">7</div>
+            <h2>Equipamento Inicial</h2>
+          </div>
+          <div class="step-body">
+            <p>Seu equipamento inicial vem de duas fontes: sua origem (itens narrativos e ferramentas) e sua classe (armas, armaduras e itens de combate). Consulte as páginas de <a href="equipamentos.html">Equipamentos</a> e <a href="conclave.html">O Conclave</a> para detalhes completos.</p>
+
+            <h3>Categorias de Equipamento</h3>
+            <ul>
+              <li><strong>Armas Brancas</strong> — Corpo a corpo (espadas, martelos, lanças, etc.).</li>
+              <li><strong>Armas de Fogo</strong> — Armas à distância (pistolas, rifles, etc.).</li>
+              <li><strong>Utilitários</strong> — Itens diversos (lanternas, cordas, kits, etc.).</li>
+              <li><strong>Equipáveis</strong> — Armaduras, acessórios e proteções.</li>
+              <li><strong>Itens Elementais</strong> — Itens imbuídos com poder elemental.</li>
+              <li><strong>Sistema de Carga</strong> — Armas e itens consomem carga, que pode ser recarregada no Conclave.</li>
+            </ul>
+
+            <h3>O Conclave</h3>
+            <p>O <a href="conclave.html">Conclave</a> é um mercado negro místico onde personagens podem comprar, vender e recarregar itens usando <strong>Sincronia de Inventário</strong>. Quanto maior sua patente (Bronze, Prata, Ouro, Platina), mais itens poderosos estão disponíveis.</p>
+
+            <div class="step-summary">
+              <p><strong>✓ Anote:</strong> Armas, armaduras, itens utilitários e equipamentos iniciais.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PASSO 8: FINALIZAÇÃO -->
+      <section class="subsection" id="passo-8">
+        <div class="step-card">
+          <div class="step-header">
+            <div class="step-number">8</div>
+            <h2>Finalização & Detalhes</h2>
+          </div>
+          <div class="step-body">
+            <p>Com todas as mecânicas definidas, é hora de dar vida ao seu personagem com detalhes narrativos e finais.</p>
+
+            <h3>O que definir</h3>
+            <ul>
+              <li><strong>Nome</strong> — Escolha um nome que combine com o universo sombrio de Wuitalur.</li>
+              <li><strong>Aparência</strong> — Descreva a idade, altura, peso, cabelo, olhos, marcas distintas e vestimentas.</li>
+              <li><strong>Personalidade</strong> — Baseie-se no traço da sua origem para criar motivações, medos e objetivos.</li>
+              <li><strong>História</strong> — Como sua raça, origem e classe se conectam? O que o trouxe até aqui?</li>
+            </ul>
+
+            <h3>Pontos Finais</h3>
+            <ul>
+              <li><span class="attr-cosmo" data-text="COSMO">COSMO</span> começa em <strong>1%</strong> para todos os personagens. Apenas o mestre pode alterar este valor durante o jogo.</li>
+              <li>A <strong>Sanidade</strong> é calculada como <span class="attr-int">INT</span> + Bônus de Classe, e a <strong>Barra de Estresse</strong> como Classe + <span class="attr-int">INT</span>. Consulte a página de <a href="sanidade.html">Sanidade</a>.</li>
+              <li>Personagens começam no <strong>Nível 1</strong>.</li>
+              <li>Atributos podem ser aumentados em +1 a cada <strong>3 níveis</strong>.</li>
+            </ul>
+
+            <div class="step-summary">
+              <p><strong>✓ Personagem pronto!</strong> Agora é só levar sua ficha para a mesa e começar a jogar.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 </div>
+
 <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
+
 <script src="js/main.js"></script>
 </body>
 </html>

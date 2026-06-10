@@ -20,6 +20,20 @@
   position: relative;
   overflow: hidden;
 }
+
+/* === PAGE-SPECIFIC GRIDS === */
+.origin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-bottom: var(--space-lg); }
+.class-stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-lg); }
+.san-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-lg); }
+.class-bar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--space-sm); margin-bottom: var(--space-lg); }
+.resgate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin: var(--space-lg) 0; }
+.per-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-lg); }
+.cond-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-lg); }
+.conclave-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-lg); }
+.equip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-lg); }
+.selo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-lg); }
+.elem-deity-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--space-sm); margin-bottom: var(--space-lg); }
+.elem-relation-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--space-sm); max-width: 700px; margin: 0 auto; }
 .attr-card::before {
   content: '';
   position: absolute;
@@ -253,10 +267,62 @@
   color: var(--text-muted);
 }
 
-/* === RESPONSIVE === */
+/* === RESPONSIVE MOBILE === */
 @media (max-width: 768px) {
   .attr-grid { grid-template-columns: 1fr; }
   .race-card-header { flex-direction: column; align-items: flex-start; gap: var(--space-md); }
+  .origin-grid { grid-template-columns: 1fr; }
+  .resgate-grid { grid-template-columns: 1fr; }
+  .class-stat-grid { grid-template-columns: 1fr; }
+  .san-grid { grid-template-columns: 1fr; }
+  .class-bar-grid { grid-template-columns: 1fr; }
+  .per-grid { grid-template-columns: 1fr; }
+  .cond-grid { grid-template-columns: 1fr; }
+  .conclave-grid { grid-template-columns: 1fr; }
+  .equip-grid { grid-template-columns: 1fr; }
+  .selo-grid { grid-template-columns: 1fr; }
+  .elem-deity-list { grid-template-columns: 1fr 1fr; }
+  .elem-relation-grid { grid-template-columns: 1fr 1fr; }
+
+  /* Touch targets — min 44px */
+  .sidebar-link { padding-top: 12px; padding-bottom: 12px; min-height: 44px; }
+  .sidebar-toggle { width: 56px; height: 56px; font-size: 1.5rem; bottom: var(--space-lg); right: var(--space-lg); }
+  button, .btn, a.sidebar-link, .difficulty-badge { min-height: 44px; }
+
+  /* Progression table horizontal scroll */
+  .progression-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .progression-table { min-width: 500px; }
+
+  /* Race cards */
+  .race-card-image { max-height: 200px; }
+  .race-card-image img { max-height: 200px; }
+  .race-name { font-size: 1.4rem; }
+  .race-card-header { padding: var(--space-md); }
+  .race-card-body { padding: var(--space-md); }
+
+  /* Calculator stack */
+  .calculator-inputs { flex-direction: column; }
+  .calculator-field { min-width: 100%; }
+
+  /* Cards compact */
+  .attr-card { padding: var(--space-md); }
+  .callout { padding: var(--space-md); }
+  .quick-nav-card { padding: var(--space-md); }
+
+  /* Section spacing */
+  .subsection { margin-bottom: var(--space-2xl); }
+  .page-content { padding: var(--space-lg) var(--space-md); }
+  .section-heading h2 { font-size: 1.6rem; }
+}
+
+@media (max-width: 480px) {
+  .elem-deity-list { grid-template-columns: 1fr; }
+  .elem-relation-grid { grid-template-columns: 1fr; }
+  .race-card-header h3 { font-size: 1.2rem; min-width: 100%; }
+  .race-description { font-size: 0.85rem; }
+  .ability-slot { padding: var(--space-sm); }
+  .page-header h1 { font-size: 1rem; }
+  .sidebar { width: 100%; }
 }
 
 /* === CALCULATOR === */

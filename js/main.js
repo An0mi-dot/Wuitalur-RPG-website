@@ -2,17 +2,35 @@ document.addEventListener('DOMContentLoaded', () => {
   const sidebar = document.getElementById('sidebar');
   const toggle = document.getElementById('sidebar-toggle');
 
+  // Create overlay
+  const overlay = document.createElement('div');
+  overlay.className = 'sidebar-overlay';
+  overlay.id = 'sidebar-overlay';
+  document.body.appendChild(overlay);
+
+  function closeSidebar() {
+    if (!sidebar) return;
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+    if (toggle) toggle.textContent = '☰';
+  }
+
+  function openSidebar() {
+    if (!sidebar) return;
+    sidebar.classList.add('open');
+    overlay.classList.add('open');
+    if (toggle) toggle.textContent = '✕';
+  }
+
   if (toggle && sidebar) {
     toggle.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
-      toggle.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
-    });
-    document.addEventListener('click', (e) => {
-      if (window.innerWidth <= 768 && sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== toggle) {
-        sidebar.classList.remove('open');
-        toggle.textContent = '☰';
+      if (sidebar.classList.contains('open')) {
+        closeSidebar();
+      } else {
+        openSidebar();
       }
     });
+    overlay.addEventListener('click', closeSidebar);
   }
 
   const sidebarLinks = document.querySelectorAll('.sidebar-link');
@@ -20,10 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('click', function () {
       sidebarLinks.forEach(l => l.classList.remove('active'));
       this.classList.add('active');
-      if (window.innerWidth <= 768 && sidebar) {
-        sidebar.classList.remove('open');
-        if (toggle) toggle.textContent = '☰';
-      }
+      if (window.innerWidth <= 768) closeSidebar();
     });
   });
 

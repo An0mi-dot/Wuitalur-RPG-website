@@ -446,12 +446,29 @@ code, .mono {
   cursor: pointer;
   box-shadow: var(--shadow-lg);
   transition: transform var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
 }
 .sidebar-toggle:hover { transform: scale(1.1); }
+
+/* Sidebar overlay backdrop */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--transition-base), visibility var(--transition-base);
+}
+.sidebar-overlay.open {
+  pointer-events: auto;
+}
 
 @media (max-width: 768px) {
   .sidebar { transform: translateX(-100%); }
   .sidebar.open { transform: translateX(0); }
+  .sidebar-overlay.open { opacity: 1; visibility: visible; }
   .main-wrapper { margin-left: 0; }
   .sidebar-toggle { display: flex; align-items: center; justify-content: center; }
   .page-header { padding: var(--space-md); }
