@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Selos — Wuitalur RPG</title>
+  <link rel="icon" href="assets/logo.png" type="image/png">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .selo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-lg); }
+    .selo-card { background: rgba(0,0,0,0.2); border: 1px solid var(--border-subtle); border-radius: var(--radius); padding: var(--space-md); display: flex; flex-direction: column; }
+    .selo-card h4 { font-family: var(--font-heading); font-size: 0.95rem; margin-bottom: var(--space-xs); }
+    .selo-infl { font-size: 0.7rem; padding: 2px 8px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: var(--text-muted); display: inline-block; margin-bottom: var(--space-sm); }
+    .selo-stats { display: flex; flex-wrap: wrap; gap: var(--space-xs); margin-bottom: var(--space-sm); }
+    .selo-stat { font-size: 0.75rem; padding: 2px 8px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.04); color: var(--text-secondary); }
+    .selo-stat strong { color: var(--text-primary); }
+    .selo-eff { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: var(--space-xs); }
+    .selo-eff strong { color: var(--attr-ea); font-weight: 600; }
+    .selo-elem-label { font-size: 0.7rem; padding: 2px 8px; border-radius: var(--radius-sm); display: inline-block; margin-bottom: var(--space-sm); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema v1.3.9</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="origins.html" class="sidebar-link"><span class="icon"></span> Origens</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+      <a href="selos.html" class="sidebar-link active"><span class="icon"></span> Selos</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Selos</h1>
+    </header>
+
+    <main class="page-content">
+
+      <!-- INTRO -->
+      <section class="subsection" id="intro">
+        <div class="section-heading">
+          <h2>Selos</h2>
+        </div>
+        <div class="race-card" style="max-width: 800px; margin: 0 auto var(--space-2xl);">
+          <div class="race-card-body">
+            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8;">Selos são símbolos capazes de permitir a manifestação direta dos Elementos em sua forma mais crua. Eles não moldam, refinam ou adaptam a Energia Astral; apenas abrem espaço para que o Elemento se imponha sobre a realidade conforme sua própria natureza.</p>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8; margin-top: var(--space-sm);">Ao ser ativado, um selo não executa uma ação inteligente nem responde à vontade do usuário. Ele funciona como um ponto de contato entre o mundo e o Elemento, deixando que suas propriedades naturais afetem corpos, matéria e ambiente de maneira imediata. O efeito gerado sempre reflete os princípios do Elemento envolvido.</p>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8; margin-top: var(--space-sm);">Cada selo possui um grau de <strong>Influência</strong>, variando de 1 a 4. A Influência representa o quanto o Elemento consegue interferir no mundo antes que a realidade limite sua presença. Selos de Influência baixa produzem manifestações localizadas e contidas, enquanto selos de Influência alta causam distorções mais intensas, capazes de alterar áreas inteiras e deixar efeitos residuais.</p>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8; margin-top: var(--space-sm);">Os componentes materiais utilizados em um selo servem como pontos de ancoragem para a manifestação elemental. Esses componentes seguem padrões fixos de acordo com o Elemento e não podem ser substituídos por equivalentes genéricos. A ausência ou uso incorreto dos materiais compromete a estabilidade do selo.</p>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8; margin-top: var(--space-sm);">A Energia Astral exigida não atua como combustível direto, mas como o meio que sustenta a abertura criada pelo símbolo. Quanto maior a Influência do selo, maior o custo de Energia Astral necessário para manter o Elemento presente.</p>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8; margin-top: var(--space-sm);">Selos podem ser aplicados em superfícies, objetos ou corpos vivos, desde que o suporte seja capaz de suportar a pressão elemental gerada. A interrupção forçada de um selo ativo costuma gerar instabilidade, liberando o Elemento de forma descontrolada por um breve momento.</p>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8; margin-top: var(--space-sm);">Os selos descritos a seguir representam formas conhecidas e catalogadas de manifestação elemental. Qualquer variação fora desses padrões deve ser tratada como instável e potencialmente perigosa, ficando a critério do mestre permitir seu uso.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SELOS DE PODRIDÃO -->
+      <section class="subsection" id="selos-podridao">
+        <h3 style="color: #980000; font-family: var(--font-heading); font-size: 1.2rem; max-width: 800px; margin: 0 auto var(--space-md);">Selos de <span class="elem-podridao">Podridão</span></h3>
+        <div class="selo-grid" style="max-width: 800px; margin: 0 auto var(--space-2xl);">
+
+          <div class="selo-card" style="border-color: rgba(152,0,0,0.3);">
+            <h4 style="color: #980000;">Selo da Infecção Hemática</h4>
+            <span class="selo-infl" style="color: #980000; border-color: rgba(152,0,0,0.3);">Influência 1</span>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Custo:</strong> 5 <span class="attr-ea">EA</span></span>
+              <span class="selo-stat"><strong>Componentes:</strong> Carne podre esmagada</span>
+              <span class="selo-stat"><strong>Execução:</strong> Ação Padrão</span>
+            </div>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Alcance:</strong> Curto</span>
+              <span class="selo-stat"><strong>Alvo:</strong> Uma criatura viva</span>
+              <span class="selo-stat"><strong>Duração:</strong> 3 rodadas</span>
+              <span class="selo-stat"><strong>Resistência:</strong> <span class="attr-re">RE</span></span>
+            </div>
+            <p class="selo-eff"><strong>Efeito:</strong> Ao falhar no teste de <span class="attr-re">RE</span>, o alvo é infectado por Podridão leve que se espalha pela corrente sanguínea. No início de cada rodada, enquanto o selo estiver ativo, o alvo sofre <span class="dice">1d8</span> de dano de Podridão. Se o alvo estiver Machucado (metade dos PVs máximos), o dano passa a ser <span class="dice">2d8</span>. Durante a duração do selo, o alvo não pode recuperar PV por meios naturais.</p>
+          </div>
+
+          <div class="selo-card" style="border-color: rgba(152,0,0,0.3);">
+            <h4 style="color: #980000;">Selo do Desmorto Pútrido</h4>
+            <span class="selo-infl" style="color: #980000; border-color: rgba(152,0,0,0.3);">Influência 1</span>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Custo:</strong> 40 <span class="attr-ea">EA</span></span>
+              <span class="selo-stat"><strong>Componentes:</strong> Sangue pútrido</span>
+              <span class="selo-stat"><strong>Execução:</strong> Ação Padrão</span>
+            </div>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Alcance:</strong> —</span>
+              <span class="selo-stat"><strong>Alvo:</strong> —</span>
+              <span class="selo-stat"><strong>Duração:</strong> <span class="dice">1d6</span>+1 turnos</span>
+              <span class="selo-stat"><strong>Resistência:</strong> —</span>
+            </div>
+            <p class="selo-eff"><strong>Efeito:</strong> O usuário inunda um corpo morto com uma quantidade avassaladora de podridão, dessa forma, conseguindo controlar o corpo morto como uma marionete. Nesse estado, a marionete faz um número de ataques por turno igual a metade do modificador de proficiência do conjurador e causa dano de podridão de <span class="dice">3d8</span> + <span class="dice">2d6</span> de dano, adicional a arma utilizada pelo cadáver.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SELOS DE SAGRADO -->
+      <section class="subsection" id="selos-sagrado">
+        <h3 style="color: #f1c232; font-family: var(--font-heading); font-size: 1.2rem; max-width: 800px; margin: 0 auto var(--space-md);">Selos de <span class="elem-sagrado">Sagrado</span></h3>
+        <div class="selo-grid" style="max-width: 800px; margin: 0 auto var(--space-2xl);">
+
+          <div class="selo-card" style="border-color: rgba(241,194,50,0.3);">
+            <h4 style="color: #f1c232;">Selo do Paradoxo Clonal</h4>
+            <span class="selo-infl" style="color: #f1c232; border-color: rgba(241,194,50,0.3);">Influência 1</span>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Custo:</strong> 20 <span class="attr-ea">EA</span></span>
+              <span class="selo-stat"><strong>Componentes:</strong> Um relógio dourado</span>
+              <span class="selo-stat"><strong>Execução:</strong> Reação</span>
+            </div>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Alcance:</strong> —</span>
+              <span class="selo-stat"><strong>Alvo:</strong> —</span>
+              <span class="selo-stat"><strong>Duração:</strong> 1 rodada</span>
+              <span class="selo-stat"><strong>Resistência:</strong> <span class="attr-re">RE</span></span>
+            </div>
+            <p class="selo-eff"><strong>Efeito:</strong> O usuário volta 5 segundos no tempo e pega seu próprio eu do passado de 5 segundos atrás, dessa forma, o sacrifica, impedindo o inimigo de acertá-lo. O inimigo acerta o clone e fica preso no tempo, ficando imóvel durante 2 turnos da rodada caso falhe em um teste de resistência de <span class="attr-re">RE</span>.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SELOS DE SOLAR -->
+      <section class="subsection" id="selos-solar">
+        <h3 style="color: #FF9900; font-family: var(--font-heading); font-size: 1.2rem; max-width: 800px; margin: 0 auto var(--space-md);">Selos de <span class="elem-solar">Solar</span></h3>
+        <div class="selo-grid" style="max-width: 800px; margin: 0 auto var(--space-2xl);">
+
+          <div class="selo-card" style="border-color: rgba(255,153,0,0.3);">
+            <h4 style="color: #FF9900;">Selo do Alvorecer Alentador</h4>
+            <span class="selo-infl" style="color: #FF9900; border-color: rgba(255,153,0,0.3);">Influência 1</span>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Custo:</strong> 30 <span class="attr-ea">EA</span></span>
+              <span class="selo-stat"><strong>Componentes:</strong> Lamparina</span>
+              <span class="selo-stat"><strong>Execução:</strong> Ação Padrão</span>
+            </div>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Alcance:</strong> Curto</span>
+              <span class="selo-stat"><strong>Alvo:</strong> 6m de raio</span>
+              <span class="selo-stat"><strong>Duração:</strong> 2 rodadas</span>
+              <span class="selo-stat"><strong>Resistência:</strong> —</span>
+            </div>
+            <p class="selo-eff"><strong>Efeito:</strong> Quando o portador invoca o poder solar, um brilho dourado irrompe como o primeiro nascer do sol após uma longa noite. A luz se espalha em ondas suaves, envolvendo aliados próximos em um calor reconfortante que fecha feridas, fortalece o espírito e dissipa o cansaço. O usuário cura em área um número de <span class="dice">d8</span> iguais ao seu bônus de proficiência e um número de <span class="dice">d6</span> igual a metade do seu bônus de proficiência.</p>
+          </div>
+
+          <div class="selo-card" style="border-color: rgba(255,153,0,0.3);">
+            <h4 style="color: #FF9900;">Selo da Verdade, Nada Além da Verdade</h4>
+            <span class="selo-infl" style="color: #FF9900; border-color: rgba(255,153,0,0.3);">Influência 3</span>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Custo:</strong> 60 <span class="attr-ea">EA</span></span>
+              <span class="selo-stat"><strong>Componentes:</strong> Materiais Combustíveis</span>
+              <span class="selo-stat"><strong>Execução:</strong> Ação Padrão</span>
+            </div>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Alcance:</strong> Curto</span>
+              <span class="selo-stat"><strong>Alvo:</strong> 12m de raio</span>
+              <span class="selo-stat"><strong>Duração:</strong> 10 minutos</span>
+              <span class="selo-stat"><strong>Resistência:</strong> <span class="attr-int">INT</span></span>
+            </div>
+            <p class="selo-eff"><strong>Efeito:</strong> Ao ativar esse Selo, cria-se um domo, onde todos, mesmo que forçadamente, juram falar a Verdade e nada além da Verdade. Dentro dessa área, NINGUÉM poderá mentir, de nenhuma forma, nem omitir a verdade, mas poderão escolher não falar nada.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SELOS DE ELECTRO -->
+      <section class="subsection" id="selos-electro">
+        <h3 style="color: #00FFFF; font-family: var(--font-heading); font-size: 1.2rem; max-width: 800px; margin: 0 auto var(--space-md);">Selos de <span class="elem-electro">Electro</span></h3>
+        <div class="selo-grid" style="max-width: 800px; margin: 0 auto var(--space-2xl);">
+
+          <div class="selo-card" style="border-color: rgba(0,255,255,0.3);">
+            <h4 style="color: #00FFFF;">Selo da Ruptura Caótica</h4>
+            <span class="selo-infl" style="color: #00FFFF; border-color: rgba(0,255,255,0.3);">Influência 1</span>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Custo:</strong> 25 <span class="attr-ea">EA</span></span>
+              <span class="selo-stat"><strong>Componentes:</strong> Celular, eletrônicos etc.</span>
+              <span class="selo-stat"><strong>Execução:</strong> Ação Padrão</span>
+            </div>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Alcance:</strong> Curto</span>
+              <span class="selo-stat"><strong>Alvo:</strong> Único</span>
+              <span class="selo-stat"><strong>Duração:</strong> 2 rodadas</span>
+              <span class="selo-stat"><strong>Resistência:</strong> Teste de resistência elemental</span>
+            </div>
+            <p class="selo-eff"><strong>Efeito:</strong> O usuário invoca a caoticidade dos deuses, conjurando um raio avermelhado de electro. Ao acertar o alvo causa <span class="dice">3d8</span>+<span class="dice">3d6</span> de dano de electro e força o alvo a realizar um teste de resistência elemental, caso falhe, os raios conjurados pelo usuário dilaceram e racham partes do corpo e da pele do alvo, o deixando <strong>dilacerado</strong> por 2 rodadas.</p>
+          </div>
+
+          <div class="selo-card" style="border-color: rgba(0,255,255,0.3);">
+            <h4 style="color: #00FFFF;">Selo da Energização Caótica</h4>
+            <span class="selo-infl" style="color: #00FFFF; border-color: rgba(0,255,255,0.3);">Influência 1</span>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Custo:</strong> 20 <span class="attr-ea">EA</span></span>
+              <span class="selo-stat"><strong>Componentes:</strong> Eletrônicos num geral</span>
+              <span class="selo-stat"><strong>Execução:</strong> Ação Bônus</span>
+            </div>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Alcance:</strong> —</span>
+              <span class="selo-stat"><strong>Alvo:</strong> Você mesmo ou um aliado</span>
+              <span class="selo-stat"><strong>Duração:</strong> <span class="dice">1d4</span>+1 turnos</span>
+              <span class="selo-stat"><strong>Resistência:</strong> Teste de resistência elemental</span>
+            </div>
+            <p class="selo-eff"><strong>Efeito:</strong> O usuário invoca o caos do deus de electro, energizando a si mesmo ou a seus aliados, porém, o caos não pode ser controlado, dessa forma tendo que rolar o que acontece:</p>
+            <p class="selo-eff"><strong>1 —</strong> O usuário acaba por eletrificar a si mesmo ou um aliado, causando <span class="dice">2d8</span>+5 de dano a si mesmo ou a um aliado.</p>
+            <p class="selo-eff"><strong>2 —</strong> O usuário aumenta seu deslocamento e reflexos, podendo teleportar durante o combate, ficando imune a ataques desprevenidos e aumentando sua esquiva em +<span class="dice">1d4</span>+1.</p>
+            <p class="selo-eff"><strong>3 —</strong> O usuário energiza a si mesmo ou a um alvo, dessa forma conseguindo aumentar os danos causados em combate em +<span class="dice">5d6</span>+<span class="dice">4d4</span> de dano de electro.</p>
+            <p class="selo-eff"><strong>4 —</strong> O usuário energiza a si mesmo ou a um aliado, dessa forma, consegue realizar mais uma ação inteira durante seu turno, possuindo duas ações padrões durante o selo.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SELOS DE NULÍDRICO -->
+      <section class="subsection" id="selos-nulidrico">
+        <h3 style="color: #ff0000; font-family: var(--font-heading); font-size: 1.2rem; max-width: 800px; margin: 0 auto var(--space-md);">Selos de <span class="elem-nulidrico">Nulídrico</span></h3>
+        <div class="selo-grid" style="max-width: 800px; margin: 0 auto var(--space-2xl);">
+
+          <div class="selo-card" style="border-color: rgba(255,0,0,0.3);">
+            <h4 style="color: #ff0000;">Selo da Zona de Vácuo</h4>
+            <span class="selo-infl" style="color: #ff0000; border-color: rgba(255,0,0,0.3);">Influência 1</span>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Custo:</strong> 40 <span class="attr-ea">EA</span></span>
+              <span class="selo-stat"><strong>Componentes:</strong> —</span>
+              <span class="selo-stat"><strong>Execução:</strong> Ação Bônus</span>
+            </div>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Alcance:</strong> 6m do usuário</span>
+              <span class="selo-stat"><strong>Alvo:</strong> —</span>
+              <span class="selo-stat"><strong>Duração:</strong> <span class="dice">1d4</span> rodadas</span>
+              <span class="selo-stat"><strong>Resistência:</strong> —</span>
+            </div>
+            <p class="selo-eff"><strong>Efeito:</strong> Ao utilizar esse selo, o usuário gera ao seu redor um campo de Nulídrico, impedindo o uso e conjuração de habilidades de caráter elemental e anulando completamente habilidades e efeitos dessa natureza.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SELOS DE PESADELO -->
+      <section class="subsection" id="selos-pesadelo">
+        <h3 style="color: #b45f06; font-family: var(--font-heading); font-size: 1.2rem; max-width: 800px; margin: 0 auto var(--space-md);">Selos de <span class="elem-pesadelo">Pesadelo</span></h3>
+        <div class="selo-grid" style="max-width: 800px; margin: 0 auto var(--space-2xl);">
+
+          <div class="selo-card" style="border-color: rgba(180,95,6,0.3);">
+            <h4 style="color: #b45f06;">Selo do Devorador de Mentes</h4>
+            <span class="selo-infl" style="color: #b45f06; border-color: rgba(180,95,6,0.3);">Influência 1</span>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Custo:</strong> 35 <span class="attr-ea">EA</span></span>
+              <span class="selo-stat"><strong>Componentes:</strong> —</span>
+              <span class="selo-stat"><strong>Execução:</strong> Ação Padrão</span>
+            </div>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Alcance:</strong> Curto</span>
+              <span class="selo-stat"><strong>Alvo:</strong> Pessoal</span>
+              <span class="selo-stat"><strong>Duração:</strong> 2 rodadas</span>
+              <span class="selo-stat"><strong>Resistência:</strong> <span class="attr-int">INT</span></span>
+            </div>
+            <p class="selo-eff"><strong>Efeito:</strong> O usuário canaliza o horror cósmico psicológico em um alvo, criando uma figura de puro terror e medo, a mente do alvo é invadida por pesadelos vivos impossíveis de distinguir da realidade. O alvo deve fazer um teste de resistência de <span class="attr-int">Inteligência</span>, caso falhe, recebe <span class="dice">5d8</span> de dano de pesadelo e fica <strong>Assombrado</strong> por duas rodadas, caso passe, evita a condição e toma apenas metade do dano. Se com esse selo o usuário matar seu alvo, ele devora sua mente, recebendo +<span class="dice">2d6</span> de sanidade (recupera) e +<span class="dice">2d8</span> de vida.</p>
+          </div>
+
+          <div class="selo-card" style="border-color: rgba(180,95,6,0.3);">
+            <h4 style="color: #b45f06;">Selo da Ilusão Sensorial</h4>
+            <span class="selo-infl" style="color: #b45f06; border-color: rgba(180,95,6,0.3);">Influência 1</span>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Custo:</strong> 15 <span class="attr-ea">EA</span></span>
+              <span class="selo-stat"><strong>Componentes:</strong> —</span>
+              <span class="selo-stat"><strong>Execução:</strong> Ação Padrão</span>
+            </div>
+            <div class="selo-stats">
+              <span class="selo-stat"><strong>Alcance:</strong> Médio</span>
+              <span class="selo-stat"><strong>Alvo:</strong> —</span>
+              <span class="selo-stat"><strong>Duração:</strong> <span class="dice">1d4</span> turnos</span>
+              <span class="selo-stat"><strong>Resistência:</strong> <span class="attr-int">INT</span></span>
+            </div>
+            <p class="selo-eff"><strong>Efeito:</strong> O usuário consegue criar ilusões sensoriais, tanto visuais, quanto auditivas e olfativas, essas ilusões são restritas em questões de tamanho e som e cheiro. Por exemplo, não é possível criar uma imagem com mais de 4m e criar um áudio capaz de ferir os alvos. Sendo ilusões mais focadas em enganação e aterrorizar seus alvos.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SELOS DE ESTASE -->
+      <section class="subsection" id="selos-estase">
+        <div style="max-width: 800px; margin: 0 auto var(--space-2xl); text-align: center; padding: var(--space-xl); border: 1px dashed var(--border-subtle); border-radius: var(--radius);">
+          <h3 style="color: #0B5394; font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: var(--space-sm);">Selos de <span class="elem-estase">Estase</span></h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Em breve.</p>
+        </div>
+      </section>
+
+      <!-- SELOS DE PRAGA -->
+      <section class="subsection" id="selos-praga">
+        <div style="max-width: 800px; margin: 0 auto var(--space-2xl); text-align: center; padding: var(--space-xl); border: 1px dashed var(--border-subtle); border-radius: var(--radius);">
+          <h3 style="color: #674EA7; font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: var(--space-sm);">Selos de <span class="elem-praga">Praga</span></h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Em breve.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
+
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atributos — Wuitalur RPG</title>
+  <link rel="icon" href="assets/icon.png" type="image/png">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema v1.3.9</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link active"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="origins.html" class="sidebar-link"><span class="icon"></span> Origens</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+      <a href="selos.html" class="sidebar-link"><span class="icon"></span> Selos</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Atributos</h1>
+    </header>
+
+    <main class="page-content">
+
+      <!-- INTRODUÇÃO -->
+      <section class="subsection" id="intro">
+        <div class="race-card">
+          <div class="race-card-body">
+            <p class="race-description"><em>"Wuitalur é um sistema autoral de RPG narrativo com foco em ambientações sombrias, horror cósmico, dilemas morais e escolhas difíceis. Mistura fantasia sombria com toques futuristas e sociais. Seus personagens vivem em um mundo onde religião, magia, tecnologia e corrupção se entrelaçam em conflitos épicos e trágicos. Esta página apresenta todo o sistema, de forma contínua e acessível, para consulta completa de regras, raças, classes e mais."</em></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ATRIBUTOS -->
+      <section class="subsection" id="atributos">
+        <div class="section-heading">
+          <h2>Atributos</h2>
+          <p>Atributos representam as características essenciais de um personagem em Wuitalur. Eles influenciam testes, combates, resistências e habilidades ao longo da campanha.</p>
+        </div>
+      </section>
+
+      <!-- DISTRIBUIÇÃO -->
+      <section class="subsection" id="distribuicao">
+        <div class="section-heading">
+          <h3>Distribuição de Atributos</h3>
+        </div>
+
+        <div class="race-card" style="max-width: 800px;">
+          <div class="race-card-body">
+            <ul style="list-style: disc; padding-left: var(--space-lg);">
+              <li style="padding: var(--space-sm) 0; border-bottom: 1px solid rgba(46, 46, 62, 0.5); font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary);">4 pontos para distribuir entre os atributos.</li>
+              <li style="padding: var(--space-sm) 0; border-bottom: 1px solid rgba(46, 46, 62, 0.5); font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary);">Todos os atributos começam sempre com 1.</li>
+              <li style="padding: var(--space-sm) 0; border-bottom: 1px solid rgba(46, 46, 62, 0.5); font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary);">Você pode tirar 1 ponto de um atributo (ficando em 0) para ter 1 ponto extra em outro.</li>
+              <li style="padding: var(--space-sm) 0; border-bottom: 1px solid rgba(46, 46, 62, 0.5); font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary);">Ganha 1 ponto de atributos a cada 3 níveis.</li>
+              <li style="padding: var(--space-sm) 0; font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary);">O máximo de pontos que dá pra ter em um atributo é 8.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- SAÚDE -->
+      <section class="subsection" id="saude">
+        <div class="attr-grid" style="grid-template-columns: 1fr;">
+          <div class="attr-card" style="--card-accent: var(--attr-saude);">
+            <div class="attr-card-header">
+              <h4 class="attr-card-title"><span class="attr-saude">Saúde</span></h4>
+            </div>
+            <div class="attr-card-body">
+              <p>A <span class="attr-saude">saúde</span> é um dos atributos básicos de um personagem, ele vai definir a <span class="attr-saude">saúde</span> do seu personagem.</p>
+              <p>Um personagem com <span class="attr-saude">saúde</span> baixa (-1) terá desvantagem em todos os testes de <span class="attr-saude">saúde</span> que for fazer; caso essa <span class="attr-saude">saúde</span> seja 0, o personagem terá uma <span class="attr-saude">saúde</span> neutra.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RE -->
+      <section class="subsection" id="re">
+        <div class="attr-grid" style="grid-template-columns: 1fr;">
+          <div class="attr-card" style="--card-accent: var(--attr-re);">
+            <div class="attr-card-header">
+              <h4 class="attr-card-title"><span class="attr-re">Resistência Elementar (RE)</span></h4>
+            </div>
+            <div class="attr-card-body">
+              <p>A <span class="attr-re">Resistência Elemental</span> representa a força e estabilidade da <span class="attr-ea">Energia Astral</span> do personagem. Ela determina sua capacidade de suportar ou dissipar ataques de natureza elemental, como <span class="elem-electro">Electro</span>, <span class="elem-praga">Praga</span>, <span class="elem-solar">Solar</span>, <span class="elem-nulidrico">Nulídrico</span>, entre outros.</p>
+              <p><strong>(Exemplo):</strong> Se um inimigo realizar um ataque elemental contra você, dependendo do tipo de ataque, será necessário rolar um teste de <span class="attr-re">Resistência Elemental</span> (<span class="dice">1d20</span> + Modificador de <span class="attr-re">RE</span>).</p>
+              <p>Além disso, a <span class="attr-re">Resistência Elemental</span> também influencia diretamente a defesa contra danos elementais. Sempre que o personagem for alvo de um ataque elemental, ele adicionará uma defesa extra (<span class="attr-re">DEFe</span>) calculada da seguinte forma:</p>
+              <div class="attr-card-formula">
+                DEFe = (<span class="attr-re">RE</span> × (<span class="attr-pv">PVs</span><sup>0.5</sup>)) / 8 + DEF
+              </div>
+              <div class="calculator">
+                <div class="calculator-inputs">
+                  <div class="calculator-field">
+                    <label><span class="attr-re">RE</span></label>
+                    <input type="number" id="re-re" min="0" max="8" value="1" step="1">
+                  </div>
+                  <div class="calculator-field">
+                    <label><span class="attr-pv">PVs</span></label>
+                    <input type="number" id="re-pvs" min="1" value="1" step="1">
+                  </div>
+                  <div class="calculator-field">
+                    <label>DEF</label>
+                    <input type="number" id="re-def" min="0" value="0" step="0.1">
+                  </div>
+                </div>
+                <div class="calculator-result" id="re-result">DEFe = 0.00</div>
+              </div>
+              <p>Essa defesa é SOMADA à defesa física (DEF) apenas contra ataques de origem elemental.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RF -->
+      <section class="subsection" id="rf">
+        <div class="attr-grid" style="grid-template-columns: 1fr;">
+          <div class="attr-card" style="--card-accent: var(--attr-rf);">
+            <div class="attr-card-header">
+              <h4 class="attr-card-title"><span class="attr-rf">Resistência Física (RF)</span></h4>
+            </div>
+            <div class="attr-card-body">
+              <p>A resistência física define sua resistência corporal.</p>
+              <p><strong>(Exemplo):</strong> Se um inimigo fizer um ataque físico contra você, dependendo do ataque você deverá rolar um teste de <span class="attr-rf">RF</span> (<span class="dice">1d20</span> + Modificador de <span class="attr-rf">RF</span>).</p>
+              <p>Além disso, a <span class="attr-rf">RF</span> (<span class="attr-rf">Resistência Física</span>) também vai ser usada para definir a defesa do seu personagem de acordo com o seguinte cálculo (deve ser refeita a cada nível, ou mudança em seus atributos de <span class="attr-rf">RF</span> e <span class="attr-saude">Saúde</span>):</p>
+              <div class="attr-card-formula">
+                DEF = (<span class="attr-rf">RF</span> × (<span class="attr-pv">PVs</span><sup>0.6</sup>)) / 6
+              </div>
+              <div class="calculator">
+                <div class="calculator-inputs">
+                  <div class="calculator-field">
+                    <label><span class="attr-rf">RF</span></label>
+                    <input type="number" id="rf-rf" min="0" max="8" value="1" step="1">
+                  </div>
+                  <div class="calculator-field">
+                    <label><span class="attr-pv">PVs</span></label>
+                    <input type="number" id="rf-pvs" min="1" value="1" step="1">
+                  </div>
+                </div>
+                <div class="calculator-result" id="rf-result">DEF = 0.00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DESTREZA -->
+      <section class="subsection" id="des">
+        <div class="attr-grid" style="grid-template-columns: 1fr;">
+          <div class="attr-card" style="--card-accent: var(--attr-des);">
+            <div class="attr-card-header">
+              <h4 class="attr-card-title"><span class="attr-des">Destreza</span></h4>
+            </div>
+            <div class="attr-card-body">
+              <p><span class="attr-des">Destreza</span> será usada principalmente para testes de iniciativa, esquiva, acerto e contra-ataques.</p>
+              <p><strong>(Exemplo):</strong> Ao ser alvo de um ataque, você pode realizar um teste de esquiva (<span class="dice">1d20</span> + modificador de <span class="attr-des">Destreza</span>), caso seja possível.</p>
+              <p>Se o resultado for maior que o acerto do inimigo, a esquiva será bem-sucedida.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FORÇA -->
+      <section class="subsection" id="for">
+        <div class="attr-grid" style="grid-template-columns: 1fr;">
+          <div class="attr-card" style="--card-accent: var(--attr-fr);">
+            <div class="attr-card-header">
+              <h4 class="attr-card-title"><span class="attr-fr">Força</span></h4>
+            </div>
+            <div class="attr-card-body">
+              <p>A <span class="attr-fr">Força</span> define a força física do seu personagem (e a definição de seus músculos).</p>
+              <p>Testes de FR (<span class="dice">1d20</span> + Mod de FR) serão usados, por exemplo, quando um personagem precisar carregar algo pesado — ele deverá rolar um teste de FR.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- INTELECTO -->
+      <section class="subsection" id="int">
+        <div class="attr-grid" style="grid-template-columns: 1fr;">
+          <div class="attr-card" style="--card-accent: var(--attr-int);">
+            <div class="attr-card-header">
+              <h4 class="attr-card-title"><span class="attr-int">Intelecto</span></h4>
+            </div>
+            <div class="attr-card-body">
+              <p>O <span class="attr-int">Intelecto</span> define o conhecimento do seu personagem, por exemplo, sobre eletrônicos, comidas, geografia, medicina, etc.</p>
+              <p>Testes de INT (<span class="dice">1d20</span> + Mod de INT) serão utilizados em momentos que o seu personagem tem que se lembrar de algo.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAMA -->
+      <section class="subsection" id="fama">
+        <div class="attr-grid" style="grid-template-columns: 1fr;">
+          <div class="attr-card" style="--card-accent: var(--attr-fama);">
+            <div class="attr-card-header">
+              <h4 class="attr-card-title"><span class="attr-fama">Fama</span></h4>
+            </div>
+            <div class="attr-card-body">
+              <p>A <span class="attr-fama">Fama</span> define o quanto seu personagem é conhecido, também define a sua carisma e o quão sua aparência é atrativa.</p>
+              <p>Testes de <span class="attr-fama">FAMA</span> (<span class="dice">1d20</span> + Mod de <span class="attr-fama">FAMA</span>) serão usados para Enganação, Sedução, Persuasão, etc.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SENTIDOS -->
+      <section class="subsection" id="sen">
+        <div class="attr-grid" style="grid-template-columns: 1fr;">
+          <div class="attr-card" style="--card-accent: var(--attr-sen);">
+            <div class="attr-card-header">
+              <h4 class="attr-card-title"><span class="attr-sen">Sentidos (SEN)</span></h4>
+            </div>
+            <div class="attr-card-body">
+              <p>O atributo <span class="attr-sen">Sentidos</span> (<span class="attr-sen">SEN</span>) define a capacidade do personagem de perceber e compreender o ambiente ao seu redor.</p>
+              <p>Ele é utilizado em testes de percepção, investigação ou para encontrar algo. Todos os personagens começam com um bônus inicial de +3 nesse atributo.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COSMO -->
+      <section class="subsection" id="cosmo">
+        <div class="attr-grid" style="grid-template-columns: 1fr;">
+          <div class="attr-card" style="--card-accent: var(--attr-cosmo);">
+            <div class="attr-card-header">
+              <h4 class="attr-card-title"><span class="attr-cosmo" data-text="COSMO">COSMO</span></h4>
+            </div>
+            <div class="attr-card-body">
+              <p><span class="attr-cosmo" data-text="COSMO">COSMO</span> NÃO pode ser modificado pelo jogador.</p>
+              <p>Ele é definido em porcentagem: (ex: 1%, 5%...)</p>
+              <p>Representa sua conexão com o além humano e sua estabilidade no mundo carnal e mortal. Todos os personagens começam com 1%. Somente o MESTRE pode alterar este valor.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
+
+<script src="js/main.js"></script>
+</body>
+</html>

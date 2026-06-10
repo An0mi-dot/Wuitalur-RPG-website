@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equipamentos — Wuitalur RPG</title>
+  <link rel="icon" href="assets/logo.png" type="image/png">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .equip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-lg); }
+    .equip-card { background: rgba(0,0,0,0.2); border: 1px solid var(--border-subtle); border-radius: var(--radius); padding: var(--space-md); display: flex; flex-direction: column; }
+    .equip-card h4 { font-family: var(--font-heading); font-size: 0.95rem; color: var(--text-primary); margin-bottom: var(--space-xs); }
+    .equip-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-sm); }
+    .equip-tag { font-size: 0.7rem; padding: 2px 8px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: var(--text-muted); white-space: nowrap; }
+    .equip-stats { display: flex; flex-wrap: wrap; gap: var(--space-xs); margin-bottom: var(--space-sm); }
+    .equip-stat { font-size: 0.8rem; padding: 2px 8px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.04); color: var(--text-secondary); }
+    .equip-stat strong { color: var(--text-primary); }
+    .equip-effect { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: var(--space-xs); }
+    .equip-effect strong { color: var(--attr-ea); font-weight: 600; }
+    .equip-desc { font-size: 0.78rem; color: var(--text-muted); font-style: italic; line-height: 1.5; margin-top: auto; }
+    .equip-section-title { font-family: var(--font-heading); font-size: 1.1rem; color: var(--text-primary); margin-top: var(--space-xl); margin-bottom: var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--border-subtle); }
+    .callout-box { background: rgba(0,0,0,0.15); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-lg); }
+    .callout-box h4 { font-family: var(--font-heading); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--attr-ea); margin-bottom: var(--space-sm); }
+    .callout-box p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+    .callout-box ul { margin: var(--space-sm) 0 0; padding-left: var(--space-lg); }
+    .callout-box li { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+    .equip-subtag { font-size: 0.7rem; padding: 2px 8px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.04); color: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema v1.3.9</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="origins.html" class="sidebar-link"><span class="icon"></span> Origens</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+      <a href="selos.html" class="sidebar-link"><span class="icon"></span> Selos</a>
+      <a href="equipamentos.html" class="sidebar-link active"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Equipamentos</h1>
+    </header>
+
+    <main class="page-content">
+
+      <!-- SISTEMA DE CARGA -->
+      <section class="subsection" id="sistema-carga">
+        <div class="section-heading">
+          <h2>Sistema de Carga</h2>
+        </div>
+
+        <div class="callout-box" style="max-width: 800px; margin: 0 auto var(--space-lg);">
+          <h4>Espaços de Carga</h4>
+          <p>Cada personagem possui Espaços de Carga, determinados pelo atributo <span class="attr-fr">Força (FR)</span>.</p>
+          <p style="font-size: 1rem; color: var(--text-primary); margin-top: var(--space-sm);"><strong>Espaços de Carga = (FR x 3) + 5</strong></p>
+          <p style="margin-top: var(--space-sm);">Esses espaços representam o total de peso que o personagem pode carregar.</p>
+        </div>
+
+        <div class="callout-box" style="max-width: 800px; margin: 0 auto var(--space-lg);">
+          <h4>Carregar Itens</h4>
+          <p>Cada item ocupa espaços de carga conforme seu nível de peso. O total dos pesos dos itens não pode exceder os Espaços de Carga do personagem sem causar penalidades.</p>
+          <ul>
+            <li><strong>Peso I:</strong> Itens muito leves, como poções, facas pequenas, munições.</li>
+            <li><strong>Peso II:</strong> Itens leves, como pistolas, espadas curtas, livros médios.</li>
+            <li><strong>Peso III:</strong> Itens médios, como espadas longas, escudos médios, kits médicos grandes.</li>
+            <li><strong>Peso IV:</strong> Itens pesados, como armas de fogo pesadas, mochilas cheias, escudos grandes.</li>
+            <li><strong>Peso V:</strong> Itens muito pesados, como armaduras completas, armas de duas mãos, barris.</li>
+          </ul>
+        </div>
+
+        <div class="callout-box" style="max-width: 800px; margin: 0 auto var(--space-lg);">
+          <h4>Sobrecarga</h4>
+          <p><strong>Dentro do limite:</strong> Sem penalidades.</p>
+          <p style="margin-top: var(--space-sm);"><strong>1 a 3 espaços além do limite:</strong></p>
+          <ul>
+            <li>-2 em <span class="attr-des">Destreza</span>.</li>
+            <li>Movimentação reduzida pela metade.</li>
+          </ul>
+          <p style="margin-top: var(--space-sm);"><strong>4+ espaços além do limite:</strong></p>
+          <ul>
+            <li>Desvantagem em testes físicos e impossibilidade de realizar ações que dependem de movimentação ágil.</li>
+          </ul>
+        </div>
+
+        <div class="callout-box" style="max-width: 800px; margin: 0 auto var(--space-lg);">
+          <h4>Itens em Uso Ativo</h4>
+          <p>Itens em uso ativo não ocupam carga, mas têm limite de quantos podem ser equipados.</p>
+        </div>
+
+        <div class="callout-box" style="max-width: 800px; margin: 0 auto var(--space-lg);">
+          <h4>Exemplo de Aplicação</h4>
+          <p>Um personagem com <span class="attr-fr">FR</span> 3 possui:</p>
+          <p style="font-size: 1rem; color: var(--text-primary);">(3 x 3) + 5 = 14 espaços de carga.</p>
+          <p style="margin-top: var(--space-sm);"><strong>Itens carregados:</strong></p>
+          <ul>
+            <li>Espada longa (Peso III)</li>
+            <li>Mochila com suprimentos (Peso IV)</li>
+            <li>Pistola (Peso II)</li>
+            <li>Poções x2 (Peso II)</li>
+            <li>Marreta Longa (Peso III)</li>
+          </ul>
+          <p style="margin-top: var(--space-sm);"><strong>Total: 14/14 espaços ocupados</strong> (limite alcançado).</p>
+        </div>
+
+        <div class="callout-box" style="max-width: 800px; margin: 0 auto var(--space-lg);">
+          <h4>Itens Iniciais</h4>
+          <p>Cada personagem pode escolher <strong>3 + <span class="attr-fr">FR</span></strong> itens iniciais para começar sua jornada. Esses itens podem incluir armas, utilitários e suprimentos, e devem ser selecionados com base nas necessidades e preferências do jogador.</p>
+        </div>
+      </section>
+
+      <!-- ARMAS BRANCAS -->
+      <section class="subsection" id="armas-brancas">
+        <div class="equip-section-title">Armas Brancas</div>
+        <div class="equip-grid">
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Martelo de Guerra</h4>
+              <span class="equip-tag">Peso III</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">4d6</span> + <span class="attr-fr">FR</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 20x3</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Golpes bem-sucedidos (Acerto 17+) reduzem o movimento do inimigo pela metade no próximo turno.</p>
+            <p class="equip-desc">Um martelo pesado feito para guerra.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Faca de Caça</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">1d8</span> + <span class="attr-des">DES</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 19x2</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Causa sangramento leve (+<span class="dice">1d4</span> de dano por turno por 2 turnos).</p>
+            <p class="equip-desc">Compacta e fácil de manusear, usada para cortes rápidos.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Espada Curta</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">1d10</span> + <span class="attr-des">DES</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 20x2</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Contra-ataque — Se bloquear um ataque corpo a corpo, pode atacar imediatamente com metade do dano.</p>
+            <p class="equip-desc">Versátil e eficaz em combate próximo.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Lança</h4>
+              <span class="equip-tag">Peso II</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">1d10</span> + <span class="attr-fr">FR</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 20x2</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Ataques com a lança podem atingir inimigos a até 2B de distância.</p>
+            <p class="equip-desc">Ótima para manter distância enquanto ataca.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Machadinha</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">2d4</span> + <span class="attr-des">DES</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 20x3</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Pode ser arremessada a até 3B, causando dano total.</p>
+            <p class="equip-desc">Uma arma versátil, podendo ser usada tanto em combate corpo a corpo quanto à distância.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Bastão de Madeira</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">1d6</span> + <span class="attr-des">DES</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 20x2</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Concede +2 na Defesa contra ataques corpo a corpo.</p>
+            <p class="equip-desc">Útil para defesa e ataques diretos, perfeito para combate ágil.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Adaga Dupla</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">2d6</span> + <span class="attr-des">DES</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 19x2</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Permite dois ataques no mesmo turno sem penalidade.</p>
+            <p class="equip-desc">Ataques rápidos com ambas as mãos, ideal para combates velozes.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Clava de Ferro</h4>
+              <span class="equip-tag">Peso IV</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">2d8</span> + <span class="attr-fr">FR</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 20x2</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Pode causar atordoamento (Teste de <span class="attr-fr">FR</span>, falha = perde um turno).</p>
+            <p class="equip-desc">Uma arma brutal usada para quebrar ossos.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Foice</h4>
+              <span class="equip-tag">Peso III</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">3d6</span> + <span class="attr-des">DES</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 20x3</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Ataques acertam todos os inimigos em um raio de 1B ao redor.</p>
+            <p class="equip-desc">Uma foice grande e pesada, capaz de golpear múltiplos inimigos.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Espada Longa</h4>
+              <span class="equip-tag">Peso II</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">1d10</span> + <span class="attr-fr">FR</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 19x2</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Se usada com as duas mãos, aumenta o dano para <span class="dice">2d8</span> + <span class="attr-fr">FR</span>.</p>
+            <p class="equip-desc">Ideal para combates de frente, com ótima versatilidade.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Mangual</h4>
+              <span class="equip-tag">Peso II</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">3d4</span> + <span class="attr-fr">FR</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 20x3</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Ignora escudos e bloqueios.</p>
+            <p class="equip-desc">Uma arma com esfera de ferro presa a uma corrente, excelente contra defesas.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Lâmina Curva</h4>
+              <span class="equip-tag">Peso II</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">2d6</span> + <span class="attr-des">DES</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 18x2</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Permite dois ataques por turno sem penalidade.</p>
+            <p class="equip-desc">Design curvado, eficiente para cortes rápidos e ataques consecutivos.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Pique</h4>
+              <span class="equip-tag">Peso III</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">2d12</span> + <span class="attr-fr">FR</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 20x2</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Causa derrubada em inimigos menores ao acertar um golpe crítico.</p>
+            <p class="equip-desc">Lança longa para manter inimigos à distância. (3B)</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Punhal Serrilhado</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">2d4</span> + <span class="attr-des">DES</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 19x3</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Causa sangramento grave (+<span class="dice">2d6</span> de dano por turno por 3 turnos).</p>
+            <p class="equip-desc">Luvas de ferro afiadas, criadas para cortes letais.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ARMAS DE FOGO -->
+      <section class="subsection" id="armas-de-fogo">
+        <div class="equip-section-title">Armas de Fogo</div>
+        <div class="equip-grid">
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Revólver Indústrias Paladium M6</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">2d6</span> + <span class="attr-des">DES</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 19x3</span>
+              <span class="equip-stat"><strong>Alcance:</strong> 8B</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Munição:</strong> 6 tiros</span>
+              <span class="equip-stat"><strong>Recarga:</strong> 1 turno</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Pode-se gastar uma ação inteira para se concentrar, fazendo o próximo disparo ignorar armaduras e causar +<span class="dice">1d6</span>.</p>
+            <p class="equip-desc">Revólver padrão barato, usado tanto por moradores da periferia quanto por alguns guardas de baixo escalão.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Pistola Automática PM-12 "Urbana"</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">2d4</span> + <span class="attr-des">DES</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 19x2</span>
+              <span class="equip-stat"><strong>Alcance:</strong> 10B</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Munição:</strong> 12 tiros</span>
+              <span class="equip-stat"><strong>Recarga:</strong> 1 turno</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Pode disparar 2 vezes no mesmo turno.</p>
+            <p class="equip-desc">Pistola de fabricação civil-militar, comum em áreas metropolitanas.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Escopeta Industrial C-32</h4>
+              <span class="equip-tag">Peso III</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">3d8</span> + <span class="attr-fr">FR</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 20x2</span>
+              <span class="equip-stat"><strong>Alcance:</strong> 4B</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Munição:</strong> 2 tiros</span>
+              <span class="equip-stat"><strong>Recarga:</strong> 1 turno</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Atinge todos os inimigos em um cone de 2B e inimigos próximos a 1B recebem dano X2.</p>
+            <p class="equip-desc">Construção pesada, usada por segurança privada e operações de contenção.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Rifle de Assalto PA-15 "Sentinela"</h4>
+              <span class="equip-tag">Peso III</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">2d6</span> + <span class="attr-des">DES</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 20x2</span>
+              <span class="equip-stat"><strong>Alcance:</strong> 15B</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Munição:</strong> 30 tiros</span>
+              <span class="equip-stat"><strong>Recarga:</strong> 1 turno</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Pode disparar em rajada (3 tiros no mesmo turno). Também pode disparar até 6 tiros, porém todos com -3 em seu acerto.</p>
+            <p class="equip-desc">Rifle oficial dos patrulheiros de Paladium, eficiente e padronizado.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Fuzil de Precisão LR-9</h4>
+              <span class="equip-tag">Peso IV</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">4d10</span> + <span class="attr-des">DES</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 18x3</span>
+              <span class="equip-stat"><strong>Alcance:</strong> 25B</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Munição:</strong> 5 tiros</span>
+              <span class="equip-stat"><strong>Recarga:</strong> 2 turnos</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Ataques ignoram 3 pontos de Esquiva do alvo.</p>
+            <p class="equip-desc">Rifles longos usados por franco-atiradores, fabricados com peças importadas e manutenção cara.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>SMT-25 Submetralhadora Compacta</h4>
+              <span class="equip-tag">Peso II</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">2d4</span> + <span class="attr-des">DES</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 19x2</span>
+              <span class="equip-stat"><strong>Alcance:</strong> 5B</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Munição:</strong> 25 tiros</span>
+              <span class="equip-stat"><strong>Recarga:</strong> 1 turno</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Pode disparar 2 vezes no mesmo turno. Essa arma dispara em um Cone, atingindo qualquer alvo dentro dele.</p>
+            <p class="equip-desc">Arma de combate urbano popular entre policiais, criminosos e milícias periféricas.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Lança-Combustível LT-4</h4>
+              <span class="equip-tag">Peso IV</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">4d6</span> + <span class="attr-fr">FR</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 20x2</span>
+              <span class="equip-stat"><strong>Alcance:</strong> 6B (cone de fogo)</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Munição:</strong> 5 usos</span>
+              <span class="equip-stat"><strong>Recarga:</strong> 2 turnos</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Atinge todos os inimigos em um cone (6B) e causa Queimando.</p>
+            <p class="equip-desc">Arma pesada que usa combustível pressurizado; empregada em demolição e controle de pragas.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Lançador Tático de Granadas G-01</h4>
+              <span class="equip-tag">Peso IV</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">6d8</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 20x2</span>
+              <span class="equip-stat"><strong>Alcance:</strong> 12B</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Munição:</strong> 3 granadas</span>
+              <span class="equip-stat"><strong>Recarga:</strong> 2 turnos</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Explosão atinge todos os inimigos em 2B de raio.</p>
+            <p class="equip-desc">Equipamento militar básico usado para dispersão e supressão.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Arco Reforçado R-12</h4>
+              <span class="equip-tag">Peso II</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">2d8</span> + <span class="attr-des">DES</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 19x3</span>
+              <span class="equip-stat"><strong>Alcance:</strong> 12B</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Munição:</strong> 1 flecha por turno</span>
+              <span class="equip-stat"><strong>Recarga:</strong> 1 turno</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Pode usar flechas especiais (Qualquer tipo).</p>
+            <p class="equip-desc">Arco moderno usado por caçadores profissionais e vigilantes.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Metralhadora Pesada MG-88</h4>
+              <span class="equip-tag">Peso V</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">3d6</span> + <span class="attr-fr">FR</span></span>
+              <span class="equip-stat"><strong>Crítico:</strong> 20x2</span>
+              <span class="equip-stat"><strong>Alcance:</strong> 20B</span>
+            </div>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Munição:</strong> 100 tiros</span>
+              <span class="equip-stat"><strong>Recarga:</strong> 2 turnos</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Antes de atacar, o usuário escolhe quantos tiros quer disparar (1 a 5). Para cada tiro escolhido, role um dado de ataque separado, cada um causando dano completo se acertar. Cada tiro após o primeiro aplica -1 de penalidade no acerto, até o máximo de -5.</p>
+            <div class="equip-stats" style="margin-top: var(--space-xs);">
+              <span class="equip-stat">1 tiro: 0</span>
+              <span class="equip-stat">2 tiros: -1</span>
+              <span class="equip-stat">3 tiros: -2</span>
+              <span class="equip-stat">4 tiros: -3</span>
+              <span class="equip-stat">5 tiros: -4</span>
+              <span class="equip-stat">6-7 tiros: -5</span>
+            </div>
+            <p class="equip-desc">Uma arma pesada, uma monstruosidade que vibra e treme como se fosse viva, cuspindo projéteis em linhas caóticas. Ninguém mira com uma dessas — só torce para que algo esteja no caminho. O operador escolhe quantos tiros despejar ao "abrir o cano", mas o recuo violento ameaça arrancar o ombro de qualquer um que não esteja preparado.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- UTILITÁRIOS -->
+      <section class="subsection" id="utilitarios">
+        <div class="equip-section-title">Utilitários</div>
+        <div class="equip-grid">
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Granada de Fragmentação</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Explode em um raio de 2B, causando <span class="dice">4d6</span> de dano. <span class="equip-subtag">Uso único</span></p>
+            <p class="equip-desc">Um explosivo poderoso que espalha estilhaços letais.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Granada de Fumaça</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Cria uma área de 3B de névoa densa que obscurece a visão por 3 turnos. <span class="equip-subtag">Uso único</span></p>
+            <p class="equip-desc">Ideal para fugas estratégicas ou emboscadas.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Granada de Luz</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Ofusca todos em uma área de 3B, forçando um Teste de Resistência de <span class="attr-sen">Sentidos</span> (CT:17). Falha = cegueira por 2 turnos. <span class="equip-subtag">Uso único</span></p>
+            <p class="equip-desc">Usada para desorientar inimigos antes de um ataque.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Coquetel Molotov</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Explode em um raio de 2B, incendiando a área por 3 turnos (<span class="dice">2d6</span> de dano por turno). <span class="equip-subtag">Uso único</span></p>
+            <p class="equip-desc">Um artefato incendiário improvisado, simples e mortal.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Kit Médico</h4>
+              <span class="equip-tag">Peso II</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Recupera <span class="dice">3d6</span> de PV e remove efeitos negativos leves. <span class="equip-subtag">Uso único</span></p>
+            <p class="equip-desc">Uma bolsa médica completa para emergências em combate.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Adrenalina</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Concede +2 em todos os testes físicos. (Também concede +10 PE caso Sobrevivente). Após o efeito, o usuário sofre -2 em todos os testes por 1 turno. <span class="equip-subtag">Uso único</span></p>
+            <p class="equip-desc">Um estimulante poderoso que aumenta os reflexos e resistência temporariamente.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Cordas Resistentes</h4>
+              <span class="equip-tag">Peso II</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Permite escaladas e amarrações seguras. Pode ser usada para prender alvos com um Teste de <span class="attr-fr">FR</span>. <span class="equip-subtag">Reutilizável</span></p>
+            <p class="equip-desc">Uma corda robusta útil para estratégias e armadilhas.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Lanterna Tática</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Ilumina até 5B à frente. <span class="equip-subtag">Reutilizável</span></p>
+            <p class="equip-desc">Essencial para missões noturnas ou em locais escuros.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Trampolim Dobrável</h4>
+              <span class="equip-tag">Peso II</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Permite um salto de até 5B em qualquer direção. <span class="equip-subtag">Reutilizável (caso pegue de volta após uso)</span></p>
+            <p class="equip-desc">Uma ferramenta improvável, mas eficiente para fugas rápidas ou infiltrações.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Garrafa de Ácido</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Joga ácido em um alvo, causando <span class="dice">3d6</span> de dano e redução de Esquiva em -2 por 3 turnos. <span class="equip-subtag">Uso único</span></p>
+            <p class="equip-desc">Um frasco com líquido corrosivo capaz de derreter metais e carne.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Dispositivo de Hack</h4>
+              <span class="equip-tag">Peso II</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Permite invadir portas eletrônicas, câmeras de segurança e dispositivos digitais com +2 de Bônus. <span class="equip-subtag">Reutilizável</span></p>
+            <p class="equip-desc">Um aparelho essencial para infiltrações e sabotagem.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Bomba de Som</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Emite um ruído ensurdecedor em 3B, causando -2 em testes que envolvam <span class="attr-sen">Sentidos</span> e revelando inimigos escondidos. <span class="equip-subtag">Uso único</span></p>
+            <p class="equip-desc">Um dispositivo útil para distração ou desorientação.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Capa de Camuflagem</h4>
+              <span class="equip-tag">Peso II</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Concede +3 em testes de furtividade enquanto estiver parado ou movendo-se devagar. <span class="equip-subtag">Reutilizável</span></p>
+            <p class="equip-desc">Feita com um material desconhecido e especial, que parece se adaptar ao arredor.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Dardos Tranquilizantes</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Ao acertar um alvo, ele deve passar em um Teste de Resistência (CT:17). Falha = Imobilizado por 2 turnos. <span class="equip-subtag">Uso único</span></p>
+            <p class="equip-desc">Dardos carregados com um sedativo forte, ideais para capturas discretas.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Garrafa de Veneno</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Pode ser aplicada em armas cortantes ou em alimentos, causando <span class="dice">1d6</span> de dano contínuo por 3 turnos. <span class="equip-subtag">Uso único</span></p>
+            <p class="equip-desc">Um veneno mortal que pode ser usado de diversas formas.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Bomba de Podridão</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Explode em um raio de 2B, prendendo todos os alvos no local por 1 turno. <span class="equip-subtag">Uso único</span></p>
+            <p class="equip-desc">Uma substância pegajosa que imobiliza inimigos e obstrui caminhos.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Máscara de Gás</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Anula os efeitos de venenos, gases e fumaça. <span class="equip-subtag">Reutilizável</span></p>
+            <p class="equip-desc">Equipamento essencial para sobreviver a ambientes tóxicos.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Pó de Percepção</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Concede +2 para sua próxima ação de testes de percepção ou iniciativa. <span class="equip-subtag">Uso único</span></p>
+            <p class="equip-desc">Uma substância que aumenta os sentidos temporariamente.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Bomba Eletromagnética (EMP)</h4>
+              <span class="equip-tag">Peso III</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Desativa todos os dispositivos eletrônicos em 5B por 3 turnos. <span class="equip-subtag">Uso único</span></p>
+            <p class="equip-desc">Arma tecnológica perfeita para desativar sistemas de segurança e Exos.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- EQUIPÁVEIS -->
+      <section class="subsection" id="equipaveis">
+        <div class="equip-section-title">Equipáveis</div>
+
+        <h4 style="font-family: var(--font-heading); font-size: 0.9rem; color: var(--attr-ea); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: var(--space-md);">Escudos</h4>
+        <div class="equip-grid">
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Escudo Compacto</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Concede +3 DEF enquanto empunhado. <span class="equip-subtag">Reutilizável</span></p>
+            <p class="equip-desc">Um pequeno escudo dobrável de fibra reforçada. Ideal para quem quer mobilidade sem abrir mão de proteção.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Escudo Balístico</h4>
+              <span class="equip-tag">Peso II</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Concede +6 DEF e Resistência a dano perfurante (Acumulável com outras Resistências). <span class="equip-subtag">Reutilizável</span></p>
+            <p class="equip-desc">Um escudo tático usado para contenção e combate urbano, capaz de parar balas e estilhaços.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Escudo Pesado de Paladium</h4>
+              <span class="equip-tag">Peso III</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Concede +12 DEF, Resistência a dano contundente e perfurante (Acumulável com outras Resistências), porém faz o usuário ter -2 em qualquer teste de perícia e resistência de <span class="attr-des">Destreza</span>. <span class="equip-subtag">Reutilizável</span></p>
+            <p class="equip-desc">Um escudo massivo com tecnologia de absorção cinética, usado apenas por guardas de elite de Paladium.</p>
+          </div>
+
+        </div>
+
+        <h4 style="font-family: var(--font-heading); font-size: 0.9rem; color: var(--attr-ea); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: var(--space-md);">Armaduras</h4>
+        <div class="equip-grid">
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Colete Leve Tático</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Concede +4 DEF e +2 em testes de Furtividade, Reflexo e Acrobacia. <span class="equip-subtag">Reutilizável</span></p>
+            <p class="equip-desc">Um colete flexível de proteção básica, ideal para missões de infiltração ou combate rápido. Oferece defesa sem comprometer a mobilidade.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Armadura Média de Fibra Reforçada</h4>
+              <span class="equip-tag">Peso II</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Concede +7 DEF e Resistência a dano cortante (Acumulável com outras Resistências). <span class="equip-subtag">Reutilizável</span></p>
+            <p class="equip-desc">Construída com compósitos de alta densidade, oferece proteção sólida contra lâminas e ataques diretos enquanto mantém boa liberdade de movimento.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Armadura de Placas</h4>
+              <span class="equip-tag">Peso II</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Concede +10 DEF e Resistência a dano físico (Acumulável com outras Resistências), mas o usuário ganha desvantagem em todas as rolagens de Furtividade. <span class="equip-subtag">Reutilizável</span></p>
+            <p class="equip-desc">Utilizada por unidades táticas especializadas, absorve impactos de projéteis e estilhaços. Ideal para ambientes urbanos e operações de risco.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Exotraje Tático Assistido</h4>
+              <span class="equip-tag">Peso III</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Concede +10 DEF e +3 em testes de Resistência de <span class="attr-fr">Força</span> e em Testes de Atletismo e Acrobacia, mas Desvantagem em todas as rolagens de Furtividade. <span class="equip-subtag">Reutilizável</span></p>
+            <p class="equip-desc">Um conjunto de placas reforçadas com motores assistidos.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Armadura Pesada de Paladium – Modelo Centurião</h4>
+              <span class="equip-tag">Peso IV</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Concede +18 DEF e Vantagem em todos os testes de <span class="attr-rf">RF</span> e <span class="attr-re">RE</span>, porém o usuário sofre desvantagem em todos os testes de <span class="attr-des">Destreza</span>. <span class="equip-subtag">Reutilizável</span></p>
+            <p class="equip-desc">A armadura oficial dos guardas de elite de Paladium. Camadas sobrepostas de metal cerimonial e tecnologia militar tornam o usuário uma parede ambulante.</p>
+          </div>
+
+          <div class="equip-card">
+            <div class="equip-card-header">
+              <h4>Armadura Consagrada</h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Concede +3 em <span class="attr-re">RE</span> e +10 em DEF. A armadura também proporciona resistência a todo tipo de dano Não-Físico. Entretanto, confere Desvantagem em Testes de <span class="attr-fr">Força</span>. <span class="equip-subtag">Reutilizável</span></p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ITENS ELEMENTAIS -->
+      <section class="subsection" id="itens-elementais">
+        <div class="equip-section-title">Itens Elementais</div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: var(--space-md);">Custo: 3 pontos de item inicial cada. Itens raros e instáveis, ligados a elementos divinos. Têm funções utilitárias ou especiais em combate.</p>
+        <div class="equip-grid">
+
+          <div class="equip-card" style="border-color: rgba(152,0,0,0.3);">
+            <div class="equip-card-header">
+              <h4><span class="elem-podridao">Fragmento de Podridão</span></h4>
+              <span class="equip-tag">Peso II</span>
+            </div>
+            <p class="equip-effect"><strong>Elemento:</strong> <span class="elem-podridao">Podridão</span></p>
+            <p class="equip-effect"><strong>Efeito:</strong> Enquanto estiver consigo, seus ataques corpo a corpo aplicam sangramento leve (+<span class="dice">1d4</span> por turno por 2 turnos). Mas você sofre -1 em testes de <span class="attr-saude">Saúde</span>.</p>
+            <p class="equip-desc">Um pedaço vivo da terra corrompida por Sapila. Emana um odor adocicado e pútrido que gruda no corpo.</p>
+          </div>
+
+          <div class="equip-card" style="border-color: rgba(152,0,0,0.3);">
+            <div class="equip-card-header">
+              <h4><span class="elem-podridao">Armadura Viva</span></h4>
+              <span class="equip-tag">Peso II</span>
+            </div>
+            <p class="equip-effect"><strong>Elemento:</strong> <span class="elem-podridao">Podridão</span></p>
+            <p class="equip-effect"><strong>Efeito:</strong> Recebe +5 de DEF, +1 em DEFe e, ao ser alvo de um ataque, o atacante irá receber dano Perfurante e Pútrido (+<span class="dice">1d8</span>) igual a sua <span class="attr-fr">FR</span> + <span class="attr-des">DES</span> para cada golpe recebido (Se seu atributo de algum dos dois for inferior a 1, ele será considerado como 1 nessa soma). Esse dano não pode ser reduzido a não ser que o alvo tenha Imunidade a Dano Perfurante e esse dano possui Perfuração de Armadura.</p>
+            <p class="equip-desc">Uma armadura de ferro.</p>
+          </div>
+
+          <div class="equip-card" style="border-color: rgba(255,153,0,0.3);">
+            <div class="equip-card-header">
+              <h4><span class="elem-solar">Lâmina Espectral de Cadamor</span></h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <p class="equip-effect"><strong>Elemento:</strong> <span class="elem-solar">Solar</span></p>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">1d8</span> + <span class="attr-fr">FR</span></span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Arma branca com dano <span class="elem-solar">Solar</span>. Em ambientes escuros, causa +<span class="dice">1d4</span> de dano adicional.</p>
+            <p class="equip-desc">Espada forjada com cristal solar, brilha levemente no escuro. Perfeita contra criaturas da noite e da podridão.</p>
+          </div>
+
+          <div class="equip-card" style="border-color: rgba(0,255,255,0.3);">
+            <div class="equip-card-header">
+              <h4><span class="elem-electro">Núcleo Instável de Electro</span></h4>
+              <span class="equip-tag">Peso III</span>
+            </div>
+            <p class="equip-effect"><strong>Elemento:</strong> <span class="elem-electro">Electro</span></p>
+            <p class="equip-effect"><strong>Efeito:</strong> Ao ser arremessado, gera uma descarga elétrica que paralisa todos em um raio de 2 blocos por 1 turno. Teste de <span class="attr-re">RE</span> para resistir. (Pode ser refeito caso pegue de volta os restos do núcleo após a explosão)</p>
+            <p class="equip-desc">Esfera metálica feita a partir de sucata dos EXOs. Extremamente volátil e imprevisível.</p>
+          </div>
+
+          <div class="equip-card" style="border-color: rgba(241,194,50,0.3);">
+            <div class="equip-card-header">
+              <h4><span class="elem-sagrado">Cruzeta Sagrada</span></h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <p class="equip-effect"><strong>Elemento:</strong> <span class="elem-sagrado">Sagrado</span></p>
+            <p class="equip-effect"><strong>Efeito:</strong> Ao ser ativada, remove qualquer maldição ou veneno de um aliado em até 3 blocos.</p>
+            <p class="equip-desc">Relíquia de templos antigos dos Deuses do Tempo. Brilha com luz dourada e repele forças profanas.</p>
+          </div>
+
+          <div class="equip-card" style="border-color: rgba(255,153,0,0.3);">
+            <div class="equip-card-header">
+              <h4><span class="elem-solar">Estilhaço Solar de Ícaron</span></h4>
+              <span class="equip-tag">Peso I</span>
+            </div>
+            <p class="equip-effect"><strong>Elemento:</strong> <span class="elem-solar">Solar</span></p>
+            <div class="equip-stats">
+              <span class="equip-stat"><strong>Dano:</strong> <span class="dice">2d10</span></span>
+            </div>
+            <p class="equip-effect"><strong>Efeito:</strong> Arremessável. Causa dano <span class="elem-solar">Solar</span> em área (3x3B) e queima o chão por 1 turno.</p>
+            <p class="equip-desc">Fragmento inflamado do corpo celestial do pupilo do deus Cadamor. Pode ser usado como granada.</p>
+          </div>
+
+          <div class="equip-card" style="border-color: rgba(152,0,0,0.3); grid-column: 1 / -1;">
+            <div class="equip-card-header">
+              <h4><span class="elem-podridao">Crânio Putrefato de um Cavaleiro de Paladium</span></h4>
+              <span class="equip-tag">Peso II</span>
+            </div>
+            <p class="equip-effect"><strong>Tipo:</strong> Item de Uso (Não Consumível)</p>
+            <p class="equip-effect"><strong>Elemento:</strong> <span class="elem-podridao">Podridão</span></p>
+            <p class="equip-desc" style="margin-bottom: var(--space-sm);">O crânio retorcido e corroído de um antigo Cavaleiro de Paladium, tomado pela Podridão após trair seu juramento e ser consumido por sua própria arrogância. Ainda emana ecos de sua força passada e da maldição que o destruiu. Olhos ocos vibram com energia pútrida quando ativado.</p>
+            <p class="equip-effect"><strong>Efeito:</strong> Ao ser ativado como <span class="ability-tag">Ação Padrão</span>, o usuário canaliza a podridão latente do antigo cavaleiro perdendo <span class="dice">1d30</span> + 10 de PV, liberando uma aura fétida de decadência num raio de 4 Blocos ao redor.</p>
+            <div style="display: flex; flex-wrap: wrap; gap: var(--space-md); margin-top: var(--space-sm);">
+              <div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary);"><strong>Inimigos na área:</strong></p>
+                <ul style="margin: var(--space-xs) 0 0; padding-left: var(--space-lg); font-size: 0.8rem; color: var(--text-secondary);">
+                  <li>-2 em todos os testes de <span class="attr-rf">RF</span> e <span class="attr-re">RE</span></li>
+                  <li><span class="dice">1d10</span> de dano de <span class="elem-podridao">Podridão</span> por rodada</li>
+                </ul>
+              </div>
+              <div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary);"><strong>Aliados na área:</strong></p>
+                <ul style="margin: var(--space-xs) 0 0; padding-left: var(--space-lg); font-size: 0.8rem; color: var(--text-secondary);">
+                  <li>+2 em <span class="attr-re">RE</span></li>
+                  <li>+<span class="dice">1d8</span> de regeneração de vida por rodada</li>
+                </ul>
+              </div>
+            </div>
+            <p class="equip-effect" style="margin-top: var(--space-sm);"><strong>Duração:</strong> 3 rodadas. <strong>Recarga:</strong> Pode ser usado 1 vez por combate/cena. <strong>Limitação:</strong> O item não consome recursos, mas sua energia só pode ser canalizada uma vez até um novo descanso curto ou longo.</p>
+            <p class="equip-effect"><strong>Observação:</strong> Se o usuário for da raça Praguento, o dano de podridão causado pelo item aumenta para <span class="dice">2d10</span>, e a aura se expande para 6 Blocos.</p>
+          </div>
+
+          <div class="equip-card" style="border-color: rgba(0,0,0,0.5);">
+            <div class="equip-card-header">
+              <h4><span class="elem-umbra" style="font-size: 1rem;">Luvu Xonar</span></h4>
+              <span class="equip-tag">Peso II</span>
+            </div>
+            <p class="equip-effect"><strong>Elemento:</strong> <span class="elem-umbra">UMBRA</span></p>
+            <p class="equip-effect"><strong>Efeito:</strong> Enquanto equipado, seus ataques corpo a corpo ganham +<span class="dice">1d6</span> de <span class="elem-umbra">Umbra</span>. Ao início de cada cena, role <span class="dice">1d6</span>:</p>
+            <ul style="font-size: 0.8rem; color: var(--text-secondary); padding-left: var(--space-lg); margin: var(--space-xs) 0;">
+              <li><strong>1-2:</strong> Você age normalmente.</li>
+              <li><strong>3-5:</strong> O item glitcha e copia uma habilidade aleatória do inimigo mais próximo (Mestre escolhe, dura 2 turnos).</li>
+              <li><strong>6:</strong> Explosão de Umbra interna — você perde a primeira ação da rodada e sofre <span class="dice">1d8</span> dano mental.</li>
+            </ul>
+            <p class="equip-desc">Um anel que se contorce como se o dedo nunca tivesse sido desenhado direito. Ele muda de forma a cada piscar, como um erro que o mundo tenta corrigir.</p>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
+
+<script src="js/main.js"></script>
+</body>
+</html>

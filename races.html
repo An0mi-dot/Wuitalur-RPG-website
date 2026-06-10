@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raças — Wuitalur RPG</title>
+  <link rel="icon" href="assets/icon.png" type="image/png">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema v1.3.9</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link active"><span class="icon"></span> Raças</a>
+      <a href="origins.html" class="sidebar-link"><span class="icon"></span> Origens</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+      <a href="selos.html" class="sidebar-link"><span class="icon"></span> Selos</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Raças</h1>
+    </header>
+
+    <main class="page-content">
+
+      <!-- ABISSAL -->
+      <section class="subsection" id="abissal">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="assets/abissais.png" alt="Abissal">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Abissal</h2>
+              <p class="race-illustration"><em>Figura ilustrada: Janna</em></p>
+            </div>
+            <div class="difficulty-badge difficulty-4"><small>ND</small>4</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">Seres que vivem no abismo abaixo da terra com corpos totalmente tomados pela <span class="elem-praga">praga</span>, com a pele pálida, veias negras e olhos completamente pretos como um vazio. Com antenas bioluminescentes fortes como uma lâmpada fluorescente que também pode ser usada como comunicação com outros abissais.</p>
+
+            <h4>Bônus de Raça</h4>
+            <ul class="race-list">
+              <li>Naturalmente tem -1 de <span class="attr-saude">Saúde</span></li>
+              <li>Ganham +1 em Des</li>
+              <li>Ganham +1 em Int</li>
+              <li>Desvantagem testes de percepção em locais com luz forte</li>
+              <li>Imunidade a <span class="elem-praga">Praga</span></li>
+              <li>Fraqueza contra <span class="elem-podridao">podridão</span></li>
+              <li>Resistência contra <span class="elem-solar">Solar</span>, dano Gélido e <span class="elem-pesadelo">Pesadelo</span></li>
+            </ul>
+
+            <h4>Habilidades de Raça</h4>
+
+            <div class="race-ability">
+              <h5>Visão no Escuro</h5>
+              <p>Alcance ilimitado</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Luz amiga</h5>
+              <p>Espalha esporos brilhantes com suas antenas que podem auxiliar as pessoas ao redor.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Pressentimento</h5>
+              <p>Pode rolar <span class="dice">1d20</span> de percepção para poder perceber possíveis emboscadas ao redor.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Telepatia</h5>
+              <p>Consegue usar suas antenas para se comunicar mentalmente com aliados.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Confusão</h5>
+              <p>Usa sua telepatia para confundir um alvo imitando vozes que ele talvez conheça ou fazendo barulhos ensurdecedores, o alvo deve rolar um teste de INT contra um teste de INT com Atuação do abissal, caso o alvo seja mal sucedido ele ficará uma rodada impossibilitado de agir.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>A Fome de Vinhas</h5>
+              <p>O Abissal pode consumir vinhas de <span class="elem-praga">praga</span> para ganhar bônus ou penalidades aleatórias que duram o efeito até que ocorra um descanso longo ou curto. Todo abissal começa com 8 vinhas e que podem ser adquiridas mais delas ao longo da jogatina por meio de descansos longos. Deve ser feito a rolagem de um dado de <span class="dice">1d7</span> pelo jogador para ver qual efeito foi aplicado.</p>
+              <div class="race-table">
+                <div class="race-table-row"><span class="race-table-dice">7</span> +2 de Dex</div>
+                <div class="race-table-row"><span class="race-table-dice">6</span> +2 de <span class="attr-rf">RF</span></div>
+                <div class="race-table-row"><span class="race-table-dice">5</span> +1 de <span class="attr-sen">Sentido</span></div>
+                <div class="race-table-row"><span class="race-table-dice">4</span> +2 de <span class="attr-saude">Saúde</span></div>
+                <div class="race-table-row"><span class="race-table-dice">3</span> -3 de <span class="attr-saude">Saúde</span></div>
+                <div class="race-table-row"><span class="race-table-dice">2</span> -2 de Dex</div>
+                <div class="race-table-row"><span class="race-table-dice">1</span> -4 de <span class="attr-re">RE</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AKIVUS -->
+      <section class="subsection" id="akivus">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="assets/akivus.png" alt="Akivus">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Akivus</h2>
+              <p class="race-illustration"><em>Figura ilustrada: Elleonor</em></p>
+            </div>
+            <div class="difficulty-badge difficulty-1"><small>ND</small>1</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">Seres que vivem principalmente na floresta que possuem muita afinidade com a fauna e a flora, são capazes de criar plantas. Possuem chifres longos que se assemelham a de alces com vinhas e flores ao seu redor, a grande maioria tem coloração de pele parda e são geralmente mais altos que humanos (tendo 1,80m ou mais).</p>
+
+            <h4>Bônus de Raça</h4>
+            <ul class="race-list">
+              <li>Naturalmente +1 em <span class="attr-saude">Saúde</span></li>
+              <li>Naturalmente -1 em <span class="attr-rf">Resistência Física</span></li>
+              <li>Naturalmente +1 em <span class="attr-re">Resistência Elemental</span></li>
+              <li>Fraqueza contra <span class="elem-podridao">Podridão</span></li>
+              <li>Resistência contra <span class="elem-sagrado">Sagrado</span> e Dano Gélido</li>
+            </ul>
+
+            <h4>Habilidades de Raça</h4>
+
+            <div class="race-ability">
+              <h5>Afinidade com plantas</h5>
+            </div>
+
+            <div class="race-ability">
+              <h5>Criação de vinhas</h5>
+              <p>Cria vinhas que podem ser usadas para amarrar coisas. <span class="ability-tag">Ação Padrão</span></p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Névoa Perfumada</h5>
+              <p>Cria vinhas com flores que soltam pólen com cheiros fortes que podem atordoar algum alvo. <span class="ability-tag">Ação Padrão</span></p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Cheiro do Perigo</h5>
+              <p>O Akivus pode ficar parado durante um tempo para sentir o cheiro de quaisquer possíveis ameaças ao redor dentro de um raio de 8m. <span class="ability-tag">Passiva</span></p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Regeneração Verde</h5>
+              <p>Quando em contato direto com o solo ou cercado por vegetação, os Akivus podem acelerar sua regeneração natural, curando-se de ferimentos leves em um curto período de tempo. A cada 2min curando <span class="dice">2d8</span> de vida. <span class="ability-tag">Passiva</span></p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Passo Silencioso</h5>
+              <p>Os Akivus conseguem mover-se silenciosamente pela floresta, passando despercebidos por inimigos e evitando armadilhas naturais. Isso os torna excelentes caçadores e batedores. Eles não fazem nenhum barulho ao andar, caso queiram correr sorrateiramente, devem rolar um teste de furtividade. <span class="ability-tag">Passiva</span></p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Aura de Vitalidade</h5>
+              <p>Em uma área de até 3B ao redor do Akivus, plantas e seres vivos se tornam mais resistentes e vigorosos. Aliados dentro dessa área recebem um pequeno bônus temporário em <span class="attr-saude">saúde</span> e <span class="attr-rf">RF</span> de +2 e ganham +25 de vida durante 2 turnos gerais. <span class="ability-tag">Ação Padrão</span> <span class="ability-cost">-70 <span class="attr-ea">Energia Astral</span> (15 PE caso Sobrevivente)</span></p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Raízes Constritoras</h5>
+              <p>Invocando raízes do solo, os Akivus podem usar uma ação bônus para prender um inimigo, esmagando-o lentamente com força esmagadora. As raízes causam dano contínuo enquanto mantêm o alvo imobilizado. O alvo deve rolar um teste de <span class="attr-rf">RF</span> (CT 18). Causa <span class="dice">2d8</span> de dano por turno. <span class="ability-tag">Ação Bônus</span> <span class="ability-cost">-100 <span class="attr-ea">Energia Astral</span> (20 PE caso Sobrevivente)</span></p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Explosão Floral</h5>
+              <p>Ao chegar no nível 10 o Akivus pode criar uma flor especial que pode ser usada como uma espécie de granada, ao entrar em contato com um inimigo ou superfície, explode em uma rajada de espinhos e pólen tóxico. Esse ataque afeta uma área que atinge todos em um raio de 5B, causando dano aos inimigos próximos e envenenando-os (Teste Inimigo de <span class="attr-saude">Saúde</span>). <span class="dice">2d8</span> de veneno por turno até o fim da cena e <span class="dice">3d15</span> de dano padrão de perfuração. <span class="ability-tag">Ação Padrão</span> <span class="ability-cost">-100 <span class="attr-ea">Energia Astral</span></span></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VAMPIROS -->
+      <section class="subsection" id="vampiros">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="assets/vampiros.png" alt="Vampiros">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Vampiros</h2>
+              <p class="race-illustration"><em>Figura ilustrada: Friede</em></p>
+            </div>
+            <div class="difficulty-badge difficulty-1"><small>ND</small>1</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">Seres com aparência humanoide com a pele um pouco pálida e com dentes caninos maiores, se alimentando principalmente de sangue, a maioria deles tem olhos vermelhos e as mulheres têm corpos mais curvados e os homens corpos mais definidos, são naturalmente bonitos e elegantes.</p>
+
+            <h4>Bônus de Raça</h4>
+            <ul class="race-list">
+              <li>Naturalmente +1 em <span class="attr-saude">Saúde</span></li>
+              <li>Ganham +1 em <span class="attr-fama">FAMA</span></li>
+              <li>Fraqueza a <span class="elem-praga">Praga</span></li>
+              <li>Resistência à <span class="elem-pesadelo">Pesadelo</span></li>
+            </ul>
+
+            <h4>Habilidades de Raça</h4>
+
+            <div class="race-ability">
+              <h5>Visão no Escuro</h5>
+              <p>18m</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Mordida Vampírica</h5>
+              <p>Os vampiros têm presas afiadas e podem morder uma vítima para extrair sangue. Ao fazer isso, eles podem causar dano e se alimentar, restaurando seus próprios pontos de vida. Eles também podem controlar a quantidade de sangue extraída para evitar matar a vítima.</p>
+              <div class="race-table">
+                <div class="race-table-row"><span class="race-table-dice">Pouco sangue</span> <span class="dice">1d12</span> + <span class="attr-saude">Saúde</span></div>
+                <div class="race-table-row"><span class="race-table-dice">Sangue moderado</span> <span class="dice">1d20</span> + <span class="attr-saude">Saúde</span></div>
+                <div class="race-table-row"><span class="race-table-dice">Muito Sangue</span> <span class="dice">1d30</span> + <span class="attr-saude">Saúde</span></div>
+              </div>
+            </div>
+
+            <div class="race-ability">
+              <h5>Frenesi Sanguíneo</h5>
+              <p>Em momentos de grande emoção ou necessidade, os vampiros, quando estiverem com 20% ou menos de sua vida máxima, podem entrar em um estado de frenesi sanguíneo, aumentando temporariamente sua força e agressividade. Durante esse frenesi, eles podem causar danos extras em combate, ganhando uma rolagem adicional de dano sem a necessidade de Acerto.</p>
+              <div class="race-table">
+                <div class="race-table-row"><span class="race-table-dice">Nvl 1 ao 10</span> 1 ataque adicional</div>
+                <div class="race-table-row"><span class="race-table-dice">Nvl 11 ao 15</span> 2 ataques adicionais</div>
+                <div class="race-table-row"><span class="race-table-dice">Nvl 16 ao 20</span> 3 ataques adicionais</div>
+              </div>
+              <div class="race-table" style="margin-top: var(--space-sm);">
+                <div class="race-table-subtitle">{Se Sobrevivente}</div>
+                <div class="race-table-row"><span class="race-table-dice">ADP 0% a 25%</span> 1 ataque adicional</div>
+                <div class="race-table-row"><span class="race-table-dice">ADP 26% a 40%</span> 2 ataques adicionais</div>
+                <div class="race-table-row"><span class="race-table-dice">ADP 45% a 65%</span> 3 ataques adicionais</div>
+              </div>
+            </div>
+
+            <div class="race-ability">
+              <h5>Vínculo de Sangue</h5>
+              <p>Os vampiros podem estabelecer um vínculo de sangue com um aliado, compartilhando temporariamente sua força e vitalidade. Enquanto o vínculo estiver ativo, o vampiro e o aliado compartilham parte do dano recebido e da cura recebida na metade, tornando-os mais resilientes juntos. <span class="ability-cost">-30 Energia (5 PE caso Sobrevivente)</span></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HÍBRIDOS - INTRO -->
+      <section class="subsection" id="hibridos">
+        <div class="section-heading">
+          <h2>Híbridos</h2>
+          <p>São pessoas que desde a segunda grande guerra e após a Era Dourada foram modificadas geneticamente pelo governo do reino de Paladium e desde então eles se espalharam no mundo e são vistos como uma raça normal. É dividida em sub-raças:</p>
+        </div>
+      </section>
+
+      <!-- ANIMALESCOS -->
+      <section class="subsection" id="animalescos">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="assets/animalescos.png" alt="Animalescos">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Animalescos</h2>
+              <p class="race-illustration"><em>Figura ilustrada: Luther</em></p>
+            </div>
+            <div class="difficulty-badge difficulty-1"><small>ND</small>1</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">Animais antropomórficos ou pessoas com características de animais.</p>
+
+            <h4>Bônus de Raça</h4>
+            <ul class="race-list">
+              <li>Naturalmente +1 em Des</li>
+              <li>Naturalmente +1 em Sen</li>
+              <li>Fraqueza a dano Sonoro</li>
+            </ul>
+
+            <h4>Habilidades de Raça</h4>
+
+            <div class="race-ability">
+              <h5>Percepção Aprimorada</h5>
+              <p>Pode rolar um teste de Sen + 2 para poder tentar perceber algo interessante ou algo escondido.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Quadrúpede</h5>
+              <p>Pode usar uma ação bônus para usar todos os seus membros para se locomover ganhando +4 de Des e recebendo vantagem em testes de esquivas enquanto está nessa posição porém não pode executar ações bônus nem ações completas. A habilidade pode ser ativada como uma ação bônus depois de uma ação padrão. <span class="ability-tag">Ação Bônus</span></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PLANTÍFEROS -->
+      <section class="subsection" id="plantiferos">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="assets/plantiferos.png" alt="Plantíferos">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Plantíferos</h2>
+              <p class="race-illustration"><em>Figura ilustrada: Tuko</em></p>
+            </div>
+            <div class="difficulty-badge difficulty-2"><small>ND</small>2</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">Plantas humanoides ou pessoas com características de plantas.</p>
+
+            <h4>Bônus de Raça</h4>
+            <ul class="race-list">
+              <li>Naturalmente +2 de <span class="attr-saude">Saúde</span></li>
+              <li>Naturalmente +1 em <span class="attr-fama">FAMA</span></li>
+              <li>Fraqueza a <span class="elem-solar">Solar</span> e <span class="elem-podridao">Podridão</span></li>
+            </ul>
+
+            <h4>Habilidades de Raça</h4>
+
+            <div class="race-ability">
+              <h5>Afinidade com plantas</h5>
+              <p>Podendo se comunicar com elas.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Criação de vinhas</h5>
+              <p>Cria vinhas que podem ser usadas para amarrar coisas.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Névoa Perfumada</h5>
+              <p>Cria vinhas com flores que soltam pólen com cheiros fortes que podem atordoar algum alvo, fazendo-o rolar um teste de <span class="attr-re">RE</span>. Vda: 18.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Canção das Árvores</h5>
+              <p>No nível 3, o plantifero aprende a se conectar com as árvores, ouvindo as batidas frenéticas de seu corações como tambores. Conseguindo criar e controlar qualquer forma de madeira na natureza.</p>
+
+              <div class="race-subability">
+                <h6>Nível 3 - Punhos rítmicos</h6>
+                <p>Ao calor de uma batalha, o plantifero pode ativar seus punhos rítmicos, após uma vez ativados, eles sempre continuam ativos até o final de uma batalha. Enquanto ativos, o plantifero não pode fazer ações bônus e ganha 25 de vida extra na hora. A cada ataque do plantiféro, grandes estruturas de madeira com formatos retangulares emergindo do chão, irão em direção ao alvo atacado seguindo o ritmo do Bpm (Batimentos por minuto) do plantifero, que deverá ser rolado após ativar a habilidade que será de acordo com:</p>
+                <div class="attr-card-formula">1d30 ÷ 2 = 3d + resultado</div>
+                <p>Exemplo: <span class="dice">1d30</span> = 10 ÷ 2 = 5 = <span class="dice">3d5</span></p>
+                <p>No nível 13, invés de <span class="dice">1d20</span>, passa a ser <span class="dice">1d40</span>.</p>
+              </div>
+
+              <div class="race-subability">
+                <h6>Nível 10 - Ritmo de Animação</h6>
+                <p>O plantifero cria dois tambores de madeira em sua frente e começa a batucá-los no ritmo de seu Bpm, criando uma área circular de 4 Blocos de área rodeada por notas músicas Astrais douradas que vibram no ritmo animador da música. Quem estiver nessa área ganhará um escudo protetor de 25 de vida que se sobrepõem à vida do aliado, absorvendo os danos. Além disso, os aliados também ganham +2 em testes de esquiva.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DRAGÃO ANÃO -->
+      <section class="subsection" id="dragao-anao">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="assets/dragaoanao.png" alt="Dragão Anão">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Dragão Anão</h2>
+              <p class="race-illustration"><em>Figura ilustrada: Alkar</em></p>
+            </div>
+            <div class="difficulty-badge difficulty-2"><small>ND</small>2</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">Originários do pequeno e hostil continente de Tragnor, os Dragões Anões são seres dracônicos de baixa estatura, variando entre 1,00m e 1,45m de altura. Apesar do porte diminuto, possuem corpos resistentes recobertos por escamas de cores diversas, que vão de tons vibrantes a metálicos e opacos. Sua fisionomia é um híbrido elegante entre dragão e humanoide, com chifres curvos, cauda longa e ágil, e seis antenas peludas com cerdas sensoriais na parte de trás da cabeça.</p>
+            <p>Essas antenas permitem uma forma única de comunicação telepática rudimentar, transmitindo emoções, impressões ou imagens simples para outros Dragões Anões ou criaturas empáticas.</p>
+            <p>Grande parte da população de Tragnor vive em comunidades tribais espalhadas pelas florestas, cavernas ou planícies íngremes do continente. Essas comunidades, embora vistas por forasteiros como "primitivas", mantêm uma estrutura social sofisticada, marcada por rituais de caça, danças cerimoniais e profundo respeito aos ancestrais dracônicos. Sua cultura é preservada por meio de um idioma próprio, chamado Idioma Antigo, um sistema de escrita e fala exclusivo da raça, repleto de símbolos e entonações que carregam significados complexos e muitas vezes impossíveis de traduzir completamente.</p>
+            <p>Devido à instabilidade de Tragnor, muitos Dragões Anões migraram para o continente principal, Terras Longínquas, formando pequenos grupos nômades ou comunidades ocultas. Mesmo longe de sua terra natal, preservam o Idioma Antigo como forma de manter viva a conexão com suas raízes.</p>
+
+            <h4>Bônus de Raça</h4>
+            <ul class="race-list">
+              <li>Naturalmente +1 em <span class="attr-des">Destreza</span></li>
+              <li>Naturalmente +1 em <span class="attr-int">Intelecto</span></li>
+              <li>Naturalmente -2 em FR</li>
+              <li>Naturalmente -2 em <span class="attr-rf">RF</span></li>
+              <li><span class="attr-re">Resistência Elemental</span>: escolha <span class="elem-solar">Solar</span>, <span class="elem-estase">Estase</span> ou Ácido</li>
+              <li>Mente Focada: vantagem em testes para resistir a efeitos de confusão ou controle mental</li>
+            </ul>
+
+            <h4>Habilidades de Raça</h4>
+
+            <div class="race-ability">
+              <h5>Sopro Ancestral</h5>
+              <p>Expele um cone de energia elemental correspondente à sua resistência (Fogo e <span class="elem-solar">Solar</span>, <span class="elem-estase">Estase</span> ou Ácido) em um raio de 3B à sua frente. Inimigos na área devem rolar um teste de RES <span class="attr-des">Destreza</span> (CT 15) ou sofrer <span class="dice">3d10</span> de dano elemental. <span class="ability-tag">Sem custo</span></p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Conexão Sensorial</h5>
+              <p>As seis antenas permitem comunicação telepática limitada com criaturas a até 10B, transmitindo emoções, intenções simples ou imagens mentais. <span class="ability-tag">Passiva</span></p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Improvisador Nascido</h5>
+              <p>Você pode gastar uma ação bônus para ativar uma engenhoca improvisada (com aval do mestre), criando distrações, faíscas, fumaça ou destrancando mecanismos frágeis. Essa habilidade só pode ser usada 2 vezes e é recuperada após um descanso curto ou longo.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Instinto de Sobrevivência</h5>
+              <p>Vantagem em testes de Sobrevivência e Navegação em ambientes como: florestas densas, zonas instáveis ou ruínas perigosas.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Camuflagem Natural</h5>
+              <p>Recebe +2 em testes de Furtividade</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Ataque Escondido</h5>
+              <p>Se estiver escondido ou invisível para o inimigo, causa <span class="dice">1dDes×2</span> de dano extra em um ataque corpo a corpo ou à distância.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRAGUENTOS -->
+      <section class="subsection" id="praguentos">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="assets/praguentos.png" alt="Praguentos">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Praguentos</h2>
+              <p class="race-illustration"><em>Figura ilustrada: A podridão</em></p>
+            </div>
+            <div class="difficulty-badge difficulty-3"><small>ND</small>3</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">Seres que personificam a zombaria da vida. Condenados pela <span class="elem-podridao">Podridão</span> a renascer como pálidas cópias do que foram, cobertos por lodo negro e viscoso, com a aparência deformada de uma lauma esquecida com seu rosto coberto de olhos alaranjados. Fazem parte de uma mente coletiva distorcida — ouvem, sentem, mas tudo em ruídos, como ecos de uma existência que não deveria mais ser.</p>
+
+            <h4>Bônus de Raça</h4>
+            <ul class="race-list">
+              <li>Naturalmente +1 em Des</li>
+              <li>Naturalmente +1 em <span class="attr-re">Resistência Elemental</span></li>
+              <li>Naturalmente -2 em <span class="attr-saude">Saúde</span></li>
+              <li>Fraqueza a dano Gélido e <span class="elem-solar">Solar</span>/Fogo</li>
+              <li>Resistência a dano de <span class="elem-praga">Praga</span></li>
+              <li>Imunidade a dano de <span class="elem-podridao">Podridão</span></li>
+            </ul>
+
+            <h4>Habilidades de Raça</h4>
+
+            <div class="race-ability">
+              <h5>Manipulação do Lodo Corporal</h5>
+              <p>Os praguentos podem manipular o lodo do seu corpo e usar de sua criatividade para criar várias coisas. Durante cada nível o praguento possui um limite de energia específica de quanto lodo ele pode formar e gastar vindo do seu corpo. O nome dessa energia é Energia de Lodo.</p>
+              <div class="race-table">
+                <div class="race-table-row"><span class="race-table-dice">Nível 1</span> 180</div>
+                <div class="race-table-row"><span class="race-table-dice">Nível 6</span> 240</div>
+                <div class="race-table-row"><span class="race-table-dice">Nível 12</span> 280</div>
+                <div class="race-table-row"><span class="race-table-dice">Nível 18</span> 320</div>
+                <div class="race-table-row"><span class="race-table-dice">Nível 20</span> 400</div>
+              </div>
+            </div>
+
+            <div class="race-ability">
+              <h5>Recuperação Rápida</h5>
+              <p>Além de descansar para recuperar a Energia de Lodo, o Praguento pode regenerar 10 de Energia de Lodo automaticamente a cada turno.</p>
+              <p>Caso a energia se esgote, o Praguento ficará com -1 em todos os testes que envolvem Dex e INT até que se recupere de volta com um descanso longo ou curto.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Criação de Itens</h5>
+              <p>O praguento pode usar sua energia para criar utensílios, armas ou formas de ataques feitos de lodo de acordo com as definições:</p>
+              <div class="race-table">
+                <div class="race-table-row"><span class="race-table-dice">Pequeno</span> 5 de Energia de Lodo</div>
+                <div class="race-table-row"><span class="race-table-dice">Médio</span> 30 de Energia de Lodo</div>
+                <div class="race-table-row"><span class="race-table-dice">Grande</span> 90 de Energia de Lodo</div>
+                <div class="race-table-row"><span class="race-table-dice">Muito Grande</span> 150 de Energia de Lodo</div>
+              </div>
+            </div>
+
+            <div class="race-ability">
+              <h5>Armas de Lodo</h5>
+              <p>Pode criar uma Espada, Martelo, Foice e Machado que possuem uso de 3 rodadas, acopladas ao Praguento, são armas que causam <span class="dice">2d12</span> + DES de dano Físico e são usadas como ação bônus. <span class="ability-tag">Ação Bônus</span></p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Tiro Lamacento</h5>
+              <p>Pode atirar até 5 projéteis rápidos de Lodo durante um turno. Cada um causando dano de <span class="elem-podridao">podridão</span> (<span class="dice">2d10</span> + Des). Eles gastam 5 de Energia de Lodo.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Corpo de Lodo</h5>
+              <p>O Praguento pode temporariamente transformar seu corpo em lodo puro, tornando-se imune a dano físico por até 2 turnos. Durante esse tempo, ele não pode atacar, mas pode se livremente através de qualquer abertura ou fenda. Esta habilidade custa 50 de Energia de Lodo e só pode ser usada uma vez por descanso curto ou longo. Pode ser usada fora de combate para locomoção em áreas complicadas ou de difícil acesso.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HUMANOS -->
+      <section class="subsection" id="humanos">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="assets/humanos.png" alt="Humanos">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Humanos</h2>
+              <p class="race-illustration"><em>Figura ilustrada: Akali</em></p>
+            </div>
+            <div class="difficulty-badge difficulty-1"><small>ND</small>1</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">Os humanos são seres abundantes e resilientes, adaptados a diferentes ambientes do mundo. Embora não possuam habilidades inatas extraordinárias, compensam com uma notável capacidade de aprendizado, versatilidade e inovação. São conhecidos por sua prosperidade e por formar sociedades diversificadas, que vão de pequenas comunidades a grandes impérios.</p>
+
+            <h4>Bônus de Raça</h4>
+            <ul class="race-list">
+              <li>Naturalmente +1 em todos os Atributos</li>
+              <li>Fraqueza a <span class="elem-pesadelo">Pesadelo</span></li>
+            </ul>
+
+            <h4>Habilidades de Raça</h4>
+
+            <div class="race-ability">
+              <h5>Determinação Implacável</h5>
+              <p>Com um teste de <span class="attr-saude">saúde</span> (CT 15), após cair pode continuar lutando até receber um número de ataques igual a metade do bônus de proficiência arredondado para cima.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Adaptação Humana</h5>
+              <p>Mesmo sendo uma raça considerada um pouco mais fraca, ao chegar em um ponto de extrema tensão o humano desperta suas habilidades físicas, aumentando assim suas capacidades. Quando estiver com menos de 25% do hp, o humano recebe +2 de <span class="attr-fr">força</span> e <span class="attr-des">destreza</span> até o fim da cena.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Aprendizado Rápido</h5>
+              <p>O humano é capaz de observar e copiar habilidades de outros, desde que tenha capacidade física e mental de executá-las. Para copiar uma habilidade, o humano deve ter presenciado a habilidade sendo usada durante a batalha ou uma interação similar, e ela deve ser algo que ele seria capaz de realizar com seus atributos e treinamento.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Força de Vontade</h5>
+              <p>Uma vez por descanso longo, quando o humano falhar em um teste de resistência, ele pode refazê-lo com um bônus de +3.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Inovação</h5>
+              <p>Humanos são mestres em resolver problemas de maneira criativa. Ao criar itens, armas ou até mesmo estratégias, um humano pode gastar tempo extra (o dobro do tempo necessário) para aprimorar o item ou plano, concedendo um bônus de +2 no teste necessário. Gastar o dobro do tempo faz o humano usar 2 Ações Padrões caso esteja em combate (2 turnos inativos).</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Resiliência Humana</h5>
+              <p>Humanos podem se recuperar rapidamente de condições debilitantes. Ao início de cada turno, eles podem fazer um teste de <span class="attr-saude">Saúde</span> (CT 14) para remover uma condição negativa, como envenenamento, atordoamento ou paralisia.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Força Interior</h5>
+              <p>Quando o humano está em uma situação de perigo extremo ou emocionalmente intenso, ele pode canalizar uma reserva interna de energia. Isso concede um bônus temporário de +2 em qualquer atributo de sua escolha (exceto <span class="attr-re">Resistência Elemental</span>) até o fim da cena. Essa habilidade pode ser ativada uma vez por descanso longo.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- INSECTÓIDES -->
+      <section class="subsection" id="insectoides">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="assets/insectoides.png" alt="Insectóides">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Insectóides</h2>
+              <p class="race-illustration"><em>Figura ilustrada: A mariposa</em></p>
+            </div>
+            <div class="difficulty-badge difficulty-3"><small>ND</small>3</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">Insectóides são herança viva dos experimentos da Era Dourada — humanos, principalmente crianças pobres, fundidas a traços de insetos como mariposas, formigas e moscas. Tentativa falha de Paladium de fazer humanos insetos. Carregam exoesqueletos, olhos que não piscam e membros estranhos, junto de uma natureza fria, calculista e, para muitos, cruel por instinto. Mesmo organizados em colônias e comunidades, raramente demonstram empatia genuína: negociam, convivem e cooperam por necessidade, não por afeto. Para o resto do mundo, continuam sendo lembrados como um povo de coração gelado, moldado para sobreviver — não para sentir.</p>
+
+            <h4>Bônus de Raça</h4>
+            <ul class="race-list">
+              <li>Naturalmente +1 em Des</li>
+              <li>Naturalmente +1 em <span class="attr-re">Resistência Elemental</span></li>
+              <li>Naturalmente +1 em INT</li>
+              <li>Naturalmente -4 em <span class="attr-fama">FAMA</span></li>
+              <li>Naturalmente Proficiência em testes de intimidação</li>
+              <li>Sensibilidade a Luzes Fortes</li>
+              <li>Fraqueza a <span class="elem-solar">Solar</span> e dano Gélido</li>
+            </ul>
+
+            <h4>Habilidades de Raça</h4>
+
+            <div class="race-ability">
+              <h5>Reputação Negativa</h5>
+              <p>Os insectóides aprenderam a transformar o medo e o preconceito que o mundo tem deles em uma arma social. Onde os outros veem monstruosidade, eles veem vantagem. Converte o redutor natural de -4 em <span class="attr-fama">FAMA</span> em +4 de <span class="attr-fama">FAMA</span> exclusivamente para testes de Intimidação.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Vínculo</h5>
+              <p>Os insectóides podem escolher um vínculo com 1 elemento à sua escolha. O Insectóide pode escolher 1 entre os elementos <span class="elem-podridao">Podridão</span>, <span class="elem-nulidrico">Nulídrico</span>, <span class="elem-pesadelo">Pesadelo</span> e Sombra. A cada elemento escolhido, o insectóide ganha duas habilidades por cada elemento escolhido.</p>
+
+              <div class="race-subability">
+                <h6><span class="elem-podridao">Podridão</span></h6>
+                <div class="race-ability-inner">
+                  <p><strong>Sentido Putrefato</strong> — Consegue sentir qualquer criatura feita de <span class="elem-podridao">podridão</span> a 6 Blocos de distância.</p>
+                  <p><strong>Engula Lodo</strong> — Pode agarrar um alvo a 2 Blocos de distância fazendo ele engolir lodo de <span class="elem-podridao">podridão</span> causando <span class="dice">2d15</span> de dano e causando estado de paralisia durante 1 rodada. O Alvo pode esquivar com um teste de Des. <em>(Liberada no nível 7)</em></p>
+                </div>
+              </div>
+
+              <div class="race-subability">
+                <h6><span class="elem-nulidrico">Nulídrico</span></h6>
+                <div class="race-ability-inner">
+                  <p><strong>Vórtice sem fim</strong> — Cria uma pequena esfera flutuante com <span class="elem-nulidrico">Nulídrico</span> que suga ar e enfraquece até 3 alvos em um alcance de até 4 Blocos, fazendo eles perderem -2 em dados de esquiva. <em>(Liberada no nível 7)</em></p>
+                  <p><strong>Sacrifício de Vida</strong> — Usa 35% de Vida para criar duas armas feitas de nulídrico que fazem ataques adicionais aos ataques padrões do Insectoide. O dado de dano das armas são de acordo com 50% da vida total do Insectoide.</p>
+                </div>
+              </div>
+
+              <div class="race-subability">
+                <h6><span class="elem-pesadelo">Pesadelo</span></h6>
+                <div class="race-ability-inner">
+                  <p><strong>Lembre-se</strong> — Em uma área de 5 Blocos o Insectóide pode causar um dano mental (<span class="dice">2d10</span>) a um alvo consciente, mostrando coisas horríveis que o insectóide desejar e deixa o alvo Paralisado.</p>
+                  <p><strong>Ilusão Amedrontadora</strong> — Cria uma ilusão a escolha do Insectóide que apenas o alvo pode ver, se o alvo for mal sucedido em um teste de <span class="attr-re">RE</span> ele ficará paralisado durante uma rodada.</p>
+                </div>
+              </div>
+
+              <div class="race-subability">
+                <h6>Sombra</h6>
+                <div class="race-ability-inner">
+                  <p><strong>Medo</strong> — Com uma ação bônus, sussurre palavras de medo e veja-os sofrer lentamente caso falhem em um teste de INT (CT:16). <span class="dice">4d12</span> de dano. <em>(Liberada no nível 10)</em></p>
+                  <p><strong>Toque da Maldade</strong> — Toque no alvo para atordoá-lo durante 1 rodada e fazer ele escutar vozes em sua cabeça, ele deve rolar um teste de <span class="attr-re">RE</span> para tentar se livrar do atordoamento.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="race-ability">
+              <h5>Habilidades Gerais</h5>
+              <ul class="race-list">
+                <li>Voo (Dependendo do Inseto)</li>
+                <li>Visão no Escuro (Dependendo do Inseto)</li>
+                <li>Escalada Aracnídea (Dependendo do Inseto)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- E.X.O.s -->
+      <section class="subsection" id="exos">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="assets/exo.png" alt="E.X.O.s">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">E.X.O.s</h2>
+              <p class="race-illustration"><em>Figura ilustrada: R2.T</em></p>
+            </div>
+            <div class="difficulty-badge difficulty-3"><small>ND</small>3</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">Uma espécie criada pelos engenheiros mais habilidosos de Paladium, feito para serem um sistema de proteção e segurança da cidade ou até de utilidade doméstica. Tem características robóticas e são feitos de um metal especial, alguns conseguem ter sentimentos próprios e desenvolver seus corações por alguma razão ainda não descoberta. O coração deles é movido por meio da energização do minério Everact, se o minério perder a energia, eles são desligados automaticamente.</p>
+
+            <h4>Bônus de Raça</h4>
+            <ul class="race-list">
+              <li>Naturalmente +1 em INT</li>
+              <li>Naturalmente +1 em <span class="attr-rf">Resistência Física</span></li>
+              <li>Imunidade a dano de Fogo</li>
+              <li>Imunidade a <span class="elem-praga">Praga</span></li>
+              <li>Fraqueza a <span class="elem-podridao">Podridão</span></li>
+              <li>Fraqueza a água (se estiver molhado perde -1 de <span class="attr-des">destreza</span> até se secar)</li>
+            </ul>
+
+            <h4>Habilidades de Raça</h4>
+
+            <div class="race-ability">
+              <h5>É capaz de consertar qualquer coisa que tenha conhecimento.</h5>
+            </div>
+
+            <div class="race-ability">
+              <h5>Modelo de Fábrica</h5>
+              <p>Existem 3 Modelos de Fábrica que um E.X.O pode ter e o jogador deve escolher:</p>
+
+              <div class="race-subability">
+                <h6>Doméstico</h6>
+                <p>São robôs mais sensíveis e fracos sendo feitos de materiais frágeis, como vidro por ex, porém eles são feitos de partes que são separadas e flutuam deixando assim eles mais flexíveis. Esse modelo de robô recebe +2 de Dex Naturalmente. E tem proficiência em Esquivas. E recebe -5 de <span class="attr-rf">Resistência Física</span>.</p>
+              </div>
+
+              <div class="race-subability">
+                <h6>Guerra</h6>
+                <p>São robôs mais parrudos e resistentes eles não tem medo de nada, sempre estão na frente para proteger os mais fracos e são feitos de materiais resistentes. Esse modelo recebe +1 de FR. E recebe +1 em ambas as resistências. Porém ele tem -3 em Dex.</p>
+              </div>
+
+              <div class="race-subability">
+                <h6>Segurança</h6>
+                <p>São robôs fortes e silenciosos, foram projetados para proteger pessoas de alta importância, por ex os ricos de Paladium, porém até pessoas de classe média podem ter um gastando uma boa grana. Esse modelo recebe +1 em <span class="attr-re">Resistência Elemental</span> e +1 em <span class="attr-rf">Resistência Física</span>.</p>
+              </div>
+            </div>
+
+            <div class="race-ability">
+              <h5>Ponto Fraco</h5>
+              <p>Pode fazer a rolagem de um teste de INT para descobrir se um alvo tem um ponto fraco. Se tirar um 20 o E.X.O consegue saber qual é o ponto fraco. O ponto fraco é um local em que se for acertado o inimigo toma o dano padrão do ataque + <span class="dice">4d15</span> de dano. O valor necessário da habilidade pode ser diminuído até 18 no Max por meio de modificações que podem ser feitas nos olhos do E.X.O durante o rpg em ferreiros ou por meio de artefatos.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Agarrão</h5>
+              <p>Pode imobilizar um alvo se agarrando nele, o alvo deve fazer a rolagem de um teste de Des contra a um dado de FR que o E.X.O também deve rolar para tentar agarrar o alvo, se o alvo não conseguir ele terá que rolar um teste de FR para se livrar.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ESPECT@&%S -->
+      <section class="subsection" id="espectros">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="assets/espectros.png" alt="Espect@&%s">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Espect@&%s</h2>
+              <p class="race-illustration"><em>Em desenvolvimento</em></p>
+            </div>
+            <div class="difficulty-badge difficulty-locked"><small>ND</small>?</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description" style="text-align: center; color: var(--text-muted); font-style: italic;">Esta raça ainda está em desenvolvimento. Aguarde atualizações.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
+
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,52 +1,95 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=./Pag_Principal/html/index.html">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wuitalur RPG - Redirecionamento</title>
-    <link rel="icon" href="Historia/Imagens/Site_Icone.png" type="image/png">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            text-align: center;
-        }
-        .redirect-message {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
-    <link rel="stylesheet" href="assets/css/version-popup.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wuitalur RPG — Sistema</title>
+  <link rel="icon" href="assets/icon.png" type="image/png">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .home-hero {
+      padding: var(--space-3xl) var(--space-xl);
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: var(--space-2xl);
+    }
+    .home-hero h1 {
+      font-family: var(--font-heading);
+      font-size: 2.4rem;
+      letter-spacing: 0.12em;
+      margin-bottom: var(--space-md);
+      color: var(--text-primary);
+      text-transform: uppercase;
+    }
+    .home-hero p {
+      max-width: 900px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin: 0;
+    }
+  </style>
 </head>
 <body>
-    <div class="redirect-message">
-        <h1>🎲 Wuitalur RPG</h1>
-        <div class="loading"></div>
-        <p>Redirecionando para o site principal...</p>
-        <p><a href="./Pag_Principal/html/index.html" style="color: #64ffda; text-decoration: none;">Clique aqui se não for redirecionado automaticamente</a></p>
-        <p id="site-version" style="font-size: 0.8em; opacity: 0.9; margin-top: 15px; color: #b8a1d9;"> <button id="version-btn" class="version-button" type="button"><span id="build-version">Alpha 1.0.0</span></button> &nbsp;-&nbsp;<span id="build-date">28/10/2025</span></p>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema v1.3.9</span>
+      </div>
     </div>
-    <script src="assets/js/version-popup.js" defer></script>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link active"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="origins.html" class="sidebar-link"><span class="icon"></span> Origens</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+      <a href="selos.html" class="sidebar-link"><span class="icon"></span> Selos</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <section class="home-hero">
+      <h1>Wuitalur - Sistema de RPG</h1>
+      <p><em>"Wuitalur é um sistema autoral de RPG narrativo com foco em ambientações sombrias, horror cósmico, dilemas morais e escolhas difíceis. Mistura fantasia sombria com toques futuristas e sociais. Seus personagens vivem em um mundo onde religião, magia, tecnologia e corrupção se entrelaçam em conflitos épicos e trágicos. Esta página apresenta todo o sistema, de forma contínua e acessível, para consulta completa de regras, raças, classes e mais."</em></p>
+    </section>
+
+    <main class="page-content">
+
+      <section class="subsection" id="introducao">
+        <div class="section-heading">
+          <h2>Introdução</h2>
+        </div>
+        <div class="race-card">
+          <div class="race-card-body">
+            <p class="race-description"><em>"Wuitalur é um sistema autoral de RPG narrativo com foco em ambientações sombrias, horror cósmico, dilemas morais e escolhas difíceis. Mistura fantasia sombria com toques futuristas e sociais. Seus personagens vivem em um mundo onde religião, magia, tecnologia e corrupção se entrelaçam em conflitos épicos e trágicos. Esta página apresenta todo o sistema, de forma contínua e acessível, para consulta completa de regras, raças, classes e mais."</em></p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
+
+<script src="js/main.js"></script>
 </body>
 </html>

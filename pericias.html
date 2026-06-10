@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perícias — Wuitalur RPG</title>
+  <link rel="icon" href="assets/logo.png" type="image/png">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .per-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-lg); }
+    .per-card { background: rgba(0,0,0,0.2); border: 1px solid var(--border-subtle); border-radius: var(--radius); padding: var(--space-md); display: flex; flex-direction: column; }
+    .per-card h4 { font-family: var(--font-heading); font-size: 0.95rem; color: var(--text-primary); margin-bottom: var(--space-xs); }
+    .per-attr { font-size: 0.75rem; padding: 2px 8px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.06); display: inline-block; margin-bottom: var(--space-sm); color: var(--text-muted); }
+    .per-card p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+    .attr-section-title { font-family: var(--font-heading); font-size: 1rem; color: var(--text-primary); margin-top: var(--space-xl); margin-bottom: var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--border-subtle); }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema v1.3.9</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="origins.html" class="sidebar-link"><span class="icon"></span> Origens</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="pericias.html" class="sidebar-link active"><span class="icon"></span> Perícias</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+      <a href="selos.html" class="sidebar-link"><span class="icon"></span> Selos</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Perícias</h1>
+    </header>
+
+    <main class="page-content">
+
+      <!-- INTRO -->
+      <section class="subsection" id="intro">
+        <div class="section-heading">
+          <h2>Perícias</h2>
+        </div>
+        <div class="race-card" style="max-width: 800px; margin: 0 auto var(--space-2xl);">
+          <div class="race-card-body">
+            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8;">Cada jogador pode escolher <strong>6 perícias</strong> abaixo para treinar seu personagem.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- LISTA DE PERÍCIAS -->
+      <section class="subsection" id="lista">
+        <div class="per-grid">
+
+          <div class="per-card">
+            <h4>Disparada</h4>
+            <span class="per-attr"><span class="attr-des">Destreza</span></span>
+            <p>Momentos em que é necessário escapar rapidamente de perigos ou alcançar algo com agilidade.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Medicina</h4>
+            <span class="per-attr"><span class="attr-int">Intelecto</span> ou <span class="attr-saude">Saúde</span></span>
+            <p>Tratamento de ferimentos, cura de doenças, restauração de saúde de aliados.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Investigação</h4>
+            <span class="per-attr"><span class="attr-int">Intelecto</span></span>
+            <p>Analisar cenas, pistas e padrões; reconstruir eventos passados; identificar contradições em relatos; deduzir a natureza de fenômenos estranhos; desvendar mistérios, crimes e anomalias.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Diplomacia</h4>
+            <span class="per-attr"><span class="attr-fama">Fama</span></span>
+            <p>Negociações, resolução de conflitos e persuasão pacífica.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Acrobacia</h4>
+            <span class="per-attr"><span class="attr-des">Destreza</span></span>
+            <p>Realização de saltos, equilíbrio e manobras físicas ágeis.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Atletismo</h4>
+            <span class="per-attr"><span class="attr-fr">Força</span></span>
+            <p>Capacidade física para correr, saltar, escalar, nadar e executar esforços intensos. Mede força, resistência e explosão corporal em ações que exigem vigor físico.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>História</h4>
+            <span class="per-attr"><span class="attr-int">Intelecto</span></span>
+            <p>Conhecimento de eventos históricos, culturas e mitologias.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Engenharia</h4>
+            <span class="per-attr"><span class="attr-int">Intelecto</span></span>
+            <p>Construção, reparos e manipulação de dispositivos mecânicos.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Sobrevivência</h4>
+            <span class="per-attr"><span class="attr-sen">Sentidos</span></span>
+            <p>Navegação e obtenção de recursos em ambientes inóspitos.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Navegação</h4>
+            <span class="per-attr"><span class="attr-sen">Sentidos</span></span>
+            <p>Orientação em territórios desconhecidos e percepção do ambiente.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Cosmos</h4>
+            <span class="per-attr"><span class="attr-int">Intelecto</span></span>
+            <p>Premonição, leitura de aura e interação com o sobrenatural.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Liderança</h4>
+            <span class="per-attr"><span class="attr-fama">Fama</span></span>
+            <p>Inspirar aliados, organizar equipes e tomar decisões estratégicas.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Furtividade</h4>
+            <span class="per-attr"><span class="attr-des">Destreza</span></span>
+            <p>Movimentação silenciosa e esconder-se de inimigos.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Alquimia</h4>
+            <span class="per-attr"><span class="attr-int">Intelecto</span></span>
+            <p>Criação de poções, elixires e itens mágicos.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Enganação</h4>
+            <span class="per-attr"><span class="attr-fama">Fama</span></span>
+            <p>Enganar ou persuadir de forma dissimulada.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Domar</h4>
+            <span class="per-attr"><span class="attr-sen">Sentidos</span></span>
+            <p>Controlar e se comunicar com criaturas selvagens.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Astúcia</h4>
+            <span class="per-attr"><span class="attr-int">Intelecto</span></span>
+            <p>Desarmar armadilhas, operar mecanismos e resolver enigmas.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Natação</h4>
+            <span class="per-attr"><span class="attr-fr">Força</span></span>
+            <p>Lidar com desafios aquáticos, como correntezas e mergulhos.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Herbalismo</h4>
+            <span class="per-attr"><span class="attr-int">Intelecto</span></span>
+            <p>Identificação e uso de plantas e ervas medicinais.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Mímica</h4>
+            <span class="per-attr"><span class="attr-fama">Fama</span></span>
+            <p>Imitar vozes, comportamentos e gestos.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Mecânica</h4>
+            <span class="per-attr"><span class="attr-int">Intelecto</span></span>
+            <p>Operar e consertar máquinas complexas.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Línguas</h4>
+            <span class="per-attr"><span class="attr-int">Intelecto</span></span>
+            <p>Comunicação em diferentes idiomas e culturas.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Barganha</h4>
+            <span class="per-attr"><span class="attr-fama">Fama</span></span>
+            <p>Negociar melhores preços ou obter informações valiosas.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Forja</h4>
+            <span class="per-attr"><span class="attr-fr">Força</span></span>
+            <p>Criação e aprimoramento de armas e armaduras.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Atuação</h4>
+            <span class="per-attr"><span class="attr-fama">Fama</span></span>
+            <p>Entretenimento, representação teatral e sedução.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Culinária</h4>
+            <span class="per-attr"><span class="attr-sen">Sentidos</span></span>
+            <p>Preparação de refeições que conferem benefícios.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Estratégia</h4>
+            <span class="per-attr"><span class="attr-int">Intelecto</span></span>
+            <p>Planejamento de combates ou abordagens complexas.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Astronomia</h4>
+            <span class="per-attr"><span class="attr-int">Intelecto</span></span>
+            <p>Navegação noturna e previsão de eventos astronômicos.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Psicologia</h4>
+            <span class="per-attr"><span class="attr-int">Intelecto</span></span>
+            <p>Entendimento de motivações e comportamentos humanos.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Meditação</h4>
+            <span class="per-attr"><span class="attr-sen">Sentidos</span></span>
+            <p>Resistência a influências mentais e recuperação de foco.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Reflexo</h4>
+            <span class="per-attr"><span class="attr-des">Destreza</span></span>
+            <p>Reação rápida a perigos ou ataques surpresa.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Intimidação</h4>
+            <span class="per-attr"><span class="attr-fama">Fama</span></span>
+            <p>Imposição de medo e influência em situações de confronto.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Percepção</h4>
+            <span class="per-attr"><span class="attr-sen">Sentidos</span></span>
+            <p>Analisar e interpretar o ambiente ao redor.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Persuasão</h4>
+            <span class="per-attr"><span class="attr-fama">Fama</span></span>
+            <p>Influenciar, convencer ou negociar com outras pessoas por meio de fala, postura ou presença.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Terapia</h4>
+            <span class="per-attr"><span class="attr-sen">Sentidos</span></span>
+            <p>Auxílio psicológico para outros personagens.</p>
+          </div>
+
+          <div class="per-card">
+            <h4>Intuição</h4>
+            <span class="per-attr"><span class="attr-sen">Sentidos</span></span>
+            <p>Perceber intenções ocultas, pressentir perigos, interpretar linguagem corporal, identificar mentiras ou hesitações, captar mudanças sutis no ambiente e fazer julgamentos rápidos baseados em sinais não verbais.</p>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
+
+<script src="js/main.js"></script>
+</body>
+</html>

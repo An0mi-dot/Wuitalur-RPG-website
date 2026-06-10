@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O Conclave — Wuitalur RPG</title>
+  <link rel="icon" href="assets/logo.png" type="image/png">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .conclave-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-lg); }
+    .conclave-card { background: rgba(0,0,0,0.2); border: 1px solid var(--border-subtle); border-radius: var(--radius); padding: var(--space-md); display: flex; flex-direction: column; }
+    .conclave-card h4 { font-family: var(--font-heading); font-size: 0.95rem; color: var(--text-primary); margin-bottom: var(--space-xs); }
+    .conclave-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-sm); flex-wrap: wrap; gap: var(--space-xs); }
+    .conclave-tag { font-size: 0.7rem; padding: 2px 8px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: var(--text-muted); white-space: nowrap; }
+    .conclave-stats { display: flex; flex-wrap: wrap; gap: var(--space-xs); margin-bottom: var(--space-sm); }
+    .conclave-stat { font-size: 0.8rem; padding: 2px 8px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.04); color: var(--text-secondary); }
+    .conclave-stat strong { color: var(--text-primary); }
+    .conclave-effect { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: var(--space-xs); }
+    .conclave-effect strong { color: var(--attr-ea); font-weight: 600; }
+    .conclave-cost { font-size: 0.82rem; color: #ff6b6b; line-height: 1.5; margin-bottom: var(--space-xs); }
+    .conclave-cost strong { color: #ff4444; font-weight: 600; }
+    .conclave-desc { font-size: 0.78rem; color: var(--text-muted); font-style: italic; line-height: 1.5; margin-top: auto; }
+    .patente-header { font-family: var(--font-heading); font-size: 1.3rem; margin-top: var(--space-xl); margin-bottom: var(--space-md); padding-bottom: var(--space-sm); border-bottom: 2px solid; text-transform: uppercase; letter-spacing: 0.08em; }
+    .patente-bronze { color: #cd7f32; border-color: rgba(205,127,50,0.3); }
+    .patente-prata { color: #c0c0c0; border-color: rgba(192,192,192,0.3); }
+    .patente-ouro { color: #ffd700; border-color: rgba(255,215,0,0.3); }
+    .patente-platina { color: #00e5ff; border-color: rgba(0,229,255,0.3); }
+    .conclave-flavor { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: var(--space-lg); }
+    .conclave-cost-label { display: inline-block; font-size: 0.7rem; padding: 2px 8px; border-radius: var(--radius-sm); background: rgba(255,60,60,0.1); border: 1px solid rgba(255,60,60,0.2); color: #ff6b6b; white-space: nowrap; }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema v1.3.9</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="origins.html" class="sidebar-link"><span class="icon"></span> Origens</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+      <a href="selos.html" class="sidebar-link"><span class="icon"></span> Selos</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link active"><span class="icon"></span> O Conclave</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>O Conclave</h1>
+    </header>
+
+    <main class="page-content">
+
+      <!-- INTRO -->
+      <section class="subsection" id="intro">
+        <div class="section-heading">
+          <h2>O Conclave</h2>
+        </div>
+        <div class="race-card" style="max-width: 800px; margin: 0 auto var(--space-2xl);">
+          <div class="race-card-body">
+            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8;">O mundo é movido por trocas que ninguém vê. Nas sombras das capitais ou no silêncio das ruínas, os Mercantes do Conclave operam uma economia invisível. Para a maioria, eles são apenas uma superstição sobre moedas que somem e itens que aparecem. Para você, eles são o único apoio, as vezes.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SINCRONIA DE INVENTÁRIO -->
+      <section class="subsection" id="sincronia">
+        <div class="section-heading">
+          <h2>Sincronia de Inventário</h2>
+        </div>
+
+        <div class="race-card" style="max-width: 800px; margin: 0 auto var(--space-2xl);">
+          <div class="race-card-body">
+            <p class="conclave-flavor">O Conclave não possui balcões ou rostos. Sua relação com eles é feita de silêncio e conveniência.</p>
+            <p class="conclave-flavor">Os itens únicos que você adquire não vêm de uma transação comum; eles simplesmente passam a existir em sua posse. Um peso novo no fundo da mochila, um pacote lacrado deixado ao lado do seu descanso ou um objeto "esquecido" em um beco por onde você acabou de passar.</p>
+            <p class="conclave-flavor">Você não sabe explicar como, mas sente a assinatura deles em cada metal e tecido. Quando o valor é pago, a realidade se ajusta. Não há perguntas, não há barganhas. Há apenas o contrato, e o item que agora é seu.</p>
+            <p class="conclave-flavor">A profundidade da sua conexão com o Conclave é medida pelo seu crescimento. Conforme você se torna mais experiente e perigoso, o Conclave "abre as portas" para itens de maior poder. Sua patente é vinculada diretamente ao seu Nível de Personagem:</p>
+            <div style="display: flex; flex-wrap: wrap; gap: var(--space-sm); justify-content: center; margin: var(--space-lg) 0;">
+              <span style="padding: var(--space-sm) var(--space-md); border-radius: var(--radius-sm); background: rgba(205,127,50,0.1); border: 1px solid rgba(205,127,50,0.3); color: #cd7f32; font-size: 0.85rem; font-weight: 600;">Patente Bronze (Nv 1-3)</span>
+              <span style="padding: var(--space-sm) var(--space-md); border-radius: var(--radius-sm); background: rgba(192,192,192,0.1); border: 1px solid rgba(192,192,192,0.3); color: #c0c0c0; font-size: 0.85rem; font-weight: 600;">Patente Prata (Nv 4-6)</span>
+              <span style="padding: var(--space-sm) var(--space-md); border-radius: var(--radius-sm); background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); color: #ffd700; font-size: 0.85rem; font-weight: 600;">Patente Ouro (Nv 7-9)</span>
+              <span style="padding: var(--space-sm) var(--space-md); border-radius: var(--radius-sm); background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; font-size: 0.85rem; font-weight: 600;">Patente Platina (Nv 10+)</span>
+            </div>
+            <p class="conclave-flavor">O Conclave opera em ciclos. Para garantir o equilíbrio das trocas, a aquisição de novos recursos segue uma regra restrita.</p>
+            <p class="conclave-flavor"><strong>A cada 3 níveis alcançados</strong>, você pode escolher um item de sua patente atual (ou inferior) para se manifestar em sua posse.</p>
+            <p class="conclave-flavor">Uma vez feita a escolha entre as sessões, o item surge em seu inventário através da Sincronia, e o custo equivalente é extraído de seus recursos de forma imediata.</p>
+            <p class="conclave-flavor">Itens de patentes superiores à sua são borrões na sua mente. Você só passa a compreender e enxergar a possibilidade de adquirir esses objetos ao atingir o nível de experiência exigido.</p>
+            <div class="callout callout-important" style="margin-top: var(--space-lg);">
+              <strong>Você, nem seu personagem, sabe o que ou quem são "O Conclave."</strong><br>
+              O seu personagem <strong>não sabe</strong> dos itens que pode obter com o Conclave.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- O PREÇO -->
+      <section class="subsection" id="preco">
+        <div class="section-heading">
+          <h2>O Preço</h2>
+        </div>
+        <div class="race-card" style="max-width: 800px; margin: 0 auto var(--space-2xl);">
+          <div class="race-card-body">
+            <p class="conclave-flavor">Os Mercantes do Conclave não lidam com moedas de metal ou promessas vazias. Para que um item de tamanha complexidade e natureza impossível se manifeste em suas mãos, é necessário um sacrifício de ancoragem.</p>
+            <p class="conclave-flavor">Uma vez que você escolhe um item do Conclave, o custo associado a ele é extraído de sua essência de forma permanente e imediata.</p>
+            <p class="conclave-flavor">O custo não está atrelado ao uso do item. Mesmo que você guarde o objeto no fundo de uma caixa, o venda ou o perca em combate, o atributo perdido, a vida drenada ou a fraqueza adquirida jamais retornarão.</p>
+            <p class="conclave-flavor">O Conclave "cobra na fonte". Ao aceitar o item, você aceita que uma parte de quem você é agora pertence a eles, servindo como combustível para que o objeto continue existindo neste plano.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TABELA DE ITENS -->
+      <section class="subsection" id="itens">
+
+        <!-- BRONZE -->
+        <h3 class="patente-header patente-bronze">Patente Bronze</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: var(--space-md);">Nível 1 ao 3</p>
+        <div class="conclave-grid">
+
+          <div class="conclave-card">
+            <div class="conclave-card-header">
+              <h4>O Relógio de Areia Negra</h4>
+              <span class="conclave-tag">Utilitário</span>
+            </div>
+            <p class="conclave-effect"><strong>Efeito:</strong> Duas vezes por cena, congela um pequeno objeto em movimento por 2 turnos.</p>
+            <p class="conclave-cost"><strong>Custo:</strong> -1 <span class="attr-int">Intelecto (INT)</span></p>
+            <p class="conclave-desc">A areia do relógio vibra, parece seguir um ritmo.</p>
+          </div>
+
+          <div class="conclave-card">
+            <div class="conclave-card-header">
+              <h4>Lâmina de Osso Vítreo</h4>
+              <span class="conclave-tag">Arma</span>
+            </div>
+            <div class="conclave-stats">
+              <span class="conclave-stat"><strong>Dano:</strong> <span class="dice">2d10</span> + <span class="attr-des">DES</span></span>
+              <span class="conclave-stat"><strong>Peso:</strong> I</span>
+            </div>
+            <p class="conclave-effect"><strong>Efeito:</strong> Ignora qualquer armadura física, mas causa dano pela metade em alvos sem proteção.</p>
+            <p class="conclave-cost"><strong>Custo:</strong> O personagem recebe Fraqueza a Dano Cortante.</p>
+            <p class="conclave-desc">Para que a lâmina atravesse o aço, ela torna a pele do usuário tão frágil quanto o vidro do qual é feita.</p>
+          </div>
+
+          <div class="conclave-card">
+            <div class="conclave-card-header">
+              <h4>Moeda do Rastreador Mudo</h4>
+              <span class="conclave-tag">Utilitário</span>
+            </div>
+            <p class="conclave-effect"><strong>Efeito:</strong> Revela qualquer Ser Vivo em 10B.</p>
+            <p class="conclave-cost"><strong>Custo:</strong> -5 de Vida Máxima (PV)</p>
+            <p class="conclave-desc">A moeda exige um "pedágio de sangue" para abrir a visão do outro lado; o corpo do usuário definha levemente para sustentar a conexão.</p>
+          </div>
+
+        </div>
+
+        <!-- PRATA -->
+        <h3 class="patente-header patente-prata">Patente Prata</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: var(--space-md);">Nível 4 ao 6</p>
+        <div class="conclave-grid">
+
+          <div class="conclave-card">
+            <div class="conclave-card-header">
+              <h4>O Respirador de Névoa</h4>
+              <span class="conclave-tag">Equipável (Máscara)</span>
+              <span class="conclave-tag">Peso I</span>
+            </div>
+            <p class="conclave-effect"><strong>Efeito:</strong> Imunidade a gases e permite o usuário ficar invisível por 2 rodadas — o usuário não perde a invisibilidade mesmo que seja atacado ou faça uma ação. O usuário pode ainda assim ser atacado, caso um ser queira o encontrar, rolando um teste de Percepção (CT 19).</p>
+            <p class="conclave-cost"><strong>Custo:</strong> -1 em <span class="attr-rf">RF</span>, <span class="attr-re">RE</span> ou <span class="attr-saude">SAU</span></p>
+            <p class="conclave-desc">Seus pulmões se adaptam à névoa, tornando-se incapazes de processar o oxigênio comum com a mesma eficiência de antes.</p>
+          </div>
+
+          <div class="conclave-card">
+            <div class="conclave-card-header">
+              <h4>Revólver "Eco"</h4>
+              <span class="conclave-tag">Arma</span>
+              <span class="conclave-tag">Peso II</span>
+            </div>
+            <div class="conclave-stats">
+              <span class="conclave-stat"><strong>Dano:</strong> <span class="dice">2d8</span> + <span class="attr-des">DES</span></span>
+              <span class="conclave-stat"><strong>Alcance:</strong> 8B</span>
+            </div>
+            <p class="conclave-effect"><strong>Efeito:</strong> Dispara energia sonora; causa atordoamento se o alvo bater em uma parede (3B).</p>
+            <p class="conclave-cost"><strong>Custo:</strong> Perda de Resistência a Dano Sonoro. Caso não possua Resistência a Dano Sonoro, ganha Fraqueza a Dano Sonoro.</p>
+            <p class="conclave-desc">O zumbido constante da arma rompe os tímpanos do usuário por dentro, tornando-o extremamente vulnerável a ataques de som.</p>
+          </div>
+
+          <div class="conclave-card">
+            <div class="conclave-card-header">
+              <h4>Lanterna de Sombras Reais</h4>
+              <span class="conclave-tag">Utilitário</span>
+              <span class="conclave-tag">Peso I</span>
+            </div>
+            <p class="conclave-effect"><strong>Efeito:</strong> Revela rastros de criaturas dos últimos 5 minutos como fumaças.</p>
+            <p class="conclave-cost"><strong>Custo:</strong> -2 em <span class="attr-sen">Sentidos</span></p>
+            <p class="conclave-desc">Ver as "sombras reais" desgasta a visão comum; o mundo real parece sempre nublado e sem cores para o usuário.</p>
+          </div>
+
+          <div class="conclave-card">
+            <div class="conclave-card-header">
+              <h4>Lâmina de Mercúrio Estático</h4>
+              <span class="conclave-tag">Arma</span>
+              <span class="conclave-tag">Peso II</span>
+            </div>
+            <div class="conclave-stats">
+              <span class="conclave-stat"><strong>Dano:</strong> <span class="dice">1d12</span> + <span class="attr-des">DES</span></span>
+              <span class="conclave-stat"><strong>Alcance:</strong> 6B</span>
+            </div>
+            <p class="conclave-effect"><strong>Efeito:</strong> Ao causar dano, a lâmina se liquefaz dentro da ferida, impedindo que o alvo utilize qualquer habilidade de movimentação ou deslocamento por 2 rodadas. O alvo pode tentar expulsar o metal de seu corpo, rolando um teste de <span class="attr-re">RE</span> (CT 18).</p>
+            <p class="conclave-cost"><strong>Custo:</strong> -1 em <span class="attr-des">DES</span></p>
+            <p class="conclave-desc">O metal em suas mãos exige que seus próprios reflexos se tornem pesados e viscosos para manter a lâmina estável na realidade.</p>
+          </div>
+
+          <div class="conclave-card">
+            <div class="conclave-card-header">
+              <h4>Manto de Vidro Opaco</h4>
+              <span class="conclave-tag">Equipável (Capa)</span>
+              <span class="conclave-tag">Peso I</span>
+            </div>
+            <p class="conclave-effect"><strong>Efeito:</strong> O usuário pode se camuflar perfeitamente em paredes sólidas, tornando-se imune a ataques de oportunidade enquanto estiver encostado em uma parede. Além disso, recebe -5 de danos de Projéteis por 2 rodadas. Um ser que observar atentamente a parede pode notar o desvio da luz, rolando um teste de Percepção (CT 21).</p>
+            <p class="conclave-cost"><strong>Custo:</strong> -1 em <span class="attr-fr">FOR</span> ou <span class="attr-saude">SAU</span></p>
+            <p class="conclave-desc">Sua massa física torna-se menos densa e mais quebradiça para se misturar aos minerais, enfraquecendo sua estrutura muscular permanentemente.</p>
+          </div>
+
+          <div class="conclave-card">
+            <div class="conclave-card-header">
+              <h4>Luva do Toque Estendido</h4>
+              <span class="conclave-tag">Equipável (Mão)</span>
+              <span class="conclave-tag">Peso I</span>
+            </div>
+            <p class="conclave-effect"><strong>Efeito:</strong> Permite interagir com objetos, alavancas ou itens a uma distância de até 8B. O usuário também pode realizar ações de Furto à distância como se estivesse colado ao alvo.</p>
+            <p class="conclave-cost"><strong>Custo:</strong> -1 de <span class="attr-fr">FR</span></p>
+            <p class="conclave-desc">Para projetar sua interação através do espaço, seus nervos superficiais tornam-se hipersensíveis; qualquer impacto físico agora dói muito mais do que o normal.</p>
+          </div>
+
+          <div class="conclave-card">
+            <div class="conclave-card-header">
+              <h4>Manancial de Mercúrio</h4>
+              <span class="conclave-tag">Utilitário (Consumível Especial)</span>
+              <span class="conclave-tag">Peso I</span>
+            </div>
+            <p class="conclave-effect"><strong>Efeito:</strong> Ao ser ativado, o item expele uma poça de metal líquido em um raio de 4B. Qualquer ser que entrar na área deve ser bem-sucedido em um teste de Acrobacia (CT 19) ou ficará Paralisado por 1 turno. O usuário pode deslizar sobre o metal sem penalidades, aumentando seu Deslocamento em +4B enquanto estiver na poça.</p>
+            <p class="conclave-cost"><strong>Custo:</strong> -1 em <span class="attr-rf">RF</span>, <span class="attr-re">RE</span> ou <span class="attr-saude">SAU</span></p>
+            <p class="conclave-desc">O metal é purificado através do seu sistema circulatório; o resíduo tóxico deixado para trás torna sua recuperação física mais difícil e lenta.</p>
+          </div>
+
+        </div>
+
+        <!-- OURO -->
+        <h3 class="patente-header patente-ouro">Patente Ouro</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: var(--space-md);">Nível 7 ao 9</p>
+        <div class="conclave-grid">
+
+          <div class="conclave-card">
+            <div class="conclave-card-header">
+              <h4>Manto do Observador Distante</h4>
+              <span class="conclave-tag">Equipável (Capa)</span>
+              <span class="conclave-tag">Peso I</span>
+            </div>
+            <p class="conclave-effect"><strong>Efeito:</strong> Indetectável enquanto parado e pode se teleportar (4 blocos) apenas ao sofrer dano.</p>
+            <p class="conclave-cost"><strong>Custo:</strong> -1 em <span class="attr-fr">Força</span></p>
+            <p class="conclave-desc">O manto torna a presença do usuário "leve" demais; seus músculos perdem densidade conforme ele se torna mais próximo de uma sombra do que de um homem.</p>
+          </div>
+
+          <div class="conclave-card">
+            <div class="conclave-card-header">
+              <h4>Martelo "Singularidade"</h4>
+              <span class="conclave-tag">Arma</span>
+              <span class="conclave-tag">Peso IV</span>
+            </div>
+            <div class="conclave-stats">
+              <span class="conclave-stat"><strong>Dano:</strong> <span class="dice">4d8</span> + <span class="attr-fr">FR</span></span>
+            </div>
+            <p class="conclave-effect"><strong>Efeito:</strong> Puxa todas as criaturas em 3 blocos para o centro e paralisa-os por 1 Turno, e causa <span class="dice">4d8</span> de dano <span class="elem-nulidrico">Nulídrico</span>.</p>
+            <p class="conclave-cost"><strong>Custo:</strong> -5 de Vida Máxima e -5 de <span class="attr-ea">Energia Astral</span> Máxima</p>
+            <p class="conclave-desc">Manter um objeto de gravidade infinita exige que o usuário sirva como âncora vital; sua própria energia é o que impede o martelo de colapsar.</p>
+          </div>
+
+          <div class="conclave-card">
+            <div class="conclave-card-header">
+              <h4>Frasco de Sangue Mercúrio</h4>
+              <span class="conclave-tag">Utilitário</span>
+              <span class="conclave-tag">Peso I</span>
+            </div>
+            <p class="conclave-effect"><strong>Efeito:</strong> Corpo semi-líquido, 1 Uso por cena (atravessa frestas, ignora dano de queda).</p>
+            <p class="conclave-cost"><strong>Custo:</strong> -1 em <span class="attr-des">Destreza</span></p>
+            <p class="conclave-desc">Embora ganhe fluidez temporária, o sistema nervoso do usuário sofre danos permanentes, tornando seus movimentos naturais mais lentos e imprecisos.</p>
+          </div>
+
+        </div>
+
+        <!-- PLATINA -->
+        <h3 class="patente-header patente-platina">Patente Platina</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: var(--space-md);">Nível 10 ou superior</p>
+        <div class="conclave-grid">
+
+          <div class="conclave-card">
+            <div class="conclave-card-header">
+              <h4>A Bússola do "Não-Lugar"</h4>
+              <span class="conclave-tag">Utilitário</span>
+            </div>
+            <p class="conclave-effect"><strong>Efeito:</strong> Permite ao usuário e mais 1 ser escolhido, atravessar paredes sólidas (até 3 blocos).</p>
+            <p class="conclave-cost"><strong>Custo:</strong> Fraqueza a Dano Mental. Caso já possua Fraqueza a Dano Mental, ganha Fraqueza Crítica a Dano Mental (x3)</p>
+            <p class="conclave-desc">"La, você será completo."</p>
+          </div>
+
+          <div class="conclave-card">
+            <div class="conclave-card-header">
+              <h4>Coração Mecânico do Conclave</h4>
+              <span class="conclave-tag">Relíquia (Implante)</span>
+            </div>
+            <p class="conclave-effect"><strong>Efeito:</strong> Para o tempo em 3B ao redor de si por 1 rodada ao chegar a 0 PV; permite entender todas as línguas.</p>
+            <p class="conclave-cost"><strong>Custo:</strong> -20 de Vida Máxima e Perda de todas as Resistências Naturais</p>
+            <p class="conclave-desc">O coração mecânico substitui o sistema imunológico e vital orgânico. O usuário sobrevive apenas pela tecnologia do Conclave, tornando-se frágil a qualquer dano externo.</p>
+            <p class="conclave-desc" style="margin-top: var(--space-xs);">"Que coceira no peito"</p>
+          </div>
+
+          <div class="conclave-card" style="border-color: rgba(180,0,255,0.3);">
+            <div class="conclave-card-header">
+              <h4>Rifle "Paradoxo de <span class="elem-umbra">Umbra</span>"</h4>
+              <span class="conclave-tag">Arma</span>
+              <span class="conclave-tag">Peso III</span>
+            </div>
+            <div class="conclave-stats">
+              <span class="conclave-stat"><strong>Dano:</strong> <span class="dice">6d10</span> + <span class="attr-des">DES</span> de dano <span class="elem-umbra">Umbral</span></span>
+            </div>
+            <p class="conclave-effect"><strong>Efeito:</strong> Ao acertar um alvo, aplica o status: <span style="color: #888; font-family: monospace; font-size: 0.85rem; letter-spacing: 1px; background: rgba(0,0,0,0.3); padding: 1px 6px; border-radius: 3px;">&̶͕͈͔͍̿̌̾&̵̴̭͇̮́̆̌̄̾̆̋͊̀͋+̷̨̛̇͊̆͠&̵̡̱̇_̴̡̩̩̏͌̂͠@̵̝̦͖̝̬͑(̷̸̧̻͂̄̌̂̚)̸̗͖̙̍͜͠</span></p>
+            <p class="conclave-effect"><strong>Mecânica do Efeito:</strong> A armadura do alvo é quebrada imediatamente durante 1 rodada. No último turno da rodada atual, o alvo regenera sua armadura pela metade máxima e perde todas as suas resistências por mais 1 rodada completa.</p>
+            <p class="conclave-cost"><strong>Custo:</strong> -2 em Atributo de <span class="attr-fama">Fama</span> (ou <span class="attr-int">INT</span>) e -15 de Vida Máxima</p>
+            <p class="conclave-desc">Quanto mais você apaga os outros da existência, mais você mesmo deixa de existir para o mundo.</p>
+            <p class="conclave-desc" style="margin-top: var(--space-xs);">"Isso está correto?"</p>
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
+
+<script src="js/main.js"></script>
+</body>
+</html>

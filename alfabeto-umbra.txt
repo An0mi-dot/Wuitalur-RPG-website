@@ -1,0 +1,86 @@
+ALFABETO UMBRAL — Escrita do Vazio
+
+O Alfabeto Umbral é a escrita dos seres do Umbra — entidades
+que existem nas bordas da realidade, nos glitches do cosmos.
+Suas letras são chamadas de "Runas Umbrais" e cada uma carrega
+um conceito, um som e uma sensação. Os nomes Umbrais sempre
+possuem um significado oculto, conhecido apenas por aqueles
+que estudam o Vazio.
+
+
+ESTRUTURA
+
+O alfabeto possui 18 consoantes e 6 vogais (total 24 runas).
+Sua estrutura é consoante-vogal (CV), formando sílabas.
+Nomes geralmente têm 2 a 4 sílabas.
+
+
+VOGAIS (sons abertos do Vazio)
+
+Runa  |  Som  |  Transliteração  |  Significado
+──────┼───────┼─────────────────┼──────────────
+  ◇   |  a    |  a               |  Origem, início
+  ◇̷  |  ɛ    |  e               |  Vazio, eco
+  ◇̸  |  i    |  i               |  Consciência, olho
+  ◇̵  |  ɔ    |  o               |  Forma, corpo
+  ◇̶  |  u    |  u               |  Profundidade, fim
+  ◇͓  |  ə    |  ÿ (y)           |  Silêncio, pausa
+
+
+CONSOANTES (sons do Limiar)
+
+Runa  |  Som  |  Transliteração  |  Significado
+──────┼───────┼─────────────────┼──────────────
+  ▰   |  k    |  k               |  Osso, estrutura
+  ▰̷  |  g    |  g               |  Sangue, vínculo
+  ▰̸  |  ŋ    |  ng              |  Sombra, véu
+  ◈   |  t    |  t               |  Lâmina, corte
+  ◈̷  |  d    |  d               |  Escudo, membrana
+  ◈̸  |  n    |  n               |  Nó, ciclo
+  ▣   |  p    |  p               |  Passo, movimento
+  ▣̷  |  b    |  b               |  Raiz, âncora
+  ▣̸  |  m    |  m               |  Matéria, carne
+  ◉   |  s    |  s               |  Sussurro, segredo
+  ◉̷  |  z    |  z               |  Zumbido, estática
+  ◉̸  |  ʃ    |  x               |  Rasgo, fratura
+  ◆   |  r    |  r               |  Fluxo, corrente
+  ◆̷  |  l    |  l               |  Laço, ligação
+  ◆̸  |  j    |  y (i)           |  Faísca, transição
+  ▸   |  f    |  f               |  Sopro, expiração
+  ▸̷  |  v    |  v               |  Peso, gravidade
+  ▸̸  |  h    |  h               |  Hálito, vazio
+
+
+REGRAS DE FORMAÇÃO
+
+1. Todo nome começa com consoante e termina com vogal.
+2. Duas consoantes idênticas não podem ficar adjacentes.
+3. A sílaba tônica é sempre a penúltima.
+4. Nomes de itens comuns têm 2 sílabas (ex: Kova, Tenu).
+5. Nomes de artefatos poderosos têm 3 sílabas (ex: Kangora).
+6. Nomes de entidades podem ter 4+ sílabas.
+
+
+EXEMPLOS DE NOMES
+
+  Komu     — "Osso da Profundidade" (item comum)
+  Tenga    — "Lâmina do Sangue" (arma)
+  Pÿkolu   — "Passo do Silêncio" (item furtivo)
+  Kangora  — "Estrutura do Vazio" (artefato)
+  Xombÿ    — "Rasgo do Silêncio" (item de ataque)
+  Gingÿmo  — "Vínculo do Véu e da Carne" (item raro)
+  Nevura   — "Ciclo da Origem na Profundidade" (artefato lendário)
+  Durÿnga  — "Membrana do Silêncio e da Sombra" (item defensivo)
+  Zogaru   — "Estática da Forma no Fluxo" (item instável)
+  Luvÿk    — "Laço do Silêncio na Estrutura" (item de contenção)
+
+
+OBSERVAÇÃO SOBRE O "ANEL GLITCHADO"
+
+A tradução literal de "Anel" para Umbral seria "Luvu"
+(Laço + Profundidade), e "Glitchado" poderia ser "Xonar"
+(Rasgo + Consciência + Fluxo). Um nome possível:
+
+  "Luvu Xonar" — Laço do Rasgo Consciente
+
+Sendo Luvu o nome do tipo de item e Xonar sua propriedade.
