@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wiki — Wuitalur RPG</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema v1.3.9</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="origins.html" class="sidebar-link"><span class="icon"></span> Origens</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+      <a href="selos.html" class="sidebar-link"><span class="icon"></span> Selos</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+      <a href="wiki.html" class="sidebar-link active"><span class="icon"></span> Wiki</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Wiki de Personagens</h1>
+      <div style="position:relative">
+        <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#9776;</button>
+        <div class="wiki-dropdown" id="wiki-menu-dropdown">
+          <a href="wiki.html" class="wiki-dropdown-item"><span class="icon">&#x1F4D6;</span> Wiki de Personagens</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <section class="subsection" id="wiki-section">
+        <div class="wiki-layout">
+
+          <!-- Sidebar esquerda -->
+          <aside class="wiki-sidebar">
+            <button class="wiki-btn-primary" id="wiki-add-btn" style="width:100%;margin-bottom:var(--space-md);padding:var(--space-md);font-size:0.9rem">+ Novo Personagem</button>
+            <input type="text" class="wiki-search" id="wiki-search" placeholder="Buscar personagem...">
+            <div class="wiki-list" id="wiki-list"></div>
+          </aside>
+
+          <!-- Conteúdo principal -->
+          <div class="wiki-main" id="wiki-view">
+            <div class="wiki-empty" id="wiki-empty">
+              <p style="font-size:2rem;margin-bottom:var(--space-md);opacity:0.3">&#x1F4D6;</p>
+              <p>Nenhum personagem na wiki ainda.</p>
+              <p style="font-size:0.85rem">Clique em <strong>"+ Novo Personagem"</strong> para adicionar o primeiro.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="wiki-modal-overlay" id="wiki-modal-overlay">
+  <div class="wiki-modal">
+    <div class="wiki-modal-header">
+      <h2 id="wiki-modal-title">Novo Personagem</h2>
+      <button class="wiki-modal-close" id="wiki-modal-close">&times;</button>
+    </div>
+    <div class="wiki-modal-body" id="wiki-form"></div>
+    <div class="wiki-modal-footer">
+      <button class="wiki-btn-secondary" id="wiki-modal-close2">Cancelar</button>
+      <button class="wiki-btn-primary" id="wiki-modal-save">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
+
+<script src="js/main.js"></script>
+<script src="js/wiki.js"></script>
+</body>
+</html>

@@ -42,6 +42,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Wiki dropdown menu
+  const wikiBtn = document.getElementById('wiki-menu-btn');
+  const wikiDropdown = document.getElementById('wiki-menu-dropdown');
+  if (wikiBtn && wikiDropdown) {
+    wikiBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      wikiDropdown.classList.toggle('open');
+    });
+    document.addEventListener('click', () => wikiDropdown.classList.remove('open'));
+    wikiDropdown.addEventListener('click', (e) => e.stopPropagation());
+  }
+
   // RE Calculator
   const reInputs = ['re-re', 're-pvs', 're-def'];
   const reResult = document.getElementById('re-result');

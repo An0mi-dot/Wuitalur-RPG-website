@@ -429,6 +429,69 @@ code, .mono {
   justify-content: center;
 }
 
+/* === WIKI DROPDOWN === */
+.wiki-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+.wiki-btn:hover {
+  border-color: var(--attr-ea);
+  color: var(--attr-ea);
+  background: rgba(77, 208, 225, 0.08);
+}
+
+.wiki-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 60;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  min-width: 180px;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: all var(--transition-fast);
+}
+.wiki-dropdown.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.wiki-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+.wiki-dropdown-item:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+.wiki-dropdown-item:first-child { border-radius: var(--radius-md) var(--radius-md) 0 0; }
+.wiki-dropdown-item:last-child { border-radius: 0 0 var(--radius-md) var(--radius-md); }
+.wiki-dropdown-item .icon { font-size: 0.9rem; opacity: 0.7; }
+
 /* === MOBILE SIDEBAR TOGGLE === */
 .sidebar-toggle {
   display: none;
