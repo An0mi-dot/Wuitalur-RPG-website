@@ -12,10 +12,48 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('wiki-form');
   const searchEl = document.getElementById('wiki-search');
 
+  const SEED_KEY = 'wuitar_wiki_seeded';
+
+  function seedDefaults() {
+    if (localStorage.getItem(SEED_KEY)) return;
+    const defaults = [
+      {
+        id: 'seed01',
+        name: 'Elleonor Capellari',
+        fullName: 'Elleonor Capellari',
+        age: '22 anos',
+        race: 'Akivus',
+        className: 'Heroína / Vigilante',
+        affiliation: 'Floricultura da avó Marta',
+        status: 'Vivo',
+        summary: 'Uma jovem Akivus que equilibra o trabalho na floricultura da avó com suas atividades noturnas como vigilante, usando as habilidades herdadas de sua família para combater vilões.',
+        origin: 'Elleonor cresceu com uma vida tranquila em relação à família e condição financeira. Seus pais eram presentes: sua mãe, Sofia Capellari, dona de uma empresa super famosa de sua cidade; e seu pai, Fernandes Capellari, um grande professor de boxe. Assim que soube da existência de Lock, Elleonor decidiu seguir seus passos e aprender com seu pai a lutar para combater vilões e melhorar as habilidades que herdou de sua família, com esperanças de um dia ser tão forte e admirada como ela admirava Lock.',
+        events: 'Perdeu um de seus chifres em uma missão como heroína — algo que sua família via como sinal de fraqueza e inutilidade. Melther fez um novo chifre para ela, e ela manteve isso em segredo o máximo possível. Após a perda de Melther, como símbolo de gratidão eterna, permaneceu vinhas com flores de violeta em volta de seu chifre recém-concertado. Namorou dos 16 aos 18 anos com Henry (também Akivus), que terminou após ele e seus amigos tentarem intimidar seu irmão caçula Theo — Elleonor quebrou um dos chifres dele como aviso.',
+        currentSituation: 'Trabalha na floricultura de sua avó Marta durante o dia, ajudando com o trabalho pesado. À noite, sai pela cidade não apenas para pichar paredes, mas para descobrir facções e prender vilões.',
+        appearance: '1,82m de altura, 76kg. Akivus com chifres — um deles foi remendado por Melther e adornado com vinhas e flores de violeta em homenagem ao amigo perdido. Suas cores favoritas (roxo e azul) transparecem em seu visual.',
+        behavior: 'Curiosa, empática e organizada. Porém é impulsiva, se autocritica excessivamente e tem dificuldade de dizer não. Gosta de passar o tempo pintando quadros ou pichando paredes que encontra pela frente.',
+        powerNature: 'Habilidades herdadas de sua família Akivus, combinadas com treinamento de boxe com seu pai.',
+        abilities: 'Capacidade de criar vinhas e flores — usa isso para se distrair quando está sem criatividade e também como ferramenta em combate.',
+        fightingStyle: 'Aprendeu boxe com seu pai, Fernandes Capellari, integrando golpes físicos com suas habilidades de vinhas.',
+        equipment: 'Chifre remendado por Melther, com vinhas e flores de violeta como símbolo de gratidão.',
+        allies: 'Kasiya — a protegeu na escola quando outras crianças a intimidavam por ser de uma espécie considerada mais fraca. Charles Capellari (25 anos) — irmão mais velho, muito próximo; Elleonor não desgrudava dele. Theo Capellari (17 anos) — irmão mais novo, doce e compreensivo; não desgrudava dela. Fernandes Capellari — pai, professor de boxe, com quem Elleonor passava mais tempo. Marta — avó, dona da floricultura. Melther (falecido) — amigo que fez seu novo chifre.',
+        enemies: 'Henry — ex-namorado Akivus, loiro e alto; tentou intimidar Theo junto com seus amigos, resultando no término e na quebra de um de seus chifres. Vilões e facções que ela combate à noite.',
+        organizations: 'Facções criminosas que ela investiga durante suas saídas noturnas.',
+        trivia1: 'Vegetariana — seu prato favorito é panqueca de queijo.',
+        trivia2: 'Roxo e azul são suas cores favoritas. Quando está sem criatividade, gosta de criar vinhas e flores para se distrair e ter novas ideias.',
+        trivia3: 'Sempre gostou de presentear amigos próximos com coroas de flores, priorizando as flores favoritas de cada pessoa.'
+      }
+    ];
+    characters = defaults;
+    save();
+    localStorage.setItem(SEED_KEY, '1');
+  }
+
   function load() {
     try {
       characters = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
     } catch { characters = []; }
+    if (characters.length === 0) seedDefaults();
   }
 
   function save() {
