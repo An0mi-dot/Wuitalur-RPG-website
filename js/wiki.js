@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('wiki-form');
   const searchEl = document.getElementById('wiki-search');
 
-  const SEED_KEY = 'wuitar_wiki_seeded';
+  const SEED_KEY = 'wuitar_wiki_seeded_v2';
 
   function seedDefaults() {
     if (localStorage.getItem(SEED_KEY)) return;
@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
         id: 'seed01',
         image: '',
         name: 'Elleonor Capellari',
+        pvs: '---',
+        sanidade: '---',
         fullName: 'Elleonor Capellari',
         age: '22 anos',
         race: 'Akivus',
@@ -43,6 +45,35 @@ document.addEventListener('DOMContentLoaded', () => {
         trivia1: 'Vegetariana — seu prato favorito é panqueca de queijo.',
         trivia2: 'Roxo e azul são suas cores favoritas. Quando está sem criatividade, gosta de criar vinhas e flores para se distrair e ter novas ideias.',
         trivia3: 'Sempre gostou de presentear amigos próximos com coroas de flores, priorizando as flores favoritas de cada pessoa.'
+      },
+      {
+        id: 'seed02',
+        image: '',
+        name: 'Melther "Zombie" Gufford',
+        fullName: 'Melther "Zombie" Gufford',
+        pvs: '---',
+        sanidade: '---',
+        age: '250 anos',
+        race: 'Elfo (espécie extinta)',
+        className: 'Rastejante (o primeiro da história)',
+        affiliation: 'Servo de Uchu / Death Squad',
+        status: 'Morto',
+        summary: 'Gênio musical e inventor louco, Melther foi um elfo de uma sociedade avançada porém opressora. Traído e morto pelos próprios companheiros de banda, foi ressuscitado por Uchu para se tornar um servo que corrige falhas na realidade.',
+        origin: 'Melther vivia numa sociedade élfica avançada, com tecnologias atualmente vistas em Paladium — como os Golens. Porém, essa sociedade era extremamente controladora, preconceituosa e estigmatizada, sem espaço para alguém criativo como Melther, tanto na magia quanto na música. Continuou produzindo invenções "loucas" e fundou a banda Death Squad, de heavy metal, estilo rejeitado pela sociedade élfica. Suas invenções foram consideradas "fora de controle" e ele foi taxado como criminoso e terrorista.',
+        events: 'No auge da carreira como estrela do rock, planejava deixar a cidade quando foi traído pelos companheiros de banda e morto num beco sujo. Foi trazido de volta à vida por Uchu, o deus que nunca se importou. Desde então, tornou-se um servo de Uchu — um daqueles que entram em fendas para corrigir erros na realidade — como preço pela segunda vida.',
+        currentSituation: 'Serve a Uchu, executando correções na realidade. Já não existe mais nada nem ninguém de seu passado.',
+        appearance: 'Elfo de 250 anos. Inspirado visualmente no Murdoc Niccals (Gorillaz). Sua história visual também bebe de MC Daleste, Julio Cesar e Arquimedes.',
+        behavior: 'Extremamente criativo, rebelde, despreza a maioria dos deuses (era "ateu" antes de ser forçado a servir Uchu). Tinha apelido "Zombie" desde a época da banda — ironia do destino ele ter morrido e voltado à vida.',
+        powerNature: 'Ressuscitado por Uchu, tornou-se um Rastejante — o primeiro da história. Passou a se alimentar de almas.',
+        abilities: 'Conseguiu criar artificialmente o elemento Pesadelo e, em seus últimos desejos, criou o próprio Pesadelo. Domesticou uma serpente gigante.',
+        fightingStyle: 'Combina magia élfica avançada com poderes de Rastejante adquiridos após a ressurreição.',
+        equipment: 'Invenções próprias, serpente gigante domesticada.',
+        allies: 'Elleonor Capellari — se apaixonou por ela em Cirus, mas faleceu antes de poder dizer algo. J&J (Johnsons&Johnsons) — adotado por ele.',
+        enemies: 'Companheiros da Death Squad — o traíram e mataram. A sociedade élfica que o perseguiu.',
+        organizations: 'Death Squad (fundador). Servo de Uchu.',
+        trivia1: 'O nome "Death Squad" surgiu como paródia crítica da polícia local.',
+        trivia2: 'Virou estrela do rock mundial — muitos mais velhos conheciam suas músicas. Inspirado por "Thriller" (Michael Jackson) e "The Trooper" (Iron Maiden). Era bissexual.',
+        trivia3: 'Depois de ressuscitado, passou a gostar de comer almas.'
       }
     ];
     characters = defaults;
@@ -99,6 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ${infoboxRow('Idade', c.age)}
             ${infoboxRow('Raça', c.race)}
             ${infoboxRow('Classe', c.className)}
+            ${infoboxRow('PVs', c.pvs)}
+            ${infoboxRow('Sanidade', c.sanidade)}
             ${infoboxRow('Afiliação', c.affiliation)}
             ${infoboxRow('Status', c.status, statusColor(c.status))}
           </div>
@@ -166,6 +199,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <option value="Selado" ${c?.status === 'Selado' ? 'selected' : ''}>Selado</option>
           </select>
         </div>
+        <div><label>PVs</label><input type="text" id="f-pvs" value="${escapeHtml(c?.pvs || '')}"></div>
+      </div>
+      <div class="form-row">
+        <div><label>Sanidade</label><input type="text" id="f-sanidade" value="${escapeHtml(c?.sanidade || '')}"></div>
         <div></div>
       </div>
       <label>URL da Ilustração</label><input type="text" id="f-image" value="${escapeHtml(c?.image || '')}" placeholder="https://...png ou deixe vazio">
@@ -207,6 +244,8 @@ document.addEventListener('DOMContentLoaded', () => {
       age: document.getElementById('f-age').value.trim(),
       race: document.getElementById('f-race').value.trim(),
       className: document.getElementById('f-className').value.trim(),
+      pvs: document.getElementById('f-pvs').value.trim(),
+      sanidade: document.getElementById('f-sanidade').value.trim(),
       affiliation: document.getElementById('f-affiliation').value.trim(),
       status: document.getElementById('f-status').value,
       summary: document.getElementById('f-summary').value.trim(),
