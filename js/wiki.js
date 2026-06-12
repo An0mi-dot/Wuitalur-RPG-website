@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const defaults = [
       {
         id: 'seed01',
+        image: '',
         name: 'Elleonor Capellari',
         fullName: 'Elleonor Capellari',
         age: '22 anos',
@@ -90,6 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
         <div class="wiki-card-body">
+          ${c.image ? `<img src="${escapeHtml(c.image)}" alt="${escapeHtml(c.name)}" class="wiki-illustration">` : ''}
           <p style="font-style:italic;color:var(--text-muted);margin-bottom:var(--space-lg)">${escapeHtml(c.summary || '')}</p>
 
           <div class="wiki-infobox">
@@ -166,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div></div>
       </div>
+      <label>URL da Ilustração</label><input type="text" id="f-image" value="${escapeHtml(c?.image || '')}" placeholder="https://...png ou deixe vazio">
       <label>Resumo (uma frase)</label><textarea id="f-summary" rows="2">${escapeHtml(c?.summary || '')}</textarea>
       <h3 style="font-family:var(--font-heading);font-size:0.9rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--attr-ea);margin:var(--space-lg)0 var(--space-md);padding-bottom:var(--space-sm);border-bottom:1px solid var(--border-subtle)">Biografia</h3>
       <label>Origem</label><textarea id="f-origin" rows="3">${escapeHtml(c?.origin || '')}</textarea>
@@ -198,6 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function saveForm() {
     const data = {
+      image: document.getElementById('f-image').value.trim(),
       name: document.getElementById('f-name').value.trim(),
       fullName: document.getElementById('f-fullName').value.trim(),
       age: document.getElementById('f-age').value.trim(),
