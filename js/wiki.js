@@ -13,6 +13,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchEl = document.getElementById('wiki-search');
 
   const SEED_KEY = 'wuitar_wiki_seeded_v2';
+  const PWD_HASH_KEY = 'wuitar_wiki_pwd';
+
+  async function hashSHA256(str) {
+    const enc = new TextEncoder().encode(str);
+    const buf = await crypto.subtle.digest('SHA-256', enc);
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  async function initPassword() {
+    if (!localStorage.getItem(PWD_HASH_KEY)) {
+      const h = await hashSHA256('Wu2202');
+      localStorage.setItem(PWD_HASH_KEY, h);
+    }
+  }
+
+  async function requirePassword() {
+    const pwd = prompt('Senha necessária:');
+    if (!pwd) return false;
+    const h = await hashSHA256(pwd);
+    return h === localStorage.getItem(PWD_HASH_KEY);
+  }
 
   function seedDefaults() {
     if (localStorage.getItem(SEED_KEY)) return;
@@ -178,7 +199,9 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `;
 
-    document.getElementById('wiki-edit-btn').addEventListener('click', () => openModal(c.id));
+    document.getElementById('wiki-edit-btn').addEventListener('click', async () => {
+      if (await requirePassword()) openModal(c.id);
+    });
     renderList(searchEl.value);
   }
 
@@ -289,7 +312,8 @@ document.addEventListener('DOMContentLoaded', () => {
     renderDetail(currentId);
   }
 
-  function deleteChar(id) {
+  async function deleteChar(id) {
+    if (!(await requirePassword())) return;
     if (!confirm('Remover este personagem?')) return;
     characters = characters.filter(c => c.id !== id);
     save();
@@ -320,7 +344,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Event listeners
-  document.getElementById('wiki-add-btn').addEventListener('click', () => openModal(null));
+  document.getElementById('wiki-add-btn').addEventListener('click', async () => {
+    if (await requirePassword()) openModal(null);
+  });
   document.getElementById('wiki-modal-close').addEventListener('click', closeModal);
   modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
   document.getElementById('wiki-modal-save').addEventListener('click', saveForm);
@@ -340,6 +366,8 @@ document.addEventListener('DOMContentLoaded', () => {
   searchEl.addEventListener('input', () => renderList(searchEl.value));
 
   // Init
-  load();
-  renderList();
+  initPassword().then(() => {
+    load();
+    renderList();
+  });
 });
