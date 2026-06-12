@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function seedDefaults() {
     if (localStorage.getItem(SEED_KEY)) return;
+    const seedMap = new Map(characters.map(c => [c.id, c]));
     const defaults = [
       {
         id: 'seed01',
@@ -26,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fullName: 'Elleonor Capellari',
         age: '22 anos',
         race: 'Akivus',
-        className: 'Heroína / Vigilante',
+        className: 'Consagrado',
         affiliation: 'Floricultura da avó Marta',
         status: 'Vivo',
         summary: 'Uma jovem Akivus que equilibra o trabalho na floricultura da avó com suas atividades noturnas como vigilante, usando as habilidades herdadas de sua família para combater vilões.',
@@ -55,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sanidade: '---',
         age: '250 anos',
         race: 'Elfo (espécie extinta)',
-        className: 'Rastejante (o primeiro da história)',
+        className: 'Consagrado',
         affiliation: 'Servo de Uchu / Death Squad',
         status: 'Morto',
         summary: 'Gênio musical e inventor louco, Melther foi um elfo de uma sociedade avançada porém opressora. Traído e morto pelos próprios companheiros de banda, foi ressuscitado por Uchu para se tornar um servo que corrige falhas na realidade.',
@@ -76,7 +77,13 @@ document.addEventListener('DOMContentLoaded', () => {
         trivia3: 'Depois de ressuscitado, passou a gostar de comer almas.'
       }
     ];
-    characters = defaults;
+    for (const d of defaults) {
+      if (seedMap.has(d.id)) {
+        Object.assign(seedMap.get(d.id), d);
+      } else {
+        characters.push(d);
+      }
+    }
     save();
     localStorage.setItem(SEED_KEY, '1');
   }
@@ -85,7 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       characters = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
     } catch { characters = []; }
-    if (characters.length === 0) seedDefaults();
+    if (localStorage.getItem(SEED_KEY) !== '1') {
+      seedDefaults();
+    }
   }
 
   function save() {
