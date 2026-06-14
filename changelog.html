@@ -11,37 +11,121 @@
     .changelog-list {
       display: flex;
       flex-direction: column;
-      gap: var(--space-lg);
+      gap: var(--space-xl);
+      position: relative;
+      padding-left: 32px;
+    }
+    .changelog-list::before {
+      content: '';
+      position: absolute;
+      left: 11px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border-subtle);
     }
     .changelog-entry {
-      border-left: 3px solid var(--accent);
-      padding-left: var(--space-md);
+      position: relative;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      transition: border-color var(--transition-base), box-shadow var(--transition-base);
+    }
+    .changelog-entry:hover {
+      border-color: var(--border-accent);
+      box-shadow: 0 0 20px rgba(124, 58, 237, 0.08);
+    }
+    .changelog-entry::before {
+      content: '';
+      position: absolute;
+      left: -27px;
+      top: 24px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent, #7C3AED);
+      border: 2px solid var(--bg-primary);
+      box-shadow: 0 0 0 2px var(--accent, #7C3AED);
+    }
+    .changelog-header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xs);
+      flex-wrap: wrap;
     }
     .changelog-version {
       font-family: var(--font-heading);
-      font-size: 1.4rem;
-      color: var(--accent);
-      margin-bottom: var(--space-xs);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: 0.02em;
+    }
+    .changelog-version-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: rgba(124, 58, 237, 0.15);
+      color: #7C3AED;
+      border: 1px solid rgba(124, 58, 237, 0.25);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
     }
     .changelog-date {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
       margin-bottom: var(--space-sm);
+      font-family: var(--font-body);
     }
     .changelog-entry ul {
       margin: 0;
-      padding-left: var(--space-lg);
+      padding: 0;
+      list-style: none;
     }
     .changelog-entry li {
       margin-bottom: var(--space-xs);
       line-height: 1.6;
+      padding-left: 0;
+      font-size: 0.92rem;
+      color: var(--text-secondary);
     }
-    .changelog-entry li::marker {
-      color: var(--accent);
+    .tag-new, .tag-change, .tag-fix {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 4px;
+      margin-right: 6px;
+      vertical-align: middle;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
     }
-    .tag-new { color: #4ade80; font-weight: 600; }
-    .tag-change { color: #facc15; font-weight: 600; }
-    .tag-fix { color: #f87171; font-weight: 600; }
+    .tag-new {
+      background: rgba(74, 222, 128, 0.12);
+      color: #4ade80;
+      border: 1px solid rgba(74, 222, 128, 0.2);
+    }
+    .tag-change {
+      background: rgba(250, 204, 21, 0.12);
+      color: #facc15;
+      border: 1px solid rgba(250, 204, 21, 0.2);
+    }
+    .tag-fix {
+      background: rgba(248, 113, 113, 0.12);
+      color: #f87171;
+      border: 1px solid rgba(248, 113, 113, 0.2);
+    }
+    @media (max-width: 768px) {
+      .changelog-list { padding-left: 24px; }
+      .changelog-entry { padding: var(--space-md); }
+      .changelog-entry::before { left: -19px; width: 10px; height: 10px; top: 20px; }
+      .changelog-list::before { left: 9px; }
+    }
   </style>
 </head>
 <body>
@@ -100,15 +184,18 @@
         <div class="changelog-list">
 
           <div class="changelog-entry">
-            <div class="changelog-version">v1.4.0 — Raça Espectro</div>
+            <div class="changelog-header">
+              <span class="changelog-version-badge">v1.4.0</span>
+              <span class="changelog-version">Raça Espectro</span>
+            </div>
             <div class="changelog-date">14 de Junho de 2026</div>
             <ul>
-              <li><span class="tag-new">[NOVO]</span> Raça <strong>Espect@&%s</strong> adicionada — ND 5, raça propositalmente injusta e difícil de jogar.</li>
-              <li><span class="tag-new">[NOVO]</span> Ilustração oficial dos Espectros substituída (espectros2.png).</li>
-              <li><span class="tag-new">[NOVO]</span> Mecânicas únicas: Estabilidade Cósmica (1d4), Instável (5 testes de morte, CT 19), Estalo de Estática (reações extras).</li>
-              <li><span class="tag-new">[NOVO]</span> Vínculo de Anomalia com 4 ramificações: Desbordamento, Deslocamento, Corrupção de Arquivo e Tela Azul.</li>
-              <li><span class="tag-new">[NOVO]</span> Habilidades nativas: Incorporação e Visão Espectral.</li>
-              <li><span class="tag-change">[MUDANÇA]</span> Versão do sistema atualizada para v1.4.0.</li>
+              <li><span class="tag-new">novo</span> Raça <strong>Espect@&%s</strong> adicionada — ND 5, raça propositalmente injusta e difícil de jogar.</li>
+              <li><span class="tag-new">novo</span> Ilustração oficial dos Espectros substituída (espectros2.png).</li>
+              <li><span class="tag-new">novo</span> Mecânicas únicas: Estabilidade Cósmica (1d4), Instável (5 testes de morte, CT 19), Estalo de Estática (reações extras).</li>
+              <li><span class="tag-new">novo</span> Vínculo de Anomalia com 4 ramificações: Desbordamento, Deslocamento, Corrupção de Arquivo e Tela Azul.</li>
+              <li><span class="tag-new">novo</span> Habilidades nativas: Incorporação e Visão Espectral.</li>
+              <li><span class="tag-change">mudança</span> Versão do sistema atualizada para v1.4.0.</li>
             </ul>
           </div>
 
