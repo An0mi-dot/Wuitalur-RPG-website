@@ -643,32 +643,42 @@
 /* === RACE NAV === */
 .race-nav {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-xs);
-  padding: var(--space-md) var(--space-lg);
+  align-items: center;
+  gap: 6px;
+  padding: var(--space-sm) var(--space-md);
   margin-bottom: var(--space-xl);
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-subtle) transparent;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
   scroll-margin-top: 80px;
 }
+.race-nav::-webkit-scrollbar { height: 4px; }
+.race-nav::-webkit-scrollbar-track { background: transparent; }
+.race-nav::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 4px; }
 .race-nav-label {
   font-family: var(--font-heading);
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-muted);
-  margin-right: var(--space-sm);
   white-space: nowrap;
+  flex-shrink: 0;
+  opacity: 0.6;
 }
 .race-nav-link {
-  display: inline-block;
-  padding: 3px 10px;
-  font-size: 0.78rem;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 4px 12px;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--text-secondary);
-  background: transparent;
+  background: rgba(255,255,255,0.03);
   border: 1px solid var(--border-subtle);
   border-radius: 20px;
   text-decoration: none;
@@ -678,31 +688,14 @@
 .race-nav-link:hover {
   color: var(--text-primary);
   border-color: var(--accent);
-  background: rgba(124, 58, 237, 0.1);
+  background: rgba(124, 58, 237, 0.12);
   text-decoration: none;
-}
-.race-nav-link:active {
-  background: rgba(124, 58, 237, 0.2);
 }
 
 @media (max-width: 768px) {
-  .race-nav {
-    gap: 4px;
-    padding: var(--space-sm) var(--space-md);
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .race-nav::-webkit-scrollbar { display: none; }
+  .race-nav { padding: var(--space-xs) var(--space-sm); gap: 4px; }
   .race-nav-label { display: none; }
-  .race-nav-link {
-    font-size: 0.72rem;
-    padding: 4px 8px;
-    min-height: 32px;
-    display: flex;
-    align-items: center;
-  }
+  .race-nav-link { font-size: 0.72rem; padding: 4px 10px; min-height: 32px; }
   .wiki-layout { flex-direction: column; }
   .wiki-sidebar { width: 100%; position: static; }
   .wiki-modal-body .form-row { grid-template-columns: 1fr; }
