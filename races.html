@@ -16,7 +16,7 @@
     <div class="sidebar-header">
       <div class="sidebar-logo">
         WUITALUR
-        <span>Sistema v1.3.9</span>
+        <span>Sistema v1.4.0</span>
       </div>
     </div>
     <nav class="sidebar-nav">
@@ -41,6 +41,7 @@
       <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
       <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
       <a href="wiki.html" class="sidebar-link"><span class="icon"></span> Wiki</a>
+      <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
     </nav>
   </aside>
 
@@ -52,6 +53,7 @@
         <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#9776;</button>
         <div class="wiki-dropdown" id="wiki-menu-dropdown">
           <a href="wiki.html" class="wiki-dropdown-item"><span class="icon">&#x1F4D6;</span> Wiki de Personagens</a>
+          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x1F4CB;</span> Changelog</a>
         </div>
       </div>
     </header>
@@ -728,17 +730,121 @@
       <section class="subsection" id="espectros">
         <div class="race-card">
           <div class="race-card-image">
-            <img src="assets/espectros.png" alt="Espect@&%s">
+            <img src="assets/espectros2.png" alt="Espect@&%s">
           </div>
           <div class="race-card-header">
             <div>
               <h2 class="race-name">Espect@&%s</h2>
-              <p class="race-illustration"><em>Em desenvolvimento</em></p>
+              <p class="race-illustration"><em>Figura ilustrada: Espectro</em></p>
             </div>
-            <div class="difficulty-badge difficulty-locked"><small>ND</small>?</div>
+            <div class="difficulty-badge difficulty-5"><small>ND</small>5</div>
           </div>
           <div class="race-card-body">
-            <p class="race-description" style="text-align: center; color: var(--text-muted); font-style: italic;">Esta raça ainda está em desenvolvimento. Aguarde atualizações.</p>
+            <p class="race-description">Os Espectros são cicatrizes vivas e erros de sintaxe no próprio tecido do espaço-tempo de Wuitalur. Quando um ser vivo morre, o fluxo natural de sua energia astral é a transição para "O Limiar"; por alguma falha cósmica, a energia dessas criaturas ficou presa no "carregamento". Sem o invólucro de um corpo físico para contê-la harmonicamente, essa energia se compactou de forma errada, forçando uma manifestação física corrompida. Eles não são apenas transparentes: eles piscam, distorcem, deixam rastros visuais e produzem estática, agindo como um glitch senciente na realidade. Por não possuírem carne ou sangue, as interações sociais com outras raças causam um desconforto profundo, quase uma repulsa biológica, pois seus movimentos parecem perder quadros de animação e sua voz sobrepõe frequências. Eles são o lembrete trágico de uma anomalia dimensional que o universo tenta, a todo momento, apagar.</p>
+
+            <p class="race-description" style="margin-top: var(--space-md);"><strong style="color: var(--attr-rf);">NÍVEL DE DIFICULDADE: 5</strong> — Esta Raça é PROPOSITALMENTE injusta e difícil de jogar.</p>
+
+            <h4>Bônus de Raça</h4>
+            <ul class="race-list">
+              <li>Naturalmente +1 em <span class="attr-re">Resistência Elemental</span></li>
+              <li>Naturalmente +2 em <span class="attr-int">INT</span></li>
+              <li>Naturalmente -2 em <span class="attr-fr">Força</span></li>
+              <li>Sua <span class="attr-saude">Saúde</span> sempre será 0</li>
+              <li>Naturalmente Desvantagem em testes de interações sociais</li>
+              <li>Fraqueza a dano <span class="elem-sagrado">Sagrado</span> e <span class="elem-solar">Solar</span></li>
+            </ul>
+
+            <h4>Mecânicas Únicas</h4>
+
+            <div class="race-ability">
+              <h5>Estabilidade Cósmica</h5>
+              <p>O Espectro ignora completamente o Dado de Vida fornecido por qualquer classe ou multiclasse que escolher, assim como ignora o atributo <span class="attr-saude">Saúde</span> para o cálculo de seus pontos vitais. Sua vida é representada pela <strong>Estabilidade</strong>, que mede o quão bem sua mente consegue forçar a energia astral corrompida a se manter coesa na realidade.</p>
+              <p>O Dado de Estabilidade do Espectro é <span class="dice">1d4</span>.</p>
+              <p>No nível 1, sua Estabilidade máxima é <strong>4 + Modificador de <span class="attr-int">Intelecto</span></strong>.</p>
+              <p>A cada nível subsequente, o jogador rola <span class="dice">1d4</span> + Modificador de <span class="attr-int">Intelecto</span> para aumentar sua Estabilidade máxima.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Instável (Estado de Morrendo)</h5>
+              <p>Quando a Estabilidade do Espectro zera e ele entra no estado de morrendo, sua presença na realidade se torna completamente incompatível com o mundo físico.</p>
+              <p>Nenhuma criatura ou aliado pode ajudá-lo a se estabilizar. Testes de Medicina, primeiros socorros ou itens de cura físicos falham automaticamente ao tentar interagir com ele.</p>
+              <p>O Espectro depende única e exclusivamente de seus próprios testes de salvaguarda (resistência) contra a morte para recalcular sua existência e se estabilizar sozinho. Se falhar nos testes, o erro é permanentemente corrigido e ele é apagado da realidade.</p>
+              <p>Em compensação ao isolamento, o Espectro possui <strong>5 testes de salvaguarda</strong> contra a morte (em vez dos 3 padrões) e ele precisa apenas tirar <strong>19</strong> no valor do dado, ao invés de 20. Se acumular as 5 falhas antes disso, ele é apagado da realidade.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Estalo de Estática</h5>
+              <p>Toda vez que o Espectro finalizar uma <strong>Ação Principal</strong> ou uma <strong>Ação Bônus</strong> (seja de movimento, ataque ou conjuração), ele pode usar imediatamente sua <strong>Reação</strong> para disparar um pulso rápido de energia astral corrompida em um alvo a até 3B de distância. (Pode ser feita sempre que terminar qualquer ação, permitindo fazer isso mais de 1 vez por turno.)</p>
+              <p><strong>Efeito:</strong> Causa <span class="dice">2d4</span> + Modificador de <span class="attr-int">Intelecto</span> de dano de <span class="elem-umbra" data-text="Umbra">Umbra</span>.</p>
+            </div>
+
+            <h4>Vínculo de Anomalia</h4>
+            <p>Os Espectros podem escolher um vínculo com 1 tipo de falha na realidade à sua escolha. O Espectro pode escolher entre as ramificações: <strong>Desbordamento</strong>, <strong>Deslocamento</strong>, <strong>Corrupção</strong> ou <strong>Tela Azul</strong>. A cada ramificação escolhida, o Espectro ganha duas habilidades nativas de dano ou utilidade.</p>
+
+            <div class="race-ability">
+              <h5>Desbordamento</h5>
+              <p><em>Focado em sobrecarregar a mente dos inimigos com dados brutos.</em></p>
+              <div class="race-subability">
+                <h6>Pânico no Sistema</h6>
+                <p>O Espectro emite uma onda de ruído estático em uma área de <strong>4 Blocos</strong> ao seu redor. Todos os inimigos conscientes na área devem passar em um teste de <span class="attr-int">INT</span> (<span class="dice">CT 18</span>) ou sofrem <span class="dice">2d8</span> de dano mental e ficam confusos, perdendo <strong>-1</strong> em seus dados de ataque por 1 rodada.</p>
+              </div>
+              <div class="race-subability">
+                <h6>Colapso de Realidade <span class="ability-tag">Nvl 7</span></h6>
+                <p>Concentrando o erro em um único ponto, o Espectro faz o espaço tridimensional ao redor de um alvo colapsar. Causa <span class="dice">4d10</span> + Modificador de <span class="attr-int">Intelecto</span> de dano <strong>Bruto</strong>. O alvo pode tentar um teste de <span class="attr-re">Resistência Elemental (RE)</span> para reduzir o dano pela metade.</p>
+              </div>
+            </div>
+
+            <div class="race-ability">
+              <h5>Deslocamento (Desfase de Frame)</h5>
+              <p><em>Focado em mobilidade e velocidade.</em></p>
+              <div class="race-subability">
+                <h6>Frame Drop</h6>
+                <p>Como uma ação bônus, o Espectro pisca e desaparece da tela da realidade, teletransportando-se instantaneamente para um espaço vazio visível a até <strong>5 Blocos</strong> de distância. Este movimento não provoca ataques de oportunidade e o faz gastar apenas <strong>1</strong> em sua movimentação.</p>
+              </div>
+              <div class="race-subability">
+                <h6>Ataque Fantasma <span class="ability-tag">Nvl 7</span></h6>
+                <p>O Espectro avança de forma linear atravessando os corpos de até <strong>3 alvos</strong> em linha reta (alcance máximo de <strong>6 Blocos</strong>). Cada alvo afetado sofre <span class="dice">2d12</span> + Modificador de <span class="attr-int">INT</span> de dano de <span class="elem-umbra" data-text="Umbra">Umbra</span>. Os alvos que falharem em um teste de <span class="attr-des">Des (Destreza)</span> ficam paralisados por 1 rodada.</p>
+              </div>
+            </div>
+
+            <div class="race-ability">
+              <h5>Corrupção de Arquivo (Dreno Astral)</h5>
+              <p><em>Focado em infectar os seres vivos e roubar sua estabilidade.</em></p>
+              <div class="race-subability">
+                <h6>Injeção de Código</h6>
+                <p>Ao tocar um alvo, o Espectro injeta energia astral corrompida diretamente em sua essência. O alvo sofre <span class="dice">1d12</span> de dano de <span class="elem-umbra" data-text="Umbra">Umbra</span> por rodada, durante <strong>3 rodadas</strong> consecutivas.</p>
+              </div>
+              <div class="race-subability">
+                <h6>Absorção de Erro <span class="ability-tag">Nvl 7</span></h6>
+                <p>Se uma criatura morrer ou estiver sob o estado de <strong>Amedrontado/Terror</strong> a até <strong>4 Blocos</strong> de distância, o Espectro pode usar sua reação para absorver os resquícios da quebra de energia dela, restaurando <span class="dice">2d6</span> pontos de <strong>Estabilidade</strong> para si mesmo.</p>
+              </div>
+            </div>
+
+            <div class="race-ability">
+              <h5>Tela Azul (Absoluto)</h5>
+              <p><em>Focado em paralisar o mundo e travar as ações dos inimigos através do congelamento lógico.</em></p>
+              <div class="race-subability">
+                <h6>Lag Temporal</h6>
+                <p>O Espectro aponta para um alvo a até <strong>6 Blocos</strong> e distorce o fluxo do tempo ao redor dele. O alvo deve fazer um teste de <span class="attr-re">RE</span> (<span class="dice">CT 16</span>). Se falhar, seus reflexos travam no espaço-tempo e ele perde completamente sua próxima <strong>Ação Bônus</strong> e <strong>Reação</strong>.</p>
+              </div>
+              <div class="race-subability">
+                <h6>Congelamento de Processo <span class="ability-tag">Nvl 10</span></h6>
+                <p>O Espectro força uma "parada total" na mente e no corpo de uma criatura. O alvo fica completamente <strong>paralisado</strong> por 1 rodada (sem direito a teste inicial para evitar). Na rodada seguinte, para tentar se libertar do travamento, precisa passar em um teste de <span class="attr-int">INT</span> (<span class="dice">CT 18</span>) ou sofrerá <span class="dice">4d12</span> de dano mental interno.</p>
+              </div>
+            </div>
+
+            <h4>Habilidades de Raça Nativas</h4>
+
+            <div class="race-ability">
+              <h5>Incorporação</h5>
+              <p>Pode atravessar livremente paredes e objetos sólidos de até <strong>1 Bloco</strong> de espessura. Caso termine o seu turno intencionalmente ou por falta de movimento dentro de um objeto, sua estrutura entra em colapso e ele sofre <span class="dice">1d10</span> de dano direto na <strong>Estabilidade</strong>.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Visão Espectral</h5>
+              <p>Consegue enxergar perfeitamente na escuridão total e detecta instantaneamente criaturas invisíveis, camufladas ou outras presenças etéreas em um raio de <strong>6 Blocos</strong>.</p>
+            </div>
+
           </div>
         </div>
       </section>

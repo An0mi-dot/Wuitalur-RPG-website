@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Changelog — Wuitalur RPG</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .changelog-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+    }
+    .changelog-entry {
+      border-left: 3px solid var(--accent);
+      padding-left: var(--space-md);
+    }
+    .changelog-version {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      color: var(--accent);
+      margin-bottom: var(--space-xs);
+    }
+    .changelog-date {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: var(--space-sm);
+    }
+    .changelog-entry ul {
+      margin: 0;
+      padding-left: var(--space-lg);
+    }
+    .changelog-entry li {
+      margin-bottom: var(--space-xs);
+      line-height: 1.6;
+    }
+    .changelog-entry li::marker {
+      color: var(--accent);
+    }
+    .tag-new { color: #4ade80; font-weight: 600; }
+    .tag-change { color: #facc15; font-weight: 600; }
+    .tag-fix { color: #f87171; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema v1.4.0</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="origins.html" class="sidebar-link"><span class="icon"></span> Origens</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+      <a href="selos.html" class="sidebar-link"><span class="icon"></span> Selos</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+      <a href="wiki.html" class="sidebar-link"><span class="icon"></span> Wiki</a>
+      <a href="changelog.html" class="sidebar-link active"><span class="icon"></span> Changelog</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Changelog</h1>
+      <div style="position:relative">
+        <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#9776;</button>
+        <div class="wiki-dropdown" id="wiki-menu-dropdown">
+          <a href="wiki.html" class="wiki-dropdown-item"><span class="icon">&#x1F4D6;</span> Wiki de Personagens</a>
+          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x1F4CB;</span> Changelog</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <section class="subsection">
+        <div class="changelog-list">
+
+          <div class="changelog-entry">
+            <div class="changelog-version">v1.4.0 — Raça Espectro</div>
+            <div class="changelog-date">14 de Junho de 2026</div>
+            <ul>
+              <li><span class="tag-new">[NOVO]</span> Raça <strong>Espect@&%s</strong> adicionada — ND 5, raça propositalmente injusta e difícil de jogar.</li>
+              <li><span class="tag-new">[NOVO]</span> Ilustração oficial dos Espectros substituída (espectros2.png).</li>
+              <li><span class="tag-new">[NOVO]</span> Mecânicas únicas: Estabilidade Cósmica (1d4), Instável (5 testes de morte, CT 19), Estalo de Estática (reações extras).</li>
+              <li><span class="tag-new">[NOVO]</span> Vínculo de Anomalia com 4 ramificações: Desbordamento, Deslocamento, Corrupção de Arquivo e Tela Azul.</li>
+              <li><span class="tag-new">[NOVO]</span> Habilidades nativas: Incorporação e Visão Espectral.</li>
+              <li><span class="tag-change">[MUDANÇA]</span> Versão do sistema atualizada para v1.4.0.</li>
+            </ul>
+          </div>
+
+          <div class="changelog-entry">
+            <div class="changelog-version">v1.3.9 — Wiki de Personagens</div>
+            <div class="changelog-date">13 de Junho de 2026</div>
+            <ul>
+              <li><span class="tag-new">[NOVO]</span> Wiki de Personagens com CRUD completo (criar, editar, visualizar, remover).</li>
+              <li><span class="tag-new">[NOVO]</span> Proteção por senha SHA-256 para criar/editar/remover.</li>
+              <li><span class="tag-new">[NOVO]</span> Seed data: Elleonor Capellari e Melther "Zombie" Gufford.</li>
+              <li><span class="tag-new">[NOVO]</span> Dropdown de navegação rápida no header de todas as páginas.</li>
+              <li><span class="tag-change">[MUDANÇA]</span> Versão do sistema atualizada para v1.3.9.</li>
+            </ul>
+          </div>
+
+          <div class="changelog-entry">
+            <div class="changelog-version">v1.3.0 — Mecânicas e Criação de Personagem</div>
+            <div class="changelog-date">2026</div>
+            <ul>
+              <li><span class="tag-new">[NOVO]</span> Página de Mecânicas (combate, turnos, defesa dinâmica, queima-roupa, movimento, ataque desarmado, escudo vivo).</li>
+              <li><span class="tag-new">[NOVO]</span> Guia de Criação de Personagem em 8 passos.</li>
+              <li><span class="tag-new">[NOVO]</span> Páginas: Condições, Sanidade, Perícias, Selos.</li>
+              <li><span class="tag-new">[NOVO]</span> Alfabeto Umbral.</li>
+            </ul>
+          </div>
+
+          <div class="changelog-entry">
+            <div class="changelog-version">v1.2.0 — Conclave e Equipamentos</div>
+            <div class="changelog-date">2026</div>
+            <ul>
+              <li><span class="tag-new">[NOVO]</span> Página O Conclave (sincronia de inventário, patentes, itens).</li>
+              <li><span class="tag-new">[NOVO]</span> Página de Equipamentos (armas brancas, armas de fogo, utilitários, equipáveis, itens elementais).</li>
+              <li><span class="tag-new">[NOVO]</span> Sistema de Carga para equipamentos.</li>
+            </ul>
+          </div>
+
+          <div class="changelog-entry">
+            <div class="changelog-version">v1.1.0 — Elementos</div>
+            <div class="changelog-date">2026</div>
+            <ul>
+              <li><span class="tag-new">[NOVO]</span> Página de Elementos (7 elementos, hierarquia dos deuses, relações elementais).</li>
+              <li><span class="tag-new">[NOVO]</span> Página de Classes (10 classes completas).</li>
+            </ul>
+          </div>
+
+          <div class="changelog-entry">
+            <div class="changelog-version">v1.0.0 — Lançamento Inicial</div>
+            <div class="changelog-date">2026</div>
+            <ul>
+              <li><span class="tag-new">[NOVO]</span> Estrutura inicial do site (sidebar, layout dark fantasy/industrial).</li>
+              <li><span class="tag-new">[NOVO]</span> Páginas: Início, Atributos, Raças (11 raças), Origens (19 origens).</li>
+              <li><span class="tag-new">[NOVO]</span> Calculadoras de RE e RF na página de Atributos.</li>
+              <li><span class="tag-new">[NOVO]</span> Sistema de cores para atributos e elementos.</li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
+
+<script src="js/main.js"></script>
+</body>
+</html>
