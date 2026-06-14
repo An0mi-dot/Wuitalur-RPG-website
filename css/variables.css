@@ -153,13 +153,6 @@ code, .mono {
 .elem-estase { color: var(--elem-estase); font-weight: 600; }
 .elem-umbra {
   font-weight: 600;
-  background: linear-gradient(90deg, #fff, #000, #fff, #000);
-  background-size: 300% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  animation: umbraGlitch 0.3s infinite linear;
   position: relative;
 }
 .elem-umbra::before {
@@ -184,7 +177,13 @@ code, .mono {
 /* Per-letter trembling for Umbra */
 .umbra-char {
   display: inline-block;
-  animation: umbraTremble 0.1s infinite ease-in-out;
+  animation: umbraTremble 0.3s infinite ease-in-out;
+  background: linear-gradient(90deg, #fff, #000, #fff, #000);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 @keyframes umbraTremble {
   0%, 100% { transform: translate(0, 0); }
