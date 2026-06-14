@@ -1,4 +1,23 @@
+// Per-letter trembling for Umbra text
+function initUmbraTremble() {
+  document.querySelectorAll('.elem-umbra').forEach(el => {
+    if (el.dataset.umbraSplit) return;
+    el.dataset.umbraSplit = '1';
+    const text = el.textContent;
+    if (!text) return;
+    el.textContent = '';
+    [...text].forEach((char, i) => {
+      const span = document.createElement('span');
+      span.className = 'umbra-char';
+      span.textContent = char;
+      span.style.animationDelay = `${(i * 0.04).toFixed(3)}s`;
+      el.appendChild(span);
+    });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  initUmbraTremble();
   const sidebar = document.getElementById('sidebar');
   const toggle = document.getElementById('sidebar-toggle');
 
