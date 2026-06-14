@@ -640,7 +640,69 @@
 .wiki-btn-danger { padding: var(--space-sm) var(--space-lg); background: rgba(255, 68, 68, 0.1); border: 1px solid rgba(255, 68, 68, 0.3); border-radius: var(--radius-sm); color: #ff4444; cursor: pointer; font-size: 0.85rem; font-family: var(--font-body); transition: all var(--transition-fast); }
 .wiki-btn-danger:hover { background: rgba(255, 68, 68, 0.2); }
 
+/* === RACE NAV === */
+.race-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: var(--space-xl);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  align-items: center;
+  scroll-margin-top: 80px;
+}
+.race-nav-label {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-right: var(--space-sm);
+  white-space: nowrap;
+}
+.race-nav-link {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+.race-nav-link:hover {
+  color: var(--text-primary);
+  border-color: var(--accent);
+  background: rgba(124, 58, 237, 0.1);
+  text-decoration: none;
+}
+.race-nav-link:active {
+  background: rgba(124, 58, 237, 0.2);
+}
+
 @media (max-width: 768px) {
+  .race-nav {
+    gap: 4px;
+    padding: var(--space-sm) var(--space-md);
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .race-nav::-webkit-scrollbar { display: none; }
+  .race-nav-label { display: none; }
+  .race-nav-link {
+    font-size: 0.72rem;
+    padding: 4px 8px;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+  }
   .wiki-layout { flex-direction: column; }
   .wiki-sidebar { width: 100%; position: static; }
   .wiki-modal-body .form-row { grid-template-columns: 1fr; }
