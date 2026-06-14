@@ -643,38 +643,35 @@
 /* === RACE NAV === */
 .race-nav {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
   gap: 6px;
-  padding: var(--space-sm) var(--space-md);
+  padding: var(--space-md);
   margin-bottom: var(--space-xl);
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-subtle) transparent;
-  -webkit-overflow-scrolling: touch;
-  position: relative;
+  border-radius: var(--radius-lg);
   scroll-margin-top: 80px;
 }
-.race-nav::-webkit-scrollbar { height: 4px; }
-.race-nav::-webkit-scrollbar-track { background: transparent; }
-.race-nav::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 4px; }
 .race-nav-label {
   font-family: var(--font-heading);
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-muted);
-  white-space: nowrap;
-  flex-shrink: 0;
   opacity: 0.6;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 2px;
 }
 .race-nav-link {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  flex-shrink: 0;
-  padding: 4px 12px;
+  padding: 4px 14px;
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--text-secondary);
@@ -693,8 +690,8 @@
 }
 
 @media (max-width: 768px) {
-  .race-nav { padding: var(--space-xs) var(--space-sm); gap: 4px; }
-  .race-nav-label { display: none; }
+  .race-nav { padding: var(--space-sm); gap: 4px; }
+  .race-nav-label { margin-bottom: 0; }
   .race-nav-link { font-size: 0.72rem; padding: 4px 10px; min-height: 32px; }
   .wiki-layout { flex-direction: column; }
   .wiki-sidebar { width: 100%; position: static; }
