@@ -576,6 +576,7 @@
 .difficulty-3 { background: rgba(255, 149, 0, 0.15); color: #ff9500; border: 1px solid rgba(255, 149, 0, 0.3); }
 .difficulty-4 { background: rgba(255, 31, 31, 0.15); color: #ff1f1f; border: 1px solid rgba(255, 31, 31, 0.3); }
 .difficulty-5 { background: rgba(180, 0, 0, 0.2); color: #e60000; border: 1px solid rgba(180, 0, 0, 0.4); }
+.difficulty-6 { background: rgba(180, 0, 200, 0.2); color: #cc00ff; border: 1px solid rgba(180, 0, 200, 0.4); text-shadow: 0 0 12px #cc00ff; }
 .difficulty-locked { background: rgba(107, 107, 123, 0.15); color: var(--text-muted); border: 1px solid rgba(107, 107, 123, 0.3); }
 
 /* === WIKI PAGE === */
