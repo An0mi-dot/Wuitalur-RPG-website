@@ -36,6 +36,7 @@
   --attr-sen:       #f5b700;
   --attr-cosmo:     #9e00ff;
   --attr-ea:        #4dd0e1;
+  --attr-san:       #7B6D8D;
 
   --elem-solar:     #FF9900;
   --elem-podridao:  #980000;
@@ -143,6 +144,7 @@ code, .mono {
 .attr-fama { color: var(--attr-fama); font-weight: 600; }
 .attr-sen { color: var(--attr-sen); font-weight: 600; }
 .attr-ea { color: var(--attr-ea); font-weight: 600; }
+.attr-san { color: var(--attr-san); font-weight: 600; }
 
 /* === ELEMENT COLORS === */
 .elem-solar { color: var(--elem-solar); font-weight: 600; }

@@ -1,49 +1,149 @@
 const SYSTEM_DATA = {
   races: [
-    { id: 'abissal', name: 'Abissal', nd: 4, bonuses: '-1 PV, +1 DES, +1 INT, Imunidade Praga, Fraqueza Podridão, Resistência Solar/Gélido/Pesadelo, Visão no Escuro, Bioluminescência, Estrondo Sônico (CT 15, 2d10 + INT, 4B), Garras Afiadas (1d6 + FR), Corpo Praguento (1d4 Praga 3 rodadas)' },
-    { id: 'akivus', name: 'Akivus', nd: 3, bonuses: '+2 DES, Visão no Escuro, Faro Apurado, Presas (1d8 perfuração), Sentidos Aguçados, Garras (1d6), Uivo de Caça' },
-    { id: 'vampiros', name: 'Vampiros', nd: 4, bonuses: '+2 FR, +1 RE, Visão Noturna, Regeneração (3 PV/rodada), Fraqueza Solar/Podridão/Sagrado, Garras (1d8), Mordida (1d6 + dreno), Hipnose (CT 15)' },
-    { id: 'animalescos', name: 'Animalescos', nd: 2, bonuses: '+2 DES, Sentidos Aguçados, Visão no Escuro' },
-    { id: 'plantiferos', name: 'Plantíferos', nd: 1, bonuses: '+2 PV, +1 RE, Fotossíntese, Resistência Física reduzida, Fraqueza Fogo' },
-    { id: 'dragao-anao', name: 'Dragão Anão', nd: 3, bonuses: '+2 FR, +1 RF, Pele Escamosa (RF+2), Sopro (1d10 + nível), Visão no Escuro' },
-    { id: 'praguentos', name: 'Praguentos', nd: 2, bonuses: '+1 RF, +1 PV, Imunidade Veneno, Corpo Praguento (1d4 Praga 3 rodadas ao serem atingidos)' },
-    { id: 'humanos', name: 'Humanos', nd: 1, bonuses: '+1 em qualquer atributo, Versatilidade' },
-    { id: 'insectoides', name: 'Insectóides', nd: 2, bonuses: '+1 DES, Carapaça Natural (RF+1), Visão Apurada, Seis membros' },
-    { id: 'exos', name: 'E.X.O.s', nd: 1, bonuses: 'Constructo (imunidade veneno/sangramento), Personalidade, +1 RE, Modelos: Executor (+1 RF), Explorador (+2 DES, -5 RF), Guerra (+1 FR, +1 RE+RF, -3 DES), Segurança (+1 RE, +1 RF)' },
-    { id: 'espectros', name: 'Espect@&%s', nd: 6, bonuses: '+1 RE, +2 INT, -2 FR, PV sempre 0, Desvantagem social, Fraqueza Sagrado/Solar, Estabilidade (1d4), Instável (5 testes CT 19), Estalo de Estática' }
+    { id: 'abissal', name: 'Abissal', nd: 4, abilities: ['Imunidade Praga', 'Fraqueza Podridão/Solar/Gélido/Pesadelo', 'Visão no Escuro', 'Bioluminescência', 'Estrondo Sônico (CT 15, 2d10+INT, 4B)', 'Garras Afiadas (1d6+FR)', 'Corpo Praguento (1d4 Praga 3 rodadas)'] },
+    { id: 'akivus', name: 'Akivus', nd: 3, abilities: ['Visão no Escuro', 'Faro Apurado', 'Presas (1d8 perfuração)', 'Sentidos Aguçados', 'Garras (1d6)', 'Uivo de Caça'] },
+    { id: 'vampiros', name: 'Vampiros', nd: 4, abilities: ['Visão Noturna', 'Regeneração (3 PV/rodada)', 'Fraqueza Solar/Podridão/Sagrado', 'Garras (1d8)', 'Mordida (1d6 + dreno)', 'Hipnose (CT 15)'] },
+    { id: 'animalescos', name: 'Animalescos', nd: 2, abilities: ['Sentidos Aguçados', 'Visão no Escuro'] },
+    { id: 'plantiferos', name: 'Plantíferos', nd: 1, abilities: ['Fotossíntese', 'Resistência Física reduzida', 'Fraqueza Fogo'] },
+    { id: 'dragao-anao', name: 'Dragão Anão', nd: 3, abilities: ['Pele Escamosa (RF+2)', 'Sopro (1d10+nível)', 'Visão no Escuro'] },
+    { id: 'praguentos', name: 'Praguentos', nd: 2, abilities: ['Imunidade Veneno', 'Corpo Praguento (1d4 Praga 3 rodadas ao ser atingido)'] },
+    { id: 'humanos', name: 'Humanos', nd: 1, abilities: ['Versatilidade'] },
+    { id: 'insectoides', name: 'Insectóides', nd: 2, abilities: ['Carapaça Natural (RF+1)', 'Visão Apurada', 'Seis Membros'] },
+    { id: 'exos', name: 'E.X.O.s', nd: 1, abilities: ['Constructo (imunidade veneno/sangramento)', 'Personalidade'] },
+    { id: 'espectros', name: 'Espect@&%s', nd: 6, abilities: ['PV sempre 0', 'Desvantagem social', 'Fraqueza Sagrado/Solar', 'Estabilidade (1d4)', 'Instável (5 testes CT 19)', 'Estalo de Estática'] }
   ],
   origins: [
-    { id: 'filho-do-abismo', name: 'Filho do Abismo', bonuses: 'Perícias: Percepção, Intimidação. Idiomas: Padrão e Abissal. Poderes: Olhos do Abismo (enxerga em escuridão total até 18B); Intuição Sombria (vantagem em Sentidos para detectar emboscadas).' },
-    { id: 'guardiao-da-floresta', name: 'Guardião da Floresta', bonuses: 'Perícias: Furtividade, Sobrevivência. Ferramentas: Kit de Herbalismo. Idiomas: Florestal e Padrão. Poderes: Vinhas Protetoras (ação bônus imobiliza inimigo 1 turno); Conexão Verdejante (detecta perigos naturais).' },
-    { id: 'herdeiro-de-paladium', name: 'Herdeiro de Paladium', bonuses: 'Perícias: Persuasão, História. Idiomas: Padrão e um a escolha. Poderes: Voz Inspiradora (ação bônus +1 em teste de aliado); Nobre Presença (vantagem em Persuasão com autoridades).' },
-    { id: 'experimento-falho', name: 'Experimento falho da Era Dourada', bonuses: 'Perícias: Cosmo, Furtividade. Ferramentas: Kit Médico. Poderes: Instinto de Sobrevivência (≤5 PV ganha +4 PV e +2 RF); Marca da Fuga (vantagem contra paralisia/mentais).' },
-    { id: 'descendente-croma', name: 'Descendente Croma', bonuses: 'Perícias: Intimidação, Sobrevivência. Idiomas: Padrão e Prisma. Poderes: Último Reflexo (PV<25% ganha +1 Força, Destreza, RF); Instinto Prismático (vantagem contra medo com ≤25% PV).' },
-    { id: 'descendente-floralis', name: 'Descendente Floralis', bonuses: 'Perícias: Atletismo, Acrobacia. Idiomas: Padrão e Floralis. Poderes: Surto Corporal (1x/cena +1 Destreza e dobra deslocamento 1 turno); Vitalidade Eterna (vantagem contra exaustão).' },
-    { id: 'mercenario', name: 'Mercenário', bonuses: 'Perícias: Intimidação, Atletismo. Poderes: Adaptabilidade em Combate (Ação Bônus vira Ação Padrão para atacar); Líder de Batalha (vantagem em ataque a aliado 1x/descanso curto).' },
-    { id: 'campones', name: 'Camponês', bonuses: 'Perícias: Sobrevivência, História. Idiomas: Padrão e da aldeia. Poderes: Mestre da Terra (colheita/caça eficiente, dobra recursos); Força Natural (carga +3).' },
-    { id: 'nerd', name: 'Nerd', bonuses: 'Perícias: Cosmo, Investigação. Idiomas: Padrão. Poderes: Manipulação de Runas (vantagem em sistemas de pedra de Everact); Conexão Arcana (vantagem em Cosmo/Investigação sobre máquinas de Everact).' },
-    { id: 'herdeiro-da-forja', name: 'Herdeiro da Forja', bonuses: 'Perícias: História, Forja e Engenharia. Idiomas: Padrão e um a escolha. Poderes: Forja Rápida (forja/repara itens simples rápido); Toque de Ferro (vantagem em testes de forja).' },
-    { id: 'morador-cidade-inexistente', name: 'Morador da Cidade Inexistente', bonuses: 'Perícias: Cosmo, Percepção e História. Idiomas: Padrão, Idioma de Cirus. Poderes: Memória Desvanecente (vantagem para compreender tecnologias incomuns); Voz do Vazio (vantagem contra dano mental).' },
-    { id: 'medico', name: 'Médico', bonuses: 'Perícias: Medicina e Alquimia. Ferramentas: Kit de medicina e alquimia. Poderes: O Salvador (medicina com vantagem ao aliado caído); Socorrista Nato (pode curar 25 PV 1x/turno com Medicina CT 18).' },
-    { id: 'guaraciense', name: 'Guaraciense', bonuses: 'Perícias: Intimidação, Diplomacia e Engenharia. Idiomas: Guaracês, Padrão e +2. Poderes: Guerreiro da Natureza (+2 em testes perto de plantas); Ciência Sustentável (modifica armas com plantas).' },
-    { id: 'realeza-vampirica', name: 'Realeza Vampírica', bonuses: 'Perícias: Persuasão, História e Intimidação. Idiomas: Padrão, Vampírico Real e +1. Poderes: Sangue Ancestral (1x/combate recupera PV metade do dano do próximo ataque); Nobreza Sombria (vantagem em Persuasão, Atuação, Intimidação).' },
-    { id: 'medroso', name: 'Medroso', bonuses: 'Perícias: Disparada e Furtividade. Idiomas: Padrão. Poderes: CORRA! (reação dobra movimento para longe); Adaptação (resistência a dano de sanidade cumulativa).' },
-    { id: 'celebridade', name: 'Celebridade', bonuses: 'Perícias: Liderança, Barganha, +1 relacionada à fama. Idiomas: Padrão. Poderes: Personalidade Inspiradora (aliados recebem bônus=proficiência); Carteirada (vantagem em barganha, intimidação, roubo).' },
-    { id: 'ciborgue', name: 'Ciborgue', bonuses: 'Perícias: Engenharia e Forja. Idiomas: Padrão e +1. Poderes: Homem de Ferro (2 modificações corporais metálicas); Homem Bomba (explode partes causando dano subclasse + 6d6).' },
-    { id: 'monstro-do-mar', name: 'Monstro do Mar', bonuses: 'Perícias: Navegação, Astronomia e Natação. Idiomas: Padrão e +2. Poderes: Senhor das Águas (controla água, dano de subclasse); Bombeamento (proficiência extra de força em combate).' },
-    { id: 'insano', name: 'INSANO', bonuses: 'Perícias: 2 a escolha. Idiomas: Nenhum perfeitamente. Equipamento: Nenhum. Poderes: Doente Mental (0 sanidade inicial, +2 acertos e +1 ação por dano de sanidade); Insanidade (volta com metade dos HP ao cair a 0).' }
+    { id: 'filho-do-abismo', name: 'Filho do Abismo', abilities: ['Olhos do Abismo (enxerga escuridão total 18B)', 'Intuição Sombria (vantagem Sentidos p/ emboscadas)'] },
+    { id: 'guardiao-da-floresta', name: 'Guardião da Floresta', abilities: ['Vinhas Protetoras (ação bônus imobiliza 1 turno)', 'Conexão Verdejante (detecta perigos naturais)'] },
+    { id: 'herdeiro-de-paladium', name: 'Herdeiro de Paladium', abilities: ['Voz Inspiradora (ação bônus +1 teste aliado)', 'Nobre Presença (vantagem Persuasão c/ autoridades)'] },
+    { id: 'experimento-falho', name: 'Experimento falho da Era Dourada', abilities: ['Instinto de Sobrevivência (<=5 PV +4 PV e +2 RF)', 'Marca da Fuga (vantagem vs paralisia/mentais)'] },
+    { id: 'descendente-croma', name: 'Descendente Croma', abilities: ['Último Reflexo (PV<25% +1 FR/DES/RF)', 'Instinto Prismático (vantagem vs medo <=25% PV)'] },
+    { id: 'descendente-floralis', name: 'Descendente Floralis', abilities: ['Surto Corporal (1x/cena +1 DES, dobra deslocamento 1 turno)', 'Vitalidade Eterna (vantagem vs exaustão)'] },
+    { id: 'mercenario', name: 'Mercenário', abilities: ['Adaptabilidade em Combate (Ação Bônus vira Ação Padrão p/ atacar)', 'Líder de Batalha (vantagem ataque aliado 1x/descanso curto)'] },
+    { id: 'campones', name: 'Camponês', abilities: ['Mestre da Terra (colheita/caça eficiente, dobra recursos)', 'Força Natural (carga +3)'] },
+    { id: 'nerd', name: 'Nerd', abilities: ['Manipulação de Runas (vantagem sistemas de pedra de Everact)', 'Conexão Arcana (vantagem Cosmo/Investigação sobre máquinas Everact)'] },
+    { id: 'herdeiro-da-forja', name: 'Herdeiro da Forja', abilities: ['Forja Rápida (forja/repara itens simples rápido)', 'Toque de Ferro (vantagem testes de forja)'] },
+    { id: 'morador-cidade-inexistente', name: 'Morador da Cidade Inexistente', abilities: ['Memória Desvanecente (vantagem p/ tecnologias incomuns)', 'Voz do Vazio (vantagem vs dano mental)'] },
+    { id: 'medico', name: 'Médico', abilities: ['O Salvador (medicina c/ vantagem em aliado caído)', 'Socorrista Nato (curar 25 PV 1x/turno Medicina CT 18)'] },
+    { id: 'guaraciense', name: 'Guaraciense', abilities: ['Guerreiro da Natureza (+2 testes perto de plantas)', 'Ciência Sustentável (modifica armas c/ plantas)'] },
+    { id: 'realeza-vampirica', name: 'Realeza Vampírica', abilities: ['Sangue Ancestral (1x/combate recupera PV metade dano próximo ataque)', 'Nobreza Sombria (vantagem Persuasão/Atuação/Intimidação)'] },
+    { id: 'medroso', name: 'Medroso', abilities: ['CORRA! (reação dobra movimento para longe)', 'Adaptação (resistência a dano de sanidade cumulativa)'] },
+    { id: 'celebridade', name: 'Celebridade', abilities: ['Personalidade Inspiradora (aliados bônus=proficiência)', 'Carteirada (vantagem barganha/intimidação/roubo)'] },
+    { id: 'ciborgue', name: 'Ciborgue', abilities: ['Homem de Ferro (2 modificações metálicas)', 'Homem Bomba (explode partes, dano subclasse+6d6)'] },
+    { id: 'monstro-do-mar', name: 'Monstro do Mar', abilities: ['Senhor das Águas (controla água, dano subclasse)', 'Bombeamento (proficiência extra FR em combate)'] },
+    { id: 'insano', name: 'INSANO', abilities: ['Doente Mental (0 sanidade inicial, +2 acertos e +1 ação por dano sanidade)', 'Insanidade (volta c/ metade HP ao cair a 0)'] }
   ],
   classes: [
-    { id: 'cavaleiros', name: 'Cavaleiros de Paladium', nd: 5, dv: 'd12', bonus: 'Combate corpo a corpo, Armadura pesada' },
-    { id: 'rastejantes', name: 'Rastejantes', nd: 5, dv: 'd10', bonus: 'Furtividade, Ataques furtivos' },
-    { id: 'protegidos', name: 'Protegidos', nd: 5, dv: 'd12', bonus: 'Linha de frente, Proteção de aliados' },
-    { id: 'anomalo', name: 'Anômalo', nd: 4, dv: 'd8', bonus: 'Manipulação elemental, Magia' },
-    { id: 'compactador', name: 'Compactador', nd: 1, dv: 'd10', bonus: 'Controle de massa, Corpo denso' },
-    { id: 'bestial', name: 'Bestial', nd: 2, dv: 'd10', bonus: 'Transformação bestial, Força bruta' },
-    { id: 'atirador-espectral', name: 'Atirador Espectral', nd: 4, dv: 'd8', bonus: 'Combate à distância, Precisão' },
-    { id: 'furtassaltante', name: 'Furtassaltante', nd: 3, dv: 'd8', bonus: 'Mobilidade, Ataques relâmpago' },
-    { id: 'sobrevivente', name: 'Sobrevivente', nd: 0, dv: 'd10', bonus: 'Versatilidade, Adaptação' },
-    { id: 'consagrados', name: 'Consagrados', nd: 1, dv: 'd8', bonus: 'Magia divina, Cura, Suporte' }
+    { id: 'cavaleiros', name: 'Cavaleiros de Paladium', nd: 2, dv: 10, abilities: {
+      1: ['Golpe Solar', 'Égide Radiante'],
+      4: ['Olhar Julgador', 'Julgamento Ardente ou Solo Sagrado'],
+      8: ['Julgamento Silencioso', 'Coroa de Chamas ou Fincada Chamuscante'],
+      10: ['Memória das Cinzas', 'Lança do Sol ou Erupção Solar'],
+      12: ['Olhar da Divindade ou Vontade de Paladium'],
+      15: ['Vingança Solar ou Fortaleza Inabalável'],
+      20: ['Avatar da Estrela Ardente']
+    }},
+    { id: 'rastejantes', name: 'Rastejantes', nd: 3, dv: 8, abilities: {
+      1: ['Toque Adoentado (Praga) ou Sussurro Desorientador (Pesadelo)'],
+      2: ['Mente Maligna'],
+      3: ['Invocação do Rastejos e Elemento Abissal'],
+      4: ['Incremento'],
+      5: ['Ataque Extra'],
+      6: ['Enxame Devorador (Praga) ou Imbuição Aterrorizante (Pesadelo)'],
+      7: ['Toque Corrosivo (Praga) ou Abraço do Terror (Pesadelo)'],
+      8: ['Incremento'],
+      9: ['Sangue Pestilento (Praga) ou Manto de Fobia (Pesadelo)'],
+      10: ['Ataque Extra'],
+      11: ['Ninho da Peste (Praga) ou Correntes do Desespero (Pesadelo)'],
+      12: ['Incremento'],
+      13: ['Troca Mente/Física'],
+      14: ['Peste Fulminante (Praga) ou Estilhaçar Sanidade (Pesadelo)'],
+      15: ['Ataque Extra'],
+      16: ['Incremento', 'Ceifa Entrópica (Praga) ou Banquete de Pavor (Pesadelo)'],
+      19: ['Incremento'],
+      20: ['Ataque Extra', 'Julgamento do Abismo']
+    }},
+    { id: 'protegidos', name: 'Protegidos', nd: 5, dv: 8, abilities: {
+      1: ['Proteger', 'Divida Comigo o Fardo', 'Se dói em mim, dói menos em você', 'Ele quer ver você bem'],
+      4: ['Você é tudo que tenho ou Não vou deixá-lo cair', 'Garras da Sombra ou Vigília Eterna (Criatura)'],
+      6: ['A Sombra está comigo ou Juntos, até o fim', 'Rugido Primordial ou Instinto Protetor (Criatura)'],
+      8: ['Eles esqueceram da escuridão ou Entre nós, o silêncio reina', 'Salto das Sombras ou Regeneração Sombria (Criatura)'],
+      12: ['Proteja-os, Sombra! ou Estou de olho em você, amigo', 'Abraço Sufocante ou Sentir o Perigo (Criatura)'],
+      15: ['Se afaste! ou Ele está com medo', 'Fúria Protetora ou Vínculo Inabalável (Criatura)'],
+      20: ['Somos Um, até o Fim', 'Guardião Ancestral (Criatura)']
+    }},
+    { id: 'anomalo', name: 'Anômalo', nd: 4, dv: 10, abilities: {
+      1: ['Vórtice Anulador', 'Estilo de Dominância'],
+      2: ['Conhecimento da Morte', 'Domo de Pressão'],
+      3: ['Destino Mortal', 'Teleporte Dimensional'],
+      7: ['Armadura Fragmentada'],
+      11: ['Atrofiar Inimigo'],
+      14: ['Tiro de Ar'],
+      16: ['Prensa Anômala'],
+      20: ['Falha Temporal']
+    }},
+    { id: 'compactador', name: 'Compactador', nd: 1, dv: 14, abilities: {
+      1: ['Punho de Inércia', 'Revestimento Essencial'],
+      3: ['Distorção de Ritmo ou Troca de Estrutura'],
+      5: ['Núcleo Condensado', 'Ataque Extra'],
+      7: ['Fratura de Impacto ou Ancoragem Absoluta'],
+      10: ['Colapso Dirigido'],
+      12: ['Esmagamento Vetorial ou Campo de Assimetria'],
+      14: ['Forma Inabalável ou Reversão Estrutural'],
+      16: ['Sombra Astral'],
+      18: ['Singularidade Astral'],
+      20: ['Forma Transcendente']
+    }},
+    { id: 'bestial', name: 'Bestial', nd: 2, dv: 14, abilities: {
+      1: ['Besta de Carga', 'Couraça Grossa ou Golpes Imprevisíveis'],
+      2: ['Corpo Pesado', 'Escudo Ambulante'],
+      3: ['Fera Divina', 'Provocação Fervorosa ou Marcação Furiosa'],
+      5: ['Ataque Extra', 'Hibernação', 'Alcatéia Imparável ou Alfa Protetor'],
+      8: ['Instinto Animal', 'Fator Curativo'],
+      10: ['Adaptabilidade Natural', 'Corpo Robusto ou Alcatéia Violenta'],
+      13: ['Besta Descontrolada ou Besta Colossal'],
+      15: ['Efeito Furioso ou Fúria Bestial Aprimorada'],
+      18: ['Corpo Resistente', 'O Rugido de um Verdadeiro Predador'],
+      20: ['Retaliação Monstruosa']
+    }},
+    { id: 'atirador-espectral', name: 'Atirador Espectral', nd: 4, dv: 4, abilities: {
+      1: ['Sombra do Caçador ou Marca da Caçada'],
+      3: ['Estilo de Caça'],
+      4: ['Flecha Fantasma ou Enlace do Espectro'],
+      8: ['Fuga Etérea ou Salto Espectral'],
+      10: ['Tiro de Aflição ou Absorção Vital'],
+      12: ['Lamento do Caçador ou Luz da Caçada'],
+      15: ['Caçada Imortal ou Conexão Etérea'],
+      20: ['Flecha Florida']
+    }},
+    { id: 'furtassaltante', name: 'Furtassaltante', nd: 3, dv: 5, abilities: {
+      1: ['Golpe das Sombras ou "Desapareci!"'],
+      4: ['Passo Fantasma ou Ataque Preciso'],
+      6: ['Sombra que Mata ou Esquiva das Sombras'],
+      8: ['"Eles esqueceram da escuridão." ou Passagem Invisível'],
+      12: ['Mestre das Sombras ou Silêncio Mortal'],
+      15: ['Golpe Fantasma ou Marca do Ladrão'],
+      20: ['Vontade Assassina']
+    }},
+    { id: 'sobrevivente', name: 'Sobrevivente', nd: 0, dv: 8, abilities: {
+      1: ['Improviso ou Instinto de Perigo'],
+      3: ['Recuperação Rápida ou Rastreamento'],
+      5: ['Resistência Extrema ou Improviso Avançado'],
+      7: ['Sobrevivência em Grupo ou Conhecimento Prático'],
+      9: ['Inquebrável ou Armadilhas Improvisadas'],
+      11: ['Liderança Natural ou Recuperação Total'],
+      13: ['Sobrevivente']
+    }},
+    { id: 'consagrados', name: 'Consagrados', nd: 1, dv: 8, abilities: {
+      1: ['Catalisador Divino'],
+      3: ['Vínculo Elemental', 'Doutrina: Campeão ou Profeta'],
+      4: ['Confluência de Selos (+1 Selo, Ampliar Selos)'],
+      6: ['Purgar o Infiel (Campeão) ou Pergaminho Litúrgico (Profeta)'],
+      8: ['Concentração como Ação Bônus', 'Baluarte da Fé (Campeão) ou Geometria Sagrada (Profeta)'],
+      12: ['+1 Selo, manter dois Selos ativos', 'Martírio Vingativo (Campeão) ou Fluxo Contínuo (Profeta)'],
+      15: ['Acelerar Selo (1x/cena)', 'Avatar da Destruição (Campeão) ou Improvisação Divina (Profeta)'],
+      20: ['+2 Selos, Apoteose (3 rodadas)', 'Glória Final (Campeão) ou Consciência Onipresente (Profeta)']
+    }}
   ],
   skills: [
     'Acrobacia', 'Adestramento', 'Arcanismo', 'Atletismo', 'Atuação', 'Conhecimento',
@@ -55,6 +155,15 @@ const SYSTEM_DATA = {
   ]
 };
 
+/* ------------------------------------------------------------------ */
+/*  ROLL HISTORY help cap                                              */
+/* ------------------------------------------------------------------ */
+function trueRandom(max) {
+  const arr = new Uint32Array(1);
+  crypto.getRandomValues(arr);
+  return (arr[0] % max) + 1;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const form = {};
   const els = ['c-name','c-age','c-gender','c-player','c-portrait','c-backstory',
@@ -65,7 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const cDef = document.getElementById('c-def');
   const cDefe = document.getElementById('c-defe');
-  const cInit = document.getElementById('c-init');
   const cSan = document.getElementById('c-san');
 
   const steps = document.querySelectorAll('.creator-panel');
@@ -73,7 +181,26 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentStep = 1;
   let portraitBase64 = '';
 
-  // Image upload preview
+  /* dice roller */
+  const diceResult = document.getElementById('dice-result');
+  const diceHistory = document.getElementById('dice-history');
+  const rollHistory = [];
+
+  document.getElementById('dice-btns').addEventListener('click', (e) => {
+    const btn = e.target.closest('.dice-btn');
+    if (!btn) return;
+    const sides = parseInt(btn.dataset.dice, 10);
+    const val = trueRandom(sides);
+    const label = `d${sides}`;
+    rollHistory.unshift({ sides, val });
+    if (rollHistory.length > 50) rollHistory.length = 50;
+    diceResult.innerHTML = `<span class="roll-label">${label}</span><span class="roll-value">${val}</span>`;
+    diceHistory.innerHTML = rollHistory.slice(0, 20).map(r =>
+      `<span class="dice-history-item">d${r.sides}: ${r.val}</span>`
+    ).join('');
+  });
+
+  /* Image upload */
   const portraitInput = form['c-portrait'];
   const previewBox = document.getElementById('c-portrait-preview');
   portraitInput.addEventListener('change', (e) => {
@@ -128,7 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
     sub.innerHTML = '<option value="">Nenhum</option>';
     if (!id) { box.innerHTML = ''; return; }
     const race = SYSTEM_DATA.races.find(r => r.id === id);
-    box.innerHTML = `<strong>${race.name}</strong> (ND ${race.nd})<br><em>${race.bonuses}</em>`;
+    const ab = race.abilities.map(a => '<li>' + a + '</li>').join('');
+    box.innerHTML = `<strong>${race.name}</strong> (ND ${race.nd})<br><ul style="margin:4px 0 0 16px;font-size:0.85rem;color:var(--text-secondary)">${ab}</ul>`;
     if (id === 'exos') {
       ['Executor (+1 RF)','Explorador (+2 DES, -5 RF)','Guerra (+1 FR, +1 RE+RF, -3 DES)','Segurança (+1 RE, +1 RF)'].forEach(m => {
         const o = document.createElement('option');
@@ -145,7 +273,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const box = document.getElementById('c-origin-info');
     if (!id) { box.innerHTML = ''; return; }
     const origin = SYSTEM_DATA.origins.find(o => o.id === id);
-    box.innerHTML = `<strong>${origin.name}</strong><br><em>${origin.bonuses}</em>`;
+    const ab = origin.abilities.map(a => '<li>' + a + '</li>').join('');
+    box.innerHTML = `<strong>${origin.name}</strong><br><ul style="margin:4px 0 0 16px;font-size:0.85rem;color:var(--text-secondary)">${ab}</ul>`;
   });
 
   form['c-class'].addEventListener('change', () => {
@@ -153,8 +282,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const box = document.getElementById('c-class-info');
     if (!id) { box.innerHTML = ''; return; }
     const cls = SYSTEM_DATA.classes.find(c => c.id === id);
-    box.innerHTML = `<strong>${cls.name}</strong> (ND ${cls.nd}, DV ${cls.dv})<br><em>${cls.bonus}</em>`;
+    box.innerHTML = `<strong>${cls.name}</strong> (ND ${cls.nd}, DV d${cls.dv})<br><em style="color:var(--text-secondary)">${cls.dv} PV no 1º nível + (nível-1)×${Math.ceil(cls.dv/2)+1}</em>`;
+    autoCalcPVs();
   });
+
+  form['c-level'].addEventListener('input', autoCalcPVs);
+
+  function autoCalcPVs() {
+    const classId = form['c-class'].value;
+    const level = parseInt(form['c-level'].value) || 1;
+    if (!classId) return;
+    const cls = SYSTEM_DATA.classes.find(c => c.id === classId);
+    if (!cls) return;
+    const perLevel = Math.ceil(cls.dv / 2) + 1;
+    const pvs = cls.dv + (level - 1) * perLevel;
+    form['c-pvs'].value = pvs;
+    calcDerived();
+  }
 
   const skillsGrid = document.getElementById('c-skills-grid');
   SYSTEM_DATA.skills.forEach(skill => {
@@ -172,15 +316,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const pvs = parseFloat(form['c-pvs'].value) || 0;
     const re = parseFloat(form['c-re'].value) || 0;
     const rf = parseFloat(form['c-rf'].value) || 0;
-    const des = parseFloat(form['c-des'].value) || 0;
     const int = parseFloat(form['c-int'].value) || 0;
     const def = (rf * Math.pow(pvs, 0.6)) / 6;
     const defe = (re * Math.sqrt(pvs)) / 8;
-    const init = des;
     const san = 10 + int;
     cDef.textContent = def.toFixed(1);
     cDefe.textContent = defe.toFixed(1);
-    cInit.textContent = init;
     cSan.textContent = san;
   }
   ['c-pvs','c-re','c-rf','c-des','c-fr','c-int','c-fama','c-sen','c-cosmo','c-ea'].forEach(id => {
@@ -189,8 +330,31 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   calcDerived();
 
+  function getClassAbilities(classId, level) {
+    const cls = SYSTEM_DATA.classes.find(c => c.id === classId);
+    if (!cls || !cls.abilities) return [];
+    const list = [];
+    const lvls = Object.keys(cls.abilities).map(Number).sort((a,b) => a-b);
+    for (const l of lvls) {
+      if (l <= level) list.push(...cls.abilities[l]);
+    }
+    return list;
+  }
+
   function getCharData() {
     const skills = [...document.querySelectorAll('#c-skills-grid input:checked')].map(c => c.value);
+    const raceId = form['c-race'].value;
+    const originId = form['c-origin'].value;
+    const classId = form['c-class'].value;
+    const level = parseInt(form['c-level'].value) || 1;
+
+    const raceData = SYSTEM_DATA.races.find(r => r.id === raceId);
+    const originData = SYSTEM_DATA.origins.find(o => o.id === originId);
+
+    const raceAbilities = raceData ? raceData.abilities : [];
+    const originAbilities = originData ? originData.abilities : [];
+    const classAbilities = getClassAbilities(classId, level);
+
     return {
       name: form['c-name'].value || '(sem nome)',
       age: form['c-age'].value || '—',
@@ -202,17 +366,17 @@ document.addEventListener('DOMContentLoaded', () => {
       subrace: form['c-subrace'].value || '',
       origin: form['c-origin'].selectedOptions[0]?.text || '(não selecionada)',
       cls: form['c-class'].selectedOptions[0]?.text || '(não selecionada)',
-      level: form['c-level'].value || '1',
+      level: level,
       pvs: form['c-pvs'].value, re: form['c-re'].value, rf: form['c-rf'].value,
       des: form['c-des'].value, fr: form['c-fr'].value, intv: form['c-int'].value,
       fama: form['c-fama'].value, sen: form['c-sen'].value,
       cosmo: form['c-cosmo'].value, ea: form['c-ea'].value,
-      def: cDef.textContent, defe: cDefe.textContent,
-      init: cInit.textContent, san: cSan.textContent,
+      def: cDef.textContent, defe: cDefe.textContent, san: cSan.textContent,
       skills: skills,
       weapon1: form['c-weapon1'].value, weapon2: form['c-weapon2'].value,
       armor: form['c-armor'].value, items: form['c-items'].value,
-      money: form['c-money'].value
+      money: form['c-money'].value,
+      raceAbilities, originAbilities, classAbilities
     };
   }
 
@@ -223,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (d.portrait) html += `<div class="review-portrait"><img src="${d.portrait}" alt="Retrato"></div>`;
     html += `<p><strong>Raça:</strong> ${d.race}${d.subrace ? ' ('+d.subrace+')' : ''} | <strong>Origem:</strong> ${d.origin} | <strong>Classe:</strong> ${d.cls} (Nv ${d.level})</p>`;
     html += `<p><strong>Atributos:</strong> PVs ${d.pvs}, RE ${d.re}, RF ${d.rf}, DES ${d.des}, FR ${d.fr}, INT ${d.intv}, Fama ${d.fama}, SEN ${d.sen}, COSMO ${d.cosmo}, EA ${d.ea}</p>`;
-    html += `<p><strong>DEF</strong> ${d.def} | <strong>DEFe</strong> ${d.defe} | <strong>Iniciativa</strong> ${d.init} | <strong>Sanidade</strong> ${d.san}</p>`;
+    html += `<p><strong>DEF</strong> ${d.def} | <strong>DEFe</strong> ${d.defe} | <strong>Sanidade</strong> ${d.san}</p>`;
     html += `<p><strong>Perícias:</strong> ${d.skills.length ? d.skills.join(', ') : 'nenhuma'}</p>`;
     const eq = [d.weapon1, d.weapon2, d.armor].filter(Boolean).join(', ');
     if (eq) html += `<p><strong>Equipamento:</strong> ${eq}</p>`;
@@ -232,6 +396,25 @@ document.addEventListener('DOMContentLoaded', () => {
     if (d.backstory && d.backstory !== '—') html += `<p><strong>História:</strong><br>${d.backstory}</p>`;
     html += `</div>`;
     review.innerHTML = html;
+
+    const abDiv = document.getElementById('c-abilities-display');
+    let abHtml = '';
+    if (d.raceAbilities.length) {
+      abHtml += `<div class="creator-section"><h4>Habilidades Raciais</h4><div class="ability-list">`;
+      d.raceAbilities.forEach(a => { abHtml += `<div class="ability-item">${a}</div>`; });
+      abHtml += `</div></div>`;
+    }
+    if (d.originAbilities.length) {
+      abHtml += `<div class="creator-section"><h4>Poderes de Origem</h4><div class="ability-list">`;
+      d.originAbilities.forEach(a => { abHtml += `<div class="ability-item">${a}</div>`; });
+      abHtml += `</div></div>`;
+    }
+    if (d.classAbilities.length) {
+      abHtml += `<div class="creator-section"><h4>Habilidades de Classe (Nv ${d.level})</h4><div class="ability-list">`;
+      d.classAbilities.forEach(a => { abHtml += `<div class="ability-item">${a}</div>`; });
+      abHtml += `</div></div>`;
+    }
+    abDiv.innerHTML = abHtml;
   }
 
   document.getElementById('c-save').addEventListener('click', () => {
@@ -260,13 +443,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('c-race-info').innerHTML = '';
     document.getElementById('c-origin-info').innerHTML = '';
     document.getElementById('c-class-info').innerHTML = '';
+    document.getElementById('c-abilities-display').innerHTML = '';
     calcDerived();
     const msg = document.getElementById('c-saved-msg');
     msg.textContent = '';
     msg.className = 'creator-msg';
   });
 
-  // Export PDF - open character sheet in new window
+  /* Export PDF */
   document.getElementById('c-export-pdf').addEventListener('click', () => {
     const d = getCharData();
     const w = window.open('', '_blank');
@@ -290,6 +474,7 @@ document.addEventListener('DOMContentLoaded', () => {
   .sheet-field .val:focus { border-color: #7C3AED; }
   .sheet-section { margin-bottom: 25px; }
   .sheet-section h2 { font-family: 'Cinzel', serif; font-size: 1rem; color: #7C3AED; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid #2E2E3E; padding-bottom: 6px; margin-bottom: 12px; }
+  .sheet-section h3 { font-family: 'Cinzel', serif; font-size: 0.85rem; color: #6B6B7B; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; margin-top: 12px; }
   .sheet-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; }
   .sheet-stat { text-align: center; }
   .sheet-stat .stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: #6B6B7B; }
@@ -332,14 +517,16 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="sheet-stat"><div class="stat-label" style="color:#4dd0e1">EA</div><div class="stat-val" contenteditable="true" style="color:#4dd0e1">${d.ea}</div></div>
       <div class="sheet-stat"><div class="stat-label" style="color:#ff1f1f">DEF</div><div class="stat-val" contenteditable="true" style="color:#ff1f1f">${d.def}</div></div>
       <div class="sheet-stat"><div class="stat-label" style="color:#4a49ff">DEFe</div><div class="stat-val" contenteditable="true" style="color:#4a49ff">${d.defe}</div></div>
-      <div class="sheet-stat"><div class="stat-label" style="color:#ff9500">Iniciativa</div><div class="stat-val" contenteditable="true" style="color:#ff9500">${d.init}</div></div>
-      <div class="sheet-stat"><div class="stat-label" style="color:#55a630">Sanidade</div><div class="stat-val" contenteditable="true" style="color:#55a630">${d.san}</div></div>
+      <div class="sheet-stat"><div class="stat-label" style="color:#7B6D8D">Sanidade</div><div class="stat-val" contenteditable="true" style="color:#7B6D8D">${d.san}</div></div>
     </div>
   </div>
   <div class="sheet-section">
     <h2>Perícias</h2>
     <div class="sheet-skills">${d.skills.length ? d.skills.map(s => '<div class="skill-item" contenteditable="true">'+s+'</div>').join('') : '<div class="skill-item" contenteditable="true" style="color:#6B6B7B">Nenhuma</div>'}</div>
   </div>
+  ${d.raceAbilities.length ? `<div class="sheet-section"><h2>Habilidades Raciais</h2><div class="sheet-skills">${d.raceAbilities.map(a => '<div class="skill-item" contenteditable="true">'+a+'</div>').join('')}</div></div>` : ''}
+  ${d.originAbilities.length ? `<div class="sheet-section"><h2>Poderes de Origem</h2><div class="sheet-skills">${d.originAbilities.map(a => '<div class="skill-item" contenteditable="true">'+a+'</div>').join('')}</div></div>` : ''}
+  ${d.classAbilities.length ? `<div class="sheet-section"><h2>Habilidades de Classe (Nv ${d.level})</h2><div class="sheet-skills">${d.classAbilities.map(a => '<div class="skill-item" contenteditable="true">'+a+'</div>').join('')}</div></div>` : ''}
   <div class="sheet-section">
     <h2>Equipamento</h2>
     <div class="sheet-row">
@@ -359,7 +546,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[contenteditable]').forEach(el => {
     el.addEventListener('keydown', e => { if (e.key === 'Enter') document.execCommand('insertLineBreak'); });
   });
-</script>
+<\/script>
 </body></html>`);
     w.document.close();
   });

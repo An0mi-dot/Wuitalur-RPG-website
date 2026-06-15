@@ -939,6 +939,22 @@
   width: 100%;
   height: auto;
 }
+.creator-section { margin-bottom: var(--space-lg); }
+.creator-section h4 { font-family: var(--font-heading); font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: var(--space-sm); border-bottom: 1px solid var(--border-subtle); padding-bottom: 4px; }
+.ability-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: var(--space-md); }
+.ability-item { font-size: 0.82rem; color: var(--text-secondary); background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 4px 10px; }
+.ability-item strong { color: var(--text-primary); }
+.dice-roller { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-md); margin-top: var(--space-md); }
+.dice-roller h4 { font-family: var(--font-heading); font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: var(--space-sm); }
+.dice-btns { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: var(--space-sm); }
+.dice-btn { font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; padding: 6px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); background: var(--bg-elevated); color: var(--text-secondary); cursor: pointer; transition: all var(--transition-fast); }
+.dice-btn:hover { border-color: var(--attr-ea); color: var(--text-primary); background: var(--bg-hover); }
+.dice-btn:active { transform: scale(0.95); }
+.dice-result { font-family: var(--font-mono); font-size: 1.4rem; font-weight: 700; color: var(--text-primary); text-align: center; padding: var(--space-sm); background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.2); border-radius: var(--radius-sm); min-height: 48px; display: flex; align-items: center; justify-content: center; gap: var(--space-md); }
+.dice-result .roll-label { font-size: 0.7rem; font-weight: 400; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; }
+.dice-result .roll-value { font-size: 1.8rem; color: var(--attr-ea); }
+.dice-history { display: flex; flex-wrap: wrap; gap: 4px; margin-top: var(--space-sm); }
+.dice-history-item { font-family: var(--font-mono); font-size: 0.7rem; padding: 2px 6px; background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: 3px; color: var(--text-muted); }
 .creator-stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
