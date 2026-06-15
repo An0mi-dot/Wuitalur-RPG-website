@@ -154,6 +154,7 @@
               <div id="c-class-info" class="creator-info-box"></div>
               <label>Nível</label>
               <input type="number" id="c-level" value="1" min="1" max="20">
+              <div id="c-class-abilities" class="creator-section" style="margin-top:var(--space-md)"></div>
             </div>
             <div class="creator-nav">
               <button type="button" class="creator-prev" data-prev="3">Voltar</button>
@@ -164,7 +165,7 @@
           <!-- STEP 5: ATRIBUTOS -->
           <section class="creator-panel" id="step-5">
             <h2>Atributos</h2>
-            <p class="creator-desc">Distribua os atributos do seu personagem.</p>
+            <p class="creator-desc">Distribua 4 pontos (base 1, máx 8). Reduza a 0 para +1 ponto extra. <strong id="c-points-remaining" style="color:var(--attr-ea)">Pontos: 4</strong></p>
             <div class="creator-stats-grid">
               <div class="creator-stat">
                 <label class="attr-saude">Saúde (PVs)</label>
@@ -213,6 +214,7 @@
                 <div><span class="attr-rf">DEF</span> <span id="c-def" class="calc-val">0</span></div>
                 <div><span class="attr-re">DEFe</span> <span id="c-defe" class="calc-val">0</span></div>
                 <div><span class="attr-san">Sanidade</span> <span id="c-san" class="calc-val">0</span></div>
+                <div><span style="color:#b45f06;font-weight:600">Estresse</span> <span id="c-estresse" class="calc-val">0</span></div>
               </div>
             </div>
             <div class="dice-roller">
