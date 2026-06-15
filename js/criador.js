@@ -167,7 +167,7 @@ function trueRandom(max) {
 document.addEventListener('DOMContentLoaded', () => {
   const form = {};
   const els = ['c-name','c-age','c-gender','c-player','c-portrait','c-backstory',
-    'c-race','c-subrace','c-origin','c-class','c-level',
+    'c-race','c-origin','c-class','c-level',
     'c-pvs','c-re','c-rf','c-des','c-fr','c-int','c-fama','c-sen','c-cosmo','c-ea',
     'c-weapon1','c-weapon2','c-armor','c-items','c-money'];
   els.forEach(id => { form[id] = document.getElementById(id); });
@@ -251,21 +251,10 @@ document.addEventListener('DOMContentLoaded', () => {
   form['c-race'].addEventListener('change', () => {
     const id = form['c-race'].value;
     const box = document.getElementById('c-race-info');
-    const sub = form['c-subrace'];
-    sub.innerHTML = '<option value="">Nenhum</option>';
     if (!id) { box.innerHTML = ''; return; }
     const race = SYSTEM_DATA.races.find(r => r.id === id);
     const ab = race.abilities.map(a => '<li>' + a + '</li>').join('');
     box.innerHTML = `<strong>${race.name}</strong> (ND ${race.nd})<br><ul style="margin:4px 0 0 16px;font-size:0.85rem;color:var(--text-secondary)">${ab}</ul>`;
-    if (id === 'exos') {
-      ['Executor (+1 RF)','Explorador (+2 DES, -5 RF)','Guerra (+1 FR, +1 RE+RF, -3 DES)','Segurança (+1 RE, +1 RF)'].forEach(m => {
-        const o = document.createElement('option');
-        o.value = m;
-        o.textContent = m;
-        sub.appendChild(o);
-      });
-      sub.value = '';
-    }
   });
 
   form['c-origin'].addEventListener('change', () => {
@@ -363,7 +352,6 @@ document.addEventListener('DOMContentLoaded', () => {
       portrait: portraitBase64,
       backstory: form['c-backstory'].value || '—',
       race: form['c-race'].selectedOptions[0]?.text || '(não selecionada)',
-      subrace: form['c-subrace'].value || '',
       origin: form['c-origin'].selectedOptions[0]?.text || '(não selecionada)',
       cls: form['c-class'].selectedOptions[0]?.text || '(não selecionada)',
       level: level,
@@ -385,7 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const review = document.getElementById('c-review');
     let html = `<div class="review-card"><h3>${d.name}</h3>`;
     if (d.portrait) html += `<div class="review-portrait"><img src="${d.portrait}" alt="Retrato"></div>`;
-    html += `<p><strong>Raça:</strong> ${d.race}${d.subrace ? ' ('+d.subrace+')' : ''} | <strong>Origem:</strong> ${d.origin} | <strong>Classe:</strong> ${d.cls} (Nv ${d.level})</p>`;
+    html += `<p><strong>Raça:</strong> ${d.race} | <strong>Origem:</strong> ${d.origin} | <strong>Classe:</strong> ${d.cls} (Nv ${d.level})</p>`;
     html += `<p><strong>Atributos:</strong> PVs ${d.pvs}, RE ${d.re}, RF ${d.rf}, DES ${d.des}, FR ${d.fr}, INT ${d.intv}, Fama ${d.fama}, SEN ${d.sen}, COSMO ${d.cosmo}, EA ${d.ea}</p>`;
     html += `<p><strong>DEF</strong> ${d.def} | <strong>DEFe</strong> ${d.defe} | <strong>Sanidade</strong> ${d.san}</p>`;
     html += `<p><strong>Perícias:</strong> ${d.skills.length ? d.skills.join(', ') : 'nenhuma'}</p>`;
@@ -493,7 +481,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="sheet-portrait">${d.portrait ? '<img src="'+d.portrait+'">' : 'Sem<br>Ilustração'}</div>
     <div class="sheet-title">
       <h1 contenteditable="true">${d.name}</h1>
-      <div class="subtitle"><span contenteditable="true">${d.race}</span>${d.subrace ? ' ('+d.subrace+')' : ''} · <span contenteditable="true">${d.origin}</span> · <span contenteditable="true">${d.cls}</span> · Nv <span contenteditable="true">${d.level}</span></div>
+      <div class="subtitle"><span contenteditable="true">${d.race}</span> · <span contenteditable="true">${d.origin}</span> · <span contenteditable="true">${d.cls}</span> · Nv <span contenteditable="true">${d.level}</span></div>
     </div>
   </div>
   <div class="sheet-row">
