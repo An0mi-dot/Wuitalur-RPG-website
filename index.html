@@ -10,22 +10,154 @@
   <style>
     .home-hero {
       padding: var(--space-3xl) var(--space-xl);
-      border-bottom: 1px solid var(--border-subtle);
-      margin-bottom: var(--space-2xl);
+      margin-bottom: var(--space-xl);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .home-hero::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(ellipse at center, rgba(124,58,237,0.06) 0%, transparent 70%);
+      pointer-events: none;
     }
     .home-hero h1 {
       font-family: var(--font-heading);
-      font-size: 2.4rem;
-      letter-spacing: 0.12em;
-      margin-bottom: var(--space-md);
+      font-size: 3rem;
+      letter-spacing: 0.15em;
+      margin-bottom: var(--space-sm);
       color: var(--text-primary);
       text-transform: uppercase;
+      position: relative;
     }
-    .home-hero p {
-      max-width: 900px;
+    .home-hero h1 small {
+      display: block;
+      font-size: 0.9rem;
+      letter-spacing: 0.25em;
+      color: var(--attr-ea);
+      font-weight: 400;
+      margin-top: var(--space-xs);
+    }
+    .home-hero .tagline {
+      max-width: 700px;
+      margin: var(--space-lg) auto;
       color: var(--text-secondary);
-      line-height: 1.75;
+      font-size: 1rem;
+      line-height: 1.8;
+      font-style: italic;
+      position: relative;
+    }
+    .home-hero .tagline::before { content: '"'; color: var(--attr-ea); font-size: 2rem; font-family: var(--font-heading); opacity: 0.5; margin-right: 4px; }
+    .home-hero .tagline::after { content: '"'; color: var(--attr-ea); font-size: 2rem; font-family: var(--font-heading); opacity: 0.5; margin-left: 4px; }
+    .home-divider {
+      width: 60px; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--attr-ea), transparent);
+      margin: 0 auto var(--space-xl);
+    }
+    .home-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: var(--space-md);
+      margin-bottom: var(--space-2xl);
+    }
+    .home-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      transition: all var(--transition-base);
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      position: relative;
+      overflow: hidden;
+    }
+    .home-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--card-accent, var(--border-subtle));
+      transition: height var(--transition-base);
+    }
+    .home-card:hover {
+      border-color: var(--card-accent, var(--border-accent));
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+    .home-card:hover::before { height: 4px; }
+    .home-card .card-icon {
+      font-size: 1.3rem;
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background: var(--bg-elevated);
+      color: var(--attr-ea);
+    }
+    .home-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      color: var(--text-primary);
       margin: 0;
+    }
+    .home-card p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.5;
+    }
+    .home-card .badge {
+      display: inline-block;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: rgba(124,58,237,0.15);
+      color: #a78bfa;
+      border: 1px solid rgba(124,58,237,0.2);
+      align-self: flex-start;
+    }
+    .home-stats {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-2xl);
+      padding: var(--space-xl) 0;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: var(--space-2xl);
+      flex-wrap: wrap;
+    }
+    .home-stat {
+      text-align: center;
+    }
+    .home-stat .num {
+      font-family: var(--font-mono);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--attr-ea);
+    }
+    .home-stat .label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+    }
+    .home-section-title {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      color: var(--text-primary);
+      text-align: center;
+      margin-bottom: var(--space-lg);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .home-section-title span {
+      color: var(--attr-ea);
     }
   </style>
 </head>
@@ -82,27 +214,80 @@
     </header>
 
     <section class="home-hero">
-      <p><em>"Wuitalur é um sistema autoral de RPG narrativo com foco em ambientações sombrias, horror cósmico, dilemas morais e escolhas difíceis. Mistura fantasia sombria com toques futuristas e sociais. Seus personagens vivem em um mundo onde religião, magia, tecnologia e corrupção se entrelaçam em conflitos épicos e trágicos. Esta página apresenta todo o sistema, de forma contínua e acessível, para consulta completa de regras, raças, classes e mais."</em></p>
+      <h1>Wuitalur <small>— Sistema de RPG</small></h1>
+      <div class="home-divider"></div>
+      <p class="tagline">Fantasia sombria entrelaçada com horror cósmico, tecnologia degenerada e conflitos morais. Um mundo onde toda escolha cobra seu pre&ccedil;o.</p>
     </section>
+
+    <div class="home-stats">
+      <div class="home-stat"><div class="num">11</div><div class="label">Ra&ccedil;as</div></div>
+      <div class="home-stat"><div class="num">9</div><div class="label">Classes</div></div>
+      <div class="home-stat"><div class="num">8</div><div class="label">Atributos</div></div>
+      <div class="home-stat"><div class="num">7</div><div class="label">Elementos</div></div>
+      <div class="home-stat"><div class="num">12+</div><div class="label">Origens</div></div>
+    </div>
 
     <main class="page-content">
 
-      <section class="subsection" id="introducao">
-        <div class="section-heading">
-          <h2>Introdução</h2>
-        </div>
-        <div class="race-card">
-          <div class="race-card-body">
-            <p class="race-description"><em>"Wuitalur é um sistema autoral de RPG narrativo com foco em ambientações sombrias, horror cósmico, dilemas morais e escolhas difíceis. Mistura fantasia sombria com toques futuristas e sociais. Seus personagens vivem em um mundo onde religião, magia, tecnologia e corrupção se entrelaçam em conflitos épicos e trágicos. Esta página apresenta todo o sistema, de forma contínua e acessível, para consulta completa de regras, raças, classes e mais."</em></p>
-          </div>
-        </div>
-      </section>
+      <div class="home-section-title">Navegue pelo <span>sistema</span></div>
+
+      <div class="home-grid">
+
+        <a href="atributos.html" class="home-card" style="--card-accent: #7c3aed;">
+          <div class="card-icon">&#x269C;</div>
+          <h3>Atributos</h3>
+          <p>For&ccedil;a, Destreza, Intelig&ecirc;ncia e os demais pilares do seu personagem.</p>
+        </a>
+
+        <a href="races.html" class="home-card" style="--card-accent: #ef4444;">
+          <div class="card-icon">&#x25B3;</div>
+          <h3>Ra&ccedil;as</h3>
+          <p>Das ru&iacute;nas abissais aos altos p&iacute;ncaros &eacute;teros &mdash; 11 ra&ccedil;as jog&aacute;veis.</p>
+        </a>
+
+        <a href="classes.html" class="home-card" style="--card-accent: #f59e0b;">
+          <div class="card-icon">&#x2605;</div>
+          <h3>Classes</h3>
+          <p>Cavaleiros, Consagrados, An&ocirc;malos e mais. Cada uma com seu prop&oacute;sito.</p>
+        </a>
+
+        <a href="origins.html" class="home-card" style="--card-accent: #10b981;">
+          <div class="card-icon">&#x25C8;</div>
+          <h3>Origens</h3>
+          <p>De onde seu personagem veio e o que carrega do passado &mdash; em 12 origens.</p>
+        </a>
+
+        <a href="elementos.html" class="home-card" style="--card-accent: #06b6d4;">
+          <div class="card-icon">&#x25CB;</div>
+          <h3>Elementos</h3>
+          <p>Fogo, Gelo, Trevas, Luz &mdash; os elementos que moldam o mundo.</p>
+        </a>
+
+        <a href="pericias.html" class="home-card" style="--card-accent: #ec4899;">
+          <div class="card-icon">&#x2606;</div>
+          <h3>Per&iacute;cias</h3>
+          <p>O que seu personagem sabe fazer &mdash; do combate &agrave; diplomacia.</p>
+        </a>
+
+        <a href="equipamentos.html" class="home-card" style="--card-accent: #6b7280;">
+          <div class="card-icon">&#x2694;</div>
+          <h3>Equipamentos</h3>
+          <p>Armas, armaduras e itens para sua jornada.</p>
+        </a>
+
+        <a href="criador.html" class="home-card" style="--card-accent: #f97316;">
+          <div class="card-icon">&#x2726;</div>
+          <h3>Criador de Ficha</h3>
+          <p>Monte seu personagem passo a passo com c&aacute;lculos autom&aacute;ticos.</p>
+        </a>
+
+      </div>
 
     </main>
   </div>
 </div>
 
-<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
 
 <script src="js/main.js"></script>
 </body>
