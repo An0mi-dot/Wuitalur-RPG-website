@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criador de Personagem — Wuitalur RPG</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema v1.4.0</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="origins.html" class="sidebar-link"><span class="icon"></span> Origens</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+      <a href="selos.html" class="sidebar-link"><span class="icon"></span> Selos</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+      <a href="wiki.html" class="sidebar-link"><span class="icon"></span> Wiki</a>
+      <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
+      <a href="criador.html" class="sidebar-link active"><span class="icon"></span> Criador de Ficha</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Criador de Personagem</h1>
+      <div style="position:relative">
+        <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#9776;</button>
+        <div class="wiki-dropdown" id="wiki-menu-dropdown">
+          <a href="wiki.html" class="wiki-dropdown-item"><span class="icon">&#x1F4D6;</span> Wiki de Personagens</a>
+          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x1F4CB;</span> Changelog</a>
+          <a href="criador.html" class="wiki-dropdown-item"><span class="icon">&#x2699;</span> Criador de Ficha</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <div class="creator-container">
+
+        <aside class="creator-sidebar" id="creator-steps">
+          <button class="creator-step active" data-step="1">1. Básico</button>
+          <button class="creator-step" data-step="2">2. Raça</button>
+          <button class="creator-step" data-step="3">3. Origem</button>
+          <button class="creator-step" data-step="4">4. Classe</button>
+          <button class="creator-step" data-step="5">5. Atributos</button>
+          <button class="creator-step" data-step="6">6. Perícias</button>
+          <button class="creator-step" data-step="7">7. Equipamento</button>
+          <button class="creator-step" data-step="8">8. Finalização</button>
+        </aside>
+
+        <div class="creator-main">
+
+          <!-- STEP 1: BÁSICO -->
+          <section class="creator-panel active" id="step-1">
+            <h2>Informações Básicas</h2>
+            <p class="creator-desc">Dados gerais do personagem.</p>
+            <div class="creator-form">
+              <label>Nome do Personagem</label>
+              <input type="text" id="c-name" placeholder="Ex: Elleonor Capellari">
+
+              <label>Idade</label>
+              <input type="number" id="c-age" placeholder="Ex: 22" min="1">
+
+              <label>Gênero</label>
+              <select id="c-gender">
+                <option value="">Selecione</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Feminino">Feminino</option>
+                <option value="Outro">Outro</option>
+              </select>
+
+              <label>Jogador</label>
+              <input type="text" id="c-player" placeholder="Seu nome">
+
+              <label>Ilustração (URL)</label>
+              <input type="url" id="c-portrait" placeholder="https://...">
+
+              <label>História / Background</label>
+              <textarea id="c-backstory" rows="4" placeholder="Conte a história do seu personagem..."></textarea>
+            </div>
+            <button class="creator-next" data-next="2">Próximo: Raça</button>
+          </section>
+
+          <!-- STEP 2: RAÇA -->
+          <section class="creator-panel" id="step-2">
+            <h2>Raça</h2>
+            <p class="creator-desc">Escolha a raça do seu personagem.</p>
+            <div class="creator-form">
+              <label>Raça</label>
+              <select id="c-race">
+                <option value="">Selecione uma raça</option>
+              </select>
+              <div id="c-race-info" class="creator-info-box"></div>
+              <label>Sub-raça / Modelo (se aplicável)</label>
+              <select id="c-subrace">
+                <option value="">Nenhum</option>
+              </select>
+            </div>
+            <div class="creator-nav">
+              <button class="creator-prev" data-prev="1">Voltar</button>
+              <button class="creator-next" data-next="3">Próximo: Origem</button>
+            </div>
+          </section>
+
+          <!-- STEP 3: ORIGEM -->
+          <section class="creator-panel" id="step-3">
+            <h2>Origem</h2>
+            <p class="creator-desc">Escolha a origem do seu personagem.</p>
+            <div class="creator-form">
+              <label>Origem</label>
+              <select id="c-origin">
+                <option value="">Selecione uma origem</option>
+              </select>
+              <div id="c-origin-info" class="creator-info-box"></div>
+            </div>
+            <div class="creator-nav">
+              <button class="creator-prev" data-prev="2">Voltar</button>
+              <button class="creator-next" data-next="4">Próximo: Classe</button>
+            </div>
+          </section>
+
+          <!-- STEP 4: CLASSE -->
+          <section class="creator-panel" id="step-4">
+            <h2>Classe</h2>
+            <p class="creator-desc">Escolha a classe do seu personagem.</p>
+            <div class="creator-form">
+              <label>Classe</label>
+              <select id="c-class">
+                <option value="">Selecione uma classe</option>
+              </select>
+              <div id="c-class-info" class="creator-info-box"></div>
+              <label>Nível</label>
+              <input type="number" id="c-level" value="1" min="1" max="20">
+            </div>
+            <div class="creator-nav">
+              <button class="creator-prev" data-prev="3">Voltar</button>
+              <button class="creator-next" data-next="5">Próximo: Atributos</button>
+            </div>
+          </section>
+
+          <!-- STEP 5: ATRIBUTOS -->
+          <section class="creator-panel" id="step-5">
+            <h2>Atributos</h2>
+            <p class="creator-desc">Distribua os atributos do seu personagem.</p>
+            <div class="creator-stats-grid">
+              <div class="creator-stat">
+                <label class="attr-saude">Saúde (PVs)</label>
+                <input type="number" id="c-pvs" value="10" min="1">
+              </div>
+              <div class="creator-stat">
+                <label class="attr-re">RE</label>
+                <input type="number" id="c-re" value="0">
+              </div>
+              <div class="creator-stat">
+                <label class="attr-rf">RF</label>
+                <input type="number" id="c-rf" value="0">
+              </div>
+              <div class="creator-stat">
+                <label class="attr-des">DES</label>
+                <input type="number" id="c-des" value="0">
+              </div>
+              <div class="creator-stat">
+                <label class="attr-fr">FR</label>
+                <input type="number" id="c-fr" value="0">
+              </div>
+              <div class="creator-stat">
+                <label class="attr-int">INT</label>
+                <input type="number" id="c-int" value="0">
+              </div>
+              <div class="creator-stat">
+                <label class="attr-fama">Fama</label>
+                <input type="number" id="c-fama" value="0">
+              </div>
+              <div class="creator-stat">
+                <label class="attr-sen">Sentidos</label>
+                <input type="number" id="c-sen" value="0">
+              </div>
+              <div class="creator-stat">
+                <label class="attr-cosmo">COSMO</label>
+                <input type="number" id="c-cosmo" value="0">
+              </div>
+              <div class="creator-stat">
+                <label class="attr-ea">EA</label>
+                <input type="number" id="c-ea" value="0">
+              </div>
+            </div>
+            <div class="creator-calculated">
+              <h4>Derivados</h4>
+              <div class="creator-calc-grid">
+                <div><span class="attr-rf">DEF</span> <span id="c-def" class="calc-val">0</span></div>
+                <div><span class="attr-re">DEFe</span> <span id="c-defe" class="calc-val">0</span></div>
+                <div><span class="attr-des">Iniciativa</span> <span id="c-init" class="calc-val">0</span></div>
+                <div><span class="attr-saude">Sanidade Max</span> <span id="c-san" class="calc-val">0</span></div>
+              </div>
+            </div>
+            <div class="creator-nav">
+              <button class="creator-prev" data-prev="4">Voltar</button>
+              <button class="creator-next" data-next="6">Próximo: Perícias</button>
+            </div>
+          </section>
+
+          <!-- STEP 6: PERÍCIAS -->
+          <section class="creator-panel" id="step-6">
+            <h2>Perícias</h2>
+            <p class="creator-desc">Selecione as perícias treinadas.</p>
+            <div class="creator-form">
+              <div id="c-skills-grid" class="creator-skills-grid"></div>
+            </div>
+            <div class="creator-nav">
+              <button class="creator-prev" data-prev="5">Voltar</button>
+              <button class="creator-next" data-next="7">Próximo: Equipamento</button>
+            </div>
+          </section>
+
+          <!-- STEP 7: EQUIPAMENTO -->
+          <section class="creator-panel" id="step-7">
+            <h2>Equipamento</h2>
+            <p class="creator-desc">Anote seu equipamento inicial.</p>
+            <div class="creator-form">
+              <label>Arma Principal</label>
+              <input type="text" id="c-weapon1" placeholder="Ex: Espada Longa">
+
+              <label>Arma Secundária</label>
+              <input type="text" id="c-weapon2" placeholder="Ex: Pistola">
+
+              <label>Armadura</label>
+              <input type="text" id="c-armor" placeholder="Ex: Armadura de Couro">
+
+              <label>Equipamento / Itens</label>
+              <textarea id="c-items" rows="3" placeholder="Mochila, poções, ferramentas..."></textarea>
+
+              <label>Dinheiro (OP$)</label>
+              <input type="text" id="c-money" placeholder="Ex: 500 OP$">
+            </div>
+            <div class="creator-nav">
+              <button class="creator-prev" data-prev="6">Voltar</button>
+              <button class="creator-next" data-next="8">Próximo: Finalização</button>
+            </div>
+          </section>
+
+          <!-- STEP 8: FINALIZAÇÃO -->
+          <section class="creator-panel" id="step-8">
+            <h2>Finalização</h2>
+            <p class="creator-desc">Revise e salve seu personagem.</p>
+            <div id="c-review" class="creator-review"></div>
+            <div class="creator-actions">
+              <button class="creator-save" id="c-save">Salvar Personagem</button>
+              <button class="creator-reset" id="c-reset">Limpar Tudo</button>
+            </div>
+            <div id="c-saved-msg" class="creator-msg"></div>
+            <div class="creator-nav">
+              <button class="creator-prev" data-prev="7">Voltar</button>
+            </div>
+          </section>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
+
+<script src="js/main.js"></script>
+<script src="js/criador.js"></script>
+</body>
+</html>
