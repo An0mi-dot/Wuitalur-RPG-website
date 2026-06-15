@@ -172,7 +172,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const cDef = document.getElementById('c-def');
   const cDefe = document.getElementById('c-defe');
   const cSan = document.getElementById('c-san');
-  const cEst = document.getElementById('c-estresse');
 
   const steps = document.querySelectorAll('.creator-panel');
   const stepBtns = document.querySelectorAll('.creator-step');
@@ -535,11 +534,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const cls = SYSTEM_DATA.classes.find(c => c.id === classId);
     const sanBonus = cls ? cls.sanBonus || 0 : 0;
     const san = 10 + int + sanBonus;
-    const estresse = (cls ? cls.dv || 0 : 0) + int;
     cDef.textContent = def.toFixed(1);
     cDefe.textContent = defe.toFixed(1);
     cSan.textContent = san;
-    cEst.textContent = estresse;
   }
 
   attrFields.forEach(id => {
@@ -599,7 +596,6 @@ document.addEventListener('DOMContentLoaded', () => {
       fama: form['c-fama'].value, sen: form['c-sen'].value,
       cosmo: form['c-cosmo'].value, ea: form['c-ea'].value,
       def: cDef.textContent, defe: cDefe.textContent, san: cSan.textContent,
-      estresse: cEst.textContent,
       skills: skills,
       weapon1: form['c-weapon1'].value, weapon2: form['c-weapon2'].value,
       armor: form['c-armor'].value, items: form['c-items'].value,
@@ -615,7 +611,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (d.portrait) html += `<div class="review-portrait"><img src="${d.portrait}" alt="Retrato"></div>`;
     html += `<p><strong>Raça:</strong> ${d.race} | <strong>Origem:</strong> ${d.origin} | <strong>Classe:</strong> ${d.cls} (Nv ${d.level})</p>`;
     html += `<p><strong>Atributos:</strong> PVs ${d.pvs}, RE ${d.re}, RF ${d.rf}, DES ${d.des}, FR ${d.fr}, INT ${d.intv}, Fama ${d.fama}, SEN ${d.sen}, COSMO ${d.cosmo}, EA ${d.ea}</p>`;
-    html += `<p><strong>DEF</strong> ${d.def} | <strong>DEFe</strong> ${d.defe} | <strong>Sanidade</strong> ${d.san} | <strong>Estresse</strong> ${d.estresse}</p>`;
+    html += `<p><strong>DEF</strong> ${d.def} | <strong>DEFe</strong> ${d.defe} | <strong>Sanidade</strong> ${d.san}</p>`;
     html += `<p><strong>Perícias:</strong> ${d.skills.length ? d.skills.join(', ') : 'nenhuma'}</p>`;
     const eq = [d.weapon1, d.weapon2, d.armor].filter(Boolean).join(', ');
     if (eq) html += `<p><strong>Equipamento:</strong> ${eq}</p>`;
@@ -760,7 +756,6 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="sheet-stat"><div class="stat-label" style="color:#ff1f1f">DEF</div><div class="stat-val" contenteditable="true" style="color:#ff1f1f">${d.def}</div></div>
       <div class="sheet-stat"><div class="stat-label" style="color:#4a49ff">DEFe</div><div class="stat-val" contenteditable="true" style="color:#4a49ff">${d.defe}</div></div>
       <div class="sheet-stat"><div class="stat-label" style="color:#7B6D8D">Sanidade</div><div class="stat-val" contenteditable="true" style="color:#7B6D8D">${d.san}</div></div>
-      <div class="sheet-stat"><div class="stat-label" style="color:#b45f06">Estresse</div><div class="stat-val" contenteditable="true" style="color:#b45f06">${d.estresse}</div></div>
     </div>
   </div>
   <div class="sheet-section">
