@@ -98,8 +98,9 @@
               <label>Jogador</label>
               <input type="text" id="c-player" placeholder="Seu nome">
 
-              <label>Ilustração (URL)</label>
-              <input type="url" id="c-portrait" placeholder="https://...">
+              <label>Ilustração do Personagem</label>
+              <input type="file" id="c-portrait" accept="image/*">
+              <div id="c-portrait-preview" class="creator-portrait-preview"></div>
 
               <label>História / Background</label>
               <textarea id="c-backstory" rows="4" placeholder="Conte a história do seu personagem..."></textarea>
@@ -271,6 +272,7 @@
             <div id="c-review" class="creator-review"></div>
             <div class="creator-actions">
               <button type="button" class="creator-save" id="c-save">Salvar Personagem</button>
+              <button type="button" class="creator-export" id="c-export-pdf">Exportar PDF</button>
               <button type="button" class="creator-reset" id="c-reset">Limpar Tudo</button>
             </div>
             <div id="c-saved-msg" class="creator-msg"></div>

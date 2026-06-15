@@ -71,6 +71,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const steps = document.querySelectorAll('.creator-panel');
   const stepBtns = document.querySelectorAll('.creator-step');
   let currentStep = 1;
+  let portraitBase64 = '';
+
+  // Image upload preview
+  const portraitInput = form['c-portrait'];
+  const previewBox = document.getElementById('c-portrait-preview');
+  portraitInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) { previewBox.innerHTML = ''; portraitBase64 = ''; return; }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      portraitBase64 = ev.target.result;
+      previewBox.innerHTML = `<img src="${portraitBase64}" alt="Preview">`;
+    };
+    reader.readAsDataURL(file);
+  });
 
   function showStep(n) {
     steps.forEach(s => s.classList.remove('active'));
@@ -94,7 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => showStep(parseInt(btn.dataset.step)));
   });
 
-  // Populate dropdowns
   function populateSelect(sel, data) {
     data.forEach(item => {
       const o = document.createElement('option');
@@ -107,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
   populateSelect(form['c-origin'], SYSTEM_DATA.origins);
   populateSelect(form['c-class'], SYSTEM_DATA.classes);
 
-  // Race change -> show bonuses + subrace
   form['c-race'].addEventListener('change', () => {
     const id = form['c-race'].value;
     const box = document.getElementById('c-race-info');
@@ -143,7 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
     box.innerHTML = `<strong>${cls.name}</strong> (ND ${cls.nd}, DV ${cls.dv})<br><em>${cls.bonus}</em>`;
   });
 
-  // Skills grid
   const skillsGrid = document.getElementById('c-skills-grid');
   SYSTEM_DATA.skills.forEach(skill => {
     const label = document.createElement('label');
@@ -156,7 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
     skillsGrid.appendChild(label);
   });
 
-  // Calculated stats
   function calcDerived() {
     const pvs = parseFloat(form['c-pvs'].value) || 0;
     const re = parseFloat(form['c-re'].value) || 0;
@@ -178,47 +189,54 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   calcDerived();
 
-  // Review
+  function getCharData() {
+    const skills = [...document.querySelectorAll('#c-skills-grid input:checked')].map(c => c.value);
+    return {
+      name: form['c-name'].value || '(sem nome)',
+      age: form['c-age'].value || '—',
+      gender: form['c-gender'].value || '—',
+      player: form['c-player'].value || '—',
+      portrait: portraitBase64,
+      backstory: form['c-backstory'].value || '—',
+      race: form['c-race'].selectedOptions[0]?.text || '(não selecionada)',
+      subrace: form['c-subrace'].value || '',
+      origin: form['c-origin'].selectedOptions[0]?.text || '(não selecionada)',
+      cls: form['c-class'].selectedOptions[0]?.text || '(não selecionada)',
+      level: form['c-level'].value || '1',
+      pvs: form['c-pvs'].value, re: form['c-re'].value, rf: form['c-rf'].value,
+      des: form['c-des'].value, fr: form['c-fr'].value, intv: form['c-int'].value,
+      fama: form['c-fama'].value, sen: form['c-sen'].value,
+      cosmo: form['c-cosmo'].value, ea: form['c-ea'].value,
+      def: cDef.textContent, defe: cDefe.textContent,
+      init: cInit.textContent, san: cSan.textContent,
+      skills: skills,
+      weapon1: form['c-weapon1'].value, weapon2: form['c-weapon2'].value,
+      armor: form['c-armor'].value, items: form['c-items'].value,
+      money: form['c-money'].value
+    };
+  }
+
   function renderReview() {
+    const d = getCharData();
     const review = document.getElementById('c-review');
-    const name = form['c-name'].value || '(sem nome)';
-    const race = form['c-race'].selectedOptions[0]?.text || '(não selecionada)';
-    const origin = form['c-origin'].selectedOptions[0]?.text || '(não selecionada)';
-    const cls = form['c-class'].selectedOptions[0]?.text || '(não selecionada)';
-    const level = form['c-level'].value || 1;
-    const skills = [...document.querySelectorAll('#c-skills-grid input:checked')].map(c => c.value).join(', ') || 'nenhuma';
-    const selected = [];
-    ['name','age','gender','player','race','subrace','origin','class','level','pvs','re','rf','des','fr','int','fama','sen','cosmo','ea','weapon1','weapon2','armor','items','money'].forEach(k => {
-      const el = form['c-' + k];
-      if (el) selected.push({ label: k, value: el.value || '—' });
-    });
-    let html = `<div class="review-card"><h3>${name}</h3>`;
-    html += `<p><strong>Raça:</strong> ${race} | <strong>Origem:</strong> ${origin} | <strong>Classe:</strong> ${cls} (Nv ${level})</p>`;
-    html += `<p><strong>Atributos:</strong> PVs ${form['c-pvs'].value}, RE ${form['c-re'].value}, RF ${form['c-rf'].value}, DES ${form['c-des'].value}, FR ${form['c-fr'].value}, INT ${form['c-int'].value}, Fama ${form['c-fama'].value}, SEN ${form['c-sen'].value}, COSMO ${form['c-cosmo'].value}, EA ${form['c-ea'].value}</p>`;
-    html += `<p><strong>DEF</strong> ${cDef.textContent} | <strong>DEFe</strong> ${cDefe.textContent} | <strong>Iniciativa</strong> ${cInit.textContent} | <strong>Sanidade</strong> ${cSan.textContent}</p>`;
-    html += `<p><strong>Perícias:</strong> ${skills}</p>`;
-    const eq = [form['c-weapon1'].value, form['c-weapon2'].value, form['c-armor'].value].filter(Boolean).join(', ');
+    let html = `<div class="review-card"><h3>${d.name}</h3>`;
+    if (d.portrait) html += `<div class="review-portrait"><img src="${d.portrait}" alt="Retrato"></div>`;
+    html += `<p><strong>Raça:</strong> ${d.race}${d.subrace ? ' ('+d.subrace+')' : ''} | <strong>Origem:</strong> ${d.origin} | <strong>Classe:</strong> ${d.cls} (Nv ${d.level})</p>`;
+    html += `<p><strong>Atributos:</strong> PVs ${d.pvs}, RE ${d.re}, RF ${d.rf}, DES ${d.des}, FR ${d.fr}, INT ${d.intv}, Fama ${d.fama}, SEN ${d.sen}, COSMO ${d.cosmo}, EA ${d.ea}</p>`;
+    html += `<p><strong>DEF</strong> ${d.def} | <strong>DEFe</strong> ${d.defe} | <strong>Iniciativa</strong> ${d.init} | <strong>Sanidade</strong> ${d.san}</p>`;
+    html += `<p><strong>Perícias:</strong> ${d.skills.length ? d.skills.join(', ') : 'nenhuma'}</p>`;
+    const eq = [d.weapon1, d.weapon2, d.armor].filter(Boolean).join(', ');
     if (eq) html += `<p><strong>Equipamento:</strong> ${eq}</p>`;
-    if (form['c-items'].value) html += `<p><strong>Itens:</strong> ${form['c-items'].value}</p>`;
-    if (form['c-money'].value) html += `<p><strong>Dinheiro:</strong> ${form['c-money'].value}</p>`;
-    if (form['c-backstory'].value) html += `<p><strong>História:</strong><br>${form['c-backstory'].value}</p>`;
+    if (d.items) html += `<p><strong>Itens:</strong> ${d.items}</p>`;
+    if (d.money) html += `<p><strong>Dinheiro:</strong> ${d.money}</p>`;
+    if (d.backstory && d.backstory !== '—') html += `<p><strong>História:</strong><br>${d.backstory}</p>`;
     html += `</div>`;
     review.innerHTML = html;
   }
 
-  // Save
   document.getElementById('c-save').addEventListener('click', () => {
-    const data = {};
-    els.forEach(id => {
-      const el = form[id];
-      data[id.replace('c-','')] = el ? el.value : '';
-    });
-    data.skills = [...document.querySelectorAll('#c-skills-grid input:checked')].map(c => c.value);
-    data.id = 'char_' + Date.now();
-    data.def = cDef.textContent;
-    data.defe = cDefe.textContent;
-    data.init = cInit.textContent;
-    data.san = cSan.textContent;
+    const d = getCharData();
+    const data = { ...d, id: 'char_' + Date.now() };
     const saved = JSON.parse(localStorage.getItem('wuitalur_chars') || '[]');
     saved.push(data);
     localStorage.setItem('wuitalur_chars', JSON.stringify(saved));
@@ -228,13 +246,13 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => { msg.textContent = ''; msg.className = 'creator-msg'; }, 3000);
   });
 
-  // Reset
   document.getElementById('c-reset').addEventListener('click', () => {
     if (!confirm('Tem certeza? Todos os campos serão limpos.')) return;
     els.forEach(id => {
       const el = form[id];
       if (el) {
         if (el.tagName === 'SELECT') el.selectedIndex = 0;
+        else if (el.type === 'file') { el.value = ''; previewBox.innerHTML = ''; portraitBase64 = ''; }
         else el.value = '';
       }
     });
@@ -246,5 +264,103 @@ document.addEventListener('DOMContentLoaded', () => {
     const msg = document.getElementById('c-saved-msg');
     msg.textContent = '';
     msg.className = 'creator-msg';
+  });
+
+  // Export PDF - open character sheet in new window
+  document.getElementById('c-export-pdf').addEventListener('click', () => {
+    const d = getCharData();
+    const w = window.open('', '_blank');
+    w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+<title>${d.name} — Ficha de Personagem</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0D0D12; color: #E4E4EC; padding: 40px; }
+  .sheet { max-width: 1000px; margin: 0 auto; background: #16161E; border: 1px solid #2E2E3E; border-radius: 16px; padding: 40px; }
+  .sheet-header { display: flex; gap: 30px; align-items: flex-start; margin-bottom: 30px; border-bottom: 1px solid #2E2E3E; padding-bottom: 25px; }
+  .sheet-portrait { width: 120px; height: 140px; border-radius: 8px; border: 1px solid #2E2E3E; overflow: hidden; flex-shrink: 0; background: #1E1E2A; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #6B6B7B; }
+  .sheet-portrait img { width: 100%; height: 100%; object-fit: cover; }
+  .sheet-title { flex: 1; }
+  .sheet-title h1 { font-family: 'Cinzel', serif; font-size: 2rem; color: #E4E4EC; margin-bottom: 4px; }
+  .sheet-title .subtitle { color: #6B6B7B; font-size: 0.85rem; }
+  .sheet-row { display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+  .sheet-field { flex: 1; min-width: 140px; }
+  .sheet-field label { display: block; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: #6B6B7B; margin-bottom: 4px; }
+  .sheet-field .val { font-size: 0.95rem; color: #E4E4EC; background: rgba(255,255,255,0.04); border: 1px solid #2E2E3E; border-radius: 6px; padding: 6px 10px; min-height: 32px; outline: none; transition: border-color 0.2s; }
+  .sheet-field .val:focus { border-color: #7C3AED; }
+  .sheet-section { margin-bottom: 25px; }
+  .sheet-section h2 { font-family: 'Cinzel', serif; font-size: 1rem; color: #7C3AED; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid #2E2E3E; padding-bottom: 6px; margin-bottom: 12px; }
+  .sheet-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; }
+  .sheet-stat { text-align: center; }
+  .sheet-stat .stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: #6B6B7B; }
+  .sheet-stat .stat-val { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 700; color: #E4E4EC; background: rgba(255,255,255,0.04); border: 1px solid #2E2E3E; border-radius: 6px; padding: 6px 10px; margin-top: 2px; outline: none; min-height: 36px; text-align: center; }
+  .sheet-stat .stat-val:focus { border-color: #7C3AED; }
+  .sheet-skills { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 4px; }
+  .sheet-skills .skill-item { font-size: 0.85rem; color: #9898A8; padding: 3px 8px; background: rgba(255,255,255,0.03); border-radius: 4px; border: 1px solid transparent; outline: none; }
+  .sheet-skills .skill-item:focus { border-color: #7C3AED; }
+  .sheet-textarea { width: 100%; min-height: 60px; background: rgba(255,255,255,0.04); border: 1px solid #2E2E3E; border-radius: 6px; padding: 8px 12px; color: #E4E4EC; font-family: 'Inter', sans-serif; font-size: 0.9rem; outline: none; resize: vertical; }
+  .sheet-textarea:focus { border-color: #7C3AED; }
+  .sheet-footer { margin-top: 30px; padding-top: 15px; border-top: 1px solid #2E2E3E; text-align: center; font-size: 0.75rem; color: #6B6B7B; font-family: 'Cinzel', serif; letter-spacing: 0.05em; }
+  @media print { body { padding: 0; } .sheet { border: none; border-radius: 0; padding: 30px; } }
+</style></head><body>
+<div class="sheet">
+  <div class="sheet-header">
+    <div class="sheet-portrait">${d.portrait ? '<img src="'+d.portrait+'">' : 'Sem<br>Ilustração'}</div>
+    <div class="sheet-title">
+      <h1 contenteditable="true">${d.name}</h1>
+      <div class="subtitle"><span contenteditable="true">${d.race}</span>${d.subrace ? ' ('+d.subrace+')' : ''} · <span contenteditable="true">${d.origin}</span> · <span contenteditable="true">${d.cls}</span> · Nv <span contenteditable="true">${d.level}</span></div>
+    </div>
+  </div>
+  <div class="sheet-row">
+    <div class="sheet-field"><label>Idade</label><div class="val" contenteditable="true">${d.age}</div></div>
+    <div class="sheet-field"><label>Gênero</label><div class="val" contenteditable="true">${d.gender}</div></div>
+    <div class="sheet-field"><label>Jogador</label><div class="val" contenteditable="true">${d.player}</div></div>
+    <div class="sheet-field"><label>Dinheiro</label><div class="val" contenteditable="true">${d.money || '—'}</div></div>
+  </div>
+  <div class="sheet-section">
+    <h2>Atributos & Derivados</h2>
+    <div class="sheet-stats">
+      <div class="sheet-stat"><div class="stat-label" style="color:#55a630">PVs</div><div class="stat-val" contenteditable="true" style="color:#55a630">${d.pvs}</div></div>
+      <div class="sheet-stat"><div class="stat-label" style="color:#4a49ff">RE</div><div class="stat-val" contenteditable="true" style="color:#4a49ff">${d.re}</div></div>
+      <div class="sheet-stat"><div class="stat-label" style="color:#ff1f1f">RF</div><div class="stat-val" contenteditable="true" style="color:#ff1f1f">${d.rf}</div></div>
+      <div class="sheet-stat"><div class="stat-label" style="color:#ff9500">DES</div><div class="stat-val" contenteditable="true" style="color:#ff9500">${d.des}</div></div>
+      <div class="sheet-stat"><div class="stat-label" style="color:#b30000">FR</div><div class="stat-val" contenteditable="true" style="color:#b30000">${d.fr}</div></div>
+      <div class="sheet-stat"><div class="stat-label" style="color:#7e00c2">INT</div><div class="stat-val" contenteditable="true" style="color:#7e00c2">${d.intv}</div></div>
+      <div class="sheet-stat"><div class="stat-label" style="color:#e200c2">Fama</div><div class="stat-val" contenteditable="true" style="color:#e200c2">${d.fama}</div></div>
+      <div class="sheet-stat"><div class="stat-label" style="color:#f5b700">SEN</div><div class="stat-val" contenteditable="true" style="color:#f5b700">${d.sen}</div></div>
+      <div class="sheet-stat"><div class="stat-label" style="color:#9e00ff">COSMO</div><div class="stat-val" contenteditable="true" style="color:#9e00ff">${d.cosmo}</div></div>
+      <div class="sheet-stat"><div class="stat-label" style="color:#4dd0e1">EA</div><div class="stat-val" contenteditable="true" style="color:#4dd0e1">${d.ea}</div></div>
+      <div class="sheet-stat"><div class="stat-label" style="color:#ff1f1f">DEF</div><div class="stat-val" contenteditable="true" style="color:#ff1f1f">${d.def}</div></div>
+      <div class="sheet-stat"><div class="stat-label" style="color:#4a49ff">DEFe</div><div class="stat-val" contenteditable="true" style="color:#4a49ff">${d.defe}</div></div>
+      <div class="sheet-stat"><div class="stat-label" style="color:#ff9500">Iniciativa</div><div class="stat-val" contenteditable="true" style="color:#ff9500">${d.init}</div></div>
+      <div class="sheet-stat"><div class="stat-label" style="color:#55a630">Sanidade</div><div class="stat-val" contenteditable="true" style="color:#55a630">${d.san}</div></div>
+    </div>
+  </div>
+  <div class="sheet-section">
+    <h2>Perícias</h2>
+    <div class="sheet-skills">${d.skills.length ? d.skills.map(s => '<div class="skill-item" contenteditable="true">'+s+'</div>').join('') : '<div class="skill-item" contenteditable="true" style="color:#6B6B7B">Nenhuma</div>'}</div>
+  </div>
+  <div class="sheet-section">
+    <h2>Equipamento</h2>
+    <div class="sheet-row">
+      <div class="sheet-field"><label>Arma Principal</label><div class="val" contenteditable="true">${d.weapon1 || '—'}</div></div>
+      <div class="sheet-field"><label>Arma Secundária</label><div class="val" contenteditable="true">${d.weapon2 || '—'}</div></div>
+      <div class="sheet-field"><label>Armadura</label><div class="val" contenteditable="true">${d.armor || '—'}</div></div>
+    </div>
+    <div class="sheet-field"><label>Itens</label><div class="sheet-textarea" contenteditable="true">${d.items || '—'}</div></div>
+  </div>
+  <div class="sheet-section">
+    <h2>História</h2>
+    <div class="sheet-textarea" contenteditable="true" style="min-height:80px">${d.backstory || '—'}</div>
+  </div>
+  <div class="sheet-footer">WUITALUR — Ficha de Personagem</div>
+</div>
+<script>
+  document.querySelectorAll('[contenteditable]').forEach(el => {
+    el.addEventListener('keydown', e => { if (e.key === 'Enter') document.execCommand('insertLineBreak'); });
+  });
+</script>
+</body></html>`);
+    w.document.close();
   });
 });
