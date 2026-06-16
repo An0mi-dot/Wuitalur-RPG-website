@@ -30,7 +30,16 @@ const CONDITIONS = [
   { key:'amalgamado', name:'Amalgamado', dur:'Até remover o parasita', desc:'Sofre 1d8 por turno (ignora resistências). Se permanecer até o fim da cena, entra em Morrendo. (Podridão)' },
   { key:'enjoado', name:'Enjoado', dur:'Turnos definidos ou até vomitar', desc:'Não pode consumir itens. Desvantagem em testes de Concentração e Fortitude.' },
   { key:'inconsciente', name:'Inconsciente', dur:'Até recuperar PVs ou descanso', desc:'Incapaz de agir. Cai no chão. Falha automaticamente em testes de resistência.' },
-  { key:'exposto', name:'Exposto', dur:'Turnos definidos', desc:'Armadura e defesa natural reduzidas em 50%. Ataques contra o alvo têm vantagem.' }
+  { key:'exposto', name:'Exposto', dur:'Turnos definidos', desc:'Armadura e defesa natural reduzidas em 50%. Ataques contra o alvo têm vantagem.' },
+  { key:'intimidado', name:'Intimidado', dur:'Turnos definidos', desc:'O alvo não pode tomar a Iniciativa ou fazer Ações de Ataque contra a fonte do medo.' },
+  { key:'marcado-pelo-medo', name:'Marcado pelo Medo', dur:'2 turnos', desc:'Incapaz de reagir ou tomar ações ofensivas enquanto durar o medo.' },
+  { key:'marcado', name:'Marcado', dur:'Turnos definidos', desc:'O alvo recebe dano adicional de todas as fontes enquanto estiver marcado.' },
+  { key:'insanidade', name:'Insanidade', dur:'Até ser curado ou estabilizado', desc:'O alvo perde o controle, agindo de forma irracional ou catatônica. Não pode realizar ações coordenadas.' },
+  { key:'morrendo', name:'Morrendo', dur:'Até ser estabilizado ou morrer', desc:'O alvo está inconsciente e à beira da morte. Deve fazer salvamentos de morte a cada turno.' },
+  { key:'congelado-fortalecido', name:'Congelado Fortalecido', dur:'Até receber 3 ataques', desc:'Perde o turno. Movimento reduzido a 0. Só sai ao receber 3 ataques. (Estase)' },
+  { key:'caido', name:'Caído', dur:'Até levantar (Ação de Movimento)', desc:'Deitado no chão. Ataques corpo a corpo contra o alvo têm vantagem. O alvo tem desvantagem em ataques.' },
+  { key:'amaldicoado', name:'Amaldiçoado', dur:'Turnos definidos', desc:'Sofre desvantagem em todos os testes. Dano recebido é aumentado em 1d6.' },
+  { key:'encurralado', name:'Encurralado', dur:'Turnos definidos', desc:'Não pode se mover voluntariamente. Ataques contra o alvo têm vantagem.' }
 ];
 
 (function() {
@@ -123,10 +132,22 @@ const CONDITIONS = [
     if (!container) return;
 
     const sorted = CONDITIONS.slice().sort((a, b) => b.name.length - a.name.length);
-    const namesRe = new RegExp('\\b(' + sorted.map(c => c.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:s|ns)?').join('|') + ')\\b', 'gi');
+    const namesRe = new RegExp('\\b(' + sorted.map(c => {
+      let pattern = c.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      // Add feminine support for words ending in 'o' and 'e'
+      pattern = pattern.replace(/o(?=\s|$)/g, '[oa]').replace(/e(?=\s|$)/g, '[ea]');
+      return pattern + '(?:s|ns)?';
+    }).join('|') + ')\\b', 'gi');
 
     const nameToKey = {};
-    CONDITIONS.forEach(c => { nameToKey[c.name.toLowerCase()] = c.key; });
+    CONDITIONS.forEach(c => {
+      const base = c.name.toLowerCase();
+      nameToKey[base] = c.key;
+      // Also add feminine variant (a→o) so "Intimidada" resolves to Intimidado
+      if (base.endsWith('a')) {
+        nameToKey[base.slice(0, -1) + 'o'] = c.key;
+      }
+    });
 
     const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
     const textNodes = [];
@@ -145,7 +166,11 @@ const CONDITIONS = [
       let m;
       while ((m = namesRe.exec(text)) !== null) {
         const condName = m[1];
-        const lookupName = condName.replace(/ns$|s$/, '');
+        const lookupName = condName
+          .replace(/ns$|s$/i, '')
+          .split(/\s+/)
+          .map(w => w.replace(/a$/i, 'o'))
+          .join(' ');
         const key = nameToKey[lookupName.toLowerCase()];
         if (!key) continue;
         const before = text.slice(0, m.index).trim();
