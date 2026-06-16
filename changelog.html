@@ -236,43 +236,22 @@
 
             <div class="changelog-section">
               <div class="changelog-section-title">Tooltip de Condições</div>
-              <p>Sistema de tooltip implementado para todas as condições. Ao passar o mouse sobre qualquer condição no texto, um popup exibe nome, duração e descrição completa. O sistema utiliza um índice de 42 condições catalogadas e injeta o CSS necessário via JavaScript.</p>
-            </div>
-
-            <div class="changelog-section">
-              <div class="changelog-section-title">Expansão do Auto-Wrap</div>
-              <p>Adicionadas 9 condições ausentes do reconhecimento automático: Intimidado, Marcado pelo Medo, Marcado, Insanidade, Morrendo, Congelado Fortalecido, Caído, Amaldiçoado e Encurralado. O reconhecimento agora suporta flexão de gênero (feminino via terminação "a"), plurais ("s", "ns") e palavras compostas (ex: "Marcado pelo Medo", "Congelado Fortalecido").</p>
+              <p>Agora todas as condições destacadas no texto exibem um popup com nome, duração e descrição ao passar o mouse. Também foram adicionadas condições que estavam faltando, como Intimidado, Marcado pelo Medo, Insanidade, Morrendo, Congelado Fortalecido e outras.</p>
             </div>
 
             <div class="changelog-section">
               <div class="changelog-section-title">Classe Pistoleiro</div>
-              <p>Implementada no criador e na página de classes. DV 6, ND 3, sanBonus 1, habilidades do nível 1 ao 20 com escolhas nos níveis 3 (trilha), 9 e 15. Três trilhas completas: Regressor, Solar e Gatilho Mortal.</p>
+              <p>Implementada no criador e na página de classes. DV 6, ND 3, com três trilhas completas: Regressor, Solar e Gatilho Mortal.</p>
             </div>
 
             <div class="changelog-section">
               <div class="changelog-section-title">Point-Buy de Atributos</div>
-              <p>Criador de personagem reformulado com point-buy: base 1 em cada atributo, 4 pontos para distribuir, máximo 8, reduzir a 0 devolve 1 ponto. Raça e origem aplicam bônus automáticos nos atributos. Origem auto-marca perícias e equipamento inicial. Sub-raça e sistema de Estresse removidos.</p>
-            </div>
-
-            <div class="changelog-section">
-              <div class="changelog-section-title">Fórmulas Recalibradas</div>
-              <p>DEF, PVs e Sanidade recalculados com novas fórmulas:</p>
-              <div class="changelog-formula-block">
-                DEF = (RF × PVs⁰·⁶) / 6<br>
-                DEF Espiritual = (RE × √PVs) / 8 + DEF<br>
-                PVs = DV máximo + Saúde base + bônus de raça + (nível − 1) × (metade do DV + 1)<br>
-                Sanidade = 10 + INT + bônus de classe
-              </div>
+              <p>Criador de personagem reformulado com point-buy: base 1 em cada atributo, 4 pontos para distribuir, máximo 8. Raça e origem aplicam bônus automáticos nos atributos, e a origem já marca as perícias e equipamento inicial. Sub-raça e Estresse removidos.</p>
             </div>
 
             <div class="changelog-section">
               <div class="changelog-section-title">Interface e Navegação</div>
-              <p>Home page redesenhada: hero centralizado, grid de navegação em cards, sem poluição visual. Símbolos substituídos por HTML entities para compatibilidade entre navegadores.</p>
-            </div>
-
-            <div class="changelog-section">
-              <div class="changelog-section-title">Correções</div>
-              <p>Correções no auto-wrap de condições: limite de palavra (\\b) adicionado ao regex para evitar matches parciais; falsos positivos filtrados por palavras anteriores (dano, ataque, escudo, etc.); sequencial por condição reescrito como single-pass com alternância; pontuação no final da palavra tratada antes da verificação.</p>
+              <p>Home page redesenhada com visual mais limpo e hero centralizado.</p>
             </div>
 
             <div class="changelog-tag-row">
