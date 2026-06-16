@@ -144,6 +144,24 @@ const SYSTEM_DATA = {
       12: { auto: ['+1 Selo, manter dois Selos ativos'], choices: [{ id:'con12', options: ['Martírio Vingativo (Campeão)','Fluxo Contínuo (Profeta)'] }] },
       15: { auto: ['Acelerar Selo (1x/cena)'], choices: [{ id:'con15', options: ['Avatar da Destruição (Campeão)','Improvisação Divina (Profeta)'] }] },
       20: { auto: ['+2 Selos, Apoteose (3 rodadas)'], choices: [{ id:'con20', options: ['Glória Final (Campeão)','Consciência Onipresente (Profeta)'] }] }
+    }},
+    { id: 'pistoleiro', name: 'Pistoleiro', nd: 3, dv: 6, sanBonus: 1, abilities: {
+      1: { auto: ['Tambor Relâmpago'], choices: [] },
+      2: { auto: ['Chumbo Astral'], choices: [] },
+      3: { auto: ['Recarga Rápida', 'Atirador Nato'], choices: [
+        { id:'pis3', options: ['Trilha Regressor','Trilha Solar','Trilha Gatilho Mortal'] }
+      ]},
+      6: { auto: ['Alvo do Caçador de Cabeças'], choices: [] },
+      8: { auto: ['Disparo Teleguiado'], choices: [] },
+      9: { auto: [], choices: [
+        { id:'pis9', options: ['Dead Eye','Gatilho Fantasma'] }
+      ]},
+      12: { auto: ['Disparo Ilusório'], choices: [] },
+      15: { auto: [], choices: [
+        { id:'pis15', options: ['Duelista Natural','Olho de Gavião'] }
+      ]},
+      18: { auto: ['Malandro Arcano'], choices: [] },
+      20: { auto: ['Apocalipse'], choices: [] }
     }}
   ],
   skills: [
