@@ -7,6 +7,7 @@ const CONDITIONS = [
   { key:'confuso', name:'Confuso', dur:'Turnos definidos', desc:'No início de cada turno, rola 1d4: 1=ataca mais próxima, 2=move aleatório, 3=perde ação padrão, 4=age normalmente.' },
   { key:'corroido', name:'Corroído', dur:'Turnos definidos ou até neutralizar', desc:'Sofre 1d6 de dano ácido por turno. Armaduras perdem 1 de defesa a cada 2 turnos.' },
   { key:'desarmado', name:'Desarmado', dur:'Até recuperar a arma', desc:'Solta a arma atual. Precisa de ação padrão para recuperá-la ou equipar outra.' },
+  { key:'doente', name:'Doente', dur:'Até curar ou receber tratamento', desc:'Desvantagem em testes físicos e mentais. Não pode recuperar PVs por descanso.' },
   { key:'desorientado', name:'Desorientado', dur:'Turnos definidos', desc:'Sofre desvantagem em ataques, esquivas e testes de Percepção.' },
   { key:'dilacerado', name:'Dilacerado', dur:'Turnos definidos ou até estabilizar', desc:'Recebe +2d8 de dano de qualquer fonte de dano.' },
   { key:'encantado', name:'Encantado', dur:'Turnos definidos ou até sofrer dano', desc:'Não pode atacar ou prejudicar quem o encantou. Testes de resistência com desvantagem.' },
@@ -26,7 +27,10 @@ const CONDITIONS = [
   { key:'assombrado', name:'Assombrado', dur:'Turnos definidos ou até superar RM', desc:'Sofre 1d6 de dano mental por turno. -2 em testes mentais. (Pesadelo)' },
   { key:'infectado', name:'Infectado', dur:'Permanente até regredir', desc:'Sofre 1% da Vida Máxima enquanto avança. Reduz FR e movimento em 2. (Praga)' },
   { key:'congelado', name:'Congelado', dur:'1 rodada', desc:'Perde o turno. Movimento reduzido a 0. -2 em ações físicas por 2 turnos após sair. (Estase)' },
-  { key:'amalgamado', name:'Amalgamado', dur:'Até remover o parasita', desc:'Sofre 1d8 por turno (ignora resistências). Se permanecer até o fim da cena, entra em Morrendo. (Podridão)' }
+  { key:'amalgamado', name:'Amalgamado', dur:'Até remover o parasita', desc:'Sofre 1d8 por turno (ignora resistências). Se permanecer até o fim da cena, entra em Morrendo. (Podridão)' },
+  { key:'enjoado', name:'Enjoado', dur:'Turnos definidos ou até vomitar', desc:'Não pode consumir itens. Desvantagem em testes de Concentração e Fortitude.' },
+  { key:'inconsciente', name:'Inconsciente', dur:'Até recuperar PVs ou descanso', desc:'Incapaz de agir. Cai no chão. Falha automaticamente em testes de resistência.' },
+  { key:'exposto', name:'Exposto', dur:'Turnos definidos', desc:'Armadura e defesa natural reduzidas em 50%. Ataques contra o alvo têm vantagem.' }
 ];
 
 (function() {
@@ -121,7 +125,7 @@ const CONDITIONS = [
     const sorted = CONDITIONS.slice().sort((a, b) => b.name.length - a.name.length);
     const namesRe = new RegExp('(' + sorted.map(c => c.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:s|ns)?').join('|') + ')', 'gi');
 
-    const triggerWords = ['condição:', 'condição', 'sofre', 'causa', 'aplica', 'recebe', 'entra em', 'fica', 'ficam', 'ficarão', 'deixa', 'deixam'];
+    const triggerWords = ['condição:', 'condição', 'condições', 'condições:', 'sofre', 'sofrer', 'sofrendo', 'causa', 'causando', 'causar', 'aplica', 'aplicar', 'aplicado', 'recebe', 'receber', 'recebido', 'entra em', 'ficou', 'ficar', 'ficam', 'fica', 'ficarão', 'deixa', 'deixam', 'deixou', 'deixar', 'provoca', 'provocado', 'provocar', 'ganha', 'ganham', 'ganhar', 'faz', 'fazem', 'fazer', 'força', 'forçam', 'forçar', 'forçado', 'imune'];
     const nameToKey = {};
     CONDITIONS.forEach(c => { nameToKey[c.name.toLowerCase()] = c.key; });
 
