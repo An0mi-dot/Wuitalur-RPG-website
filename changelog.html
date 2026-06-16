@@ -192,29 +192,23 @@
             </div>
             <div class="changelog-date">16 de Junho de 2026</div>
 
-            <p><strong>Condições Agora São Interativas!</strong><br>
-            Passar o mouse sobre qualquer condição no texto agora mostra um popup com o nome, duração e descrição completa daquela condição. Não precisa mais ficar alternando entre abas ou decorando a ficha — a informação está ali, na hora que você precisa.</p>
+            <p>Implementado sistema de tooltip para condições. Ao passar o mouse sobre qualquer condição no texto, um popup exibe nome, duração e descrição completa. O sistema utiliza um índice de 42 condições catalogadas e injeta o CSS necessário via JavaScript.</p>
 
-            <p>Além disso, fechamos várias lacunas: condições que existiam na página de <strong>Condições</strong> mas não eram linkadas automaticamente no texto agora são. Isso inclui <strong>Intimidado</strong>, <strong>Marcado pelo Medo</strong>, <strong>Insanidade</strong>, <strong>Morrendo</strong>, <strong>Congelado Fortalecido</strong>, <strong>Caído</strong>, <strong>Amaldiçoado</strong> e <strong>Encurralado</strong>. O sistema também passou a reconhecer o feminino (Exterminada, Amaldiçoada) e plurais, e consegue linkar condições de palavras compostas como "Marcado pelo Medo".</p>
+            <p>Adicionadas 9 condições ausentes do auto-wrap: Intimidado, Marcado pelo Medo, Marcado, Insanidade, Morrendo, Congelado Fortalecido, Caído, Amaldiçoado e Encurralado. O reconhecimento agora suporta flexão de gênero (feminino via terminação "a"), plurais ("s", "ns") e palavras compostas (ex: "Marcado pelo Medo", "Congelado Fortalecido").</p>
 
-            <p><strong>Pistoleiro no Criador de Personagem</strong><br>
-            A classe Pistoleiro foi totalmente implementada no criador e na página de classes. DV 6, ND 3, com 3 trilhas completas — <strong>Regressor</strong>, <strong>Solar</strong> e <strong>Gatilho Mortal</strong> — todas com habilidades do nível 1 ao 20 e escolhas nos níveis 3, 9 e 15.</p>
+            <p>Classe Pistoleiro implementada no criador e na página de classes. DV 6, ND 3, sanBonus 1, habilidades do nível 1 ao 20 com escolhas nos níveis 3 (trilha), 9 e 15. Três trilhas completas: Regressor, Solar e Gatilho Mortal.</p>
 
-            <p><strong>Point-Buy de Atributos</strong><br>
-            O criador agora tem um sistema de point-buy visual: você começa com base 1 em cada atributo, distribui 4 pontos livremente (máximo 8), e reduzir um atributo a 0 devolve 1 ponto. Raça e origem aplicam bônus automaticamente, e a origem também já marca as perícias e equipamento inicial.</p>
+            <p>Criador de personagem reformulado com point-buy de atributos: base 1 em cada atributo, 4 pontos para distribuir, máximo 8, reduzir a 0 devolve 1 ponto. Raça e origem aplicam bônus automáticos nos atributos. Origem auto-marca perícias e equipamento inicial. Sub-raça e sistema de Estresse removidos.</p>
 
-            <p><strong>Fórmulas Rebalanceadas</strong><br>
-            As fórmulas de DEF, PVs e Sanidade foram recalibradas para ficarem mais justas:<br>
-            <strong>DEF</strong> = (RF × PVs⁰·⁶) / 6<br>
-            <strong>DEF Espiritual</strong> = (RE × √PVs) / 8 + DEF<br>
-            <strong>PVs</strong> = DV máximo + Saúde base + bônus de raça + (nível − 1) × (metade do DV + 1)<br>
-            <strong>Sanidade</strong> = 10 + INT + bônus de classe</p>
+            <p>Fórmulas recalibradas:<br>
+            DEF = (RF × PVs⁰·⁶) / 6<br>
+            DEF Espiritual = (RE × √PVs) / 8 + DEF<br>
+            PVs = DV máximo + Saúde base + bônus de raça + (nível − 1) × (metade do DV + 1)<br>
+            Sanidade = 10 + INT + bônus de classe</p>
 
-            <p><strong>Interface e Navegação</strong><br>
-            A home page foi reformulada com um visual mais limpo: hero centralizado, grid de navegação em cards e sem poluição visual. Emojis foram substituídos por símbolos compatíveis com todos os navegadores para evitar caracteres quebrados.</p>
+            <p>Home page redesenhada: hero centralizado, grid de navegação em cards, sem poluição visual. Símbolos substituídos por HTML entities para compatibilidade entre navegadores.</p>
 
-            <p><strong>Ajustes Técnicos</strong><br>
-            Vários bugs de linkagem de condições foram corrigidos: palavras com acentuação e pontuação no final não quebram mais o link, expressões como "Amedrontado" não são mais confundidas com "Amedrontadora", e o sistema ignora contextos onde a palavra não é uma condição (como "dano", "ataque", "escudo"). A sub-raça e o sistema de Estresse antigo foram removidos do criador.</p>
+            <p>Correções no auto-wrap de condições: limite de palavra (\\b) adicionado ao regex para evitar matches parciais; falsos positivos filtrados por palavras anteriores (dano, ataque, escudo, etc.); sequencial por condição reescrito como single-pass com alternância; pontuação no final da palavra tratada antes da verificação.</p>
 
             <p><span class="tag-change">mudança</span> Versão do sistema atualizada para v1.4.1.</p>
           </div>
