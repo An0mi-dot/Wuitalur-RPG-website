@@ -121,44 +121,40 @@ const CONDITIONS = [
     const condNames = CONDITIONS.map(c => c.name).sort((a, b) => b.length - a.length);
     const condKeys = {};
     CONDITIONS.forEach(c => { condKeys[c.name] = c.key; });
+    const nameReStr = '(' + condNames.join('|') + ')';
+    const leadReStr = '(?:Condi[cç][aà]o:\\s*|condi[cç][aà]o\\s+|sofre\\s+(?:a\\s+)?condi[cç][aà]o\\s+|aplica\\s+(?:a\\s+)?condi[cç][aà]o\\s+|causa\\s+(?:a\\s+)?condi[cç][aà]o\\s+|recebe\\s+(?:a\\s+)?condi[cç][aà]o\\s+|entra\\s+em\\s+|fic[aã](?:m|r[aã]o)?\\s+|deix[aã](?:m)?\\s+)';
+    const re = new RegExp(leadReStr + nameReStr, 'gi');
 
-    const leadPattern = '(?:Condi[cç][aà]o:\\s*|condi[cç][aà]o\\s+|sofre\\s+(?:a\\s+)?condi[cç][aà]o\\s+|aplica\\s+(?:a\\s+)?condi[cç][aà]o\\s+|causa\\s+(?:a\\s+)?condi[cç][aà]o\\s+|recebe\\s+(?:a\\s+)?condi[cç][aà]o\\s+|entra\\s+em\\s+|sofre\\s+)';
-    const re = new RegExp('(' + leadPattern + ')(' + condNames.join('|') + ')', 'gi');
-
-    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, {
-      acceptNode: n => {
-        const p = n.parentElement;
-        if (!p || p.closest('.cond, .sidebar, .page-header, .wiki-dropdown, .section-heading, script, style')) return NodeFilter.FILTER_REJECT;
-        if (p.tagName === 'A' || p.tagName === 'BUTTON') return NodeFilter.FILTER_REJECT;
-        return re.test(n.textContent) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
-      }
-    });
-
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
     const nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
 
     nodes.forEach(textNode => {
+      const p = textNode.parentElement;
+      if (!p) return;
+      if (p.closest('.cond, .sidebar, .page-header, .wiki-dropdown, .section-heading, h1, h2, h3, h4, h5, script, style, a, button, nav')) return;
+
       const text = textNode.textContent;
-      let result = '';
-      let lastIdx = 0;
-      let match;
+      if (!text.trim()) return;
+
       const localRe = new RegExp(re.source, 'gi');
+      const parts = [];
+      let lastIdx = 0, match;
+      let found = false;
       while ((match = localRe.exec(text)) !== null) {
-        const keyword = match[1];
+        found = true;
+        parts.push(text.slice(lastIdx, match.index));
+        parts.push(match[1]);
         const condName = match[2];
         const key = condKeys[condName];
-        if (!key) continue;
-        if (textNode.parentElement.closest('.cond')) continue;
-        result += text.slice(lastIdx, match.index);
-        result += keyword;
-        result += `<span class="cond" data-cond="${key}">${condName}</span>`;
+        parts.push(key ? `<span class="cond" data-cond="${key}">${condName}</span>` : condName);
         lastIdx = localRe.lastIndex;
       }
-      if (lastIdx > 0 && lastIdx < text.length) result += text.slice(lastIdx);
-      if (result) {
+      if (found) {
+        parts.push(text.slice(lastIdx));
         const span = document.createElement('span');
-        span.innerHTML = result;
-        textNode.parentElement.replaceChild(span, textNode);
+        span.innerHTML = parts.join('');
+        p.replaceChild(span, textNode);
       }
     });
   }
