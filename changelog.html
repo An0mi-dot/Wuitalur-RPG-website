@@ -188,27 +188,35 @@
           <div class="changelog-entry">
             <div class="changelog-header">
               <span class="changelog-version-badge">v1.4.1</span>
-              <span class="changelog-version">Sistema de Condições & Criador</span>
+              <span class="changelog-version">Condições Interativas & Criador Reformulado</span>
             </div>
             <div class="changelog-date">16 de Junho de 2026</div>
-            <ul>
-              <li><span class="tag-new">novo</span> Sistema de tooltip de condições (<code>js/conditions.js</code>): 42 condições catalogadas com nome, duração e descrição. CSS injetado via JS. Popup estilizado com nome, duração e descrição ao passar o mouse.</li>
-              <li><span class="tag-new">novo</span> Auto-wrap de condições: varre todo texto em <code>.page-content</code> via TreeWalker, encontra menções a nomes de condição (com suporte a plural <code>s</code>/<code>ns</code> e feminino <code>a</code>) e envolve em <code>&lt;span class="cond" data-cond="..."&gt;</code>.</li>
-              <li><span class="tag-new">novo</span> Adicionadas 9 condições faltantes: Intimidado, Marcado pelo Medo, Marcado, Insanidade, Morrendo, Congelado Fortalecido, Caído, Amaldiçoado, Encurralado.</li>
-              <li><span class="tag-new">novo</span> Classe <strong>Pistoleiro</strong> adicionada ao criador e à página de classes: dv 6, ND 3, sanBonus 1, habilidades 1–20, escolhas nos níveis 3 (trilha), 9 e 15. Três trilhas completas: Regressor, Solar e Gatilho Mortal.</li>
-              <li><span class="tag-new">novo</span> Point-buy de atributos no criador: base 1, 4 pontos para distribuir, máximo 8, reduzir a 0 devolve 1 ponto. Campos readOnly com botões −/+.</li>
-              <li><span class="tag-change">mudança</span> Raça e origem agora aplicam bônus automáticos nos atributos no criador. Origem auto-marca perícias e equipamento inicial.</li>
-              <li><span class="tag-change">mudança</span> Fórmulas de DEF corrigidas: <code>DEF = (RF × PVs^0.6) / 6</code>, <code>DEFe = (RE × PVs^0.5) / 8 + DEF</code>. PVs: <code>DV_max + Saúde_base + max(bônus_raça_Saúde, 0) + (nível−1) × (⌈DV/2⌉ + 1)</code>. Sanidade: <code>10 + INT + sanBonus</code>.</li>
-              <li><span class="tag-change">mudança</span> Sub-raça removida do criador (select + lógica). Estresse removido.</li>
-              <li><span class="tag-change">mudança</span> Home page redesenhada: hero central, divider decorativo, grid de cards de navegação sem ícones. Tagline e barra de stats removidos.</li>
-              <li><span class="tag-change">mudança</span> Emojis substituídos em todas as 17 páginas HTML por HTML entities de símbolos (<code>&amp;#x25C8;</code>, <code>&amp;#x21BB;</code>, <code>&amp;#x2726;</code>, <code>&amp;#x2630;</code>) para evitar corrompimento de encoding.</li>
-              <li><span class="tag-fix">correção</span> Bug no auto-wrap: non-capturing group <code>(?:...)</code> impedia captura da condição → mudado para <code>(...)</code>. Processamento sequencial por condição causava perda de matches → reescrito como regex single-pass com todas as condições em alternância. Pontuação no <code>lastWord</code> impedia trigger match → <code>.replace(/[.,;:!?]+$/, '')</code> adicionado.</li>
-              <li><span class="tag-fix">correção</span> Palavras-gatilho expandidas: todas as formas verbais comuns (fica/ficarão/ficará/forem, sofre/sofrer/sofrendo, causa/causando, deixa/deixando, aplica/aplicam, etc.) mais conectivos (e, ou, para, como, enquanto). Verificação agora checa ambas as palavras anteriores (<code>last2.some</code>) para capturar advérbios entre verbo e condição (ex: "fica completamente paralisado").</li>
-              <li><span class="tag-fix">correção</span> Limite de palavra (<code>\b</code>) adicionado ao regex para evitar matches parciais (ex: "Amedrontado" dentro de "Amedrontadora"). Exclusão de falsos positivos: pula quando precedido por "dano", "ataque", "atirador", "escudo", "visão", "lâmina", etc.</li>
-              <li><span class="tag-fix">correção</span> Suporte a palavras compostas no regex (ex: "Congelado Fortalecido", "Marcado pelo Medo"). Normalização de lookup converte feminino→masculino (<code>a→o</code>) em cada palavra antes de buscar no índice.</li>
-              <li><span class="tag-fix">correção</span> Elementos <code>.cond-card</code> excluídos do auto-wrap para evitar tooltips aninhados. Script adicionado a todas as 17 páginas.</li>
-              <li><span class="tag-change">mudança</span> Versão do sistema atualizada para v1.4.1.</li>
-            </ul>
+
+            <p>📖 <strong>Condições Agora São Interativas!</strong><br>
+            Passar o mouse sobre qualquer condição no texto agora mostra um popup com o nome, duração e descrição completa daquela condição. Não precisa mais ficar alternando entre abas ou decorando a ficha — a informação está ali, na hora que você precisa.</p>
+
+            <p>Além disso, fechamos várias lacunas: condições que existiam na página de <strong>Condições</strong> mas não eram linkadas automaticamente no texto agora são. Isso inclui <strong>Intimidado</strong>, <strong>Marcado pelo Medo</strong>, <strong>Insanidade</strong>, <strong>Morrendo</strong>, <strong>Congelado Fortalecido</strong>, <strong>Caído</strong>, <strong>Amaldiçoado</strong> e <strong>Encurralado</strong>. O sistema também passou a reconhecer o feminino (Exterminada, Amaldiçoada) e plurais, e consegue linkar condições de palavras compostas como "Marcado pelo Medo".</p>
+
+            <p>🔫 <strong>Pistoleiro no Criador de Personagem</strong><br>
+            A classe Pistoleiro foi totalmente implementada no criador e na página de classes. DV 6, ND 3, com 3 trilhas completas — <strong>Regressor</strong>, <strong>Solar</strong> e <strong>Gatilho Mortal</strong> — todas com habilidades do nível 1 ao 20 e escolhas nos níveis 3, 9 e 15.</p>
+
+            <p>📐 <strong>Point-Buy de Atributos</strong><br>
+            O criador agora tem um sistema de point-buy visual: você começa com base 1 em cada atributo, distribui 4 pontos livremente (máximo 8), e reduzir um atributo a 0 devolve 1 ponto. Raça e origem aplicam bônus automaticamente, e a origem também já marca as perícias e equipamento inicial.</p>
+
+            <p>🧮 <strong>Fórmulas Rebalanceadas</strong><br>
+            As fórmulas de DEF, PVs e Sanidade foram recalibradas para ficarem mais justas:<br>
+            <strong>DEF</strong> = (RF × PVs⁰·⁶) / 6<br>
+            <strong>DEF Espiritual</strong> = (RE × √PVs) / 8 + DEF<br>
+            <strong>PVs</strong> = DV máximo + Saúde base + bônus de raça + (nível − 1) × (metade do DV + 1)<br>
+            <strong>Sanidade</strong> = 10 + INT + bônus de classe</p>
+
+            <p>🖥️ <strong>Interface e Navegação</strong><br>
+            A home page foi reformulada com um visual mais limpo: hero centralizado, grid de navegação em cards e sem poluição visual. Emojis foram substituídos por símbolos compatíveis com todos os navegadores para evitar caracteres quebrados.</p>
+
+            <p>⚙️ <strong>Ajustes Técnicos</strong><br>
+            Vários bugs de linkagem de condições foram corrigidos: palavras com acentuação e pontuação no final não quebram mais o link, expressões como "Amedrontado" não são mais confundidas com "Amedrontadora", e o sistema ignora contextos onde a palavra não é uma condição (como "dano", "ataque", "escudo"). A sub-raça e o sistema de Estresse antigo foram removidos do criador.</p>
+
+            <p><span class="tag-change">mudança</span> Versão do sistema atualizada para v1.4.1.</p>
           </div>
 
           <div class="changelog-entry">
