@@ -119,7 +119,7 @@ const CONDITIONS = [
     if (!container) return;
 
     const sorted = CONDITIONS.slice().sort((a, b) => b.name.length - a.name.length);
-    const namesRe = new RegExp('(' + sorted.map(c => c.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'gi');
+    const namesRe = new RegExp('(' + sorted.map(c => c.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:s|ns)?').join('|') + ')', 'gi');
 
     const triggerWords = ['condição:', 'condição', 'sofre', 'causa', 'aplica', 'recebe', 'entra em', 'fica', 'ficam', 'ficarão', 'deixa', 'deixam'];
     const nameToKey = {};
@@ -142,13 +142,18 @@ const CONDITIONS = [
       let m;
       while ((m = namesRe.exec(text)) !== null) {
         const condName = m[1];
+        const lookupName = condName.replace(/ns$|s$/, '');
+        const key = nameToKey[lookupName.toLowerCase()];
+        if (!key) continue;
         const before = text.slice(0, m.index).trim();
-        const lastWord = before.split(/\s+/).pop().toLowerCase();
+        const words = before.split(/\s+/);
+        const last2 = words.slice(-2).map(w => w.replace(/[.,;:!?]+$/, '').toLowerCase());
         const isTrigger = triggerWords.some(tw => {
-          if (tw.endsWith(':')) return lastWord === tw.slice(0, -1);
-          return lastWord === tw;
+          const parts = tw.split(/\s+/);
+          if (parts.length === 1) return last2[last2.length - 1] === tw;
+          return last2.length === 2 && last2[0] === parts[0] && last2[1] === parts[1];
         });
-        if (isTrigger) matches.push({ idx: m.index, end: namesRe.lastIndex, name: condName });
+        if (isTrigger) matches.push({ idx: m.index, end: namesRe.lastIndex, name: condName, key });
       }
 
       if (!matches.length) return;
@@ -157,8 +162,7 @@ const CONDITIONS = [
       let lastIdx = 0;
       for (const match of matches) {
         result += text.slice(lastIdx, match.idx);
-        const key = nameToKey[match.name.toLowerCase()];
-        result += key ? `<span class="cond" data-cond="${key}">${match.name}</span>` : match.name;
+        result += match.key ? `<span class="cond" data-cond="${match.key}">${match.name}</span>` : match.name;
         lastIdx = match.end;
       }
       result += text.slice(lastIdx);
