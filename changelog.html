@@ -136,7 +136,7 @@
     <div class="sidebar-header">
       <div class="sidebar-logo">
         WUITALUR
-        <span>Sistema v1.4.0</span>
+        <span>Sistema v1.4.1</span>
       </div>
     </div>
     <nav class="sidebar-nav">
@@ -184,6 +184,32 @@
 
       <section class="subsection">
         <div class="changelog-list">
+
+          <div class="changelog-entry">
+            <div class="changelog-header">
+              <span class="changelog-version-badge">v1.4.1</span>
+              <span class="changelog-version">Sistema de Condições & Criador</span>
+            </div>
+            <div class="changelog-date">16 de Junho de 2026</div>
+            <ul>
+              <li><span class="tag-new">novo</span> Sistema de tooltip de condições (<code>js/conditions.js</code>): 42 condições catalogadas com nome, duração e descrição. CSS injetado via JS. Popup estilizado com nome, duração e descrição ao passar o mouse.</li>
+              <li><span class="tag-new">novo</span> Auto-wrap de condições: varre todo texto em <code>.page-content</code> via TreeWalker, encontra menções a nomes de condição (com suporte a plural <code>s</code>/<code>ns</code> e feminino <code>a</code>) e envolve em <code>&lt;span class="cond" data-cond="..."&gt;</code>.</li>
+              <li><span class="tag-new">novo</span> Adicionadas 9 condições faltantes: Intimidado, Marcado pelo Medo, Marcado, Insanidade, Morrendo, Congelado Fortalecido, Caído, Amaldiçoado, Encurralado.</li>
+              <li><span class="tag-new">novo</span> Classe <strong>Pistoleiro</strong> adicionada ao criador e à página de classes: dv 6, ND 3, sanBonus 1, habilidades 1–20, escolhas nos níveis 3 (trilha), 9 e 15. Três trilhas completas: Regressor, Solar e Gatilho Mortal.</li>
+              <li><span class="tag-new">novo</span> Point-buy de atributos no criador: base 1, 4 pontos para distribuir, máximo 8, reduzir a 0 devolve 1 ponto. Campos readOnly com botões −/+.</li>
+              <li><span class="tag-change">mudança</span> Raça e origem agora aplicam bônus automáticos nos atributos no criador. Origem auto-marca perícias e equipamento inicial.</li>
+              <li><span class="tag-change">mudança</span> Fórmulas de DEF corrigidas: <code>DEF = (RF × PVs^0.6) / 6</code>, <code>DEFe = (RE × PVs^0.5) / 8 + DEF</code>. PVs: <code>DV_max + Saúde_base + max(bônus_raça_Saúde, 0) + (nível−1) × (⌈DV/2⌉ + 1)</code>. Sanidade: <code>10 + INT + sanBonus</code>.</li>
+              <li><span class="tag-change">mudança</span> Sub-raça removida do criador (select + lógica). Estresse removido.</li>
+              <li><span class="tag-change">mudança</span> Home page redesenhada: hero central, divider decorativo, grid de cards de navegação sem ícones. Tagline e barra de stats removidos.</li>
+              <li><span class="tag-change">mudança</span> Emojis substituídos em todas as 17 páginas HTML por HTML entities de símbolos (<code>&amp;#x25C8;</code>, <code>&amp;#x21BB;</code>, <code>&amp;#x2726;</code>, <code>&amp;#x2630;</code>) para evitar corrompimento de encoding.</li>
+              <li><span class="tag-fix">correção</span> Bug no auto-wrap: non-capturing group <code>(?:...)</code> impedia captura da condição → mudado para <code>(...)</code>. Processamento sequencial por condição causava perda de matches → reescrito como regex single-pass com todas as condições em alternância. Pontuação no <code>lastWord</code> impedia trigger match → <code>.replace(/[.,;:!?]+$/, '')</code> adicionado.</li>
+              <li><span class="tag-fix">correção</span> Palavras-gatilho expandidas: todas as formas verbais comuns (fica/ficarão/ficará/forem, sofre/sofrer/sofrendo, causa/causando, deixa/deixando, aplica/aplicam, etc.) mais conectivos (e, ou, para, como, enquanto). Verificação agora checa ambas as palavras anteriores (<code>last2.some</code>) para capturar advérbios entre verbo e condição (ex: "fica completamente paralisado").</li>
+              <li><span class="tag-fix">correção</span> Limite de palavra (<code>\b</code>) adicionado ao regex para evitar matches parciais (ex: "Amedrontado" dentro de "Amedrontadora"). Exclusão de falsos positivos: pula quando precedido por "dano", "ataque", "atirador", "escudo", "visão", "lâmina", etc.</li>
+              <li><span class="tag-fix">correção</span> Suporte a palavras compostas no regex (ex: "Congelado Fortalecido", "Marcado pelo Medo"). Normalização de lookup converte feminino→masculino (<code>a→o</code>) em cada palavra antes de buscar no índice.</li>
+              <li><span class="tag-fix">correção</span> Elementos <code>.cond-card</code> excluídos do auto-wrap para evitar tooltips aninhados. Script adicionado a todas as 17 páginas.</li>
+              <li><span class="tag-change">mudança</span> Versão do sistema atualizada para v1.4.1.</li>
+            </ul>
+          </div>
 
           <div class="changelog-entry">
             <div class="changelog-header">
