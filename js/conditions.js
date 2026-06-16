@@ -118,18 +118,18 @@ const CONDITIONS = [
     const container = document.querySelector('.page-content') || document.querySelector('.main-wrapper') || document.body;
     if (!container) return;
 
-    const condNames = CONDITIONS.map(c => c.name).sort((a, b) => b.length - a.length);
-    const condKeys = {};
-    CONDITIONS.forEach(c => { condKeys[c.name] = c.key; });
-    const nameReStr = '(' + condNames.join('|') + ')';
-    const leadReStr = '(Condi[cç][aà]o:\\s*|condi[cç][aà]o\\s+|sofre\\s+(?:a\\s+)?condi[cç][aà]o\\s+|aplica\\s+(?:a\\s+)?condi[cç][aà]o\\s+|causa\\s+(?:a\\s+)?condi[cç][aà]o\\s+|recebe\\s+(?:a\\s+)?condi[cç][aà]o\\s+|entra\\s+em\\s+|fic[aã](?:m|r[aã]o)?\\s+|deix[aã](?:m)?\\s+)';
-    const re = new RegExp(leadReStr + nameReStr, 'gi');
+    const sorted = CONDITIONS.slice().sort((a, b) => b.name.length - a.name.length);
+    const namesRe = new RegExp('(' + sorted.map(c => c.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'gi');
+
+    const triggerWords = ['condição:', 'condição', 'sofre', 'causa', 'aplica', 'recebe', 'entra em', 'fica', 'ficam', 'ficarão', 'deixa', 'deixam'];
+    const nameToKey = {};
+    CONDITIONS.forEach(c => { nameToKey[c.name.toLowerCase()] = c.key; });
 
     const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
-    const nodes = [];
-    while (walker.nextNode()) nodes.push(walker.currentNode);
+    const textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
 
-    nodes.forEach(textNode => {
+    textNodes.forEach(textNode => {
       const p = textNode.parentElement;
       if (!p) return;
       if (p.closest('.cond, .sidebar, .page-header, .wiki-dropdown, .section-heading, h1, h2, h3, h4, h5, script, style, a, button, nav')) return;
@@ -137,25 +137,35 @@ const CONDITIONS = [
       const text = textNode.textContent;
       if (!text.trim()) return;
 
-      const localRe = new RegExp(re.source, 'gi');
-      const parts = [];
-      let lastIdx = 0, match;
-      let found = false;
-      while ((match = localRe.exec(text)) !== null) {
-        found = true;
-        parts.push(text.slice(lastIdx, match.index));
-        parts.push(match[1]);
-        const condName = match[2];
-        const key = condKeys[condName];
-        parts.push(key ? `<span class="cond" data-cond="${key}">${condName}</span>` : condName);
-        lastIdx = localRe.lastIndex;
+      const matches = [];
+      namesRe.lastIndex = 0;
+      let m;
+      while ((m = namesRe.exec(text)) !== null) {
+        const condName = m[1];
+        const before = text.slice(0, m.index).trim();
+        const lastWord = before.split(/\s+/).pop().toLowerCase();
+        const isTrigger = triggerWords.some(tw => {
+          if (tw.endsWith(':')) return lastWord === tw.slice(0, -1);
+          return lastWord === tw;
+        });
+        if (isTrigger) matches.push({ idx: m.index, end: namesRe.lastIndex, name: condName });
       }
-      if (found) {
-        parts.push(text.slice(lastIdx));
-        const span = document.createElement('span');
-        span.innerHTML = parts.join('');
-        p.replaceChild(span, textNode);
+
+      if (!matches.length) return;
+
+      let result = '';
+      let lastIdx = 0;
+      for (const match of matches) {
+        result += text.slice(lastIdx, match.idx);
+        const key = nameToKey[match.name.toLowerCase()];
+        result += key ? `<span class="cond" data-cond="${key}">${match.name}</span>` : match.name;
+        lastIdx = match.end;
       }
+      result += text.slice(lastIdx);
+
+      const span = document.createElement('span');
+      span.innerHTML = result;
+      p.replaceChild(span, textNode);
     });
   }
 
