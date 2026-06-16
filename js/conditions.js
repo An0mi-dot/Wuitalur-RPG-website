@@ -122,7 +122,7 @@ const CONDITIONS = [
     const condKeys = {};
     CONDITIONS.forEach(c => { condKeys[c.name] = c.key; });
     const nameReStr = '(' + condNames.join('|') + ')';
-    const leadReStr = '(?:Condi[cç][aà]o:\\s*|condi[cç][aà]o\\s+|sofre\\s+(?:a\\s+)?condi[cç][aà]o\\s+|aplica\\s+(?:a\\s+)?condi[cç][aà]o\\s+|causa\\s+(?:a\\s+)?condi[cç][aà]o\\s+|recebe\\s+(?:a\\s+)?condi[cç][aà]o\\s+|entra\\s+em\\s+|fic[aã](?:m|r[aã]o)?\\s+|deix[aã](?:m)?\\s+)';
+    const leadReStr = '(Condi[cç][aà]o:\\s*|condi[cç][aà]o\\s+|sofre\\s+(?:a\\s+)?condi[cç][aà]o\\s+|aplica\\s+(?:a\\s+)?condi[cç][aà]o\\s+|causa\\s+(?:a\\s+)?condi[cç][aà]o\\s+|recebe\\s+(?:a\\s+)?condi[cç][aà]o\\s+|entra\\s+em\\s+|fic[aã](?:m|r[aã]o)?\\s+|deix[aã](?:m)?\\s+)';
     const re = new RegExp(leadReStr + nameReStr, 'gi');
 
     const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
