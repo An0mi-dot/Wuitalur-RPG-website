@@ -125,7 +125,6 @@ const CONDITIONS = [
     const sorted = CONDITIONS.slice().sort((a, b) => b.name.length - a.name.length);
     const namesRe = new RegExp('\\b(' + sorted.map(c => c.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:s|ns)?').join('|') + ')\\b', 'gi');
 
-    const triggerWords = ['condição:', 'condição', 'condições', 'condições:', 'sofre', 'sofrer', 'sofrendo', 'causa', 'causando', 'causar', 'aplica', 'aplicam', 'aplicar', 'aplicado', 'recebe', 'receber', 'recebem', 'recebido', 'entra em', 'ficou', 'ficar', 'ficam', 'fica', 'ficarão', 'ficará', 'forem', 'deixa', 'deixam', 'deixou', 'deixar', 'deixando', 'provoca', 'provocado', 'provocar', 'ganha', 'ganham', 'ganhar', 'faz', 'fazem', 'fazer', 'força', 'forçam', 'forçar', 'forçado', 'imune', 'é', 'são', 'estado de', 'sob', 'for', 'seja', 'à', 'cai', 'esteja', 'estiver', 'e', 'para', 'enquanto', 'ou', 'como'];
     const nameToKey = {};
     CONDITIONS.forEach(c => { nameToKey[c.name.toLowerCase()] = c.key; });
 
@@ -151,15 +150,13 @@ const CONDITIONS = [
         if (!key) continue;
         const before = text.slice(0, m.index).trim();
         const words = before.split(/\s+/);
-        const last2 = words.slice(-2).map(w => w.replace(/[.,;:!?()]+$/, '').toLowerCase());
-        // Skip if immediately preceded by "dano" (e.g., "Dano Espectral" = damage type, not condition)
-        if (last2.length > 0 && last2[last2.length - 1] === 'dano') continue;
-        const isTrigger = triggerWords.some(tw => {
-          const parts = tw.split(/\s+/);
-          if (parts.length === 1) return last2.some(w => w === tw);
-          return last2.length >= 2 && last2[last2.length - 2] === parts[0] && last2[last2.length - 1] === parts[1];
-        });
-        if (isTrigger) matches.push({ idx: m.index, end: namesRe.lastIndex, name: condName, key });
+        const lastWord = words.length > 0 ? words[words.length - 1].replace(/[.,;:!?()]+$/, '').toLowerCase() : '';
+        // Skip common false positives where condition name is used as descriptor
+        if (lastWord === 'dano' || lastWord === 'ataque' || lastWord === 'golpe' || lastWord === 'armas' ||
+            lastWord === 'atirador' || lastWord === 'escudo' || lastWord === 'visão' || lastWord === 'lâmina' ||
+            lastWord === 'lâmpada' || lastWord === 'grito' || lastWord === 'vibração' ||
+            lastWord === 'existência' || lastWord === 'energia' || lastWord === 'flecha' || lastWord === 'tiros') continue;
+        matches.push({ idx: m.index, end: namesRe.lastIndex, name: condName, key });
       }
 
       if (!matches.length) return;
