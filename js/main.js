@@ -16,8 +16,44 @@ function initUmbraTremble() {
   });
 }
 
+function highlightPV() {
+  const walker = document.createTreeWalker(
+    document.body,
+    NodeFilter.SHOW_TEXT,
+    {
+      acceptNode: function(node) {
+        if (!node.textContent || !node.textContent.includes('PV')) return NodeFilter.FILTER_REJECT;
+        var parent = node.parentElement;
+        if (!parent || ['SCRIPT','STYLE','TEXTAREA'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        if (parent.closest('.pv-stat')) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    }
+  );
+  var nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach(function(node) {
+    var text = node.textContent;
+    var frag = document.createDocumentFragment();
+    var lastIdx = 0;
+    var re = /(\d+\s*)?PV/g;
+    var match;
+    while ((match = re.exec(text)) !== null) {
+      if (match.index > lastIdx) frag.appendChild(document.createTextNode(text.slice(lastIdx, match.index)));
+      var span = document.createElement('span');
+      span.className = 'pv-stat';
+      span.textContent = match[0];
+      frag.appendChild(span);
+      lastIdx = re.lastIndex;
+    }
+    if (lastIdx < text.length) frag.appendChild(document.createTextNode(text.slice(lastIdx)));
+    node.parentNode.replaceChild(frag, node);
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initUmbraTremble();
+  highlightPV();
   const sidebar = document.getElementById('sidebar');
   const toggle = document.getElementById('sidebar-toggle');
 

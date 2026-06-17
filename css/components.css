@@ -1119,3 +1119,10 @@
   .creator-panel h2 { font-size: 1.3rem; }
   .creator-calc-grid { gap: var(--space-md); }
 }
+
+
+/* === PV STAT HIGHLIGHT === */
+.pv-stat {
+  color: #4ade80;
+  font-weight: 600;
+}
