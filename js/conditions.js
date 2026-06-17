@@ -156,7 +156,7 @@ const CONDITIONS = [
     textNodes.forEach(textNode => {
       const p = textNode.parentElement;
       if (!p) return;
-      if (p.closest('.cond, .cond-card, .sidebar, .page-header, .wiki-dropdown, .section-heading, h1, h2, h3, h4, h5, script, style, a, button, nav')) return;
+      if (p.closest('.cond, .cond-card, .sidebar, .page-header, .wiki-dropdown, .section-heading, h1, h2, h3, h4, h5, script, style, a, button, nav, [data-no-auto-cond]')) return;
 
       const text = textNode.textContent;
       if (!text.trim()) return;

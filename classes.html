@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -31,7 +31,7 @@
     <div class="sidebar-header">
       <div class="sidebar-logo">
         WUITALUR
-        <span>Sistema v1.4.1</span>
+        <span>Sistema v1.4.2</span>
       </div>
     </div>
     <nav class="sidebar-nav">
@@ -48,6 +48,7 @@
       <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
       <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
       <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+      <a href="glossario.html" class="sidebar-link"><span class="icon"></span> Glossário</a>
 
       <div class="sidebar-section-title">Conteúdo</div>
       <a href="classes.html" class="sidebar-link active"><span class="icon"></span> Classes</a>
@@ -72,6 +73,7 @@
         <div class="wiki-dropdown" id="wiki-menu-dropdown">
           <a href="wiki.html" class="wiki-dropdown-item"><span class="icon">&#x25C8;</span> Wiki de Personagens</a>
           <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
+          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x25C6;</span> Glossário</a>
           <a href="criador.html" class="wiki-dropdown-item"><span class="icon">&#x2726;</span> Criador de Ficha</a>
         </div>
       </div>
@@ -108,6 +110,7 @@
         <a href="#sobrevivente" class="ability-tag" style="font-size: 0.85rem; padding: var(--space-sm) var(--space-md); text-decoration: none; color: var(--text-primary); background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle);">Sobrevivente</a>
         <a href="#consagrados" class="ability-tag" style="font-size: 0.85rem; padding: var(--space-sm) var(--space-md); text-decoration: none; color: var(--text-primary); background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle);">Consagrados</a>
         <a href="#pistoleiro" class="ability-tag" style="font-size: 0.85rem; padding: var(--space-sm) var(--space-md); text-decoration: none; color: var(--text-primary); background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle);">Pistoleiro</a>
+        <a href="#eterno" class="ability-tag" style="font-size: 0.85rem; padding: var(--space-sm) var(--space-md); text-decoration: none; color: var(--text-primary); background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle);">O Eterno</a>
       </div>
 
       <!-- CAVALEIROS DE PALADIUM -->
@@ -3666,15 +3669,186 @@
               </div>
             </div>
 
+            <h4>Trilhas do Eterno</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: var(--space-lg);">No 3&ordm; n&iacute;vel, o Eterno decide que rumo tomar com rela&ccedil;&atilde;o ao seu poder. A Trilha reflete a ess&ecirc;ncia elemental que o Eterno vai canalizar atrav&eacute;s da Centelha.</p>
+
+            <!-- TRILHA CONDUTOR DE TEMPESTADES -->
+            <div class="race-card" style="max-width: 100%; border-color: rgba(0, 255, 255, 0.4); margin-bottom: var(--space-xl);">
+              <div class="race-card-header"><h3 class="race-name" style="font-size: 1.3rem;">Condutor de Tempestades</h3></div>
+              <div class="race-card-body">
+                <p class="race-description">"A Centelha n&atilde;o apenas acende a vida &mdash; ela invoca a tormenta. Cada disparo &eacute; um raio, cada inimigo, um para-raios."</p>
+                <p class="race-description">O Condutor de Tempestades canaliza o <span class="elem-electro">Electro</span> em sua forma mais bruta. Sua Centelha projeta Descargas Voltaicas diretamente no campo de batalha, transformando tiros em arcos voltaicos que saltam entre inimigos. Enquanto outros precisam de foco e materiais para ancorar seus s&iacute;mbolos, o Condutor sustenta suas Descargas com a pr&oacute;pria Energia Astral, espalhando caos e alta voltagem por onde passa.</p>
+
+                <div class="class-rank"><h5>Descargas Voltaicas</h5>
+                <p>Os disparos do Eterno aplicam 1 ac&uacute;mulo de <strong>Descargas Voltaicas</strong> no alvo (m&aacute;x. 5). Ao atingir 5 ac&uacute;mulos, as Descargas descarregam: o inimigo sofre <span class="dice">3d8</span> de dano <span class="elem-electro">Electro</span> e todos os inimigos num raio de 3B recebem metade desse dano por um arco voltaico. Os ac&uacute;mulos s&atilde;o zerados ap&oacute;s a descarga.</p></div>
+
+                <div class="race-ability"><div class="ability-level">N&iacute;vel 3 &mdash; Escolha uma:</div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                    <h5>Sobrecarga de Descargas</h5>
+                    <p>Aplica 2 ac&uacute;mulos de Descarga Voltaica em um alvo vis&iacute;vel. Se o alvo j&aacute; tiver 3 ou mais ac&uacute;mulos, a descarga &eacute; imediata, causando <span class="dice">4d8</span> de dano <span class="elem-electro">Electro</span> em &aacute;rea de 4B. <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-30 de Energia Astral</span></p>
+                  </div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
+                    <h5>Raio em Cadeia</h5>
+                    <p>Dispara um raio que atinge o alvo principal e salta para at&eacute; 3 inimigos adicionais num raio de 4B. Cada salto causa <span class="dice">2d6</span> de dano <span class="elem-electro">Electro</span> e aplica 1 Descarga Voltaica. <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-40 de Energia Astral</span></p>
+                  </div>
+                </div>
+
+                <div class="race-ability"><div class="ability-level">N&iacute;vel 6</div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
+                    <h5>Tempestade Imminente</h5>
+                    <p>O Eterno canaliza Electro intensamente. Durante 3 rodadas, seus disparos aplicam 1 Descarga Voltaica extra e o raio de descarga das Descargas aumenta para 5B. <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-60 de Energia Astral</span></p>
+                  </div>
+                </div>
+
+                <div class="race-ability"><div class="ability-level">N&iacute;vel 10</div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
+                    <h5>Escudo de Raios</h5>
+                    <p>A Centelha envolve o Eterno em uma cascata de cargas el&eacute;tricas. Por 2 rodadas, inimigos que acertarem o Eterno em corpo a corpo sofrem <span class="dice">2d8</span> de dano <span class="elem-electro">Electro</span> e recebem 1 Descarga Voltaica. <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-50 de Energia Astral</span></p>
+                  </div>
+                </div>
+
+                <div class="race-ability"><div class="ability-level">N&iacute;vel 14 &mdash; Escolha uma:</div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                    <h5>Eletrocutar</h5>
+                    <p>Descarrega todas as Descargas Voltaicas de um alvo instantaneamente, causando <span class="dice">2d8</span> de dano <span class="elem-electro">Electro</span> por Descarga consumida. Se consumir 5 Descargas, o dano dobra e o alvo fica <strong>Paralisado</strong> at&eacute; o pr&oacute;ximo turno. <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-70 de Energia Astral</span></p>
+                  </div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
+                    <h5>Campo Eletromagn&eacute;tico</h5>
+                    <p>Cria uma &aacute;rea de 4B que distorce proj&eacute;teis. Inimigos na &aacute;rea t&ecirc;m desvantagem em ataques &agrave; dist&acirc;ncia. Aliados dentro ganham +10 de Escudo Astral. Dura 3 rodadas. <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-80 de Energia Astral</span></p>
+                  </div>
+                </div>
+
+                <div class="race-ability"><div class="ability-level">N&iacute;vel 18</div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
+                    <h5>F&uacute;ria da Tempestade</h5>
+                    <p>O Eterno canaliza o Electro ao m&aacute;ximo. Durante o Bem da Luz, toda Descarga Voltaica causa <span class="dice">6d10</span> de dano <span class="elem-electro">Electro</span> em cadeia para todos os inimigos num raio de 6B, e os ac&uacute;mulos n&atilde;o s&atilde;o zerados ap&oacute;s a descarga. <span class="ability-tag">Passiva</span></p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- TRILHA PREDADOR NULÍDRICO -->
+            <div class="race-card" style="max-width: 100%; border-color: rgba(255, 0, 0, 0.4); margin-bottom: var(--space-xl);">
+              <div class="race-card-header"><h3 class="race-name" style="font-size: 1.3rem;">Predador Nul&iacute;drico</h3></div>
+              <div class="race-card-body">
+                <p class="race-description">"O v&aacute;cuo n&atilde;o sente piedade. Ele apenas espera &mdash; e quando voc&ecirc; menos espera, ele consome."</p>
+                <p class="race-description">O Predador Nul&iacute;drico manipula o <span class="elem-nulidrico">Nul&iacute;drico</span> para distorcer a gravidade e a pr&oacute;pria realidade ao redor dos inimigos. Ca&ccedil;ador implac&aacute;vel, ele enfraquece a Armadura dos alvos, prende grupos em campos gravitacionais e rastreia amea&ccedil;as atrav&eacute;s de anomalias espaciais geradas por sua Centelha.</p>
+
+                <div class="class-rank"><h5>Marca do V&aacute;cuo</h5>
+                <p>Os disparos do Eterno aplicam 1 ac&uacute;mulo de <strong>Marca do V&aacute;cuo</strong> no alvo (m&aacute;x. 5). Para cada ac&uacute;mulo, a Armadura do alvo &eacute; reduzida em 2 e sua velocidade reduzida em 1B. Ao atingir 5 ac&uacute;mulos, o alvo fica <strong>Enraizado</strong> por 1 rodada e sofre <span class="dice">4d6</span> de dano <span class="elem-nulidrico">Nul&iacute;drico</span>.</p></div>
+
+                <div class="race-ability"><div class="ability-level">N&iacute;vel 3 &mdash; Escolha uma:</div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                    <h5>Distorcer Gravidade</h5>
+                    <p>Escolhe um ponto vis&iacute;vel em at&eacute; 6B. Cria uma distor&ccedil;&atilde;o gravitacional num raio de 3B. Inimigos na &aacute;rea devem passar em teste de <span class="attr-fr">FOR</span> (CD 10 + <span class="attr-des">DES</span> + Profici&ecirc;ncia) ou s&atilde;o puxados 2B em dire&ccedil;&atilde;o ao centro e recebem 1 Marca do V&aacute;cuo. Dura 2 rodadas. <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-35 de Energia Astral</span></p>
+                  </div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
+                    <h5>Passos do V&aacute;cuo</h5>
+                    <p>O Eterno se desmaterializa e se teletransporta para um ponto vis&iacute;vel em at&eacute; 6B. Ap&oacute;s o teleporte, ganha vantagem no pr&oacute;ximo ataque e aplica 2 Marcas do V&aacute;cuo no alvo. <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-25 de Energia Astral</span></p>
+                  </div>
+                </div>
+
+                <div class="race-ability"><div class="ability-level">N&iacute;vel 6</div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
+                    <h5>Vis&atilde;o do Ca&ccedil;ador</h5>
+                    <p>O Eterno marca um alvo como sua presa. Por 4 rodadas, ele sabe exatamente onde o alvo est&aacute; (mesmo invis&iacute;vel ou atr&aacute;s de cobertura), ganha +2 em testes de acerto contra ele, e seus disparos aplicam 1 Marca do V&aacute;cuo extra. <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-40 de Energia Astral</span></p>
+                  </div>
+                </div>
+
+                <div class="race-ability"><div class="ability-level">N&iacute;vel 10</div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
+                    <h5>Campo de Supress&atilde;o</h5>
+                    <p>Cria uma esfera de anula&ccedil;&atilde;o num raio de 4B por 2 rodadas. Inimigos dentro n&atilde;o podem ganhar b&ocirc;nus m&aacute;gicos ou elementares, e t&ecirc;m seus PV recuperados reduzidos pela metade. <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-70 de Energia Astral</span></p>
+                  </div>
+                </div>
+
+                <div class="race-ability"><div class="ability-level">N&iacute;vel 14 &mdash; Escolha uma:</div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                    <h5>Rasgo de Realidade</h5>
+                    <p>Rasga o espa&ccedil;o em um ponto vis&iacute;vel. Todos os inimigos num raio de 3B sofrem <span class="dice">4d10</span> de dano <span class="elem-nulidrico">Nul&iacute;drico</span> e recebem 3 Marcas do V&aacute;cuo. A &aacute;rea se torna terreno dif&iacute;cil por 2 rodadas. <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-90 de Energia Astral</span></p>
+                  </div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
+                    <h5>Emboscada Dimensional</h5>
+                    <p>O Eterno desaparece em uma fenda espacial. No pr&oacute;ximo turno, emerge em qualquer ponto vis&iacute;vel em at&eacute; 10B. Ao emergir, realiza um disparo autom&aacute;tico que ignora Armadura e causa <span class="dice">5d8</span> de dano <span class="elem-nulidrico">Nul&iacute;drico</span>. <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o (prepara)</span> <span class="ability-cost">-75 de Energia Astral</span></p>
+                  </div>
+                </div>
+
+                <div class="race-ability"><div class="ability-level">N&iacute;vel 18</div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
+                    <h5>Ca&ccedil;a Espectral</h5>
+                    <p>Durante o Bem da Luz, toda Marca do V&aacute;cuo aplicada emite um pulso de rastreamento. O Eterno sabe a localiza&ccedil;&atilde;o de todos os inimigos <span data-no-auto-cond>marcados</span>, e seus disparos contra eles s&atilde;o cr&iacute;ticos em 19-20. Al&eacute;m disso, ao eliminar um alvo com 5 Marcas, recupera 60 de Energia Astral. <span class="ability-tag">Passiva</span></p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- TRILHA DEMOLIDOR SOLAR -->
+            <div class="race-card" style="max-width: 100%; border-color: rgba(255, 153, 0, 0.4); margin-bottom: var(--space-xl);">
+              <div class="race-card-header"><h3 class="race-name" style="font-size: 1.3rem;">Demolidor Solar</h3></div>
+              <div class="race-card-body">
+                <p class="race-description">"O sol n&atilde;o conhece recuo. Ele queima, sustenta e renasce &mdash; e enquanto eu estiver de p&eacute;, o fogo nunca vai se apagar."</p>
+                <p class="race-description">O Demolidor Solar canaliza o <span class="elem-solar">Solar</span> para se tornar a linha de frente inquebr&aacute;vel do grupo. Onde ele pisa, o ch&atilde;o se incendeia e o ar se distorce pelo calor. Sua Centelha n&atilde;o apenas o revive &mdash; ela cauteriza feridas em pleno combate e ergue barreiras t&eacute;rmicas que protegem a si e a seus aliados.</p>
+
+                <div class="class-rank"><h5>Chamas Solares</h5>
+                <p>Os disparos e habilidades do Eterno deixam rastros de <strong>Chamas Solares</strong> no ch&atilde;o (&aacute;reas de 2B). Inimigos que entrarem ou terminarem o turno em uma &aacute;rea de Chama Solar sofrem <span class="dice">1d8</span> de dano <span class="elem-solar">Solar</span>. O Eterno e aliados dentro das chamas recuperam <span class="dice">1d6</span> de PV por turno. M&aacute;ximo de 3 &aacute;reas ativas simultaneamente.</p></div>
+
+                <div class="race-ability"><div class="ability-level">N&iacute;vel 3 &mdash; Escolha uma:</div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                    <h5>Lança-Chamas Solar</h5>
+                    <p>O Eterno dispara um jato de fogo solar em cone de 4B. Todos os inimigos na &aacute;rea sofrem <span class="dice">3d8</span> de dano <span class="elem-solar">Solar</span> e deixam uma &aacute;rea de Chamas Solares no local por 2 rodadas. <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-35 de Energia Astral</span></p>
+                  </div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
+                    <h5>Escudo Termal</h5>
+                    <p>A Centelha gera uma barreira de calor ao redor do Eterno ou de um aliado num raio de 3B. O alvo recebe 15 PV tempor&aacute;rios por 3 rodadas. Enquanto durar, ataques corpo a corpo contra o alvo causam <span class="dice">1d8</span> de dano <span class="elem-solar">Solar</span> ao atacante. <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-30 de Energia Astral</span></p>
+                  </div>
+                </div>
+
+                <div class="race-ability"><div class="ability-level">N&iacute;vel 6</div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
+                    <h5>Passo do Sol</h5>
+                    <p>O Eterno avanca rapidamente em linha reta at&eacute; 4B, deixando um rastro de Chamas Solares por onde passar. Pode passar por espa&ccedil;os de inimigos sem sofrer ataques de oportunidade. <span class="ability-tag">A&ccedil;&atilde;o de Movimento</span> <span class="ability-cost">-20 de Energia Astral</span></p>
+                  </div>
+                </div>
+
+                <div class="race-ability"><div class="ability-level">N&iacute;vel 10 &mdash; Escolha uma:</div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                    <h5>Chamas Intensas</h5>
+                    <p>O dano das Chamas Solares aumenta para <span class="dice">2d8</span>. O n&uacute;mero m&aacute;ximo de &aacute;reas ativas aumenta para 5. <span class="ability-tag">Passiva</span></p>
+                  </div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
+                    <h5>Chamas Regeneradoras</h5>
+                    <p>A cura das Chamas Solares aumenta para <span class="dice">2d6</span>. O n&uacute;mero m&aacute;ximo de &aacute;reas ativas aumenta para 5. <span class="ability-tag">Passiva</span></p>
+                  </div>
+                </div>
+
+                <div class="race-ability"><div class="ability-level">N&iacute;vel 14 &mdash; Escolha uma:</div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                    <h5>Explos&atilde;o Solar</h5>
+                    <p>O Eterno bate com a arma no ch&atilde;o e libera uma onda de choque t&eacute;rmica num raio de 5B. Inimigos sofrem <span class="dice">5d8</span> de dano <span class="elem-solar">Solar</span> e s&atilde;o empurrados 3B. Aliados na &aacute;rea recuperam <span class="dice">3d6</span> de PV e ganham 10 PV tempor&aacute;rios. <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-80 de Energia Astral</span></p>
+                  </div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
+                    <h5>F&ecirc;nix Renascido</h5>
+                    <p>Se o Reacendimento for ativado, ao retornar o Eterno explode em chamas curativas. Aliados num raio de 5B recuperam <span class="dice">4d10</span> + <span class="attr-saude">Sa&uacute;de</span> de PV e o ch&atilde;o ao redor se cobre de Chamas Solares por 3 rodadas. <span class="ability-tag">Passiva</span></p>
+                  </div>
+                </div>
+
+                <div class="race-ability"><div class="ability-level">N&iacute;vel 18</div>
+                  <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
+                    <h5>Sol Imortal</h5>
+                    <p>Durante o Bem da Luz, o Eterno se torna um sol em miniatura. Chamas Solares cobrem toda &aacute;rea num raio de 4B ao redor dele automaticamente a cada turno. Ele recupera 20 PV no in&iacute;cio de cada turno. Se morrer, o Bem da Luz o reacende com 50% dos PV em vez de 50 PV. <span class="ability-tag">Passiva</span></p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
 
     </main>
-  </div>
-</div>
-
-<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
 
 <script src="js/conditions.js"></script>
 <script src="js/main.js"></script>

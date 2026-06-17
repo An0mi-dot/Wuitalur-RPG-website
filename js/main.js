@@ -25,7 +25,7 @@ function highlightPV() {
         if (!node.textContent || !node.textContent.includes('PV')) return NodeFilter.FILTER_REJECT;
         var parent = node.parentElement;
         if (!parent || ['SCRIPT','STYLE','TEXTAREA'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
-        if (parent.closest('.pv-stat')) return NodeFilter.FILTER_REJECT;
+        if (parent.closest('.pv-stat, h1, h2, h3, h4, h5, .gloss-term, .section-heading')) return NodeFilter.FILTER_REJECT;
         return NodeFilter.FILTER_ACCEPT;
       }
     }
