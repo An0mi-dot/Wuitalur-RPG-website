@@ -127,6 +127,31 @@ document.addEventListener('DOMContentLoaded', () => {
     calcRE();
   }
 
+  // Floating Índice button for classes page
+  const classIndex = document.querySelectorAll('.section-heading')[1];
+  if (classIndex) {
+    const btn = document.createElement('button');
+    btn.textContent = '↑ Índice';
+    btn.id = 'floating-index-btn';
+    btn.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:998;padding:10px 18px;border-radius:8px;border:1px solid var(--border-accent);background:var(--bg-elevated);color:var(--text-primary);font-size:0.85rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.3);display:none;transition:opacity 0.2s;';
+    btn.addEventListener('click', () => {
+      document.querySelector('.section-heading h2')?.closest('.section-heading')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    document.body.appendChild(btn);
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const rect = classIndex.getBoundingClientRect();
+          btn.style.display = rect.top < -100 ? 'block' : 'none';
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  }
+
   // RF Calculator
   const rfInputs = ['rf-rf', 'rf-pvs'];
   const rfResult = document.getElementById('rf-result');
