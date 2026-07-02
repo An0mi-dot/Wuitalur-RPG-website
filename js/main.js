@@ -133,10 +133,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const btn = document.createElement('button');
     btn.textContent = '↑ Índice';
     btn.id = 'floating-index-btn';
-    btn.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:998;padding:10px 18px;border-radius:8px;border:1px solid var(--border-accent);background:var(--bg-elevated);color:var(--text-primary);font-size:0.85rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.3);display:none;transition:opacity 0.2s;';
+    btn.style.cssText = 'position:fixed;bottom:32px;right:32px;z-index:998;padding:12px 22px;border-radius:100px;border:1px solid rgba(124,58,237,0.3);background:rgba(18,18,24,0.9);color:#e4e4e7;font-size:0.8rem;font-weight:500;letter-spacing:0.3px;cursor:pointer;box-shadow:0 8px 28px rgba(0,0,0,0.4);display:none;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:all 0.25s ease;';
     btn.addEventListener('click', () => {
       document.querySelector('.section-heading h2')?.closest('.section-heading')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
+    btn.addEventListener('mouseenter', () => { btn.style.borderColor = '#7C3AED'; btn.style.background = 'rgba(30,30,40,0.95)'; btn.style.boxShadow = '0 8px 28px rgba(124,58,237,0.25)'; });
+    btn.addEventListener('mouseleave', () => { btn.style.borderColor = 'rgba(124,58,237,0.3)'; btn.style.background = 'rgba(18,18,24,0.9)'; btn.style.boxShadow = '0 8px 28px rgba(0,0,0,0.4)'; });
     document.body.appendChild(btn);
 
     let ticking = false;
