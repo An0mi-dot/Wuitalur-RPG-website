@@ -3756,11 +3756,6 @@
           </div>
           <div class="race-card-body">
 
-            <div class="callout callout-important">
-              <strong>CLASSE INCOMPLETA</strong>
-              <p>Esta classe ainda está em desenvolvimento. Algumas habilidades e mecânicas podem estar faltando ou incompletas.</p>
-            </div>
-
             <p class="race-description"><em>"Dois nascidos, um só ser. Carne molda sombra, sombra molda carne. Nós somos Aurora." — Aurora Borbón</em></p>
             <p class="race-description">Os Protegidos são pessoas marcadas por um fardo que ninguém escolhe carregar. Um dia, sem aviso, uma Criatura Guardiã — um fragmento vivo de algo ancestral e esquecido — desperta e se prende à carne de seu portador, enlaçando suas costas como uma sombra viva, um tumor monstruoso que respira, sangra e sonha junto.</p>
             <p class="race-description">Ninguém sabe ao certo por que essas criaturas surgem. Não há pacto, não há ritual. Simplesmente acontecem — como se um eco de um passado remoto decidisse que alguém merece ser guardado… ou vigiado.</p>
@@ -3879,10 +3874,6 @@
                 <p>A Criatura Guardiã recupera 25 de PVs, e o Protegido perde 10 de PVs, ignorando resistências e reduções.</p>
                 <p>Só pode ser usada se a Criatura estiver com menos de 100% da Vida máxima.</p>
                 <span class="ability-tag">Ação Bônus</span>
-              </div>
-              <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
-                <h5>Passiva</h5>
-                <span class="ability-tag">Passiva</span>
               </div>
             </div>
 
@@ -4151,6 +4142,174 @@
                 <p>Após o término, a Criatura fica Condição: Exausta e seus atributos são reduzidos pela metade por 2 turnos.</p>
                 <p>Pode ser usado uma vez por descanso longo.</p>
                 <span class="ability-tag">Ação Bônus</span> <span class="ability-cost">-300 de Energia Astral</span>
+              </div>
+            </div>
+
+            <h4>Arquétipos</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: var(--space-md);">Liberados no Nível 2: Um arquétipo é uma especialização que define o papel da Criatura Guardiã no grupo. Cada arquétipo concede habilidades fixas nos níveis indicados — não há escolha dentro do arquétipo; todas as habilidades listadas são adquiridas automaticamente.</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-lg);">
+              <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md); border-left: 3px solid #4a9eff;">
+                <h5>Muralha Viva</h5>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">Tank — Focado em absorver dano, provocar inimigos e proteger aliados com barreiras e sacrifício.</p>
+              </div>
+              <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md); border-left: 3px solid #6fcf97;">
+                <h5>Âncora de Almas</h5>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">Suporte — Focado em curar aliados, purificar condições e fortalecer o grupo com laços espirituais.</p>
+              </div>
+              <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md); border-left: 3px solid #eb5757;">
+                <h5>Fera de Guerra</h5>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">Juggernaut — Focado em causar dano massivo, sangrar inimigos e aterrorizar com fúria bestial.</p>
+              </div>
+            </div>
+
+            <!-- MURALHA VIVA -->
+            <div class="origin-card" style="background: rgba(74, 158, 255, 0.08); border: 1px solid rgba(74, 158, 255, 0.25); border-radius: var(--radius); padding: var(--space-lg); margin-bottom: var(--space-lg);">
+              <div style="margin-bottom: var(--space-md);">
+                <h4 style="color: #4a9eff; margin-bottom: 0;">Muralha Viva</h4>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: var(--space-xs);"><em>"Ninguém passa enquanto eu estiver de pé."</em></p>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: var(--space-lg);">Tank impenetrável. A Muralha Viva transforma o corpo e a Criatura em uma fortaleza ambulante, capaz de absorver dano, redirecionar ataques e manter inimigos focados em si.</p>
+
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Postura Defensiva — Nível 2</h5>
+                <p>Entre em postura defensiva, ganhando +4 de <span class="attr-rf">DEF</span> e <span class="attr-re">DEFe</span>, mas reduzindo seu dano causado em 50%. Dura até o início do seu próximo turno ou até você realizar um ataque.</p>
+                <span class="ability-tag">Ação Bônus</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Interceptação — Nível 3</h5>
+                <p>Quando um aliado a até 5B for alvo de um ataque, você pode gastar sua Reação para se colocar entre o ataque e o aliado, recebendo o dano no lugar dele.</p>
+                <span class="ability-tag">Ação Reação</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Provocar — Nível 6</h5>
+                <p>Grite e provoque um inimigo a até 6B. O alvo deve passar num teste de <span class="attr-re">RE</span> (CD 15) ou terá desvantagem em ataques contra outros alvos que não você até o início do seu próximo turno.</p>
+                <span class="ability-tag">Ação Padrão</span> <span class="ability-cost">-30 de Energia Astral</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Muralha de Ferro — Nível 8</h5>
+                <p>Você se torna imóvel mas ganha resistência a todo dano (reduz pela metade) por 2 turnos. Não pode ser movido à força.</p>
+                <span class="ability-tag">Ação Padrão</span> <span class="ability-cost">-100 de Energia Astral</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Guardião Incansável — Nível 9</h5>
+                <p>Enquanto sua Criatura estiver com 50%+ de vida, você e ela concedem +2 de <span class="attr-rf">DEF</span> e <span class="attr-re">DEFe</span> a aliados a até 3B.</p>
+                <span class="ability-tag">Passiva</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Estou de olho em você, amigo — Nível 12</h5>
+                <p>Enquanto a Criatura estiver a até 12B de você, sempre que um aliado dentro dessa distância for atingido, você pode gastar sua Reação para reduzir o dano em 50% ou redirecioná-lo inteiramente para a Criatura Guardiã.</p>
+                <span class="ability-tag">Ação Reação</span> <span class="ability-cost">-175 de Energia Astral</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Inquebrável — Nível 15</h5>
+                <p>Por 3 turnos, você reduz todo dano recebido em 75%. Após o fim, fica Exausto por 1 turno. Uma vez por combate.</p>
+                <span class="ability-tag">Ação Bônus</span> <span class="ability-cost">-200 de Energia Astral</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md);">
+                <h5>Guardião Imortal — Nível 18</h5>
+                <p>Enquanto sua Criatura estiver viva, você não pode morrer. Se você chegar a 0 PV, a Criatura gasta 50% de seus PVs atuais para mantê-lo de pé com 1 PV.</p>
+                <span class="ability-tag">Passiva</span>
+              </div>
+            </div>
+
+            <!-- ÂNCORA DE ALMAS -->
+            <div class="origin-card" style="background: rgba(111, 207, 151, 0.08); border: 1px solid rgba(111, 207, 151, 0.25); border-radius: var(--radius); padding: var(--space-lg); margin-bottom: var(--space-lg);">
+              <div style="margin-bottom: var(--space-md);">
+                <h4 style="color: #6fcf97; margin-bottom: 0;">Âncora de Almas</h4>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: var(--space-xs);"><em>"Enquanto eu respirar, você não cairá."</em></p>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: var(--space-lg);">Suporte espiritual. A Âncora de Almas canaliza o vínculo com a Criatura para curar, purificar e fortalecer aliados, mantendo o grupo de pé mesmo nas piores batalhas.</p>
+
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Aura de Conforto — Nível 2</h5>
+                <p>Aliados a até 4B recuperam 5 PV no início de cada turno por 3 turnos.</p>
+                <span class="ability-tag">Ação Bônus</span> <span class="ability-cost">-50 de Energia Astral</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Toque Restaurador — Nível 3</h5>
+                <p>Cure um aliado a até 3B em <span class="dice">2d8</span> + <span class="attr-saude">SAU</span>.</p>
+                <span class="ability-tag">Ação Padrão</span> <span class="ability-cost">-40 de Energia Astral</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Purificar — Nível 6</h5>
+                <p>Remova uma condição negativa (Sangramento, Envenenado, Amedrontado, Atordoado, etc.) de um aliado a até 6B.</p>
+                <span class="ability-tag">Ação Padrão</span> <span class="ability-cost">-60 de Energia Astral</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Laço de Almas — Nível 8</h5>
+                <p>Conecte-se a um aliado a até 8B. Enquanto conectado, quando um de vocês receber cura, ambos se curam. Dura 3 turnos.</p>
+                <span class="ability-tag">Ação Padrão</span> <span class="ability-cost">-100 de Energia Astral</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Grito de Reunir — Nível 9</h5>
+                <p>Todos os aliados a até 10B recuperam <span class="dice">1d4</span> + <span class="attr-saude">SAU</span> de PVs.</p>
+                <span class="ability-tag">Ação Padrão</span> <span class="ability-cost">-80 de Energia Astral</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Santuário — Nível 12</h5>
+                <p>Crie uma zona sagrada de 4B de raio. Aliados dentro dela recuperam <span class="dice">1d12</span> PVs no início de cada turno. Dura 3 turnos.</p>
+                <span class="ability-tag">Ação Padrão</span> <span class="ability-cost">-160 de Energia Astral</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Conexão Divina — Nível 15</h5>
+                <p>Por 2 turnos, suas curas são dobradas e podem ser feitas à distância (até 10B).</p>
+                <span class="ability-tag">Ação Bônus</span> <span class="ability-cost">-200 de Energia Astral</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md);">
+                <h5>Âncora da Vida — Nível 18</h5>
+                <p>Marque um aliado. Enquanto você estiver consciente, ele não pode morrer — se chegar a 0 PV, você perde 30 PVs para mantê-lo vivo. Dura o combate.</p>
+                <span class="ability-tag">Ação Padrão</span> <span class="ability-cost">-300 de Energia Astral</span>
+              </div>
+            </div>
+
+            <!-- FERA DE GUERRA -->
+            <div class="origin-card" style="background: rgba(235, 87, 87, 0.08); border: 1px solid rgba(235, 87, 87, 0.25); border-radius: var(--radius); padding: var(--space-lg); margin-bottom: var(--space-lg);">
+              <div style="margin-bottom: var(--space-md);">
+                <h4 style="color: #eb5757; margin-bottom: 0;">Fera de Guerra</h4>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: var(--space-xs);"><em>"Sangue, tripas e sombras. Não preciso de mais nada."</em></p>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: var(--space-lg);">Juggernaut bestial. A Fera de Guerra liberta o instinto mais primitivo da Criatura, causando dano devastador, sangrando inimigos e aterrorizando o campo de batalha.</p>
+
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Golpe Feroz — Nível 2</h5>
+                <p>Sua Criatura realiza um ataque poderoso que causa +<span class="dice">2d8</span> de dano adicional. Se o alvo estiver Sangrando, o dano adicional dobra.</p>
+                <span class="ability-tag">Ação Padrão</span> <span class="ability-cost">-40 de Energia Astral</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Presença Intimidadora — Nível 3</h5>
+                <p>Um inimigo a até 4B deve passar num teste de <span class="attr-re">RE</span> (CD 14) ou fica Amedrontado por 1 turno.</p>
+                <span class="ability-tag">Ação Padrão</span> <span class="ability-cost">-30 de Energia Astral</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Dilacerar — Nível 6</h5>
+                <p>A Criatura causa Sangramento (<span class="dice">2d6</span> por turno durante 3 turnos) em um alvo. Se o alvo já estiver Sangrando, o dano dobra.</p>
+                <span class="ability-tag">Ação Padrão</span> <span class="ability-cost">-60 de Energia Astral</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Assalto Implacável — Nível 8</h5>
+                <p>A Criatura realiza 2 ataques como uma única Ação Padrão. Cada ataque causa dano normal.</p>
+                <span class="ability-tag">Ação Padrão</span> <span class="ability-cost">-90 de Energia Astral</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Carga de Berserker — Nível 9</h5>
+                <p>A Criatura avança até 8B em linha reta, causando <span class="dice">2d10</span> + <span class="attr-fr">FOR</span> de dano a todos em seu caminho e pode derrubar alvos (teste de <span class="attr-fr">FOR</span> CD 15).</p>
+                <span class="ability-tag">Ação Padrão</span> <span class="ability-cost">-90 de Energia Astral</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Incontrolável — Nível 12</h5>
+                <p>A Criatura fica imune a controle mental e medo, ganha +2 em ataques e +<span class="dice">1d8</span> de dano por 3 turnos.</p>
+                <span class="ability-tag">Ação Bônus</span> <span class="ability-cost">-140 de Energia Astral</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md); margin-bottom: var(--space-sm);">
+                <h5>Aura de Pavor — Nível 15</h5>
+                <p>Cria uma aura de 4B ao redor da Criatura. Inimigos dentro têm desvantagem em ataques contra aliados que não a Criatura. Dura 3 turnos.</p>
+                <span class="ability-tag">Ação Bônus</span> <span class="ability-cost">-180 de Energia Astral</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: var(--space-md);">
+                <h5>Destruição Total — Nível 18</h5>
+                <p>A Criatura concentra toda sua energia em um golpe: <span class="dice">8d12</span> + <span class="attr-fr">FOR</span> de dano a um alvo. Se o alvo morrer, inimigos num raio de 4B passam num teste de <span class="attr-re">RE</span> (CD 18) ou ficam Amedrontados por 3 turnos. Uma vez por descanso longo.</p>
+                <span class="ability-tag">Ação Padrão</span> <span class="ability-cost">-350 de Energia Astral</span>
               </div>
             </div>
 
