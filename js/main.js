@@ -127,15 +127,17 @@ document.addEventListener('DOMContentLoaded', () => {
     calcRE();
   }
 
-  // Floating Índice button for classes page
+  // Floating Índice button for classes/races page
+  const raceNav = document.getElementById('race-nav');
   const classIndex = document.querySelectorAll('.section-heading')[1];
-  if (classIndex) {
+  const target = raceNav || classIndex;
+  if (target) {
     const btn = document.createElement('button');
     btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><polyline points="18 15 12 9 6 15"/></svg>Índice';
     btn.id = 'floating-index-btn';
     btn.style.cssText = 'position:fixed;bottom:32px;right:32px;z-index:998;padding:12px 22px;border-radius:100px;border:1px solid rgba(124,58,237,0.3);background:rgba(18,18,24,0.9);color:#e4e4e7;font-size:0.8rem;font-weight:500;letter-spacing:0.3px;cursor:pointer;box-shadow:0 8px 28px rgba(0,0,0,0.4);display:none;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:all 0.25s ease;';
     btn.addEventListener('click', () => {
-      document.querySelector('.section-heading h2')?.closest('.section-heading')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
     btn.addEventListener('mouseenter', () => { btn.style.borderColor = '#7C3AED'; btn.style.background = 'rgba(30,30,40,0.95)'; btn.style.boxShadow = '0 8px 28px rgba(124,58,237,0.25)'; });
     btn.addEventListener('mouseleave', () => { btn.style.borderColor = 'rgba(124,58,237,0.3)'; btn.style.background = 'rgba(18,18,24,0.9)'; btn.style.boxShadow = '0 8px 28px rgba(0,0,0,0.4)'; });
@@ -145,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          const rect = classIndex.getBoundingClientRect();
+          const rect = target.getBoundingClientRect();
           btn.style.display = rect.top < -100 ? 'block' : 'none';
           ticking = false;
         });
