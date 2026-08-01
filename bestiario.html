@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bestiário — Wuitalur RPG</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .vilao-card {
+      background: linear-gradient(160deg, rgba(140, 0, 0, 0.35), rgba(60, 0, 0, 0.25));
+      border: 2px solid #c1121f;
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl);
+      max-width: 800px;
+      margin: 0 auto var(--space-2xl);
+      text-align: center;
+      box-shadow: 0 0 40px rgba(193, 18, 31, 0.25);
+      transition: all var(--transition-base);
+    }
+    .vilao-card:hover {
+      box-shadow: 0 0 60px rgba(193, 18, 31, 0.45);
+      border-color: #e5383b;
+    }
+    .vilao-label {
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #ff6b6b;
+      margin-bottom: var(--space-md);
+    }
+    .vilao-nome {
+      font-family: var(--font-heading);
+      font-size: 4rem;
+      color: #ff3b3b;
+      letter-spacing: 0.15em;
+      text-shadow: 0 0 30px rgba(255, 59, 59, 0.6);
+      line-height: 1.1;
+    }
+    .bestiario-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: var(--space-md);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .bestiario-card {
+      display: block;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-left: 4px solid var(--border-accent);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: all var(--transition-base);
+    }
+    .bestiario-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-accent);
+      box-shadow: var(--shadow-lg);
+    }
+    .bestiario-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      margin-bottom: var(--space-xs);
+    }
+    .bestiario-card p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema v1.4.4_2</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="origins.html" class="sidebar-link"><span class="icon"></span> Origens</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+      <a href="glossario.html" class="sidebar-link"><span class="icon"></span> Glossário</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+      <a href="selos.html" class="sidebar-link"><span class="icon"></span> Selos</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+      <a href="bestiario.html" class="sidebar-link active"><span class="icon"></span> Bestiário</a>
+
+      <div class="sidebar-section-title">Ferramentas</div>
+      <a href="wiki.html" class="sidebar-link"><span class="icon"></span> Wiki</a>
+      <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
+      <a href="criador.html" class="sidebar-link"><span class="icon"></span> Criador de Ficha</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Bestiário</h1>
+      <div style="position:relative">
+        <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
+        <div class="wiki-dropdown" id="wiki-menu-dropdown">
+          <a href="wiki.html" class="wiki-dropdown-item"><span class="icon">&#x265F;</span> Wiki de Personagens</a>
+          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
+          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
+          <a href="criador.html" class="wiki-dropdown-item"><span class="icon">&#x270E;</span> Criador de Ficha</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <!-- VILÃO PRINCIPAL -->
+      <section class="subsection" id="vilao">
+        <div class="section-heading">
+          <h2>Vilão Principal</h2>
+        </div>
+        <div class="vilao-card">
+          <div class="vilao-label">Vilão Principal</div>
+          <div class="vilao-nome">ZAEL</div>
+        </div>
+      </section>
+
+      <!-- INIMIGOS POR ELEMENTO -->
+      <section class="subsection" id="elementos">
+        <div class="section-heading">
+          <h2>Inimigos por Elemento</h2>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; max-width: 600px; margin: 0 auto var(--space-lg);">Cada elemento possui suas próprias criaturas e monstros. Selecione um elemento para explorar seus inimigos.</p>
+
+        <div class="bestiario-grid">
+
+          <a class="bestiario-card" href="bestiario-podridao.html" style="border-left-color: var(--elem-podridao);">
+            <h3 style="color: var(--elem-podridao);">Podridão</h3>
+            <p>As criaturas da gosma negra e viva.</p>
+          </a>
+
+          <a class="bestiario-card" href="bestiario-praga.html" style="border-left-color: var(--elem-praga);">
+            <h3 style="color: var(--elem-praga);">Praga</h3>
+            <p>As abominações das nuvens de insetos.</p>
+          </a>
+
+          <a class="bestiario-card" href="bestiario-sagrado.html" style="border-left-color: var(--elem-sagrado);">
+            <h3 style="color: var(--elem-sagrado);">Sagrado</h3>
+            <p>Os servos dourados do tempo divino.</p>
+          </a>
+
+          <a class="bestiario-card" href="bestiario-electro.html" style="border-left-color: var(--elem-electro);">
+            <h3 style="color: var(--elem-electro);">Electro</h3>
+            <p>As tempestades vivas de alta voltagem.</p>
+          </a>
+
+          <a class="bestiario-card" href="bestiario-nulidrico.html" style="border-left-color: var(--elem-nulidrico);">
+            <h3 style="color: var(--elem-nulidrico);">Nulídrico</h3>
+            <p>As fissuras vermelhas do tecido da realidade.</p>
+          </a>
+
+          <a class="bestiario-card" href="bestiario-solar.html" style="border-left-color: var(--elem-solar);">
+            <h3 style="color: var(--elem-solar);">Solar</h3>
+            <p>As chamas alaranjadas de intensidade ardente.</p>
+          </a>
+
+          <a class="bestiario-card" href="bestiario-estase.html" style="border-left-color: var(--elem-estase);">
+            <h3 style="color: var(--elem-estase);">Estase</h3>
+            <p>Os fragmentos de gelo azul do cosmos.</p>
+          </a>
+
+          <a class="bestiario-card" href="bestiario-pesadelo.html" style="border-left-color: var(--elem-pesadelo);">
+            <h3 style="color: var(--elem-pesadelo);">Pesadelo</h3>
+            <p>Os manifestadores do terror.</p>
+          </a>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
+
+<script src="js/conditions.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
