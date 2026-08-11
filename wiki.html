@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wiki — Wuitalur RPG</title>
+<title>Sobre o Universo — Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/components.css">
@@ -43,7 +43,7 @@
       <a href="bestiario.html" class="sidebar-link"><span class="icon"></span> Bestiário</a>
 
       <div class="sidebar-section-title">Ferramentas</div>
-      <a href="wiki.html" class="sidebar-link active"><span class="icon"></span> Wiki</a>
+      <a href="wiki.html" class="sidebar-link active"><span class="icon"></span> Sobre o Universo</a>
       <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
       <a href="criador.html" class="sidebar-link"><span class="icon"></span> Criador de Ficha</a>
     </nav>
@@ -52,11 +52,11 @@
   <div class="main-wrapper">
 
     <header class="page-header">
-      <h1>Wiki de Personagens</h1>
+      <h1>Sobre o Universo</h1>
       <div style="position:relative">
         <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
         <div class="wiki-dropdown" id="wiki-menu-dropdown">
-          <a href="wiki.html" class="wiki-dropdown-item"><span class="icon">&#x265F;</span> Wiki de Personagens</a>
+          <a href="wiki.html" class="wiki-dropdown-item"><span class="icon">&#x25C8;</span> Sobre o Universo</a>
           <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
           <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
           <a href="criador.html" class="wiki-dropdown-item"><span class="icon">&#x270E;</span> Criador de Ficha</a>
@@ -67,25 +67,100 @@
     <main class="page-content">
 
       <section class="subsection" id="wiki-section">
-        <div class="wiki-layout">
 
-          <!-- Sidebar esquerda -->
-          <aside class="wiki-sidebar">
-            <button class="wiki-btn-primary" id="wiki-add-btn" style="width:100%;margin-bottom:var(--space-md);padding:var(--space-md);font-size:0.9rem">+ Novo Personagem</button>
-            <input type="text" class="wiki-search" id="wiki-search" placeholder="Buscar personagem...">
-            <div class="wiki-list" id="wiki-list"></div>
-          </aside>
+        <div id="universe-hub" class="universe-hub">
 
-          <!-- Conteúdo principal -->
-          <div class="wiki-main" id="wiki-view">
-            <div class="wiki-empty" id="wiki-empty">
-              <p style="font-size:2rem;margin-bottom:var(--space-md);opacity:0.3">&#x25C8;</p>
-              <p>Nenhum personagem na wiki ainda.</p>
-              <p style="font-size:0.85rem">Clique em <strong>"+ Novo Personagem"</strong> para adicionar o primeiro.</p>
+          <a href="campanha.html" class="campaign-banner campaign-btn">
+            <svg class="campaign-banner-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <h2>Sobre a Campanha Principal</h2>
+            <p>Explore o mundo de Wuitalur — seus heróis, locais, divindades e histórias que moldaram o destino.</p>
+            <span class="campaign-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="18" height="18"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </span>
+          </a>
+
+          <div class="universe-grid">
+
+            <div class="universe-main">
+
+              <div class="glass-card glass-lg" data-topic="areas">
+                <div class="glass-card-icon-bg">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div class="glass-card-body">
+                  <h3>Áreas do Mundo</h3>
+                  <p>Regiões, cidades e reinos — cada lugar guarda segredos e histórias por contar.</p>
+                  <span class="glass-tag">Em construção</span>
+                </div>
+              </div>
+
+              <div class="glass-card glass-lg" data-topic="eventos">
+                <div class="glass-card-icon-bg">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div class="glass-card-body">
+                  <h3>Eventos Históricos</h3>
+                  <p>Guerras, catástrofes e marcos que moldaram Wuitalur como é hoje.</p>
+                  <span class="glass-tag">Em construção</span>
+                </div>
+              </div>
+
+              <div class="glass-card glass-lg" data-topic="divindades">
+                <div class="glass-card-icon-bg">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <div class="glass-card-body">
+                  <h3>Deuses & Cosmo</h3>
+                  <p>As divindades, o Cosmo e as forças que regem a realidade.</p>
+                  <span class="glass-tag">Em construção</span>
+                </div>
+              </div>
+
             </div>
+
+            <div class="universe-side">
+
+              <div class="glass-card glass-side personagens-card">
+                <div class="glass-side-head">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  <span>Personagens</span>
+                  <span class="glass-count" id="char-count">2</span>
+                </div>
+                <div class="char-mini-list" id="char-mini-list"></div>
+                <button class="glass-add-btn" id="add-char-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  Novo Personagem
+                </button>
+              </div>
+
+              <div class="glass-card glass-side" data-topic="faccoes">
+                <div class="glass-card-body">
+                  <div class="glass-side-head">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span>Facções & Organizações</span>
+                  </div>
+                  <p class="glass-side-sub">Em construção</p>
+                </div>
+              </div>
+
+              <div class="glass-card glass-side" data-topic="criaturas">
+                <div class="glass-card-body">
+                  <div class="glass-side-head">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="9" cy="9" r="1.5" fill="currentColor"/><circle cx="15" cy="9" r="1.5" fill="currentColor"/><path d="M12 22a7 7 0 0 0 7-7c0-3-2-5.5-4-7h-6c-2 1.5-4 4-4 7a7 7 0 0 0 7 7z"/></svg>
+                    <span>Criaturas & Bestiário</span>
+                  </div>
+                  <p class="glass-side-sub">Em construção</p>
+                </div>
+              </div>
+
+            </div>
+
           </div>
 
         </div>
+
+        <div id="universe-topic" class="universe-topic" hidden></div>
+
       </section>
 
     </main>
