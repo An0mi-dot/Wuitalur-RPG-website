@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeskRPG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="is-dm">
+
+  <div id="screen-battle" class="screen active">
+    <div class="battle-top-bar">
+      <span class="game-title">DeskRPG</span>
+      <div class="top-bar-right">
+        <div class="role-toggle">
+          <button id="btn-player" class="role-btn" onclick="setRole('player')">JOGADOR</button>
+          <button id="btn-dm" class="role-btn active" onclick="setRole('dm')">MESTRE</button>
+        </div>
+        <button class="rpg-btn small ai-chat-btn" onclick="toggleAiChat()">IA</button>
+        <div class="connection-status" id="connection-status">
+          <span class="status-dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="battle-layout">
+
+      <div class="battle-stage">
+        <div class="battle-scene">
+          <div class="enemy-zone" id="enemy-zone">
+            <div class="enemy-placeholder">
+              <span>NPC</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="party-bar" id="characters-grid">
+          <!-- Cards gerados via JS -->
+        </div>
+      </div>
+
+      <aside class="master-sidebar" id="master-sidebar">
+        <div class="sidebar-tabs">
+          <button class="sidebar-tab active" data-tab="chars" onclick="switchSidebar('chars')">PERSONAGENS</button>
+          <button class="sidebar-tab" data-tab="combat" onclick="switchSidebar('combat')">COMBATE</button>
+          <button class="sidebar-tab" data-tab="log" onclick="switchSidebar('log')">LOG</button>
+        </div>
+
+        <!-- ABAS: PERSONAGENS -->
+        <div class="sidebar-panel active" id="panel-tab-chars">
+          <div class="char-list" id="char-list"></div>
+          <div class="detail-panel" id="detail-panel">
+            <div class="detail-header">
+              <span class="detail-title" id="detail-name">-</span>
+              <div class="detail-header-actions">
+                <button class="detail-close" id="detail-delete" title="Remover">DEL</button>
+                <button class="detail-close" onclick="closeDetail()">X</button>
+              </div>
+            </div>
+            <div class="detail-body" id="detail-body"></div>
+          </div>
+          <div class="sidebar-actions">
+            <button class="rpg-btn small" onclick="openAddModal(true)">+ JOGADOR</button>
+            <button class="rpg-btn small" onclick="openAddModal(false)">+ NPC</button>
+          </div>
+        </div>
+
+        <!-- ABA: COMBATE -->
+        <div class="sidebar-panel" id="panel-tab-combat">
+          <div class="turn-controls column">
+            <div class="turn-control-row">
+              <button class="rpg-btn small" id="btn-combat-start" onclick="combatStart()">INICIAR</button>
+              <button class="rpg-btn small" id="btn-combat-end" onclick="combatEnd()" disabled>ENCERRAR</button>
+            </div>
+            <div class="turn-control-row">
+              <button class="rpg-btn small" id="btn-turn-prev" onclick="combatPrev()">&#x25C0;</button>
+              <span class="turn-round" id="turn-round">RODADA 1</span>
+              <button class="rpg-btn small" id="btn-turn-next" onclick="combatNext()">&#x25B6;</button>
+            </div>
+          </div>
+          <div class="sidebar-section-title">ORDEM DE TURNO</div>
+          <div class="turn-order" id="turn-order"></div>
+        </div>
+
+        <!-- ABA: LOG -->
+        <div class="sidebar-panel" id="panel-tab-log">
+          <div class="combat-log-header">
+            <span>LOG</span>
+            <button class="rpg-btn small" onclick="combatLogClear()">LIMPAR</button>
+          </div>
+          <div class="combat-log-list full" id="combat-log-list"></div>
+        </div>
+      </aside>
+
+    </div>
+
+    <div class="battle-bottom-bar">
+      <button class="tab-btn active" onclick="switchTab('battle')">BATALHA</button>
+      <button class="tab-btn" onclick="switchTab('player')">PLAYER</button>
+      <button class="rpg-btn small" id="btn-share" onclick="openDisplayWindow()">COMPARTILHAR</button>
+    </div>
+  </div>
+
+  <div id="screen-player" class="screen">
+    <div class="player-app">
+      <div class="player-top-row">
+        <button class="rpg-btn" onclick="switchTab('battle')">VOLTAR</button>
+        <button id="mp-btn-open" class="rpg-btn" title="Open File">ABRIR</button>
+        <div id="mp-now-playing" class="mp-now-playing">
+          <span id="mp-file-name">Nenhum arquivo</span>
+        </div>
+      </div>
+
+      <div id="mp-drop-zone" class="mp-drop-zone">
+        <span>Arraste um video ou audio aqui</span>
+      </div>
+
+      <div class="mp-timeline-container">
+        <span id="mp-current-time" class="mp-time-label">00:00</span>
+        <input type="range" id="mp-timeline" class="mp-timeline" min="0" max="100" value="0" step="0.1">
+        <span id="mp-total-time" class="mp-time-label">00:00</span>
+      </div>
+
+      <div class="mp-controls">
+        <button id="mp-btn-stop" class="rpg-btn" title="Stop">STOP</button>
+        <button id="mp-btn-play" class="rpg-btn rpg-btn-main" title="Play">PLAY</button>
+        <button id="mp-btn-loop" class="rpg-btn" title="Loop">LOOP</button>
+      </div>
+
+      <div class="mp-loop-start-row">
+        <span class="label">INICIO:</span>
+        <input type="text" id="mp-loop-start" class="rpg-input" value="00:00" placeholder="mm:ss">
+        <button id="mp-btn-set-loop" class="rpg-btn small">DEFINIR</button>
+        <button id="mp-btn-clear-loop" class="rpg-btn small">LIMPAR</button>
+      </div>
+
+      <div class="mp-volume-row">
+        <button id="mp-btn-mute" class="rpg-btn small">SOM</button>
+        <input type="range" id="mp-volume" class="mp-volume-slider" min="0" max="1" step="0.01" value="1">
+        <span id="mp-volume-label" class="mp-volume-label">100%</span>
+      </div>
+
+      <div class="mp-playlist-section">
+        <div class="rpg-frame">
+          <ul id="mp-playlist" class="mp-playlist"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal adicionar personagem -->
+  <div id="add-modal" class="add-modal hidden">
+    <div class="add-modal-box">
+      <div class="add-modal-title" id="add-modal-title">NOVO JOGADOR</div>
+      <input type="text" id="add-name" class="rpg-input-wide" placeholder="NOME">
+      <input type="text" id="add-class" class="rpg-input-wide" placeholder="CLASSE">
+      <input type="number" id="add-pv" class="rpg-input-wide" placeholder="PV MAX">
+      <input type="number" id="add-ea" class="rpg-input-wide" placeholder="EA MAX">
+      <div class="add-modal-btns">
+        <button class="rpg-btn" onclick="createCharacter()">CRIAR</button>
+        <button class="rpg-btn" onclick="closeAddModal()">CANCELAR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat do mestre com IA -->
+  <div id="ai-chat" class="ai-chat hidden">
+    <div class="ai-chat-head">
+      <span class="game-title">MESTRE x IA</span>
+      <button class="detail-close" onclick="toggleAiChat()">X</button>
+    </div>
+    <div class="ai-chat-list" id="ai-chat-list"></div>
+    <div class="ai-chat-form">
+      <input type="text" id="ai-chat-input" class="ai-chat-input" placeholder='Ex.: "Dummy fica sangrando por 3 turnos"'
+        onkeydown="if(event.key==='Enter')aiSend()">
+      <button class="rpg-btn small" onclick="aiSend()">ENVIAR</button>
+    </div>
+  </div>
+
+  <div id="dice-overlay" class="dice-overlay hidden">
+    <div class="dice-overlay-bg"></div>
+    <div class="dice-container" id="dice-container"></div>
+    <div class="dice-result" id="dice-result"></div>
+    <div class="dice-user" id="dice-user"></div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="vitaluCoreLogic.js"></script>
+  <script src="combatAppIntegration.js"></script>
+  <script src="script.js"></script>
+  <script src="media-player.js"></script>
+</body>
+</html>

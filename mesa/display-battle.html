@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeskRPG - Display</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Press Start 2P', monospace;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .enemy-zone {
+      flex: 1;
+      margin: 16px;
+      border: 3px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .enemy-zone:has(> .enemy-card-display) {
+      align-items: stretch;
+      justify-content: flex-start;
+      gap: 8px;
+    }
+
+    .enemy-zone .placeholder {
+      font-size: 0.5rem;
+      opacity: 0.2;
+      letter-spacing: 4px;
+    }
+
+    .party-bar {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      flex-shrink: 0;
+      min-height: 220px;
+    }
+
+    .enemy-intro { flex: 1; min-width: 0; min-height: 0; }
+
+    .enemy-card-display {
+      flex: 1;
+      min-width: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      padding: 14px;
+    }
+
+    .enemy-name {
+      align-self: center;
+      color: #fff;
+      border: 3px solid #ff2222;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      letter-spacing: 3px;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 90%;
+      margin-bottom: 12px;
+    }
+
+    .enemy-portrait {
+      flex: 1;
+      min-height: 0;
+      border-top: 3px solid #611f1f;
+      border-bottom: 3px solid #611f1f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4.5rem;
+      color: #4a4a4a;
+      position: relative;
+    }
+
+    .enemy-portrait .shield-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      border: 2px solid rgba(255,255,255,0.5);
+      box-shadow: inset 0 0 12px rgba(255,255,255,0.2);
+      animation: shield-pulse 2s ease-in-out infinite;
+    }
+
+    .enemy-card-display.active {
+      outline: 3px solid #ffcc00;
+      outline-offset: -3px;
+    }
+
+    .char-card {
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .char-card.active {
+      outline: 3px solid #ffcc00;
+      outline-offset: 2px;
+    }
+
+    .card-name-row {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .card-level {
+      font-size: 0.4rem;
+      color: #000;
+      background: #ffcc00;
+      border: 1px solid #fff;
+      padding: 1px 4px;
+    }
+
+    .card-sub {
+      font-size: 0.4rem;
+      color: #888;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .turn-banner {
+      flex-shrink: 0;
+      padding: 8px 16px;
+      border-bottom: 2px solid #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.55rem;
+      color: #ffcc00;
+      letter-spacing: 2px;
+    }
+
+    .turn-banner .turn-active-name {
+      color: #fff;
+    }
+
+    .card-frame {
+      width: 200px;
+      height: 280px;
+      border: 2px solid #fff;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .card-portrait {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      border-bottom: 2px solid #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-portrait img {
+      width: 150%;
+      height: 150%;
+      object-fit: cover;
+      object-position: 35% 12%;
+      image-rendering: pixelated;
+    }
+
+    .card-info {
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .card-name {
+      font-size: 0.45rem;
+      color: #fff;
+      text-align: center;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-hp {
+      font-size: 0.55rem;
+      color: #cc2222;
+    }
+
+    .card-ea {
+      font-size: 0.55rem;
+      color: #66bbee;
+    }
+
+    .card-san-row {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .card-san-text {
+      font-size: 0.55rem;
+      color: #664488;
+    }
+
+    .san-icon {
+      flex-shrink: 0;
+    }
+
+    .card-san-bar {
+      width: 100%;
+      height: 8px;
+      background: #000;
+      border: 1px solid #fff;
+      position: relative;
+    }
+
+    .card-san-fill {
+      height: 100%;
+      background: #664488;
+      transition: width 0.3s;
+    }
+
+    .shield-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 2px solid rgba(255,255,255,0.5);
+      box-shadow: inset 0 0 12px rgba(255,255,255,0.2);
+      animation: shield-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes shield-pulse {
+      0%, 100% { box-shadow: inset 0 0 12px rgba(255,255,255,0.2); }
+      50% { box-shadow: inset 0 0 20px rgba(255,255,255,0.4); }
+    }
+
+/* ========== LAYOUT: conteúdo + card do turno ========== */
+    .battle-row {
+      flex: 1;
+      display: flex;
+      min-height: 0;
+      width: 100%;
+    }
+
+    .content-wrap {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ========== TURN CARD (ficha vertical do jogador) ========== */
+    .turn-card {
+      width: 0;
+      overflow: hidden;
+      background: #000;
+      border-left: 3px solid #fff;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .turn-card.show {
+      width: 340px;
+    }
+
+    .turn-card {
+      position: relative;
+    }
+
+    .turn-card-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .turn-card.entering .turn-card-inner {
+      animation: card-from-top 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .turn-card-leave {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: card-to-bottom 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes card-from-top {
+      0% {
+        transform: translateY(-100%);
+        opacity: 0.6;
+        filter: brightness(1.4);
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+        filter: brightness(1);
+      }
+    }
+
+    @keyframes card-to-bottom {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100%);
+        opacity: 0.4;
+      }
+    }
+
+    .turn-card.show {
+      transform: translateX(0);
+    }
+
+    .turn-card-header {
+      flex-shrink: 0;
+      padding: 16px 14px 10px;
+      border-bottom: 2px solid #fff;
+      text-align: center;
+    }
+
+    .turn-card-title {
+      font-size: 0.45rem;
+      color: #ffcc00;
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+    }
+
+    .turn-card-name {
+      font-size: 0.85rem;
+      color: #fff;
+      letter-spacing: 2px;
+      word-break: break-word;
+    }
+
+    .turn-card-class {
+      font-size: 0.45rem;
+      color: #888;
+      letter-spacing: 1px;
+      margin-top: 6px;
+    }
+
+    .turn-card-portrait {
+      flex: none;
+      min-height: 0;
+      height: 400px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      border-bottom: 3px solid #611f1f;
+      background: #000;
+      position: relative;
+      overflow: hidden;
+      padding-top: 0px;
+    }
+
+    .turn-card-portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 35% 10%;
+      image-rendering: pixelated;
+    }
+
+    .turn-card-portrait .no-image {
+      font-size: 4rem;
+      color: #4a4a4a;
+    }
+
+    .turn-card-attrs {
+      flex-shrink: 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      padding: 10px 14px;
+      border-top: 1px solid #261d1d;
+    }
+
+    .turn-card-attr {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 4px;
+      padding: 5px 2px;
+      font-size: 0.4rem;
+      color: #999;
+      letter-spacing: 1px;
+    }
+
+    .turn-card-attr b {
+      font-size: 0.85rem;
+      color: #fff;
+      margin-top: 1px;
+    }
+
+    .turn-card-stats {
+      flex-shrink: 0;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+    }
+
+    .turn-card-stat {
+      position: relative;
+    }
+
+    .turn-card-stat-label {
+      font-size: 0.4rem;
+      color: #999;
+      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 5px;
+    }
+
+    .turn-card-bar {
+      width: 100%;
+      height: 16px;
+      background: #000;
+      border: 2px solid #fff;
+      position: relative;
+    }
+
+    .turn-card-bar-fill {
+      height: 100%;
+      transition: width 0.3s;
+    }
+    .turn-card-bar-fill.hp { background: #cc2222; }
+    .turn-card-bar-fill.ea { background: #66bbee; }
+    .turn-card-bar-fill.san { background: #664488; }
+    .turn-card-bar-fill.shield { background: #ffffff; }
+
+    .turn-card-stat-num {
+      position: absolute;
+      right: 2px;
+      top: -2px;
+      font-size: 0.4rem;
+      color: #fff;
+      text-shadow: 1px 1px 0 #000;
+    }
+
+    .turn-card-san-lv {
+      font-size: 0.35rem;
+      color: #000;
+      background: #664488;
+      padding: 2px 4px;
+      border: 1px solid #fff;
+    }
+
+    .turn-card-footer {
+      flex-shrink: 0;
+      padding: 8px 14px 14px;
+      text-align: center;
+    }
+
+    .turn-card-level-badge {
+      display: inline-block;
+      font-size: 0.5rem;
+      color: #000;
+      background: #ffcc00;
+      border: 1px solid #fff;
+      padding: 4px 10px;
+      letter-spacing: 1px;
+    }
+
+    .turn-card .shield-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      border: 3px solid rgba(255,255,255,0.6);
+      box-shadow: inset 0 0 20px rgba(255,255,255,0.3);
+      animation: shield-pulse 2s ease-in-out infinite;
+    }
+
+    img.portrait-symbol {
+      width: auto;
+      height: 80%;
+      max-height: 96%;
+      object-fit: contain;
+      object-position: center;
+      image-rendering: auto;
+    }
+
+    .turn-card-portrait img.portrait-symbol {
+      height: 96%;
+    }
+  </style>
+</head>
+<body>
+  <div class="battle-row">
+    <div class="content-wrap">
+      <div class="turn-banner" id="turn-banner">
+        <span class="turn-round-label" id="turn-round">SEM COMBATE</span>
+        <span class="turn-active-name" id="turn-active">-</span>
+      </div>
+
+      <div class="enemy-zone" id="enemy-zone">
+        <span class="placeholder">NPC</span>
+      </div>
+
+      <div class="party-bar" id="party-bar"></div>
+    </div>
+
+    <div class="turn-card" id="turn-card"></div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="vitaluCoreLogic.js"></script>
+  <script src="combatAppIntegration.js"></script>
+  <script>
+    let allCharacters = [];
+    let stateCombat = { active: false, order: [], index: 0, round: 1 };
+    function displayWsUrl() {
+      if (window.MESA_WS) return window.MESA_WS;
+      if (window.MESA_API) return window.MESA_API.replace(/^http/, 'ws');
+      return (location.protocol === 'https:' ? 'wss' : 'ws') + '://' + location.host;
+    }
+    const ws = new WebSocket(displayWsUrl());
+
+    ws.onopen = () => console.log('[Display] Connected');
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === 'init' || data.type === 'state') {
+        allCharacters = (data.characters || []).map(toUiCharacter);
+        stateCombat = data.combat || stateCombat;
+        renderAll();
+      } else if (data.type === 'update') {
+        const projected = toUiCharacter(data.character);
+        const idx = allCharacters.findIndex(c => c.id === projected.id);
+        if (idx !== -1) allCharacters[idx] = projected;
+        else allCharacters.push(projected);
+        renderAll();
+      }
+    };
+
+    ws.onerror = (err) => console.error('[Display] WS error:', err);
+    ws.onclose = () => setTimeout(() => { try { new WebSocket(displayWsUrl()); } catch(e){} }, 2000);
+
+    function renderAll() {
+      renderBanner();
+      renderParty();
+      renderEnemies();
+      renderTurnCard();
+    }
+
+    function renderBanner() {
+      const round = document.getElementById('turn-round');
+      const active = document.getElementById('turn-active');
+      if (!stateCombat.active || stateCombat.order.length === 0) {
+        round.textContent = 'SEM COMBATE';
+        active.textContent = '-';
+        return;
+      }
+      round.textContent = 'RODADA ' + stateCombat.round;
+      const id = stateCombat.order[stateCombat.index];
+      const c = allCharacters.find(x => x.id === id);
+      active.textContent = 'Vez de: ' + (c ? c.name : '?');
+    }
+
+    function cardFor(c) {
+      const s = { current: c.san.current, max: c.san.max };
+      const sanCycle = 60;
+      const sanLevel = Math.min(6, Math.floor(s.current / sanCycle));
+      const sanPercent = sanLevel >= 6 ? 100 : Math.min(100, ((s.current % sanCycle) / sanCycle) * 100);
+      const activeId = stateCombat.active ? stateCombat.order[stateCombat.index] : null;
+      const isActive = c.id === activeId;
+
+      return `
+        <div class="char-card ${isActive ? 'active' : ''}">
+          <div class="card-frame" style="${c.type === 'npc' ? 'border-color:#ff4444;' : ''}">
+            <div class="card-portrait">
+              ${portraitHtml(c, 0)}
+              ${c.shield && c.shield.current > 0 ? '<div class="shield-overlay"></div>' : ''}
+            </div>
+            <div class="card-info">
+              <div class="card-name-row">
+                <span class="card-name">${c.name}</span>
+                <span class="card-level">${c.level || 1}</span>
+              </div>
+              <div class="card-sub">${c.type === 'npc' ? 'NPC' : (c.class || '')}</div>
+              <div class="card-hp">HP ${c.pv.current}/${c.pv.max}</div>
+              <div class="card-ea">EA ${c.ea.current}/${c.ea.max}</div>
+<div class="card-san-row">
+                  <svg class="san-icon" viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#664488" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <circle cx="12" cy="12" r="4"/>
+                    <line x1="12" y1="2" x2="12" y2="5"/>
+                    <line x1="12" y1="19" x2="12" y2="22"/>
+                    <line x1="2" y1="12" x2="5" y2="12"/>
+                    <line x1="19" y1="12" x2="22" y2="12"/>
+                  </svg>
+                  <span class="card-san-text">${Math.max(0, Math.min(6, sanLevel))}</span>
+                </div>
+              <div class="card-san-bar">
+                <div class="card-san-fill" style="width: ${sanPercent}%"></div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function renderParty() {
+      const bar = document.getElementById('party-bar');
+      const players = allCharacters.filter(c => c.type !== 'npc');
+      bar.innerHTML = players.map(cardFor).join('');
+    }
+
+    function renderEnemies() {
+      const zone = document.getElementById('enemy-zone');
+      const npcs = allCharacters.filter(c => c.type === 'npc');
+      if (npcs.length === 0) {
+        zone.innerHTML = '<span class="placeholder">NPC</span>';
+        return;
+      }
+      const activeId = stateCombat.active ? stateCombat.order[stateCombat.index] : null;
+      zone.innerHTML = npcs.map(c => {
+        return `
+          <div class="enemy-card-display ${c.id === activeId ? 'active' : ''}">
+            <div class="enemy-name">${c.name}</div>
+            <div class="enemy-portrait">
+              ${portraitHtml(c, 0)}
+              ${c.shield && c.shield.current > 0 ? '<div class="shield-overlay"></div>' : ''}
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    // ========== TURN CARD (ficha do jogador na vez) ==========
+
+    function sanMetaOf(c) {
+      const sanCycle = 60;
+      const level = Math.min(6, Math.floor(c.san.current / sanCycle));
+      const percent = level >= 6 ? 100 : Math.min(100, ((c.san.current % sanCycle) / sanCycle) * 100);
+      return { level, percent };
+    }
+
+    function barOf(label, key, c, extra) {
+      const cur = c[key] ? c[key].current : 0;
+      const max = c[key] ? c[key].max : 0;
+      const pct = max > 0 ? Math.max(0, Math.min(100, (cur / max) * 100)) : 0;
+      return `
+        <div class="turn-card-stat">
+          <span class="turn-card-stat-label">${label}${extra || ''}</span>
+          <div class="turn-card-bar">
+            <div class="turn-card-bar-fill ${key}" style="width: ${pct}%"></div>
+            <span class="turn-card-stat-num">${cur}/${max}</span>
+          </div>
+        </div>`;
+    }
+
+    function attrsHtml(c) {
+      const s = c.stats || {};
+      const cells = [
+        ['SAU', s.saude], ['DES', s.des], ['FOR', s.forca], ['INT', s.int],
+        ['FAMA', s.fama], ['SEN', s.sen], ['RE', s.re], ['RF', s.rf],
+      ].map(([label, val]) => {
+        const v = (val === undefined || val === null) ? '—' : val;
+        return `<span class="turn-card-attr">${label}<b>${v}</b></span>`;
+      }).join('');
+      return cells;
+    }
+
+    let lastTurnCardId = null;
+    let lastPvSeen = {};
+    let lastSanSeen = {};
+
+    function portraitHtml(c) {
+      if (!c.image) return '<span class="no-image">?</span>';
+      const base = c.image.replace(/\.svg$/, '').replace(/\.png$/, '');
+      const src = 'images/symbols/' + base + '.svg';
+      return `<img class="portrait-symbol" src="${src}" onerror="this.onerror=null;this.style.display='none';">`;
+    }
+
+    function renderTurnCard() {
+      const card = document.getElementById('turn-card');
+      if (!stateCombat.active || stateCombat.order.length === 0) {
+        card.classList.remove('show');
+        card.innerHTML = '';
+        lastTurnCardId = null;
+        return;
+      }
+      const id = stateCombat.order[stateCombat.index];
+      const c = allCharacters.find(x => x.id === id);
+      if (!c || c.type === 'npc') {
+        card.classList.remove('show');
+        card.innerHTML = '';
+        lastTurnCardId = null;
+        return;
+      }
+
+      const s = sanMetaOf(c);
+      const prevPv = lastPvSeen[c.id];
+      const pvDiff = (prevPv !== undefined) ? c.pv.current - prevPv : 0;
+      lastPvSeen[c.id] = c.pv.current;
+      const prevSan = lastSanSeen[c.id];
+      const sanDiff = (prevSan !== undefined) ? c.san.current - prevSan : 0;
+      lastSanSeen[c.id] = c.san.current;
+      const portrait = portraitHtml(c, pvDiff, sanDiff);
+
+      const newContent = `
+        <div class="turn-card-inner">
+          <div class="turn-card-header">
+            <div class="turn-card-title">VEZ DE</div>
+            <div class="turn-card-name">${c.name}</div>
+            <div class="turn-card-class">${c.class || ''}</div>
+          </div>
+          <div class="turn-card-portrait">
+            ${portrait}
+            ${c.shield && c.shield.current > 0 ? '<div class="shield-overlay"></div>' : ''}
+          </div>
+          <div class="turn-card-stats">
+            ${barOf('VIDA', 'pv', c)}
+            ${barOf('ENERGIA', 'ea', c)}
+            ${barOf('ESTRESSE', 'san', c, `<span class="turn-card-san-lv">N${s.level}</span>`)}
+            ${c.shield && c.shield.max > 0 ? barOf('ESCUDO', 'shield', c) : ''}
+          </div>
+          <div class="turn-card-attrs">
+            ${attrsHtml(c)}
+          </div>
+          <div class="turn-card-footer">
+            <span class="turn-card-level-badge">NIVEL ${c.level || 1}</span>
+          </div>
+        </div>
+      `;
+
+      const wasShown = lastTurnCardId !== null && lastTurnCardId !== c.id;
+
+      if (wasShown) {
+        const prevInner = card.querySelector('.turn-card-inner');
+        if (prevInner) {
+          const leave = document.createElement('div');
+          leave.className = 'turn-card-leave';
+          leave.innerHTML = prevInner.innerHTML;
+          card.appendChild(leave);
+          setTimeout(() => {
+            if (leave.parentNode === card) card.removeChild(leave);
+          }, 600);
+        }
+      }
+
+      lastTurnCardId = c.id;
+      card.innerHTML = newContent;
+
+      card.classList.remove('entering');
+      if (wasShown) {
+        void card.offsetWidth;
+        card.classList.add('entering');
+      }
+
+      if (!card.classList.contains('show')) {
+        card.classList.add('show');
+      }
+    }
+  </script>
+</body>
+</html>

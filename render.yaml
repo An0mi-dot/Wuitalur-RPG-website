@@ -1,0 +1,15 @@
+# Deploy do backend (server/) no Render — plano gratuito.
+# Passos: 1) conecte este repositório no Render; 2) adicione a env
+# GEMINI_API_KEY; 3) Deploy. O render.yaml detecta rootDirectory = server.
+services:
+  - type: web
+    name: wuitu-server
+    runtime: node
+    rootDirectory: server
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/state
+    plan: free
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
