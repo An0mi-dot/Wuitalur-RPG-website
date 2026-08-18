@@ -1,8 +1,7 @@
-/* Configuração da Mesa no GitHub Pages.
- * Depois que o backend estiver no ar (Render), preencha MESA_API com a URL
- * dele, sem barra final. Exemplo:
- *   window.MESA_API = 'https://wuitu-server.onrender.com';
- * MESA_WS fica vazio (é derivado da MESA_API, trocando http por ws).
- * Se MESA_API ficar vazio, o app tenta o mesmo domínio (modo local). */
-window.MESA_API = '';
-window.MESA_WS = '';
+/* Configuração da Mesa no GitHub Pages (modo Supabase).
+ * Preencha SUPABASE_URL ('https://<ref>.supabase.co') e SUPABASE_ANON_KEY
+ * com os valores do projeto (Project Settings > API).
+ * A tabela `mesa_state` guarda todo o estado; o Realtime sincroniza os
+ * clientes; a Edge Function `ai-chat` traduz ordens do mestre via Gemini. */
+window.SUPABASE_URL = 'https://ifhindsqtxjeeszgtwv.supabase.co';
+window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlmaGluZHNxdHhqZWVzenpndHd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwODI3MDgsImV4cCI6MjEwMjY1ODcwOH0.x13UaaJjaBAw6ntey0HmQW_rcTlLG-1JLL3Ls1zrrc8';

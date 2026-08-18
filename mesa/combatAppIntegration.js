@@ -30,6 +30,8 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
+  const root = (typeof self !== 'undefined' ? self : (typeof window !== 'undefined' ? window : globalThis));
+
   /* Traduz um personagem do schema novo para o formato legado da UI.
    * Mantém também os campos novos no objeto (a UI pode ler ambos). */
   function toUiCharacter(c) {
@@ -57,83 +59,93 @@
     });
   }
 
-/* Base remota opcional (definida por window.MESA_API; vazia = mesma origem). */
-  function apiUrl(p) {
-    return ((typeof window !== 'undefined' && window.MESA_API) || '') + p;
+/* Ações autoritativas executadas no navegador via Mesa (Supabase). */
+  function localAction(fn) {
+    if (typeof root.Mesa === 'undefined' || !root.Mesa.actions) {
+      return Promise.resolve({ error: 'Mesa não inicializada', code: 503 });
+    }
+    try {
+      return Promise.resolve(fn(root.Mesa.actions));
+    } catch (err) {
+      return Promise.resolve({ error: String(err && err.message || err), code: 500 });
+    }
   }
 
-  /* Projeta um estado inteiro (init/state/update) para a UI. */
-  function projectCharacters(list) {
-    return (list || []).map(toUiCharacter);
-  }
-
-  /* Helper de POST + parse de resposta. */
-  function postCombatAction(url, body) {
-    return fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body || {}),
-    }).then(function (r) { return r.json(); });
-  }
-
-  /* Todas as ações autoritativas que o servidor expõe. */
+  /* Todas as ações da mesa (validadas com vitaluCore no navegador). */
   var api = {
     // ---------- Estado / personagens ----------
     state: function () {
-      return fetch(apiUrl('/api/state')).then(function (r) { return r.json(); });
+      if (typeof root.Mesa !== 'undefined' && root.Mesa.getDB) {
+        return Promise.resolve(root.Mesa.getDB());
+      }
+      return Promise.resolve({ error: 'Mesa não inicializada', code: 503 });
     },
 
     // ---------- Atributos (valores absolutos ou deltas validados) ----------
     damage: function (target_id, amount, actor_id) {
-      return postCombatAction(apiUrl('/api/damage'), { target_id: target_id, amount: amount, actor_id: actor_id || null });
+      return localAction((a) => a.damage({ target_id: target_id, amount: amount, actor_id: actor_id || null }));
     },
     heal: function (target_id, amount, actor_id) {
-      return postCombatAction(apiUrl('/api/heal'), { target_id: target_id, amount: amount, actor_id: actor_id || null });
+      return localAction((a) => a.heal({ target_id: target_id, amount: amount, actor_id: actor_id || null }));
     },
     astral: function (target_id, amount, actor_id) {
-      return postCombatAction(apiUrl('/api/astral'), { target_id: target_id, amount: amount, actor_id: actor_id || null });
+      return localAction((a) => a.astral({ target_id: target_id, amount: amount, actor_id: actor_id || null }));
     },
     stress: function (target_id, amount, actor_id) {
-      return postCombatAction(apiUrl('/api/stress'), { target_id: target_id, amount: amount, actor_id: actor_id || null });
+      return localAction((a) => a.stress({ target_id: target_id, amount: amount, actor_id: actor_id || null }));
     },
     ready: function (target_id, ready) {
-      return postCombatAction(apiUrl('/api/ready'), { target_id: target_id, ready: !!ready });
+      return localAction((a) => a.ready({ target_id: target_id, ready: !!ready }));
     },
 
     // ---------- Escudo / vida extra / condições ----------
     shield: function (target_id, value, duration) {
-      return postCombatAction(apiUrl('/api/shield'), { target_id: target_id, value: value, duration: duration });
+      return localAction((a) => a.shield({ target_id: target_id, value: value, duration: duration }));
     },
     extraLife: function (target_id) {
-      return postCombatAction(apiUrl('/api/extra-life'), { target_id: target_id });
+      return localAction((a) => a.extraLife({ target_id: target_id }));
     },
     condition: function (target_id, name, duration) {
-      return postCombatAction(apiUrl('/api/condition'), { target_id: target_id, name: name, duration: duration });
+      return localAction((a) => a.condition({ target_id: target_id, name: name, duration: duration }));
     },
     removeCondition: function (target_id, name) {
-      return postCombatAction(apiUrl('/api/condition/remove'), { target_id: target_id, name: name });
+      return localAction((a) => a.removeCondition({ target_id: target_id, name: name }));
     },
     // ---------- Habilidades ----------
     skill: function (target_id, actor_id, skill_name) {
-      return postCombatAction(apiUrl('/api/skill'), {
+      return localAction((a) => a.skill({
         target_id: target_id,
         actor_id: actor_id,
         skill: skill_name,
-      });
+      }));
     },
 
     // ---------- Combate ----------
-    startCombat: function () { return postCombatAction(apiUrl('/api/combat/start'), {}); },
-    endCombat: function () { return postCombatAction(apiUrl('/api/combat/end'), {}); },
-    nextTurn: function () { return postCombatAction(apiUrl('/api/combat/next'), {}); },
-    prevTurn: function () { return postCombatAction(apiUrl('/api/combat/prev'), {}); },
-    clearLog: function () { return postCombatAction(apiUrl('/api/combat/log/clear'), {}); },
+    startCombat: function () { return localAction((a) => a.startCombat({})); },
+    endCombat: function () { return localAction((a) => a.endCombat()); },
+    nextTurn: function () { return localAction((a) => a.nextTurn()); },
+    prevTurn: function () { return localAction((a) => a.prevTurn()); },
+    clearLog: function () { return localAction((a) => a.clearLog()); },
   };
 
   return {
     toUiCharacter: toUiCharacter,
     projectCharacters: projectCharacters,
-    postCombatAction: postCombatAction,
+    postCombatAction: function (path, body) {
+      // Mantém assinatura: converte /api/<acao> para a respectiva ação local.
+      const map = {
+        '/api/damage': 'damage', '/api/heal': 'heal', '/api/astral': 'astral',
+        '/api/stress': 'stress', '/api/ready': 'ready', '/api/shield': 'shield',
+        '/api/extra-life': 'extraLife', '/api/condition': 'condition',
+        '/api/condition/remove': 'removeCondition', '/api/skill': 'skill',
+        '/api/combat/start': 'startCombat', '/api/combat/end': 'endCombat',
+        '/api/combat/next': 'nextTurn', '/api/combat/prev': 'prevTurn',
+        '/api/combat/log/clear': 'clearLog',
+      };
+      const key = map[path];
+      if (!key) return Promise.resolve({ error: 'Ação desconhecida: ' + path, code: 404 });
+      return localAction((a) => a[key](body || {}));
+    },
     api: api,
   };
 });

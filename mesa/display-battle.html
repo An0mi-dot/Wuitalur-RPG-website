@@ -536,38 +536,29 @@
     <div class="turn-card" id="turn-card"></div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
   <script src="vitaluCoreLogic.js"></script>
+  <script src="localState.js"></script>
   <script src="combatAppIntegration.js"></script>
   <script>
     let allCharacters = [];
     let stateCombat = { active: false, order: [], index: 0, round: 1 };
-    function displayWsUrl() {
-      if (window.MESA_WS) return window.MESA_WS;
-      if (window.MESA_API) return window.MESA_API.replace(/^http/, 'ws');
-      return (location.protocol === 'https:' ? 'wss' : 'ws') + '://' + location.host;
-    }
-    const ws = new WebSocket(displayWsUrl());
 
-    ws.onopen = () => console.log('[Display] Connected');
-
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === 'init' || data.type === 'state') {
-        allCharacters = (data.characters || []).map(toUiCharacter);
-        stateCombat = data.combat || stateCombat;
-        renderAll();
-      } else if (data.type === 'update') {
-        const projected = toUiCharacter(data.character);
-        const idx = allCharacters.findIndex(c => c.id === projected.id);
-        if (idx !== -1) allCharacters[idx] = projected;
-        else allCharacters.push(projected);
-        renderAll();
+    /* Estado vem da memória/Postgres via localState.js (Supabase Realtime) */
+    function initDisplay() {
+      if (typeof window.Mesa === 'undefined') {
+        setTimeout(initDisplay, 2000);
+        return;
       }
-    };
-
-    ws.onerror = (err) => console.error('[Display] WS error:', err);
-    ws.onclose = () => setTimeout(() => { try { new WebSocket(displayWsUrl()); } catch(e){} }, 2000);
+      window.Mesa.subscribe((db) => {
+        allCharacters = (db.characters || []).map(toUiCharacter);
+        stateCombat = db.combat || stateCombat;
+        renderAll();
+      });
+      window.Mesa.init().catch((err) => console.error('[Display] Mesa init:', err));
+    }
+    initDisplay();
 
     function renderAll() {
       renderBanner();

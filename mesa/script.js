@@ -1,5 +1,4 @@
-﻿let ws;
-let characters = [];
+﻿let characters = [];
 let combat = { active: false, order: [], index: 0, round: 1, log: [] };
 let previousValues = {};
 let currentRole = 'dm';
@@ -9,19 +8,7 @@ let selectedCharId = null;
 let addModalIsPlayer = true;
 let animationsToRun = [];
 
-/* Base remota opcional (window.MESA_API/config.js). Vazia = mesma origem. */
-function apiUrl(p) {
-  return (typeof window !== 'undefined' && window.MESA_API ? window.MESA_API : '') + p;
-}
-
-function wsUrl() {
-  if (typeof window !== 'undefined' && window.MESA_WS) return window.MESA_WS;
-  if (typeof window !== 'undefined' && window.MESA_API) {
-    return window.MESA_API.replace(/^http/, 'ws');
-  }
-  const protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  return `${protocol}://${location.host}`;
-}
+/* Estado autoritativo mantido por localState.js (Supabase + Realtime). */
 
 function getPortraitHtml(c) {
   if (!c.image) return '<span class="no-image">?</span>';
@@ -30,35 +17,39 @@ function getPortraitHtml(c) {
   return `<img class="portrait-symbol" src="${src}" onerror="this.onerror=null;this.style.display='none';">`;
 }
 
-function connectWS() {
-  ws = new WebSocket(wsUrl());
+/* Sincroniza a UI com o estado autoritativo (Mesa/localState.js). */
+function applyState(db) {
+  characters = typeof toUiCharacter === 'function' ? (db.characters || []).map(toUiCharacter) : db.characters || [];
+  combat = db.combat || { active: false, order: [], index: 0, round: 1, log: [] };
+  renderCharacters();
+  renderCombat();
+  refreshAiChatFromState();
+}
 
-  ws.onopen = () => updateStatus(true);
-  ws.onclose = () => {
-    updateStatus(false);
-    setTimeout(connectWS, 2000);
-  };
-  ws.onerror = () => updateStatus(false);
+function refreshAiChatFromState() {
+  const list = document.getElementById('ai-chat-list');
+  if (!list || !Mesa.getDB) return;
+  const msgs = Mesa.getDB().ai_chat || [];
+  list.innerHTML = '';
+  msgs.forEach((m) => aiAppend(list, m.role, m.text, m.action));
+  aiScroll();
+}
 
-  ws.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    if (data.type === 'init' || data.type === 'state') {
-      characters = typeof toUiCharacter === 'function' ? (data.characters || []).map(toUiCharacter) : data.characters || [];
-      combat = data.combat || combat;
-      renderCharacters();
-      renderCombat();
-    } else if (data.type === 'update') {
-      const projected = typeof toUiCharacter === 'function' ? toUiCharacter(data.character) : data.character;
-      const idx = characters.findIndex((c) => c.id === (projected && projected.id));
-      if (projected) {
-        if (idx !== -1) characters[idx] = projected;
-        else characters.push(projected);
-      }
-      renderCharacters();
-    } else if (data.type === 'dice-roll') {
-      handleDiceRoll(data);
-    }
-  };
+/* Conecta a UI ao Mesa: aplica o estado inicial e reage a mudanças
+ * (locais ou vindas de outros clientes via Supabase Realtime). */
+function connectMesa() {
+  if (typeof window.Mesa === 'undefined') {
+    console.error('[Mesa] localState.js não carregado');
+    setTimeout(connectMesa, 2000);
+    return;
+  }
+  window.Mesa.subscribe(applyState);
+  window.Mesa.init()
+    .then(() => updateStatus(true))
+    .catch((err) => {
+      console.error('[Mesa] falha ao inicializar:', err);
+      updateStatus(false);
+    });
 }
 
 function updateStatus(connected) {
@@ -310,13 +301,9 @@ async function setMaxStat(charId, key, value) {
 
 async function updateCharacter(id, body) {
   try {
-    const res = await fetch(apiUrl(`/api/characters/${id}`), {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-    const data = await res.json();
+    const data = await Mesa.actions.updateCharacter(id, body);
     applyCharacterUpdate(data);
+    if (data && data.error) console.error('Erro ao atualizar:', data.error);
   } catch (err) {
     console.error('Erro ao atualizar:', err);
   }
@@ -351,11 +338,7 @@ async function createCharacter() {
   const ea = parseInt(document.getElementById('add-ea').value) || 0;
   if (!name) return;
   try {
-    await fetch(apiUrl('/api/characters'), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, class: cls, type: addModalIsPlayer ? 'player' : 'npc', pvMax: pv, eaMax: ea }),
-    });
+    await Mesa.actions.createCharacter({ name, class: cls, type: addModalIsPlayer ? 'player' : 'npc', pvMax: pv, eaMax: ea });
     ['add-name', 'add-class', 'add-pv', 'add-ea'].forEach((id) => (document.getElementById(id).value = ''));
     closeAddModal();
   } catch (err) {
@@ -366,7 +349,7 @@ async function createCharacter() {
 async function deleteCharacter(id) {
   if (!confirm('Remover este personagem?')) return;
   try {
-    await fetch(apiUrl(`/api/characters/${id}`), { method: 'DELETE' });
+    await Mesa.actions.deleteCharacter(id);
     if (selectedCharId === id) closeDetail();
   } catch (err) {
     console.error('Erro ao remover:', err);
@@ -376,23 +359,23 @@ async function deleteCharacter(id) {
 // ========== Combate ==========
 
 async function combatStart() {
-  await fetch(apiUrl('/api/combat/start'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+  await Mesa.actions.startCombat({});
 }
 
 async function combatEnd() {
-  await fetch(apiUrl('/api/combat/end'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+  await Mesa.actions.endCombat();
 }
 
 async function combatNext() {
-  await fetch(apiUrl('/api/combat/next'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+  await Mesa.actions.nextTurn();
 }
 
 async function combatPrev() {
-  await fetch(apiUrl('/api/combat/prev'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+  await Mesa.actions.prevTurn();
 }
 
 async function combatLogClear() {
-  await fetch(apiUrl('/api/combat/log/clear'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+  await Mesa.actions.clearLog();
 }
 
 function renderCombat() {
@@ -847,26 +830,8 @@ function openDisplayWindow() {
 
 // ========== INIT ==========
 
-function startPolling() {
-  setInterval(async () => {
-    try {
-      const res = await fetch(apiUrl('/api/state'));
-      const data = await res.json();
-      const newStr = JSON.stringify(data);
-      if (window.lastStateStr !== newStr) {
-        window.lastStateStr = newStr;
-        characters = typeof toUiCharacter === 'function' ? (data.characters || []).map(toUiCharacter) : data.characters || [];
-        combat = data.combat || combat;
-        renderCharacters();
-        renderCombat();
-      }
-    } catch (err) {}
-  }, 5000);
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-  connectWS();
-  startPolling();
+  connectMesa();
   loadAiChat();
   // fecha modal ao esc
   document.addEventListener('keydown', (e) => {
@@ -911,17 +876,7 @@ function aiAppend(list, role, text, action) {
 }
 
 async function loadAiChat() {
-  try {
-    const res = await fetch(apiUrl('/api/ai/chat'));
-    const data = await res.json();
-    const list = document.getElementById('ai-chat-list');
-    if (!list) return;
-    list.innerHTML = '';
-    (data.messages || []).forEach((m) => aiAppend(list, m.role, m.text, m.action));
-    aiScroll();
-  } catch (err) {
-    console.error('Erro ao carregar chat:', err);
-  }
+  refreshAiChatFromState();
 }
 
 async function aiSend() {
@@ -937,12 +892,7 @@ async function aiSend() {
   list.appendChild(typing);
   aiScroll();
   try {
-    const res = await fetch(apiUrl('/api/ai/chat'), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: msg }),
-    });
-    const data = await res.json();
+    const data = await Mesa.sendAiChat(msg);
     typing.remove();
     if (data.error) {
       aiAppend(list, 'assistant', 'Erro: ' + data.error);
@@ -951,7 +901,7 @@ async function aiSend() {
     }
   } catch (err) {
     typing.remove();
-    aiAppend(list, 'assistant', 'Falha de conexÃ£o com a IA.');
+    aiAppend(list, 'assistant', 'Falha de conexão com a IA.');
   }
   aiScroll();
 }
