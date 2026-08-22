@@ -16,7 +16,7 @@
     <div class="sidebar-header">
       <div class="sidebar-logo">
         WUITALUR
-        <span>Sistema v1.4.6</span>
+        <span>Sistema v1.4.7</span>
       </div>
     </div>
     <nav class="sidebar-nav">
@@ -47,7 +47,6 @@
       <a href="wiki.html" class="sidebar-link"><span class="icon"></span> Sobre o Universo</a>
       <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
       <a href="criador.html" class="sidebar-link"><span class="icon"></span> Criador de Ficha</a>
-      <a href="mesa/" class="sidebar-link"><span class="icon"></span> Mesa do Desktop</a>
     </nav>
   </aside>
 
@@ -62,7 +61,6 @@
           <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
           <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
           <a href="criador.html" class="wiki-dropdown-item"><span class="icon">&#x270E;</span> Criador de Ficha</a>
-          <a href="mesa/" class="wiki-dropdown-item"><span class="icon">&#x2699;</span> Mesa do Desktop</a>
         </div>
       </div>
     </header>
@@ -488,47 +486,70 @@
             <h4>Bônus de Raça</h4>
             <ul class="race-list">
               <li>Naturalmente +1 em INT</li>
-              <li>Naturalmente +1 em <span class="attr-rf">Resistência Física</span></li>
+              <li>Naturalmente +1 em <span class="attr-fr">FR</span></li>
               <li>Imunidade a dano de Fogo</li>
               <li>Imunidade a <span class="elem-praga">Praga</span></li>
+              <li>Imunidade a Sangramento</li>
+              <li>Imunidade a Envenenado</li>
               <li>Fraqueza a <span class="elem-podridao">Podridão</span></li>
-              <li>Fraqueza a água (se estiver molhado perde -1 de <span class="attr-des">destreza</span> até se secar)</li>
+              <li>Fraqueza a <span class="elem-nullidrico">Nulídrico</span></li>
             </ul>
 
             <h4>Habilidades de Raça</h4>
 
             <div class="race-ability">
-              <h5>É capaz de consertar qualquer coisa que tenha conhecimento.</h5>
-            </div>
-
-            <div class="race-ability">
-              <h5>Modelo de Fábrica</h5>
-              <p>Existem 3 Modelos de Fábrica que um E.X.O pode ter e o jogador deve escolher:</p>
+              <h5>Exoesqueleto Autônomo</h5>
 
               <div class="race-subability">
-                <h6>Doméstico</h6>
-                <p>São robôs mais sensíveis e fracos sendo feitos de materiais frágeis, como vidro por ex, porém eles são feitos de partes que são separadas e flutuam deixando assim eles mais flexíveis. Esse modelo de robô recebe +2 de Dex Naturalmente. E tem proficiência em Esquivas. E recebe -5 de <span class="attr-rf">Resistência Física</span>.</p>
+                <h6>Pontos de Chassi (PCs)</h6>
+                <p>O E.X.O. não possui vida biológica. Habilidades convencionais, poções de cura e primeiros socorros não surtem efeito sobre ele.</p>
               </div>
 
               <div class="race-subability">
-                <h6>Guerra</h6>
-                <p>São robôs mais parrudos e resistentes eles não tem medo de nada, sempre estão na frente para proteger os mais fracos e são feitos de materiais resistentes. Esse modelo recebe +1 de FR. E recebe +1 em ambas as resistências. Porém ele tem -3 em Dex.</p>
+                <h6>Autorreparo</h6>
+                <p>Com 1 Ação Bônus, o autômato canaliza solda e recomposição interna sem custo de recurso, recuperando <span class="dice">2d8</span> + INT em PCs.</p>
               </div>
 
               <div class="race-subability">
-                <h6>Segurança</h6>
-                <p>São robôs fortes e silenciosos, foram projetados para proteger pessoas de alta importância, por ex os ricos de Paladium, porém até pessoas de classe média podem ter um gastando uma boa grana. Esse modelo recebe +1 em <span class="attr-re">Resistência Elemental</span> e +1 em <span class="attr-rf">Resistência Física</span>.</p>
+                <h6>Estado "Morrendo"</h6>
+                <p>Ao cair para 0 PCs, o autômato desliga. Os testes para estabilizá-lo exigem um teste de Engenharia, e não de Medicina.</p>
+              </div>
+
+              <div class="race-subability">
+                <h6>Overclock</h6>
+                <p>Sempre que estiver com 40 ou menos PCs, o núcleo Everact entra em sobrecarga contínua, concedendo:</p>
+                <ul class="race-list">
+                  <li>+1 em <span class="attr-fr">FR</span></li>
+                  <li>+2 em <span class="attr-int">INT</span></li>
+                  <li>+10 em Defesa (DEF)</li>
+                  <li><span class="dice">+1d8</span> de dano extra em qualquer ataque realizado</li>
+                </ul>
               </div>
             </div>
 
             <div class="race-ability">
-              <h5>Ponto Fraco</h5>
-              <p>Pode fazer a rolagem de um teste de INT para descobrir se um alvo tem um ponto fraco. Se tirar um 20 o E.X.O consegue saber qual é o ponto fraco. O ponto fraco é um local em que se for acertado o inimigo toma o dano padrão do ataque + <span class="dice">4d15</span> de dano. O valor necessário da habilidade pode ser diminuído até 18 no Max por meio de modificações que podem ser feitas nos olhos do E.X.O durante o rpg em ferreiros ou por meio de artefatos.</p>
+              <h5>Além das Fraquezas</h5>
+              <p>E.X.Os conseguem ver registros astrais fragilizados em alvos. O E.X.O pode fazer a rolagem de um teste de <span class="attr-int">INT</span> para descobrir se um alvo tem um ponto com <strong>Energia Astral Fragilizada</strong>. Se tirar 20 ou mais, o E.X.O consegue saber qual é o ponto certo. O ponto certo é um local em que se for acertado, o inimigo toma o dano padrão do ataque em <strong>DOBRO</strong>. O dano em dobro só é aplicado em ataques feitos pelo E.X.O.</p>
+              <p>Nos níveis 10, 15 e 20, a CD desse teste é diminuída em -1.</p>
             </div>
 
             <div class="race-ability">
-              <h5>Agarrão</h5>
-              <p>Pode imobilizar um alvo se agarrando nele, o alvo deve fazer a rolagem de um teste de Des contra a um dado de FR que o E.X.O também deve rolar para tentar agarrar o alvo, se o alvo não conseguir ele terá que rolar um teste de FR para se livrar.</p>
+              <h5>Prensa Hidráulica</h5>
+              <p>O E.X.O avança para agarrar uma criatura adjacente, ativando as travas de alta pressão dos seus atuadores.</p>
+              <p>O E.X.O realiza um teste de <span class="attr-rf">FR</span> contra a <span class="attr-rf">FR</span> ou <span class="attr-rf">RF</span> do alvo; se vencer, a vítima fica <strong>Imobilizada</strong> e o E.X.O permanece ocupado sustentando o agarrão.</p>
+              <p>Enquanto estiver presa, a vítima sofre automaticamente <span class="dice">2d6</span> de Dano de Impacto + <span class="attr-rf">FR</span> no início de cada um dos seus próprios turnos devido ao esmagamento contínuo. Para se libertar, a criatura deve gastar sua ação para disputar um novo teste resistido de <span class="attr-rf">FR</span> contra a <span class="attr-rf">FR</span> do E.X.O.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Torque Forçado</h5>
+              <p>O E.X.O. trava suas engrenagens no solo para aplicar força mecânica bruta contínua.</p>
+              <p>Recebe <strong>Vantagem</strong> em testes de <span class="attr-fr">FR</span> para erguer cargas colossais, arrombar estruturas metálicas, derrubar portas pesadas ou resistir a ser empurrado/derrubado por forças externas.</p>
+            </div>
+
+            <div class="race-ability">
+              <h5>Mira Telemétrica</h5>
+              <p><strong>Tipo:</strong> Passiva.</p>
+              <p>Os sensores ópticos do autômato calculam automaticamente vento, distância, recuo e trajetória balística em tempo real. O E.X.O. <strong>utiliza o atributo de Inteligência (<span class="attr-int">INT</span>) somado aos seus testes de acerto com armas de fogo</strong>.</p>
             </div>
           </div>
         </div>
