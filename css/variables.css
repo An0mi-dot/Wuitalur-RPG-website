@@ -5,6 +5,22 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
+@font-face {
+  font-family: 'Avestrava Tattoo';
+  src: url('../assets/fonts/AvestravaTattoo.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BlackFlag';
+  src: url('../assets/fonts/BlackFlag.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --bg-primary:     #0D0D12;
   --bg-surface:     #16161E;
@@ -570,4 +586,140 @@ code, .mono {
   h1 { font-size: 1.8rem; }
   h2 { font-size: 1.5rem; }
   h3 { font-size: 1.25rem; }
+}
+
+/* FRENESI! Animation */
+@keyframes frenesiRGB {
+  0% { background-position: 100% 50%; }
+  100% { background-position: -100% 50%; }
+}
+
+@keyframes frenesiWave {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes frenesiTremble1 {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(0.5px, 1px); }
+  50% { transform: translate(-0.5px, 0.5px); }
+  75% { transform: translate(0.3px, 1.5px); }
+}
+
+@keyframes frenesiTremble2 {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-1px, 0.3px); }
+  50% { transform: translate(-0.5px, -0.5px); }
+  75% { transform: translate(-1.2px, 0.2px); }
+}
+
+@keyframes frenesiTremble3 {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(0.8px, -0.5px); }
+  50% { transform: translate(1.2px, 0.3px); }
+  75% { transform: translate(0.4px, -0.8px); }
+}
+
+@keyframes frenesiTremble4 {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-0.3px, 1.2px); }
+  50% { transform: translate(0.5px, 0.8px); }
+  75% { transform: translate(-0.7px, 1px); }
+}
+
+@keyframes frenesiTremble5 {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(1px, -0.3px); }
+  50% { transform: translate(0.3px, -1px); }
+  75% { transform: translate(0.8px, 0.2px); }
+}
+
+@keyframes frenesiTremble6 {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-0.8px, -0.8px); }
+  50% { transform: translate(0.3px, -0.3px); }
+  75% { transform: translate(-0.5px, 0.5px); }
+}
+
+@keyframes frenesiTremble7 {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(0.5px, 0.8px); }
+  50% { transform: translate(-1px, -0.5px); }
+  75% { transform: translate(0.2px, 1.2px); }
+}
+
+.frenesi-title {
+  font-family: 'BlackFlag', serif;
+  font-size: 1.25rem;
+  display: inline-block;
+}
+
+.frenesi-letter {
+  display: inline-block;
+}
+
+.frenesi-letter:nth-child(1) { animation: frenesiTremble1 0.3s infinite; }
+.frenesi-letter:nth-child(2) { animation: frenesiTremble2 0.35s infinite; }
+.frenesi-letter:nth-child(3) { animation: frenesiTremble3 0.28s infinite; }
+.frenesi-letter:nth-child(4) { animation: frenesiTremble4 0.32s infinite; }
+.frenesi-letter:nth-child(5) { animation: frenesiTremble5 0.3s infinite; }
+.frenesi-letter:nth-child(6) { animation: frenesiTremble6 0.34s infinite; }
+.frenesi-letter:nth-child(7) { animation: frenesiTremble7 0.29s infinite; }
+.frenesi-letter:nth-child(8) { animation: frenesiTremble1 0.31s infinite; }
+
+.frenesi-letter span {
+  display: inline-block;
+  background: linear-gradient(
+    90deg,
+    #8B0000, #B22222, #DC143C, #FF4500, #FF8C00, #FFD700,
+    #FF8C00, #FF4500, #DC143C, #B22222, #8B0000
+  );
+  background-size: 600% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: frenesiRGB 4s linear infinite, frenesiWave 1.2s ease-in-out infinite;
+}
+
+.frenesi-letter:nth-child(1) > span { animation-delay: 0s, 0s; }
+.frenesi-letter:nth-child(2) > span { animation-delay: 0.1s, 0.1s; }
+.frenesi-letter:nth-child(3) > span { animation-delay: 0.2s, 0.2s; }
+.frenesi-letter:nth-child(4) > span { animation-delay: 0.3s, 0.3s; }
+.frenesi-letter:nth-child(5) > span { animation-delay: 0.4s, 0.4s; }
+.frenesi-letter:nth-child(6) > span { animation-delay: 0.5s, 0.5s; }
+.frenesi-letter:nth-child(7) > span { animation-delay: 0.6s, 0.6s; }
+.frenesi-letter:nth-child(8) > span { animation-delay: 0.7s, 0.7s; }
+
+.frenesi-style {
+  font-family: 'Avestrava Tattoo', serif;
+  font-weight: normal;
+  font-size: 2.2rem;
+  background: linear-gradient(
+    90deg,
+    #8B0000, #B22222, #DC143C, #FF4500, #FF8C00, #FFD700,
+    #FF8C00, #FF4500, #DC143C, #B22222, #8B0000
+  );
+  background-size: 600% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: frenesiRGB 4s linear infinite;
+  display: inline-block;
+}
+
+.frenesi-style-rainbow {
+  font-family: 'Avestrava Tattoo', serif;
+  font-weight: normal;
+  font-size: 3rem;
+  background: linear-gradient(
+    90deg,
+    #FF0000, #FF7F00, #FFFF00, #00FF00, #0000FF, #4B0082, #9400D3,
+    #9400D3, #4B0082, #0000FF, #00FF00, #FFFF00, #FF7F00, #FF0000
+  );
+  background-size: 600% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: frenesiRGB 3s linear infinite;
+  display: inline-block;
 }
