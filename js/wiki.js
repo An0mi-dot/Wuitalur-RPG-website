@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return (await hashSHA256(pwd)) === localStorage.getItem(PWD_HASH_KEY);
   }
 
-  const SEED_KEY = 'wuitar_wiki_seeded_v2';
+  const SEED_KEY = 'wuitar_wiki_seeded_v3';
 
   function seedDefaults() {
     if (localStorage.getItem(SEED_KEY)) return;
