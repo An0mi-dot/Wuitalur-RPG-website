@@ -25,6 +25,9 @@
       transition: all var(--transition-base);
       position: relative;
       overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: block;
     }
     .char-select-card:hover {
       border-color: var(--accent, #7C3AED);
@@ -227,19 +230,6 @@
 
 <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
 
-<div class="wiki-modal-overlay" id="char-modal-overlay" hidden>
-  <div class="wiki-modal" style="max-width: 800px;">
-    <div class="wiki-modal-header">
-      <h2 id="char-modal-title">Detalhes do Personagem</h2>
-      <button class="wiki-modal-close" id="char-modal-close">&times;</button>
-    </div>
-    <div class="wiki-modal-body" id="char-modal-body"></div>
-    <div class="wiki-modal-footer">
-      <button class="wiki-btn-secondary" id="char-modal-close2">Fechar</button>
-    </div>
-  </div>
-</div>
-
 <script src="js/conditions.js"></script>
 <script src="js/main.js"></script>
 <script>
@@ -288,7 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
     empty.hidden = true;
 
     grid.innerHTML = characters.map(c => `
-      <div class="char-select-card" data-id="${c.id}">
+      <a href="personagem.html?id=${encodeURIComponent(c.id)}" class="char-select-card">
         <div class="char-select-header">
           <div class="char-select-avatar">
             ${c.image ? `<img src="${escapeHtml(c.image)}" alt="${escapeHtml(c.name)}">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`}
@@ -306,113 +296,9 @@ document.addEventListener('DOMContentLoaded', () => {
         <span class="char-select-arrow">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="18" height="18"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </span>
-      </div>
+      </a>
     `).join('');
-
-    grid.querySelectorAll('.char-select-card').forEach(card => {
-      card.addEventListener('click', () => openDetail(card.dataset.id));
-    });
   }
-
-  function openDetail(id) {
-    const c = characters.find(ch => ch.id === id);
-    if (!c) return;
-
-    const overlay = document.getElementById('char-modal-overlay');
-    const title = document.getElementById('char-modal-title');
-    const body = document.getElementById('char-modal-body');
-
-    title.textContent = c.fullName || c.name || 'Personagem';
-
-    body.innerHTML = `
-      <div style="display:flex;gap:var(--space-xl);flex-wrap:wrap;margin-bottom:var(--space-xl);">
-        <div style="flex:1;min-width:200px;">
-          <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:4px;">Nome Completo</div>
-          <div style="color:var(--text-primary);font-weight:600;">${escapeHtml(c.fullName || c.name || '—')}</div>
-        </div>
-        <div style="flex:0 0 auto;">
-          <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:4px;">Idade</div>
-          <div style="color:var(--text-primary);">${escapeHtml(c.age || '—')}</div>
-        </div>
-        <div style="flex:0 0 auto;">
-          <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:4px;">Status</div>
-          <span class="char-select-status ${statusClass(c.status)}" style="margin:0;">
-            <span class="status-dot" style="background:${statusColor(c.status)}"></span>
-            ${escapeHtml(c.status || 'Desconhecido')}
-          </span>
-        </div>
-      </div>
-
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:var(--space-md);margin-bottom:var(--space-xl);">
-        <div style="background:rgba(0,0,0,0.15);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:var(--space-md);">
-          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--attr-ea);margin-bottom:4px;">Raça</div>
-          <div style="color:var(--text-primary);font-weight:600;">${escapeHtml(c.race || '—')}</div>
-        </div>
-        <div style="background:rgba(0,0,0,0.15);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:var(--space-md);">
-          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--attr-ea);margin-bottom:4px;">Classe</div>
-          <div style="color:var(--text-primary);font-weight:600;">${escapeHtml(c.className || '—')}</div>
-        </div>
-        <div style="background:rgba(0,0,0,0.15);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:var(--space-md);">
-          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--attr-ea);margin-bottom:4px;">Afiliação</div>
-          <div style="color:var(--text-primary);font-weight:600;">${escapeHtml(c.affiliation || '—')}</div>
-        </div>
-      </div>
-
-      ${c.summary ? `
-        <div style="background:rgba(0,0,0,0.15);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:var(--space-lg);margin-bottom:var(--space-lg);">
-          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--attr-ea);margin-bottom:var(--space-sm);">Resumo</div>
-          <p style="margin:0;color:var(--text-secondary);line-height:1.7;">${escapeHtml(c.summary)}</p>
-        </div>
-      ` : ''}
-
-      ${c.origin ? `
-        <div style="margin-bottom:var(--space-lg);">
-          <h4 style="margin-bottom:var(--space-sm);">Origem</h4>
-          <p style="color:var(--text-secondary);line-height:1.7;margin:0;">${escapeHtml(c.origin)}</p>
-        </div>
-      ` : ''}
-
-      ${c.appearance ? `
-        <div style="margin-bottom:var(--space-lg);">
-          <h4 style="margin-bottom:var(--space-sm);">Aparência</h4>
-          <p style="color:var(--text-secondary);line-height:1.7;margin:0;">${escapeHtml(c.appearance)}</p>
-        </div>
-      ` : ''}
-
-      ${c.behavior ? `
-        <div style="margin-bottom:var(--space-lg);">
-          <h4 style="margin-bottom:var(--space-sm);">Personalidade</h4>
-          <p style="color:var(--text-secondary);line-height:1.7;margin:0;">${escapeHtml(c.behavior)}</p>
-        </div>
-      ` : ''}
-
-      ${c.events ? `
-        <div style="margin-bottom:var(--space-lg);">
-          <h4 style="margin-bottom:var(--space-sm);">Eventos Importantes</h4>
-          <p style="color:var(--text-secondary);line-height:1.7;margin:0;">${escapeHtml(c.events)}</p>
-        </div>
-      ` : ''}
-
-      ${c.currentSituation ? `
-        <div style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.2);border-radius:var(--radius-md);padding:var(--space-lg);">
-          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent,#7C3AED);margin-bottom:var(--space-sm);">Situação Atual</div>
-          <p style="margin:0;color:var(--text-secondary);line-height:1.7;">${escapeHtml(c.currentSituation)}</p>
-        </div>
-      ` : ''}
-    `;
-
-    overlay.hidden = false;
-  }
-
-  document.getElementById('char-modal-close').addEventListener('click', () => {
-    document.getElementById('char-modal-overlay').hidden = true;
-  });
-  document.getElementById('char-modal-close2').addEventListener('click', () => {
-    document.getElementById('char-modal-overlay').hidden = true;
-  });
-  document.getElementById('char-modal-overlay').addEventListener('click', (e) => {
-    if (e.target === e.currentTarget) e.currentTarget.hidden = true;
-  });
 
   load();
   renderCards();

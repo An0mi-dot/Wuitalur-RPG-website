@@ -669,24 +669,17 @@
 
 /* --- Grid 2 colunas --- */
 .universe-grid {
-  display: grid;
-  grid-template-columns: 1fr 280px;
+  display: flex;
+  flex-direction: column;
   gap: var(--space-lg);
-  align-items: start;
+  max-width: 600px;
+  margin: 0 auto;
 }
 .universe-main {
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
 }
-.universe-side {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  position: sticky;
-  top: calc(var(--header-height) + var(--space-lg));
-}
-
 /* --- Glass cards --- */
 .glass-card {
   background: rgba(255,255,255,0.04);
@@ -949,8 +942,6 @@
 
 /* --- Responsive --- */
 @media (max-width: 860px) {
-  .universe-grid { grid-template-columns: 1fr; }
-  .universe-side { position: static; }
   .glass-lg { flex-direction: column; gap: var(--space-md); }
   .campaign-banner h2 { font-size: 1.4rem; }
 }

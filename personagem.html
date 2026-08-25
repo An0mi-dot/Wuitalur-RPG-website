@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personagem — Wuitalur RPG</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .char-profile { max-width: 860px; margin: 0 auto; }
+    .char-profile-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xl);
+      margin-bottom: var(--space-2xl);
+      flex-wrap: wrap;
+    }
+    .char-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: rgba(124, 58, 237, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+      border: 2px solid var(--border-subtle);
+    }
+    .char-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .char-avatar svg { width: 48px; height: 48px; color: var(--accent, #7C3AED); opacity: 0.5; }
+    .char-header-info { flex: 1; min-width: 0; }
+    .char-header-name {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 900;
+      margin: 0 0 var(--space-xs) 0;
+    }
+    .char-header-sub {
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+    .char-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .status-vivo { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
+    .status-morto { background: rgba(248, 113, 113, 0.15); color: #f87171; }
+    .status-desconhecido { background: rgba(148, 163, 184, 0.15); color: #94a3b8; }
+    .char-stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: var(--space-md);
+      margin-bottom: var(--space-2xl);
+    }
+    .char-stat-box {
+      background: rgba(0,0,0,0.15);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+    }
+    .char-stat-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--attr-ea);
+      margin-bottom: 4px;
+    }
+    .char-stat-value {
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .char-section {
+      margin-bottom: var(--space-2xl);
+    }
+    .char-section h3 {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: var(--space-md);
+      padding-bottom: var(--space-sm);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .char-section p {
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin: 0;
+    }
+    .char-situation {
+      background: rgba(124, 58, 237, 0.08);
+      border: 1px solid rgba(124, 58, 237, 0.2);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+    }
+    .char-situation .char-section-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent, #7C3AED);
+      margin-bottom: var(--space-sm);
+    }
+    .char-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-bottom: var(--space-xl);
+      transition: color var(--transition-fast);
+    }
+    .char-back:hover { color: var(--text-primary); text-decoration: none; }
+    .char-not-found {
+      text-align: center;
+      padding: var(--space-4xl);
+      color: var(--text-muted);
+    }
+    .char-not-found svg { width: 64px; height: 64px; margin-bottom: var(--space-lg); opacity: 0.3; }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema v1.4.8-1</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="origins.html" class="sidebar-link"><span class="icon"></span> Origens</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+      <a href="glossario.html" class="sidebar-link"><span class="icon"></span> Glossário</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+      <a href="selos.html" class="sidebar-link"><span class="icon"></span> Selos</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+      <a href="bestiario.html" class="sidebar-link"><span class="icon"></span> Bestiário</a>
+
+      <div class="sidebar-section-title">Ferramentas</div>
+      <a href="wiki.html" class="sidebar-link"><span class="icon"></span> Sobre o Universo</a>
+      <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
+      <a href="criador.html" class="sidebar-link"><span class="icon"></span> Criador de Ficha</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1 id="page-title">Personagem</h1>
+      <div style="position:relative">
+        <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
+        <div class="wiki-dropdown" id="wiki-menu-dropdown">
+          <a href="wiki.html" class="wiki-dropdown-item"><span class="icon">&#x25C8;</span> Sobre o Universo</a>
+          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
+          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
+          <a href="criador.html" class="wiki-dropdown-item"><span class="icon">&#x270E;</span> Criador de Ficha</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <section class="subsection">
+        <div id="char-content"></div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
+
+<script src="js/conditions.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const STORAGE_KEY = 'wuitar_wiki_characters';
+  const params = new URLSearchParams(window.location.search);
+  const charId = params.get('id');
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function statusColor(status) {
+    if (!status) return '#94a3b8';
+    const s = status.toLowerCase();
+    if (s === 'vivo' || s === 'ativa' || s === 'ativo') return '#4ade80';
+    if (s === 'morto' || s === 'morta' || s === 'inativo') return '#f87171';
+    return '#94a3b8';
+  }
+
+  function statusClass(status) {
+    if (!status) return 'status-desconhecido';
+    const s = status.toLowerCase();
+    if (s === 'vivo' || s === 'ativa' || s === 'ativo') return 'status-vivo';
+    if (s === 'morto' || s === 'morta' || s === 'inativo') return 'status-morto';
+    return 'status-desconhecido';
+  }
+
+  let characters = [];
+  try { characters = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch { characters = []; }
+
+  const c = characters.find(ch => ch.id === charId);
+  const container = document.getElementById('char-content');
+  const pageTitle = document.getElementById('page-title');
+
+  if (!c) {
+    pageTitle.textContent = 'Personagem não encontrado';
+    container.innerHTML = `
+      <div class="char-not-found">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <p>Personagem não encontrado.</p>
+        <a href="personagens.html" class="char-back" style="justify-content:center;margin-top:var(--space-lg);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="16" height="16"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Voltar para Personagens
+        </a>
+      </div>`;
+    return;
+  }
+
+  pageTitle.textContent = c.fullName || c.name || 'Personagem';
+
+  container.innerHTML = `
+    <a href="personagens.html" class="char-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="16" height="16"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Voltar para Personagens
+    </a>
+
+    <div class="char-profile">
+      <div class="char-profile-header">
+        <div class="char-avatar">
+          ${c.image ? `<img src="${escapeHtml(c.image)}" alt="${escapeHtml(c.name)}">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`}
+        </div>
+        <div class="char-header-info">
+          <h2 class="char-header-name">${escapeHtml(c.fullName || c.name || 'Sem nome')}</h2>
+          <div class="char-header-sub">${escapeHtml(c.className || '')}${c.race ? ' · ' + escapeHtml(c.race) : ''}</div>
+        </div>
+        <span class="char-status-badge ${statusClass(c.status)}">
+          <span class="status-dot" style="background:${statusColor(c.status)}"></span>
+          ${escapeHtml(c.status || 'Desconhecido')}
+        </span>
+      </div>
+
+      <div class="char-stats-row">
+        <div class="char-stat-box">
+          <div class="char-stat-label">Idade</div>
+          <div class="char-stat-value">${escapeHtml(c.age || '—')}</div>
+        </div>
+        <div class="char-stat-box">
+          <div class="char-stat-label">Raça</div>
+          <div class="char-stat-value">${escapeHtml(c.race || '—')}</div>
+        </div>
+        <div class="char-stat-box">
+          <div class="char-stat-label">Classe</div>
+          <div class="char-stat-value">${escapeHtml(c.className || '—')}</div>
+        </div>
+        <div class="char-stat-box">
+          <div class="char-stat-label">Afiliação</div>
+          <div class="char-stat-value">${escapeHtml(c.affiliation || '—')}</div>
+        </div>
+      </div>
+
+      ${c.summary ? `
+        <div class="char-section">
+          <h3>Resumo</h3>
+          <p>${escapeHtml(c.summary)}</p>
+        </div>
+      ` : ''}
+
+      ${c.origin ? `
+        <div class="char-section">
+          <h3>Origem</h3>
+          <p>${escapeHtml(c.origin)}</p>
+        </div>
+      ` : ''}
+
+      ${c.appearance ? `
+        <div class="char-section">
+          <h3>Aparência</h3>
+          <p>${escapeHtml(c.appearance)}</p>
+        </div>
+      ` : ''}
+
+      ${c.behavior ? `
+        <div class="char-section">
+          <h3>Personalidade</h3>
+          <p>${escapeHtml(c.behavior)}</p>
+        </div>
+      ` : ''}
+
+      ${c.events ? `
+        <div class="char-section">
+          <h3>Eventos Importantes</h3>
+          <p>${escapeHtml(c.events)}</p>
+        </div>
+      ` : ''}
+
+      ${c.currentSituation ? `
+        <div class="char-section">
+          <div class="char-situation">
+            <div class="char-section-label">Situação Atual</div>
+            <p>${escapeHtml(c.currentSituation)}</p>
+          </div>
+        </div>
+      ` : ''}
+    </div>
+  `;
+});
+</script>
+</body>
+</html>
