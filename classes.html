@@ -1930,11 +1930,11 @@
 
             <h4>Profici&ecirc;ncias</h4>
             <div class="class-stat-grid">
-              <div class="class-stat"><div class="class-stat-label">Armas</div><div class="class-stat-value">Rev&oacute;lveres, Pistolas e armas de fogo semiautom&aacute;ticas (b&ocirc;nus de profici&ecirc;ncia aumentado em + metade do b&ocirc;nus arredondado para baixo)</div></div>
+              <div class="class-stat"><div class="class-stat-label">Armas</div><div class="class-stat-value">Rev&oacute;lveres, Pistolas e L&acirc;minas Curtas e M&eacute;dias</div></div>
               <div class="class-stat"><div class="class-stat-label">Armaduras</div><div class="class-stat-value">Armaduras leves</div></div>
               <div class="class-stat"><div class="class-stat-label">Ferramentas</div><div class="class-stat-value">Kit de Armeiro</div></div>
               <div class="class-stat"><div class="class-stat-label">Escudos</div><div class="class-stat-value">Nenhum</div></div>
-              <div class="class-stat"><div class="class-stat-label">Testes de Resist&ecirc;ncia</div><div class="class-stat-value"><span class="attr-des">Destreza</span>, <span class="attr-int">Intelig&ecirc;ncia</span></div></div>
+              <div class="class-stat"><div class="class-stat-label">Testes de Resist&ecirc;ncia</div><div class="class-stat-value"><span class="attr-des">Destreza</span>, <span class="attr-fr">For&ccedil;a</span></div></div>
             </div>
 
             <h4>B&ocirc;nus de Profici&ecirc;ncia</h4>
@@ -1947,24 +1947,36 @@
             </div>
 
             <h4>Equipamentos Iniciais</h4>
-            <div class="class-stat-grid">
-              <div class="class-stat"><div class="class-stat-label">Arma</div><div class="class-stat-value">Rev&oacute;lver Adulterado &mdash; come&ccedil;a causando <span class="dice">3d6</span> ao inv&eacute;s de <span class="dice">2d6</span></div></div>
+            <div class="class-stat-grid" style="margin-bottom: var(--space-md);">
+              <div class="class-stat"><div class="class-stat-label">Arma de Fogo</div><div class="class-stat-value">Rev&oacute;lver Adulterado Estilizado &mdash; causando <span class="dice">2d6</span> de dano por tiro.</div></div>
+              <div class="class-stat"><div class="class-stat-label">Arma Corpo a Corpo</div><div class="class-stat-value">Espada Curta Estilizada &mdash; causando <span class="dice">1d10</span> de dano por ataque.</div></div>
               <div class="class-stat"><div class="class-stat-label">Armadura</div><div class="class-stat-value">Armadura leve (couro leve ou equivalente)</div></div>
               <div class="class-stat"><div class="class-stat-label">Ferramentas</div><div class="class-stat-value">Kit de Armeiro</div></div>
               <div class="class-stat"><div class="class-stat-label">Pacote de Aventuras</div><div class="class-stat-value">Mochila do Viajante (ra&ccedil;&otilde;es 5 usos, cantil, 3m de corda)</div></div>
             </div>
 
-            <h4>Mec&acirc;nica de Equipamento &mdash; O Rev&oacute;lver Assinatura (Adulterado)</h4>
-            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: var(--space-lg);">O Pistoleiro j&aacute; inicia sua jornada com sua arma caracter&iacute;stica no invent&aacute;rio. Trata-se de um modelo personalizado pelo pr&oacute;prio atirador, com acabamento e est&eacute;tica definidos pelo jogador. No momento da cria&ccedil;&atilde;o da ficha, o jogador escolhe <strong>uma &uacute;nica modifica&ccedil;&atilde;o para adulterar</strong> os valores base do seu rev&oacute;lver.</p>
+            <div class="callout callout-info" style="margin-bottom: var(--space-lg);">
+              <strong>Importante:</strong> As habilidades do Pistoleiro somam o dano da <strong>arma utilizada</strong> ao dano da pr&oacute;pria habilidade. Por exemplo, <strong>Talho &amp; P&oacute;lvora</strong> &agrave; dist&acirc;ncia usa o dano do <span class="dice">2d6</span> do Rev&oacute;lver + o dano da habilidade, enquanto a vers&atilde;o corpo a corpo usa o dano da <span class="dice">1d10</span> da Espada Curta + o dano da habilidade.
+            </div>
 
-            <h4>Estat&iacute;sticas Base do Rev&oacute;lver</h4>
+            <h4>Rev&oacute;lver Adulterado Estilizado</h4>
             <div class="class-stat-grid" style="margin-bottom: var(--space-lg);">
               <div class="class-stat"><div class="class-stat-label">Peso</div><div class="class-stat-value">I</div></div>
               <div class="class-stat"><div class="class-stat-label">Dano</div><div class="class-stat-value"><span class="dice">2d6</span> + DES (Perfura&ccedil;&atilde;o)</div></div>
               <div class="class-stat"><div class="class-stat-label">Cr&iacute;tico</div><div class="class-stat-value">19/x3</div></div>
               <div class="class-stat"><div class="class-stat-label">Alcance</div><div class="class-stat-value">8B</div></div>
               <div class="class-stat"><div class="class-stat-label">Muni&ccedil;&atilde;o</div><div class="class-stat-value">6 tiros</div></div>
-              <div class="class-stat"><div class="class-stat-label">Recarga</div><div class="class-stat-value">1 turno (Pode ser reduzida pelos b&ocirc;nus de Rank de Estilo)</div></div>
+              <div class="class-stat"><div class="class-stat-label">Recarga</div><div class="class-stat-value">1 turno</div></div>
+              <div class="class-stat"><div class="class-stat-label">Efeito</div><div class="class-stat-value">Pode-se gastar uma a&ccedil;&atilde;o inteira para se concentrar, fazendo o pr&oacute;ximo disparo ignorar armaduras e causar +<span class="dice">1d6</span>.</div></div>
+            </div>
+
+            <h4>Espada Curta Estilizada</h4>
+            <div class="class-stat-grid" style="margin-bottom: var(--space-lg);">
+              <div class="class-stat"><div class="class-stat-label">Peso</div><div class="class-stat-value">I</div></div>
+              <div class="class-stat"><div class="class-stat-label">Dano</div><div class="class-stat-value"><span class="dice">1d10</span> + DES</div></div>
+              <div class="class-stat"><div class="class-stat-label">Cr&iacute;tico</div><div class="class-stat-value">20/x2</div></div>
+              <div class="class-stat"><div class="class-stat-label">Efeito</div><div class="class-stat-value">Contra-ataque &mdash; Se bloquear um ataque corpo a corpo, pode atacar imediatamente com metade do dano.</div></div>
+            </div>
             </div>
 
             <h5 style="margin-bottom: var(--space-sm);">Modifica&ccedil;&otilde;es de Adultera&ccedil;&atilde;o (Escolha 1 no 1&ordm; N&iacute;vel):</h5>
@@ -2050,7 +2062,7 @@
             <div class="race-ability">
               <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
                 <h5>Talho &amp; P&oacute;lvora</h5>
-                <p><span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> (Categoria: Habilidade de Classe)</p>
+                <p><span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span></p>
                 <p><span class="ability-cost">10 / 15 / 20 / 25 / 30 / 35 / 40 de Energia Astral</span></p>
                 <p>Alcance: <strong>8B</strong> (Disparo) ou <strong>at&eacute; 3B</strong> (Corpo a Corpo)</p>
                 <p>Voc&ecirc; desfere uma a&ccedil;&atilde;o r&aacute;pida adaptada &agrave; sua dist&acirc;ncia:</p>
@@ -2062,7 +2074,7 @@
             <div class="race-ability">
               <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
                 <h5>Turbilh&atilde;o de A&ccedil;o</h5>
-                <p><span class="ability-tag">Rea&ccedil;&atilde;o</span> ou <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> (Categoria: Habilidade de Classe)</p>
+                <p><span class="ability-tag">Rea&ccedil;&atilde;o</span> ou <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span></p>
                 <p><span class="ability-cost">20 / 25 / 30 / 35 / 40 / 45 / 50 de Energia Astral</span></p>
                 <p>Alcance: <strong>Pessoal</strong> (Raio de 3B ao redor)</p>
                 <p>Voc&ecirc; gira golpeando o ar freneticamente com sua arma e l&acirc;mina ao longo de 1 rodada.</p>
@@ -2075,7 +2087,7 @@
             <div class="race-ability">
               <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
                 <h5>&Iacute;mpeto Audacioso</h5>
-                <p><span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> (Categoria: Habilidade de Classe)</p>
+                <p><span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span></p>
                 <p><span class="ability-cost">15 / 20 / 25 / 30 / 35 / 40 / 45 de Energia Astral</span></p>
                 <p>Alcance: <strong>3B / 4B / 5B / 6B / 7B / 8B / 10B</strong> (Avan&ccedil;o direcionado)</p>
                 <p>Voc&ecirc; avan&ccedil;a velozmente atravessando um alvo e se posicionando do outro lado.</p>
@@ -2088,7 +2100,7 @@
             <div class="race-ability">
               <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
                 <h5>Provoca&ccedil;&atilde;o Impertinente</h5>
-                <p><span class="ability-tag">A&ccedil;&atilde;o Livre</span> (1x por rodada) (Categoria: Habilidade de Classe)</p>
+                <p><span class="ability-tag">A&ccedil;&atilde;o Livre</span> (1x por rodada)</p>
                 <p><span class="ability-cost">5 / 8 / 10 / 12 / 15 / 18 / 20 de Energia Astral</span></p>
                 <p>Alcance: <strong>4B / 5B / 6B / 7B / 8B / 9B / 10B</strong></p>
                 <p>Voc&ecirc; lan&ccedil;a uma moeda ou faz um floreio provocador contra um alvo.</p>
@@ -2100,7 +2112,7 @@
             <div class="race-ability">
               <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: var(--space-md);">
                 <h5>Olho por Olho (Contra-Ataque com Estilo)</h5>
-                <p><span class="ability-tag">Rea&ccedil;&atilde;o</span> (Categoria: Habilidade de Classe)</p>
+                <p><span class="ability-tag">Rea&ccedil;&atilde;o</span></p>
                 <p><span class="ability-cost">15 / 20 / 25 / 30 / 35 / 40 / 45 de Energia Astral</span></p>
                 <p>Alcance: <strong>4B / 5B / 6B / 7B / 8B / 9B / 10B</strong></p>
                 <p>Ativada imediatamente ap&oacute;s voc&ecirc; sofrer dano de um ataque.</p>
