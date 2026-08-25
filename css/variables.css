@@ -707,6 +707,28 @@ code, .mono {
   display: inline-block;
 }
 
+.ability-scale {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.15em;
+  font-size: 0.95em;
+  line-height: 1;
+}
+.ability-scale-val {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.ability-scale-lvl {
+  font-size: 0.65em;
+  vertical-align: super;
+  color: var(--accent-gold);
+  opacity: 0.85;
+}
+.ability-scale-sep {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
 .frenesi-style-rainbow {
   font-family: 'Avestrava Tattoo', serif;
   font-weight: normal;
