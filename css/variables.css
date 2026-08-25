@@ -710,7 +710,7 @@ code, .mono {
 .ability-scale {
   display: inline-flex;
   align-items: baseline;
-  gap: 0.15em;
+  gap: 0.1em;
   font-size: 0.95em;
   line-height: 1;
 }
@@ -723,6 +723,7 @@ code, .mono {
   vertical-align: super;
   color: var(--accent-gold);
   opacity: 0.85;
+  margin-left: 1px;
 }
 .ability-scale-sep {
   color: var(--text-muted);
