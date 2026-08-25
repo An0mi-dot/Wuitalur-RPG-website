@@ -143,6 +143,17 @@
     .char-empty p {
       font-size: 1rem;
     }
+    .char-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-bottom: var(--space-lg);
+      transition: color var(--transition-fast);
+    }
+    .char-back:hover { color: var(--text-primary); text-decoration: none; }
     @media (max-width: 768px) {
       .char-select-grid {
         grid-template-columns: 1fr;
@@ -209,6 +220,10 @@
     <main class="page-content">
 
       <section class="subsection">
+        <a href="wiki.html" class="char-back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="16" height="16"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Voltar
+        </a>
         <div class="section-heading">
           <h2>Escolha um Personagem</h2>
           <p>Selecione um personagem para ver seus detalhes completos.</p>
