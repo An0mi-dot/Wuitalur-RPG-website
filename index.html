@@ -1,77 +1,52 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wuitalur RPG — Sistema</title>
+  <title>Wuitalur — Sistema de RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/components.css">
   <style>
     .home-hero {
-      padding: var(--space-3xl) var(--space-xl);
-      margin-bottom: var(--space-xl);
       text-align: center;
+      padding: var(--space-3xl) var(--space-xl) var(--space-2xl);
       position: relative;
-      overflow: hidden;
-    }
-    .home-hero::before {
-      content: '';
-      position: absolute;
-      top: -50%; left: -50%;
-      width: 200%; height: 200%;
-      background: radial-gradient(ellipse at center, rgba(124,58,237,0.06) 0%, transparent 70%);
-      pointer-events: none;
     }
     .home-hero h1 {
       font-family: var(--font-heading);
       font-size: 3rem;
+      font-weight: 900;
       letter-spacing: 0.15em;
-      margin-bottom: var(--space-sm);
       color: var(--text-primary);
       text-transform: uppercase;
-      position: relative;
+      margin-bottom: var(--space-xs);
+      text-shadow: 0 0 40px rgba(124, 58, 237, 0.3);
     }
     .home-hero h1 small {
-      display: block;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+      font-weight: 400;
       letter-spacing: 0.25em;
       color: var(--attr-ea);
-      font-weight: 400;
+      display: block;
       margin-top: var(--space-xs);
-    }
-    .home-hero .tagline {
-      max-width: 700px;
-      margin: var(--space-lg) auto;
-      color: var(--text-secondary);
-      font-size: 1rem;
-      line-height: 1.8;
-      font-style: italic;
-      position: relative;
-    }
-    .home-hero .tagline::before { content: '"'; color: var(--attr-ea); font-size: 2rem; font-family: var(--font-heading); opacity: 0.5; margin-right: 4px; }
-    .home-hero .tagline::after { content: '"'; color: var(--attr-ea); font-size: 2rem; font-family: var(--font-heading); opacity: 0.5; margin-left: 4px; }
-    .home-divider {
-      width: 60px; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--attr-ea), transparent);
-      margin: 0 auto var(--space-xl);
+      text-transform: uppercase;
     }
     .home-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: var(--space-md);
-      margin-bottom: var(--space-2xl);
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 28px;
+      margin-bottom: var(--space-3xl);
     }
     .home-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      padding: var(--space-lg);
-      transition: all var(--transition-base);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
       text-decoration: none;
+      transition: all var(--transition-base);
       display: flex;
       flex-direction: column;
-      gap: var(--space-sm);
       position: relative;
       overflow: hidden;
     }
@@ -80,72 +55,38 @@
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 3px;
-      background: var(--card-accent, var(--border-subtle));
-      transition: height var(--transition-base);
+      background: var(--card-accent, var(--attr-ea));
+      opacity: 0;
+      transition: opacity var(--transition-base);
     }
     .home-card:hover {
-      border-color: var(--card-accent, var(--border-accent));
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-md);
+      border-color: var(--card-accent, var(--attr-ea));
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(124, 58, 237, 0.1);
     }
-    .home-card:hover::before { height: 4px; }
-    .home-card .card-icon {
-      font-size: 1.3rem;
-      width: 40px; height: 40px;
-      display: flex; align-items: center; justify-content: center;
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm);
-      background: var(--bg-elevated);
-      color: var(--attr-ea);
+    .home-card:hover::before {
+      opacity: 1;
     }
     .home-card h3 {
       font-family: var(--font-heading);
-      font-size: 1rem;
+      font-size: 1.15rem;
+      font-weight: 700;
       color: var(--text-primary);
-      margin: 0;
+      margin-bottom: var(--space-xs);
     }
     .home-card p {
-      font-size: 0.82rem;
-      color: var(--text-muted);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
       margin: 0;
-      line-height: 1.5;
     }
     .home-card .badge {
-      display: inline-block;
-      font-size: 0.6rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      padding: 2px 8px;
-      border-radius: 10px;
-      background: rgba(124,58,237,0.15);
-      color: #a78bfa;
-      border: 1px solid rgba(124,58,237,0.2);
       align-self: flex-start;
+      margin-bottom: var(--space-sm);
     }
-    .home-stats {
-      display: flex;
-      justify-content: center;
-      gap: var(--space-2xl);
-      padding: var(--space-xl) 0;
+    .home-divider {
       border-top: 1px solid var(--border-subtle);
-      border-bottom: 1px solid var(--border-subtle);
-      margin-bottom: var(--space-2xl);
-      flex-wrap: wrap;
-    }
-    .home-stat {
-      text-align: center;
-    }
-    .home-stat .num {
-      font-family: var(--font-mono);
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--attr-ea);
-    }
-    .home-stat .label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--text-muted);
+      margin: var(--space-2xl) 0;
     }
     .home-section-title {
       font-family: var(--font-heading);
@@ -165,6 +106,7 @@
 
 <div class="app-layout">
 
+  <!-- SIDEBAR LATERAL -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-logo">
@@ -173,6 +115,9 @@
       </div>
     </div>
     <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Extras</div>
+      <a href="suplementos.html" class="sidebar-link"><span class="icon"></span> Suplementos</a>
+
       <div class="sidebar-section-title">Principal</div>
       <a href="index.html" class="sidebar-link active"><span class="icon"></span> Início</a>
       <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
@@ -181,7 +126,6 @@
       <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
 
       <div class="sidebar-section-title">Regras</div>
-
       <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
       <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
       <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
@@ -197,12 +141,12 @@
       <a href="bestiario.html" class="sidebar-link"><span class="icon"></span> Bestiário</a>
 
       <div class="sidebar-section-title">Ferramentas</div>
-      <a href="wiki.html" class="sidebar-link"><span class="icon"></span> Sobre o Universo</a>
       <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
       <a href="criador.html" class="sidebar-link"><span class="icon"></span> Criador de Ficha</a>
     </nav>
   </aside>
 
+  <!-- WRAPPER PRINCIPAL -->
   <div class="main-wrapper">
 
     <header class="page-header">
@@ -210,7 +154,6 @@
       <div style="position:relative">
         <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
         <div class="wiki-dropdown" id="wiki-menu-dropdown">
-          <a href="wiki.html" class="wiki-dropdown-item"><span class="icon">&#x25C8;</span> Sobre o Universo</a>
           <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
           <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
           <a href="criador.html" class="wiki-dropdown-item"><span class="icon">&#x270E;</span> Criador de Ficha</a>
@@ -224,6 +167,21 @@
 
     <main class="page-content">
 
+      <!-- EXTRAS -->
+      <div class="home-section-title"><span>Extras</span></div>
+
+      <div class="home-grid">
+
+        <a href="suplementos.html" class="home-card" style="--card-accent: #ef4444; border-color: rgba(239, 68, 68, 0.3);">
+          <span class="badge" style="background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-color: rgba(239, 68, 68, 0.3);">Expansões Oficiais</span>
+          <h3 style="color: #f87171;">Suplementos</h3>
+          <p>Catálogo de sistemas filhos, expansões de gênero e suplementos oficiais como Fios do Medo.</p>
+        </a>
+
+      </div>
+
+      <!-- PRINCIPAL -->
+      <div class="home-divider"></div>
       <div class="home-section-title"><span>Principal</span></div>
 
       <div class="home-grid">
@@ -255,6 +213,7 @@
 
       </div>
 
+      <!-- REGRAS -->
       <div class="home-divider"></div>
       <div class="home-section-title"><span>Regras</span></div>
 
@@ -287,6 +246,7 @@
 
       </div>
 
+      <!-- CONTEÚDO -->
       <div class="home-divider"></div>
       <div class="home-section-title"><span>Conte&uacute;do</span></div>
 
@@ -314,6 +274,7 @@
 
       </div>
 
+      <!-- FERRAMENTAS -->
       <div class="home-divider"></div>
       <div class="home-section-title"><span>Ferramentas</span></div>
 
@@ -322,11 +283,6 @@
         <a href="criador.html" class="home-card" style="--card-accent: #f97316;">
           <h3>Criador de Ficha</h3>
           <p>Monte seu personagem passo a passo com c&aacute;lculos autom&aacute;ticos.</p>
-        </a>
-
-        <a href="wiki.html" class="home-card" style="--card-accent: #10b981;">
-          <h3>Sobre o Universo</h3>
-          <p>Explore personagens, &aacute;reas e hist&oacute;rias do mundo de Wuitalur.</p>
         </a>
 
         <a href="changelog.html" class="home-card" style="--card-accent: #a78bfa;">
@@ -346,4 +302,3 @@
 <script src="js/main.js"></script>
 </body>
 </html>
-

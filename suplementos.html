@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suplementos — Wuitalur RPG</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .suplementos-hero {
+      background: linear-gradient(180deg, rgba(24, 24, 27, 0.9) 0%, rgba(10, 10, 14, 0.95) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-2xl) var(--space-xl);
+      margin-bottom: var(--space-2xl);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .suplementos-hero h1 {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      color: var(--text-primary);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-xs);
+    }
+
+    .suplementos-hero h1 span {
+      color: var(--attr-ea);
+    }
+
+    .suplementos-hero p.tagline {
+      max-width: 720px;
+      margin: 0 auto;
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .suplementos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 340px));
+      gap: var(--space-xl);
+      justify-content: center;
+      margin-bottom: var(--space-2xl);
+    }
+
+    .suplemento-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      transition: all var(--transition-base);
+      position: relative;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .suplemento-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--card-hover-border, var(--attr-ea));
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(239, 68, 68, 0.2);
+    }
+
+    .suplemento-poster-wrapper {
+      width: 100%;
+      aspect-ratio: 1300 / 1920;
+      overflow: hidden;
+      position: relative;
+      background: #000;
+    }
+
+    .suplemento-poster-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .suplemento-card:hover .suplemento-poster-wrapper img {
+      transform: scale(1.03);
+    }
+
+    .suplemento-badge-floating {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .suplemento-card-content {
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex: 1;
+      gap: var(--space-md);
+    }
+
+    .suplemento-card-title {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .suplemento-card-desc {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .suplemento-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .suplemento-tag {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+    }
+
+    .suplemento-btn-action {
+      background: #27272a;
+      border: 1px solid #3f3f46;
+      color: #ffffff;
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: center;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .suplemento-card:hover .suplemento-btn-action {
+      background: #ef4444;
+      border-color: #ef4444;
+      color: #fff;
+    }
+
+    .suplemento-placeholder {
+      border: 2px dashed var(--border-subtle);
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-2xl) var(--space-lg);
+      text-align: center;
+      color: var(--text-dim);
+      gap: var(--space-md);
+      min-height: 480px;
+    }
+    .crimson-transition-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(255, 17, 51, 0.45) 0%, rgba(12, 12, 17, 0.98) 75%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 99999;
+      transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1), backdrop-filter 0.32s ease;
+      backdrop-filter: blur(0px);
+    }
+
+    .crimson-transition-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+      backdrop-filter: blur(8px);
+    }
+  </style>
+</head>
+<body>
+
+<div class="crimson-transition-overlay" id="crimson-overlay"></div>
+
+<div class="app-layout">
+
+  <!-- SIDEBAR LATERAL -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema v1.4.8-1</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Extras</div>
+      <a href="suplementos.html" class="sidebar-link active"><span class="icon"></span> Suplementos</a>
+
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="origins.html" class="sidebar-link"><span class="icon"></span> Origens</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+      <a href="glossario.html" class="sidebar-link"><span class="icon"></span> Glossário</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+      <a href="selos.html" class="sidebar-link"><span class="icon"></span> Selos</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+      <a href="bestiario.html" class="sidebar-link"><span class="icon"></span> Bestiário</a>
+
+      <div class="sidebar-section-title">Ferramentas</div>
+      <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
+      <a href="criador.html" class="sidebar-link"><span class="icon"></span> Criador de Ficha</a>
+    </nav>
+  </aside>
+
+  <!-- WRAPPER PRINCIPAL -->
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Suplementos Oficiais</h1>
+      <div style="position:relative">
+        <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
+        <div class="wiki-dropdown" id="wiki-menu-dropdown">
+          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
+          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
+          <a href="criador.html" class="wiki-dropdown-item"><span class="icon">&#x270E;</span> Criador de Ficha</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <section class="suplementos-hero">
+        <h1>Catálogo de <span>Suplementos</span></h1>
+        <p class="tagline">
+          Extensões, adaptações temáticas e <strong>Sistemas Filhos</strong> do universo de Wuitalur RPG. Explore modos de jogo focados em diferentes gêneros, regras dedicadas e ambientações alternativas.
+        </p>
+      </section>
+
+      <!-- GRADE DE CARDS VERTICAIS (POSTERS 1300x1920) -->
+      <section class="suplementos-grid">
+
+        <!-- CARD 1: FIOS DO MEDO -->
+        <a href="fios-do-medo/index.html" class="suplemento-card" style="--card-hover-border: #ef4444;">
+          <div class="suplemento-poster-wrapper">
+            <img src="assets/suplementos/fios-do-medo-cover.jpg" alt="Capa Fios do Medo">
+            <span class="suplemento-badge-floating">Terror &amp; Investigação</span>
+          </div>
+          <div class="suplemento-card-content">
+            <div>
+              <h2 class="suplemento-card-title">Fios do Medo</h2>
+              <p class="suplemento-card-desc">
+                Sistema Filho voltado para terror e mistério, trazendo oportunidades para histórias focadas totalmente em investigação, conspirações e sobrevivência.
+              </p>
+            </div>
+
+            <div class="suplemento-tags">
+              <span class="suplemento-tag">Sistema Filho</span>
+              <span class="suplemento-tag">Investigação</span>
+              <span class="suplemento-tag">Terror</span>
+            </div>
+
+            <div class="suplemento-btn-action">
+              <span>Acessar Suplemento</span>
+              <span>&rarr;</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- CARD 2: EM BREVE -->
+        <div class="suplemento-placeholder">
+          <div style="font-size: 2rem; opacity: 0.4;">✦</div>
+          <h3 style="font-family: var(--font-heading); color: var(--text-muted); font-size: 1.1rem; text-transform: uppercase;">Novo Suplemento</h3>
+          <p style="font-size: 0.82rem; line-height: 1.6; max-width: 240px;">
+            Novas expansões temáticas e modos de jogo estão sendo preparados para o universo de Wuitalur.
+          </p>
+          <span style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim);">Em Breve</span>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+
+<script src="js/conditions.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

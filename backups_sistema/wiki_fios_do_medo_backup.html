@@ -1,51 +1,54 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sobre o Universo — Wuitalur RPG</title>
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/variables.css">
-  <link rel="stylesheet" href="css/components.css">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="css/fdm.css">
 </head>
 <body>
 
 <div class="app-layout">
 
-  <aside class="sidebar" id="sidebar">
+    <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-logo">
         WUITALUR
-        <span>Sistema v1.4.8-1</span>
+        <span>Suplemento (Fios do Medo) v1.0.0</span>
       </div>
     </div>
+
+        <a href="../index.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar ao Sistema Principal</span>
+    </a>
+
     <nav class="sidebar-nav">
       <div class="sidebar-section-title">Principal</div>
       <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
       <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
-      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
-      <a href="origins.html" class="sidebar-link"><span class="icon"></span> Origens</a>
+      <a href="arquetipos.html" class="sidebar-link"><span class="icon"></span> Arquétipos</a>
       <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
 
       <div class="sidebar-section-title">Regras</div>
-      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
-      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
       <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
       <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
       <a href="glossario.html" class="sidebar-link"><span class="icon"></span> Glossário</a>
 
       <div class="sidebar-section-title">Conteúdo</div>
-      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
       <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
-      <a href="selos.html" class="sidebar-link"><span class="icon"></span> Selos</a>
-      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
-      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
-      <a href="bestiario.html" class="sidebar-link"><span class="icon"></span> Bestiário</a>
+      <a href="wiki.html" class="sidebar-link active"><span class="icon"></span> Sobre o Universo</a>
 
       <div class="sidebar-section-title">Ferramentas</div>
-      <a href="wiki.html" class="sidebar-link active"><span class="icon"></span> Sobre o Universo</a>
       <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
-      <a href="criador.html" class="sidebar-link"><span class="icon"></span> Criador de Ficha</a>
     </nav>
   </aside>
 
@@ -71,7 +74,7 @@
         <div id="universe-hub" class="universe-hub">
 
           <a href="campanha.html" class="campaign-banner campaign-btn">
-            <img src="assets/Banner.png" alt="A Purificação" class="campaign-banner-img">
+            <img src="../assets/Banner.png" alt="A Purificação" class="campaign-banner-img">
             <div class="campaign-banner-content">
               <h2>A Purificação</h2>
               <span class="campaign-banner-sub">Campanha atual</span>
@@ -141,9 +144,9 @@
 
 <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
 
-<script src="js/conditions.js"></script>
-<script src="js/main.js"></script>
-<script src="js/wiki.js"></script>
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/wiki.js"></script>
 </body>
 </html>
 

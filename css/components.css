@@ -1491,3 +1491,75 @@
   color: #4ade80;
   font-weight: 600;
 }
+
+/* ============================================================
+   PAGE & TOPIC TRANSITIONS / RADIAL RIPPLE
+   ============================================================ */
+#radial-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999999;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--click-x, 50%) var(--click-y, 50%), #ff1133 0%, #900018 70%, #08080c 100%);
+  clip-path: circle(0px at var(--click-x, 50%) var(--click-y, 50%));
+  transition: clip-path 0.65s cubic-bezier(0.3, 0.0, 0.1, 1);
+}
+
+#radial-transition-overlay.expanding {
+  clip-path: circle(160vmax at var(--click-x, 50%) var(--click-y, 50%));
+  pointer-events: all;
+}
+
+.page-exit-left {
+  animation: topicContentExit 0.15s ease-in both !important;
+}
+
+@keyframes topicContentEnter {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes topicContentExit {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-40px);
+    filter: blur(2px);
+  }
+}
+
+.card-stagger-enter {
+  animation: topicContentEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.main-wrapper {
+  animation: topicContentEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.home-grid .home-card,
+.dice-ladder-grid > div,
+.attr-grid-presentation .attr-box-card,
+.step-card,
+.per-card,
+.penalidade-card,
+.fdm-card {
+  animation: topicContentEnter 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.home-grid .home-card:nth-child(1) { animation-delay: 0.03s; }
+.home-grid .home-card:nth-child(2) { animation-delay: 0.06s; }
+.home-grid .home-card:nth-child(3) { animation-delay: 0.09s; }
+.home-grid .home-card:nth-child(4) { animation-delay: 0.12s; }
+.home-grid .home-card:nth-child(5) { animation-delay: 0.15s; }
+.home-grid .home-card:nth-child(6) { animation-delay: 0.18s; }
