@@ -407,6 +407,46 @@
   margin: 0;
 }
 
+/* Dice display row */
+.attr-dice-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-lg);
+  margin: var(--space-lg) 0;
+}
+
+.attr-dice-item {
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--dice-color, #fff);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-lg);
+  min-width: 52px;
+  text-align: center;
+}
+
+/* Warning card (Situações Impossíveis) */
+.fdm-card-warning {
+  border-color: rgba(245, 158, 11, 0.35);
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.06) 0%, var(--bg-surface) 100%);
+}
+
+.fdm-card-warning .fdm-card-header h2 {
+  color: var(--attr-fdm-vigor);
+}
+
+/* Intro text */
+.fdm-intro-text {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: var(--space-xl);
+}
+
 /* Colors inline */
 .attr-fdm-saude { color: var(--attr-fdm-saude); font-weight: 700; }
 .attr-fdm-vigor { color: var(--attr-fdm-vigor); font-weight: 700; }
@@ -417,5 +457,14 @@
   .fdm-home-hero {
     flex-direction: column;
     text-align: center;
+  }
+
+  .attr-dice-row {
+    gap: var(--space-sm);
+  }
+
+  .attr-dice-item {
+    font-size: 1.2rem;
+    padding: var(--space-xs) var(--space-md);
   }
 }
