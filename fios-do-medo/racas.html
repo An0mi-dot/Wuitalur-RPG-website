@@ -1,0 +1,543 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raças — Fios do Medo — Wuitalur RPG</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="css/fdm.css">
+  <style>
+    .race-adapt-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: var(--space-xl);
+      margin-top: var(--space-xl);
+    }
+    .race-adapt-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: all var(--transition-fast);
+    }
+    .race-adapt-card:hover {
+      border-color: rgba(239, 68, 68, 0.4);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 10px rgba(239, 68, 68, 0.1);
+      transform: translateY(-2px);
+    }
+    .race-adapt-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .race-adapt-body {
+      padding: var(--space-lg);
+    }
+    .race-adapt-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-md);
+    }
+    .race-adapt-name {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 0;
+    }
+    .race-adapt-nd {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+    }
+    .race-adapt-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: var(--space-md);
+    }
+    .race-adapt-bonus {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: var(--radius-md);
+      padding: var(--space-sm) var(--space-md);
+      margin-bottom: var(--space-md);
+      font-size: 0.85rem;
+      color: #fca5a5;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .race-adapt-bonus svg {
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+    .race-adapt-skills {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+    .race-skill {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: var(--space-sm);
+    }
+    .race-skill:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+    .race-skill h5 {
+      font-family: var(--font-heading);
+      font-size: 0.88rem;
+      color: #fff;
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .race-skill h5 span {
+      color: var(--accent-red);
+    }
+    .race-skill p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin: 0;
+    }
+    .race-skill-cost {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent-red);
+      font-weight: 600;
+    }
+    .race-warning {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-xl);
+      display: flex;
+      gap: var(--space-md);
+      align-items: flex-start;
+    }
+    .race-warning-icon {
+      flex-shrink: 0;
+      color: var(--accent-red);
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+    .race-warning-text {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .race-warning-text strong {
+      color: #fca5a5;
+    }
+    .race-note {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: var(--space-md) var(--space-lg);
+      margin-bottom: var(--space-xl);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    @media (max-width: 768px) {
+      .race-adapt-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Suplemento (Fios do Medo) v1.0.0</span>
+      </div>
+    </div>
+
+    <a href="../index.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar ao Sistema Principal</span>
+    </a>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="racas.html" class="sidebar-link active"><span class="icon"></span> Raças</a>
+      <a href="arquetipos.html" class="sidebar-link"><span class="icon"></span> Arquétipos</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+      <a href="glossario.html" class="sidebar-link"><span class="icon"></span> Glossário</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+
+      <div class="sidebar-section-title">Ferramentas</div>
+      <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Raças</h1>
+      <div style="position:relative">
+        <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
+        <div class="wiki-dropdown" id="wiki-menu-dropdown">
+          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
+          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <section class="subsection">
+        <div class="section-heading">
+          <h2>Raças Adaptadas para Fios do Medo</h2>
+          <p>As raças de Wuitalur foram adaptadas para o contexto de horror e investigação do suplemento. Cada raça concede <strong>1 Bônus</strong> e <strong>2 Habilidades</strong> que custam PE.</p>
+        </div>
+
+        <div class="race-warning">
+          <svg class="race-warning-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <div class="race-warning-text">
+            <strong>Importante:</strong> As raças do sistema padrão de Wuitalur foram projetadas para um jogo de combate épico e progressão de poder. Em <em>Fios do Medo</em>, o foco é <strong>investigação, terror e vulnerabilidade</strong>. Usar as raças originais com todos os seus bônus e habilidades quebraria completamente a química do jogo — sobreviventes com regeneração, voou ou imunidades seriam incapazes de sentir medo real. Por isso, as raças foram <strong>adaptadas e enfraquecidas</strong> para se encaixarem no tom do suplemento.
+          </div>
+        </div>
+
+        <div class="race-note">
+          <strong>Nota:</strong> Em <em>Fios do Medo</em>, o jogador <strong>não escolhe nenhuma classe</strong>. Todos os personagens são <strong>Sobreviventes</strong> com 10 PE fixos, sem proficiências de armas e sem progressão de classe. As habilidades de raça e arquétipo substituem as habilidades de classe tradicionais.
+        </div>
+
+      </section>
+
+      <section class="subsection">
+        <div class="race-adapt-grid">
+
+          <!-- AKIVUS -->
+          <div class="race-adapt-card">
+            <img src="../assets/akivus.png" alt="Akivus" class="race-adapt-img">
+            <div class="race-adapt-body">
+              <div class="race-adapt-header">
+                <h3 class="race-adapt-name">Akivus</h3>
+                <span class="race-adapt-nd">ND 1</span>
+              </div>
+              <p class="race-adapt-desc">Seres da floresta com chifres adornados por vinhas e flores. Sua conexão com a natureza é tanto uma bênção quanto um peso em um mundo que ruem.</p>
+              <div class="race-adapt-bonus">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="16" height="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                +d4 em testes de Vigor em ambientes naturais
+              </div>
+              <div class="race-adapt-skills">
+                <div class="race-skill">
+                  <h5><span>✦</span> Cheiro do Perigo <span class="race-skill-cost">(2 PE)</span></h5>
+                  <p>Parando em silêncio, o Akivus pode farejar o ar para detectar ameaças ocultas em um raio de 10m. Vantagem em testes de Mente para perceber emboscadas.</p>
+                </div>
+                <div class="race-skill">
+                  <h5><span>✦</span> Passo Silencioso <span class="race-skill-cost">(2 PE)</span></h5>
+                  <p>Move-se sem emitir som por 1 cena. Não provoca ataques de oportunidade ao se mover e ganha +d4 em testes de furtividade.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ANIMALESCOS -->
+          <div class="race-adapt-card">
+            <img src="../assets/animalescos.png" alt="Animalescos" class="race-adapt-img">
+            <div class="race-adapt-body">
+              <div class="race-adapt-header">
+                <h3 class="race-adapt-name">Animalescos</h3>
+                <span class="race-adapt-nd">ND 1</span>
+              </div>
+              <p class="race-adapt-desc">Animais antropomórficos ou pessoas com características animais. Seus instintos são afiados, mas o medo humano também os corrói.</p>
+              <div class="race-adapt-bonus">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="16" height="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                +d4 em testes de esquiva
+              </div>
+              <div class="race-adapt-skills">
+                <div class="race-skill">
+                  <h5><span>✦</span> Percepção Aprimorada <span class="race-skill-cost">(2 PE)</span></h5>
+                  <p>Seus sentidos animais se aguçam. Ganha vantagem em testes de Mente para detectar presenças, sons ou cheiros suspeitos por 1 cena.</p>
+                </div>
+                <div class="race-skill">
+                  <h5><span>✦</span> Instinto de Sobrevivência <span class="race-skill-cost">(3 PE)</span></h5>
+                  <p>Em situações de perigo iminente, o corpo reage antes da mente. Sube 1 degrau no dado de Vigor ou Força para a próxima ação de combate.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PLANTÍFEROS -->
+          <div class="race-adapt-card">
+            <img src="../assets/plantiferos.png" alt="Plantíferos" class="race-adapt-img">
+            <div class="race-adapt-body">
+              <div class="race-adapt-header">
+                <h3 class="race-adapt-name">Plantíferos</h3>
+                <span class="race-adapt-nd">ND 1</span>
+              </div>
+              <p class="race-adapt-desc">Plantas humanoides que carregam a serenidade da natureza. Sua presença é reconfortante, mas o terror os afeta como qualquer outro ser.</p>
+              <div class="race-adapt-bonus">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="16" height="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                +4 PV Máximos
+              </div>
+              <div class="race-adapt-skills">
+                <div class="race-skill">
+                  <h5><span>✦</span> Neblina Protetora <span class="race-skill-cost">(3 PE)</span></h5>
+                  <p>Libera pólen calmante em uma área de 3m ao redor. Aliados na área ganham resistência a efeitos de medo por 1 rodada. Inimigos sentem -d4 em testes de ataque.</p>
+                </div>
+                <div class="race-skill">
+                  <h5><span>✦</span> Sentir a Terra <span class="race-skill-cost">(2 PE)</span></h5>
+                  <p>Toque o chão e sinta vibrações. Detecta criaturas vivas em um raio de 15m, mesmo através de paredes, por 1 rodada.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- HUMANOS -->
+          <div class="race-adapt-card">
+            <img src="../assets/humanos.png" alt="Humanos" class="race-adapt-img">
+            <div class="race-adapt-body">
+              <div class="race-adapt-header">
+                <h3 class="race-adapt-name">Humanos</h3>
+                <span class="race-adapt-nd">ND 1</span>
+              </div>
+              <p class="race-adapt-desc">Versáteis e adaptáveis, os humanos compensam a falta de habilidades extraordinárias com pura determinação e capacidade de aprendizado.</p>
+              <div class="race-adapt-bonus">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="16" height="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                +1 em 1 atributo à escolha
+              </div>
+              <div class="race-adapt-skills">
+                <div class="race-skill">
+                  <h5><span>✦</span> Determinação Implacável <span class="race-skill-cost">(2 PE)</span></h5>
+                  <p>Quando falhar em um teste de resistência, pode gastar 2 PE para refazê-lo com vantagem. Uma vez por cena.</p>
+                </div>
+                <div class="race-skill">
+                  <h5><span>✦</span> Adaptação Rápida <span class="race-skill-cost">(3 PE)</span></h5>
+                  <p>Observa um aliado usar uma habilidade e a compreende instantaneamente. Ganha +d4 no próximo teste do mesmo tipo até o fim da cena.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- VAMPIROS -->
+          <div class="race-adapt-card">
+            <img src="../assets/vampiros.png" alt="Vampiros" class="race-adapt-img">
+            <div class="race-adapt-body">
+              <div class="race-adapt-header">
+                <h3 class="race-adapt-name">Vampiros</h3>
+                <span class="race-adapt-nd">ND 1</span>
+              </div>
+              <p class="race-adapt-desc">Seres elegantes e pálidos que se alimentam de sangue. Sua natureza predatória os torna resistentes ao medo, mas sua sede pode ser sua ruína.</p>
+              <div class="race-adapt-bonus">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="16" height="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Visão no Escuro (18m)
+              </div>
+              <div class="race-adapt-skills">
+                <div class="race-skill">
+                  <h5><span>✦</span> Mordida Vampírica <span class="race-skill-cost">(3 PE)</span></h5>
+                  <p>Morde um alvo adjacente para drenar sangue. Causa dano igual ao dado de Força e restaura PV iguais à metade do dano causado.</p>
+                </div>
+                <div class="race-skill">
+                  <h5><span>✦</span> Presença Hipnótica <span class="race-skill-cost">(2 PE)</span></h5>
+                  <p>Exerce magnetismo sobrenatural. Ganha vantagem em testes de Mente para intimidar ou convencer até o fim da cena.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DRAGÃO ANÃO -->
+          <div class="race-adapt-card">
+            <img src="../assets/dragaoanao.png" alt="Dragão Anão" class="race-adapt-img">
+            <div class="race-adapt-body">
+              <div class="race-adapt-header">
+                <h3 class="race-adapt-name">Dragão Anão</h3>
+                <span class="race-adapt-nd">ND 2</span>
+              </div>
+              <p class="race-adapt-desc">Pequenos seres dracônicos de Tragnor, com escamas coloridas e antenas sensoriais. Sua tecnologia ancestral os torna úteis, mas seu porte diminuto é uma vulnerabilidade.</p>
+              <div class="race-adapt-bonus">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="16" height="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                +d4 em testes de Mente
+              </div>
+              <div class="race-adapt-skills">
+                <div class="race-skill">
+                  <h5><span>✦</span> Sopro Ancestral <span class="race-skill-cost">(4 PE)</span></h5>
+                  <p>Expele um cone de energia elemental (frio, fogo ou ácido) de 3m. Inimigos na área sofrem dano igual ao dado de Força e devem passar em teste de Vigor ou ficam atordoados por 1 rodada.</p>
+                </div>
+                <div class="race-skill">
+                  <h5><span>✦</span> Conexão Sensorial <span class="race-skill-cost">(2 PE)</span></h5>
+                  <p>Usa suas antenas para se comunicar telepaticamente com aliados a até 20m por 1 cena. Transmite emoções, imagens simples e intenções.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- INSECTÓIDES -->
+          <div class="race-adapt-card">
+            <img src="../assets/insectoides.png" alt="Insectóides" class="race-adapt-img">
+            <div class="race-adapt-body">
+              <div class="race-adapt-header">
+                <h3 class="race-adapt-name">Insectóides</h3>
+                <span class="race-adapt-nd">ND 2</span>
+              </div>
+              <p class="race-adapt-desc">Herança viva dos experimentos da Era Dourada — humanos fundidos a traços de insetos. Sua natureza fria e calculista os torna resistentes, mas temidos por todos.</p>
+              <div class="race-adapt-bonus">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="16" height="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                +d4 em testes de Vigor
+              </div>
+              <div class="race-adapt-skills">
+                <div class="race-skill">
+                  <h5><span>✦</span> Exoesqueleto <span class="race-skill-cost">(3 PE)</span></h5>
+                  <p>Endurece seu exoesqueleto por 1 rodada. Reduz todo dano recebido pela metade e ganha resistência a veneno e doenças.</p>
+                </div>
+                <div class="race-skill">
+                  <h5><span>✦</span> Voo <span class="race-skill-cost">(4 PE)</span></h5>
+                  <p>Voja por 1 turno (dependendo do tipo de inseto). Pode se mover livremente no ar, ignorando terreno e obstáculos.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PRAGUENTOS -->
+          <div class="race-adapt-card">
+            <img src="../assets/praguentos.png" alt="Praguentos" class="race-adapt-img">
+            <div class="race-adapt-body">
+              <div class="race-adapt-header">
+                <h3 class="race-adapt-name">Praguentos</h3>
+                <span class="race-adapt-nd">ND 3</span>
+              </div>
+              <p class="race-adapt-desc">Seres condenados pela Podridão a renascer como cópias pálidas do que foram, cobertos por lodo negro. Sua existência é uma distorção da vida.</p>
+              <div class="race-adapt-bonus">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="16" height="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Imunidade a Praga
+              </div>
+              <div class="race-adapt-skills">
+                <div class="race-skill">
+                  <h5><span>✦</span> Manipulação de Lodo <span class="race-skill-cost">(3 PE)</span></h5>
+                  <p>Forma uma arma de lodo com seu próprio corpo. Causa dano igual ao dado de Força + Vigor. Dura 1 rodada.</p>
+                </div>
+                <div class="race-skill">
+                  <h5><span>✦</span> Corpo de Lodo <span class="race-skill-cost">(4 PE)</span></h5>
+                  <p>Transforma temporariamente seu corpo em lodo puro. Imune a dano físico por 1 rodada, mas não pode atacar. Pode se mover livremente através de fendas e aberturas.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ABISSAL -->
+          <div class="race-adapt-card">
+            <img src="../assets/abissais.png" alt="Abissal" class="race-adapt-img">
+            <div class="race-adapt-body">
+              <div class="race-adapt-header">
+                <h3 class="race-adapt-name">Abissal</h3>
+                <span class="race-adapt-nd">ND 3</span>
+              </div>
+              <p class="race-adapt-desc">Seres que vivem no abismo abaixo da terra, com corpos tomados pela Praga. Pele pálida, veias negras e olhos completamente pretos como um vazio.</p>
+              <div class="race-adapt-bonus">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="16" height="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Visão no Escuro (ilimitada)
+              </div>
+              <div class="race-adapt-skills">
+                <div class="race-skill">
+                  <h5><span>✦</span> Telepatia <span class="race-skill-cost">(2 PE)</span></h5>
+                  <p>Usa suas antenas bioluminescentes para se comunicar mentalmente com aliados a até 30m. Transmite pensamentos, imagens e emoções por 1 cena.</p>
+                </div>
+                <div class="race-skill">
+                  <h5><span>✦</span> Confusão <span class="race-skill-cost">(3 PE)</span></h5>
+                  <p>Imita vozes familiares ou barulhos ensurdecedores na mente de um alvo a até 10m. O alvo deve passar em teste de Mente ou fica confuso por 1 rodada, perdendo sua próxima ação.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- E.X.O.s -->
+          <div class="race-adapt-card">
+            <img src="../assets/exo.png" alt="E.X.O.s" class="race-adapt-img">
+            <div class="race-adapt-body">
+              <div class="race-adapt-header">
+                <h3 class="race-adapt-name">E.X.O.s</h3>
+                <span class="race-adapt-nd">ND 3</span>
+              </div>
+              <p class="race-adapt-desc">Autômatos de metal criados por Paladium, movidos pelo minério Everact. Alguns desenvolveram sentimentos — e agora sentem medo pela primeira vez.</p>
+              <div class="race-adapt-bonus">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="16" height="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Autorreparo passivo (recupera 1 PV por turno)
+              </div>
+              <div class="race-adapt-skills">
+                <div class="race-skill">
+                  <h5><span>✦</span> Mira Telemétrica <span class="race-skill-cost">(3 PE)</span></h5>
+                  <p>Sensores ópticos calculam vento, distância e trajetória. Ganha vantagem em testes de ataque à distância até o fim da cena.</p>
+                </div>
+                <div class="race-skill">
+                  <h5><span>✦</span> Torque Forçado <span class="race-skill-cost">(2 PE)</span></h5>
+                  <p>Trava engrenagens no solo para aplicar força bruta. Ganha +d4 em testes de Força para erguer cargas, arrombar portas ou resistir a ser empurrado.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ESPECTROS -->
+          <div class="race-adapt-card">
+            <img src="../assets/espectros2.png" alt="Espectros" class="race-adapt-img">
+            <div class="race-adapt-body">
+              <div class="race-adapt-header">
+                <h3 class="race-adapt-name">Espectros</h3>
+                <span class="race-adapt-nd">ND 5</span>
+              </div>
+              <p class="race-adapt-desc">Cicatrizes vivas no tecido do espaço-tempo. Não possuem carne nem sangue — são glitches sencientes na realidade, causando repulsa biológica em todos ao redor.</p>
+              <div class="race-adapt-bonus">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="16" height="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Saúde sempre 0 — usa Estabilidade em vez de PV
+              </div>
+              <div class="race-adapt-skills">
+                <div class="race-skill">
+                  <h5><span>✦</span> Incorporação <span class="race-skill-cost">(3 PE)</span></h5>
+                  <p>Atravessa paredes e objetos sólidos de até 1 Bloco de espessura. Se terminar o turno dentro de um objeto, sofre dano direto na Estabilidade.</p>
+                </div>
+                <div class="race-skill">
+                  <h5><span>✦</span> Visão Espectral <span class="race-skill-cost">(2 PE)</span></h5>
+                  <p>Enxerga perfeitamente na escuridão total e detecta criaturas invisíveis ou camufladas em um raio de 6 Blocos por 1 cena.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glossário — Wuitalur RPG</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="css/fdm.css">
+  <style>
+    .gloss-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--space-md); max-width: 1100px; margin: 0 auto; }
+    .gloss-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: var(--space-lg); transition: border-color 0.2s; }
+    .gloss-card:hover { border-color: var(--attr-ea); }
+    .gloss-term { font-family: var(--font-heading); font-size: 1.1rem; color: var(--attr-ea); margin-bottom: var(--space-xs); }
+    .gloss-abbr { font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: var(--space-sm); }
+    .gloss-card p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7; margin: 0; }
+    .gloss-card code { background: rgba(0,0,0,0.2); padding: 1px 6px; border-radius: var(--radius-sm); font-size: 0.8rem; color: var(--text-primary); }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+    <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Suplemento (Fios do Medo) v1.0.0</span>
+      </div>
+    </div>
+
+        <a href="../index.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar ao Sistema Principal</span>
+    </a>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="racas.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="arquetipos.html" class="sidebar-link"><span class="icon"></span> Arquétipos</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+      <a href="glossario.html" class="sidebar-link active"><span class="icon"></span> Glossário</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+
+      <div class="sidebar-section-title">Ferramentas</div>
+      <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Glossário</h1>
+      <div style="position:relative">
+        <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
+        <div class="wiki-dropdown" id="wiki-menu-dropdown">
+          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
+          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
+          <a href="criador.html" class="wiki-dropdown-item"><span class="icon">&#x270E;</span> Criador de Ficha</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <section class="subsection" id="intro">
+        <div class="section-heading">
+          <h2>Glossário de Termos</h2>
+          <p>Referência rápida dos termos e siglas utilizados no sistema Wuitalur.</p>
+        </div>
+      </section>
+
+      <section class="subsection" id="termos">
+        <div class="gloss-grid">
+
+          <div class="gloss-card">
+            <div class="gloss-term">Armadura</div>
+            <span class="gloss-abbr">Mecânica de inimigos e NPCs</span>
+            <p>Valor de redução de dano presente exclusivamente em inimigos e NPCs. Personagens dos jogadores não possuem Armadura &mdash; em vez disso, utilizam <strong>DEF</strong> e <strong>DEFe</strong> para mitigação. Habilidades podem reduzir ou ignorar a Armadura de alvos.</p>
+          </div>
+
+          <div class="gloss-card">
+            <div class="gloss-term">Bloco (B)</div>
+            <span class="gloss-abbr">Unidade de distância</span>
+            <p>Unidade padrão de distância do sistema, equivalente a aproximadamente 1,5 metros. Usado para medir alcances de ataques, raios de área, deslocamento por turno e adjacência entre criaturas.</p>
+          </div>
+
+          <div class="gloss-card">
+            <div class="gloss-term">CD / CT</div>
+            <span class="gloss-abbr">Classe de Dificuldade / Classe de Teste</span>
+            <p>CD e CT s&atilde;o o mesmo conceito: o n&uacute;mero alvo que deve ser igualado ou superado em uma rolagem de <strong>d20</strong> para obter sucesso. O termo correto do sistema &eacute; <strong>CT (Classe de Teste)</strong>, mas CD (Classe de Dificuldade) ainda aparece em alguns textos antigos. Exemplo: sucesso em <code>CT 16</code>.</p>
+          </div>
+
+          <div class="gloss-card">
+            <div class="gloss-term">DEF</div>
+            <span class="gloss-abbr">Defesa Física</span>
+            <p>Valor de redução de dano físico do personagem. Calculado a partir de <strong>RF</strong> e <strong>PVs</strong>: <code>DEF = (RF &times; PVs^0,6) / 6</code>. Ao sofrer um ataque físico, o valor de DEF é subtraído do dano recebido.</p>
+          </div>
+
+          <div class="gloss-card">
+            <div class="gloss-term">DEFe</div>
+            <span class="gloss-abbr">Defesa Elemental</span>
+            <p>Defesa adicional contra ataques de origem elemental. Calculada como: <code>DEFe = (RE &times; &radic;PVs) / 8 + DEF</code>. É somada à DEF contra ataques elementais. Personagens com RE alta são significativamente mais resistentes a elementos.</p>
+          </div>
+
+          <div class="gloss-card">
+            <div class="gloss-term">EA</div>
+            <span class="gloss-abbr">Energia Astral</span>
+            <p>Recurso utilizado por classes para ativar habilidades especiais e feitiços. Cada classe possui sua própria progressão de EA por nível. Representa a energia vital e mística que flui pelo personagem e é gasta ao usar habilidades (<code>-30 de EA</code>, etc.).</p>
+          </div>
+
+          <div class="gloss-card">
+            <div class="gloss-term">Escudo Astral</div>
+            <span class="gloss-abbr">PV temporário</span>
+            <p>Pontos de vida temporários que se sobrepõem aos PV atuais do personagem. O dano é absorvido primeiro pelo Escudo Astral antes de atingir os PVs reais. Escudos Astrais de fontes diferentes não se acumulam &mdash; apenas o de maior valor permanece ativo.</p>
+          </div>
+
+          <div class="gloss-card">
+            <div class="gloss-term">ND</div>
+            <span class="gloss-abbr">Nível de Dificuldade</span>
+            <p>Indicador de complexidade de uma classe ou raça. Quanto maior o ND, mais complexa é a mecânica e o entendimento necessário para jogar com ela. Varia de <strong>ND 1</strong> (mais simples) a <strong>ND 6</strong> (mais complexo).</p>
+          </div>
+
+          <div class="gloss-card">
+            <div class="gloss-term">Proficiência</div>
+            <span class="gloss-abbr">Bônus de nível</span>
+            <p>Bônus que aumenta conforme a progressão do personagem: níveis 1&ndash;4 (+2), 5&ndash;8 (+3), 9&ndash;12 (+4), 13&ndash;16 (+5), 17&ndash;20 (+6). É somado a cálculos de CD, dano e efeitos de habilidades. Também determina em quais armas, armaduras e perícias o personagem é treinado.</p>
+          </div>
+
+          <div class="gloss-card">
+            <div class="gloss-term">PV</div>
+            <span class="gloss-abbr">Pontos de Vida</span>
+            <p>Representam a vitalidade e a capacidade de suportar dano do personagem. Determinados pela classe e pelo atributo <strong>Saúde</strong>. Ao chegar a 0 PV, o personagem cai inconsciente e começa a morrer. Cada classe possui uma Vida fixa por nível somada ao atributo <strong>Saúde</strong> (ex.: <code>10 + Saúde</code>).</p>
+          </div>
+
+          <div class="gloss-card">
+            <div class="gloss-term">RD</div>
+            <span class="gloss-abbr">Resistência a Dano</span>
+            <p>Capacidade de reduzir ou ignorar dano de um tipo específico. Personagens, inimigos e equipamentos podem conceder RD contra tipos de dano físicos ou elementais. Diferente de DEF, a RD é específica por tipo de dano.</p>
+          </div>
+
+          <div class="gloss-card">
+            <div class="gloss-term">RE</div>
+            <span class="gloss-abbr">Resistência Elementar</span>
+            <p>Atributo que determina a capacidade do personagem de suportar e dissipar ataques de natureza elemental (Electro, Solar, Nulídrico, Praga, etc.). Utilizado no cálculo de <strong>DEFe</strong> e em testes de resistência contra efeitos elementais.</p>
+          </div>
+
+          <div class="gloss-card">
+            <div class="gloss-term">RF</div>
+            <span class="gloss-abbr">Resistência Física</span>
+            <p>Atributo que define a resistência corporal do personagem contra ataques físicos. Utilizado no cálculo de <strong>DEF</strong> e em testes de resistência contra efeitos físicos, como quedas, empurrões e explosões.</p>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
+
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
+
+
+
+

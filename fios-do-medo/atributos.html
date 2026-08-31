@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atributos — Fios do Medo — Wuitalur RPG</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="css/fdm.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- SIDEBAR LATERAL -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Suplemento (Fios do Medo) v1.0.0</span>
+      </div>
+    </div>
+
+        <a href="../index.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar ao Sistema Principal</span>
+    </a>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link active"><span class="icon"></span> Atributos</a>
+      <a href="racas.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="arquetipos.html" class="sidebar-link"><span class="icon"></span> Arquétipos</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+      <a href="glossario.html" class="sidebar-link"><span class="icon"></span> Glossário</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+
+      <div class="sidebar-section-title">Ferramentas</div>
+      <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
+    </nav>
+  </aside>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Atributos</h1>
+      <div style="position:relative">
+        <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
+        <div class="wiki-dropdown" id="wiki-menu-dropdown">
+          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
+          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <!-- INTRODUÇÃO AOS ATRIBUTOS DE FIOS DO MEDO -->
+      <section class="subsection">
+        <div class="section-heading">
+          <h2>Atributos</h2>
+          <p>
+            Diferente do sistema padrão, Fios do Medo tem apenas 4 atributos:
+          </p>
+        </div>
+
+        <!-- GRADE MODERNA DE CARDS DE ATRIBUTOS -->
+        <div class="attr-grid-presentation">
+
+          <!-- SAÚDE -->
+          <div class="attr-box-card saude">
+            <div class="attr-box-header">
+              <h3 class="attr-box-title saude">Saúde</h3>
+              <span class="attr-box-subtitle">Resistência &amp; Vida</span>
+            </div>
+            <p class="attr-box-desc">
+              Resistência física, tolerância a ferimentos graves, venenos, toxinas e capacidade de sobrevivência corporal do personagem.
+            </p>
+          </div>
+
+          <!-- VIGOR -->
+          <div class="attr-box-card vigor">
+            <div class="attr-box-header">
+              <h3 class="attr-box-title vigor">Vigor</h3>
+              <span class="attr-box-subtitle">Fôlego &amp; Fuga</span>
+            </div>
+            <p class="attr-box-desc">
+              Fôlego, agilidade, velocidade de reação, reflexos motores e testes de disparada em momentos de fuga desesperada.
+            </p>
+          </div>
+
+          <!-- FORÇA -->
+          <div class="attr-box-card forca">
+            <div class="attr-box-header">
+              <h3 class="attr-box-title forca">Força</h3>
+              <span class="attr-box-subtitle">Potência &amp; Impacto</span>
+            </div>
+            <p class="attr-box-desc">
+              Capacidade muscular, potência física, impacto de golpes, esforço corporal para carregar peso ou empurrar barreiras.
+            </p>
+          </div>
+
+          <!-- MENTE -->
+          <div class="attr-box-card mente">
+            <div class="attr-box-header">
+              <h3 class="attr-box-title mente">Mente</h3>
+              <span class="attr-box-subtitle">Intelecto &amp; Sanidade</span>
+            </div>
+            <p class="attr-box-desc">
+              Intelecto, raciocínio lógico, dedução em cenas de mistério, análise de pistas e preservação da lucidez contra o pânico.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- DISTRIBUIÇÃO DOS DADOS -->
+        <div class="fdm-card highlight">
+          <div class="fdm-card-header">
+            <h2>Distribuição dos Dados</h2>
+          </div>
+          <p>
+            O jogador deve escolher cada dado seguinte para ser atribuído a 1 atributo:
+          </p>
+          <div style="text-align: center; font-family: var(--font-mono); font-size: 1.3rem; color: #fff; margin: var(--space-md) 0;">
+            <strong style="color: #10b981;">d4</strong> &nbsp;&bull;&nbsp; 
+            <strong style="color: #f59e0b;">d8</strong> &nbsp;&bull;&nbsp; 
+            <strong style="color: #ef4444;">d12</strong> &nbsp;&bull;&nbsp; 
+            <strong style="color: #06b6d4;">d16</strong>
+          </div>
+          <div class="callout callout-info">
+            <strong>Exemplo:</strong><br>
+            <span class="attr-fdm-saude">Saúde:</span> d4<br>
+            <span class="attr-fdm-vigor">Vigor:</span> d8<br>
+            <span class="attr-fdm-forca">Força:</span> d12<br>
+            <span class="attr-fdm-mente">Mente:</span> d16
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: var(--space-sm);">
+            As rolagens são feitas de acordo com o atributo, indo de d4 até d16 (d4, d8, d12, d16).
+          </p>
+        </div>
+
+        <!-- REGRA: SITUAÇÕES IMPOSSÍVEIS -->
+        <div class="fdm-card" style="border-left: 4px solid #f59e0b;">
+          <div class="fdm-card-header">
+            <h2 style="color: #f59e0b;">Situações Impossíveis</h2>
+          </div>
+          <p>
+            Sobre as DTs (Dificuldade de Teste):
+          </p>
+          <ul>
+            <li><strong>Quando ocorre:</strong> Quando a DT de um teste for maior que o valor máximo do dado de atributo do jogador (ex: tentar bater DT 7 rolando um d4).</li>
+            <li><strong>Como funciona:</strong> O jogador só tem chance de sucesso se critar (tirar o valor máximo no dado atual).</li>
+            <li><strong>Efeito:</strong> Ao critar, o dado sobe um degrau (d4 &rarr; d8 &rarr; d12 &rarr; d16) e o jogador rola esse novo dado, somando ao resultado anterior.</li>
+            <li><strong>Resolução:</strong> Se a soma alcançar ou superar a DT, o personagem supera o teste; se ainda faltar valor, o teste falha (a menos que o novo dado também crite no valor máximo e suba mais um degrau).</li>
+          </ul>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
+
+
+

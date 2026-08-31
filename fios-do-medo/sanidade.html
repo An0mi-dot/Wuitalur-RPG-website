@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sanidade — Fios do Medo — Wuitalur RPG</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="css/fdm.css">
+  <style>
+    .san-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius); padding: var(--space-md); }
+    .san-card h4 { font-family: var(--font-heading); font-size: 0.9rem; color: var(--text-primary); margin-bottom: var(--space-xs); }
+    .san-card p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+    .san-card .san-label { font-family: var(--font-heading); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-red); margin-bottom: var(--space-xs); }
+    .penalidade-card { background: rgba(180,0,0,0.08); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-sm); }
+    .penalidade-card h5 { font-family: var(--font-heading); font-size: 0.88rem; color: #ff6b6b; margin-bottom: var(--space-xs); }
+    .penalidade-card p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin: 0; }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- SIDEBAR LATERAL -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Suplemento (Fios do Medo) v1.0.0</span>
+      </div>
+    </div>
+
+        <a href="../index.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar ao Sistema Principal</span>
+    </a>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="racas.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="arquetipos.html" class="sidebar-link"><span class="icon"></span> Arquétipos</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="sanidade.html" class="sidebar-link active"><span class="icon"></span> Sanidade</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+      <a href="glossario.html" class="sidebar-link"><span class="icon"></span> Glossário</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+
+      <div class="sidebar-section-title">Ferramentas</div>
+      <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
+    </nav>
+  </aside>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Sanidade &amp; Estresse</h1>
+      <div style="position:relative">
+        <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
+        <div class="wiki-dropdown" id="wiki-menu-dropdown">
+          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
+          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <!-- INTRO -->
+      <section class="subsection">
+        <div class="section-heading">
+          <h2>Sanidade &amp; Barra de Estresse</h2>
+        </div>
+        <div class="fdm-card" style="max-width: 800px; margin: 0 auto var(--space-2xl);">
+          <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: var(--space-md);">
+            A Sanidade em <em>Fios do Medo</em> é a medida do esgotamento psicológico diante do horror. Em vez de perder pontos abstratos, os investigadores acumulam estresse na barra à medida que presenciam o macabro e o incompreensível.
+          </p>
+          <div class="callout callout-info" style="margin: 0; font-size: 1rem;">
+            Todo jogador começa com a sua barra de estresse definida por <strong>20 + o atributo de <span class="attr-fdm-mente">Mente</span></strong>.
+          </div>
+        </div>
+      </section>
+
+      <!-- DINÂMICA DO DANO MENTAL -->
+      <section class="subsection">
+        <div class="section-heading">
+          <h2>Dinâmica do Dano Mental</h2>
+        </div>
+
+        <div class="fdm-card highlight" style="max-width: 800px; margin: 0 auto var(--space-2xl);">
+          <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: var(--space-md);">
+            Todo personagem começa com <strong>0 Pontos de Estresse</strong>. Ao presenciar horrores, o jogador acumula "Dano Mental" preenchendo a barra:
+          </p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-bottom: var(--space-md);">
+            <div class="san-card">
+              <div class="san-label">Transbordando a Barra</div>
+              <p>Quando a barra atinge o limite máximo, ela zera e o personagem ganha <strong>1 Ponto de Estresse</strong> definitivo na ficha.</p>
+            </div>
+            <div class="san-card">
+              <div class="san-label">Dano Sobressalente</div>
+              <p>Se o dano mental passar do limite da barra, o excedente <strong>NÃO</strong> é aplicado na nova barra que zerou.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PENALIDADES DE ESTRESSE -->
+      <section class="subsection">
+        <div class="section-heading">
+          <h2>Penalidades dos Pontos de Estresse (1 a 6)</h2>
+        </div>
+
+        <div style="max-width: 720px; margin: 0 auto var(--space-2xl);">
+          <div class="penalidade-card">
+            <h5>1 Ponto — Mente Fraca</h5>
+            <p>Tiques nervosos, suor frio e calafrios ao ouvir ruídos nas sombras.</p>
+          </div>
+
+          <div class="penalidade-card">
+            <h5>2 Pontos — Paranoia</h5>
+            <p>-1 em testes de Ataque e Percepção; +1 em testes de Disparada para fugir de perigos.</p>
+          </div>
+
+          <div class="penalidade-card">
+            <h5>3 Pontos — Ansiedade Aguda</h5>
+            <p>O redutor sobe para -2 em todos os testes de Ataque e Percepção.</p>
+          </div>
+
+          <div class="penalidade-card">
+            <h5>4 Pontos — Mente Rachada</h5>
+            <p>Ganha Fraqueza a Dano Mental (todo dano mental recebido na barra agora é dobrado!).</p>
+          </div>
+
+          <div class="penalidade-card">
+            <h5>5 Pontos — À Beira do Abismo</h5>
+            <p>Redutor de -3 em Ataques; testes contra medo ou horror são feitos com Desvantagem.</p>
+          </div>
+
+          <div class="penalidade-card" style="border-color: #ef4444; background: rgba(239, 68, 68, 0.15);">
+            <h5 style="color: #fff;">6 Pontos — COLAPSO MENTAL</h5>
+            <p>A mente quebra. O personagem entra em surto psicótico ou catatonia. Inicia-se o Teste de Loucura (CT 22) com 3 tentativas próprias e 3 tentativas de aliados.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
+
+
+

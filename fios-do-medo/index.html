@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fios do Medo — Suplemento Wuitalur RPG</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="css/fdm.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- SIDEBAR LATERAL DO SUPLEMENTO -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Suplemento (Fios do Medo) v1.0.0</span>
+      </div>
+    </div>
+
+    <!-- BOTÃO VOLTAR AO SISTEMA PRINCIPAL -->
+        <a href="../index.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar ao Sistema Principal</span>
+    </a>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link active"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="racas.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="arquetipos.html" class="sidebar-link"><span class="icon"></span> Arquétipos</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+      <a href="glossario.html" class="sidebar-link"><span class="icon"></span> Glossário</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+
+      <div class="sidebar-section-title">Ferramentas</div>
+      <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
+    </nav>
+  </aside>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Fios do Medo — Suplemento</h1>
+      <div style="position:relative">
+        <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
+        <div class="wiki-dropdown" id="wiki-menu-dropdown">
+          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
+          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <!-- BANNER DE APRESENTAÇÃO -->
+      <section class="fdm-home-hero">
+        <div class="fdm-poster-box">
+          <img src="../assets/suplementos/fios-do-medo-cover.jpg" alt="Poster Fios do Medo">
+        </div>
+        <div class="fdm-hero-text">
+          <span class="fdm-badge">Sistema Filho</span>
+          <h1>Fios do <span>Medo</span></h1>
+          <p class="tagline">
+            Suplemento oficial de terror e mistério, trazendo oportunidades para narrativas focadas totalmente em investigação, conspirações e sobrevivência diante do desconhecido.
+          </p>
+          <a href="../suplementos.html" class="sidebar-back-btn" style="display:inline-flex; width:auto; margin:0; padding:8px 16px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Voltar ao Catálogo de Suplementos</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- SEÇÃO PRINCIPAL -->
+      <div class="home-section-title"><span>Principal</span></div>
+
+      <div class="home-grid">
+
+        <a href="atributos.html" class="home-card" style="--card-accent: #ef4444;">
+          <h3 style="color: #f87171;">Atributos</h3>
+          <p>Saúde, Vigor, Força e Mente — Dados de d4 a d16 e a regra de Situações Impossíveis.</p>
+        </a>
+
+        <a href="arquetipos.html" class="home-card" style="--card-accent: #f59e0b;">
+          <h3 style="color: #fcd34d;">Arquétipos</h3>
+          <p>20 Arquétipos que substituem as origens, trazendo 2 habilidades e 1 bônus exclusivo cada.</p>
+        </a>`n        <a href="racas.html" class="home-card" style="--card-accent: #8b5cf6;">
+          <div class="card-icon"><span></span></div>
+          <div class="card-content">
+            <h3>Raças</h3>
+            <p>Lista de raças adaptadas para Fios do Medo.</p>
+          </div>
+        </a>
+
+        <a href="criacao-personagem.html" class="home-card" style="--card-accent: #10b981;">
+          <h3 style="color: #6ee7b7;">Criação de Personagem</h3>
+          <p>Passo a passo para montar sua ficha no suplemento Fios do Medo.</p>
+        </a>
+
+      </div>
+
+      <!-- SEÇÃO REGRAS -->
+      <div class="home-divider" style="border-top-color: var(--border-subtle);"></div>
+      <div class="home-section-title"><span>Regras</span></div>
+
+      <div class="home-grid">
+
+        <a href="pericias.html" class="home-card" style="--card-accent: #06b6d4;">
+          <h3 style="color: #67e8f9;">Perícias</h3>
+          <p>Sistema de degraus de dados (d4 &rarr; d8 &rarr; d12 &rarr; d16) e bônus de +4 no d16.</p>
+        </a>
+
+        <a href="sanidade.html" class="home-card" style="--card-accent: #a855f7;">
+          <h3 style="color: #c084fc;">Sanidade &amp; Estresse</h3>
+          <p>Barra de estresse, gatilhos de horror, acúmulo de pontos de estresse e colapso mental.</p>
+        </a>
+
+        <a href="condicoes.html" class="home-card" style="--card-accent: #ec4899;">
+          <h3 style="color: #f472b6;">Condições</h3>
+          <p>Estados e aflições físicas e mentais que impactam os sobreviventes.</p>
+        </a>
+
+        <a href="mecanicas.html" class="home-card" style="--card-accent: #3b82f6;">
+          <h3 style="color: #60a5fa;">Mecânicas</h3>
+          <p>Turnos, combate desarmado, reações e dinâmicas de jogo fundamentais.</p>
+        </a>
+
+        <a href="glossario.html" class="home-card" style="--card-accent: #eab308;">
+          <h3 style="color: #fde047;">Glossário</h3>
+          <p>Explicações de siglas, termos técnicos e regras do suplemento.</p>
+        </a>
+
+      </div>
+
+      <!-- SEÇÃO CONTEÚDO -->
+      <div class="home-divider" style="border-top-color: var(--border-subtle);"></div>
+      <div class="home-section-title"><span>Conteúdo</span></div>
+
+      <div class="home-grid">
+
+        <a href="elementos.html" class="home-card" style="--card-accent: #06b6d4;">
+          <h3 style="color: #67e8f9;">Elementos</h3>
+          <p>Forças cósmicas e anomalias elementais que permeiam o universo.</p>
+        </a>
+
+        </div>
+
+      <!-- SEÇÃO FERRAMENTAS -->
+      <div class="home-divider" style="border-top-color: var(--border-subtle);"></div>
+      <div class="home-section-title"><span>Ferramentas</span></div>
+
+      <div class="home-grid">
+
+        <a href="changelog.html" class="home-card" style="--card-accent: #ef4444;">
+          <h3 style="color: #f87171;">Changelog</h3>
+          <p>Notas de atualização e histórico de versões do Suplemento Fios do Medo.</p>
+        </a>
+
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+

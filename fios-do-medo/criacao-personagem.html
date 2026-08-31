@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criação de Personagem — Fios do Medo — Wuitalur RPG</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="css/fdm.css">
+  <style>
+    .step-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      margin-bottom: var(--space-xl);
+    }
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: var(--space-md);
+      margin-bottom: var(--space-lg);
+    }
+    .step-number {
+      font-family: var(--font-mono);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--accent-red);
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+    }
+    .step-title {
+      font-size: 1.2rem;
+      margin: 0;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- SIDEBAR LATERAL -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Suplemento (Fios do Medo) v1.0.0</span>
+      </div>
+    </div>
+
+        <a href="../index.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar ao Sistema Principal</span>
+    </a>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="racas.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="arquetipos.html" class="sidebar-link"><span class="icon"></span> Arquétipos</a>
+      <a href="criacao-personagem.html" class="sidebar-link active"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+      <a href="glossario.html" class="sidebar-link"><span class="icon"></span> Glossário</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+
+      <div class="sidebar-section-title">Ferramentas</div>
+      <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
+    </nav>
+  </aside>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Criação de Personagem</h1>
+      <div style="position:relative">
+        <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
+        <div class="wiki-dropdown" id="wiki-menu-dropdown">
+          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
+          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <section class="subsection">
+        <div class="section-heading">
+          <h2>Criação de Personagem</h2>
+          <p>
+            Processo de criação de ficha para o suplemento Fios do Medo:
+          </p>
+        </div>
+
+        <!-- PASSO 1: ARQUÉTIPO -->
+        <div class="step-card">
+          <div class="step-header">
+            <div class="step-number">1</div>
+            <h3 class="step-title">Escolha do Arquétipo (Substitui Origem)</h3>
+          </div>
+          <p>
+            Os jogadores não utilizam a aba de Origens. Escolha 1 entre os <strong>20 Arquétipos</strong> disponíveis. O arquétipo concede <strong>1 Bônus</strong> e <strong>2 Habilidades</strong>.
+          </p>
+        </div>
+
+        <!-- PASSO 2: CLASSE SOBREVIVENTE -->
+        <div class="step-card">
+          <div class="step-header">
+            <div class="step-number">2</div>
+            <h3 class="step-title">Classe Sobrevivente</h3>
+          </div>
+          <p>
+            A classe utilizada é o <strong>Sobrevivente</strong> com as seguintes regras:
+          </p>
+          <ul>
+            <li><strong>Pontos de Esforço (PE):</strong> 10 PE fixos para todos.</li>
+            <li>Não possui níveis de adaptação nem proficiências de armas/armaduras.</li>
+            <li>Não possui meios de sobrevivência (recebe as habilidades do Arquétipo).</li>
+          </ul>
+        </div>
+
+        <!-- PASSO 3: DISTRIBUIÇÃO DE DADOS DE ATRIBUTOS -->
+        <div class="step-card">
+          <div class="step-header">
+            <div class="step-number">3</div>
+            <h3 class="step-title">Atribuição dos Dados aos 4 Atributos</h3>
+          </div>
+          <p>
+            Distribua exatamente 1 dado do conjunto <strong style="color: #fff;">(d4, d8, d12, d16)</strong> para cada um dos seus 4 atributos:
+          </p>
+          <div class="dice-ladder-grid">
+            <div class="dice-ladder-item" style="border-color: rgba(16, 185, 129, 0.4);"><span class="dice-ladder-die attr-fdm-saude">Saúde</span></div>
+            <div class="dice-ladder-item" style="border-color: rgba(245, 158, 11, 0.4);"><span class="dice-ladder-die attr-fdm-vigor">Vigor</span></div>
+            <div class="dice-ladder-item" style="border-color: rgba(239, 68, 68, 0.4);"><span class="dice-ladder-die attr-fdm-forca">Força</span></div>
+            <div class="dice-ladder-item" style="border-color: rgba(6, 182, 212, 0.4);"><span class="dice-ladder-die attr-fdm-mente">Mente</span></div>
+          </div>
+        </div>
+
+        <!-- PASSO 4: PONTOS DE VIDA -->
+        <div class="step-card">
+          <div class="step-header">
+            <div class="step-number">4</div>
+            <h3 class="step-title">Cálculo de Pontos de Vida (PV)</h3>
+          </div>
+          <p>
+            O Dado de Vida (DV) é definido igualmente para todos os personagens seguindo a base de Wuitalur, somado aos bônus diretos de PV concedidos pelo seu <strong>Arquétipo</strong>.
+          </p>
+        </div>
+
+        <!-- PASSO 5: PERÍCIAS -->
+        <div class="step-card">
+          <div class="step-header">
+            <div class="step-number">5</div>
+            <h3 class="step-title">Escolha de Perícias &amp; Degraus de Dados</h3>
+          </div>
+          <p>
+            Escolha suas perícias de investigação. Ao testar uma perícia na qual você é treinado, o dado do teste <strong>sobe um degrau</strong> (<span class="dice">d4 &rarr; d8 &rarr; d12 &rarr; d16</span>). Se o atributo já tiver o <strong>d16</strong>, o teste ganha <strong>+4 no resultado</strong>.
+          </p>
+        </div>
+
+        <!-- PASSO 6: EQUIPAMENTOS E CONCLAVE -->
+        <div class="step-card">
+          <div class="step-header">
+            <div class="step-number">6</div>
+            <h3 class="step-title">Pertences Civis &amp; Restrições</h3>
+          </div>
+          <p>
+            Lembre-se: em <em>Fios do Medo</em>, <strong>não há acesso à aba de Equipamentos nem à aba do Conclave</strong>. O personagem começa com roupas civis cotidianas, chaves, carteira e ferramentas mundanas que caibam na sua rotina.
+          </p>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
+
+
+

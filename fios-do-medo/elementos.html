@@ -1,0 +1,243 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elementos — Wuitalur RPG</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="css/fdm.css">
+  <style>
+    .elem-page-card { background: rgba(0,0,0,0.15); border-radius: var(--radius); padding: var(--space-lg); margin-bottom: var(--space-lg); max-width: 800px; margin-left: auto; margin-right: auto; }
+    .elem-page-card .elem-quote { font-size: 0.9rem; font-style: italic; color: var(--text-muted); margin-bottom: var(--space-md); padding-left: var(--space-md); border-left: 2px solid var(--border-subtle); }
+    .elem-page-card h3 { font-family: var(--font-heading); font-size: 1.2rem; margin-bottom: var(--space-md); }
+    .elem-page-card p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: var(--space-sm); }
+    .elem-deity-item { background: rgba(0,0,0,0.15); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: var(--space-sm) var(--space-md); }
+    .elem-deity-item .deity-name { font-size: 0.9rem; color: var(--text-primary); font-weight: 600; }
+    .elem-deity-item .deity-title { font-size: 0.8rem; color: var(--text-muted); }
+    .elem-relation-item { background: rgba(0,0,0,0.15); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: var(--space-sm) var(--space-md); text-align: center; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+    .elem-section-subtitle { font-family: var(--font-heading); font-size: 1rem; color: var(--text-primary); margin-top: var(--space-xl); margin-bottom: var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--border-subtle); }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+    <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Suplemento (Fios do Medo) v1.0.0</span>
+      </div>
+    </div>
+
+        <a href="../index.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar ao Sistema Principal</span>
+    </a>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="racas.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="arquetipos.html" class="sidebar-link"><span class="icon"></span> Arquétipos</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+      <a href="glossario.html" class="sidebar-link"><span class="icon"></span> Glossário</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="elementos.html" class="sidebar-link active"><span class="icon"></span> Elementos</a>
+
+      <div class="sidebar-section-title">Ferramentas</div>
+      <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Elementos</h1>
+      <div style="position:relative">
+        <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
+        <div class="wiki-dropdown" id="wiki-menu-dropdown">
+          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
+          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
+          <a href="criador.html" class="wiki-dropdown-item"><span class="icon">&#x270E;</span> Criador de Ficha</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <!-- INTRO -->
+      <section class="subsection" id="intro">
+        <div class="section-heading">
+          <h2>Elementos</h2>
+        </div>
+        <div class="race-card" style="max-width: 800px; margin: 0 auto var(--space-2xl);">
+          <div class="race-card-body">
+            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8;">Os elementos são manifestações de energia provenientes dos Deuses, que influenciam o equilíbrio e a ordem do universo. Os Deuses, organizados em uma hierarquia, governam cada elemento, com suas forças e fraquezas relativas.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- PODRIDÃO -->
+      <section class="subsection" id="podridao">
+        <div class="elem-page-card" style="border-left: 4px solid var(--elem-podridao, #980000);">
+          <h3 style="color: #980000;">Podridão</h3>
+          <div class="elem-quote" style="border-left-color: #980000;">"A Guerra e Caos são necessários"</div>
+          <p>Foi descoberta depois da Guerra Dourada durante uma batalha entre Sápila (Deusa da Podridão) e os dois irmãos Orá e Chrónos (Deuses Divinos e do Tempo). Pessoas que dizem ter presenciado a guerra de baixo comentam que durante essa batalha um ataque foi desferido contra Sápila que acertou em cheio, fazendo assim, uma grande quantidade do seu sangue cair em uma grande parte do continente criando uma área completamente nova feita de Podridão com criaturas únicas e mortais, até os mais Habilidosos sofrem dificuldades com os monstros de lá.</p>
+          <p>O Elemento atua como uma forma de doença "viva", uma vez em contato com o corpo de um ser vivo, a Podridão vai se alastrar pelas veias da vítima derretendo todo o seu sangue até não restar mais nada, após a morte da vítima, ela vira mais uma criatura de podridão.</p>
+          <p>Ele tem o visual de uma gosma preta grudenta e fedorenta e aparenta estar se movendo, porém, lentamente.</p>
+        </div>
+      </section>
+
+      <!-- PRAGA -->
+      <section class="subsection" id="praga">
+        <div class="elem-page-card" style="border-left: 4px solid var(--elem-praga, #674EA7);">
+          <h3 style="color: #674EA7;">Praga</h3>
+          <div class="elem-quote" style="border-left-color: #674EA7;">"Oh Praga nos perdoe pela vida, nos perdoe por existir, nos perdoe pela nossa composição, Que a SUA vida continue com exatidão."</div>
+          <p>Esse era um cântico de antigos serventes da praga durante Eras atrás.</p>
+          <p>Esse elemento é bastante peculiar em sua forma que atua. Esse elemento sempre evita o elemento de Podridão como se de alguma forma ele não gostasse do elemento.</p>
+          <p>A forma dele é uma nuvem de tamanhos variados composta de insetos voadores, nunca vistos na natureza, que são Pretos ou Cinzas e devoram qualquer coisa com vida que avistarem.</p>
+          <p>Esse elemento é o principal responsável pela "Doença da Praga" que tanto atormenta o mundo por anos. O elemento também demonstra odiar QUALQUER coisa que tenha vida.</p>
+        </div>
+      </section>
+
+      <!-- SAGRADO -->
+      <section class="subsection" id="sagrado">
+        <div class="elem-page-card" style="border-left: 4px solid var(--elem-sagrado, #f1c232);">
+          <h3 style="color: #f1c232;">Sagrado</h3>
+          <div class="elem-quote" style="border-left-color: #f1c232;">"Que o tempo divino sobrevenha a todos."</div>
+          <p>Sendo o ÚNICO elemento que dois deuses representam, o elemento divino ou temporal atua na forma como o nome fala. Ele envolve coisas sagradas normalmente douradas e que envolvam o tempo, como: Relógio de ouro, anel de ouro, cálice, tempo climático e etc.</p>
+          <p>Ele se mostra em símbolos dourados e brilhantes sendo muito eficiente contra podridão. É um elemento muito antigo que vem sendo cultuado até nos dias atuais, normalmente as pessoas que o veneram são os que vivem na parte de baixo do continente.</p>
+        </div>
+      </section>
+
+      <!-- ELECTRO -->
+      <section class="subsection" id="electro">
+        <div class="elem-page-card" style="border-left: 4px solid var(--elem-electro, #00FFFF);">
+          <h3 style="color: #00FFFF;">Electro</h3>
+          <div class="elem-quote" style="border-left-color: #00FFFF;">"A eletricidade ganha vida, uma tempestade em cada centelha."</div>
+          <p>O Elemento Electro é uma manifestação única da eletricidade em seu estado mais selvagem. Comporta-se como uma força incontrolável de energias elétricas de alta voltagem, semelhante a raios e descargas elétricas que cortam o céu durante uma tempestade. Este elemento é definido por sua imprevisibilidade, intensidade e capacidade de gerar efeitos espetaculares.</p>
+          <p>O Elemento Electro é repleto de cargas elétricas de alta voltagem que podem ser liberadas com um impacto impressionante. Essas cargas podem ser manipuladas, mas com grande dificuldade devido à sua natureza volátil.</p>
+          <p>O Elemento Electro é capaz de distorcer campos eletromagnéticos ao seu redor, afetando a eletrônica, gerando interferência e causando panes em dispositivos eletrônicos.</p>
+          <p>A manipulação do Elemento Electro é extremamente perigosa devido à sua volatilidade. Os indivíduos que tentam dominá-lo correm o risco de serem consumidos pela própria energia que desejam controlar.</p>
+        </div>
+      </section>
+
+      <!-- NULÍDRICO -->
+      <section class="subsection" id="nulidrico">
+        <div class="elem-page-card" style="border-left: 4px solid var(--elem-nulidrico, #ff0000);">
+          <h3 style="color: #ff0000;">Nulídrico</h3>
+          <div class="elem-quote" style="border-left-color: #ff0000;">"Na sua essência, é uma quebra nas leis naturais, uma anomalia vermelha que desafia o equilíbrio dos elementos."</div>
+          <p>O Elemento Nulídrico apresenta uma aparência que desafia nossa compreensão convencional, assemelhando-se a um rastro de vidro ou vácuo se quebrando no espaço a uma velocidade impressionante. Sua essência é marcada por uma sucessão rápida de distorções no espaço-tempo, criando uma aparência efêmera e hipnotizante. Este elemento se manifesta como uma série de fissuras vermelhas que cortam o tecido da realidade, como se estivessem rompendo o próprio espaço. Essas fissuras aparecem e desaparecem em uma fração de segundo, deixando para trás um vislumbre de sua presença. A cada aparição, o Elemento Nulídrico parece distorcer o ambiente ao seu redor, criando uma sensação de desordem no tecido da realidade. Sua coloração vermelha intensa irradia uma sensação de calor e energia, contrastando com a natureza fugaz e fragmentada de sua aparência. Cada "fragmento" de Nulídrico é como um pedaço de vidro quebrado, emitindo uma luminescência vermelha que se funde e se separa rapidamente.</p>
+          <p>O Nulídrico tem a capacidade única de anular temporariamente qualquer outro elemento presente em sua área de influência. Seja fogo, água, terra, ar, eletricidade ou qualquer outra manifestação elemental, o Nulídrico é capaz de neutralizar essas forças, tornando-as ineficazes.</p>
+          <p>Embora sua habilidade de anulação seja notável, o Nulídrico não é invulnerável. Sua capacidade de anulação é limitada por sua proximidade e duração. Elementos em grande escala ou forças Elementares extremamente poderosas podem resistir à sua influência.</p>
+          <p>O uso do Nulídrico não é sem consequências. A anulação de elementos pode causar distúrbios temporários no equilíbrio ambiental e, em alguns casos, levar à instabilidade em processos naturais ou até ferir o usuário.</p>
+          <p>Dominar o Elemento Nulídrico requer uma compreensão profunda das forças Elementares e um controle excepcional. Aqueles que buscam dominar essa habilidade enfrentam desafios significativos e riscos associados.</p>
+        </div>
+      </section>
+
+      <!-- SOLAR -->
+      <section class="subsection" id="solar">
+        <div class="elem-page-card" style="border-left: 4px solid var(--elem-solar, #FF9900);">
+          <h3 style="color: #FF9900;">Solar</h3>
+          <div class="elem-quote" style="border-left-color: #FF9900;">"Uma luminosidade mais intensa, uma tonalidade alaranjada ardente, as chamas transcendem a mera combustão e se tornam uma manifestação de chamas fortes que desafiam os limites da compreensão."</div>
+          <p>O Elemento Solar é uma visão majestosa de fogo em sua forma mais impressionante. Sua chama alaranjada é intensamente brilhante, irradiando calor e luminosidade em todas as direções. Quando se manifesta, cria uma claridade ardente que pode se comparar metaforicamente com a luz do próprio sol, banhando o ambiente em uma luminosidade resplandecente que envolve tudo o que toca. O calor que emana do Elemento Solar é avassalador, e sua luminosidade ofuscante é capaz de iluminar vastas áreas com facilidade. Essa potência luminosa e alaranjada o torna único entre todas as manifestações de fogo, criando uma visão impressionante que desafia a imaginação. No entanto, o Elemento Solar não é apenas uma fonte de beleza. Sua intensidade também o torna imprevisível e desafiador de se controlar. Aqueles que buscam dominar essa forma de fogo devem fazê-lo com respeito e habilidade, pois ele é uma manifestação ardente da natureza que exige um entendimento profundo e um profundo respeito por sua potência.</p>
+        </div>
+      </section>
+
+      <!-- ESTASE -->
+      <section class="subsection" id="estase">
+        <div class="elem-page-card" style="border-left: 4px solid var(--elem-estase, #0B5394);">
+          <h3 style="color: #0B5394;">Estase</h3>
+          <div class="elem-quote" style="border-left-color: #0B5394;">"Fragmentos do Cosmos em pedaços de gelo azul profundo, o presente raro do Supremo Criador que equilibra o Cosmo."</div>
+          <p>O Elemento Estase é uma visão única e enigmática, manifestando-se como pedaços de gelo resistentes e de um azul escuro profundo. Cada fragmento é uma representação da vastidão do espaço cósmico, uma lembrança do poder do Supremo Criador que equilibra todas as coisas.</p>
+          <p>Esses pedaços de gelo possuem propriedades especiais que desafiam as leis naturais. São resistentes e um pouco brilhantes, uma demonstração da estabilidade que o Supremo Criador busca manter no cosmos. Seu azul profundo irradia uma sensação de tranquilidade e harmonia, um lembrete de que mesmo nas profundezas do espaço cósmico, o equilíbrio pode ser encontrado.</p>
+          <p>No entanto, a Estase também carrega o peso da responsabilidade, pois seu poder deve ser usado com sabedoria. Aqueles que buscam manipulá-la devem fazê-lo com respeito e moderação, pois perturbá-la pode resultar em desequilíbrios catastróficos no universo.</p>
+          <p>O Elemento Estase é um presente e um desafio, uma manifestação da criação que lembra a todos da importância do equilíbrio no cosmos. É uma maravilha que transcende nossa compreensão e continua a inspirar aqueles que buscam compreender os mistérios do universo.</p>
+        </div>
+      </section>
+
+      <!-- HIERARQUIA DOS DEUSES -->
+      <section class="subsection" id="hierarquia">
+        <div class="section-heading">
+          <h2>Hierarquia dos Deuses</h2>
+        </div>
+
+        <div style="max-width: 800px; margin: 0 auto var(--space-2xl);">
+
+          <h4 class="elem-section-subtitle" style="color: #ffd700;">Deuses Principais</h4>
+          <div class="elem-deity-list">
+            <div class="elem-deity-item"><div class="deity-name">Uchū</div><div class="deity-title">Deus supremo, criador de tudo.</div></div>
+            <div class="elem-deity-item"><div class="deity-name">Sapila</div><div class="deity-title" style="color: #980000;">Deusa da Podridão.</div></div>
+            <div class="elem-deity-item"><div class="deity-name">Cadamor</div><div class="deity-title" style="color: #FF9900;">Deus da Justiça e do Fogo.</div></div>
+            <div class="elem-deity-item"><div class="deity-name">Óra e Chrónos</div><div class="deity-title" style="color: #f1c232;">Irmãos e Deuses do Tempo e do Elemento Sagrado.</div></div>
+            <div class="elem-deity-item"><div class="deity-name">Deusa da Praga</div><div class="deity-title" style="color: #674EA7;">Seu nome é desconhecido, mas ela rege o elemento Praga.</div></div>
+            <div class="elem-deity-item"><div class="deity-name">Babô</div><div class="deity-title" style="color: #ff0000;">Deus do Nulídrico, a força primordial do espaço tempo.</div></div>
+          </div>
+
+          <h4 class="elem-section-subtitle" style="color: #cd7f32;">Deuses Bestiais</h4>
+          <div class="elem-deity-list">
+            <div class="elem-deity-item"><div class="deity-name">Fylax</div><div class="deity-title">Deus Gato, guardião astuto.</div></div>
+            <div class="elem-deity-item"><div class="deity-name">Deus Touro</div><div class="deity-title">Representa força e resistência.</div></div>
+            <div class="elem-deity-item"><div class="deity-name">Manoha</div><div class="deity-title">Deusa Tubarão, simboliza ferocidade.</div></div>
+            <div class="elem-deity-item"><div class="deity-name">Maggie</div><div class="deity-title">Deusa Pug, símbolo de proteção e lealdade.</div></div>
+            <div class="elem-deity-item"><div class="deity-name">Deus Cobra</div><div class="deity-title">Mestre da furtividade e do veneno, com nome desconhecido.</div></div>
+          </div>
+
+          <h4 class="elem-section-subtitle" style="color: #888;">Deuses Menores</h4>
+          <div class="elem-deity-list">
+            <div class="elem-deity-item"><div class="deity-name">Variks</div><div class="deity-title" style="color: #00FFFF;">Deus do Electro, energia e inovação.</div></div>
+            <div class="elem-deity-item"><div class="deity-name">Alptraum</div><div class="deity-title" style="color: #b45f06;">Deus do Pesadelo, manifestador do terror.</div></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- RELAÇÕES ENTRE OS ELEMENTOS -->
+      <section class="subsection" id="relacoes">
+        <div class="section-heading">
+          <h2>Relações Entre os Elementos</h2>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; max-width: 600px; margin: 0 auto var(--space-lg);">Cada elemento possui vantagens e desvantagens, criando um ciclo de forças que regem o equilíbrio.</p>
+
+        <div class="elem-relation-grid" style="max-width: 800px;">
+
+          <div class="elem-relation-item" style="border-color: #FF9900;"><span style="color: #FF9900; font-weight: 600;">Solar</span> &gt; <span style="color: #980000;">Podridão</span></div>
+          <div class="elem-relation-item" style="border-color: #980000;"><span style="color: #980000; font-weight: 600;">Podridão</span> &gt; <span style="color: #674EA7;">Praga</span></div>
+          <div class="elem-relation-item" style="border-color: #674EA7;"><span style="color: #674EA7; font-weight: 600;">Praga</span> &gt; <span style="color: #FF9900;">Solar</span>, <span style="color: #f1c232;">Sagrado</span></div>
+          <div class="elem-relation-item" style="border-color: #f1c232;"><span style="color: #f1c232; font-weight: 600;">Sagrado</span> &gt; <span style="color: #980000;">Podridão</span>, <span style="color: #674EA7;">Praga</span></div>
+          <div class="elem-relation-item" style="border-color: #0B5394;"><span style="color: #0B5394; font-weight: 600;">Estase</span> &gt; <span style="color: #ff0000;">Nulídrico</span>, <span style="color: #f1c232;">Sagrado</span>, <span style="color: #674EA7;">Praga</span></div>
+          <div class="elem-relation-item" style="border-color: #00FFFF;"><span style="color: #00FFFF; font-weight: 600;">Electro</span> &gt; <span style="color: #980000;">Podridão</span>, <span style="color: #b45f06;">Pesadelo</span></div>
+          <div class="elem-relation-item" style="border-color: #b45f06;"><span style="color: #b45f06; font-weight: 600;">Pesadelo</span> &gt; <span style="color: #f1c232;">Sagrado</span>, <span style="color: #674EA7;">Praga</span></div>
+          <div class="elem-relation-item" style="border-color: #ff0000; grid-column: 1 / -1;"><span style="color: #ff0000; font-weight: 600;">Nulídrico</span> pode anular todos os elementos, exceto <span style="color: #0B5394;">Estase</span>.</div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
+
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
+
+
+
+
