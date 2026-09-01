@@ -1,5 +1,5 @@
 const CONDITIONS = [
-  { key:'agarrado', name:'Agarrado', dur:'Até ser removido', desc:'O deslocamento se torna 0, a criatura não pode realizar Ações ou Reações. A condição se encerra com a criatura agarrada fazendo um teste de Força contra o agressor; caso tire um valor maior, ela se liberta.' },
+  { key:'agarrado', name:'Agarrado', dur:'Até ser removido', desc:'O deslocamento se torna 0, a criatura não pode realizar Ações ou Reações. A condição se encerra se um efeito remover a criatura agarrada do alcance do agressor. Pode acontecer uma intervenção de outra criatura não agarrada, concedendo vantagem nos testes de libertação.' },
   { key:'afogado', name:'Afogado', dur:'Até recuperar o fôlego', desc:'Sofre 1d10 de dano direto por turno enquanto estiver submerso sem ar.' },
   { key:'amedrontado', name:'Amedrontado', dur:'Turnos definidos ou até vencer teste de resistência', desc:'O alvo não pode se aproximar da fonte do medo. Todos os testes têm desvantagem.' },
   { key:'atordoado', name:'Atordoado', dur:'Turnos definidos', desc:'O alvo não pode realizar ações no próximo turno.' },
