@@ -76,12 +76,17 @@
       font-size: 0.85rem;
       color: #fca5a5;
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
-      gap: 8px;
+      gap: 4px 8px;
     }
     .race-adapt-bonus svg {
       flex-shrink: 0;
       opacity: 0.7;
+    }
+    .race-adapt-bonus div {
+      width: 100%;
+    }
     }
     .race-adapt-skills {
       display: flex;
@@ -378,8 +383,8 @@
               <div class="race-pv-mini"><span>PV:</span> 12</div>
               <div class="race-adapt-bonus">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="16" height="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                +<span class="dice">d4</span> em testes de <span class="attr-fdm-mente">Mente</span><br>
-                Visão no Escuro (5B)
+                <div>+<span class="dice">d4</span> em testes de <span class="attr-fdm-mente">Mente</span></div>
+                <div>Visão no Escuro (5B)</div>
               </div>
               <div class="race-adapt-skills">
                 <div class="race-skill">
