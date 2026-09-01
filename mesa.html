@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mesa Virtual - Wuitalur RPG</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/mesa.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="mesa-body">
+
+    <!-- Top floating actions -->
+    <div class="mesa-floating-nav">
+        <a href="index.html" class="mesa-back-btn">&#x2190; Voltar</a>
+        <div class="mesa-actions">
+            <button class="mesa-btn mesa-btn-outline" onclick="MesaApp.toggleView()">Minha Ficha</button>
+            <button class="mesa-btn" onclick="MesaApp.openTokenModal()">Acessar Slot</button>
+        </div>
+    </div>
+
+    <!-- Board -->
+    <div class="mesa-board-container">
+        <div class="mesa-black-board"></div>
+
+        <!-- Player slots on the borders -->
+        <div class="player-slot slot-1 empty" onclick="MesaApp.handleSlotClick(1)">Slot 1</div>
+        <div class="player-slot slot-2 empty" onclick="MesaApp.handleSlotClick(2)">Slot 2</div>
+        <div class="player-slot slot-3 empty" onclick="MesaApp.handleSlotClick(3)">Slot 3</div>
+        <div class="player-slot slot-4 empty" onclick="MesaApp.handleSlotClick(4)">Slot 4</div>
+        <div class="player-slot slot-5 empty" onclick="MesaApp.handleSlotClick(5)">Slot 5</div>
+        <div class="player-slot slot-6 empty" onclick="MesaApp.handleSlotClick(6)">Slot 6</div>
+        <div class="player-slot slot-7 empty" onclick="MesaApp.handleSlotClick(7)">Slot 7</div>
+        <div class="player-slot slot-8 empty" onclick="MesaApp.handleSlotClick(8)">Slot 8</div>
+    </div>
+
+    <!-- Modal de Ficha -->
+    <div id="ficha-modal" class="mesa-modal-overlay">
+      <div class="mesa-modal">
+        <button class="mesa-modal-close" onclick="MesaApp.closeModal('ficha-modal')">&times;</button>
+        <div id="ficha-content"></div>
+      </div>
+    </div>
+
+    <!-- Modal de Token -->
+    <div id="token-modal" class="mesa-modal-overlay">
+      <div class="mesa-modal" style="max-width: 400px; text-align: center;">
+        <button class="mesa-modal-close" onclick="MesaApp.closeModal('token-modal')">&times;</button>
+        <h2 style="color:var(--mesa-orange); margin-top:0;">Acesso à Mesa</h2>
+        <p style="color:#aaa; margin-bottom: 20px;">Insira seu token de personagem para liberar acesso à sua ficha na mesa.</p>
+        <input type="text" id="token-input" class="mesa-input" placeholder="Seu Token...">
+        <button class="mesa-btn" style="width:100%" onclick="MesaApp.submitToken()">Conectar</button>
+      </div>
+    </div>
+
+<script src="js/mesa.js"></script>
+</body>
+</html>
