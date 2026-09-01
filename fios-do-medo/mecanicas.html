@@ -141,10 +141,10 @@
       <section class="subsection" id="defesa-dinamica">
         <div class="mech-card">
           <div class="mech-card-header">
-            <h2>Defesa — Esquiva</h2>
+            <h2>Defesa — Esquiva &amp; Defesa</h2>
           </div>
           <div class="mech-card-body">
-            <p>Ao ser atacado, o personagem pode rolar um teste de <span class="attr-fdm-vigor">Vigor</span> para esquivar do ataque.</p>
+            <p>Ao ser atacado, o personagem pode escolher uma das seguintes opções:</p>
 
             <div class="ability-slot">
               <div class="ability-header">
@@ -153,6 +153,14 @@
               <p>O jogador rola o dado de <span class="attr-fdm-vigor">Vigor</span>.</p>
               <p>Se o valor for maior que o acerto do inimigo, o personagem evita o golpe.</p>
               <p>Se falhar, recebe o dano total.</p>
+            </div>
+
+            <div class="ability-slot">
+              <div class="ability-header">
+                <h4 class="ability-title">Defesa (<span class="attr-fdm-forca">Força</span> ou <span class="attr-fdm-vigor">Vigor</span>)</h4>
+              </div>
+              <p>O jogador rola o dado de <span class="attr-fdm-forca">Força</span> ou <span class="attr-fdm-vigor">Vigor</span> e subtrai o resultado do dano recebido.</p>
+              <p>Se o dano restante for 0 ou menor, o personagem não sofre nenhum dano.</p>
             </div>
 
           </div>
@@ -194,7 +202,7 @@
           </div>
           <div class="mech-card-body">
             <p>Parecida com "Impulsionar Movimento", mas mais intensa e arriscada.</p>
-            <p><strong>Ação Padrão</strong> — Teste de Disparada, <span class="dice">CT 20</span>.</p>
+            <p><strong>Ação Padrão</strong> — Teste de Disparada, <span class="dice">CT 16</span>.</p>
             <p><strong>Sucesso:</strong> +10 de Movimento.</p>
             <p><strong>Falha:</strong> o jogador tropeça e perde o turno inteiro.</p>
           </div>
@@ -213,7 +221,7 @@
             <p>O ataque desarmado usa o dado de <span class="attr-fdm-forca">Força</span> para dano:</p>
             <ul>
               <li><strong>Acerto:</strong> Rola o dado de <span class="attr-fdm-vigor">Vigor</span> ou <span class="attr-fdm-forca">Força</span>.</li>
-              <li><strong>Dano:</strong> Rola o dado de <span class="attr-fdm-forca">Força</span>.</li>
+              <li><strong>Dano:</strong> <span class="dice">1d4</span> + <span class="attr-fdm-forca">Força</span>.</li>
               <li><strong>Custo:</strong> Gratuito (Ação Padrão).</li>
             </ul>
           </div>
