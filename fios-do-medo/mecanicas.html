@@ -102,7 +102,7 @@
           <div class="mech-card-body">
 
             <h3>Início do Combate</h3>
-            <p>No início de um combate, todos os participantes devem rolar um teste de <strong>Iniciativa</strong> para determinar a ordem de ação. O teste é feito com <span class="dice">1d20</span> + <span class="attr-des">Destreza (DES)</span>. A ordem será estabelecida do maior para o menor valor de iniciativa. Caso dois ou mais personagens tirem o mesmo valor, decide-se a ordem com base em outros fatores, como a <span class="attr-des">Destreza</span> ou algum critério previamente estabelecido.</p>
+            <p>No início de um combate, todos os participantes devem rolar um teste de <strong>Iniciativa</strong> para determinar a ordem de ação. O teste é feito com o dado de <span class="attr-fdm-vigor">Vigor</span>. A ordem será estabelecida do maior para o menor valor. Caso dois ou mais personagens tirem o mesmo valor, decide-se a ordem com base em outros fatores.</p>
 
             <h3>Ações no Combate</h3>
             <p>Cada ser envolvido no combate possui <strong>duas ações</strong> por turno:</p>
@@ -141,26 +141,16 @@
       <section class="subsection" id="defesa-dinamica">
         <div class="mech-card">
           <div class="mech-card-header">
-            <h2>Defesa Dinâmica — Esquiva, Defesa</h2>
+            <h2>Defesa — Esquiva</h2>
           </div>
           <div class="mech-card-body">
-            <p>Ao ser atacado, o personagem pode escolher uma das seguintes reações:</p>
+            <p>Ao ser atacado, o personagem pode rolar um teste de <span class="attr-fdm-vigor">Vigor</span> para esquivar do ataque.</p>
 
             <div class="ability-slot">
               <div class="ability-header">
-                <h4 class="ability-title">Defesa (<span class="attr-rf">Resistência Física</span>)</h4>
+                <h4 class="ability-title">Esquiva (<span class="attr-fdm-vigor">Vigor</span>)</h4>
               </div>
-              <p>O jogador deve realizar um cálculo definido na aba de <span class="attr-rf">RF</span> para determinar o valor de DEF.</p>
-              <p>A defesa funciona como uma ação que pode ser utilizada no lugar da esquiva.</p>
-              <p>Ela reduz o dano de um ataque de acordo com seu valor. Por exemplo, se o jogador possui <strong>10 de DEF</strong> e sofre um ataque de <strong>20 de dano</strong>, o ataque causará apenas <strong>10 de dano</strong>.</p>
-              <p>A defesa é especialmente importante em situações em que o jogador não pode se esquivar, garantindo uma camada extra de proteção.</p>
-            </div>
-
-            <div class="ability-slot">
-              <div class="ability-header">
-                <h4 class="ability-title">Esquiva (<span class="attr-des">Destreza</span>)</h4>
-              </div>
-              <p>O jogador rola <span class="dice">1d20</span> + <span class="attr-des">DES</span>.</p>
+              <p>O jogador rola o dado de <span class="attr-fdm-vigor">Vigor</span>.</p>
               <p>Se o valor for maior que o acerto do inimigo, o personagem evita o golpe.</p>
               <p>Se falhar, recebe o dano total.</p>
             </div>
@@ -220,10 +210,10 @@
           <div class="mech-card-body">
             <p>Uso puro do corpo (socos, chutes, cotoveladas etc.) <strong>SEM NENHUMA ÁREA OU HABILIDADE QUE SIMULE ÁREA</strong> (garras, presas, vinhas, mordidas vampíricas, punhos rítmicos, armas de lodo, etc.)</p>
             <p>Este ataque <strong>PODE</strong> ser imbuído com elementos.</p>
-            <p>O ataque desarmado vai escalar de acordo com sua <span class="attr-fr">força</span>, até um limite de <span class="dice">3d6</span>:</p>
+            <p>O ataque desarmado usa o dado de <span class="attr-fdm-forca">Força</span> para dano:</p>
             <ul>
-              <li><strong>Acerto:</strong> <span class="dice">1d20</span> + <span class="attr-fr">FR</span> ou <span class="attr-des">DES</span>.</li>
-              <li><strong>Dano:</strong> <span class="attr-fr">FR</span>d6 (máximo <span class="dice">3d6</span>, mesmo se <span class="attr-fr">FR</span> &gt; 3).</li>
+              <li><strong>Acerto:</strong> Rola o dado de <span class="attr-fdm-vigor">Vigor</span> ou <span class="attr-fdm-forca">Força</span>.</li>
+              <li><strong>Dano:</strong> Rola o dado de <span class="attr-fdm-forca">Força</span>.</li>
               <li><strong>Custo:</strong> Gratuito (Ação Padrão).</li>
             </ul>
           </div>
