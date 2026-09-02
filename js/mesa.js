@@ -1700,6 +1700,10 @@ const MesaDice = {
   selectedDice: [20], // padrão inicial: 1d20
   modifier: 0,
   isRolling: false,
+  isGlobalRolling: false,
+  currentRoller: null,
+  lastRollTimestamp: 0,
+  ROLL_COOLDOWN_MS: 3500,
   rollTimeout: null,
 
   init() {
@@ -1728,6 +1732,12 @@ const MesaDice = {
       MesaApp.openTokenModal();
       return;
     }
+
+    if (this.isGlobalRolling) {
+      alert(`[MESA OCUPADA]: ${this.currentRoller || 'Outro jogador'} está rolando dados no palco central neste momento. Aguarde a rolagem terminar!`);
+      return;
+    }
+
     MesaApp.openModal('dice-modal');
     this.renderSelectedList();
   },
@@ -1789,6 +1799,14 @@ const MesaDice = {
     const btn = document.getElementById('dice-roll-execute-btn');
     if (!btn) return;
 
+    if (this.isGlobalRolling) {
+      btn.textContent = `AGUARDE (${this.currentRoller || 'Rolagem'} em andamento...)`;
+      btn.disabled = true;
+      btn.style.opacity = '0.5';
+      btn.style.cursor = 'not-allowed';
+      return;
+    }
+
     if (this.selectedDice.length === 0) {
       btn.textContent = 'SELECIONE AO MENOS 1 DADO';
       btn.disabled = true;
@@ -1816,11 +1834,27 @@ const MesaDice = {
       return;
     }
 
+    // 1. Trava contra concorrência global (alguém já rolando no palco)
+    if (this.isGlobalRolling) {
+      alert(`[MESA OCUPADA]: ${this.currentRoller || 'Outro jogador'} está rolando dados neste momento. Aguarde o resultado!`);
+      return;
+    }
+
+    // 2. Trava anti-spam (cooldown de segurança)
+    const now = Date.now();
+    const elapsed = now - this.lastRollTimestamp;
+    if (elapsed < this.ROLL_COOLDOWN_MS && !MesaApp.state.isMaster) {
+      const waitSec = Math.ceil((this.ROLL_COOLDOWN_MS - elapsed) / 1000);
+      alert(`[AGUARDE]: Aguarde ${waitSec}s antes de rolar dados novamente.`);
+      return;
+    }
+
     if (this.selectedDice.length === 0) return;
 
+    this.lastRollTimestamp = now;
     MesaApp.closeModal('dice-modal');
 
-    // 1. Gera resultados criptograficamente seguros para cada dado
+    // 3. Gera resultados criptograficamente seguros para cada dado
     const diceResults = this.selectedDice.map(sides => ({
       sides: sides,
       val: this.cryptoRandomInt(1, sides)
@@ -1839,10 +1873,10 @@ const MesaDice = {
       total: total
     };
 
-    // 2. Executa a animação no quadrado preto central
+    // 4. Executa a animação no quadrado preto central
     this.playRollAnimation(rollPayload);
 
-    // 3. Transmite para todos os jogadores na mesa em tempo real via WebSocket
+    // 5. Transmite para todos os jogadores na mesa em tempo real via WebSocket
     if (MesaChat.channel) {
       MesaChat.channel.send({
         type: 'broadcast',
@@ -1851,7 +1885,7 @@ const MesaDice = {
       });
     }
 
-    // 4. Log no chat da mesa
+    // 6. Log no chat da mesa
     const breakdown = diceResults.map(d => `[d${d.sides}: ${d.val}]`).join(' + ');
     const modStr = this.modifier !== 0 ? (this.modifier > 0 ? ` + ${this.modifier}` : ` - ${Math.abs(this.modifier)}`) : '';
     const chatContent = `🎲 Rolou ${breakdown}${modStr} ➔ Total: ${total}`;
@@ -1870,6 +1904,11 @@ const MesaDice = {
     if (!stage) return;
 
     if (this.rollTimeout) clearTimeout(this.rollTimeout);
+
+    // Trava global ativa enquanto a rolagem ocorre no palco
+    this.isGlobalRolling = true;
+    this.currentRoller = data.rollerName;
+    this.updateRollButtonLabel();
 
     stage.classList.add('active');
 
@@ -1927,11 +1966,14 @@ const MesaDice = {
       }
     }, 1200);
 
-    // Mantém na tela e retorna suavemente ao estado de repouso após 5.5s
+    // Mantém na tela e retorna suavemente ao estado de repouso após 5.0s, liberando a trava global
     this.rollTimeout = setTimeout(() => {
       stage.classList.remove('active');
       stage.innerHTML = '';
-    }, 5500);
+      this.isGlobalRolling = false;
+      this.currentRoller = null;
+      this.updateRollButtonLabel();
+    }, 5000);
   }
 };
 
