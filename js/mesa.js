@@ -340,6 +340,7 @@ const MesaApp = {
       raca: 'Dragão Anão',
       arquetipo: 'Popular',
       imagem: 'assets/thulita.png',
+      avatar: 'assets/thulita_avatar.png',
       hp: 14, hpMax: 14,
       pe: 10, peMax: 10,
       st: 0, stMax: 32,
@@ -637,6 +638,7 @@ const MesaApp = {
 
           if (p.token === 'W4R9' || p.slot === 1) {
             p.imagem = 'assets/thulita.png';
+            p.avatar = 'assets/thulita_avatar.png';
           }
 
           if (p.slot >= 1 && p.slot <= 8) {
@@ -648,7 +650,7 @@ const MesaApp = {
       // Garante que Thulita (Slot 1), Minerva (Slot 2) e Eric (Slot 3) estejam presentes
       if (!this.state.players[0]) {
         this.state.players[0] = {
-          id: 2, slot: 1, token: 'W4R9', nome: 'Thulita De La Benevidez', idade: '18 anos', altura: '1,40', raca: 'Dragão Anão', arquetipo: 'Popular', imagem: 'assets/thulita.png',
+          id: 2, slot: 1, token: 'W4R9', nome: 'Thulita De La Benevidez', idade: '18 anos', altura: '1,40', raca: 'Dragão Anão', arquetipo: 'Popular', imagem: 'assets/thulita.png', avatar: 'assets/thulita_avatar.png',
           hp: 14, hpMax: 14, pe: 10, peMax: 10, st: 0, stMax: 32, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Saúde': 'd12', 'Vigor': 'd16', 'Força': 'd4', 'Mente': 'd8' },
           bonus: [{ origem: 'Raça (Dragão Anão)', desc: '+d4 em testes de Mente' }, { origem: 'Arquétipo (Popular)', desc: '+d4 em Testes Sociais' }],
@@ -801,8 +803,9 @@ const MesaApp = {
       
       if (p) {
         slotEl.classList.remove('empty');
-        const avatarContent = p.imagem
-          ? `<img src="${p.imagem}" alt="${p.nome}" class="slot-avatar-img" />`
+        const avatarSrc = p.avatar || p.imagem;
+        const avatarContent = avatarSrc
+          ? `<img src="${avatarSrc}" alt="${p.nome}" class="slot-avatar-img" />`
           : `${p.nome.charAt(0)}`;
 
         slotEl.innerHTML = `
