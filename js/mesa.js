@@ -427,6 +427,40 @@ const MesaApp = {
         { nome: 'Olhar Investigativo', custo: '2 PE', desc: 'Gasta 2 PE para notar instantaneamente marcas de arranhões, botões falsos ou compartimentos secretos na cena.' }
       ]
     };
+
+    // Personagem para Slot 4 (Pera Hylidae da Silva)
+    this.state.players[3] = {
+      id: 4,
+      slot: 4,
+      token: 'P3R4',
+      nome: 'Pera Hylidae da Silva',
+      idade: '18 anos',
+      altura: '1,58m',
+      raca: 'Perereca-de-leite',
+      arquetipo: 'Rebelde',
+      classe: 'Adivinha',
+      hp: 12, hpMax: 12,
+      pe: 10, peMax: 10,
+      st: 0, stMax: 24,
+      stressPoints: 0,
+      stressPointsMax: 6,
+      atributos: {
+        'Mente': 'd4',
+        'Saúde': 'd8',
+        'Vigor': 'd12',
+        'Força': 'd16'
+      },
+      bonus: [
+        { origem: 'Raça (Perereca-de-leite)', desc: '+d4 em testes de Vigor' },
+        { origem: 'Arquétipo (Rebelde)', desc: '+d4 em Força. Desprezo por autoridade — não obedece a ninguém, nem a monstros.' }
+      ],
+      pericias: ['Intimidação', 'Atletismo', 'Disparada', 'Sobrevivência'],
+      habilidades: [
+        { nome: 'Percepção Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguçam. Ganha vantagem em testes de Mente para detectar presenças, sons ou cheiros suspeitos por 1 cena.' },
+        { nome: 'Instinto de Sobrevivência', custo: '3 PE', desc: 'Em situações de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou Força para a próxima ação.' },
+        { nome: 'Desobediência Instintiva', custo: 'Passiva', desc: 'Possui vantagem em testes para resistir a ordens forçadas, coerções sociais ou hipnoses de entidades.' }
+      ]
+    };
     
     this.renderMesa();
   },
@@ -549,6 +583,24 @@ const MesaApp = {
             { nome: 'Mordida Vampírica', custo: '3 PE', desc: 'Morde um alvo adjacente para drenar sangue. Causa dano igual a uma rolagem de Força e restaura PV iguais à metade do dano causado.' },
             { nome: 'Presença Hipnótica', custo: '2 PE', desc: 'Exerce magnetismo sobrenatural. Ganha vantagem em testes de Mente para intimidar ou convencer até o fim da cena.' },
             { nome: 'Olhar Investigativo', custo: '2 PE', desc: 'Gasta 2 PE para notar instantaneamente marcas de arranhões, botões falsos ou compartimentos secretos na cena.' }
+          ]
+        };
+      }
+
+      if (!this.state.players[3]) {
+        this.state.players[3] = {
+          id: 4, slot: 4, token: 'P3R4', nome: 'Pera Hylidae da Silva', idade: '18 anos', altura: '1,58m', raca: 'Perereca-de-leite', arquetipo: 'Rebelde', classe: 'Adivinha',
+          hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 24, stressPoints: 0, stressPointsMax: 6,
+          atributos: { 'Mente': 'd4', 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd16' },
+          bonus: [
+            { origem: 'Raça (Perereca-de-leite)', desc: '+d4 em testes de Vigor' },
+            { origem: 'Arquétipo (Rebelde)', desc: '+d4 em Força. Desprezo por autoridade — não obedece a ninguém, nem a monstros.' }
+          ],
+          pericias: ['Intimidação', 'Atletismo', 'Disparada', 'Sobrevivência'],
+          habilidades: [
+            { nome: 'Percepção Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguçam. Ganha vantagem em testes de Mente para detectar presenças, sons ou cheiros suspeitos por 1 cena.' },
+            { nome: 'Instinto de Sobrevivência', custo: '3 PE', desc: 'Em situações de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou Força para a próxima ação.' },
+            { nome: 'Desobediência Instintiva', custo: 'Passiva', desc: 'Possui vantagem em testes para resistir a ordens forçadas, coerções sociais ou hipnoses de entidades.' }
           ]
         };
       }
