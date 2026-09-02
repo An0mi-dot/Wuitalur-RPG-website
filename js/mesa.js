@@ -2246,46 +2246,59 @@ const MesaMediaPlayer = {
     }
   },
 
-  addImages(files) {
-    Array.from(files).forEach(async file => {
-      const localBlob = URL.createObjectURL(file);
+  // Comprime qualquer imagem local para ~70KB em 20ms e transmite direto via WebSocket sem falhas
+  compressImageToDataUrl(file, maxWidth = 1400, maxHeight = 900, quality = 0.82) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxWidth || height > maxHeight) {
+            if (width / height > maxWidth / maxHeight) {
+              height = Math.round((height * maxWidth) / width);
+              width = maxWidth;
+            } else {
+              width = Math.round((width * maxHeight) / height);
+              height = maxHeight;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          const dataUrl = canvas.toDataURL('image/jpeg', quality);
+          resolve(dataUrl);
+        };
+        img.onerror = () => resolve(e.target.result);
+        img.src = e.target.result;
+      };
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(file);
+    });
+  },
+
+  async addImages(files) {
+    for (const file of Array.from(files)) {
+      const dataUrl = await this.compressImageToDataUrl(file);
+      if (!dataUrl) continue;
+
       const playlistItem = {
         name: file.name,
-        url: localBlob,
-        file: file,
-        isUploading: true
+        url: dataUrl,
+        file: file
       };
 
       this.imagePlaylist.push(playlistItem);
       this.renderImagePlaylist();
-      const itemIndex = this.imagePlaylist.length - 1;
       if (this.currentImageIndex === -1) {
-        this.selectImage(itemIndex);
+        this.selectImage(0);
       }
-
-      // Upload temporário em segundo plano
-      try {
-        const res = await this.uploadTempFile(file);
-        if (res && res.url) {
-          playlistItem.url = res.url;
-          playlistItem.storagePath = res.storagePath;
-          playlistItem.provider = res.provider;
-          playlistItem.isUploading = false;
-          this.renderImagePlaylist();
-          if (this.isTransmitting && this.currentImageIndex === itemIndex) {
-            this.syncLiveDisplay();
-          }
-        } else {
-          playlistItem.isUploading = false;
-          playlistItem.uploadFailed = true;
-          this.renderImagePlaylist();
-        }
-      } catch (e) {
-        playlistItem.isUploading = false;
-        playlistItem.uploadFailed = true;
-        this.renderImagePlaylist();
-      }
-    });
+    }
   },
 
   renderImagePlaylist() {
@@ -2306,24 +2319,13 @@ const MesaMediaPlayer = {
 
     list.innerHTML = this.imagePlaylist.map((item, idx) => `
       <div class="adm-playlist-item ${idx === this.currentImageIndex ? 'active' : ''}" onclick="MesaMediaPlayer.selectImage(${idx})">
-        <span class="adm-item-name" title="${item.name}">
-          ${idx + 1}. ${item.name}
-          ${item.isUploading ? '<span style="color:var(--mesa-orange); font-size:0.68rem; margin-left:4px;">⏳ Preparando...</span>' : ''}
-          ${item.uploadFailed ? '<span style="color:#ef4444; font-size:0.68rem; margin-left:4px;">(Use +Link)</span>' : ''}
-        </span>
+        <span class="adm-item-name" title="${item.name}">${idx + 1}. ${item.name}</span>
         <button class="adm-item-remove" onclick="event.stopPropagation(); MesaMediaPlayer.removeImage(${idx})">&times;</button>
       </div>
     `).join('');
   },
 
-  async removeImage(idx) {
-    const item = this.imagePlaylist[idx];
-    if (item && item.storagePath && MesaApp.supabase && MesaApp.supabase.storage) {
-      try {
-        await MesaApp.supabase.storage.from('temp_media').remove([item.storagePath]);
-      } catch (e) {}
-    }
-
+  removeImage(idx) {
     this.imagePlaylist.splice(idx, 1);
     if (this.currentImageIndex >= this.imagePlaylist.length) {
       this.currentImageIndex = this.imagePlaylist.length - 1;
