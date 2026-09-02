@@ -391,8 +391,7 @@ const MesaApp = {
       habilidades: [
         { nome: 'Mordida Vampírica', custo: '3 PE', desc: 'Morde um alvo adjacente para drenar sangue. Causa dano igual a uma rolagem de Força e restaura PV iguais à metade do dano causado.' },
         { nome: 'Presença Hipnótica', custo: '2 PE', desc: 'Exerce magnetismo sobrenatural. Ganha vantagem em testes de Mente para intimidar ou convencer até o fim da cena.' },
-        { nome: 'Visão no Escuro', custo: 'Passiva', desc: 'Enxerga na escuridão perfeitamente em um alcance de até 5 blocos (5B).' },
-        { nome: 'Olhar Investigativo', custo: '2 PE', desc: 'Gasta 2 PE para notar instantaneamente marcas de arranhões, botões falsos, passagens secretas ou compartimentos ocultos na cena.' }
+        { nome: 'Olhar Investigativo', custo: '2 PE', desc: 'Gasta 2 PE para notar instantaneamente marcas de arranhões, botões falsos ou compartimentos secretos na cena.' }
       ]
     };
     
