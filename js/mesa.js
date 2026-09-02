@@ -474,7 +474,7 @@ const MesaApp = {
       arquetipo: 'Valentão',
       hp: 15, hpMax: 15,
       pe: 10, peMax: 10,
-      st: 0, stMax: 48,
+      st: 0, stMax: 28,
       stressPoints: 0,
       stressPointsMax: 6,
       atributos: {
@@ -674,7 +674,7 @@ const MesaApp = {
       if (!this.state.players[4]) {
         this.state.players[4] = {
           id: 5, slot: 5, token: 'K4R5', nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão',
-          hp: 15, hpMax: 15, pe: 10, peMax: 10, st: 0, stMax: 48, stressPoints: 0, stressPointsMax: 6,
+          hp: 15, hpMax: 15, pe: 10, peMax: 10, st: 0, stMax: 28, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Saúde': 'd4', 'Vigor': 'd16', 'Força': 'd12', 'Mente': 'd8' },
           bonus: [
             { origem: 'Raça (Animalesco)', desc: '+d4 em testes de Esquiva' },
