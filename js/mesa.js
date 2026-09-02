@@ -436,8 +436,21 @@ const MesaApp = {
             atributos: typeof raw.atributos === 'string' ? JSON.parse(raw.atributos || '{}') : (raw.atributos || {}),
             bonus: typeof raw.bonus === 'string' ? JSON.parse(raw.bonus || '[]') : (raw.bonus || []),
             pericias: typeof raw.pericias === 'string' ? JSON.parse(raw.pericias || '[]') : (raw.pericias || []),
-            habilidades: typeof raw.habilidades === 'string' ? JSON.parse(raw.habilidades || '[]') : (raw.habilidades || [])
+            habilidades: (typeof raw.habilidades === 'string' ? JSON.parse(raw.habilidades || '[]') : (raw.habilidades || []))
+              .filter(h => h.nome !== 'Visão no Escuro')
           };
+
+          // Garantir que Eric (Slot 3 / Token B8T3) tenha apenas as 3 habilidades corretas
+          if (p.token === 'B8T3' || p.slot === 3) {
+            p.habilidades = p.habilidades.filter(h => h.nome !== 'Visão no Escuro');
+            if (!p.habilidades.some(h => h.nome === 'Olhar Investigativo')) {
+              p.habilidades.push({
+                nome: 'Olhar Investigativo',
+                custo: '2 PE',
+                desc: 'Gasta 2 PE para notar instantaneamente marcas de arranhões, botões falsos ou compartimentos secretos na cena.'
+              });
+            }
+          }
 
           if (p.slot >= 1 && p.slot <= 8) {
             this.state.players[p.slot - 1] = p;
@@ -662,7 +675,7 @@ const MesaApp = {
     `).join('');
     
     // Habilidades
-    let habsHtml = habs.map((h, idx) => `
+    let habsHtml = habs.filter(h => h.nome !== 'Visão no Escuro').map((h, idx) => `
       <li class="hab-open-item" style="--hab-idx: ${idx};">
         <div class="hab-open-title">
           ✦ ${h.nome}
