@@ -494,6 +494,39 @@ const MesaApp = {
         { nome: 'Intimidação Física', custo: '2 PE', desc: 'Gasta 2 PE para subjugar NPCs humanos ou abrir portas emperradas com uma ombrada violenta.' }
       ]
     };
+
+    // Personagem para Slot 6 (John Doe)
+    this.state.players[5] = {
+      id: 6,
+      slot: 6,
+      token: 'J9D6',
+      nome: 'John Doe',
+      idade: '899 dias (Autômato)',
+      altura: '2,20m',
+      raca: 'E.X.O.s',
+      arquetipo: 'Palhaço',
+      hp: 16, hpMax: 16,
+      pe: 13, peMax: 13,
+      st: 0, stMax: 32,
+      stressPoints: 0,
+      stressPointsMax: 6,
+      atributos: {
+        'Força': 'd16',
+        'Mente': 'd12',
+        'Saúde': 'd8',
+        'Vigor': 'd4'
+      },
+      bonus: [
+        { origem: 'Raça (E.X.O.s)', desc: 'Autorreparo passivo (recupera 1 PV por turno)' },
+        { origem: 'Arquétipo (Palhaço)', desc: '+3 PE Máximos' }
+      ],
+      pericias: ['Atletismo (Força)', 'Diplomacia (Mente)', 'Intimidação (Força/Mente)', 'Percepção (Mente)'],
+      habilidades: [
+        { nome: 'Quebrar a Tensão', custo: 'Passiva', desc: 'Com uma piada ou comentário sarcástico, reduz em 1d4 a Barra de Estresse de todos os aliados após um momento de pânico.' },
+        { nome: 'Mira Telemétrica', custo: '3 PE', desc: 'Sensores ópticos calculam vento, distância e trajetória. Ganha vantagem em testes de ataque à distância até o fim da cena.' },
+        { nome: 'Torque Forçado', custo: '2 PE', desc: 'Trava engrenagens no solo para aplicar força bruta. Ganha +d4 em testes de Força para erguer cargas, arrombar portas ou resistir a ser empurrado.' }
+      ]
+    };
     
     this.renderMesa();
   },
@@ -652,6 +685,24 @@ const MesaApp = {
             { nome: 'Percepção Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguçam. Ganha vantagem em testes de Mente para detectar presenças, sons ou cheiros suspeitos por 1 cena.' },
             { nome: 'Instinto de Sobrevivência', custo: '3 PE', desc: 'Em situações de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou Força para a próxima ação.' },
             { nome: 'Intimidação Física', custo: '2 PE', desc: 'Gasta 2 PE para subjugar NPCs humanos ou abrir portas emperradas com uma ombrada violenta.' }
+          ]
+        };
+      }
+
+      if (!this.state.players[5]) {
+        this.state.players[5] = {
+          id: 6, slot: 6, token: 'J9D6', nome: 'John Doe', idade: '899 dias (Autômato)', altura: '2,20m', raca: 'E.X.O.s', arquetipo: 'Palhaço',
+          hp: 16, hpMax: 16, pe: 13, peMax: 13, st: 0, stMax: 32, stressPoints: 0, stressPointsMax: 6,
+          atributos: { 'Força': 'd16', 'Mente': 'd12', 'Saúde': 'd8', 'Vigor': 'd4' },
+          bonus: [
+            { origem: 'Raça (E.X.O.s)', desc: 'Autorreparo passivo (recupera 1 PV por turno)' },
+            { origem: 'Arquétipo (Palhaço)', desc: '+3 PE Máximos' }
+          ],
+          pericias: ['Atletismo (Força)', 'Diplomacia (Mente)', 'Intimidação (Força/Mente)', 'Percepção (Mente)'],
+          habilidades: [
+            { nome: 'Quebrar a Tensão', custo: 'Passiva', desc: 'Com uma piada ou comentário sarcástico, reduz em 1d4 a Barra de Estresse de todos os aliados após um momento de pânico.' },
+            { nome: 'Mira Telemétrica', custo: '3 PE', desc: 'Sensores ópticos calculam vento, distância e trajetória. Ganha vantagem em testes de ataque à distância até o fim da cena.' },
+            { nome: 'Torque Forçado', custo: '2 PE', desc: 'Trava engrenagens no solo para aplicar força bruta. Ganha +d4 em testes de Força para erguer cargas, arrombar portas ou resistir a ser empurrado.' }
           ]
         };
       }
