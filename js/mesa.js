@@ -339,6 +339,7 @@ const MesaApp = {
       altura: '1,40',
       raca: 'Dragão Anão',
       arquetipo: 'Popular',
+      imagem: 'assets/thulita.png',
       hp: 14, hpMax: 14,
       pe: 10, peMax: 10,
       st: 0, stMax: 32,
@@ -634,6 +635,10 @@ const MesaApp = {
             }
           }
 
+          if (p.token === 'W4R9' || p.slot === 1) {
+            p.imagem = 'assets/thulita.png';
+          }
+
           if (p.slot >= 1 && p.slot <= 8) {
             this.state.players[p.slot - 1] = p;
           }
@@ -643,7 +648,7 @@ const MesaApp = {
       // Garante que Thulita (Slot 1), Minerva (Slot 2) e Eric (Slot 3) estejam presentes
       if (!this.state.players[0]) {
         this.state.players[0] = {
-          id: 2, slot: 1, token: 'W4R9', nome: 'Thulita De La Benevidez', idade: '18 anos', altura: '1,40', raca: 'Dragão Anão', arquetipo: 'Popular',
+          id: 2, slot: 1, token: 'W4R9', nome: 'Thulita De La Benevidez', idade: '18 anos', altura: '1,40', raca: 'Dragão Anão', arquetipo: 'Popular', imagem: 'assets/thulita.png',
           hp: 14, hpMax: 14, pe: 10, peMax: 10, st: 0, stMax: 32, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Saúde': 'd12', 'Vigor': 'd16', 'Força': 'd4', 'Mente': 'd8' },
           bonus: [{ origem: 'Raça (Dragão Anão)', desc: '+d4 em testes de Mente' }, { origem: 'Arquétipo (Popular)', desc: '+d4 em Testes Sociais' }],
@@ -796,8 +801,12 @@ const MesaApp = {
       
       if (p) {
         slotEl.classList.remove('empty');
+        const avatarContent = p.imagem
+          ? `<img src="${p.imagem}" alt="${p.nome}" class="slot-avatar-img" />`
+          : `${p.nome.charAt(0)}`;
+
         slotEl.innerHTML = `
-          <div class="player-avatar-placeholder">${p.nome.charAt(0)}</div>
+          <div class="player-avatar-placeholder">${avatarContent}</div>
           <div class="player-name-badge" title="${p.nome}">${p.nome}</div>
           <div class="player-stats-segmented">
             <div class="stat-segmented-row">
@@ -1047,17 +1056,23 @@ const MesaApp = {
     }
 
     content.innerHTML = `
-      <!-- COLUNA ESQUERDA: ILUSTRAÇÃO (CUBO SECO) -->
+      <!-- COLUNA ESQUERDA: ILUSTRAÇÃO -->
       <div class="ficha-portrait-col">
-        <div class="cube-placeholder-box">
-          <svg viewBox="0 0 100 100" class="cube-svg">
-            <polygon points="50,12 88,34 50,56 12,34" fill="rgba(255,85,0,0.12)" stroke="#ff5500" stroke-width="2.2" />
-            <polygon points="12,34 50,56 50,92 12,70" fill="rgba(255,85,0,0.06)" stroke="#ff5500" stroke-width="2.2" />
-            <polygon points="88,34 50,56 50,92 88,70" fill="rgba(255,85,0,0.18)" stroke="#ff5500" stroke-width="2.2" />
-            <line x1="50" y1="56" x2="50" y2="92" stroke="#ff7733" stroke-width="2.2" />
-          </svg>
-          <div class="cube-label-dry">[ SEM IMAGEM ]</div>
-        </div>
+        ${player.imagem ? `
+          <div class="ficha-char-portrait-box">
+            <img src="${player.imagem}" alt="${player.nome}" class="ficha-char-portrait-img" />
+          </div>
+        ` : `
+          <div class="cube-placeholder-box">
+            <svg viewBox="0 0 100 100" class="cube-svg">
+              <polygon points="50,12 88,34 50,56 12,34" fill="rgba(255,85,0,0.12)" stroke="#ff5500" stroke-width="2.2" />
+              <polygon points="12,34 50,56 50,92 12,70" fill="rgba(255,85,0,0.06)" stroke="#ff5500" stroke-width="2.2" />
+              <polygon points="88,34 50,56 50,92 88,70" fill="rgba(255,85,0,0.18)" stroke="#ff5500" stroke-width="2.2" />
+              <line x1="50" y1="56" x2="50" y2="92" stroke="#ff7733" stroke-width="2.2" />
+            </svg>
+            <div class="cube-label-dry">[ SEM IMAGEM ]</div>
+          </div>
+        `}
       </div>
 
       <!-- COLUNA DIREITA: INFORMAÇÕES LIMPAS E DISPERSAS -->
