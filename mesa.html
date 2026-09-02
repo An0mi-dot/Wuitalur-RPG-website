@@ -8,9 +8,9 @@
   <meta http-equiv="Expires" content="0">
   <title>Mesa Virtual - Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/variables.css?v=2.5.1">
-  <link rel="stylesheet" href="css/components.css?v=2.5.1">
-  <link rel="stylesheet" href="css/mesa.css?v=2.5.1">
+  <link rel="stylesheet" href="css/variables.css?v=2.5.2">
+  <link rel="stylesheet" href="css/components.css?v=2.5.2">
+  <link rel="stylesheet" href="css/mesa.css?v=2.5.2">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -192,15 +192,17 @@
           <div class="adm-col-playlist">
             <div class="adm-col-header">
               <span>PLAYLIST DE VÍDEOS</span>
-              <div style="display:flex; gap:4px;">
-                <button class="adm-col-action-btn" onclick="MesaMediaPlayer.promptAddVideoUrl()" title="Adicionar por Link ou URL da internet">+ Link/URL</button>
-                <button class="adm-col-action-btn" onclick="document.getElementById('adm-video-input').click()" title="Adicionar arquivo do computador">+ Arquivo</button>
-              </div>
+              <button class="adm-col-action-btn" onclick="document.getElementById('adm-video-input').click()" title="Adicionar arquivo do computador">+ Arquivo Local</button>
               <input type="file" id="adm-video-input" accept="video/*,audio/*" multiple style="display:none;" onchange="MesaMediaPlayer.handleVideoAdd(event)">
+            </div>
+
+            <div class="adm-url-bar" style="display:flex; gap:4px; margin: 6px 0;">
+              <input type="text" id="adm-video-url-input" placeholder="Cole o link do vídeo (.mp4, Discord, web)..." style="flex:1; height:24px; font-size:0.7rem; background:#0d0d10; border:1px solid #3f3f46; color:#fff; border-radius:3px; padding:0 6px;">
+              <button class="adm-col-action-btn" onclick="MesaMediaPlayer.addVideoFromInput()">+ Link</button>
             </div>
             
             <div id="adm-video-dropzone" class="adm-dropzone">
-              <span>Arraste vídeos aqui ou clique nos botões acima</span>
+              <span>Arraste vídeos aqui ou use o campo de link acima</span>
             </div>
 
             <div id="adm-video-playlist-list" class="adm-items-list">
@@ -288,15 +290,17 @@
           <div class="adm-col-playlist">
             <div class="adm-col-header">
               <span>GALERIA DE SLIDES</span>
-              <div style="display:flex; gap:4px;">
-                <button class="adm-col-action-btn" onclick="MesaMediaPlayer.promptAddImageUrl()" title="Adicionar por Link ou URL da internet">+ Link/URL</button>
-                <button class="adm-col-action-btn" onclick="document.getElementById('adm-image-input').click()" title="Adicionar arquivo do computador">+ Arquivo</button>
-              </div>
+              <button class="adm-col-action-btn" onclick="document.getElementById('adm-image-input').click()" title="Adicionar arquivo do computador">+ Arquivo Local</button>
               <input type="file" id="adm-image-input" accept="image/*" multiple style="display:none;" onchange="MesaMediaPlayer.handleImageAdd(event)">
             </div>
 
+            <div class="adm-url-bar" style="display:flex; gap:4px; margin: 6px 0;">
+              <input type="text" id="adm-image-url-input" placeholder="Cole o link da imagem (png, jpg, web)..." style="flex:1; height:24px; font-size:0.7rem; background:#0d0d10; border:1px solid #3f3f46; color:#fff; border-radius:3px; padding:0 6px;">
+              <button class="adm-col-action-btn" onclick="MesaMediaPlayer.addImageFromInput()">+ Link</button>
+            </div>
+
             <div id="adm-image-dropzone" class="adm-dropzone">
-              <span>Arraste imagens aqui ou clique em + Adicionar</span>
+              <span>Arraste imagens aqui ou use o campo de link acima</span>
             </div>
 
             <div id="adm-image-playlist-list" class="adm-items-list">
@@ -338,9 +342,10 @@
     <!-- PALCO DE TRANSMISSÃO EM TELA CHEIA (FUNDO PRETO TRANSPARENTE COM BORDA LARANJA NO CENTRO) -->
     <div id="master-media-theater-overlay" class="master-media-theater-overlay">
       <div class="theater-media-frame">
-        <video id="theater-video-player" class="theater-media-element" playsinline></video>
-        <img id="theater-image-player" class="theater-media-element" style="display:none;" alt="Mídia transmitida pelo Mestre">
+        <video id="theater-video-player" class="theater-media-element" playsinline style="display:none;"></video>
+        <img id="theater-image-player" class="theater-media-element" style="display:none;" alt="">
         <audio id="theater-audio-player" style="display:none;"></audio>
+        <div id="theater-status-note" style="display:none; color: var(--mesa-orange); font-size: 0.8rem; font-family: monospace; padding: 20px; text-align: center;">Aguardando transmissão do Mestre...</div>
       </div>
     </div>
 
@@ -448,6 +453,6 @@
       </div>
     </div>
 
-<script src="js/mesa.js?v=2.5.1"></script>
+<script src="js/mesa.js?v=2.5.2"></script>
 </body>
 </html>

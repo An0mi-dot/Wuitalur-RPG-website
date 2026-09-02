@@ -1929,6 +1929,22 @@ const MesaMediaPlayer = {
     if (files.length > 0) this.addVideos(files);
   },
 
+  addVideoFromInput() {
+    const input = document.getElementById('adm-video-url-input');
+    if (!input) return;
+    const url = input.value.trim();
+    if (!url) {
+      alert("Por favor, cole um link válido de vídeo ou áudio.");
+      return;
+    }
+
+    const name = url.split('/').pop().split('?')[0] || 'Vídeo Online';
+    this.videoPlaylist.push({ name: name, url: url });
+    input.value = '';
+    this.renderVideoPlaylist();
+    this.selectVideo(this.videoPlaylist.length - 1);
+  },
+
   promptAddVideoUrl() {
     const url = prompt("Insira o Link / URL direto do vídeo ou áudio (ex: https://.../video.mp4, Catbox, Discord, Streamable, Tenor):");
     if (!url || !url.trim()) return;
@@ -2125,6 +2141,22 @@ const MesaMediaPlayer = {
     if (files.length > 0) this.addImages(files);
   },
 
+  addImageFromInput() {
+    const input = document.getElementById('adm-image-url-input');
+    if (!input) return;
+    const url = input.value.trim();
+    if (!url) {
+      alert("Por favor, cole um link válido de imagem.");
+      return;
+    }
+
+    const name = url.split('/').pop().split('?')[0] || 'Imagem Online';
+    this.imagePlaylist.push({ name: name, url: url });
+    input.value = '';
+    this.renderImagePlaylist();
+    this.selectImage(this.imagePlaylist.length - 1);
+  },
+
   promptAddImageUrl() {
     const url = prompt("Insira o Link / URL direto da imagem (ex: https://.../imagem.png/jpg, Imgur, Discord, Tenor):");
     if (!url || !url.trim()) return;
@@ -2297,13 +2329,15 @@ const MesaMediaPlayer = {
     const frame = overlay ? overlay.querySelector('.theater-media-frame') : null;
     const theaterVideo = document.getElementById('theater-video-player');
     const theaterImage = document.getElementById('theater-image-player');
+    const statusNote = document.getElementById('theater-status-note');
 
     if (!overlay) return;
 
     if (!data.isTransmitting) {
       overlay.classList.remove('active');
-      if (theaterVideo) { theaterVideo.pause(); theaterVideo.src = ''; }
-      if (theaterImage) { theaterImage.src = ''; }
+      if (theaterVideo) { theaterVideo.pause(); theaterVideo.src = ''; theaterVideo.style.display = 'none'; }
+      if (theaterImage) { theaterImage.src = ''; theaterImage.style.display = 'none'; }
+      if (statusNote) statusNote.style.display = 'none';
       return;
     }
 
@@ -2314,36 +2348,55 @@ const MesaMediaPlayer = {
       else frame.classList.remove('blackout');
     }
 
-    if (data.mediaType === 'video' && data.url) {
-      if (theaterImage) theaterImage.style.display = 'none';
-      if (theaterVideo) {
-        theaterVideo.style.display = 'block';
-        if (theaterVideo.src !== data.url) {
-          theaterVideo.src = data.url;
-          theaterVideo.load();
-        }
-        if (Math.abs(theaterVideo.currentTime - data.currentTime) > 1.5) {
-          theaterVideo.currentTime = data.currentTime;
-        }
-        theaterVideo.volume = data.volume !== undefined ? data.volume : 1;
-        if (data.isPlaying) {
-          const playPromise = theaterVideo.play();
-          if (playPromise !== undefined) {
-            playPromise.catch((err) => {
-              console.warn("Autoplay bloqueado pelo navegador, tentando com mudo:", err);
-              theaterVideo.muted = true;
-              theaterVideo.play().catch(e => console.warn("Falha no playback:", e));
-            });
+    if (data.mediaType === 'video') {
+      if (theaterImage) { theaterImage.style.display = 'none'; theaterImage.src = ''; }
+
+      if (data.url) {
+        if (statusNote) statusNote.style.display = 'none';
+        if (theaterVideo) {
+          theaterVideo.style.display = 'block';
+          if (theaterVideo.src !== data.url) {
+            theaterVideo.src = data.url;
+            theaterVideo.load();
           }
-        } else {
-          theaterVideo.pause();
+          if (Math.abs(theaterVideo.currentTime - data.currentTime) > 1.5) {
+            theaterVideo.currentTime = data.currentTime;
+          }
+          theaterVideo.volume = data.volume !== undefined ? data.volume : 1;
+          if (data.isPlaying) {
+            const playPromise = theaterVideo.play();
+            if (playPromise !== undefined) {
+              playPromise.catch(() => {
+                theaterVideo.muted = true;
+                theaterVideo.play().catch(e => console.warn("Falha no playback com mudo:", e));
+              });
+            }
+          } else {
+            theaterVideo.pause();
+          }
+        }
+      } else {
+        if (theaterVideo) theaterVideo.style.display = 'none';
+        if (statusNote) {
+          statusNote.style.display = 'block';
+          statusNote.textContent = 'Aguardando o Mestre selecionar um vídeo...';
         }
       }
-    } else if (data.mediaType === 'image' && data.url) {
-      if (theaterVideo) { theaterVideo.style.display = 'none'; theaterVideo.pause(); }
-      if (theaterImage) {
-        theaterImage.src = data.url;
-        theaterImage.style.display = 'block';
+    } else if (data.mediaType === 'image') {
+      if (theaterVideo) { theaterVideo.style.display = 'none'; theaterVideo.pause(); theaterVideo.src = ''; }
+
+      if (data.url) {
+        if (statusNote) statusNote.style.display = 'none';
+        if (theaterImage) {
+          theaterImage.src = data.url;
+          theaterImage.style.display = 'block';
+        }
+      } else {
+        if (theaterImage) theaterImage.style.display = 'none';
+        if (statusNote) {
+          statusNote.style.display = 'block';
+          statusNote.textContent = 'Aguardando o Mestre selecionar uma imagem...';
+        }
       }
     }
   },
