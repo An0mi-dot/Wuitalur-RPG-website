@@ -362,6 +362,39 @@ const MesaApp = {
       ]
     };
 
+    // Personagem para Slot 2 (Sanguiminerva "Minerva" Qamari Von Adams)
+    this.state.players[1] = {
+      id: 3,
+      slot: 2,
+      token: 'M7Q2',
+      nome: 'Sanguiminerva "Minerva" Qamari Von Adams',
+      idade: '18 anos',
+      altura: '1,78m',
+      raca: 'Vampira',
+      arquetipo: 'Nerd',
+      hp: 12, hpMax: 12,
+      pe: 10, peMax: 10,
+      st: 0, stMax: 40,
+      stressPoints: 0,
+      stressPointsMax: 6,
+      atributos: {
+        'Saúde': 'd8',
+        'Vigor': 'd12',
+        'Força': 'd4',
+        'Mente': 'd16'
+      },
+      bonus: [
+        { origem: 'Raça (Vampira)', desc: '+d4 em testes de Mente e Visão no Escuro (5B)' },
+        { origem: 'Arquétipo (Nerd)', desc: '+d4 em Testes de Mente' }
+      ],
+      pericias: ['Furtividade', 'Intimidação', 'Investigação', 'Astúcia'],
+      habilidades: [
+        { nome: 'Mordida Vampírica', custo: '3 PE', desc: 'Morde um alvo adjacente para drenar sangue. Causa dano igual a uma rolagem de Força e restaura PV iguais à metade do dano causado.' },
+        { nome: 'Presença Hipnótica', custo: '2 PE', desc: 'Exerce magnetismo sobrenatural. Ganha vantagem em testes de Mente para intimidar ou convencer até o fim da cena.' },
+        { nome: 'Raciocínio Lógico', custo: '2 PE', desc: 'Pode gastar 2 PE para analisar uma cena de enigma, mecanismo ou texto cifrado e deduzir instantaneamente um padrão oculto.' }
+      ]
+    };
+
     // Personagem para Slot 3 (Eric "Blade")
     this.state.players[2] = {
       id: 1,
@@ -472,8 +505,52 @@ const MesaApp = {
             this.state.players[p.slot - 1] = p;
           }
         });
-      } else {
-        this.loadMockData();
+      }
+
+      // Garante que Thulita (Slot 1), Minerva (Slot 2) e Eric (Slot 3) estejam presentes
+      if (!this.state.players[0]) {
+        this.state.players[0] = {
+          id: 2, slot: 1, token: 'W4R9', nome: 'Thulita De La Benevidez', idade: '18 anos', altura: '1,40', raca: 'Dragão Anão', arquetipo: 'Popular',
+          hp: 14, hpMax: 14, pe: 10, peMax: 10, st: 0, stMax: 32, stressPoints: 0, stressPointsMax: 6,
+          atributos: { 'Saúde': 'd12', 'Vigor': 'd16', 'Força': 'd4', 'Mente': 'd8' },
+          bonus: [{ origem: 'Raça (Dragão Anão)', desc: '+d4 em testes de Mente' }, { origem: 'Arquétipo (Popular)', desc: '+d4 em Testes Sociais' }],
+          pericias: ['Atletismo', 'Percepção', 'Acrobacia', 'Intuição'],
+          habilidades: [
+            { nome: 'Sopro Ancestral', custo: '4 PE', desc: 'Expele um cone de energia elemental (frio, fogo ou ácido) de 3m. Inimigos na área sofrem dano igual a uma rolagem de Força e devem passar em teste de Vigor (CT 13) ou ficam atordoados por 1 rodada.' },
+            { nome: 'Conexão Sensorial', custo: '2 PE', desc: 'Usa suas antenas para se comunicar telepaticamente com aliados a até 20m por 1 cena. Transmite emoções, imagens simples e intenções.' },
+            { nome: 'Carisma Natural', custo: 'Passiva', desc: 'Testemunhas e habitantes locais sempre confiam em você e compartilham boatos e segredos da cidade.' }
+          ]
+        };
+      }
+
+      if (!this.state.players[1]) {
+        this.state.players[1] = {
+          id: 3, slot: 2, token: 'M7Q2', nome: 'Sanguiminerva "Minerva" Qamari Von Adams', idade: '18 anos', altura: '1,78m', raca: 'Vampira', arquetipo: 'Nerd',
+          hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 40, stressPoints: 0, stressPointsMax: 6,
+          atributos: { 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd4', 'Mente': 'd16' },
+          bonus: [{ origem: 'Raça (Vampira)', desc: '+d4 em testes de Mente e Visão no Escuro (5B)' }, { origem: 'Arquétipo (Nerd)', desc: '+d4 em Testes de Mente' }],
+          pericias: ['Furtividade', 'Intimidação', 'Investigação', 'Astúcia'],
+          habilidades: [
+            { nome: 'Mordida Vampírica', custo: '3 PE', desc: 'Morde um alvo adjacente para drenar sangue. Causa dano igual a uma rolagem de Força e restaura PV iguais à metade do dano causado.' },
+            { nome: 'Presença Hipnótica', custo: '2 PE', desc: 'Exerce magnetismo sobrenatural. Ganha vantagem em testes de Mente para intimidar ou convencer até o fim da cena.' },
+            { nome: 'Raciocínio Lógico', custo: '2 PE', desc: 'Pode gastar 2 PE para analisar uma cena de enigma, mecanismo ou texto cifrado e deduzir instantaneamente um padrão oculto.' }
+          ]
+        };
+      }
+
+      if (!this.state.players[2]) {
+        this.state.players[2] = {
+          id: 1, slot: 3, token: 'B8T3', nome: 'Eric "Blade" Tepes Adams', idade: '17 anos', altura: '1,76', raca: 'Vampiro', arquetipo: 'Curioso',
+          hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 44, stressPoints: 0, stressPointsMax: 6,
+          atributos: { 'Mente': 'd16', 'Saúde': 'd4', 'Vigor': 'd12', 'Força': 'd8' },
+          bonus: [{ origem: 'Raça (Vampiro)', desc: '+d4 em testes de Mente e Visão no Escuro (5B)' }, { origem: 'Arquétipo (Curioso)', desc: '+d4 em testes de Investigação' }],
+          pericias: ['Investigação', 'Percepção', 'Disparada', 'Medicina'],
+          habilidades: [
+            { nome: 'Mordida Vampírica', custo: '3 PE', desc: 'Morde um alvo adjacente para drenar sangue. Causa dano igual a uma rolagem de Força e restaura PV iguais à metade do dano causado.' },
+            { nome: 'Presença Hipnótica', custo: '2 PE', desc: 'Exerce magnetismo sobrenatural. Ganha vantagem em testes de Mente para intimidar ou convencer até o fim da cena.' },
+            { nome: 'Olhar Investigativo', custo: '2 PE', desc: 'Gasta 2 PE para notar instantaneamente marcas de arranhões, botões falsos ou compartimentos secretos na cena.' }
+          ]
+        };
       }
       
       this.renderMesa();
