@@ -436,7 +436,7 @@ const MesaApp = {
       nome: 'Pera Hylidae da Silva',
       idade: '18 anos',
       altura: '1,58m',
-      raca: 'Perereca-de-leite',
+      raca: 'Animalesco',
       arquetipo: 'Rebelde',
       classe: 'Adivinha',
       hp: 12, hpMax: 12,
@@ -451,7 +451,7 @@ const MesaApp = {
         'Força': 'd16'
       },
       bonus: [
-        { origem: 'Raça (Perereca-de-leite)', desc: '+d4 em testes de Vigor' },
+        { origem: 'Raça (Animalesco)', desc: '+d4 em testes de Esquiva' },
         { origem: 'Arquétipo (Rebelde)', desc: '+d4 em Força. Desprezo por autoridade — não obedece a ninguém, nem a monstros.' }
       ],
       pericias: ['Intimidação', 'Atletismo', 'Disparada', 'Sobrevivência'],
@@ -589,11 +589,11 @@ const MesaApp = {
 
       if (!this.state.players[3]) {
         this.state.players[3] = {
-          id: 4, slot: 4, token: 'P3R4', nome: 'Pera Hylidae da Silva', idade: '18 anos', altura: '1,58m', raca: 'Perereca-de-leite', arquetipo: 'Rebelde', classe: 'Adivinha',
+          id: 4, slot: 4, token: 'P3R4', nome: 'Pera Hylidae da Silva', idade: '18 anos', altura: '1,58m', raca: 'Animalesco', arquetipo: 'Rebelde', classe: 'Adivinha',
           hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 24, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Mente': 'd4', 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd16' },
           bonus: [
-            { origem: 'Raça (Perereca-de-leite)', desc: '+d4 em testes de Vigor' },
+            { origem: 'Raça (Animalesco)', desc: '+d4 em testes de Esquiva' },
             { origem: 'Arquétipo (Rebelde)', desc: '+d4 em Força. Desprezo por autoridade — não obedece a ninguém, nem a monstros.' }
           ],
           pericias: ['Intimidação', 'Atletismo', 'Disparada', 'Sobrevivência'],
