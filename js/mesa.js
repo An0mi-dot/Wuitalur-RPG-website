@@ -1063,8 +1063,10 @@ const MesaApp = {
       <!-- COLUNA ESQUERDA: ILUSTRAÇÃO -->
       <div class="ficha-portrait-col">
         ${player.imagem ? `
-          <div class="ficha-char-portrait-box">
-            <img src="${player.imagem}" alt="${player.nome}" class="ficha-char-portrait-img" />
+          <div class="ficha-char-portrait-box glitch-portrait-box">
+            <img src="${player.imagem}" alt="${player.nome}" class="ficha-char-portrait-img glitch-img-base" />
+            <img src="${player.imagem}" alt="" class="ficha-char-portrait-img glitch-img-layer glitch-layer-1" aria-hidden="true" />
+            <img src="${player.imagem}" alt="" class="ficha-char-portrait-img glitch-img-layer glitch-layer-2" aria-hidden="true" />
           </div>
         ` : `
           <div class="cube-placeholder-box">
