@@ -8,9 +8,9 @@
   <meta http-equiv="Expires" content="0">
   <title>Mesa Virtual - Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/variables.css?v=2.8.1">
-  <link rel="stylesheet" href="css/components.css?v=2.8.1">
-  <link rel="stylesheet" href="css/mesa.css?v=2.8.1">
+  <link rel="stylesheet" href="css/variables.css?v=2.8.2">
+  <link rel="stylesheet" href="css/components.css?v=2.8.2">
+  <link rel="stylesheet" href="css/mesa.css?v=2.8.2">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -113,13 +113,32 @@
           Rolar Dado
         </button>
 
-        <!-- Botão Exclusivo do Mestre: Transmissão de Mídia -->
-        <button id="nav-master-media-btn" class="ink-tag master-only-btn" style="display:none;" onclick="MesaMediaPlayer.toggleDrawer()" title="Controle de Mídia do Mestre">
-          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="5 3 19 12 5 21 5 3"></polygon>
-          </svg>
-          Transmissão
-        </button>
+        <!-- Botão Menu do Mestre com Dropdown (Assets na Esquerda & Mídia Embaixo) -->
+        <div id="nav-master-dropdown-wrapper" class="master-dropdown-wrapper" style="position: relative; display: none;">
+          <button id="nav-master-menu-btn" class="ink-tag master-only-btn" onclick="MesaApp.toggleMasterDropdown()" title="Painel do Mestre">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+            </svg>
+            Mestre ▾
+          </button>
+          
+          <div id="master-dropdown-menu" class="master-dropdown-popover">
+            <button class="master-dropdown-item" onclick="MesaLibrary.toggleSidebar(); MesaApp.toggleMasterDropdown(false)">
+              <span class="m-item-icon">📁</span>
+              <div class="m-item-text">
+                <strong>Galeria de Assets</strong>
+                <small>Menu lateral (NPCs, Itens, Cenários)</small>
+              </div>
+            </button>
+            <button class="master-dropdown-item" onclick="MesaMediaPlayer.toggleDrawer(); MesaApp.toggleMasterDropdown(false)">
+              <span class="m-item-icon">🎬</span>
+              <div class="m-item-text">
+                <strong>Player de Mídia</strong>
+                <small>Painel inferior (Vídeos & Slideshow)</small>
+              </div>
+            </button>
+          </div>
+        </div>
 
         <div class="token-btn-wrapper" style="position: relative; display: inline-flex;">
           <button id="nav-token-btn" class="ink-tag" onclick="MesaApp.openTokenModal()">
@@ -133,6 +152,53 @@
         <button id="nav-ficha-btn" class="ink-tag primary desktop-only-btn" onclick="MesaApp.toggleView()">Minha Ficha</button>
       </div>
     </nav>
+
+    <!-- SIDEBAR LATERAL ESQUERDA: GALERIA DE ASSETS DO MESTRE -->
+    <div id="master-assets-sidebar" class="master-assets-sidebar">
+      <div class="sidebar-topbar">
+        <div class="sidebar-title-group">
+          <span class="sidebar-title">📁 GALERIA DE ASSETS</span>
+          <span class="sidebar-subtitle">Ilustrações no Centro da Mesa</span>
+        </div>
+        <button class="sidebar-close-btn" onclick="MesaLibrary.toggleSidebar()" title="Fechar">&times;</button>
+      </div>
+
+      <!-- Barra de Status da Projeção Central -->
+      <div class="adm-projection-status-bar sidebar-status">
+        <div class="adm-proj-info">
+          <span class="adm-proj-label">NO CENTRO:</span>
+          <span id="adm-active-proj-name" class="adm-proj-name">Nenhuma</span>
+        </div>
+        <button id="adm-btn-clear-proj" class="adm-col-action-btn danger" onclick="MesaLibrary.clearCenterProjection()" style="display:none;">✕ Limpar</button>
+      </div>
+
+      <!-- Pastas de Categorias -->
+      <div class="sidebar-section-header">
+        <span>PASTAS & CATEGORIAS</span>
+        <button class="sidebar-action-btn" onclick="MesaLibrary.promptNewFolder()">+ Nova Pasta</button>
+      </div>
+      <div id="adm-folder-list" class="sidebar-folder-list">
+        <!-- Renderizado via JS -->
+      </div>
+
+      <!-- Ações de Adição na Pasta -->
+      <div class="sidebar-section-header" style="margin-top: 14px;">
+        <span id="adm-selected-folder-title">PERSONAGENS / NPCS</span>
+        <button class="sidebar-action-btn" onclick="document.getElementById('adm-library-file-input').click()">+ Arquivo</button>
+        <input type="file" id="adm-library-file-input" accept="image/*" multiple style="display:none;" onchange="MesaLibrary.handleLocalUpload(event)">
+      </div>
+
+      <div class="sidebar-url-bar">
+        <input type="text" id="adm-library-url-input" placeholder="Cole link da imagem (.png, .jpg, web)..." class="sidebar-input">
+        <input type="text" id="adm-library-name-input" placeholder="Nome..." class="sidebar-input name-input">
+        <button class="sidebar-action-btn" onclick="MesaLibrary.addFromUrlInput()">+ Link</button>
+      </div>
+
+      <!-- Grade de Imagens da Pasta Selecionada -->
+      <div id="adm-folder-items-grid" class="sidebar-gallery-grid">
+        <!-- Cards renderizados via JS -->
+      </div>
+    </div>
 
     <!-- Layout da Mesa -->
     <div class="mesa-board-container" id="mesa-board-container">
@@ -198,7 +264,7 @@
       <div class="adm-topbar">
         <div class="adm-topbar-left">
           <span class="adm-app-title">ADMINISTRADOR DE RPG</span>
-          <span class="adm-sub-badge">Central do Mestre</span>
+          <span class="adm-sub-badge">Player de Mídia</span>
           <button class="adm-btn-subtle" onclick="MesaMediaPlayer.toggleDrawer()">Fechar</button>
         </div>
         <div class="adm-topbar-right">
@@ -211,62 +277,12 @@
 
       <!-- Navigation Tabs -->
       <div class="adm-tab-bar">
-        <button id="adm-tab-library" class="adm-tab-btn active" onclick="MesaMediaPlayer.switchTab('library')">📁 Galeria & Pastas (Projeção Central)</button>
-        <button id="adm-tab-video" class="adm-tab-btn" onclick="MesaMediaPlayer.switchTab('video')">🎬 Player de Vídeos (Loop A-B)</button>
-        <button id="adm-tab-slideshow" class="adm-tab-btn" onclick="MesaMediaPlayer.switchTab('slideshow')">🖼️ Slideshow (Tela Cheia)</button>
+        <button id="adm-tab-video" class="adm-tab-btn active" onclick="MesaMediaPlayer.switchTab('video')">🎬 Player de Vídeos (Loop A-B & Fade)</button>
+        <button id="adm-tab-slideshow" class="adm-tab-btn" onclick="MesaMediaPlayer.switchTab('slideshow')">🖼️ Compartilhador de Imagens (Slideshow)</button>
       </div>
 
-      <!-- TAB 1: BIBLIOTECA DE PASTAS & PROJEÇÃO CENTRAL -->
-      <div id="adm-view-library" class="adm-tab-content active">
-        <!-- Barra de Status da Projeção Central -->
-        <div class="adm-projection-status-bar">
-          <div class="adm-proj-info">
-            <span class="adm-proj-label">PROJEÇÃO CENTRAL ATIVA:</span>
-            <span id="adm-active-proj-name" class="adm-proj-name">Nenhuma (Quadro livre)</span>
-          </div>
-          <button id="adm-btn-clear-proj" class="adm-col-action-btn danger" onclick="MesaLibrary.clearCenterProjection()" style="display:none;">✕ Desativar Projeção Central</button>
-        </div>
-
-        <div class="adm-two-columns library-columns">
-          <!-- Coluna 1: Pastas & Categorias -->
-          <div class="adm-col-playlist folder-col">
-            <div class="adm-col-header">
-              <span>PASTAS & CATEGORIAS</span>
-              <button class="adm-col-action-btn" onclick="MesaLibrary.promptNewFolder()">+ Nova Pasta</button>
-            </div>
-
-            <div id="adm-folder-list" class="adm-items-list folder-list">
-              <!-- Renderizado dinamicamente via JS -->
-            </div>
-          </div>
-
-          <!-- Coluna 2: Galeria de Imagens da Pasta Selecionada -->
-          <div class="adm-col-monitor gallery-col">
-            <div class="adm-col-header">
-              <span id="adm-selected-folder-title">PASTA: PERSONAGENS / NPCS</span>
-              <div class="adm-header-right">
-                <button class="adm-col-action-btn" onclick="document.getElementById('adm-library-file-input').click()">+ Arquivo Local</button>
-                <input type="file" id="adm-library-file-input" accept="image/*" multiple style="display:none;" onchange="MesaLibrary.handleLocalUpload(event)">
-              </div>
-            </div>
-
-            <!-- Barra de inserção por Link -->
-            <div class="adm-url-bar" style="display:flex; gap:6px; margin: 4px 0 8px;">
-              <input type="text" id="adm-library-url-input" placeholder="Cole o link da imagem (.png, .jpg, web, Discord)..." style="flex:1; height:24px; font-size:0.7rem; background:#0d0d10; border:1px solid #3f3f46; color:#fff; border-radius:3px; padding:0 6px;">
-              <input type="text" id="adm-library-name-input" placeholder="Nome/Título (opcional)..." style="width:130px; height:24px; font-size:0.7rem; background:#0d0d10; border:1px solid #3f3f46; color:#fff; border-radius:3px; padding:0 6px;">
-              <button class="adm-col-action-btn" onclick="MesaLibrary.addFromUrlInput()">+ Adicionar</button>
-            </div>
-
-            <!-- Grade de Imagens da Pasta -->
-            <div id="adm-folder-items-grid" class="adm-gallery-grid">
-              <!-- Cards de Imagens renderizados via JS -->
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 2: PLAYER DE VÍDEOS -->
-      <div id="adm-view-video" class="adm-tab-content">
+      <!-- TAB 1: PLAYER DE VÍDEOS -->
+      <div id="adm-view-video" class="adm-tab-content active">
         <div class="adm-two-columns">
           <!-- Coluna 1: Playlist de Vídeos -->
           <div class="adm-col-playlist">
@@ -533,6 +549,6 @@
       </div>
     </div>
 
-<script src="js/mesa.js?v=2.8.1"></script>
+<script src="js/mesa.js?v=2.8.2"></script>
 </body>
 </html>

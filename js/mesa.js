@@ -1310,6 +1310,17 @@ const MesaApp = {
 
     // 3. Se ainda não possui token conectado, abre o modal de token
     this.openTokenModal();
+  },
+
+  toggleMasterDropdown(forceState) {
+    const popover = document.getElementById('master-dropdown-menu');
+    if (!popover) return;
+    if (forceState !== undefined) {
+      if (forceState) popover.classList.add('active');
+      else popover.classList.remove('active');
+    } else {
+      popover.classList.toggle('active');
+    }
   }
 };
 
@@ -2090,16 +2101,24 @@ const MesaMediaPlayer = {
   },
 
   updateMasterVisibility() {
-    const btn = document.getElementById('nav-master-media-btn');
-    if (btn) {
+    const wrapper = document.getElementById('nav-master-dropdown-wrapper');
+    if (wrapper) {
       if (MesaApp.state.isMaster) {
-        btn.style.display = 'inline-flex';
+        wrapper.style.display = 'inline-flex';
         this.isMasterUnlocked = true;
       } else {
-        btn.style.display = 'none';
+        wrapper.style.display = 'none';
         this.isMasterUnlocked = false;
         if (this.isDrawerOpen) this.toggleDrawer();
+        const sidebar = document.getElementById('master-assets-sidebar');
+        if (sidebar) sidebar.classList.remove('active');
       }
+    }
+
+    // Atualiza a visibilidade do botão fechar da projeção central (somente mestre)
+    const closeBtn = document.getElementById('board-center-close-btn');
+    if (closeBtn) {
+      closeBtn.style.display = (MesaApp.state.isMaster && MesaLibrary.activeProjection && MesaLibrary.activeProjection.isProjecting) ? 'flex' : 'none';
     }
   },
 
@@ -2915,6 +2934,7 @@ const MesaLibrary = {
 
   currentFolderId: 'npcs',
   activeProjection: null,
+  isSidebarOpen: false,
 
   init() {
     this.loadFromStorage();
@@ -2922,6 +2942,24 @@ const MesaLibrary = {
     this.renderGallery();
     this.updateProjectionBar();
     this.restoreProjection();
+  },
+
+  toggleSidebar(forceState) {
+    if (!MesaApp.state.isMaster) return;
+    const sidebar = document.getElementById('master-assets-sidebar');
+    if (!sidebar) return;
+
+    if (forceState !== undefined) {
+      this.isSidebarOpen = forceState;
+    } else {
+      this.isSidebarOpen = !this.isSidebarOpen;
+    }
+
+    if (this.isSidebarOpen) {
+      sidebar.classList.add('active');
+    } else {
+      sidebar.classList.remove('active');
+    }
   },
 
   loadFromStorage() {
@@ -3295,6 +3333,14 @@ const MesaLibrary = {
 
 document.addEventListener('DOMContentLoaded', () => {
   MesaApp.init();
+
+  // Fecha o menu dropdown do mestre se clicar fora
+  document.addEventListener('click', (e) => {
+    const wrapper = document.getElementById('nav-master-dropdown-wrapper');
+    if (wrapper && !wrapper.contains(e.target)) {
+      MesaApp.toggleMasterDropdown(false);
+    }
+  });
 });
 
 window.addEventListener('beforeunload', () => {
