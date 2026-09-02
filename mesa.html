@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -12,46 +12,427 @@
 </head>
 <body class="mesa-body">
 
-    <!-- Top floating actions -->
-    <div class="mesa-floating-nav">
-        <a href="index.html" class="mesa-back-btn">&#x2190; Voltar</a>
-        <div class="mesa-actions">
-            <button class="mesa-btn mesa-btn-outline" onclick="MesaApp.toggleView()">Minha Ficha</button>
-            <button class="mesa-btn" onclick="MesaApp.openTokenModal()">Acessar Slot</button>
+    <!-- Filtros SVG Globais de Nanquim e Tinta Falhada -->
+    <svg width="0" height="0" style="position:absolute; width:0; height:0; pointer-events:none;">
+      <defs>
+        <filter id="nanquim-rough" x="-10%" y="-10%" width="120%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <filter id="nanquim-heavy" x="-10%" y="-10%" width="120%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="4" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="4.5" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </defs>
+    </svg>
+
+    <!-- Moldura Perimetral de Tinta Nanquim -->
+    <div class="mesa-ink-frame">
+      <div class="ink-corner tl"></div>
+      <div class="ink-corner tr"></div>
+      <div class="ink-corner bl"></div>
+      <div class="ink-corner br"></div>
+      <div class="ink-edge-marks top"></div>
+      <div class="ink-edge-marks bottom"></div>
+    </div>
+
+    <!-- Canvas de Efeito Glitch no Background -->
+    <canvas id="glitch-canvas" class="mesa-glitch-canvas"></canvas>
+
+    <!-- Barra Superior de Navegação & Ações -->
+    <nav class="mesa-floating-nav">
+      <a href="index.html" class="ink-tag">
+        <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Voltar ao Menu
+      </a>
+      <div class="mesa-actions">
+        <!-- Botão exclusivo no mobile para alternar entre Minha Ficha e Grupo -->
+        <button id="mobile-toggle-group-btn" class="ink-tag mobile-only-btn" onclick="MesaApp.toggleMobileGroupView()">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          Ver Grupo
+        </button>
+
+        <!-- Botão de Reações com Emojis (SVG Rosto Sorrindo) -->
+        <div style="position: relative;">
+          <button id="nav-reaction-btn" class="ink-tag" onclick="MesaReactions.togglePicker()" title="Reagir com Emoji">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+              <line x1="9" y1="9" x2="9.01" y2="9"></line>
+              <line x1="15" y1="9" x2="15.01" y2="9"></line>
+            </svg>
+            Reagir
+          </button>
+
+          <!-- Paleta de Emojis Pixel Flutuante -->
+          <div id="mesa-reaction-picker" class="reaction-picker-popover">
+            <div id="reaction-picker-grid" class="reaction-picker-grid">
+              <!-- Renderizado dinamicamente via JS com SVGs em Pixel Art -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Botão para alternar Chat -->
+        <button id="nav-chat-btn" class="ink-tag" onclick="MesaChat.toggleChat()">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          Chat <span id="chat-unread-badge" class="chat-unread-pip" style="display:none;"></span>
+        </button>
+
+        <!-- Botão de Rolar Dados -->
+        <button id="nav-dice-btn" class="ink-tag primary" onclick="MesaDice.openModal()" title="Rolar Dados">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="3" ry="3"></rect>
+            <path d="M8 8h.01"></path>
+            <path d="M16 8h.01"></path>
+            <path d="M12 12h.01"></path>
+            <path d="M8 16h.01"></path>
+            <path d="M16 16h.01"></path>
+          </svg>
+          Rolar Dado
+        </button>
+
+        <!-- Botão Exclusivo do Mestre: Transmissão de Mídia -->
+        <button id="nav-master-media-btn" class="ink-tag master-only-btn" style="display:none;" onclick="MesaMediaPlayer.toggleDrawer()" title="Controle de Mídia do Mestre">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          Transmissão
+        </button>
+
+        <button id="nav-token-btn" class="ink-tag" onclick="MesaApp.openTokenModal()">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+          </svg>
+          Token
+        </button>
+        <button id="nav-ficha-btn" class="ink-tag primary desktop-only-btn" onclick="MesaApp.toggleView()">Minha Ficha</button>
+      </div>
+    </nav>
+
+    <!-- Layout da Mesa -->
+    <div class="mesa-board-container" id="mesa-board-container">
+        <!-- O Quadrado Preto com borda de nanquim artesanal -->
+        <div class="mesa-black-board">
+          <div class="board-ink-inner-border"></div>
+          <div class="board-crosshair-c"></div>
+          <!-- Palco Central de Rolagem de Dados -->
+          <div id="dice-stage" class="dice-stage"></div>
+        </div>
+
+        <!-- 8 Cards de Jogadores -->
+        <div class="player-slot slot-1 empty" onclick="MesaApp.handleSlotClick(1)">
+          <div class="slot-empty-label">Slot 1</div>
+        </div>
+        <div class="player-slot slot-2 empty" onclick="MesaApp.handleSlotClick(2)">
+          <div class="slot-empty-label">Slot 2</div>
+        </div>
+        <div class="player-slot slot-3 empty" onclick="MesaApp.handleSlotClick(3)">
+          <div class="slot-empty-label">Slot 3</div>
+        </div>
+        <div class="player-slot slot-4 empty" onclick="MesaApp.handleSlotClick(4)">
+          <div class="slot-empty-label">Slot 4</div>
+        </div>
+        <div class="player-slot slot-5 empty" onclick="MesaApp.handleSlotClick(5)">
+          <div class="slot-empty-label">Slot 5</div>
+        </div>
+        <div class="player-slot slot-6 empty" onclick="MesaApp.handleSlotClick(6)">
+          <div class="slot-empty-label">Slot 6</div>
+        </div>
+        <div class="player-slot slot-7 empty" onclick="MesaApp.handleSlotClick(7)">
+          <div class="slot-empty-label">Slot 7</div>
+        </div>
+        <div class="player-slot slot-8 empty" onclick="MesaApp.handleSlotClick(8)">
+          <div class="slot-empty-label">Slot 8</div>
         </div>
     </div>
 
-    <!-- Board -->
-    <div class="mesa-board-container">
-        <div class="mesa-black-board"></div>
+    <!-- PAINEL TÉCNICO ADMINISTRADOR DE RPG - MEDIA PLAYER (EXCLUSIVO DO MESTRE) -->
+    <div id="master-media-drawer" class="master-media-drawer">
+      <!-- Top Title Bar -->
+      <div class="adm-topbar">
+        <div class="adm-topbar-left">
+          <span class="adm-app-title">ADMINISTRADOR DE RPG</span>
+          <span class="adm-sub-badge">Player de Mídia</span>
+          <button class="adm-btn-subtle" onclick="MesaMediaPlayer.toggleDrawer()">Fechar</button>
+        </div>
+        <div class="adm-topbar-right">
+          <span id="adm-status-tag" class="adm-status-tag inactive">● Inativo</span>
+          <button id="adm-btn-transmit" class="adm-top-btn primary" onclick="MesaMediaPlayer.toggleTransmit()">Transmitir</button>
+          <button id="adm-btn-blackout" class="adm-top-btn blackout" onclick="MesaMediaPlayer.toggleBlackout()">Blackout</button>
+          <button class="adm-icon-close" onclick="MesaMediaPlayer.toggleDrawer()" title="Fechar">&times;</button>
+        </div>
+      </div>
 
-        <!-- Player slots on the borders -->
-        <div class="player-slot slot-1 empty" onclick="MesaApp.handleSlotClick(1)">Sem personagem</div>
-        <div class="player-slot slot-2 empty" onclick="MesaApp.handleSlotClick(2)">Sem personagem</div>
-        <div class="player-slot slot-3 empty" onclick="MesaApp.handleSlotClick(3)">Sem personagem</div>
-        <div class="player-slot slot-4 empty" onclick="MesaApp.handleSlotClick(4)">Sem personagem</div>
-        <div class="player-slot slot-5 empty" onclick="MesaApp.handleSlotClick(5)">Sem personagem</div>
-        <div class="player-slot slot-6 empty" onclick="MesaApp.handleSlotClick(6)">Sem personagem</div>
-        <div class="player-slot slot-7 empty" onclick="MesaApp.handleSlotClick(7)">Sem personagem</div>
-        <div class="player-slot slot-8 empty" onclick="MesaApp.handleSlotClick(8)">Sem personagem</div>
+      <!-- Navigation Tabs -->
+      <div class="adm-tab-bar">
+        <button id="adm-tab-video" class="adm-tab-btn active" onclick="MesaMediaPlayer.switchTab('video')">Player de Vídeos (Loop A-B & Fade)</button>
+        <button id="adm-tab-slideshow" class="adm-tab-btn" onclick="MesaMediaPlayer.switchTab('slideshow')">Compartilhador de Imagens (Slideshow)</button>
+      </div>
+
+      <!-- TAB 1: PLAYER DE VÍDEOS -->
+      <div id="adm-view-video" class="adm-tab-content active">
+        <div class="adm-two-columns">
+          <!-- Coluna 1: Playlist de Vídeos -->
+          <div class="adm-col-playlist">
+            <div class="adm-col-header">
+              <span>PLAYLIST DE VÍDEOS</span>
+              <button class="adm-col-action-btn" onclick="document.getElementById('adm-video-input').click()">+ Adicionar</button>
+              <input type="file" id="adm-video-input" accept="video/*,audio/*" multiple style="display:none;" onchange="MesaMediaPlayer.handleVideoAdd(event)">
+            </div>
+            
+            <div id="adm-video-dropzone" class="adm-dropzone">
+              <span>Arraste vídeos aqui ou clique em + Adicionar</span>
+            </div>
+
+            <div id="adm-video-playlist-list" class="adm-items-list">
+              <div class="adm-empty-note">Nenhum vídeo na playlist.</div>
+            </div>
+
+            <div class="adm-playlist-bottom-nav">
+              <button class="adm-btn-nav" onclick="MesaMediaPlayer.prevVideo()">Anterior</button>
+              <button class="adm-btn-nav" onclick="MesaMediaPlayer.nextVideo()">Próximo (Fade)</button>
+            </div>
+          </div>
+
+          <!-- Coluna 2: Monitor do Mestre & Controles -->
+          <div class="adm-col-monitor">
+            <div class="adm-col-header">
+              <span>MONITOR DO MESTRE</span>
+              <div class="adm-header-right">
+                <span class="adm-lbl">Transição:</span>
+                <select id="adm-video-transition" class="adm-select" onchange="MesaMediaPlayer.setTransition(this.value)">
+                  <option value="0.4s">0.4s</option>
+                  <option value="0.8s" selected>0.8s</option>
+                  <option value="1.2s">1.2s</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Preview do Vídeo do Mestre -->
+            <div class="adm-monitor-viewport">
+              <video id="adm-preview-video" class="adm-monitor-element" playsinline></video>
+              <div id="adm-live-badge-video" class="adm-live-badge" style="display:none;">AO VIVO</div>
+            </div>
+
+            <!-- Controles de Playback -->
+            <div class="adm-controls-panel">
+              <div class="adm-slider-track">
+                <input type="range" id="adm-video-timeline" class="adm-timeline" min="0" max="100" value="0" step="0.1" oninput="MesaMediaPlayer.handleSeekInput()" onchange="MesaMediaPlayer.handleSeekChange()">
+              </div>
+              <div class="adm-playback-bar">
+                <div class="adm-play-btns">
+                  <button id="adm-btn-play" class="adm-ctrl-icon-btn" onclick="MesaMediaPlayer.togglePlay()" title="Play/Pause">&#9654;</button>
+                  <button class="adm-ctrl-icon-btn" onclick="MesaMediaPlayer.rewindToStart()" title="Voltar ao início">&#9198;</button>
+                  <span id="adm-video-time" class="adm-time-display">00:00 / 00:00</span>
+                </div>
+                <div class="adm-vol-box">
+                  <span class="adm-lbl">VOL</span>
+                  <input type="range" id="adm-video-volume" class="adm-vol-slider" min="0" max="1" step="0.05" value="1" oninput="MesaMediaPlayer.handleVolumeChange(this.value)">
+                </div>
+              </div>
+            </div>
+
+            <!-- Estação de Loop A-B -->
+            <div class="adm-loop-station">
+              <div class="adm-loop-header">
+                <span>ESTAÇÃO DE LOOP A-B</span>
+                <label class="adm-checkbox-lbl">
+                  <input type="checkbox" id="adm-loop-active" onchange="MesaMediaPlayer.toggleLoopCheckbox(this.checked)">
+                  Ativar Loop
+                </label>
+              </div>
+              <div class="adm-loop-body">
+                <div class="adm-loop-point-block">
+                  <span class="adm-point-name">PONTO A</span>
+                  <span id="adm-point-a-val" class="adm-point-time">00:00.0</span>
+                  <button class="adm-btn-point" onclick="MesaMediaPlayer.markPointA()">Marcar</button>
+                </div>
+                <div class="adm-loop-point-block">
+                  <span class="adm-point-name">PONTO B</span>
+                  <span id="adm-point-b-val" class="adm-point-time">00:00.0</span>
+                  <button class="adm-btn-point" onclick="MesaMediaPlayer.markPointB()">Marcar</button>
+                </div>
+                <div class="adm-loop-actions">
+                  <button class="adm-btn-point" onclick="MesaMediaPlayer.jumpToPointA()">Ir para A</button>
+                  <button class="adm-btn-point danger" onclick="MesaMediaPlayer.clearLoopPoints()">Limpar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: COMPARTILHADOR DE IMAGENS (SLIDESHOW) -->
+      <div id="adm-view-slideshow" class="adm-tab-content">
+        <div class="adm-two-columns">
+          <!-- Coluna 1: Galeria de Slides -->
+          <div class="adm-col-playlist">
+            <div class="adm-col-header">
+              <span>GALERIA DE SLIDES</span>
+              <button class="adm-col-action-btn" onclick="document.getElementById('adm-image-input').click()">+ Adicionar</button>
+              <input type="file" id="adm-image-input" accept="image/*" multiple style="display:none;" onchange="MesaMediaPlayer.handleImageAdd(event)">
+            </div>
+
+            <div id="adm-image-dropzone" class="adm-dropzone">
+              <span>Arraste imagens aqui ou clique em + Adicionar</span>
+            </div>
+
+            <div id="adm-image-playlist-list" class="adm-items-list">
+              <div class="adm-empty-note">Nenhuma imagem na galeria.</div>
+            </div>
+
+            <div class="adm-playlist-bottom-nav">
+              <button class="adm-btn-nav" onclick="MesaMediaPlayer.prevImage()">Anterior</button>
+              <span id="adm-slide-counter" class="adm-counter-text">0/0</span>
+              <button class="adm-btn-nav" onclick="MesaMediaPlayer.nextImage()">Próxima (Fade)</button>
+            </div>
+          </div>
+
+          <!-- Coluna 2: Transmissão de Imagem -->
+          <div class="adm-col-monitor">
+            <div class="adm-col-header">
+              <span>TRANSMISSÃO DE IMAGEM</span>
+              <div class="adm-header-right">
+                <span class="adm-lbl">Transição:</span>
+                <select id="adm-image-transition" class="adm-select" onchange="MesaMediaPlayer.setTransition(this.value)">
+                  <option value="0.3s">0.3s</option>
+                  <option value="0.6s" selected>0.6s</option>
+                  <option value="1.0s">1.0s</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Preview da Imagem -->
+            <div class="adm-monitor-viewport">
+              <img id="adm-preview-image" class="adm-monitor-element" style="display:none;" alt="Preview de Imagem">
+              <div id="adm-preview-image-empty" class="adm-empty-monitor-text">Nenhuma imagem selecionada</div>
+              <div id="adm-live-badge-image" class="adm-live-badge" style="display:none;">AO VIVO</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Modal de Ficha -->
-    <div id="ficha-modal" class="mesa-modal-overlay">
-      <div class="mesa-modal">
-        <button class="mesa-modal-close" onclick="MesaApp.closeModal('ficha-modal')">&times;</button>
-        <div id="ficha-content"></div>
+    <!-- PALCO DE TRANSMISSÃO EM TELA CHEIA (FUNDO PRETO TRANSPARENTE COM BORDA LARANJA NO CENTRO) -->
+    <div id="master-media-theater-overlay" class="master-media-theater-overlay">
+      <div class="theater-media-frame">
+        <video id="theater-video-player" class="theater-media-element" playsinline></video>
+        <img id="theater-image-player" class="theater-media-element" style="display:none;" alt="Mídia transmitida pelo Mestre">
+        <audio id="theater-audio-player" style="display:none;"></audio>
+      </div>
+    </div>
+
+    <!-- PAINEL DE CHAT EM TEMPO REAL DA MESA -->
+    <div id="mesa-chat-panel" class="mesa-chat-panel">
+      <div class="chat-header">
+        <div class="chat-header-info">
+          <span class="chat-title-ribbon">CHAT DA MESA</span>
+          <span id="chat-sender-identity" class="chat-sender-badge">Identificando...</span>
+        </div>
+        <button class="chat-minimize-btn" onclick="MesaChat.toggleChat()" title="Fechar Chat">&#x2715;</button>
+      </div>
+
+      <div id="chat-messages-container" class="chat-messages-container">
+        <!-- Mensagens renderizadas dinamicamente aqui -->
+        <div class="chat-system-notice">Conectado ao canal em tempo real da mesa.</div>
+      </div>
+
+      <form id="chat-form" class="chat-input-row" onsubmit="MesaChat.handleSubmit(event)">
+        <input 
+          type="text" 
+          id="chat-message-input" 
+          class="chat-input ink-input" 
+          placeholder="Digite sua mensagem..." 
+          autocomplete="off" 
+          maxlength="400"
+        />
+        <button type="submit" class="chat-send-btn ink-tag primary">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </form>
+    </div>
+
+    <!-- Tela da Ficha Completa -->
+    <div id="ficha-modal" class="mesa-modal-overlay ficha-overlay">
+      <!-- Brilho Diagonal e Retícula Comic de Fundo -->
+      <div class="ficha-diagonal-glow"></div>
+      <div class="ficha-diagonal-halftone"></div>
+
+      <!-- Canvas de Bolinhas Comic -->
+      <canvas id="ficha-particles-canvas" class="ficha-particles-canvas"></canvas>
+
+      <div class="ficha-screen-wrapper">
+        <button class="ficha-screen-close" onclick="MesaApp.closeModal('ficha-modal')">&#x2715; FECHAR</button>
+        <div id="ficha-content" class="ficha-content-layout"></div>
       </div>
     </div>
 
     <!-- Modal de Token -->
     <div id="token-modal" class="mesa-modal-overlay">
-      <div class="mesa-modal" style="max-width: 400px; text-align: center;">
+      <div class="mesa-modal ink-modal" style="max-width: 420px; text-align: center;">
         <button class="mesa-modal-close" onclick="MesaApp.closeModal('token-modal')">&times;</button>
-        <h2 style="color:var(--mesa-orange); margin-top:0;">Acesso à Mesa</h2>
-        <p style="color:#aaa; margin-bottom: 20px;">Insira seu token de personagem para liberar acesso à sua ficha na mesa.</p>
-        <input type="text" id="token-input" class="mesa-input" placeholder="Seu Token...">
-        <button class="mesa-btn" style="width:100%" onclick="MesaApp.submitToken()">Conectar</button>
+        <div class="ink-ribbon-title">ACESSO À MESA</div>
+        <p style="color:#bbb; margin: 15px 0 20px; font-size: 0.9rem;">Insira seu <strong>token de 4 caracteres</strong> para conectar e editar sua ficha.</p>
+        <input type="text" id="token-input" class="mesa-input ink-input" placeholder="Ex: B8T3..." maxlength="4" style="text-transform: uppercase; text-align: center; font-size: 1.25rem; letter-spacing: 0.25em;">
+        <button class="mesa-btn ink-tag primary" style="width:100%; font-size:1rem; padding:10px;" onclick="MesaApp.submitToken()">CONECTAR FICHA</button>
+      </div>
+    </div>
+
+    <!-- Modal de Rolagem de Dados -->
+    <div id="dice-modal" class="mesa-modal-overlay">
+      <div class="mesa-modal ink-modal dice-config-modal">
+        <button class="mesa-modal-close" onclick="MesaApp.closeModal('dice-modal')">&times;</button>
+        <div class="ink-ribbon-title">ROLAGEM DE DADOS</div>
+        
+        <div class="dice-selector-section">
+          <div class="dice-section-label">ADICIONAR DADO À ROLAGEM:</div>
+          <div class="dice-chips-grid">
+            <button class="dice-chip-btn" onclick="MesaDice.addDie(4)">+ d4</button>
+            <button class="dice-chip-btn" onclick="MesaDice.addDie(6)">+ d6</button>
+            <button class="dice-chip-btn" onclick="MesaDice.addDie(8)">+ d8</button>
+            <button class="dice-chip-btn" onclick="MesaDice.addDie(10)">+ d10</button>
+            <button class="dice-chip-btn" onclick="MesaDice.addDie(12)">+ d12</button>
+            <button class="dice-chip-btn" onclick="MesaDice.addDie(16)">+ d16</button>
+            <button class="dice-chip-btn" onclick="MesaDice.addDie(20)">+ d20</button>
+            <button class="dice-chip-btn" onclick="MesaDice.addDie(100)">+ d100</button>
+          </div>
+        </div>
+
+        <!-- Dados Selecionados -->
+        <div class="dice-pool-container">
+          <div class="dice-section-label">DADOS SELECIONADOS:</div>
+          <div id="dice-selected-list" class="dice-selected-list">
+            <!-- Renderizado dinamicamente -->
+          </div>
+        </div>
+
+        <!-- Modificador Numérico Cru -->
+        <div class="dice-modifier-section">
+          <div class="dice-section-label">MODIFICADOR (NÚMERO CRU):</div>
+          <div class="dice-modifier-control">
+            <button class="mod-btn" onclick="MesaDice.adjustModifier(-1)">-1</button>
+            <input type="number" id="dice-modifier-input" class="mod-input" value="0" onchange="MesaDice.setModifier(this.value)">
+            <button class="mod-btn" onclick="MesaDice.adjustModifier(1)">+1</button>
+          </div>
+        </div>
+
+        <div class="dice-modal-actions">
+          <button class="mesa-btn ink-tag" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.3);" onclick="MesaDice.clearPool()">Limpar</button>
+          <button id="dice-roll-execute-btn" class="mesa-btn ink-tag primary roll-action-btn" onclick="MesaDice.executeRoll()">ROLAR DADOS</button>
+        </div>
       </div>
     </div>
 
