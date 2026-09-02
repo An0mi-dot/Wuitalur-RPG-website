@@ -1018,22 +1018,30 @@ const MesaApp = {
       this.closeModal('token-modal');
     }
   },
-  
+
   toggleView() {
+    // 1. Se o jogador tem um token ativo, abre diretamente a ficha dele
     if (this.state.myToken && !this.state.isMaster) {
-      const myChar = this.state.players.find(p => p && p.token && p.token.toUpperCase() === this.state.myToken);
+      const myChar = this.state.players.find(p => p && p.token && p.token.toUpperCase() === this.state.myToken.toUpperCase());
       if (myChar) {
         this.openFicha(myChar);
         return;
       }
     }
 
-    const firstChar = this.state.players.find(p => p !== null) || this.state.players[2];
-    if (firstChar) {
-      this.openFicha(firstChar);
-    } else {
-      this.openTokenModal();
+    // 2. Se for o Mestre com acesso total
+    if (this.state.isMaster) {
+      const targetChar = this.state.activeViewingPlayer || this.state.players.find(p => p !== null);
+      if (targetChar) {
+        this.openFicha(targetChar);
+      } else {
+        alert("[ACESSO TOTAL]: Clique no card de qualquer personagem na mesa para abrir e editar a ficha.");
+      }
+      return;
     }
+
+    // 3. Se ainda não possui token conectado, abre o modal de token
+    this.openTokenModal();
   }
 };
 
