@@ -192,12 +192,15 @@
           <div class="adm-col-playlist">
             <div class="adm-col-header">
               <span>PLAYLIST DE VÍDEOS</span>
-              <button class="adm-col-action-btn" onclick="document.getElementById('adm-video-input').click()">+ Adicionar</button>
+              <div style="display:flex; gap:4px;">
+                <button class="adm-col-action-btn" onclick="MesaMediaPlayer.promptAddVideoUrl()" title="Adicionar por Link ou URL da internet">+ Link/URL</button>
+                <button class="adm-col-action-btn" onclick="document.getElementById('adm-video-input').click()" title="Adicionar arquivo do computador">+ Arquivo</button>
+              </div>
               <input type="file" id="adm-video-input" accept="video/*,audio/*" multiple style="display:none;" onchange="MesaMediaPlayer.handleVideoAdd(event)">
             </div>
             
             <div id="adm-video-dropzone" class="adm-dropzone">
-              <span>Arraste vídeos aqui ou clique em + Adicionar</span>
+              <span>Arraste vídeos aqui ou clique nos botões acima</span>
             </div>
 
             <div id="adm-video-playlist-list" class="adm-items-list">
@@ -285,7 +288,10 @@
           <div class="adm-col-playlist">
             <div class="adm-col-header">
               <span>GALERIA DE SLIDES</span>
-              <button class="adm-col-action-btn" onclick="document.getElementById('adm-image-input').click()">+ Adicionar</button>
+              <div style="display:flex; gap:4px;">
+                <button class="adm-col-action-btn" onclick="MesaMediaPlayer.promptAddImageUrl()" title="Adicionar por Link ou URL da internet">+ Link/URL</button>
+                <button class="adm-col-action-btn" onclick="document.getElementById('adm-image-input').click()" title="Adicionar arquivo do computador">+ Arquivo</button>
+              </div>
               <input type="file" id="adm-image-input" accept="image/*" multiple style="display:none;" onchange="MesaMediaPlayer.handleImageAdd(event)">
             </div>
 

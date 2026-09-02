@@ -1929,15 +1929,42 @@ const MesaMediaPlayer = {
     if (files.length > 0) this.addVideos(files);
   },
 
-  addVideos(files) {
-    files.forEach(file => {
-      const url = URL.createObjectURL(file);
-      this.videoPlaylist.push({ name: file.name, url: url, file: file });
-    });
+  promptAddVideoUrl() {
+    const url = prompt("Insira o Link / URL direto do vídeo ou áudio (ex: https://.../video.mp4, Catbox, Discord, Streamable, Tenor):");
+    if (!url || !url.trim()) return;
+    const cleanUrl = url.trim();
+    const name = cleanUrl.split('/').pop().split('?')[0] || 'Vídeo Online';
+    this.videoPlaylist.push({ name: name, url: cleanUrl });
     this.renderVideoPlaylist();
     if (this.currentVideoIndex === -1 && this.videoPlaylist.length > 0) {
-      this.selectVideo(0);
+      this.selectVideo(this.videoPlaylist.length - 1);
     }
+  },
+
+  addVideos(files) {
+    Array.from(files).forEach(file => {
+      // Se for menor que 10MB, converte para DataURL (Base64) para transmitir a todos os jogadores
+      if (file.size <= 10 * 1024 * 1024) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const dataUrl = e.target.result;
+          this.videoPlaylist.push({ name: file.name, url: dataUrl, file: file });
+          this.renderVideoPlaylist();
+          if (this.currentVideoIndex === -1 && this.videoPlaylist.length > 0) {
+            this.selectVideo(this.videoPlaylist.length - 1);
+          }
+        };
+        reader.readAsDataURL(file);
+      } else {
+        const blobUrl = URL.createObjectURL(file);
+        this.videoPlaylist.push({ name: file.name, url: blobUrl, file: file });
+        this.renderVideoPlaylist();
+        if (this.currentVideoIndex === -1 && this.videoPlaylist.length > 0) {
+          this.selectVideo(this.videoPlaylist.length - 1);
+        }
+        alert(`[AVISO]: O arquivo "${file.name}" tem ${(file.size / (1024 * 1024)).toFixed(1)}MB. Vídeos locais acima de 10MB tocam apenas na sua tela. Para transmitir a todos os jogadores na internet, use o botão "+ Link/URL" com o link direto do vídeo.`);
+      }
+    });
   },
 
   renderVideoPlaylist() {
@@ -2098,15 +2125,31 @@ const MesaMediaPlayer = {
     if (files.length > 0) this.addImages(files);
   },
 
-  addImages(files) {
-    files.forEach(file => {
-      const url = URL.createObjectURL(file);
-      this.imagePlaylist.push({ name: file.name, url: url, file: file });
-    });
+  promptAddImageUrl() {
+    const url = prompt("Insira o Link / URL direto da imagem (ex: https://.../imagem.png/jpg, Imgur, Discord, Tenor):");
+    if (!url || !url.trim()) return;
+    const cleanUrl = url.trim();
+    const name = cleanUrl.split('/').pop().split('?')[0] || 'Imagem Online';
+    this.imagePlaylist.push({ name: name, url: cleanUrl });
     this.renderImagePlaylist();
     if (this.currentImageIndex === -1 && this.imagePlaylist.length > 0) {
-      this.selectImage(0);
+      this.selectImage(this.imagePlaylist.length - 1);
     }
+  },
+
+  addImages(files) {
+    Array.from(files).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const dataUrl = e.target.result;
+        this.imagePlaylist.push({ name: file.name, url: dataUrl, file: file });
+        this.renderImagePlaylist();
+        if (this.currentImageIndex === -1 && this.imagePlaylist.length > 0) {
+          this.selectImage(this.imagePlaylist.length - 1);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
   },
 
   renderImagePlaylist() {
@@ -2275,13 +2318,26 @@ const MesaMediaPlayer = {
       if (theaterImage) theaterImage.style.display = 'none';
       if (theaterVideo) {
         theaterVideo.style.display = 'block';
-        if (theaterVideo.src !== data.url) theaterVideo.src = data.url;
+        if (theaterVideo.src !== data.url) {
+          theaterVideo.src = data.url;
+          theaterVideo.load();
+        }
         if (Math.abs(theaterVideo.currentTime - data.currentTime) > 1.5) {
           theaterVideo.currentTime = data.currentTime;
         }
         theaterVideo.volume = data.volume !== undefined ? data.volume : 1;
-        if (data.isPlaying) theaterVideo.play().catch(() => {});
-        else theaterVideo.pause();
+        if (data.isPlaying) {
+          const playPromise = theaterVideo.play();
+          if (playPromise !== undefined) {
+            playPromise.catch((err) => {
+              console.warn("Autoplay bloqueado pelo navegador, tentando com mudo:", err);
+              theaterVideo.muted = true;
+              theaterVideo.play().catch(e => console.warn("Falha no playback:", e));
+            });
+          }
+        } else {
+          theaterVideo.pause();
+        }
       }
     } else if (data.mediaType === 'image' && data.url) {
       if (theaterVideo) { theaterVideo.style.display = 'none'; theaterVideo.pause(); }
