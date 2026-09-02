@@ -8,9 +8,9 @@
   <meta http-equiv="Expires" content="0">
   <title>Mesa Virtual - Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/variables.css?v=2.7.6">
-  <link rel="stylesheet" href="css/components.css?v=2.7.6">
-  <link rel="stylesheet" href="css/mesa.css?v=2.7.6">
+  <link rel="stylesheet" href="css/variables.css?v=2.8.0">
+  <link rel="stylesheet" href="css/components.css?v=2.8.0">
+  <link rel="stylesheet" href="css/mesa.css?v=2.8.0">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -140,6 +140,16 @@
         <div class="mesa-black-board">
           <div class="board-ink-inner-border"></div>
           <div class="board-crosshair-c"></div>
+          
+          <!-- Projeção Central de Imagens do Mestre (NPCs, Itens, Cenários) -->
+          <div id="board-center-display" class="board-center-display">
+            <div id="board-center-content" class="board-center-content">
+              <img id="board-center-img" class="board-center-img" src="" alt="Projeção Central" style="display:none;" />
+              <div id="board-center-banner" class="board-center-banner" style="display:none;"></div>
+              <button id="board-center-close-btn" class="board-center-close-btn" style="display:none;" onclick="MesaLibrary.clearCenterProjection()" title="Remover Projeção">&times;</button>
+            </div>
+          </div>
+
           <!-- Palco Central de Rolagem de Dados -->
           <div id="dice-stage" class="dice-stage"></div>
         </div>
@@ -188,7 +198,7 @@
       <div class="adm-topbar">
         <div class="adm-topbar-left">
           <span class="adm-app-title">ADMINISTRADOR DE RPG</span>
-          <span class="adm-sub-badge">Player de Mídia</span>
+          <span class="adm-sub-badge">Central do Mestre</span>
           <button class="adm-btn-subtle" onclick="MesaMediaPlayer.toggleDrawer()">Fechar</button>
         </div>
         <div class="adm-topbar-right">
@@ -201,12 +211,62 @@
 
       <!-- Navigation Tabs -->
       <div class="adm-tab-bar">
-        <button id="adm-tab-video" class="adm-tab-btn active" onclick="MesaMediaPlayer.switchTab('video')">Player de Vídeos (Loop A-B & Fade)</button>
-        <button id="adm-tab-slideshow" class="adm-tab-btn" onclick="MesaMediaPlayer.switchTab('slideshow')">Compartilhador de Imagens (Slideshow)</button>
+        <button id="adm-tab-library" class="adm-tab-btn active" onclick="MesaMediaPlayer.switchTab('library')">📁 Galeria & Pastas (Projeção Central)</button>
+        <button id="adm-tab-video" class="adm-tab-btn" onclick="MesaMediaPlayer.switchTab('video')">🎬 Player de Vídeos (Loop A-B)</button>
+        <button id="adm-tab-slideshow" class="adm-tab-btn" onclick="MesaMediaPlayer.switchTab('slideshow')">🖼️ Slideshow (Tela Cheia)</button>
       </div>
 
-      <!-- TAB 1: PLAYER DE VÍDEOS -->
-      <div id="adm-view-video" class="adm-tab-content active">
+      <!-- TAB 1: BIBLIOTECA DE PASTAS & PROJEÇÃO CENTRAL -->
+      <div id="adm-view-library" class="adm-tab-content active">
+        <!-- Barra de Status da Projeção Central -->
+        <div class="adm-projection-status-bar">
+          <div class="adm-proj-info">
+            <span class="adm-proj-label">PROJEÇÃO CENTRAL ATIVA:</span>
+            <span id="adm-active-proj-name" class="adm-proj-name">Nenhuma (Quadro livre)</span>
+          </div>
+          <button id="adm-btn-clear-proj" class="adm-col-action-btn danger" onclick="MesaLibrary.clearCenterProjection()" style="display:none;">✕ Desativar Projeção Central</button>
+        </div>
+
+        <div class="adm-two-columns library-columns">
+          <!-- Coluna 1: Pastas & Categorias -->
+          <div class="adm-col-playlist folder-col">
+            <div class="adm-col-header">
+              <span>PASTAS & CATEGORIAS</span>
+              <button class="adm-col-action-btn" onclick="MesaLibrary.promptNewFolder()">+ Nova Pasta</button>
+            </div>
+
+            <div id="adm-folder-list" class="adm-items-list folder-list">
+              <!-- Renderizado dinamicamente via JS -->
+            </div>
+          </div>
+
+          <!-- Coluna 2: Galeria de Imagens da Pasta Selecionada -->
+          <div class="adm-col-monitor gallery-col">
+            <div class="adm-col-header">
+              <span id="adm-selected-folder-title">PASTA: PERSONAGENS / NPCS</span>
+              <div class="adm-header-right">
+                <button class="adm-col-action-btn" onclick="document.getElementById('adm-library-file-input').click()">+ Arquivo Local</button>
+                <input type="file" id="adm-library-file-input" accept="image/*" multiple style="display:none;" onchange="MesaLibrary.handleLocalUpload(event)">
+              </div>
+            </div>
+
+            <!-- Barra de inserção por Link -->
+            <div class="adm-url-bar" style="display:flex; gap:6px; margin: 4px 0 8px;">
+              <input type="text" id="adm-library-url-input" placeholder="Cole o link da imagem (.png, .jpg, web, Discord)..." style="flex:1; height:24px; font-size:0.7rem; background:#0d0d10; border:1px solid #3f3f46; color:#fff; border-radius:3px; padding:0 6px;">
+              <input type="text" id="adm-library-name-input" placeholder="Nome/Título (opcional)..." style="width:130px; height:24px; font-size:0.7rem; background:#0d0d10; border:1px solid #3f3f46; color:#fff; border-radius:3px; padding:0 6px;">
+              <button class="adm-col-action-btn" onclick="MesaLibrary.addFromUrlInput()">+ Adicionar</button>
+            </div>
+
+            <!-- Grade de Imagens da Pasta -->
+            <div id="adm-folder-items-grid" class="adm-gallery-grid">
+              <!-- Cards de Imagens renderizados via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: PLAYER DE VÍDEOS -->
+      <div id="adm-view-video" class="adm-tab-content">
         <div class="adm-two-columns">
           <!-- Coluna 1: Playlist de Vídeos -->
           <div class="adm-col-playlist">
@@ -473,6 +533,6 @@
       </div>
     </div>
 
-<script src="js/mesa.js?v=2.7.6"></script>
+<script src="js/mesa.js?v=2.8.0"></script>
 </body>
 </html>

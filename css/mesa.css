@@ -327,6 +327,94 @@ html, body {
   left: 0; right: 0; top: 50%; height: 1px;
 }
 
+/* ---- PROJEÇÃO CENTRAL DE IMAGENS NO QUADRADO PRETO ---- */
+.board-center-display {
+  position: absolute;
+  inset: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.board-center-display.active {
+  pointer-events: all;
+}
+
+.board-center-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.board-center-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 30px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 15px rgba(255, 85, 0, 0.35));
+  animation: boardCenterPopIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  border-radius: 4px;
+}
+
+@keyframes boardCenterPopIn {
+  0% { opacity: 0; transform: scale(0.92); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.board-center-banner {
+  position: absolute;
+  bottom: 8px;
+  background: rgba(12, 3, 0, 0.92);
+  border: 1.5px solid var(--mesa-orange);
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 2px;
+  clip-path: polygon(2% 0%, 98% 3%, 100% 97%, 0% 100%);
+  filter: url(#nanquim-rough);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.9);
+  max-width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  animation: boardCenterPopIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+.board-center-close-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: var(--mesa-ink-red);
+  border: 1px solid #ff7733;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 900;
+  width: 26px;
+  height: 26px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+  transition: all 0.15s;
+  z-index: 10;
+}
+
+.board-center-close-btn:hover {
+  background: #ff2200;
+  transform: scale(1.1);
+}
+
 /* ---- GLASS & NANQUIM PLAYER CARDS ---- */
 .player-slot {
   position: absolute;
@@ -1316,7 +1404,203 @@ html, body {
 
 
 /* ============================================================
-   RESPONSIVIDADE EXCLUSIVA PARA CELULAR / TELAS PEQUENAS
+   ABA DA BIBLIOTECA DE PASTAS DO MESTRE (PROJEÇÃO CENTRAL)
+   ============================================================ */
+
+.adm-projection-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0d0d10;
+  border: 1px solid #27272a;
+  padding: 6px 12px;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+
+.adm-proj-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.adm-proj-label {
+  font-size: 0.68rem;
+  font-weight: 900;
+  color: #a1a1aa;
+  letter-spacing: 0.06em;
+}
+
+.adm-proj-name {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--mesa-orange);
+  font-family: 'Courier New', monospace;
+}
+
+.library-columns {
+  grid-template-columns: 240px 1fr !important;
+}
+
+.folder-list {
+  max-height: 240px !important;
+  min-height: 180px !important;
+}
+
+.adm-folder-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #18181b;
+  border: 1px solid #27272a;
+  padding: 6px 8px;
+  border-radius: 3px;
+  font-size: 0.74rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+
+.adm-folder-item:hover {
+  background: #27272a;
+  border-color: #3f3f46;
+}
+
+.adm-folder-item.active {
+  background: rgba(255, 85, 0, 0.18);
+  border-color: var(--mesa-orange);
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.adm-folder-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.adm-folder-count {
+  font-size: 0.65rem;
+  background: #27272a;
+  color: #a1a1aa;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.adm-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.adm-gallery-card {
+  background: #0d0d10;
+  border: 1px solid #27272a;
+  border-radius: 4px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.adm-gallery-card:hover {
+  border-color: rgba(255, 85, 0, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+}
+
+.adm-gallery-card.projected {
+  border-color: var(--mesa-orange);
+  background: rgba(255, 85, 0, 0.1);
+  box-shadow: 0 0 12px rgba(255, 85, 0, 0.35);
+}
+
+.adm-gallery-thumb-box {
+  width: 100%;
+  height: 90px;
+  background: #050507;
+  border-radius: 2px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adm-gallery-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.adm-gallery-card-title {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #e4e4e7;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.adm-gallery-actions {
+  display: flex;
+  gap: 4px;
+  justify-content: space-between;
+}
+
+.adm-card-btn {
+  flex: 1;
+  padding: 3px 2px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  background: #1c1c20;
+  border: 1px solid #3f3f46;
+  color: #e4e4e7;
+  border-radius: 2px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+
+.adm-card-btn:hover {
+  background: #27272a;
+  color: #fff;
+}
+
+.adm-card-btn.proj-btn {
+  background: rgba(255, 85, 0, 0.2);
+  border-color: rgba(255, 85, 0, 0.5);
+  color: #ffaa66;
+}
+
+.adm-card-btn.proj-btn:hover {
+  background: var(--mesa-orange);
+  color: #fff;
+}
+
+.adm-card-btn.danger {
+  flex: 0 0 20px;
+  color: #ef4444;
+}
+
+.adm-card-btn.danger:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+}
+
+
+/* ============================================================
+   RESPONSIVIDADE COMPLETA E POLIDA PARA CELULAR / TELAS PEQUENAS
    ============================================================ */
 
 @media (max-width: 768px) {
@@ -1328,98 +1612,188 @@ html, body {
     display: inline-flex !important;
   }
 
+  /* Header Superior Responsivo */
   .mesa-floating-nav {
-    top: 14px;
-    left: 14px;
-    right: 14px;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    gap: 6px;
+    flex-wrap: wrap;
   }
 
   .ink-tag {
-    padding: 6px 12px;
-    font-size: 0.75rem;
+    padding: 6px 10px;
+    font-size: 0.72rem;
+    gap: 4px;
   }
 
+  .mesa-actions {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  /* Container da Mesa no Mobile (Com Quadro Central Visível no Topo) */
   .mesa-board-container {
     position: relative;
-    top: 60px;
+    top: 62px;
     left: 0;
     transform: none;
     width: 100vw;
-    height: calc(100vh - 70px);
+    height: calc(100vh - 62px);
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 16px 12px 60px 12px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    padding: 10px 10px 90px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     z-index: 10;
   }
 
+  /* O Quadro Preto fica visível no topo da mesa no mobile */
   .mesa-black-board {
-    display: none;
+    display: block !important;
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: 190px !important;
+    min-height: 190px !important;
+    margin: 0 auto;
+    border-width: 3px !important;
+    transform: none !important;
   }
 
+  .board-center-banner {
+    font-size: 0.72rem;
+    padding: 3px 8px;
+    bottom: 6px;
+  }
+
+  /* Cards de Jogadores em Grade Responsiva de 2 Colunas */
   .player-slot {
     position: relative !important;
     top: auto !important;
     left: auto !important;
     transform: none !important;
     width: 100% !important;
-    height: 185px !important;
+    min-height: 165px !important;
+    height: auto !important;
+    padding: 8px 6px;
     margin: 0 auto;
   }
 
   .player-slot:hover {
-    transform: scale(1.02) !important;
+    transform: scale(1.01) !important;
     border-color: rgba(255, 120, 30, 0.7) !important;
   }
 
+  /* Grid wrapper implícito para os slots */
+  .player-slot.slot-1,
+  .player-slot.slot-2,
+  .player-slot.slot-3,
+  .player-slot.slot-4,
+  .player-slot.slot-5,
+  .player-slot.slot-6,
+  .player-slot.slot-7,
+  .player-slot.slot-8 {
+    width: 100% !important;
+  }
+
+  /* Card do Mestre em destaque no topo da lista */
+  .player-slot.master-slot {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    min-height: 80px !important;
+    height: auto !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    padding: 8px 12px !important;
+  }
+
+  .player-slot.master-slot .master-avatar {
+    width: 44px !important;
+    height: 44px !important;
+    margin-top: 0 !important;
+  }
+
+  .player-slot.master-slot .master-name-badge {
+    width: auto !important;
+    padding: 6px 16px !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Ficha Completa no Mobile (Scroll Suave e Fácil de Usar) */
   .ficha-screen-wrapper {
-    padding: 16px 14px 40px 14px;
+    padding: 14px 12px 60px 12px;
     overflow-y: auto !important;
-    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
     height: 100vh;
   }
 
   .ficha-screen-close {
-    top: 12px;
-    right: 12px;
+    top: 10px;
+    right: 10px;
     padding: 5px 14px;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
   }
 
   .ficha-content-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 18px !important;
     height: auto !important;
     max-height: none !important;
     overflow: visible !important;
-    padding-top: 24px;
-    padding-bottom: 50px;
+    padding-top: 36px;
+    padding-bottom: 40px;
   }
 
-  .cube-placeholder-box {
-    width: 100%;
-    max-width: 100%;
-    height: 160px;
-    flex-direction: row;
-    gap: 16px;
+  .ficha-portrait-col {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 220px !important;
+    max-height: 280px !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
-  .cube-svg {
-    width: 70px;
-    height: 70px;
+  .ficha-char-portrait-box {
+    height: 240px !important;
+    max-height: 240px !important;
+    align-items: center !important;
+  }
+
+  .ficha-char-portrait-img {
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    transform: none !important;
+    max-height: 240px !important;
+    object-fit: contain !important;
   }
 
   .ficha-char-title {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
+    line-height: 1.2;
   }
 
-  .ficha-vital-row {
+  .ficha-tags-row {
     flex-wrap: wrap;
-    gap: 14px;
-    width: 100%;
+    gap: 6px;
+  }
+
+  .vital-stat-block {
+    padding: 6px 10px;
+    gap: 8px;
+  }
+
+  .stat-edit-btn {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 1.1rem !important;
   }
 
   .ficha-stress-container {
@@ -1427,21 +1801,66 @@ html, body {
   }
 
   .ficha-dual-row {
-    grid-template-columns: 1fr;
-    gap: 16px;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
   }
 
   .ficha-skills-habs-row {
-    grid-template-columns: 1fr;
-    gap: 20px;
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
   }
 
-  /* Chat no Mobile: painel em tela cheia ou quase cheia */
+  /* Painel do Mestre no Mobile */
+  .master-media-drawer {
+    height: 85vh !important;
+  }
+
+  .adm-topbar {
+    flex-wrap: wrap;
+    gap: 8px;
+    height: auto !important;
+    padding: 8px 10px !important;
+  }
+
+  .adm-tab-bar {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .adm-two-columns,
+  .library-columns {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .folder-list,
+  .adm-gallery-grid {
+    max-height: 160px !important;
+  }
+
+  /* Chat no Mobile */
   .mesa-chat-panel {
-    width: calc(100vw - 20px) !important;
-    height: calc(100vh - 120px) !important;
-    right: 10px !important;
-    bottom: 10px !important;
+    width: calc(100vw - 16px) !important;
+    height: calc(100vh - 100px) !important;
+    right: 8px !important;
+    bottom: 8px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .mesa-floating-nav {
+    top: 6px;
+    left: 6px;
+    right: 6px;
+  }
+
+  .ink-tag {
+    padding: 5px 8px;
+    font-size: 0.68rem;
+  }
+
+  .mesa-board-container {
+    padding: 8px 6px 80px 6px;
   }
 }
 

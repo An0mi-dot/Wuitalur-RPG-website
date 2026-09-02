@@ -290,6 +290,7 @@ const MesaApp = {
     MesaReactions.init();
     MesaDice.init();
     MesaMediaPlayer.init();
+    MesaLibrary.init();
     this.updateTokenBtnState();
   },
 
@@ -1417,7 +1418,15 @@ const MesaChat = {
       }
     });
 
-    // 6. Postgres Changes para novas mensagens gravadas
+    // 6. WebSocket Broadcast de Projeção no Quadro Preto Central
+    this.channel.on('broadcast', { event: 'board_display_sync' }, (payload) => {
+      const data = payload.payload;
+      if (data && typeof MesaLibrary !== 'undefined') {
+        MesaLibrary.handleIncomingBoardDisplay(data);
+      }
+    });
+
+    // 7. Postgres Changes para novas mensagens gravadas
     this.channel.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mensagens_chat' }, (payload) => {
       const msg = payload.new;
       this.receiveMessage({
@@ -2051,7 +2060,7 @@ const MesaDice = {
 const MesaMediaPlayer = {
   isMasterUnlocked: false,
   isDrawerOpen: false,
-  activeTab: 'video', // 'video' | 'slideshow'
+  activeTab: 'library', // 'library' | 'video' | 'slideshow'
   
   // Estado de Transmissão & Blackout
   isTransmitting: false,
@@ -2860,6 +2869,422 @@ const MesaMediaPlayer = {
     const secs = Math.floor(seconds % 60);
     const tenths = Math.floor((seconds % 1) * 10);
     return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}.${tenths}`;
+  }
+};
+
+
+// ---- 8. GERENCIADOR DE BIBLIOTECA, PASTAS E PROJEÇÃO CENTRAL DO MESTRE ----
+const MesaLibrary = {
+  STORAGE_KEY: 'mesa_master_folders_v1',
+  PROJ_STORAGE_KEY: 'mesa_master_active_proj_v1',
+  
+  folders: [
+    {
+      id: 'npcs',
+      name: 'Personagens / NPCs',
+      icon: '👤',
+      items: [
+        {
+          id: 'item-thulita',
+          title: 'Thulita De La Benevidez',
+          url: 'assets/thulita.png',
+          thumb: 'assets/thulita_avatar.png',
+          created_at: new Date().toISOString()
+        }
+      ]
+    },
+    {
+      id: 'itens',
+      name: 'Itens & Artefatos',
+      icon: '🗡️',
+      items: []
+    },
+    {
+      id: 'cenarios',
+      name: 'Cenários & Locais',
+      icon: '🏰',
+      items: []
+    },
+    {
+      id: 'pistas',
+      name: 'Pistas & Documentos',
+      icon: '📜',
+      items: []
+    }
+  ],
+
+  currentFolderId: 'npcs',
+  activeProjection: null,
+
+  init() {
+    this.loadFromStorage();
+    this.renderFolders();
+    this.renderGallery();
+    this.updateProjectionBar();
+    this.restoreProjection();
+  },
+
+  loadFromStorage() {
+    try {
+      const raw = localStorage.getItem(this.STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          this.folders = parsed;
+        }
+      }
+    } catch (e) {
+      console.warn("Falha ao carregar biblioteca do storage:", e);
+    }
+  },
+
+  saveToStorage() {
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.folders));
+    } catch (e) {
+      console.warn("Falha ao salvar biblioteca no storage:", e);
+    }
+  },
+
+  restoreProjection() {
+    try {
+      const raw = localStorage.getItem(this.PROJ_STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && parsed.isProjecting && parsed.url) {
+          this.activeProjection = parsed;
+          this.updateCenterDOM(parsed);
+          this.updateProjectionBar();
+        }
+      }
+    } catch (e) {}
+  },
+
+  saveActiveProjection(proj) {
+    try {
+      if (proj && proj.isProjecting) {
+        localStorage.setItem(this.PROJ_STORAGE_KEY, JSON.stringify(proj));
+      } else {
+        localStorage.removeItem(this.PROJ_STORAGE_KEY);
+      }
+    } catch (e) {}
+  },
+
+  renderFolders() {
+    const list = document.getElementById('adm-folder-list');
+    if (!list) return;
+
+    list.innerHTML = this.folders.map(folder => `
+      <div class="adm-folder-item ${folder.id === this.currentFolderId ? 'active' : ''}" onclick="MesaLibrary.selectFolder('${folder.id}')">
+        <div class="adm-folder-name" title="${folder.name}">
+          <span>${folder.icon || '📁'}</span>
+          <span>${folder.name}</span>
+        </div>
+        <span class="adm-folder-count">${folder.items ? folder.items.length : 0}</span>
+      </div>
+    `).join('');
+  },
+
+  selectFolder(id) {
+    this.currentFolderId = id;
+    this.renderFolders();
+    this.renderGallery();
+  },
+
+  promptNewFolder() {
+    const name = prompt("Nome da nova pasta/categoria (ex: 'Monstros', 'Mapas', 'Grimório'):");
+    if (!name || !name.trim()) return;
+
+    const id = 'folder_' + Date.now();
+    this.folders.push({
+      id: id,
+      name: name.trim(),
+      icon: '📁',
+      items: []
+    });
+
+    this.currentFolderId = id;
+    this.saveToStorage();
+    this.renderFolders();
+    this.renderGallery();
+  },
+
+  renderGallery() {
+    const folder = this.folders.find(f => f.id === this.currentFolderId) || this.folders[0];
+    const titleEl = document.getElementById('adm-selected-folder-title');
+    const grid = document.getElementById('adm-folder-items-grid');
+
+    if (titleEl && folder) {
+      titleEl.textContent = `PASTA: ${folder.name.toUpperCase()}`;
+    }
+
+    if (!grid) return;
+
+    if (!folder || !folder.items || folder.items.length === 0) {
+      grid.innerHTML = `<div class="adm-empty-note" style="grid-column: 1 / -1; padding: 24px; text-align: center;">Nenhuma imagem nesta pasta. Adicione um arquivo do seu computador ou cole um link acima.</div>`;
+      return;
+    }
+
+    grid.innerHTML = folder.items.map(item => {
+      const isProjected = this.activeProjection && this.activeProjection.isProjecting && this.activeProjection.url === item.url;
+      return `
+        <div class="adm-gallery-card ${isProjected ? 'projected' : ''}">
+          <div class="adm-gallery-thumb-box">
+            <img src="${item.thumb || item.url}" alt="${item.title}" class="adm-gallery-thumb" />
+          </div>
+          <div class="adm-gallery-card-title" title="${item.title}">${item.title}</div>
+          <div class="adm-gallery-actions">
+            <button class="adm-card-btn proj-btn" onclick="MesaLibrary.projectToCenterById('${item.id}')" title="Projetar no Quadro Preto Central">
+              ${isProjected ? '★ No Centro' : '🎯 Centro'}
+            </button>
+            <button class="adm-card-btn" onclick="MesaLibrary.showInTheaterById('${item.id}')" title="Tela Cheia">📺</button>
+            <button class="adm-card-btn danger" onclick="MesaLibrary.deleteItem('${folder.id}', '${item.id}')" title="Excluir">&times;</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
+  async handleLocalUpload(e) {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const folder = this.folders.find(f => f.id === this.currentFolderId);
+    if (!folder) return;
+
+    for (const file of Array.from(files)) {
+      const dataUrl = await this.compressImage(file);
+      if (!dataUrl) continue;
+
+      const cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
+      folder.items.push({
+        id: 'img_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+        title: cleanName,
+        url: dataUrl,
+        thumb: dataUrl,
+        created_at: new Date().toISOString()
+      });
+    }
+
+    this.saveToStorage();
+    this.renderFolders();
+    this.renderGallery();
+    e.target.value = '';
+  },
+
+  compressImage(file) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const maxDim = 1280;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          resolve(canvas.toDataURL('image/jpeg', 0.82));
+        };
+        img.onerror = () => resolve(e.target.result);
+        img.src = e.target.result;
+      };
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(file);
+    });
+  },
+
+  addFromUrlInput() {
+    const urlInput = document.getElementById('adm-library-url-input');
+    const nameInput = document.getElementById('adm-library-name-input');
+    if (!urlInput || !urlInput.value.trim()) return;
+
+    const url = urlInput.value.trim();
+    let title = nameInput ? nameInput.value.trim() : '';
+
+    if (!title) {
+      try {
+        const u = new URL(url);
+        title = u.pathname.split('/').pop().replace(/\.[^/.]+$/, "") || 'Ilustração';
+      } catch (e) {
+        title = 'Ilustração';
+      }
+    }
+
+    const folder = this.folders.find(f => f.id === this.currentFolderId);
+    if (!folder) return;
+
+    folder.items.push({
+      id: 'img_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+      title: title,
+      url: url,
+      thumb: url,
+      created_at: new Date().toISOString()
+    });
+
+    this.saveToStorage();
+    this.renderFolders();
+    this.renderGallery();
+
+    urlInput.value = '';
+    if (nameInput) nameInput.value = '';
+  },
+
+  deleteItem(folderId, itemId) {
+    const folder = this.folders.find(f => f.id === folderId);
+    if (!folder) return;
+
+    const idx = folder.items.findIndex(i => i.id === itemId);
+    if (idx !== -1) {
+      const item = folder.items[idx];
+      folder.items.splice(idx, 1);
+      
+      if (this.activeProjection && this.activeProjection.url === item.url) {
+        this.clearCenterProjection();
+      }
+
+      this.saveToStorage();
+      this.renderFolders();
+      this.renderGallery();
+    }
+  },
+
+  projectToCenterById(itemId) {
+    const folder = this.folders.find(f => f.id === this.currentFolderId);
+    if (!folder) return;
+    const item = folder.items.find(i => i.id === itemId);
+    if (item) this.projectToCenter(item);
+  },
+
+  showInTheaterById(itemId) {
+    const folder = this.folders.find(f => f.id === this.currentFolderId);
+    if (!folder) return;
+    const item = folder.items.find(i => i.id === itemId);
+    if (item) this.showInTheater(item);
+  },
+
+  projectToCenter(item) {
+    const payload = {
+      isProjecting: true,
+      url: item.url,
+      title: item.title,
+      id: item.id
+    };
+
+    this.activeProjection = payload;
+    this.saveActiveProjection(payload);
+    this.updateCenterDOM(payload);
+    this.updateProjectionBar();
+    this.renderGallery();
+
+    if (MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'board_display_sync',
+        payload: payload
+      });
+    }
+  },
+
+  clearCenterProjection() {
+    const payload = { isProjecting: false };
+    this.activeProjection = null;
+    this.saveActiveProjection(null);
+    this.updateCenterDOM(payload);
+    this.updateProjectionBar();
+    this.renderGallery();
+
+    if (MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'board_display_sync',
+        payload: payload
+      });
+    }
+  },
+
+  updateCenterDOM(data) {
+    const display = document.getElementById('board-center-display');
+    const img = document.getElementById('board-center-img');
+    const banner = document.getElementById('board-center-banner');
+    const closeBtn = document.getElementById('board-center-close-btn');
+
+    if (!display || !img) return;
+
+    if (data && data.isProjecting && data.url) {
+      img.src = data.url;
+      img.style.display = 'block';
+
+      if (banner) {
+        banner.textContent = data.title || '';
+        banner.style.display = data.title ? 'block' : 'none';
+      }
+
+      if (closeBtn) {
+        closeBtn.style.display = MesaApp.state.isMaster ? 'flex' : 'none';
+      }
+
+      display.classList.add('active');
+    } else {
+      img.src = '';
+      img.style.display = 'none';
+      if (banner) { banner.textContent = ''; banner.style.display = 'none'; }
+      if (closeBtn) closeBtn.style.display = 'none';
+      display.classList.remove('active');
+    }
+  },
+
+  updateProjectionBar() {
+    const nameEl = document.getElementById('adm-active-proj-name');
+    const clearBtn = document.getElementById('adm-btn-clear-proj');
+
+    if (this.activeProjection && this.activeProjection.isProjecting) {
+      if (nameEl) nameEl.textContent = `★ ${this.activeProjection.title || 'Imagem Ativa'}`;
+      if (clearBtn) clearBtn.style.display = 'inline-flex';
+    } else {
+      if (nameEl) nameEl.textContent = 'Nenhuma (Quadro livre)';
+      if (clearBtn) clearBtn.style.display = 'none';
+    }
+  },
+
+  showInTheater(item) {
+    if (typeof MesaMediaPlayer !== 'undefined') {
+      const existingIdx = MesaMediaPlayer.imagePlaylist.findIndex(i => i.url === item.url);
+      if (existingIdx !== -1) {
+        MesaMediaPlayer.selectImage(existingIdx);
+      } else {
+        MesaMediaPlayer.imagePlaylist.push({ name: item.title, url: item.url });
+        MesaMediaPlayer.selectImage(MesaMediaPlayer.imagePlaylist.length - 1);
+      }
+
+      if (!MesaMediaPlayer.isTransmitting) {
+        MesaMediaPlayer.toggleTransmit();
+      }
+      MesaMediaPlayer.switchTab('slideshow');
+    }
+  },
+
+  handleIncomingBoardDisplay(data) {
+    this.activeProjection = data && data.isProjecting ? data : null;
+    this.updateCenterDOM(data);
+    this.updateProjectionBar();
+    if (MesaApp.state.isMaster) {
+      this.renderGallery();
+    }
   }
 };
 
