@@ -8,9 +8,9 @@
   <meta http-equiv="Expires" content="0">
   <title>Mesa Virtual - Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/variables.css?v=2.7.3">
-  <link rel="stylesheet" href="css/components.css?v=2.7.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.7.3">
+  <link rel="stylesheet" href="css/variables.css?v=2.7.4">
+  <link rel="stylesheet" href="css/components.css?v=2.7.4">
+  <link rel="stylesheet" href="css/mesa.css?v=2.7.4">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -25,6 +25,15 @@
         <filter id="nanquim-heavy" x="-10%" y="-10%" width="120%" height="120%">
           <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="4" result="noise" />
           <feDisplacementMap in="SourceGraphic" in2="noise" scale="4.5" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <!-- Filtro Procedural Animado de Nanquim e Textura Digital em Loop Lento -->
+        <filter id="procedural-char-distort" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.035 0.05" numOctaves="3" result="turb">
+            <animate attributeName="baseFrequency" values="0.025 0.045; 0.045 0.03; 0.02 0.06; 0.04 0.035; 0.025 0.045" dur="10s" repeatCount="indefinite" />
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="turb" scale="3" xChannelSelector="R" yChannelSelector="G" result="disp">
+            <animate attributeName="scale" values="1.8; 4.2; 1.5; 3.6; 1.8" dur="10s" repeatCount="indefinite" />
+          </feDisplacementMap>
         </filter>
       </defs>
     </svg>
@@ -464,6 +473,6 @@
       </div>
     </div>
 
-<script src="js/mesa.js?v=2.7.3"></script>
+<script src="js/mesa.js?v=2.7.4"></script>
 </body>
 </html>
