@@ -1238,6 +1238,12 @@ const MesaReactions = {
   },
 
   togglePicker() {
+    if (!MesaApp.state.myToken && !MesaApp.state.isMaster) {
+      alert("Observadores não podem usar reações de emojis. Conecte seu token de personagem para reagir na mesa!");
+      MesaApp.openTokenModal();
+      return;
+    }
+
     this.isPickerOpen = !this.isPickerOpen;
     const picker = document.getElementById('mesa-reaction-picker');
     if (picker) {
@@ -1257,6 +1263,12 @@ const MesaReactions = {
 
   sendReaction(faceKey) {
     this.closePicker();
+
+    if (!MesaApp.state.myToken && !MesaApp.state.isMaster) {
+      alert("Observadores não podem usar reações de emojis. Conecte seu token de personagem!");
+      MesaApp.openTokenModal();
+      return;
+    }
 
     // Determina o slot do jogador atual
     let targetSlot = null;
@@ -1379,6 +1391,11 @@ const MesaDice = {
   },
 
   openModal() {
+    if (!MesaApp.state.myToken && !MesaApp.state.isMaster) {
+      alert("Observadores não podem rolar dados. Conecte seu token de personagem para rolar dados na mesa!");
+      MesaApp.openTokenModal();
+      return;
+    }
     MesaApp.openModal('dice-modal');
     this.renderSelectedList();
   },
@@ -1462,6 +1479,11 @@ const MesaDice = {
   },
 
   executeRoll() {
+    if (!MesaApp.state.myToken && !MesaApp.state.isMaster) {
+      alert("Observadores não podem rolar dados.");
+      return;
+    }
+
     if (this.selectedDice.length === 0) return;
 
     MesaApp.closeModal('dice-modal');
