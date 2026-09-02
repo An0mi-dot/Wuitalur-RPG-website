@@ -240,6 +240,110 @@ const FichaParticlesEngine = {
 };
 
 
+// ---- 2.1 MOTOR DE PARTÍCULAS DE GLITCH LARANJA NA ILUSTRAÇÃO DA FICHA ----
+const PortraitGlitchEngine = {
+  canvas: null,
+  ctx: null,
+  width: 0,
+  height: 0,
+  particles: [],
+  animId: null,
+  endTime: 0,
+
+  burst() {
+    this.canvas = document.getElementById('portrait-glitch-canvas');
+    if (!this.canvas) return;
+    this.ctx = this.canvas.getContext('2d');
+    
+    const rect = this.canvas.parentElement ? this.canvas.parentElement.getBoundingClientRect() : null;
+    this.width = this.canvas.width = rect && rect.width > 50 ? rect.width : 450;
+    this.height = this.canvas.height = rect && rect.height > 50 ? rect.height : 650;
+
+    this.particles = [];
+    this.endTime = Date.now() + 680; // Duração sincronizada com a transição da ilustração
+
+    const orangeColors = [
+      '#ff5500',
+      '#ff7700',
+      '#ff9900',
+      '#ffaa22',
+      '#ffffff',
+      '#ff3300'
+    ];
+
+    // Spawna partículas de glitch digital (slices, blocos, pixels)
+    for (let i = 0; i < 55; i++) {
+      const type = Math.random() > 0.6 ? 'slice' : (Math.random() > 0.4 ? 'block' : 'pixel');
+      this.particles.push({
+        type: type,
+        x: Math.random() * (this.width * 0.85) + 10,
+        y: Math.random() * (this.height * 0.85) + 20,
+        vx: (Math.random() - 0.3) * 7,
+        vy: (Math.random() - 0.5) * 4,
+        width: type === 'slice' ? Math.random() * 70 + 20 : (type === 'block' ? Math.random() * 20 + 6 : Math.random() * 4 + 2),
+        height: type === 'slice' ? Math.random() * 2.5 + 1 : (type === 'block' ? Math.random() * 10 + 4 : Math.random() * 4 + 2),
+        color: orangeColors[Math.floor(Math.random() * orangeColors.length)],
+        alpha: Math.random() * 0.85 + 0.2,
+        life: Math.random() * 25 + 10,
+        maxLife: 32
+      });
+    }
+
+    if (this.animId) cancelAnimationFrame(this.animId);
+    this.loop();
+  },
+
+  loop() {
+    if (!this.ctx) return;
+    const now = Date.now();
+    if (now > this.endTime) {
+      this.ctx.clearRect(0, 0, this.width, this.height);
+      return;
+    }
+
+    this.ctx.clearRect(0, 0, this.width, this.height);
+    const progress = Math.max((this.endTime - now) / 680, 0); // 1 decrescendo até 0
+
+    for (let i = 0; i < this.particles.length; i++) {
+      const p = this.particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.life--;
+
+      if (p.life <= 0 || p.x < -30 || p.x > this.width + 30 || p.y < -30 || p.y > this.height + 30) {
+        p.x = Math.random() * (this.width * 0.7) + (this.width * 0.15);
+        p.y = Math.random() * (this.height * 0.7) + (this.height * 0.15);
+        p.vx = (Math.random() - 0.3) * 8;
+        p.life = Math.random() * 18 + 8;
+      }
+
+      this.ctx.save();
+      this.ctx.globalAlpha = p.alpha * progress * (Math.random() > 0.12 ? 1 : 0.25);
+      this.ctx.shadowBlur = 8;
+      this.ctx.shadowColor = '#ff5500';
+      this.ctx.fillStyle = p.color;
+
+      if (p.type === 'slice') {
+        this.ctx.fillRect(p.x, p.y, p.width, p.height);
+      } else if (p.type === 'block') {
+        if (Math.random() > 0.4) {
+          this.ctx.fillRect(p.x, p.y, p.width, p.height);
+        } else {
+          this.ctx.strokeStyle = p.color;
+          this.ctx.lineWidth = 1.2;
+          this.ctx.strokeRect(p.x, p.y, p.width, p.height);
+        }
+      } else {
+        this.ctx.fillRect(p.x, p.y, p.width, p.height);
+      }
+      this.ctx.restore();
+    }
+
+    this.animId = requestAnimationFrame(() => this.loop());
+  }
+};
+
+
 // ---- 3. MESA APP (GERENCIADOR DE ESTADO, SUPABASE & TOKENS) ----
 const MesaApp = {
   SUPABASE_URL: 'https://qkupdpgcjusbedaoahwi.supabase.co', 
@@ -1064,6 +1168,7 @@ const MesaApp = {
       <div class="ficha-portrait-col">
         ${player.imagem ? `
           <div class="ficha-char-portrait-box glitch-portrait-box">
+            <canvas id="portrait-glitch-canvas" class="portrait-glitch-canvas"></canvas>
             <img src="${player.imagem}" alt="${player.nome}" class="ficha-char-portrait-img glitch-img-base" />
             <img src="${player.imagem}" alt="" class="ficha-char-portrait-img glitch-img-layer glitch-layer-1" aria-hidden="true" />
             <img src="${player.imagem}" alt="" class="ficha-char-portrait-img glitch-img-layer glitch-layer-2" aria-hidden="true" />
@@ -1191,6 +1296,11 @@ const MesaApp = {
     }
 
     fichaModal.classList.add('active');
+
+    // Dispara a rajada de partículas digitais de glitch laranjas sincronizadas com o slide
+    setTimeout(() => {
+      PortraitGlitchEngine.burst();
+    }, 25);
   },
 
   openModal(id) {
