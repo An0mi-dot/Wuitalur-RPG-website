@@ -1277,7 +1277,7 @@ const MesaChat = {
     const sender = this.getCurrentSender();
     el.textContent = `Falando como: ${sender.name}`;
     if (sender.isMaster) {
-      el.style.color = '#c084fc';
+      el.style.color = '#ffffff';
     } else {
       el.style.color = 'var(--mesa-orange)';
     }
