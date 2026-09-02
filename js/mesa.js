@@ -437,18 +437,34 @@ const MesaApp = {
             bonus: typeof raw.bonus === 'string' ? JSON.parse(raw.bonus || '[]') : (raw.bonus || []),
             pericias: typeof raw.pericias === 'string' ? JSON.parse(raw.pericias || '[]') : (raw.pericias || []),
             habilidades: (typeof raw.habilidades === 'string' ? JSON.parse(raw.habilidades || '[]') : (raw.habilidades || []))
-              .filter(h => h.nome !== 'Visão no Escuro')
+              .filter(h => {
+                if (!h || !h.nome) return false;
+                const clean = h.nome.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+                return !clean.includes("visao") && !clean.includes("escuro");
+              })
           };
 
           // Garantir que Eric (Slot 3 / Token B8T3) tenha apenas as 3 habilidades corretas
           if (p.token === 'B8T3' || p.slot === 3) {
-            p.habilidades = p.habilidades.filter(h => h.nome !== 'Visão no Escuro');
+            p.habilidades = p.habilidades.filter(h => {
+              if (!h || !h.nome) return false;
+              const clean = h.nome.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+              return !clean.includes("visao") && !clean.includes("escuro");
+            });
+
             if (!p.habilidades.some(h => h.nome === 'Olhar Investigativo')) {
               p.habilidades.push({
                 nome: 'Olhar Investigativo',
                 custo: '2 PE',
                 desc: 'Gasta 2 PE para notar instantaneamente marcas de arranhões, botões falsos ou compartimentos secretos na cena.'
               });
+            }
+
+            // Sincroniza e limpa no banco de dados do Supabase
+            if (this.supabase && p.id) {
+              this.supabase.from('personagens').update({
+                habilidades: p.habilidades
+              }).eq('id', p.id).then(() => {});
             }
           }
 
@@ -674,8 +690,14 @@ const MesaApp = {
       <li class="skill-open-item" style="--skill-idx: ${idx};">${s}</li>
     `).join('');
     
-    // Habilidades
-    let habsHtml = habs.filter(h => h.nome !== 'Visão no Escuro').map((h, idx) => `
+    // Habilidades filtradas estritamente (removendo qualquer variante de Visão no Escuro)
+    const isDarkVision = (name) => {
+      if (!name) return false;
+      const clean = name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+      return clean.includes("visao") || clean.includes("escuro");
+    };
+
+    let habsHtml = habs.filter(h => h && h.nome && !isDarkVision(h.nome)).map((h, idx) => `
       <li class="hab-open-item" style="--hab-idx: ${idx};">
         <div class="hab-open-title">
           ✦ ${h.nome}
