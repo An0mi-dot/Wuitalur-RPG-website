@@ -3028,17 +3028,16 @@ const MesaLibrary = {
     grid.innerHTML = folder.items.map(item => {
       const isProjected = this.activeProjection && this.activeProjection.isProjecting && this.activeProjection.url === item.url;
       return `
-        <div class="adm-gallery-card ${isProjected ? 'projected' : ''}">
+        <div class="adm-gallery-card ${isProjected ? 'projected' : ''}" onclick="MesaLibrary.toggleCenterProjection('${item.id}')">
           <div class="adm-gallery-thumb-box">
             <img src="${item.thumb || item.url}" alt="${item.title}" class="adm-gallery-thumb" />
           </div>
           <div class="adm-gallery-card-title" title="${item.title}">${item.title}</div>
           <div class="adm-gallery-actions">
-            <button class="adm-card-btn proj-btn" onclick="MesaLibrary.projectToCenterById('${item.id}')" title="Projetar no Quadro Preto Central">
-              ${isProjected ? '★ No Centro' : '🎯 Centro'}
+            <button class="adm-card-btn proj-btn" onclick="event.stopPropagation(); MesaLibrary.toggleCenterProjection('${item.id}')" title="Exibir / Remover do Quadro Central">
+              ${isProjected ? '✕ Remover' : '🎯 Exibir no Centro'}
             </button>
-            <button class="adm-card-btn" onclick="MesaLibrary.showInTheaterById('${item.id}')" title="Tela Cheia">📺</button>
-            <button class="adm-card-btn danger" onclick="MesaLibrary.deleteItem('${folder.id}', '${item.id}')" title="Excluir">&times;</button>
+            <button class="adm-card-btn danger" onclick="event.stopPropagation(); MesaLibrary.deleteItem('${folder.id}', '${item.id}')" title="Excluir da Pasta">&times;</button>
           </div>
         </div>
       `;
@@ -3163,18 +3162,24 @@ const MesaLibrary = {
     }
   },
 
+  toggleCenterProjection(itemId) {
+    const folder = this.folders.find(f => f.id === this.currentFolderId);
+    if (!folder) return;
+    const item = folder.items.find(i => i.id === itemId);
+    if (!item) return;
+
+    if (this.activeProjection && this.activeProjection.isProjecting && this.activeProjection.url === item.url) {
+      this.clearCenterProjection();
+    } else {
+      this.projectToCenter(item);
+    }
+  },
+
   projectToCenterById(itemId) {
     const folder = this.folders.find(f => f.id === this.currentFolderId);
     if (!folder) return;
     const item = folder.items.find(i => i.id === itemId);
     if (item) this.projectToCenter(item);
-  },
-
-  showInTheaterById(itemId) {
-    const folder = this.folders.find(f => f.id === this.currentFolderId);
-    if (!folder) return;
-    const item = folder.items.find(i => i.id === itemId);
-    if (item) this.showInTheater(item);
   },
 
   projectToCenter(item) {
