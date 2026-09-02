@@ -755,7 +755,7 @@ html, body {
   max-width: 100vw;
   height: 100vh;
   max-height: 100vh;
-  padding: 24px 44px 20px 44px;
+  padding: 20px 44px 0 44px;
   display: flex;
   flex-direction: column;
   z-index: 10;
@@ -793,8 +793,8 @@ html, body {
   grid-template-columns: minmax(460px, 44vw) 1fr;
   gap: 28px;
   width: 100%;
-  height: calc(100vh - 40px);
-  max-height: calc(100vh - 40px);
+  height: calc(100vh - 20px);
+  max-height: calc(100vh - 20px);
   padding-top: 0;
   padding-bottom: 0;
   overflow: hidden;
@@ -824,13 +824,14 @@ html, body {
   border-right: none;
   overflow: visible;
   padding-bottom: 0;
+  margin-bottom: 0;
 }
 
 .ficha-char-portrait-box {
   width: 100%;
   max-width: 100%;
   height: 100%;
-  max-height: calc(100vh - 30px);
+  max-height: 100%;
   background: transparent;
   border: none;
   border-radius: 0;
@@ -842,44 +843,18 @@ html, body {
   clip-path: none;
   filter: none;
   box-shadow: none;
-}
-
-/* Animação em loop de papel amassado / Stop-motion sutil */
-@keyframes paperCrumpleWiggle {
-  0% {
-    transform: translateY(24px) scale(1.16) rotate(0deg) skew(0deg, 0deg);
-  }
-  14% {
-    transform: translateY(26px) scale(1.165, 1.152) rotate(-0.6deg) skew(0.7deg, -0.4deg);
-  }
-  28% {
-    transform: translateY(23px) scale(1.155, 1.165) rotate(0.5deg) skew(-0.6deg, 0.6deg);
-  }
-  42% {
-    transform: translateY(25px) scale(1.163, 1.156) rotate(-0.4deg) skew(0.5deg, 0.3deg);
-  }
-  57% {
-    transform: translateY(22px) scale(1.157, 1.163) rotate(0.7deg) skew(-0.7deg, -0.4deg);
-  }
-  71% {
-    transform: translateY(27px) scale(1.164, 1.154) rotate(-0.5deg) skew(0.4deg, -0.6deg);
-  }
-  85% {
-    transform: translateY(24px) scale(1.158, 1.162) rotate(0.4deg) skew(-0.5deg, 0.5deg);
-  }
-  100% {
-    transform: translateY(24px) scale(1.16) rotate(0deg) skew(0deg, 0deg);
-  }
+  margin-bottom: 0;
 }
 
 .ficha-char-portrait-img {
   width: 100%;
   height: 100%;
-  max-height: calc(100vh - 30px);
+  max-height: 100%;
   object-fit: contain;
   object-position: center bottom;
   filter: drop-shadow(0 14px 35px rgba(0, 0, 0, 0.85));
-  animation: paperCrumpleWiggle 3.2s ease-in-out infinite;
+  transform: scale(1.24) translateY(16px);
+  transform-origin: center bottom;
   pointer-events: none;
   user-select: none;
 }
