@@ -857,11 +857,30 @@ const MesaApp = {
       patchData.stress_points = next;
     }
 
-    // 1. Atualiza cirurgicamente no DOM (zero replay de animação)
+    // 1. Atualiza cirurgicamente no DOM local (zero replay de animação)
     this.updateVitalsUI(player);
     this.renderMesa();
 
-    // 2. Sincroniza com o Supabase
+    // 2. Transmissão WebSocket Instantânea para todas as telas conectadas (<30ms)
+    if (MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'vitals_sync',
+        payload: {
+          slot: player.slot,
+          hp: player.hp,
+          hpMax: player.hpMax,
+          pe: player.pe,
+          peMax: player.peMax,
+          st: player.st,
+          stMax: player.stMax,
+          stressPoints: player.stressPoints,
+          stressPointsMax: player.stressPointsMax
+        }
+      });
+    }
+
+    // 3. Sincroniza persistentemente com o Supabase
     if (this.supabase && player.id) {
       try {
         await this.supabase
@@ -871,6 +890,31 @@ const MesaApp = {
       } catch(err) {
         console.error("Erro ao salvar status no Supabase:", err);
       }
+    }
+  },
+
+  // RECEBE SINCRONIZAÇÃO DE STATUS EM TEMPO REAL VIA WEBSOCKET
+  handleIncomingVitals(data) {
+    if (!data || !data.slot) return;
+    const player = this.state.players[data.slot - 1];
+    if (!player) return;
+
+    if (data.hp !== undefined) player.hp = data.hp;
+    if (data.hpMax !== undefined) player.hpMax = data.hpMax;
+    if (data.pe !== undefined) player.pe = data.pe;
+    if (data.peMax !== undefined) player.peMax = data.peMax;
+    if (data.st !== undefined) player.st = data.st;
+    if (data.stMax !== undefined) player.stMax = data.stMax;
+    if (data.stressPoints !== undefined) player.stressPoints = data.stressPoints;
+    if (data.stressPointsMax !== undefined) player.stressPointsMax = data.stressPointsMax;
+
+    // Atualiza o card correspondente na mesa
+    this.renderMesa();
+
+    // Se a ficha deste personagem estiver aberta, atualiza imediatamente os números e barras
+    if (this.state.activeViewingPlayer && this.state.activeViewingPlayer.slot === data.slot) {
+      this.state.activeViewingPlayer = player;
+      this.updateVitalsUI(player);
     }
   },
 
@@ -1296,7 +1340,15 @@ const MesaChat = {
       }
     });
 
-    // 5. Postgres Changes para novas mensagens gravadas
+    // 5. WebSocket Broadcast de Vitals em Tempo Real (PV, PE, Estresse instantâneo < 30ms)
+    this.channel.on('broadcast', { event: 'vitals_sync' }, (payload) => {
+      const data = payload.payload;
+      if (data && data.slot) {
+        MesaApp.handleIncomingVitals(data);
+      }
+    });
+
+    // 6. Postgres Changes para novas mensagens gravadas
     this.channel.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mensagens_chat' }, (payload) => {
       const msg = payload.new;
       this.receiveMessage({
