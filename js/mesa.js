@@ -452,7 +452,7 @@ const MesaApp = {
       },
       bonus: [
         { origem: 'Raça (Animalesco)', desc: '+d4 em testes de Esquiva' },
-        { origem: 'Arquétipo (Rebelde)', desc: '+d4 em Força. Desprezo por autoridade — não obedece a ninguém, nem a monstros.' }
+        { origem: 'Arquétipo (Rebelde)', desc: '+d4 em Força' }
       ],
       pericias: ['Intimidação', 'Atletismo', 'Disparada', 'Sobrevivência'],
       habilidades: [
@@ -660,7 +660,7 @@ const MesaApp = {
           atributos: { 'Mente': 'd4', 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd16' },
           bonus: [
             { origem: 'Raça (Animalesco)', desc: '+d4 em testes de Esquiva' },
-            { origem: 'Arquétipo (Rebelde)', desc: '+d4 em Força. Desprezo por autoridade — não obedece a ninguém, nem a monstros.' }
+            { origem: 'Arquétipo (Rebelde)', desc: '+d4 em Força' }
           ],
           pericias: ['Intimidação', 'Atletismo', 'Disparada', 'Sobrevivência'],
           habilidades: [
