@@ -8,9 +8,9 @@
   <meta http-equiv="Expires" content="0">
   <title>Mesa Virtual - Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/variables.css?v=2.8.2">
-  <link rel="stylesheet" href="css/components.css?v=2.8.2">
-  <link rel="stylesheet" href="css/mesa.css?v=2.8.2">
+  <link rel="stylesheet" href="css/variables.css?v=2.8.3">
+  <link rel="stylesheet" href="css/components.css?v=2.8.3">
+  <link rel="stylesheet" href="css/mesa.css?v=2.8.3">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -124,14 +124,14 @@
           
           <div id="master-dropdown-menu" class="master-dropdown-popover">
             <button class="master-dropdown-item" onclick="MesaLibrary.toggleSidebar(); MesaApp.toggleMasterDropdown(false)">
-              <span class="m-item-icon">📁</span>
+              <span class="m-item-icon">[ASSETS]</span>
               <div class="m-item-text">
                 <strong>Galeria de Assets</strong>
                 <small>Menu lateral (NPCs, Itens, Cenários)</small>
               </div>
             </button>
             <button class="master-dropdown-item" onclick="MesaMediaPlayer.toggleDrawer(); MesaApp.toggleMasterDropdown(false)">
-              <span class="m-item-icon">🎬</span>
+              <span class="m-item-icon">[MÍDIA]</span>
               <div class="m-item-text">
                 <strong>Player de Mídia</strong>
                 <small>Painel inferior (Vídeos & Slideshow)</small>
@@ -153,12 +153,12 @@
       </div>
     </nav>
 
-    <!-- SIDEBAR LATERAL ESQUERDA: GALERIA DE ASSETS DO MESTRE -->
+    <!-- SIDEBAR LATERAL ESQUERDA: GALERIA DE ASSETS DO MESTRE (ESTILO TÉCNICO DESKRPG) -->
     <div id="master-assets-sidebar" class="master-assets-sidebar">
       <div class="sidebar-topbar">
         <div class="sidebar-title-group">
-          <span class="sidebar-title">📁 GALERIA DE ASSETS</span>
-          <span class="sidebar-subtitle">Ilustrações no Centro da Mesa</span>
+          <span class="sidebar-title">ADMINISTRADOR DE ASSETS</span>
+          <span class="sidebar-subtitle">Galeria de Imagens</span>
         </div>
         <button class="sidebar-close-btn" onclick="MesaLibrary.toggleSidebar()" title="Fechar">&times;</button>
       </div>
@@ -166,10 +166,10 @@
       <!-- Barra de Status da Projeção Central -->
       <div class="adm-projection-status-bar sidebar-status">
         <div class="adm-proj-info">
-          <span class="adm-proj-label">NO CENTRO:</span>
-          <span id="adm-active-proj-name" class="adm-proj-name">Nenhuma</span>
+          <span class="adm-proj-label">CENTRO:</span>
+          <span id="adm-active-proj-name" class="adm-proj-name">NENHUM</span>
         </div>
-        <button id="adm-btn-clear-proj" class="adm-col-action-btn danger" onclick="MesaLibrary.clearCenterProjection()" style="display:none;">✕ Limpar</button>
+        <button id="adm-btn-clear-proj" class="adm-col-action-btn danger" onclick="MesaLibrary.clearCenterProjection()" style="display:none;">Desativar</button>
       </div>
 
       <!-- Pastas de Categorias -->
@@ -207,15 +207,6 @@
           <div class="board-ink-inner-border"></div>
           <div class="board-crosshair-c"></div>
           
-          <!-- Projeção Central de Imagens do Mestre (NPCs, Itens, Cenários) -->
-          <div id="board-center-display" class="board-center-display">
-            <div id="board-center-content" class="board-center-content">
-              <img id="board-center-img" class="board-center-img" src="" alt="Projeção Central" style="display:none;" />
-              <div id="board-center-banner" class="board-center-banner" style="display:none;"></div>
-              <button id="board-center-close-btn" class="board-center-close-btn" style="display:none;" onclick="MesaLibrary.clearCenterProjection()" title="Remover Projeção">&times;</button>
-            </div>
-          </div>
-
           <!-- Palco Central de Rolagem de Dados -->
           <div id="dice-stage" class="dice-stage"></div>
         </div>
@@ -256,6 +247,14 @@
         <div class="player-slot slot-8 empty" onclick="MesaApp.handleSlotClick(8)">
           <div class="slot-empty-label">Slot 8</div>
         </div>
+
+        <!-- Projeção Central de Imagens do Mestre (Fica NO TOPO de tudo na mesa) -->
+        <div id="board-center-display" class="board-center-display">
+          <div id="board-center-content" class="board-center-content">
+            <img id="board-center-img" class="board-center-img" src="" alt="Projeção Central" style="display:none;" />
+            <button id="board-center-close-btn" class="board-center-close-btn" style="display:none;" onclick="MesaLibrary.clearCenterProjection()" title="Remover Projeção">&times;</button>
+          </div>
+        </div>
     </div>
 
     <!-- PAINEL TÉCNICO ADMINISTRADOR DE RPG - MEDIA PLAYER (EXCLUSIVO DO MESTRE) -->
@@ -277,8 +276,8 @@
 
       <!-- Navigation Tabs -->
       <div class="adm-tab-bar">
-        <button id="adm-tab-video" class="adm-tab-btn active" onclick="MesaMediaPlayer.switchTab('video')">🎬 Player de Vídeos (Loop A-B & Fade)</button>
-        <button id="adm-tab-slideshow" class="adm-tab-btn" onclick="MesaMediaPlayer.switchTab('slideshow')">🖼️ Compartilhador de Imagens (Slideshow)</button>
+        <button id="adm-tab-video" class="adm-tab-btn active" onclick="MesaMediaPlayer.switchTab('video')">[VÍDEOS] Player de Vídeos (Loop A-B & Fade)</button>
+        <button id="adm-tab-slideshow" class="adm-tab-btn" onclick="MesaMediaPlayer.switchTab('slideshow')">[SLIDESHOW] Compartilhador de Imagens</button>
       </div>
 
       <!-- TAB 1: PLAYER DE VÍDEOS -->
@@ -549,6 +548,6 @@
       </div>
     </div>
 
-<script src="js/mesa.js?v=2.8.2"></script>
+<script src="js/mesa.js?v=2.8.3"></script>
 </body>
 </html>

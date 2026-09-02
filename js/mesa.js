@@ -2901,7 +2901,7 @@ const MesaLibrary = {
     {
       id: 'npcs',
       name: 'Personagens / NPCs',
-      icon: '👤',
+      icon: '[NPCs]',
       items: [
         {
           id: 'item-thulita',
@@ -2915,19 +2915,19 @@ const MesaLibrary = {
     {
       id: 'itens',
       name: 'Itens & Artefatos',
-      icon: '🗡️',
+      icon: '[ITENS]',
       items: []
     },
     {
       id: 'cenarios',
       name: 'Cenários & Locais',
-      icon: '🏰',
+      icon: '[CENÁRIOS]',
       items: []
     },
     {
       id: 'pistas',
       name: 'Pistas & Documentos',
-      icon: '📜',
+      icon: '[PISTAS]',
       items: []
     }
   ],
@@ -3015,7 +3015,7 @@ const MesaLibrary = {
     list.innerHTML = this.folders.map(folder => `
       <div class="adm-folder-item ${folder.id === this.currentFolderId ? 'active' : ''}" onclick="MesaLibrary.selectFolder('${folder.id}')">
         <div class="adm-folder-name" title="${folder.name}">
-          <span>${folder.icon || '📁'}</span>
+          <span style="font-size: 0.65rem; color: #a1a1aa; font-family: monospace;">${folder.icon || '[DIR]'}</span>
           <span>${folder.name}</span>
         </div>
         <span class="adm-folder-count">${folder.items ? folder.items.length : 0}</span>
@@ -3037,7 +3037,7 @@ const MesaLibrary = {
     this.folders.push({
       id: id,
       name: name.trim(),
-      icon: '📁',
+      icon: '[PASTA]',
       items: []
     });
 
@@ -3053,13 +3053,13 @@ const MesaLibrary = {
     const grid = document.getElementById('adm-folder-items-grid');
 
     if (titleEl && folder) {
-      titleEl.textContent = `PASTA: ${folder.name.toUpperCase()}`;
+      titleEl.textContent = `${folder.name.toUpperCase()}`;
     }
 
     if (!grid) return;
 
     if (!folder || !folder.items || folder.items.length === 0) {
-      grid.innerHTML = `<div class="adm-empty-note" style="grid-column: 1 / -1; padding: 24px; text-align: center;">Nenhuma imagem nesta pasta. Adicione um arquivo do seu computador ou cole um link acima.</div>`;
+      grid.innerHTML = `<div class="adm-empty-note" style="grid-column: 1 / -1; padding: 20px; text-align: center; font-size: 0.72rem; color: #71717a;">Nenhuma imagem nesta pasta.</div>`;
       return;
     }
 
@@ -3072,10 +3072,10 @@ const MesaLibrary = {
           </div>
           <div class="adm-gallery-card-title" title="${item.title}">${item.title}</div>
           <div class="adm-gallery-actions">
-            <button class="adm-card-btn proj-btn" onclick="event.stopPropagation(); MesaLibrary.toggleCenterProjection('${item.id}')" title="Exibir / Remover do Quadro Central">
-              ${isProjected ? '✕ Remover' : '🎯 Exibir no Centro'}
+            <button class="adm-card-btn proj-btn" onclick="event.stopPropagation(); MesaLibrary.toggleCenterProjection('${item.id}')" title="Exibir / Remover do Centro">
+              ${isProjected ? '[REMOVER]' : '[EXIBIR]'}
             </button>
-            <button class="adm-card-btn danger" onclick="event.stopPropagation(); MesaLibrary.deleteItem('${folder.id}', '${item.id}')" title="Excluir da Pasta">&times;</button>
+            <button class="adm-card-btn danger" onclick="event.stopPropagation(); MesaLibrary.deleteItem('${folder.id}', '${item.id}')" title="Excluir">&times;</button>
           </div>
         </div>
       `;
@@ -3263,7 +3263,6 @@ const MesaLibrary = {
   updateCenterDOM(data) {
     const display = document.getElementById('board-center-display');
     const img = document.getElementById('board-center-img');
-    const banner = document.getElementById('board-center-banner');
     const closeBtn = document.getElementById('board-center-close-btn');
 
     if (!display || !img) return;
@@ -3271,11 +3270,6 @@ const MesaLibrary = {
     if (data && data.isProjecting && data.url) {
       img.src = data.url;
       img.style.display = 'block';
-
-      if (banner) {
-        banner.textContent = data.title || '';
-        banner.style.display = data.title ? 'block' : 'none';
-      }
 
       if (closeBtn) {
         closeBtn.style.display = MesaApp.state.isMaster ? 'flex' : 'none';
@@ -3285,7 +3279,6 @@ const MesaLibrary = {
     } else {
       img.src = '';
       img.style.display = 'none';
-      if (banner) { banner.textContent = ''; banner.style.display = 'none'; }
       if (closeBtn) closeBtn.style.display = 'none';
       display.classList.remove('active');
     }
@@ -3296,10 +3289,10 @@ const MesaLibrary = {
     const clearBtn = document.getElementById('adm-btn-clear-proj');
 
     if (this.activeProjection && this.activeProjection.isProjecting) {
-      if (nameEl) nameEl.textContent = `★ ${this.activeProjection.title || 'Imagem Ativa'}`;
+      if (nameEl) nameEl.textContent = (this.activeProjection.title || 'ATIVO').toUpperCase();
       if (clearBtn) clearBtn.style.display = 'inline-flex';
     } else {
-      if (nameEl) nameEl.textContent = 'Nenhuma (Quadro livre)';
+      if (nameEl) nameEl.textContent = 'NENHUM';
       if (clearBtn) clearBtn.style.display = 'none';
     }
   },
