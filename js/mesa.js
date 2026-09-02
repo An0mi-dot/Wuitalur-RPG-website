@@ -527,6 +527,39 @@ const MesaApp = {
         { nome: 'Torque Forçado', custo: '2 PE', desc: 'Trava engrenagens no solo para aplicar força bruta. Ganha +d4 em testes de Força para erguer cargas, arrombar portas ou resistir a ser empurrado.' }
       ]
     };
+
+    // Personagem para Slot 7 (Odara De La Benevidez)
+    this.state.players[6] = {
+      id: 7,
+      slot: 7,
+      token: 'O7D7',
+      nome: 'Odara De La Benevidez',
+      idade: '18 anos',
+      altura: '1,42m',
+      raca: 'Dragão Anão',
+      arquetipo: 'Gótica',
+      hp: 14, hpMax: 14,
+      pe: 10, peMax: 10,
+      st: 0, stMax: 36,
+      stressPoints: 0,
+      stressPointsMax: 6,
+      atributos: {
+        'Força': 'd16',
+        'Mente': 'd12',
+        'Saúde': 'd8',
+        'Vigor': 'd4'
+      },
+      bonus: [
+        { origem: 'Raça (Dragão Anão)', desc: '+d4 em testes de Mente' },
+        { origem: 'Arquétipo (Gótica)', desc: '+3 Redução de Dano Mental' }
+      ],
+      pericias: ['Intimidação', 'Atletismo', 'Intuição', 'Astúcia'],
+      habilidades: [
+        { nome: 'Sopro Ancestral', custo: '4 PE', desc: 'Expele um cone de energia elemental (Fogo/Solar, Estase ou Ácido) em um raio de 3B à sua frente. Inimigos na área devem rolar teste de Destreza (CT 15) ou sofrer 3d10 de dano elemental.' },
+        { nome: 'Conexão Sensorial', custo: '2 PE', desc: 'As seis antenas permitem comunicação telepática limitada com criaturas a até 10B, transmitindo emoções, intenções simples ou imagens mentais.' },
+        { nome: 'Familiaridade com o Macabro', custo: 'Passiva', desc: 'A visão de cadáveres, ossadas ou sangue seco não provoca dano na sua Barra de Estresse.' }
+      ]
+    };
     
     this.renderMesa();
   },
@@ -703,6 +736,24 @@ const MesaApp = {
             { nome: 'Quebrar a Tensão', custo: 'Passiva', desc: 'Com uma piada ou comentário sarcástico, reduz em 1d4 a Barra de Estresse de todos os aliados após um momento de pânico.' },
             { nome: 'Mira Telemétrica', custo: '3 PE', desc: 'Sensores ópticos calculam vento, distância e trajetória. Ganha vantagem em testes de ataque à distância até o fim da cena.' },
             { nome: 'Torque Forçado', custo: '2 PE', desc: 'Trava engrenagens no solo para aplicar força bruta. Ganha +d4 em testes de Força para erguer cargas, arrombar portas ou resistir a ser empurrado.' }
+          ]
+        };
+      }
+
+      if (!this.state.players[6]) {
+        this.state.players[6] = {
+          id: 7, slot: 7, token: 'O7D7', nome: 'Odara De La Benevidez', idade: '18 anos', altura: '1,42m', raca: 'Dragão Anão', arquetipo: 'Gótica',
+          hp: 14, hpMax: 14, pe: 10, peMax: 10, st: 0, stMax: 36, stressPoints: 0, stressPointsMax: 6,
+          atributos: { 'Força': 'd16', 'Mente': 'd12', 'Saúde': 'd8', 'Vigor': 'd4' },
+          bonus: [
+            { origem: 'Raça (Dragão Anão)', desc: '+d4 em testes de Mente' },
+            { origem: 'Arquétipo (Gótica)', desc: '+3 Redução de Dano Mental' }
+          ],
+          pericias: ['Intimidação', 'Atletismo', 'Intuição', 'Astúcia'],
+          habilidades: [
+            { nome: 'Sopro Ancestral', custo: '4 PE', desc: 'Expele um cone de energia elemental (Fogo/Solar, Estase ou Ácido) em um raio de 3B à sua frente. Inimigos na área devem rolar teste de Destreza (CT 15) ou sofrer 3d10 de dano elemental.' },
+            { nome: 'Conexão Sensorial', custo: '2 PE', desc: 'As seis antenas permitem comunicação telepática limitada com criaturas a até 10B, transmitindo emoções, intenções simples ou imagens mentais.' },
+            { nome: 'Familiaridade com o Macabro', custo: 'Passiva', desc: 'A visão de cadáveres, ossadas ou sangue seco não provoca dano na sua Barra de Estresse.' }
           ]
         };
       }
