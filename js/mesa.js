@@ -1957,28 +1957,94 @@ const MesaMediaPlayer = {
     }
   },
 
-  addVideos(files) {
-    Array.from(files).forEach(file => {
-      // Se for menor que 10MB, converte para DataURL (Base64) para transmitir a todos os jogadores
-      if (file.size <= 10 * 1024 * 1024) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const dataUrl = e.target.result;
-          this.videoPlaylist.push({ name: file.name, url: dataUrl, file: file });
-          this.renderVideoPlaylist();
-          if (this.currentVideoIndex === -1 && this.videoPlaylist.length > 0) {
-            this.selectVideo(this.videoPlaylist.length - 1);
+  // Upload temporário que não polui o banco e se auto-deleta ao remover ou fechar a página
+  async uploadTempFile(file) {
+    const ext = file.name.split('.').pop().toLowerCase();
+    const fileName = `temp_${Date.now()}_${Math.random().toString(36).substring(7)}.${ext}`;
+
+    // 1. Tenta Supabase Storage
+    if (MesaApp.supabase && MesaApp.supabase.storage) {
+      try {
+        const { data, error } = await MesaApp.supabase.storage
+          .from('temp_media')
+          .upload(fileName, file, { cacheControl: '3600', upsert: true });
+
+        if (!error && data) {
+          const { data: pubData } = MesaApp.supabase.storage
+            .from('temp_media')
+            .getPublicUrl(fileName);
+          if (pubData && pubData.publicUrl) {
+            return { url: pubData.publicUrl, storagePath: fileName, provider: 'supabase' };
           }
-        };
-        reader.readAsDataURL(file);
-      } else {
-        const blobUrl = URL.createObjectURL(file);
-        this.videoPlaylist.push({ name: file.name, url: blobUrl, file: file });
-        this.renderVideoPlaylist();
-        if (this.currentVideoIndex === -1 && this.videoPlaylist.length > 0) {
-          this.selectVideo(this.videoPlaylist.length - 1);
         }
-        alert(`[AVISO]: O arquivo "${file.name}" tem ${(file.size / (1024 * 1024)).toFixed(1)}MB. Vídeos locais acima de 10MB tocam apenas na sua tela. Para transmitir a todos os jogadores na internet, use o botão "+ Link/URL" com o link direto do vídeo.`);
+      } catch (err) {
+        console.warn("Supabase storage indisponível:", err);
+      }
+    }
+
+    // 2. Fallback: Litterbox API (Arquivo temporário que expira e se auto-destrói em 1 hora)
+    try {
+      const formData = new FormData();
+      formData.append('reqtype', 'fileupload');
+      formData.append('time', '1h');
+      formData.append('fileToUpload', file);
+
+      const res = await fetch('https://litterbox.catbox.moe/resources/internals/api.php', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (res.ok) {
+        const url = await res.text();
+        if (url && url.startsWith('http')) {
+          return { url: url.trim(), provider: 'litterbox' };
+        }
+      }
+    } catch (err) {
+      console.warn("Fallback Litterbox temporário falhou:", err);
+    }
+
+    return null;
+  },
+
+  addVideos(files) {
+    Array.from(files).forEach(async file => {
+      const localBlob = URL.createObjectURL(file);
+      const playlistItem = {
+        name: file.name,
+        url: localBlob,
+        file: file,
+        isUploading: true
+      };
+
+      this.videoPlaylist.push(playlistItem);
+      this.renderVideoPlaylist();
+      const itemIndex = this.videoPlaylist.length - 1;
+      if (this.currentVideoIndex === -1) {
+        this.selectVideo(itemIndex);
+      }
+
+      // Upload temporário em segundo plano
+      try {
+        const res = await this.uploadTempFile(file);
+        if (res && res.url) {
+          playlistItem.url = res.url;
+          playlistItem.storagePath = res.storagePath;
+          playlistItem.provider = res.provider;
+          playlistItem.isUploading = false;
+          this.renderVideoPlaylist();
+          if (this.isTransmitting && this.currentVideoIndex === itemIndex) {
+            this.syncLiveDisplay();
+          }
+        } else {
+          playlistItem.isUploading = false;
+          playlistItem.uploadFailed = true;
+          this.renderVideoPlaylist();
+        }
+      } catch (e) {
+        playlistItem.isUploading = false;
+        playlistItem.uploadFailed = true;
+        this.renderVideoPlaylist();
       }
     });
   },
@@ -1994,13 +2060,24 @@ const MesaMediaPlayer = {
 
     list.innerHTML = this.videoPlaylist.map((item, idx) => `
       <div class="adm-playlist-item ${idx === this.currentVideoIndex ? 'active' : ''}" onclick="MesaMediaPlayer.selectVideo(${idx})">
-        <span class="adm-item-name" title="${item.name}">${idx + 1}. ${item.name}</span>
+        <span class="adm-item-name" title="${item.name}">
+          ${idx + 1}. ${item.name}
+          ${item.isUploading ? '<span style="color:var(--mesa-orange); font-size:0.68rem; margin-left:4px;">⏳ Preparando...</span>' : ''}
+          ${item.uploadFailed ? '<span style="color:#ef4444; font-size:0.68rem; margin-left:4px;">(Use +Link)</span>' : ''}
+        </span>
         <button class="adm-item-remove" onclick="event.stopPropagation(); MesaMediaPlayer.removeVideo(${idx})">&times;</button>
       </div>
     `).join('');
   },
 
-  removeVideo(idx) {
+  async removeVideo(idx) {
+    const item = this.videoPlaylist[idx];
+    if (item && item.storagePath && MesaApp.supabase && MesaApp.supabase.storage) {
+      try {
+        await MesaApp.supabase.storage.from('temp_media').remove([item.storagePath]);
+      } catch (e) {}
+    }
+
     this.videoPlaylist.splice(idx, 1);
     if (this.currentVideoIndex >= this.videoPlaylist.length) {
       this.currentVideoIndex = this.videoPlaylist.length - 1;
@@ -2170,17 +2247,44 @@ const MesaMediaPlayer = {
   },
 
   addImages(files) {
-    Array.from(files).forEach(file => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const dataUrl = e.target.result;
-        this.imagePlaylist.push({ name: file.name, url: dataUrl, file: file });
-        this.renderImagePlaylist();
-        if (this.currentImageIndex === -1 && this.imagePlaylist.length > 0) {
-          this.selectImage(this.imagePlaylist.length - 1);
-        }
+    Array.from(files).forEach(async file => {
+      const localBlob = URL.createObjectURL(file);
+      const playlistItem = {
+        name: file.name,
+        url: localBlob,
+        file: file,
+        isUploading: true
       };
-      reader.readAsDataURL(file);
+
+      this.imagePlaylist.push(playlistItem);
+      this.renderImagePlaylist();
+      const itemIndex = this.imagePlaylist.length - 1;
+      if (this.currentImageIndex === -1) {
+        this.selectImage(itemIndex);
+      }
+
+      // Upload temporário em segundo plano
+      try {
+        const res = await this.uploadTempFile(file);
+        if (res && res.url) {
+          playlistItem.url = res.url;
+          playlistItem.storagePath = res.storagePath;
+          playlistItem.provider = res.provider;
+          playlistItem.isUploading = false;
+          this.renderImagePlaylist();
+          if (this.isTransmitting && this.currentImageIndex === itemIndex) {
+            this.syncLiveDisplay();
+          }
+        } else {
+          playlistItem.isUploading = false;
+          playlistItem.uploadFailed = true;
+          this.renderImagePlaylist();
+        }
+      } catch (e) {
+        playlistItem.isUploading = false;
+        playlistItem.uploadFailed = true;
+        this.renderImagePlaylist();
+      }
     });
   },
 
@@ -2202,13 +2306,24 @@ const MesaMediaPlayer = {
 
     list.innerHTML = this.imagePlaylist.map((item, idx) => `
       <div class="adm-playlist-item ${idx === this.currentImageIndex ? 'active' : ''}" onclick="MesaMediaPlayer.selectImage(${idx})">
-        <span class="adm-item-name" title="${item.name}">${idx + 1}. ${item.name}</span>
+        <span class="adm-item-name" title="${item.name}">
+          ${idx + 1}. ${item.name}
+          ${item.isUploading ? '<span style="color:var(--mesa-orange); font-size:0.68rem; margin-left:4px;">⏳ Preparando...</span>' : ''}
+          ${item.uploadFailed ? '<span style="color:#ef4444; font-size:0.68rem; margin-left:4px;">(Use +Link)</span>' : ''}
+        </span>
         <button class="adm-item-remove" onclick="event.stopPropagation(); MesaMediaPlayer.removeImage(${idx})">&times;</button>
       </div>
     `).join('');
   },
 
-  removeImage(idx) {
+  async removeImage(idx) {
+    const item = this.imagePlaylist[idx];
+    if (item && item.storagePath && MesaApp.supabase && MesaApp.supabase.storage) {
+      try {
+        await MesaApp.supabase.storage.from('temp_media').remove([item.storagePath]);
+      } catch (e) {}
+    }
+
     this.imagePlaylist.splice(idx, 1);
     if (this.currentImageIndex >= this.imagePlaylist.length) {
       this.currentImageIndex = this.imagePlaylist.length - 1;
@@ -2419,4 +2534,16 @@ const MesaMediaPlayer = {
 
 document.addEventListener('DOMContentLoaded', () => {
   MesaApp.init();
+});
+
+window.addEventListener('beforeunload', () => {
+  // Limpa arquivos temporários do Supabase Storage ao fechar ou recarregar a mesa
+  if (typeof MesaMediaPlayer !== 'undefined' && MesaApp.supabase && MesaApp.supabase.storage) {
+    const pathsToDelete = [];
+    MesaMediaPlayer.videoPlaylist.forEach(v => { if (v.storagePath) pathsToDelete.push(v.storagePath); });
+    MesaMediaPlayer.imagePlaylist.forEach(i => { if (i.storagePath) pathsToDelete.push(i.storagePath); });
+    if (pathsToDelete.length > 0) {
+      MesaApp.supabase.storage.from('temp_media').remove(pathsToDelete);
+    }
+  }
 });
