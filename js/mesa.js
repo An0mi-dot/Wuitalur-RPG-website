@@ -290,28 +290,39 @@ const MesaApp = {
     MesaReactions.init();
     MesaDice.init();
     MesaMediaPlayer.init();
+    this.updateTokenBtnState();
   },
 
   checkSavedToken() {
     const saved = localStorage.getItem('mesa_token');
-    const tokenBtn = document.getElementById('nav-token-btn');
 
     if (saved) {
       this.state.myToken = saved.toUpperCase();
       if (this.state.myToken === this.MASTER_TOKEN) {
         this.state.isMaster = true;
-        if (tokenBtn) {
-          tokenBtn.innerHTML = `${SVG_ICONS.key} Token Ativo`;
-        }
-      } else {
-        if (tokenBtn) {
-          tokenBtn.innerHTML = `${SVG_ICONS.key} ${this.state.myToken}`;
-        }
       }
     }
 
+    this.updateTokenBtnState();
+
     if (typeof MesaMediaPlayer !== 'undefined') {
       MesaMediaPlayer.updateMasterVisibility();
+    }
+  },
+
+  updateTokenBtnState() {
+    const tokenBtn = document.getElementById('nav-token-btn');
+    if (!tokenBtn) return;
+
+    if (this.state.isMaster) {
+      tokenBtn.innerHTML = `${SVG_ICONS.key} Token Ativo`;
+      tokenBtn.classList.remove('token-pulse-attention');
+    } else if (this.state.myToken) {
+      tokenBtn.innerHTML = `${SVG_ICONS.key} ${this.state.myToken}`;
+      tokenBtn.classList.remove('token-pulse-attention');
+    } else {
+      tokenBtn.innerHTML = `${SVG_ICONS.key} Token`;
+      tokenBtn.classList.add('token-pulse-attention');
     }
   },
 
@@ -847,11 +858,7 @@ const MesaApp = {
       this.state.myToken = token;
       this.state.isMaster = true;
 
-      const tokenBtn = document.getElementById('nav-token-btn');
-      if (tokenBtn) {
-        tokenBtn.innerHTML = `${SVG_ICONS.key} Token Ativo`;
-      }
-
+      this.updateTokenBtnState();
       MesaChat.updateSenderIdentity();
       if (typeof MesaMediaPlayer !== 'undefined') {
         MesaMediaPlayer.updateMasterVisibility();
@@ -865,6 +872,7 @@ const MesaApp = {
     localStorage.setItem('mesa_token', token);
     this.state.myToken = token;
     this.state.isMaster = false;
+    this.updateTokenBtnState();
 
     let matchedPlayer = this.state.players.find(p => p && p.token && p.token.toUpperCase() === token);
 
@@ -885,16 +893,13 @@ const MesaApp = {
     }
 
     if (matchedPlayer) {
-      const tokenBtn = document.getElementById('nav-token-btn');
-      if (tokenBtn) {
-        tokenBtn.innerHTML = `${SVG_ICONS.key} ${token}`;
-      }
-
+      this.updateTokenBtnState();
       MesaChat.updateSenderIdentity();
       alert(`[CONECTADO] ${matchedPlayer.nome} (Slot ${matchedPlayer.slot}) - Modo de edição ativado.`);
       this.closeModal('token-modal');
       this.openFicha(matchedPlayer);
     } else {
+      this.updateTokenBtnState();
       MesaChat.updateSenderIdentity();
       alert(`Token '${token}' salvo.`);
       this.closeModal('token-modal');
