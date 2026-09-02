@@ -396,6 +396,49 @@ html, body {
   top: 0; left: 25%; transform: translate(-50%, -50%) rotate(-1.2deg);
   animation: slotDropTop 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.16s both;
 }
+
+/* Card Central do Mestre (Posicionado exatamente entre Thulita e Minerva) */
+.master-slot {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: slotDropTop 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.19s both;
+  border-color: rgba(192, 132, 252, 0.55);
+  background: rgba(22, 6, 32, 0.72);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(168, 85, 247, 0.25);
+  cursor: default !important;
+  user-select: none;
+}
+.master-slot:hover {
+  transform: translate(-50%, -50%) scale(1.02);
+  border-color: #c084fc;
+}
+.master-avatar {
+  background: linear-gradient(135deg, #581c87, #9333ea) !important;
+  border-color: #c084fc !important;
+  color: #fff !important;
+  box-shadow: 0 0 15px rgba(192, 132, 252, 0.5);
+}
+.master-name-badge {
+  background: #7e22ce !important;
+  color: #f3e8ff !important;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  transform: rotate(0deg) !important;
+}
+.master-status-tag {
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  background: rgba(168, 85, 247, 0.2);
+  border: 1px solid rgba(192, 132, 252, 0.4);
+  color: #d8b4fe;
+  border-radius: 2px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
 .slot-2 {
   top: 0; left: 75%; transform: translate(-50%, -50%) rotate(1.4deg);
   animation: slotDropTop 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;

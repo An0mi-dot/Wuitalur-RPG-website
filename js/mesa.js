@@ -1602,21 +1602,15 @@ const MesaReactions = {
       return;
     }
 
-    // Determina o slot do jogador atual
+    // Determina o slot do jogador atual ou o Card Central do Mestre
     let targetSlot = null;
 
-    if (MesaApp.state.myToken && !MesaApp.state.isMaster) {
+    if (MesaApp.state.isMaster) {
+      targetSlot = 'master';
+    } else if (MesaApp.state.myToken) {
       const myChar = MesaApp.state.players.find(p => p && p.token && p.token.toUpperCase() === MesaApp.state.myToken.toUpperCase());
       if (myChar) {
         targetSlot = myChar.slot;
-      }
-    } else if (MesaApp.state.isMaster) {
-      // Se for Mestre, reage no personagem ativo ou no primeiro disponível
-      if (MesaApp.state.activeViewingPlayer) {
-        targetSlot = MesaApp.state.activeViewingPlayer.slot;
-      } else {
-        const firstOccupied = MesaApp.state.players.find(p => p !== null);
-        targetSlot = firstOccupied ? firstOccupied.slot : 1;
       }
     }
 
@@ -1640,7 +1634,7 @@ const MesaReactions = {
   },
 
   showBubble(slot, faceKey) {
-    const slotEl = document.querySelector(`.player-slot.slot-${slot}`);
+    const slotEl = slot === 'master' ? document.getElementById('master-slot') : document.querySelector(`.player-slot.slot-${slot}`);
     const board = document.getElementById('mesa-board-container');
     if (!slotEl || !board) return;
 
@@ -1659,23 +1653,29 @@ const MesaReactions = {
     bubble.className = 'comic-speech-bubble';
     bubble.innerHTML = svgContent;
 
-    // Se o slot estiver na metade direita da mesa, coloca o balão fora à esquerda do card; senão coloca à direita.
-    const isRightSide = (slotRect.left + slotRect.width / 2) > (boardRect.left + boardRect.width / 2);
-
-    let leftPos, topPos;
-    if (isRightSide) {
-      bubble.classList.add('bubble-pointing-right');
-      leftPos = (slotRect.left - boardRect.left) - 75; // totalmente fora, à esquerda do card
-      topPos = (slotRect.top - boardRect.top) + 16;
-    } else {
+    if (slot === 'master') {
       bubble.classList.add('bubble-pointing-left');
-      leftPos = (slotRect.right - boardRect.left) + 16; // totalmente fora, à direita do card
-      topPos = (slotRect.top - boardRect.top) + 16;
+      const leftPos = (slotRect.right - boardRect.left) + 12;
+      const topPos = (slotRect.top - boardRect.top) + 16;
+      bubble.style.position = 'absolute';
+      bubble.style.left = `${Math.round(leftPos)}px`;
+      bubble.style.top = `${Math.round(topPos)}px`;
+    } else {
+      const isRightSide = (slotRect.left + slotRect.width / 2) > (boardRect.left + boardRect.width / 2);
+      let leftPos, topPos;
+      if (isRightSide) {
+        bubble.classList.add('bubble-pointing-right');
+        leftPos = (slotRect.left - boardRect.left) - 75; // totalmente fora, à esquerda do card
+        topPos = (slotRect.top - boardRect.top) + 16;
+      } else {
+        bubble.classList.add('bubble-pointing-left');
+        leftPos = (slotRect.right - boardRect.left) + 16; // totalmente fora, à direita do card
+        topPos = (slotRect.top - boardRect.top) + 16;
+      }
+      bubble.style.position = 'absolute';
+      bubble.style.left = `${Math.round(leftPos)}px`;
+      bubble.style.top = `${Math.round(topPos)}px`;
     }
-
-    bubble.style.position = 'absolute';
-    bubble.style.left = `${Math.round(leftPos)}px`;
-    bubble.style.top = `${Math.round(topPos)}px`;
 
     board.appendChild(bubble);
 
