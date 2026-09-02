@@ -461,6 +461,39 @@ const MesaApp = {
         { nome: 'Desobediência Instintiva', custo: 'Passiva', desc: 'Possui vantagem em testes para resistir a ordens forçadas, coerções sociais ou hipnoses de entidades.' }
       ]
     };
+
+    // Personagem para Slot 5 (Willian Kars)
+    this.state.players[4] = {
+      id: 5,
+      slot: 5,
+      token: 'K4R5',
+      nome: 'Willian Kars',
+      idade: '17 anos',
+      altura: '1,86m',
+      raca: 'Animalesco',
+      arquetipo: 'Valentão',
+      hp: 15, hpMax: 15,
+      pe: 10, peMax: 10,
+      st: 0, stMax: 48,
+      stressPoints: 0,
+      stressPointsMax: 6,
+      atributos: {
+        'Saúde': 'd4',
+        'Vigor': 'd16',
+        'Força': 'd12',
+        'Mente': 'd8'
+      },
+      bonus: [
+        { origem: 'Raça (Animalesco)', desc: '+d4 em testes de Esquiva' },
+        { origem: 'Arquétipo (Valentão)', desc: '+d4 em testes de Força' }
+      ],
+      pericias: ['Furtividade', 'Atletismo', 'Intuição', 'Acrobacia'],
+      habilidades: [
+        { nome: 'Percepção Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguçam. Ganha vantagem em testes de Mente para detectar presenças, sons ou cheiros suspeitos por 1 cena.' },
+        { nome: 'Instinto de Sobrevivência', custo: '3 PE', desc: 'Em situações de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou Força para a próxima ação.' },
+        { nome: 'Intimidação Física', custo: '2 PE', desc: 'Gasta 2 PE para subjugar NPCs humanos ou abrir portas emperradas com uma ombrada violenta.' }
+      ]
+    };
     
     this.renderMesa();
   },
@@ -601,6 +634,24 @@ const MesaApp = {
             { nome: 'Percepção Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguçam. Ganha vantagem em testes de Mente para detectar presenças, sons ou cheiros suspeitos por 1 cena.' },
             { nome: 'Instinto de Sobrevivência', custo: '3 PE', desc: 'Em situações de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou Força para a próxima ação.' },
             { nome: 'Desobediência Instintiva', custo: 'Passiva', desc: 'Possui vantagem em testes para resistir a ordens forçadas, coerções sociais ou hipnoses de entidades.' }
+          ]
+        };
+      }
+
+      if (!this.state.players[4]) {
+        this.state.players[4] = {
+          id: 5, slot: 5, token: 'K4R5', nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão',
+          hp: 15, hpMax: 15, pe: 10, peMax: 10, st: 0, stMax: 48, stressPoints: 0, stressPointsMax: 6,
+          atributos: { 'Saúde': 'd4', 'Vigor': 'd16', 'Força': 'd12', 'Mente': 'd8' },
+          bonus: [
+            { origem: 'Raça (Animalesco)', desc: '+d4 em testes de Esquiva' },
+            { origem: 'Arquétipo (Valentão)', desc: '+d4 em testes de Força' }
+          ],
+          pericias: ['Furtividade', 'Atletismo', 'Intuição', 'Acrobacia'],
+          habilidades: [
+            { nome: 'Percepção Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguçam. Ganha vantagem em testes de Mente para detectar presenças, sons ou cheiros suspeitos por 1 cena.' },
+            { nome: 'Instinto de Sobrevivência', custo: '3 PE', desc: 'Em situações de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou Força para a próxima ação.' },
+            { nome: 'Intimidação Física', custo: '2 PE', desc: 'Gasta 2 PE para subjugar NPCs humanos ou abrir portas emperradas com uma ombrada violenta.' }
           ]
         };
       }
