@@ -312,17 +312,19 @@ const MesaApp = {
 
   updateTokenBtnState() {
     const tokenBtn = document.getElementById('nav-token-btn');
+    const tokenLabel = document.getElementById('nav-token-label');
+    const alertBadge = document.getElementById('token-alert-badge');
     if (!tokenBtn) return;
 
     if (this.state.isMaster) {
-      tokenBtn.innerHTML = `${SVG_ICONS.key} Token Ativo`;
-      tokenBtn.classList.remove('token-pulse-attention');
+      if (tokenLabel) tokenLabel.textContent = 'Token Ativo';
+      if (alertBadge) alertBadge.style.display = 'none';
     } else if (this.state.myToken) {
-      tokenBtn.innerHTML = `${SVG_ICONS.key} ${this.state.myToken}`;
-      tokenBtn.classList.remove('token-pulse-attention');
+      if (tokenLabel) tokenLabel.textContent = this.state.myToken;
+      if (alertBadge) alertBadge.style.display = 'none';
     } else {
-      tokenBtn.innerHTML = `${SVG_ICONS.key} Token`;
-      tokenBtn.classList.add('token-pulse-attention');
+      if (tokenLabel) tokenLabel.textContent = 'Token';
+      if (alertBadge) alertBadge.style.display = 'flex';
     }
   },
 
