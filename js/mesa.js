@@ -1967,12 +1967,11 @@ const MesaMediaPlayer = {
 
   // Upload temporário que não polui o banco e se auto-deleta ao remover ou fechar a página
   async uploadTempFile(file) {
-    const ext = file.name.split('.').pop().toLowerCase();
-    const fileName = `temp_${Date.now()}_${Math.random().toString(36).substring(7)}.${ext}`;
-
-    // 1. Tenta Supabase Storage
+    // 1. Tenta Supabase Storage (se configurado)
     if (MesaApp.supabase && MesaApp.supabase.storage) {
       try {
+        const ext = file.name.split('.').pop().toLowerCase();
+        const fileName = `temp_${Date.now()}_${Math.random().toString(36).substring(7)}.${ext}`;
         const { data, error } = await MesaApp.supabase.storage
           .from('temp_media')
           .upload(fileName, file, { cacheControl: '3600', upsert: true });
@@ -1986,30 +1985,29 @@ const MesaMediaPlayer = {
           }
         }
       } catch (err) {
-        console.warn("Supabase storage indisponível:", err);
+        console.warn("Supabase storage erro:", err);
       }
     }
 
-    // 2. Fallback: Litterbox API (Arquivo temporário que expira e se auto-destrói em 1 hora)
+    // 2. Upload temporário em nuvem de alta velocidade com auto-destruição e CORS liberado (tmpfiles.org)
     try {
       const formData = new FormData();
-      formData.append('reqtype', 'fileupload');
-      formData.append('time', '1h');
-      formData.append('fileToUpload', file);
+      formData.append('file', file);
 
-      const res = await fetch('https://litterbox.catbox.moe/resources/internals/api.php', {
+      const res = await fetch('https://tmpfiles.org/api/v1/upload', {
         method: 'POST',
         body: formData
       });
 
       if (res.ok) {
-        const url = await res.text();
-        if (url && url.startsWith('http')) {
-          return { url: url.trim(), provider: 'litterbox' };
+        const json = await res.json();
+        if (json && json.status === 'success' && json.data && json.data.url) {
+          let directUrl = json.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
+          return { url: directUrl, provider: 'tmpfiles' };
         }
       }
     } catch (err) {
-      console.warn("Fallback Litterbox temporário falhou:", err);
+      console.warn("Upload temporário tmpfiles.org falhou:", err);
     }
 
     return null;
@@ -2405,11 +2403,17 @@ const MesaMediaPlayer = {
         const item = this.videoPlaylist[this.currentVideoIndex];
         const previewVideo = document.getElementById('adm-preview-video');
 
-        payload.url = item.url;
         payload.mediaType = 'video';
         payload.currentTime = previewVideo ? previewVideo.currentTime : 0;
         payload.isPlaying = this.isPlaying;
         payload.volume = this.volume;
+
+        if (item && item.url && !item.url.startsWith('blob:')) {
+          payload.url = item.url;
+        } else {
+          payload.url = null;
+          payload.isPreparing = true;
+        }
 
         if (theaterImage) theaterImage.style.display = 'none';
         if (theaterVideo) {
@@ -2476,7 +2480,7 @@ const MesaMediaPlayer = {
     if (data.mediaType === 'video') {
       if (theaterImage) { theaterImage.style.display = 'none'; theaterImage.src = ''; }
 
-      if (data.url) {
+      if (data.url && !data.url.startsWith('blob:')) {
         if (statusNote) statusNote.style.display = 'none';
         if (theaterVideo) {
           theaterVideo.style.display = 'block';
@@ -2504,7 +2508,7 @@ const MesaMediaPlayer = {
         if (theaterVideo) theaterVideo.style.display = 'none';
         if (statusNote) {
           statusNote.style.display = 'block';
-          statusNote.textContent = 'Aguardando o Mestre selecionar um vídeo...';
+          statusNote.textContent = data.isPreparing ? 'Preparando transmissão de vídeo...' : 'Aguardando o Mestre selecionar um vídeo...';
         }
       }
     } else if (data.mediaType === 'image') {
