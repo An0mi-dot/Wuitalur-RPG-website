@@ -846,15 +846,15 @@ html, body {
   margin-bottom: 0;
 }
 
-/* Keyframe de Entrada Suave da Ilustração ao Abrir a Ficha */
+/* Keyframe de Entrada Deslizando da Esquerda ao Abrir a Ficha */
 @keyframes charPortraitEntrance {
   0% {
     opacity: 0;
-    transform: scale(1.16) translateY(50px);
+    transform: scale(1.24) translateX(-90px) translateY(16px);
   }
   100% {
     opacity: 1;
-    transform: scale(1.24) translateY(16px);
+    transform: scale(1.24) translateX(0) translateY(16px);
   }
 }
 
@@ -873,7 +873,7 @@ html, body {
 }
 
 .ficha-overlay.active .ficha-char-portrait-img {
-  animation: charPortraitEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.06s both;
+  animation: charPortraitEntrance 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
 }
 
 .cube-placeholder-box {
