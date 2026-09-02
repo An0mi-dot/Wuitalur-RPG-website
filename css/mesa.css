@@ -949,15 +949,55 @@ html, body {
   margin-bottom: 0;
 }
 
-/* Keyframe de Entrada Deslizando da Esquerda ao Abrir a Ficha */
+/* Keyframe de Entrada: Translúcido -> Glitches Laranjas Rápidos -> Deslizando da Esquerda -> Imagem Nítida */
 @keyframes charPortraitEntrance {
   0% {
-    opacity: 0;
-    transform: scale(1.24) translateX(-90px) translateY(16px);
+    opacity: 0.18;
+    transform: scale(1.24) translateX(-85px) translateY(16px) skewX(-4deg);
+    filter: drop-shadow(8px 0 0 rgba(255, 85, 0, 0.95)) drop-shadow(-6px 0 0 rgba(255, 140, 0, 0.8)) drop-shadow(0 0 15px rgba(255, 85, 0, 0.6));
+    clip-path: inset(12% 0 28% 0);
+  }
+  14% {
+    opacity: 0.35;
+    transform: scale(1.24) translateX(-68px) translateY(16px) skewX(5deg);
+    filter: drop-shadow(-10px 0 0 rgba(255, 60, 0, 0.95)) drop-shadow(6px 0 0 rgba(255, 170, 0, 0.9));
+    clip-path: inset(45% 0 8% 0);
+  }
+  28% {
+    opacity: 0.52;
+    transform: scale(1.24) translateX(-50px) translateY(16px) skewX(-3deg);
+    filter: drop-shadow(7px 0 0 rgba(255, 85, 0, 0.9)) drop-shadow(-4px 0 0 rgba(255, 120, 0, 0.7));
+    clip-path: inset(0 0 0 0);
+  }
+  42% {
+    opacity: 0.7;
+    transform: scale(1.24) translateX(-32px) translateY(16px) skewX(4deg);
+    filter: drop-shadow(-8px 0 0 rgba(255, 85, 0, 0.85)) drop-shadow(5px 0 0 rgba(255, 150, 0, 0.75));
+    clip-path: inset(20% 0 35% 0);
+  }
+  56% {
+    opacity: 0.84;
+    transform: scale(1.24) translateX(-18px) translateY(16px) skewX(-2deg);
+    filter: drop-shadow(5px 0 0 rgba(255, 85, 0, 0.6)) drop-shadow(-3px 0 0 rgba(255, 110, 0, 0.5));
+    clip-path: inset(0 0 0 0);
+  }
+  70% {
+    opacity: 0.94;
+    transform: scale(1.24) translateX(-7px) translateY(16px) skewX(1deg);
+    filter: drop-shadow(-3px 0 0 rgba(255, 85, 0, 0.35)) drop-shadow(0 14px 35px rgba(0, 0, 0, 0.85));
+    clip-path: inset(0 0 0 0);
+  }
+  84% {
+    opacity: 0.98;
+    transform: scale(1.24) translateX(-2px) translateY(16px) skewX(0deg);
+    filter: drop-shadow(1px 0 0 rgba(255, 85, 0, 0.2)) drop-shadow(0 14px 35px rgba(0, 0, 0, 0.85));
+    clip-path: inset(0 0 0 0);
   }
   100% {
     opacity: 1;
-    transform: scale(1.24) translateX(0) translateY(16px);
+    transform: scale(1.24) translateX(0) translateY(16px) skewX(0deg);
+    filter: drop-shadow(0 14px 35px rgba(0, 0, 0, 0.85));
+    clip-path: inset(0 0 0 0);
   }
 }
 
@@ -976,7 +1016,7 @@ html, body {
 }
 
 .ficha-overlay.active .ficha-char-portrait-img {
-  animation: charPortraitEntrance 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+  animation: charPortraitEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
 }
 
 .cube-placeholder-box {
