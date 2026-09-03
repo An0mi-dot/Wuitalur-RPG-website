@@ -406,13 +406,13 @@ const MesaApp = {
   // LISTA DE TOKENS DE 4 CARACTERES PARA OS 8 SLOTS
   SLOT_TOKENS: {
     1: 'W4R9',
-    2: 'K7M2',
+    2: 'M7Q2',
     3: 'B8T3', // Eric "Blade"
-    4: 'V5N8',
-    5: 'L3P6',
-    6: 'H9D4',
-    7: 'Z2Q7',
-    8: 'X6K1'
+    4: 'P3R4', // Pera
+    5: 'K4R5', // Willian
+    6: 'J9D6', // John Doe
+    7: 'O7D7', // Odara
+    8: 'C8B8'  // Canneth 'Blinko' Biloxi
   },
 
   supabase: null,
@@ -718,6 +718,39 @@ const MesaApp = {
         { nome: 'Familiaridade com o Macabro', custo: 'Passiva', desc: 'A visão de cadáveres, ossadas ou sangue seco não provoca dano na sua Barra de Estresse.' }
       ]
     };
+
+    // Personagem para Slot 8 (Canneth ‘Blinko’ Biloxi)
+    this.state.players[7] = {
+      id: 8,
+      slot: 8,
+      token: 'C8B8',
+      nome: "Canneth 'Blinko' Biloxi",
+      idade: '18 anos',
+      altura: '1,75m',
+      raca: 'Animalesco',
+      arquetipo: 'Teimoso',
+      hp: 17, hpMax: 17,
+      pe: 10, peMax: 10,
+      st: 0, stMax: 36,
+      stressPoints: 0,
+      stressPointsMax: 6,
+      atributos: {
+        'Vigor': 'd12',
+        'Saúde': 'd8',
+        'Força': 'd4',
+        'Mente': 'd16'
+      },
+      bonus: [
+        { origem: 'Raça (Animalesco)', desc: '+d4 em testes de Esquiva / Sentidos Aguçados' },
+        { origem: 'Arquétipo (Teimoso)', desc: 'Resistência a ser coagido ou derrubado' }
+      ],
+      pericias: ['Intimidação', 'Engenharia', 'Atletismo', 'História'],
+      habilidades: [
+        { nome: 'Recusa em Cair', custo: '3 PE', desc: 'Ao sofrer dano que o deixaria com 0 PV, gasta 3 PE para permanecer de pé com exatamente 1 PV (uma vez por sessão).' },
+        { nome: 'Percepção Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguçam. Ganha vantagem em testes de Mente para detectar presenças, sons ou cheiros suspeitos por 1 cena.' },
+        { nome: 'Instinto de Sobrevivência', custo: '3 PE', desc: 'Em situações de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou Força para a próxima ação.' }
+      ]
+    };
     
     this.renderMesa();
   },
@@ -917,6 +950,24 @@ const MesaApp = {
             { nome: 'Sopro Ancestral', custo: '4 PE', desc: 'Expele um cone de energia elemental (Fogo/Solar, Estase ou Ácido) em um raio de 3B à sua frente. Inimigos na área devem rolar teste de Destreza (CT 15) ou sofrer 3d10 de dano elemental.' },
             { nome: 'Conexão Sensorial', custo: '2 PE', desc: 'As seis antenas permitem comunicação telepática limitada com criaturas a até 10B, transmitindo emoções, intenções simples ou imagens mentais.' },
             { nome: 'Familiaridade com o Macabro', custo: 'Passiva', desc: 'A visão de cadáveres, ossadas ou sangue seco não provoca dano na sua Barra de Estresse.' }
+          ]
+        };
+      }
+
+      if (!this.state.players[7]) {
+        this.state.players[7] = {
+          id: 8, slot: 8, token: 'C8B8', nome: "Canneth 'Blinko' Biloxi", idade: '18 anos', altura: '1,75m', raca: 'Animalesco', arquetipo: 'Teimoso',
+          hp: 17, hpMax: 17, pe: 10, peMax: 10, st: 0, stMax: 36, stressPoints: 0, stressPointsMax: 6,
+          atributos: { 'Vigor': 'd12', 'Saúde': 'd8', 'Força': 'd4', 'Mente': 'd16' },
+          bonus: [
+            { origem: 'Raça (Animalesco)', desc: '+d4 em testes de Esquiva / Sentidos Aguçados' },
+            { origem: 'Arquétipo (Teimoso)', desc: 'Resistência a ser coagido ou derrubado' }
+          ],
+          pericias: ['Intimidação', 'Engenharia', 'Atletismo', 'História'],
+          habilidades: [
+            { nome: 'Recusa em Cair', custo: '3 PE', desc: 'Ao sofrer dano que o deixaria com 0 PV, gasta 3 PE para permanecer de pé com exatamente 1 PV (uma vez por sessão).' },
+            { nome: 'Percepção Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguçam. Ganha vantagem em testes de Mente para detectar presenças, sons ou cheiros suspeitos por 1 cena.' },
+            { nome: 'Instinto de Sobrevivência', custo: '3 PE', desc: 'Em situações de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou Força para a próxima ação.' }
           ]
         };
       }
