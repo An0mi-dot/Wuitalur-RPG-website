@@ -590,7 +590,7 @@ html, body {
 /* Cards do TOPO (Slot 1, Mestre, Slot 2) - Ficam ABAIXO da ilustração central (z-index: 5 < 10) */
 .slot-1 {
   top: 0; left: 25%; transform: translate(-50%, -50%) rotate(-1.2deg);
-  animation: slotDropTop 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.16s both;
+  animation: slotDropTop 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.16s both, cardLivingPulse 7.5s ease-in-out 0.8s infinite;
   z-index: 5 !important;
 }
 .slot-1:hover {
@@ -602,7 +602,7 @@ html, body {
   top: 0;
   left: 50%;
   transform: translate(-50%, -50%) rotate(0deg);
-  animation: slotDropTop 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.19s both;
+  animation: slotDropTop 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.19s both, masterAuraPulse 8s ease-in-out 0.8s infinite;
   border-color: rgba(255, 255, 255, 0.65);
   background: rgba(15, 15, 15, 0.85);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85), 0 0 22px rgba(255, 255, 255, 0.2);
@@ -637,7 +637,7 @@ html, body {
 
 .slot-2 {
   top: 0; left: 75%; transform: translate(-50%, -50%) rotate(1.4deg);
-  animation: slotDropTop 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
+  animation: slotDropTop 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both, cardLivingPulse 7.5s ease-in-out 1.8s infinite;
   z-index: 5 !important;
 }
 .slot-2:hover {
@@ -647,32 +647,32 @@ html, body {
 /* Cards das LATERAIS e de BAIXO (Slots 3 a 8) - Ficam ACIMA da ilustração central (z-index: 20 > 10) */
 .slot-3 {
   top: 50%; left: 0; transform: translate(-50%, -50%) rotate(-1.5deg);
-  animation: slotSlideLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.28s both;
+  animation: slotSlideLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.28s both, cardLivingPulse 7.5s ease-in-out 2.8s infinite;
   z-index: 20;
 }
 .slot-4 {
   top: 50%; left: 100%; transform: translate(-50%, -50%) rotate(1.2deg);
-  animation: slotSlideRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.34s both;
+  animation: slotSlideRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.34s both, cardLivingPulse 7.5s ease-in-out 3.8s infinite;
   z-index: 20;
 }
 .slot-5 {
   top: 100%; left: 12.5%; transform: translate(-50%, -50%) rotate(-0.8deg);
-  animation: slotRiseBottom 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.40s both;
+  animation: slotRiseBottom 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.40s both, cardLivingPulse 7.5s ease-in-out 4.8s infinite;
   z-index: 20;
 }
 .slot-6 {
   top: 100%; left: 37.5%; transform: translate(-50%, -50%) rotate(1.1deg);
-  animation: slotRiseBottom 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.46s both;
+  animation: slotRiseBottom 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.46s both, cardLivingPulse 7.5s ease-in-out 5.8s infinite;
   z-index: 20;
 }
 .slot-7 {
   top: 100%; left: 62.5%; transform: translate(-50%, -50%) rotate(-1.3deg);
-  animation: slotRiseBottom 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.52s both;
+  animation: slotRiseBottom 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.52s both, cardLivingPulse 7.5s ease-in-out 6.8s infinite;
   z-index: 20;
 }
 .slot-8 {
   top: 100%; left: 87.5%; transform: translate(-50%, -50%) rotate(0.9deg);
-  animation: slotRiseBottom 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.58s both;
+  animation: slotRiseBottom 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.58s both, cardLivingPulse 7.5s ease-in-out 7.8s infinite;
   z-index: 20;
 }
 
@@ -685,45 +685,136 @@ html, body {
   z-index: 30;
 }
 
-/* Efeito de micro-pixels e linhas digitais se movendo lentamente dentro do card ao passar o mouse */
+/* ============================================================
+   ANIMAÇÃO CONTÍNUA LENTA DOS CARDS: PULSO DE ENERGIA & REFLEXO HOLOGRÁFICO
+   (Sem boobing / Sem deslizamento / Transições lentas de 6.5s a 9.5s)
+   ============================================================ */
+
+@keyframes cardLivingPulse {
+  0%, 100% {
+    border-color: rgba(255, 85, 0, 0.28);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.72), 0 0 10px rgba(255, 85, 0, 0.08);
+  }
+  50% {
+    border-color: rgba(255, 125, 35, 0.58);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.82), 0 0 22px rgba(255, 85, 0, 0.26), inset 0 0 16px rgba(255, 85, 0, 0.06);
+  }
+}
+
+@keyframes masterAuraPulse {
+  0%, 100% {
+    border-color: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85), 0 0 16px rgba(255, 255, 255, 0.16);
+  }
+  50% {
+    border-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.92), 0 0 28px rgba(255, 255, 255, 0.42), inset 0 0 18px rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* Efeito de micro-pixels ambiente lento */
 .player-slot::before {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle, rgba(255, 110, 0, 0.42) 1.2px, transparent 1.3px);
-  background-size: 6px 6px;
-  opacity: 0;
+  background-image: radial-gradient(circle, rgba(255, 110, 0, 0.35) 1px, transparent 1.2px);
+  background-size: 8px 8px;
+  opacity: 0.18;
   transition: opacity 0.4s ease;
   pointer-events: none;
   z-index: 1;
+  animation: pixelCrawlAmbient 14s linear infinite;
 }
 
+@keyframes pixelCrawlAmbient {
+  0% { background-position: 0 0; }
+  100% { background-position: -32px -64px; }
+}
+
+/* Reflexo diagonal de vidro holográfico percorrendo suavemente os cards */
 .player-slot::after {
   content: '';
   position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(255, 85, 0, 0.08) 0px,
-    rgba(255, 85, 0, 0.08) 1px,
-    transparent 1px,
-    transparent 4px
+  inset: -60%;
+  background: linear-gradient(
+    120deg,
+    transparent 38%,
+    rgba(255, 90, 0, 0.02) 44%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 130, 0, 0.03) 56%,
+    transparent 62%
   );
-  opacity: 0;
-  transition: opacity 0.4s ease;
+  opacity: 0.7;
   pointer-events: none;
   z-index: 2;
+  transform: translateY(-130%) translateX(-20%);
+  animation: glassSheenSweep 9.5s ease-in-out infinite;
 }
 
+@keyframes glassSheenSweep {
+  0% {
+    transform: translateY(-130%) translateX(-20%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.75;
+  }
+  26% {
+    transform: translateY(130%) translateX(20%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(130%) translateX(20%);
+    opacity: 0;
+  }
+}
+
+.slot-1::after { animation-delay: 0s; }
+.slot-2::after { animation-delay: 1.2s; }
+.slot-3::after { animation-delay: 2.4s; }
+.slot-4::after { animation-delay: 3.6s; }
+.slot-5::after { animation-delay: 4.8s; }
+.slot-6::after { animation-delay: 6.0s; }
+.slot-7::after { animation-delay: 7.2s; }
+.slot-8::after { animation-delay: 8.4s; }
+.master-slot::after { animation-delay: 0.6s; }
+
 .player-slot:hover::before {
-  opacity: 1;
-  animation: pixelCrawlSlow 7s linear infinite;
+  opacity: 0.85;
+  animation: pixelCrawlSlow 6s linear infinite;
 }
 
 .player-slot:hover::after {
   opacity: 1;
-  animation: pixelScanlineSlow 4.5s linear infinite;
 }
+
+/* Micro-pulso de vitalidade do Avatar */
+.slot-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  animation: avatarLifePulse 6.8s ease-in-out infinite;
+}
+
+@keyframes avatarLifePulse {
+  0%, 100% {
+    filter: brightness(0.97) contrast(1.02);
+  }
+  50% {
+    filter: brightness(1.06) contrast(1.10) drop-shadow(0 0 6px rgba(255, 85, 0, 0.35));
+  }
+}
+
+.slot-1 .slot-avatar-img { animation-delay: 0.3s; }
+.slot-2 .slot-avatar-img { animation-delay: 1.5s; }
+.slot-3 .slot-avatar-img { animation-delay: 2.7s; }
+.slot-4 .slot-avatar-img { animation-delay: 3.9s; }
+.slot-5 .slot-avatar-img { animation-delay: 5.1s; }
+.slot-6 .slot-avatar-img { animation-delay: 6.3s; }
+.slot-7 .slot-avatar-img { animation-delay: 7.5s; }
+.slot-8 .slot-avatar-img { animation-delay: 8.7s; }
 
 @keyframes pixelCrawlSlow {
   0% { background-position: 0 0; }
