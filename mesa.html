@@ -8,9 +8,9 @@
   <meta http-equiv="Expires" content="0">
   <title>Mesa Virtual - Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/variables.css?v=2.9.1">
-  <link rel="stylesheet" href="css/components.css?v=2.9.1">
-  <link rel="stylesheet" href="css/mesa.css?v=2.9.1">
+  <link rel="stylesheet" href="css/variables.css?v=2.9.2">
+  <link rel="stylesheet" href="css/components.css?v=2.9.2">
+  <link rel="stylesheet" href="css/mesa.css?v=2.9.2">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -541,6 +541,16 @@
           </div>
         </div>
 
+        <div class="dice-modal-actions">
+          <button class="mesa-btn ink-tag" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.3);" onclick="MesaDice.clearPool()">Limpar</button>
+          <button id="dice-roll-execute-btn" class="mesa-btn ink-tag primary roll-action-btn" onclick="MesaDice.executeRoll()">ROLAR DADOS</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BACKDROP PARA FECHAR O MENU MOBILE AO CLICAR FORA -->
+    <div id="mesa-mobile-backdrop" class="mesa-mobile-backdrop" onclick="MesaMobileMenu.close()"></div>
+
     <!-- BOTÃO FLUTUANTE HAMBÚRGUER MOBILE (CANTO INFERIOR DIREITO) -->
     <div id="mesa-mobile-fab-container" class="mesa-mobile-fab-container">
       <button id="mesa-mobile-fab-btn" class="mesa-mobile-fab-btn" onclick="MesaMobileMenu.toggle()" aria-label="Menu de Ações">
@@ -638,6 +648,6 @@
       </div>
     </div>
 
-<script src="js/mesa.js?v=2.9.1"></script>
+<script src="js/mesa.js?v=2.9.2"></script>
 </body>
 </html>

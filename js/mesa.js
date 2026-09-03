@@ -3571,8 +3571,10 @@ const MesaMobileMenu = {
     this.isOpen = true;
     const drawer = document.getElementById('mesa-mobile-menu-drawer');
     const fabBtn = document.getElementById('mesa-mobile-fab-btn');
+    const backdrop = document.getElementById('mesa-mobile-backdrop');
     if (drawer) drawer.classList.add('active');
     if (fabBtn) fabBtn.classList.add('active');
+    if (backdrop) backdrop.classList.add('active');
     this.updateState();
   },
 
@@ -3580,8 +3582,10 @@ const MesaMobileMenu = {
     this.isOpen = false;
     const drawer = document.getElementById('mesa-mobile-menu-drawer');
     const fabBtn = document.getElementById('mesa-mobile-fab-btn');
+    const backdrop = document.getElementById('mesa-mobile-backdrop');
     if (drawer) drawer.classList.remove('active');
     if (fabBtn) fabBtn.classList.remove('active');
+    if (backdrop) backdrop.classList.remove('active');
   },
 
   updateState() {
