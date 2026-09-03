@@ -8,9 +8,9 @@
   <meta http-equiv="Expires" content="0">
   <title>Mesa Virtual - Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/variables.css?v=2.9.0">
-  <link rel="stylesheet" href="css/components.css?v=2.9.0">
-  <link rel="stylesheet" href="css/mesa.css?v=2.9.0">
+  <link rel="stylesheet" href="css/variables.css?v=2.9.1">
+  <link rel="stylesheet" href="css/components.css?v=2.9.1">
+  <link rel="stylesheet" href="css/mesa.css?v=2.9.1">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -541,13 +541,103 @@
           </div>
         </div>
 
-        <div class="dice-modal-actions">
-          <button class="mesa-btn ink-tag" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.3);" onclick="MesaDice.clearPool()">Limpar</button>
-          <button id="dice-roll-execute-btn" class="mesa-btn ink-tag primary roll-action-btn" onclick="MesaDice.executeRoll()">ROLAR DADOS</button>
+    <!-- BOTÃO FLUTUANTE HAMBÚRGUER MOBILE (CANTO INFERIOR DIREITO) -->
+    <div id="mesa-mobile-fab-container" class="mesa-mobile-fab-container">
+      <button id="mesa-mobile-fab-btn" class="mesa-mobile-fab-btn" onclick="MesaMobileMenu.toggle()" aria-label="Menu de Ações">
+        <div class="fab-hamburger-icon">
+          <span class="fab-bar"></span>
+          <span class="fab-bar"></span>
+          <span class="fab-bar"></span>
+        </div>
+        <span id="mobile-fab-alert-pip" class="mobile-fab-alert-pip" style="display: none;"></span>
+      </button>
+
+      <!-- GAVETA DE AÇÕES MOBILE FLUTUANTE -->
+      <div id="mesa-mobile-menu-drawer" class="mesa-mobile-menu-drawer">
+        <div class="mobile-menu-header">
+          <span class="mobile-menu-title">[ MENU DA MESA ]</span>
+          <button class="mobile-menu-close-btn" onclick="MesaMobileMenu.close()">&times;</button>
+        </div>
+
+        <div class="mobile-menu-list">
+          <!-- Minha Ficha / Ver Grupo -->
+          <button class="mobile-menu-item primary-highlight" onclick="MesaApp.toggleMobileGroupView(); MesaMobileMenu.close()">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span id="mobile-menu-group-label">Ver Minha Ficha / Grupo</span>
+          </button>
+
+          <!-- Reagir -->
+          <button class="mobile-menu-item" onclick="MesaReactions.togglePicker(); MesaMobileMenu.close()">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+              <line x1="9" y1="9" x2="9.01" y2="9"></line>
+              <line x1="15" y1="9" x2="15.01" y2="9"></line>
+            </svg>
+            <span>Reagir com Emoji</span>
+          </button>
+
+          <!-- Chat -->
+          <button class="mobile-menu-item" onclick="MesaChat.toggleChat(); MesaMobileMenu.close()">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span>Chat da Mesa</span>
+            <span id="mobile-chat-unread-pip" class="chat-unread-pip" style="display:none; margin-left: auto;"></span>
+          </button>
+
+          <!-- Rolar Dados -->
+          <button class="mobile-menu-item" onclick="MesaDice.openModal(); MesaMobileMenu.close()">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="3" ry="3"></rect>
+              <path d="M8 8h.01"></path>
+              <path d="M16 8h.01"></path>
+              <path d="M12 12h.01"></path>
+              <path d="M8 16h.01"></path>
+              <path d="M16 16h.01"></path>
+            </svg>
+            <span>Rolar Dados</span>
+          </button>
+
+          <!-- Painel do Mestre (Exibido apenas para o Mestre) -->
+          <div id="mobile-master-section" class="mobile-master-section" style="display: none;">
+            <div class="mobile-section-divider">PAINEL DO MESTRE</div>
+            <button class="mobile-menu-item master-item" onclick="MesaLibrary.toggleSidebar(); MesaMobileMenu.close()">
+              <span class="m-item-icon">[ASSETS]</span>
+              <span>Galeria de Assets</span>
+            </button>
+            <button class="mobile-menu-item master-item" onclick="MesaMediaPlayer.toggleDrawer(); MesaMobileMenu.close()">
+              <span class="m-item-icon">[MÍDIA]</span>
+              <span>Player de Mídia</span>
+            </button>
+          </div>
+
+          <!-- Token de Autenticação -->
+          <button class="mobile-menu-item" onclick="MesaApp.openTokenModal(); MesaMobileMenu.close()">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+            </svg>
+            <span id="mobile-token-label">Autenticar Token</span>
+            <span id="mobile-token-alert-pip" class="token-alert-pip" style="margin-left: auto;">!</span>
+          </button>
+
+          <!-- Voltar ao Menu Principal -->
+          <a href="index.html" class="mobile-menu-item exit-item">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Voltar ao Menu Principal</span>
+          </a>
         </div>
       </div>
     </div>
 
-<script src="js/mesa.js?v=2.9.0"></script>
+<script src="js/mesa.js?v=2.9.1"></script>
 </body>
 </html>

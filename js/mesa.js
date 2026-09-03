@@ -1588,6 +1588,9 @@ const MesaChat = {
       if (this.isOpen) {
         panel.classList.add('active');
         if (badge) badge.style.display = 'none';
+        const mobileBadge = document.getElementById('mobile-chat-unread-pip');
+        if (mobileBadge) mobileBadge.style.display = 'none';
+        if (typeof MesaMobileMenu !== 'undefined') MesaMobileMenu.updateState();
         this.updateSenderIdentity();
         this.scrollToBottom();
         const input = document.getElementById('chat-message-input');
@@ -1709,6 +1712,9 @@ const MesaChat = {
     if (!this.isOpen) {
       const badge = document.getElementById('chat-unread-badge');
       if (badge) badge.style.display = 'inline-block';
+      const mobileBadge = document.getElementById('mobile-chat-unread-pip');
+      if (mobileBadge) mobileBadge.style.display = 'inline-block';
+      if (typeof MesaMobileMenu !== 'undefined') MesaMobileMenu.updateState();
     }
   },
 
@@ -3539,8 +3545,91 @@ const MesaLibrary = {
   }
 };
 
+// ---- 9. MOTOR DO MENU FLUTUANTE HAMBÚRGUER MOBILE ----
+const MesaMobileMenu = {
+  isOpen: false,
+
+  init() {
+    document.addEventListener('click', (e) => {
+      const container = document.getElementById('mesa-mobile-fab-container');
+      if (container && this.isOpen && !container.contains(e.target)) {
+        this.close();
+      }
+    });
+    this.updateState();
+  },
+
+  toggle() {
+    if (this.isOpen) {
+      this.close();
+    } else {
+      this.open();
+    }
+  },
+
+  open() {
+    this.isOpen = true;
+    const drawer = document.getElementById('mesa-mobile-menu-drawer');
+    const fabBtn = document.getElementById('mesa-mobile-fab-btn');
+    if (drawer) drawer.classList.add('active');
+    if (fabBtn) fabBtn.classList.add('active');
+    this.updateState();
+  },
+
+  close() {
+    this.isOpen = false;
+    const drawer = document.getElementById('mesa-mobile-menu-drawer');
+    const fabBtn = document.getElementById('mesa-mobile-fab-btn');
+    if (drawer) drawer.classList.remove('active');
+    if (fabBtn) fabBtn.classList.remove('active');
+  },
+
+  updateState() {
+    const masterSection = document.getElementById('mobile-master-section');
+    const tokenLabel = document.getElementById('mobile-token-label');
+    const tokenAlert = document.getElementById('mobile-token-alert-pip');
+    const groupLabel = document.getElementById('mobile-menu-group-label');
+    const fabAlert = document.getElementById('mobile-fab-alert-pip');
+    const fichaModal = document.getElementById('ficha-modal');
+
+    const isMaster = MesaApp && MesaApp.state && MesaApp.state.isMaster;
+    const myToken = MesaApp && MesaApp.state && MesaApp.state.myToken;
+
+    if (masterSection) {
+      masterSection.style.display = isMaster ? 'block' : 'none';
+    }
+
+    if (tokenLabel) {
+      if (isMaster) {
+        tokenLabel.textContent = 'Token Ativo (Mestre)';
+      } else if (myToken) {
+        tokenLabel.textContent = `Token: ${myToken}`;
+      } else {
+        tokenLabel.textContent = 'Autenticar Token';
+      }
+    }
+
+    const needsToken = !myToken && !isMaster;
+    if (tokenAlert) {
+      tokenAlert.style.display = needsToken ? 'flex' : 'none';
+    }
+
+    const chatBadge = document.getElementById('mobile-chat-unread-pip');
+    const hasUnreadChat = chatBadge && chatBadge.style.display !== 'none';
+    if (fabAlert) {
+      fabAlert.style.display = (needsToken || hasUnreadChat) ? 'block' : 'none';
+    }
+
+    if (groupLabel) {
+      const isFichaActive = fichaModal && fichaModal.classList.contains('active');
+      groupLabel.textContent = isFichaActive ? 'Ver Grupo na Mesa' : 'Ver Minha Ficha';
+    }
+  }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   MesaApp.init();
+  MesaMobileMenu.init();
 
   // Fecha o menu dropdown do mestre se clicar fora
   document.addEventListener('click', (e) => {
