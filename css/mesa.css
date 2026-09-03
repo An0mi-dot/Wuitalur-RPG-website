@@ -277,6 +277,7 @@ html, body {
     inset 0 0 120px rgba(0, 0, 0, 0.9);
   filter: url(#nanquim-rough);
   animation: mesaBoardReveal 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+  overflow: hidden; /* Imagem fica estritamente contida abaixo das bordas */
 }
 
 @keyframes mesaBoardReveal {
@@ -302,6 +303,7 @@ html, body {
   border: 1.5px dashed rgba(255, 85, 0, 0.35);
   border-radius: 2px;
   pointer-events: none;
+  z-index: 5; /* Borda tracejada fica sobre a imagem */
 }
 
 .board-crosshair-c {
@@ -313,6 +315,7 @@ html, body {
   height: 40px;
   opacity: 0.15;
   pointer-events: none;
+  z-index: 4;
 }
 .board-crosshair-c::before,
 .board-crosshair-c::after {
@@ -327,19 +330,17 @@ html, body {
   left: 0; right: 0; top: 50%; height: 1px;
 }
 
-/* ---- PROJEÇÃO CENTRAL DE IMAGENS NO QUADRADO PRETO (ACIMA DO MESTRE, ABAIXO DOS JOGADORES) ---- */
+/* ---- PROJEÇÃO CENTRAL DE IMAGENS NO QUADRADO PRETO (COM GLITCH CYBERPUNK & PROCEDURAL) ---- */
 .board-center-display {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(82vw, 1100px);
-  height: min(56vh, 600px);
+  inset: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10; /* Acima do card do mestre (z-index: 5) e abaixo dos jogadores (z-index: 20) */
-  overflow: visible;
+  z-index: 10;
+  overflow: hidden;
   pointer-events: none;
 }
 
@@ -354,6 +355,17 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 14px;
+  box-sizing: border-box;
+}
+
+.board-center-glitch-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 15;
 }
 
 .board-center-img {
@@ -363,23 +375,143 @@ html, body {
   max-height: 100%;
   object-fit: contain;
   object-position: center center;
-  filter: none !important; /* SEM BRILHO OU SOMBRA */
-  animation: boardCenterPopIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
-  transition: opacity 0.3s ease;
+  filter: none !important;
   user-select: none;
   pointer-events: none;
 }
 
-@keyframes boardCenterPopIn {
-  0% { opacity: 0; transform: scale(0.96); }
-  100% { opacity: 1; transform: scale(1); }
+/* Camada Base: Transparência inicial -> Desliza da Esquerda -> Assenta 100% Sólida */
+.board-center-display.active #board-center-img.glitch-img-base {
+  animation: boardCenterGlitchBaseSlide 0.58s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes boardCenterGlitchBaseSlide {
+  0% {
+    opacity: 0.2;
+    transform: translateX(-70px) scale(0.96);
+  }
+  35% {
+    opacity: 0.5;
+  }
+  70% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Glitch Camada 1: Fatias Horizontais Laranjas Vivas no Centro */
+.board-center-display.active #board-center-glitch-1.glitch-layer-1 {
+  mix-blend-mode: screen;
+  filter: drop-shadow(5px 0 0 #ff5500) drop-shadow(-3px 0 0 #ffaa00) saturate(220%) brightness(1.2);
+  animation: boardCenterGlitchSliceOrange 0.52s steps(1, end) both;
+}
+
+@keyframes boardCenterGlitchSliceOrange {
+  0% {
+    opacity: 0.85;
+    transform: translateX(-76px) scale(0.96);
+    clip-path: polygon(0 8%, 100% 8%, 100% 24%, 0 24%);
+  }
+  12% {
+    opacity: 0.9;
+    transform: translateX(-56px) scale(0.96);
+    clip-path: polygon(0 42%, 100% 42%, 100% 56%, 0 56%);
+  }
+  24% {
+    opacity: 0.8;
+    transform: translateX(-38px) scale(0.98);
+    clip-path: polygon(0 70%, 100% 70%, 100% 86%, 0 86%);
+  }
+  36% {
+    opacity: 0.95;
+    transform: translateX(-20px) scale(0.99);
+    clip-path: polygon(0 18%, 100% 18%, 100% 34%, 0 34%);
+  }
+  48% {
+    opacity: 0.75;
+    transform: translateX(-10px) scale(1);
+    clip-path: polygon(0 52%, 100% 52%, 100% 64%, 0 64%);
+  }
+  62% {
+    opacity: 0.6;
+    transform: translateX(-4px) scale(1);
+    clip-path: polygon(0 82%, 100% 82%, 100% 96%, 0 96%);
+  }
+  76% {
+    opacity: 0.35;
+    transform: translateX(3px) scale(1);
+    clip-path: polygon(0 30%, 100% 30%, 100% 44%, 0 44%);
+  }
+  88% {
+    opacity: 0.15;
+    transform: translateX(0) scale(1);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(0) scale(1);
+    clip-path: polygon(0 0, 0 0, 0 0, 0 0);
+  }
+}
+
+/* Glitch Camada 2: Fatias Horizontais em Fase Oposta no Centro */
+.board-center-display.active #board-center-glitch-2.glitch-layer-2 {
+  mix-blend-mode: screen;
+  filter: drop-shadow(-5px 0 0 #ff7700) drop-shadow(4px 0 0 #ffffff) brightness(1.25);
+  animation: boardCenterGlitchSliceAmber 0.48s steps(1, end) both;
+}
+
+@keyframes boardCenterGlitchSliceAmber {
+  0% {
+    opacity: 0.8;
+    transform: translateX(-64px) scale(0.96);
+    clip-path: polygon(0 28%, 100% 28%, 100% 40%, 0 40%);
+  }
+  14% {
+    opacity: 0.9;
+    transform: translateX(-48px) scale(0.97);
+    clip-path: polygon(0 60%, 100% 60%, 100% 74%, 0 74%);
+  }
+  28% {
+    opacity: 0.75;
+    transform: translateX(-30px) scale(0.98);
+    clip-path: polygon(0 4%, 100% 4%, 100% 16%, 0 16%);
+  }
+  42% {
+    opacity: 0.85;
+    transform: translateX(-14px) scale(1);
+    clip-path: polygon(0 76%, 100% 76%, 100% 92%, 0 92%);
+  }
+  58% {
+    opacity: 0.55;
+    transform: translateX(4px) scale(1);
+    clip-path: polygon(0 36%, 100% 36%, 100% 48%, 0 48%);
+  }
+  72% {
+    opacity: 0.3;
+    transform: translateX(-2px) scale(1);
+    clip-path: polygon(0 88%, 100% 88%, 100% 98%, 0 98%);
+  }
+  86% {
+    opacity: 0.1;
+    transform: translateX(0) scale(1);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(0) scale(1);
+    clip-path: polygon(0 0, 0 0, 0 0, 0 0);
+  }
 }
 
 .board-center-close-btn {
   display: none; /* Exclusivo do mestre, controlado via JS */
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 12px;
+  right: 12px;
   background: #ef4444;
   border: 1px solid #7f1d1d;
   color: #fff;
@@ -393,7 +525,7 @@ html, body {
   cursor: pointer;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
   transition: all 0.15s;
-  z-index: 40;
+  z-index: 20;
 }
 
 .board-center-close-btn:hover {

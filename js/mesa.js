@@ -395,6 +395,161 @@ const PortraitGlitchEngine = {
 };
 
 
+// ---- 2.2 MOTOR DE GLITCH DA ILUSTRAÇÃO CENTRAL DA MESA (MESMA FREQUÊNCIA E ESTILO DO BG) ----
+const BoardCenterGlitchEngine = {
+  canvas: null,
+  ctx: null,
+  width: 0,
+  height: 0,
+  glitches: [],
+  running: false,
+  spawnTimer: null,
+  animId: null,
+
+  start() {
+    this.canvas = document.getElementById('board-center-glitch-canvas');
+    if (!this.canvas) return;
+    this.ctx = this.canvas.getContext('2d');
+    
+    this.resize();
+    this.running = true;
+    this.glitches = [];
+
+    // Trigger inicial de abertura
+    for (let i = 0; i < 3; i++) {
+      this.createGlitch();
+    }
+
+    if (this.animId) cancelAnimationFrame(this.animId);
+    this.loop();
+    this.scheduleSpawns();
+  },
+
+  stop() {
+    this.running = false;
+    if (this.spawnTimer) clearTimeout(this.spawnTimer);
+    if (this.animId) cancelAnimationFrame(this.animId);
+    if (this.ctx && this.canvas) {
+      this.ctx.clearRect(0, 0, this.width, this.height);
+    }
+  },
+
+  resize() {
+    if (!this.canvas) return;
+    const rect = this.canvas.parentElement ? this.canvas.parentElement.getBoundingClientRect() : null;
+    this.width = this.canvas.width = rect && rect.width > 50 ? rect.width : 500;
+    this.height = this.canvas.height = rect && rect.height > 50 ? rect.height : 360;
+  },
+
+  scheduleSpawns() {
+    if (!this.running) return;
+    const triggerGlitchBurst = () => {
+      if (!this.running) return;
+      const count = Math.floor(Math.random() * 3) + 1;
+      for (let i = 0; i < count; i++) {
+        this.createGlitch();
+      }
+      const nextTime = Math.random() * 2500 + 800; // Mesma frequência do BG
+      this.spawnTimer = setTimeout(triggerGlitchBurst, nextTime);
+    };
+
+    triggerGlitchBurst();
+  },
+
+  createGlitch() {
+    const types = ['slice', 'scanline', 'microBlock', 'digitalDot'];
+    const type = types[Math.floor(Math.random() * types.length)];
+
+    const orangePalette = [
+      'rgba(255, 85, 0, 0.45)',
+      'rgba(255, 110, 0, 0.40)',
+      'rgba(255, 140, 20, 0.35)',
+      'rgba(220, 70, 0, 0.40)',
+      'rgba(255, 170, 40, 0.30)'
+    ];
+    const color = orangePalette[Math.floor(Math.random() * orangePalette.length)];
+
+    const x = Math.random() * this.width;
+    const y = Math.random() * this.height;
+
+    let glitch = {
+      type,
+      x,
+      y,
+      color,
+      life: Math.floor(Math.random() * 12) + 6,
+      maxLife: 14,
+      width: 0,
+      height: 0,
+      size: 0
+    };
+
+    if (type === 'slice') {
+      glitch.width = Math.random() * (this.width * 0.45) + 30;
+      glitch.height = Math.random() * 3 + 1;
+      glitch.x = Math.random() * (this.width - glitch.width);
+    } else if (type === 'scanline') {
+      glitch.width = this.width;
+      glitch.height = Math.random() * 1.5 + 0.8;
+      glitch.x = 0;
+    } else if (type === 'microBlock') {
+      glitch.width = Math.random() * 45 + 15;
+      glitch.height = Math.random() * 14 + 4;
+      glitch.hollow = Math.random() > 0.4;
+    } else if (type === 'digitalDot') {
+      glitch.size = Math.random() * 3 + 1.5;
+    }
+
+    glitch.maxLife = glitch.life;
+    this.glitches.push(glitch);
+  },
+
+  loop() {
+    if (!this.running || !this.ctx) return;
+    this.ctx.clearRect(0, 0, this.width, this.height);
+
+    for (let i = this.glitches.length - 1; i >= 0; i--) {
+      const g = this.glitches[i];
+      g.life--;
+
+      const fade = g.life / g.maxLife;
+      this.ctx.save();
+      this.ctx.globalAlpha = fade * 0.75;
+      this.ctx.shadowBlur = 6;
+      this.ctx.shadowColor = '#ff5500';
+
+      if (g.type === 'slice') {
+        this.ctx.fillStyle = g.color;
+        this.ctx.fillRect(g.x, g.y, g.width, g.height);
+      } else if (g.type === 'scanline') {
+        this.ctx.fillStyle = g.color;
+        this.ctx.fillRect(0, g.y, this.width, g.height);
+      } else if (g.type === 'microBlock') {
+        if (g.hollow) {
+          this.ctx.strokeStyle = g.color;
+          this.ctx.lineWidth = 1;
+          this.ctx.strokeRect(g.x, g.y, g.width, g.height);
+        } else {
+          this.ctx.fillStyle = g.color;
+          this.ctx.fillRect(g.x, g.y, g.width, g.height);
+        }
+      } else if (g.type === 'digitalDot') {
+        this.ctx.fillStyle = g.color;
+        this.ctx.fillRect(g.x, g.y, g.size, g.size);
+      }
+
+      this.ctx.restore();
+
+      if (g.life <= 0) {
+        this.glitches.splice(i, 1);
+      }
+    }
+
+    this.animId = requestAnimationFrame(() => this.loop());
+  }
+};
+
+
 // ---- 3. MESA APP (GERENCIADOR DE ESTADO, SUPABASE & TOKENS) ----
 const MesaApp = {
   SUPABASE_URL: 'https://qkupdpgcjusbedaoahwi.supabase.co', 
@@ -3484,6 +3639,8 @@ const MesaLibrary = {
   updateCenterDOM(data) {
     const display = document.getElementById('board-center-display');
     const img = document.getElementById('board-center-img');
+    const glitch1 = document.getElementById('board-center-glitch-1');
+    const glitch2 = document.getElementById('board-center-glitch-2');
     const closeBtn = document.getElementById('board-center-close-btn');
 
     if (!display || !img) return;
@@ -3492,16 +3649,36 @@ const MesaLibrary = {
       img.src = data.url;
       img.style.display = 'block';
 
+      if (glitch1) {
+        glitch1.src = data.url;
+        glitch1.style.display = 'block';
+      }
+      if (glitch2) {
+        glitch2.src = data.url;
+        glitch2.style.display = 'block';
+      }
+
       if (closeBtn) {
         closeBtn.style.display = MesaApp.state.isMaster ? 'flex' : 'none';
       }
 
+      // Reinicia animações de entrada
+      display.classList.remove('active');
+      void display.offsetWidth; // Reflow
       display.classList.add('active');
+
+      // Inicia motor de glitch contínuo na projeção central
+      setTimeout(() => {
+        BoardCenterGlitchEngine.start();
+      }, 25);
     } else {
       img.src = '';
       img.style.display = 'none';
+      if (glitch1) { glitch1.src = ''; glitch1.style.display = 'none'; }
+      if (glitch2) { glitch2.src = ''; glitch2.style.display = 'none'; }
       if (closeBtn) closeBtn.style.display = 'none';
       display.classList.remove('active');
+      BoardCenterGlitchEngine.stop();
     }
   },
 

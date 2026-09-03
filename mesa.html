@@ -8,9 +8,9 @@
   <meta http-equiv="Expires" content="0">
   <title>Mesa Virtual - Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/variables.css?v=2.9.2">
-  <link rel="stylesheet" href="css/components.css?v=2.9.2">
-  <link rel="stylesheet" href="css/mesa.css?v=2.9.2">
+  <link rel="stylesheet" href="css/variables.css?v=2.9.3">
+  <link rel="stylesheet" href="css/components.css?v=2.9.3">
+  <link rel="stylesheet" href="css/mesa.css?v=2.9.3">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -204,6 +204,17 @@
     <div class="mesa-board-container" id="mesa-board-container">
         <!-- O Quadrado Preto com borda de nanquim artesanal -->
         <div class="mesa-black-board">
+          <!-- Projeção Central de Imagens do Mestre (Fica DENTRO do quadro preto, abaixo das bordas) -->
+          <div id="board-center-display" class="board-center-display">
+            <div id="board-center-content" class="board-center-content glitch-portrait-box">
+              <canvas id="board-center-glitch-canvas" class="board-center-glitch-canvas portrait-glitch-canvas"></canvas>
+              <img id="board-center-img" class="board-center-img glitch-img-base" src="" alt="Projeção Central" style="display:none;" />
+              <img id="board-center-glitch-1" class="board-center-img glitch-img-layer glitch-layer-1" src="" alt="" aria-hidden="true" style="display:none;" />
+              <img id="board-center-glitch-2" class="board-center-img glitch-img-layer glitch-layer-2" src="" alt="" aria-hidden="true" style="display:none;" />
+              <button id="board-center-close-btn" class="board-center-close-btn" style="display:none;" onclick="MesaLibrary.clearCenterProjection()" title="Remover Projeção">&times;</button>
+            </div>
+          </div>
+
           <div class="board-ink-inner-border"></div>
           <div class="board-crosshair-c"></div>
           
@@ -246,14 +257,6 @@
         </div>
         <div class="player-slot slot-8 empty" onclick="MesaApp.handleSlotClick(8)">
           <div class="slot-empty-label">Slot 8</div>
-        </div>
-
-        <!-- Projeção Central de Imagens do Mestre (Fica NO TOPO de tudo na mesa) -->
-        <div id="board-center-display" class="board-center-display">
-          <div id="board-center-content" class="board-center-content">
-            <img id="board-center-img" class="board-center-img" src="" alt="Projeção Central" style="display:none;" />
-            <button id="board-center-close-btn" class="board-center-close-btn" style="display:none;" onclick="MesaLibrary.clearCenterProjection()" title="Remover Projeção">&times;</button>
-          </div>
         </div>
     </div>
 
@@ -648,6 +651,6 @@
       </div>
     </div>
 
-<script src="js/mesa.js?v=2.9.2"></script>
+<script src="js/mesa.js?v=2.9.3"></script>
 </body>
 </html>
