@@ -1198,7 +1198,7 @@ html, body {
 /* Camada Base: Transparência inicial -> Desliza da Esquerda -> Assenta 100% Sólida */
 .glitch-img-base {
   filter: drop-shadow(0 14px 35px rgba(0, 0, 0, 0.85));
-  transform: scale(1.24) translateY(16px);
+  transform: scale(1.22) translateY(65px);
 }
 
 .ficha-overlay.active .glitch-img-base {
@@ -1208,7 +1208,7 @@ html, body {
 @keyframes glitchBaseSlide {
   0% {
     opacity: 0.2;
-    transform: scale(1.24) translateX(-90px) translateY(16px);
+    transform: scale(1.22) translateX(-90px) translateY(65px);
   }
   35% {
     opacity: 0.5;
@@ -1218,7 +1218,7 @@ html, body {
   }
   100% {
     opacity: 1;
-    transform: scale(1.24) translateX(0) translateY(16px);
+    transform: scale(1.22) translateX(0) translateY(65px);
   }
 }
 
@@ -1245,47 +1245,47 @@ html, body {
 @keyframes glitchSliceOrange {
   0% {
     opacity: 0.85;
-    transform: scale(1.24) translateX(-96px) translateY(16px);
+    transform: scale(1.22) translateX(-96px) translateY(65px);
     clip-path: polygon(0 8%, 100% 8%, 100% 24%, 0 24%);
   }
   12% {
     opacity: 0.9;
-    transform: scale(1.24) translateX(-76px) translateY(16px);
+    transform: scale(1.22) translateX(-76px) translateY(65px);
     clip-path: polygon(0 42%, 100% 42%, 100% 56%, 0 56%);
   }
   24% {
     opacity: 0.8;
-    transform: scale(1.24) translateX(-58px) translateY(16px);
+    transform: scale(1.22) translateX(-58px) translateY(65px);
     clip-path: polygon(0 70%, 100% 70%, 100% 86%, 0 86%);
   }
   36% {
     opacity: 0.95;
-    transform: scale(1.24) translateX(-32px) translateY(16px);
+    transform: scale(1.22) translateX(-32px) translateY(65px);
     clip-path: polygon(0 18%, 100% 18%, 100% 34%, 0 34%);
   }
   48% {
     opacity: 0.75;
-    transform: scale(1.24) translateX(-18px) translateY(16px);
+    transform: scale(1.22) translateX(-18px) translateY(65px);
     clip-path: polygon(0 52%, 100% 52%, 100% 64%, 0 64%);
   }
   62% {
     opacity: 0.6;
-    transform: scale(1.24) translateX(-6px) translateY(16px);
+    transform: scale(1.22) translateX(-6px) translateY(65px);
     clip-path: polygon(0 82%, 100% 82%, 100% 96%, 0 96%);
   }
   76% {
     opacity: 0.35;
-    transform: scale(1.24) translateX(4px) translateY(16px);
+    transform: scale(1.22) translateX(4px) translateY(65px);
     clip-path: polygon(0 30%, 100% 30%, 100% 44%, 0 44%);
   }
   88% {
     opacity: 0.15;
-    transform: scale(1.24) translateX(0) translateY(16px);
+    transform: scale(1.22) translateX(0) translateY(65px);
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   }
   100% {
     opacity: 0;
-    transform: scale(1.24) translateX(0) translateY(16px);
+    transform: scale(1.22) translateX(0) translateY(65px);
     clip-path: polygon(0 0, 0 0, 0 0, 0 0);
   }
 }
@@ -1303,42 +1303,42 @@ html, body {
 @keyframes glitchSliceAmber {
   0% {
     opacity: 0.8;
-    transform: scale(1.24) translateX(-84px) translateY(16px);
+    transform: scale(1.22) translateX(-84px) translateY(65px);
     clip-path: polygon(0 28%, 100% 28%, 100% 40%, 0 40%);
   }
   14% {
     opacity: 0.9;
-    transform: scale(1.24) translateX(-68px) translateY(16px);
+    transform: scale(1.22) translateX(-68px) translateY(65px);
     clip-path: polygon(0 60%, 100% 60%, 100% 74%, 0 74%);
   }
   28% {
     opacity: 0.75;
-    transform: scale(1.24) translateX(-46px) translateY(16px);
+    transform: scale(1.22) translateX(-46px) translateY(65px);
     clip-path: polygon(0 4%, 100% 4%, 100% 16%, 0 16%);
   }
   42% {
     opacity: 0.85;
-    transform: scale(1.24) translateX(-24px) translateY(16px);
+    transform: scale(1.22) translateX(-24px) translateY(65px);
     clip-path: polygon(0 76%, 100% 76%, 100% 92%, 0 92%);
   }
   58% {
     opacity: 0.55;
-    transform: scale(1.24) translateX(6px) translateY(16px);
+    transform: scale(1.22) translateX(6px) translateY(65px);
     clip-path: polygon(0 36%, 100% 36%, 100% 48%, 0 48%);
   }
   72% {
     opacity: 0.3;
-    transform: scale(1.24) translateX(-2px) translateY(16px);
+    transform: scale(1.22) translateX(-2px) translateY(65px);
     clip-path: polygon(0 88%, 100% 88%, 100% 98%, 0 98%);
   }
   86% {
     opacity: 0.1;
-    transform: scale(1.24) translateX(0) translateY(16px);
+    transform: scale(1.22) translateX(0) translateY(65px);
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   }
   100% {
     opacity: 0;
-    transform: scale(1.24) translateX(0) translateY(16px);
+    transform: scale(1.22) translateX(0) translateY(65px);
     clip-path: polygon(0 0, 0 0, 0 0, 0 0);
   }
 }
