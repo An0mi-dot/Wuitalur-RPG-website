@@ -718,6 +718,8 @@ const MesaApp = {
       altura: '1,76',
       raca: 'Vampiro',
       arquetipo: 'Curioso',
+      imagem: 'assets/eric.png',
+      avatar: 'assets/eric_avatar.png',
       hp: 12, hpMax: 12,
       pe: 10, peMax: 10,
       st: 0, stMax: 44,
@@ -985,6 +987,11 @@ const MesaApp = {
             p.avatar = 'assets/thulita_avatar.png';
           }
 
+          if (p.token === 'B8T3' || p.slot === 3) {
+            p.imagem = 'assets/eric.png';
+            p.avatar = 'assets/eric_avatar.png';
+          }
+
           if (p.slot >= 1 && p.slot <= 8) {
             this.state.players[p.slot - 1] = p;
           }
@@ -1024,7 +1031,7 @@ const MesaApp = {
 
       if (!this.state.players[2]) {
         this.state.players[2] = {
-          id: 1, slot: 3, token: 'B8T3', nome: 'Eric "Blade" Tepes Adams', idade: '17 anos', altura: '1,76', raca: 'Vampiro', arquetipo: 'Curioso',
+          id: 1, slot: 3, token: 'B8T3', nome: 'Eric "Blade" Tepes Adams', idade: '17 anos', altura: '1,76', raca: 'Vampiro', arquetipo: 'Curioso', imagem: 'assets/eric.png', avatar: 'assets/eric_avatar.png',
           hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 44, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Mente': 'd16', 'Saúde': 'd4', 'Vigor': 'd12', 'Força': 'd8' },
           bonus: [{ origem: 'Raça (Vampiro)', desc: '+d4 em testes de Mente e Visão no Escuro (5B)' }, { origem: 'Arquétipo (Curioso)', desc: '+d4 em testes de Investigação' }],
