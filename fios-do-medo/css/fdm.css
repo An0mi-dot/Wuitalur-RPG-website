@@ -469,9 +469,78 @@
   }
 }
 
-/* ============================================================
-   SISTEMA DE INVESTIGAÇÃO: PONTOS DE INTERESSE (PDI)
-   ============================================================ */
+/* Cards de Diretrizes e Regras de Descoberta */
+.pdi-rules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-lg);
+  margin: var(--space-lg) 0 var(--space-2xl);
+}
+
+.pdi-rule-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all var(--transition-base);
+}
+
+.pdi-rule-card:hover {
+  border-color: rgba(255, 17, 51, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.pdi-rule-card.full-width {
+  grid-column: 1 / -1;
+  background: linear-gradient(180deg, rgba(255, 17, 51, 0.04) 0%, var(--bg-surface) 100%);
+  border-color: rgba(255, 17, 51, 0.25);
+}
+
+.pdi-rule-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-sm);
+}
+
+.pdi-rule-badge {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--accent-red-bright);
+  background: rgba(255, 17, 51, 0.12);
+  border: 1px solid rgba(255, 17, 51, 0.3);
+  padding: 3px 9px;
+  border-radius: var(--radius-sm);
+}
+
+.pdi-rule-title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.pdi-rule-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.pdi-rule-desc strong {
+  color: var(--text-primary);
+}
+
+.pdi-rule-desc em {
+  color: #ff99aa;
+  font-style: normal;
+}
 
 .pdi-example-container {
   margin: var(--space-xl) 0 var(--space-2xl) 0;
