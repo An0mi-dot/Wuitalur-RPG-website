@@ -468,3 +468,241 @@
     padding: var(--space-xs) var(--space-md);
   }
 }
+
+/* ============================================================
+   SISTEMA DE INVESTIGAÇÃO: PONTOS DE INTERESSE (PDI)
+   ============================================================ */
+
+.pdi-example-container {
+  margin: var(--space-xl) 0 var(--space-2xl) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.pdi-card {
+  background: #111116;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  transition: all var(--transition-base);
+}
+
+.pdi-card:hover {
+  border-color: rgba(255, 17, 51, 0.4);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 17, 51, 0.12);
+}
+
+/* 1. Cabeçalho do Ponto de Interesse */
+.pdi-header {
+  background: #191922;
+  border-bottom: 2px solid #282836;
+  padding: var(--space-lg) var(--space-xl);
+}
+
+.pdi-title {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.pdi-desc {
+  font-size: 0.92rem;
+  color: #adadb9;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* 2. Tabela de Perícias e CTs */
+.pdi-table-wrapper {
+  overflow-x: auto;
+  background: #14141c;
+}
+
+.pdi-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  text-align: left;
+}
+
+.pdi-table th {
+  background: #1e1e2b;
+  color: #d1d1db;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 12px 18px;
+  border-bottom: 2px solid #2e2e40;
+}
+
+.pdi-table th.th-pericia { width: 25%; }
+.pdi-table th.th-ct { width: 12%; text-align: center; }
+.pdi-table th.th-info { width: 63%; }
+
+.pdi-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(46, 46, 62, 0.6);
+  vertical-align: middle;
+  line-height: 1.6;
+}
+
+.pdi-table tr:last-child td {
+  border-bottom: none;
+}
+
+.pdi-row-accent-yellow {
+  background: rgba(245, 158, 11, 0.08);
+}
+.pdi-row-accent-yellow:hover {
+  background: rgba(245, 158, 11, 0.14);
+}
+
+.pdi-row-accent-green {
+  background: rgba(16, 185, 129, 0.08);
+}
+.pdi-row-accent-green:hover {
+  background: rgba(16, 185, 129, 0.14);
+}
+
+.pdi-row-accent-cyan {
+  background: rgba(6, 182, 212, 0.08);
+}
+.pdi-row-accent-cyan:hover {
+  background: rgba(6, 182, 212, 0.14);
+}
+
+.pdi-row-accent-red {
+  background: rgba(255, 17, 51, 0.08);
+}
+.pdi-row-accent-red:hover {
+  background: rgba(255, 17, 51, 0.14);
+}
+
+.pdi-pericia-name {
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pdi-pericia-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f1f1f5;
+}
+
+.pdi-ct-value {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 1.1rem;
+  text-align: center;
+  display: block;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pdi-info-text {
+  color: #e2e2e8;
+  font-size: 0.88rem;
+}
+
+/* 3. Descrição Contextual (Área do Mestre) */
+.pdi-contextual {
+  background: #161620;
+  border-top: 1px solid #2e2e40;
+  padding: var(--space-lg) var(--space-xl);
+  display: flex;
+  gap: var(--space-lg);
+  align-items: flex-start;
+}
+
+.pdi-context-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 17, 51, 0.12);
+  border: 1px solid rgba(255, 17, 51, 0.3);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-red-bright);
+}
+
+.pdi-context-body {
+  flex: 1;
+}
+
+.pdi-context-title {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent-red-bright);
+  margin-bottom: var(--space-xs);
+}
+
+.pdi-context-body p {
+  font-size: 0.87rem;
+  color: #adadb9;
+  line-height: 1.65;
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.pdi-context-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* Diagrama Anatômico do Ponto de Interesse */
+.pdi-diagram-wrapper {
+  position: relative;
+  margin: var(--space-xl) 0;
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+.pdi-diagram-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #ff4d6a;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .pdi-diagram-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .pdi-diagram-labels {
+    display: none;
+  }
+  .pdi-contextual {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+}

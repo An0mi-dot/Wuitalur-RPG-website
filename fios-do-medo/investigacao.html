@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investigação & Pontos de Interesse — Fios do Medo — Wuitalur RPG</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="css/fdm.css">
+  <style>
+    .pdi-anatomy-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      margin-bottom: var(--space-2xl);
+    }
+    .pdi-anatomy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-lg);
+      margin-top: var(--space-lg);
+    }
+    .pdi-part-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: var(--space-md) var(--space-lg);
+    }
+    .pdi-part-card h4 {
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      color: var(--accent-red-bright);
+      margin-bottom: var(--space-xs);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pdi-part-card p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- SIDEBAR LATERAL -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Suplemento (Fios do Medo) v1.0.0</span>
+      </div>
+    </div>
+
+    <a href="../index.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar ao Sistema Principal</span>
+    </a>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Extras</div>
+      <a href="../suplementos.html" class="sidebar-link"><span class="icon"></span> Suplementos</a>
+      <a href="../mesa.html" class="sidebar-link" style="color: #ff7700;"><span class="icon"></span> Mesa Virtual</a>
+
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="racas.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="arquetipos.html" class="sidebar-link"><span class="icon"></span> Arquétipos</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+      <a href="investigacao.html" class="sidebar-link active"><span class="icon"></span> Investigação</a>
+      <a href="glossario.html" class="sidebar-link"><span class="icon"></span> Glossário</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+
+      <div class="sidebar-section-title">Ferramentas</div>
+      <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
+    </nav>
+  </aside>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Investigação & Pontos de Interesse</h1>
+      <div style="position:relative">
+        <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
+        <div class="wiki-dropdown" id="wiki-menu-dropdown">
+          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
+          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <!-- INTRODUÇÃO À INVESTIGAÇÃO -->
+      <section class="subsection" id="introducao-investigacao">
+        <div class="section-heading">
+          <h2>A Dinâmica de Investigação em Fios do Medo</h2>
+          <p>
+            No suplemento <strong>Fios do Medo</strong>, o horror e a sobrevivência andam de mãos dadas com a busca por respostas. Ao entrar em qualquer ambiente — seja um quarto de hospital abandonado, um sótão empoeirado, o corredor de uma mansão antiga ou os destroços de um laboratório —, o cenário é composto por elementos cruciais chamados <strong>Pontos de Interesse (PdI)</strong>.
+          </p>
+        </div>
+
+        <div class="fdm-card highlight">
+          <div class="fdm-card-header">
+            <h2>Como Funciona a Descoberta</h2>
+          </div>
+          <ul>
+            <li><strong>Apresentação pelo Mestre:</strong> Ao descrever uma cena, o Mestre narra o ambiente e <strong>aponta explicitamente os Pontos de Interesse</strong> que saltam aos olhos ou que despertam a atenção imediata dos personagens (ex: <em>"Neste corredor escuro, vocês notam um quadro torto na parede, uma cômoda com gavetas entreabertas e marcas de arranhão na porta trancada ao fundo"</em>).</li>
+            <li><strong>Liberdade de Ação:</strong> Cada jogador decide qual Ponto de Interesse seu personagem deseja examinar, tocar, analisar ou manipular.</li>
+            <li><strong>Testes e Perícias Múltiplas:</strong> Cada Ponto de Interesse pode ser abordado através de diferentes perícias do sistema. Por exemplo, um mecanismo pode ser examinado com <strong>Investigação</strong>, destrancado com <strong>Astúcia</strong> ou notado com <strong>Percepção</strong>.</li>
+            <li><strong>Informações Graduais por CT:</strong> Nem todos os sucessos revelam tudo de uma só vez. Um teste mais modesto concede informações básicas de superfície, enquanto rolagens mais altas superam <strong>Classes de Teste (CT)</strong> elevadas e desvendam segredos vitais, anomalias e passagens ocultas.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ANATOMIA DO PONTO DE INTERESSE -->
+      <section class="subsection" id="anatomia-pdi">
+        <div class="section-heading">
+          <h2>Estrutura de um Ponto de Interesse</h2>
+          <p>Para facilitar a preparação do Mestre e garantir clareza nas revelações, cada Ponto de Interesse é estruturado em três partes fundamentais:</p>
+        </div>
+
+        <div class="pdi-anatomy-box">
+          <div class="pdi-anatomy-grid">
+            <div class="pdi-part-card">
+              <h4><span>1.</span> Cabeçalho</h4>
+              <p>O nome do objeto/lugar e a descrição pública e imediata do que qualquer personagem enxerga ao olhar na direção do Ponto de Interesse, sem necessidade de rolagens.</p>
+            </div>
+            <div class="pdi-part-card">
+              <h4><span>2.</span> Quadro de Perícias</h4>
+              <p>Uma tabela contendo as perícias permitidas para o exame, as respectivas <strong>Classes de Teste (CT)</strong> e a informação revelada para cada valor atingido.</p>
+            </div>
+            <div class="pdi-part-card">
+              <h4><span>3.</span> Descrição Contextual</h4>
+              <p>Anotações secretas exclusivas do Mestre explicando o propósito do item na narrativa, segredos ocultos e como a anomalia ou o mistério afetam aquele objeto.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXEMPLO OFICIAL: QUADRO NA PAREDE -->
+      <section class="subsection" id="exemplo-quadro">
+        <div class="section-heading">
+          <h2>Exemplo Prático: Ponto de Interesse em Cena</h2>
+          <p>Abaixo está o modelo visual oficial utilizado em <strong>Fios do Medo</strong> para estruturar pontos de investigação em mesa:</p>
+        </div>
+
+        <div class="pdi-example-container">
+          
+          <div class="pdi-card">
+            <!-- 1. Cabeçalho -->
+            <div class="pdi-header">
+              <div class="pdi-title">Quadro na Parede</div>
+              <p class="pdi-desc">Um quadro a óleo está pendurado na parede do corredor. A pintura retrata uma menina sentada em um balanço de madeira.</p>
+            </div>
+
+            <!-- 2. Quadro de Perícias & CTs -->
+            <div class="pdi-table-wrapper">
+              <table class="pdi-table">
+                <thead>
+                  <tr>
+                    <th class="th-pericia">Perícia</th>
+                    <th class="th-ct">CT</th>
+                    <th class="th-info">Informação Revelada</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="pdi-row-accent-yellow">
+                    <td>
+                      <div class="pdi-pericia-name">
+                        <span class="pdi-pericia-tag attr-fdm-mente">História</span>
+                      </div>
+                    </td>
+                    <td><span class="pdi-ct-value">6</span></td>
+                    <td>
+                      <span class="pdi-info-text">A menina retratada não possui boca pintada e seus olhos estão anormalmente arregalados de pavor. Esse detalhe bizarro não combina com o estilo renascentista da moldura, sugerindo que a pintura original foi corrompida ou alterada posteriormente.</span>
+                    </td>
+                  </tr>
+                  <tr class="pdi-row-accent-green">
+                    <td rowspan="2" style="border-bottom: none;">
+                      <div class="pdi-pericia-name">
+                        <span class="pdi-pericia-tag attr-fdm-mente">Percepção</span>
+                      </div>
+                    </td>
+                    <td><span class="pdi-ct-value">6</span></td>
+                    <td>
+                      <span class="pdi-info-text">Há marcas recentes de dedos e poeira deslocada na parede ao redor do quadro. Alguém costumava movimentá-lo ou tirá-lo do lugar com grande frequência.</span>
+                    </td>
+                  </tr>
+                  <tr class="pdi-row-accent-green">
+                    <td style="border-top: 1px solid rgba(46, 46, 62, 0.4);"><span class="pdi-ct-value">8</span></td>
+                    <td style="border-top: 1px solid rgba(46, 46, 62, 0.4);">
+                      <span class="pdi-info-text">Na borda inferior interna da moldura de madeira talhada, há uma pequena gota de sangue escuro e ressecado, como se alguém tivesse cortado o dedo ao pressionar a lateral.</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- 3. Descrição Contextual (Área do Mestre) -->
+            <div class="pdi-contextual">
+              <div class="pdi-context-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+              </div>
+              <div class="pdi-context-body">
+                <div class="pdi-context-title">Descrição Contextual (Anotações do Mestre)</div>
+                <p>O quadro foi posicionado estrategicamente para ocultar um cofre embutido de metal na alvenaria, que é imediatamente descoberto por qualquer personagem que decida remover o quadro da parede.</p>
+                <p>A pintura da menina não foi feita assim pelo artista: a ausência da boca e o pavor nos olhos foram distorções paranormais provocadas pela proximidade contínua da anomalia que habita a mansão.</p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SEGUNDO EXEMPLO: ARMÁRIO DE MEDICAMENTOS -->
+      <section class="subsection" id="exemplo-armario">
+        <div class="section-heading">
+          <h2>Exemplo Adicional: Armário de Medicamentos Trancado</h2>
+          <p>Exemplo de ponto de interesse com opções de perícias mentais, técnicas e de suporte:</p>
+        </div>
+
+        <div class="pdi-example-container">
+          
+          <div class="pdi-card">
+            <!-- 1. Cabeçalho -->
+            <div class="pdi-header">
+              <div class="pdi-title">Armário de Primeiros Socorros da Enfermaria</div>
+              <p class="pdi-desc">Um armário de aço vitrificado suspenso na parede, com a porta de vidro fosco trancada por uma fechadura enferrujada.</p>
+            </div>
+
+            <!-- 2. Quadro de Perícias & CTs -->
+            <div class="pdi-table-wrapper">
+              <table class="pdi-table">
+                <thead>
+                  <tr>
+                    <th class="th-pericia">Perícia</th>
+                    <th class="th-ct">CT</th>
+                    <th class="th-info">Informação Revelada</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="pdi-row-accent-cyan">
+                    <td>
+                      <div class="pdi-pericia-name">
+                        <span class="pdi-pericia-tag attr-fdm-mente">Investigação</span>
+                      </div>
+                    </td>
+                    <td><span class="pdi-ct-value">6</span></td>
+                    <td>
+                      <span class="pdi-info-text">Pelo vidro fosco é possível avistar dois frascos de sedativo e bandagens esterilizadas intactas, além de um papel dobrado preso sob a última prateleira.</span>
+                    </td>
+                  </tr>
+                  <tr class="pdi-row-accent-yellow">
+                    <td>
+                      <div class="pdi-pericia-name">
+                        <span class="pdi-pericia-tag attr-fdm-mente">Astúcia</span>
+                      </div>
+                    </td>
+                    <td><span class="pdi-ct-value">7</span></td>
+                    <td>
+                      <span class="pdi-info-text">Utilizando um grampo ou arame, o personagem destranca a fechadura sem quebrar o vidro e sem fazer barulho excessivo, recuperando os suprimentos médicos com sucesso.</span>
+                    </td>
+                  </tr>
+                  <tr class="pdi-row-accent-green">
+                    <td rowspan="2" style="border-bottom: none;">
+                      <div class="pdi-pericia-name">
+                        <span class="pdi-pericia-tag attr-fdm-saude">Medicina</span>
+                      </div>
+                    </td>
+                    <td><span class="pdi-ct-value">6</span></td>
+                    <td>
+                      <span class="pdi-info-text">Identifica que os medicamentos contidos no armário são frascos de anestésico potente capazes de estabilizar imediatamente um aliado em crise.</span>
+                    </td>
+                  </tr>
+                  <tr class="pdi-row-accent-green">
+                    <td style="border-top: 1px solid rgba(46, 46, 62, 0.4);"><span class="pdi-ct-value">9</span></td>
+                    <td style="border-top: 1px solid rgba(46, 46, 62, 0.4);">
+                      <span class="pdi-info-text">Nota que os rótulos possuem números de lote modificados à mão, correspondentes aos experimentos proibidos descritos no relatório do diretor.</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- 3. Descrição Contextual (Área do Mestre) -->
+            <div class="pdi-contextual">
+              <div class="pdi-context-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+              </div>
+              <div class="pdi-context-body">
+                <div class="pdi-context-title">Descrição Contextual (Anotações do Mestre)</div>
+                <p>Se o armário for arrombado na força bruta (<span class="attr-fdm-forca">Atletismo</span> CT 7), o barulho de vidro estilhaçado atrai a atenção de criaturas errantes nas redondezas em 1 rodada.</p>
+                <p>O papel escondido sob a prateleira contém a combinação do cofre principal da sala de segurança.</p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- DICAS PARA O MESTRE CRIAR PONTOS DE INTERESSE -->
+      <section class="subsection" id="dicas-mestre">
+        <div class="section-heading">
+          <h2>Diretrizes para o Mestre Criar Pontos de Interesse</h2>
+        </div>
+
+        <div class="fdm-card">
+          <div class="fdm-card-header">
+            <h2>Boas Práticas de Design Investigativo</h2>
+          </div>
+          <ul>
+            <li><strong>Variedade de Perícias:</strong> Nunca force apenas uma perícia. Permita que jogadores com diferentes talentos (ex: um focado em <em>Percepção</em>, outro em <em>História</em> ou <em>Astúcia</em>) possam contribuir com ângulos distintos da mesma pista.</li>
+            <li><strong>Pistas Essenciais não Devem Bloquear o Jogo:</strong> Se uma informação for indispensável para a história continuar, garanta que uma CT baixa (ex: CT 4 a 6) entregue o essencial, enquanto CTs altas revelem vantagens táticas, fraquezas de inimigos ou atalhos seguros.</li>
+            <li><strong>Consequências de Falha:</strong> Falhar no teste de um Ponto de Interesse não significa necessariamente que nada acontece. Pode significar perda de tempo precioso, pistas incompletas ou acionamento involuntário de um ruído suspeito.</li>
+          </ul>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
