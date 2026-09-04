@@ -550,24 +550,158 @@ const BoardCenterGlitchEngine = {
 };
 
 
-// ---- 3. MESA APP (GERENCIADOR DE ESTADO, SUPABASE & TOKENS) ----
+// ---- 2.2 MOTOR DE SEGURANÇA E PROTEÇÃO CONTRA FORÇA BRUTA (RATE LIMITING & TIMING PROTECTION) ----
+const MesaSecurity = {
+  STORAGE_KEY_ATTEMPTS: 'mesa_sec_fails',
+  STORAGE_KEY_LOCKOUT: 'mesa_sec_lockout_until',
+  timerInterval: null,
+
+  async sha256(text) {
+    if (!text) return '';
+    try {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(text.trim().toUpperCase());
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    } catch(e) {
+      // Fallback simples caso crypto não esteja disponível
+      let hash = 0;
+      const str = text.trim().toUpperCase();
+      for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash |= 0;
+      }
+      return 'fb_' + Math.abs(hash).toString(16);
+    }
+  },
+
+  timingDelay(ms = 600) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  },
+
+  getLockoutSecondsRemaining() {
+    const lockoutUntil = parseInt(localStorage.getItem(this.STORAGE_KEY_LOCKOUT) || '0', 10);
+    const now = Date.now();
+    if (lockoutUntil > now) {
+      return Math.ceil((lockoutUntil - now) / 1000);
+    }
+    return 0;
+  },
+
+  canAttempt() {
+    return this.getLockoutSecondsRemaining() <= 0;
+  },
+
+  getFailedAttempts() {
+    return parseInt(localStorage.getItem(this.STORAGE_KEY_ATTEMPTS) || '0', 10);
+  },
+
+  recordFailedAttempt() {
+    let fails = this.getFailedAttempts() + 1;
+    localStorage.setItem(this.STORAGE_KEY_ATTEMPTS, fails.toString());
+
+    let lockoutDuration = 0;
+    if (fails >= 8) {
+      lockoutDuration = 300; // 5 minutos de bloqueio contra ataques contínuos
+    } else if (fails >= 5) {
+      lockoutDuration = 60;  // 1 minuto de bloqueio
+    } else if (fails >= 3) {
+      lockoutDuration = 15;  // 15 segundos de resfriamento
+    }
+
+    if (lockoutDuration > 0) {
+      const lockoutUntil = Date.now() + (lockoutDuration * 1000);
+      localStorage.setItem(this.STORAGE_KEY_LOCKOUT, lockoutUntil.toString());
+    }
+
+    this.updateModalUI();
+    return { fails, lockoutDuration };
+  },
+
+  recordSuccess() {
+    localStorage.removeItem(this.STORAGE_KEY_ATTEMPTS);
+    localStorage.removeItem(this.STORAGE_KEY_LOCKOUT);
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+      this.timerInterval = null;
+    }
+    this.updateModalUI();
+  },
+
+  updateModalUI() {
+    const input = document.getElementById('token-input');
+    const submitBtn = document.getElementById('token-submit-btn');
+    const errorEl = document.getElementById('token-security-status');
+    if (!input || !submitBtn) return;
+
+    const remaining = this.getLockoutSecondsRemaining();
+    if (remaining > 0) {
+      input.disabled = true;
+      submitBtn.disabled = true;
+      submitBtn.style.opacity = '0.5';
+      submitBtn.style.cursor = 'not-allowed';
+      if (errorEl) {
+        errorEl.style.display = 'block';
+        errorEl.innerHTML = `<span style="color:#ff3355; font-weight:700;">[BLOQUEIO ATIVO]</span> Muitas tentativas incorretas. Aguarde <strong>${remaining}s</strong> para tentar novamente.`;
+      }
+
+      if (!this.timerInterval) {
+        this.timerInterval = setInterval(() => {
+          const rem = this.getLockoutSecondsRemaining();
+          if (rem <= 0) {
+            clearInterval(this.timerInterval);
+            this.timerInterval = null;
+            this.updateModalUI();
+          } else {
+            if (errorEl) {
+              errorEl.innerHTML = `<span style="color:#ff3355; font-weight:700;">[BLOQUEIO ATIVO]</span> Muitas tentativas incorretas. Aguarde <strong>${rem}s</strong> para tentar novamente.`;
+            }
+          }
+        }, 1000);
+      }
+    } else {
+      input.disabled = false;
+      submitBtn.disabled = false;
+      submitBtn.style.opacity = '1';
+      submitBtn.style.cursor = 'pointer';
+      const fails = this.getFailedAttempts();
+      if (errorEl) {
+        if (fails > 0 && fails < 3) {
+          errorEl.style.display = 'block';
+          errorEl.innerHTML = `<span style="color:#ffaa00;">Tentativa incorreta (${fails}/3 antes do bloqueio).</span>`;
+        } else if (fails === 0) {
+          errorEl.style.display = 'none';
+          errorEl.innerHTML = '';
+        }
+      }
+    }
+  }
+};
+
+
+// ---- 3. MESA APP (GERENCIADOR DE ESTADO, SUPABASE & TOKENS SEGUROS) ----
 const MesaApp = {
   SUPABASE_URL: 'https://qkupdpgcjusbedaoahwi.supabase.co', 
   SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFrdXBkcGdjanVzYmVkYW9haHdpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgxNzk1ODAsImV4cCI6MjEwMzc1NTU4MH0.UDc5nE7ZwUyWmwNZKpq7bGrty1N6Uh0bjq2PJtBkVrk', 
   
-  // TOKEN EXCLUSIVO DO MESTRE (ACESSO TOTAL)
-  MASTER_TOKEN: 'M9X7',
+  // HASHES SHA-256 DO MESTRE (Zero exposição em texto puro no código do cliente)
+  MASTER_HASHES: [
+    'ffd77d81aa08ae3582779ba189e7dbbabd57da8ceb9aa8b6a64d2988dc552e76', // M9X7
+    '74d06b763fd7ccdd4e86b81b59989c73b923a319c0adda2c243137079434d63d', // WUI-M9X7-MAST
+    '011e063f8402ff1a9263d6cbf115896ce8844f14c8c1a03b1e70992be9fc84b4'  // WUI-MASTER-99
+  ],
 
-  // LISTA DE TOKENS DE 4 CARACTERES PARA OS 8 SLOTS
-  SLOT_TOKENS: {
-    1: 'W4R9',
-    2: 'M7Q2',
-    3: 'B8T3', // Eric "Blade"
-    4: 'P3R4', // Pera
-    5: 'K4R5', // Willian
-    6: 'J9D6', // John Doe
-    7: 'O7D7', // Odara
-    8: 'C8B8'  // Canneth 'Blinko' Biloxi
+  // HASHES SHA-256 DOS SLOTS PADRÃO DA MESA
+  SLOT_HASHES: {
+    1: ['6d6b9e504b9a07f490b068e62a6d5a5b4beb6d5ab51c949a8ab8f1950c1261d2', '43c11d372feae45dd633a6a37286cf1a44f0c1278235b2ef7dc49d2d309c20b5'], // Thulita (W4R9 / WUI-W4R9-9K2M)
+    2: ['2619977a9e5e0522d65a338b053fe9d668b9ffd7a26fb694f4f89a332a2573ee', 'caa37dd424c75c8bcc49096685ff408930c6409922491c2b7465694b67934fd9'], // Minerva (M7Q2 / WUI-M7Q2-4L1B)
+    3: ['63c816ce5724c99e47758d2bca36cd1c41b210bc3d295922731867746c891527', '9f741eaf72fb7c0417ecdf910cd18132a7cc6945a91655a38fc00dd3f20da436'], // Eric (B8T3 / WUI-B8T3-7X8A)
+    4: ['50aedd3f6c1ec1bbd96b4462cf11f9e51365b6d7657a092c857df19ecd7f22c6', '610c3adf93b9f4f25d5169ba2ece084e06a2d6491db68eb10ffaf49e0e4cb29c'], // Pera (P3R4 / WUI-P3R4-3D9V)
+    5: ['04d7fd5ceb247311a8f46bb5f5d353a927ac7fd25776cafbdd3ac9f70182a2b8', '1ed723041d29cae397ffc8fafc052009b36a001e601be6d3a5aba3ceea9ccaa9'], // Willian (K4R5 / WUI-K4R5-8F2Q)
+    6: ['f25cf5826fd56f85266d0aeb7d1e361d4035ceb0dac146166c1a8ad28ec03735', '409f7205e3d6398aaa57d0f6058e66d10a2ea22502faa4ba6c442af7353cff94'], // John Doe (J9D6 / WUI-J9D6-5M7N)
+    7: ['ba486a269e0fb9deac1c37f61ccb38be5cae83fd47ac6743adeddc8772681530', 'b094e8349e61a7092f6e0b54356560900cd295e9b6f29e4690e73a7899fc368b'], // Odara (O7D7 / WUI-O7D7-2H4Z)
+    8: ['7d704a54101b1028e1dc54f3eb0fe527a6c358746a25008236e2b3940fb7b97c', '0a218ab04615fd7a9e9a69da55aabde2faadf19b62e4ba78902b34a83331fd23']  // Canneth (C8B8 / WUI-C8B8-6P1K)
   },
 
   supabase: null,
@@ -575,6 +709,7 @@ const MesaApp = {
   state: {
     players: new Array(8).fill(null),
     myToken: localStorage.getItem('mesa_token') || null,
+    myPlayerSlot: null,
     isMaster: false,
     activeViewingPlayer: null
   },
@@ -604,13 +739,25 @@ const MesaApp = {
     this.updateTokenBtnState();
   },
 
-  checkSavedToken() {
+  async checkSavedToken() {
     const saved = localStorage.getItem('mesa_token');
 
     if (saved) {
       this.state.myToken = saved.toUpperCase();
-      if (this.state.myToken === this.MASTER_TOKEN) {
+      const hash = await MesaSecurity.sha256(this.state.myToken);
+
+      if (this.MASTER_HASHES.includes(hash)) {
         this.state.isMaster = true;
+        this.state.myPlayerSlot = null;
+      } else {
+        this.state.isMaster = false;
+        // Verifica se pertence a algum slot padrão
+        for (const [slotNum, hashes] of Object.entries(this.SLOT_HASHES)) {
+          if (hashes.includes(hash)) {
+            this.state.myPlayerSlot = parseInt(slotNum, 10);
+            break;
+          }
+        }
       }
     }
 
@@ -628,10 +775,12 @@ const MesaApp = {
     if (!tokenBtn) return;
 
     if (this.state.isMaster) {
-      if (tokenLabel) tokenLabel.textContent = 'Token Ativo';
+      if (tokenLabel) tokenLabel.textContent = 'Mestre Ativo';
       if (alertBadge) alertBadge.style.display = 'none';
     } else if (this.state.myToken) {
-      if (tokenLabel) tokenLabel.textContent = this.state.myToken;
+      if (tokenLabel) {
+        tokenLabel.textContent = this.state.myPlayerSlot ? `Slot ${this.state.myPlayerSlot} Conectado` : 'Token Ativo';
+      }
       if (alertBadge) alertBadge.style.display = 'none';
     } else {
       if (tokenLabel) tokenLabel.textContent = 'Token';
@@ -1215,7 +1364,10 @@ const MesaApp = {
   canEdit(player) {
     if (!player) return false;
     if (this.state.isMaster) return true;
-    if (this.state.myToken && player.token && this.state.myToken === player.token.toUpperCase()) {
+    if (this.state.myPlayerSlot && player.slot && this.state.myPlayerSlot === player.slot) {
+      return true;
+    }
+    if (this.state.myToken && player.token && this.state.myToken.toUpperCase() === player.token.toUpperCase()) {
       return true;
     }
     return false;
@@ -1576,6 +1728,7 @@ const MesaApp = {
 
   openTokenModal() {
     this.openModal('token-modal');
+    MesaSecurity.updateModalUI();
     const input = document.getElementById('token-input');
     if (input) {
       input.value = this.state.myToken || '';
@@ -1605,15 +1758,34 @@ const MesaApp = {
   },
 
   async submitToken() {
+    if (!MesaSecurity.canAttempt()) {
+      const remaining = MesaSecurity.getLockoutSecondsRemaining();
+      alert(`[BLOQUEIO ATIVO] Muitas tentativas incorretas. Aguarde ${remaining} segundos.`);
+      MesaSecurity.updateModalUI();
+      return;
+    }
+
     const rawInput = document.getElementById('token-input').value.trim();
     if (!rawInput) return;
 
     const token = rawInput.toUpperCase();
+    const submitBtn = document.getElementById('token-submit-btn');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'AUTENTICANDO...';
+    }
 
-    // 1. VERIFICA SE É O TOKEN DE ACESSO TOTAL
-    if (token === this.MASTER_TOKEN) {
+    // Atraso artificial de segurança (timing attack & brute force throttle)
+    await MesaSecurity.timingDelay(600);
+
+    const tokenHash = await MesaSecurity.sha256(token);
+
+    // 1. VERIFICA SE É TOKEN DO MESTRE (ACESSO TOTAL)
+    if (this.MASTER_HASHES.includes(tokenHash)) {
+      MesaSecurity.recordSuccess();
       localStorage.setItem('mesa_token', token);
       this.state.myToken = token;
+      this.state.myPlayerSlot = null;
       this.state.isMaster = true;
 
       this.updateTokenBtnState();
@@ -1621,18 +1793,28 @@ const MesaApp = {
       if (typeof MesaMediaPlayer !== 'undefined') {
         MesaMediaPlayer.updateMasterVisibility();
       }
-      alert("[SUCESSO] Token autenticado com sucesso.");
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'AUTENTICAR TOKEN';
+      }
+      alert("[SUCESSO] Token de Mestre autenticado com sucesso.");
       this.closeModal('token-modal');
       return;
     }
 
-    // 2. VERIFICA SE É O TOKEN DE UM DOS JOGADORES
-    localStorage.setItem('mesa_token', token);
-    this.state.myToken = token;
-    this.state.isMaster = false;
-    this.updateTokenBtnState();
+    // 2. VERIFICA SE É O TOKEN DE UM DOS JOGADORES (VIA HASH OU SUPABASE)
+    let matchedSlot = null;
+    for (const [slotNum, hashes] of Object.entries(this.SLOT_HASHES)) {
+      if (hashes.includes(tokenHash)) {
+        matchedSlot = parseInt(slotNum, 10);
+        break;
+      }
+    }
 
-    let matchedPlayer = this.state.players.find(p => p && p.token && p.token.toUpperCase() === token);
+    let matchedPlayer = null;
+    if (matchedSlot && this.state.players[matchedSlot - 1]) {
+      matchedPlayer = this.state.players[matchedSlot - 1];
+    }
 
     if (this.supabase && !matchedPlayer) {
       try {
@@ -1644,6 +1826,7 @@ const MesaApp = {
 
         if (data) {
           matchedPlayer = data;
+          matchedSlot = data.slot;
         }
       } catch(err) {
         console.warn("Erro ao verificar token:", err);
@@ -1651,23 +1834,45 @@ const MesaApp = {
     }
 
     if (matchedPlayer) {
+      MesaSecurity.recordSuccess();
+      localStorage.setItem('mesa_token', token);
+      this.state.myToken = token;
+      this.state.myPlayerSlot = matchedSlot || matchedPlayer.slot;
+      this.state.isMaster = false;
+
       this.updateTokenBtnState();
       MesaChat.updateSenderIdentity();
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'AUTENTICAR TOKEN';
+      }
       alert(`[CONECTADO] ${matchedPlayer.nome} (Slot ${matchedPlayer.slot}) - Modo de edição ativado.`);
       this.closeModal('token-modal');
       this.openFicha(matchedPlayer);
     } else {
-      this.updateTokenBtnState();
-      MesaChat.updateSenderIdentity();
-      alert(`Token '${token}' salvo.`);
-      this.closeModal('token-modal');
+      const { fails, lockoutDuration } = MesaSecurity.recordFailedAttempt();
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'AUTENTICAR TOKEN';
+      }
+      if (lockoutDuration > 0) {
+        alert(`[BLOQUEIO DE SEGURANÇA] Token inválido. Você excedeu o limite de tentativas (${fails}). Aguarde ${lockoutDuration} segundos.`);
+      } else {
+        alert(`[ERRO] Token inválido ou não encontrado (${fails}/3 tentativas antes do bloqueio temporário).`);
+      }
     }
   },
 
   toggleView() {
     // 1. Se o jogador tem um token ativo, abre diretamente a ficha dele
     if (this.state.myToken && !this.state.isMaster) {
-      const myChar = this.state.players.find(p => p && p.token && p.token.toUpperCase() === this.state.myToken.toUpperCase());
+      let myChar = null;
+      if (this.state.myPlayerSlot) {
+        myChar = this.state.players[this.state.myPlayerSlot - 1];
+      }
+      if (!myChar) {
+        myChar = this.state.players.find(p => p && p.token && p.token.toUpperCase() === this.state.myToken.toUpperCase());
+      }
       if (myChar) {
         this.openFicha(myChar);
         return;

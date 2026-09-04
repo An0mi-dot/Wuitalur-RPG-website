@@ -8,9 +8,9 @@
   <meta http-equiv="Expires" content="0">
   <title>Mesa Virtual - Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/variables.css?v=2.9.7">
-  <link rel="stylesheet" href="css/components.css?v=2.9.7">
-  <link rel="stylesheet" href="css/mesa.css?v=2.9.7">
+  <link rel="stylesheet" href="css/variables.css?v=2.9.8">
+  <link rel="stylesheet" href="css/components.css?v=2.9.8">
+  <link rel="stylesheet" href="css/mesa.css?v=2.9.8">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -499,10 +499,11 @@
     <div id="token-modal" class="mesa-modal-overlay">
       <div class="mesa-modal ink-modal" style="max-width: 420px; text-align: center;">
         <button class="mesa-modal-close" onclick="MesaApp.closeModal('token-modal')">&times;</button>
-        <div class="ink-ribbon-title">ACESSO À MESA</div>
-        <p style="color:#bbb; margin: 15px 0 20px; font-size: 0.9rem;">Insira seu <strong>token de 4 caracteres</strong> para conectar e editar sua ficha.</p>
-        <input type="text" id="token-input" class="mesa-input ink-input" placeholder="Ex: B8T3..." maxlength="4" style="text-transform: uppercase; text-align: center; font-size: 1.25rem; letter-spacing: 0.25em;">
-        <button class="mesa-btn ink-tag primary" style="width:100%; font-size:1rem; padding:10px;" onclick="MesaApp.submitToken()">CONECTAR FICHA</button>
+        <div class="ink-ribbon-title">AUTENTICAÇÃO SEGURA</div>
+        <p style="color:#bbb; margin: 15px 0 16px; font-size: 0.88rem;">Insira seu <strong>token de acesso</strong> para autenticar sua sessão e editar sua ficha.</p>
+        <input type="text" id="token-input" class="mesa-input ink-input" placeholder="Ex: B8T3 ou Token..." maxlength="36" autocomplete="off" style="text-transform: uppercase; text-align: center; font-size: 1.15rem; letter-spacing: 0.15em; font-family: monospace;">
+        <div id="token-security-status" style="display:none; font-size:0.8rem; margin: -6px 0 14px; min-height: 18px; line-height: 1.4;"></div>
+        <button id="token-submit-btn" class="mesa-btn ink-tag primary" style="width:100%; font-size:1rem; padding:10px;" onclick="MesaApp.submitToken()">AUTENTICAR TOKEN</button>
       </div>
     </div>
 
@@ -651,6 +652,6 @@
       </div>
     </div>
 
-<script src="js/mesa.js?v=2.9.7"></script>
+<script src="js/mesa.js?v=2.9.8"></script>
 </body>
 </html>
