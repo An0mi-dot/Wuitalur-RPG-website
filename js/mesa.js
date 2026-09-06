@@ -2565,7 +2565,7 @@ const MesaDice = {
     // 6. Log no chat da mesa
     const breakdown = diceResults.map(d => `[d${d.sides}: ${d.val}]`).join(' + ');
     const modStr = this.modifier !== 0 ? (this.modifier > 0 ? ` + ${this.modifier}` : ` - ${Math.abs(this.modifier)}`) : '';
-    const chatContent = `🎲 Rolou ${breakdown}${modStr} ➔ Total: ${total}`;
+    const chatContent = `Rolou ${breakdown}${modStr} ➔ Total: ${total}`;
 
     MesaChat.receiveMessage({
       id: 'dice_' + Date.now(),
