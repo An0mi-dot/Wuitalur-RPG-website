@@ -142,8 +142,11 @@
   box-shadow: 0 0 10px var(--accent-red);
 }
 
-/* Destaque para aba essencial / importante */
-.sidebar-link.featured-investigacao {
+/* Destaque para abas essenciais / importantes */
+.sidebar-link.featured-investigacao,
+.sidebar-link.featured-sanidade,
+.sidebar-link.featured-perseguicao,
+.sidebar-link.featured-important {
   color: #ff3355 !important;
   font-weight: 700;
   display: flex;
@@ -151,7 +154,10 @@
   justify-content: space-between;
 }
 
-.sidebar-link.featured-investigacao:not(.active) {
+.sidebar-link.featured-investigacao:not(.active),
+.sidebar-link.featured-sanidade:not(.active),
+.sidebar-link.featured-perseguicao:not(.active),
+.sidebar-link.featured-important:not(.active) {
   background: rgba(255, 17, 51, 0.08);
   border-left: 2px solid rgba(255, 17, 51, 0.5);
 }

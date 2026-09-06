@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perseguição — Fios do Medo — Wuitalur RPG</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="css/fdm.css">
+  <style>
+    .vd-track-container {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      margin: var(--space-xl) 0;
+    }
+    .vd-track {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: var(--space-md);
+      margin-top: var(--space-lg);
+    }
+    .vd-step {
+      background: rgba(20, 20, 28, 0.9);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      text-align: center;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+    .vd-step:hover {
+      border-color: var(--accent-red);
+      transform: translateY(-2px);
+    }
+    .vd-step.danger {
+      border-color: rgba(255, 17, 51, 0.6);
+      background: rgba(255, 17, 51, 0.08);
+    }
+    .vd-step.safe {
+      border-color: rgba(16, 185, 129, 0.6);
+      background: rgba(16, 185, 129, 0.08);
+    }
+    .vd-number {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .vd-step.danger .vd-number {
+      color: var(--accent-red-bright);
+      text-shadow: 0 0 10px rgba(255, 17, 51, 0.5);
+    }
+    .vd-step.safe .vd-number {
+      color: #10b981;
+      text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+    }
+    .vd-label {
+      font-family: var(--font-heading);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .vd-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.3;
+      margin: 0;
+    }
+    .perseguicao-action-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-lg);
+      margin: var(--space-xl) 0;
+    }
+    .action-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      border-left: 3px solid var(--accent-red);
+    }
+    .action-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 4px;
+      flex-wrap: wrap;
+    }
+    .action-card-title {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      color: #fff;
+      margin: 0;
+    }
+    .action-badge {
+      font-family: var(--font-heading);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(255, 17, 51, 0.2);
+      border: 1px solid rgba(255, 17, 51, 0.4);
+      color: #ff8093;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- SIDEBAR LATERAL -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Suplemento (Fios do Medo) v1.0.0</span>
+      </div>
+    </div>
+
+    <a href="../index.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar ao Sistema Principal</span>
+    </a>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Extras</div>
+      <a href="../suplementos.html" class="sidebar-link"><span class="icon"></span> Suplementos</a>
+      <a href="../mesa.html" class="sidebar-link" style="color: #ff7700;"><span class="icon"></span> Mesa Virtual</a>
+
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="racas.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="arquetipos.html" class="sidebar-link"><span class="icon"></span> Arquétipos</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+            <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="sanidade.html" class="sidebar-link featured-sanidade"><span class="icon"></span> Sanidade <span class="sidebar-badge-featured">IMPORTANTE</span></a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+      <a href="investigacao.html" class="sidebar-link featured-investigacao"><span class="icon"></span> Investigação <span class="sidebar-badge-featured">IMPORTANTE</span></a>
+      <a href="perseguicao.html" class="sidebar-link active featured-perseguicao"><span class="icon"></span> Perseguição <span class="sidebar-badge-featured">IMPORTANTE</span></a>
+      <a href="glossario.html" class="sidebar-link"><span class="icon"></span> Glossário</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+
+      <div class="sidebar-section-title">Ferramentas</div>
+      <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
+    </nav>
+  </aside>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Perseguição</h1>
+      <div style="position:relative">
+        <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
+        <div class="wiki-dropdown" id="wiki-menu-dropdown">
+          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
+          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <!-- INTRODUÇÃO À PERSEGUIÇÃO -->
+      <section class="subsection" id="visao-geral">
+        <div class="section-heading">
+          <div class="pdi-essential-banner">
+            <span class="beacon"></span>
+            <span>✦ Mecânica Importante</span>
+          </div>
+          <h2>Dinâmica de Perseguição &amp; Fuga Desesperada</h2>
+          <p>
+            Em <em>Fios do Medo</em>, nem todas as anomalias e assassinos podem ser enfrentados de peito aberto. A mecânica de <strong>Perseguição</strong> substitui o combate tático tradicional por uma dinâmica ágil, cinematográfica e desesperadora de sobrevivência, onde cada metro e cada segundo decidem quem vive e quem morre.
+          </p>
+        </div>
+
+        <div class="fdm-card highlight" style="max-width: 800px; margin: 0 auto var(--space-2xl);">
+          <p style="font-size: 0.95rem; color: var(--text-primary); line-height: 1.8; margin-bottom: var(--space-sm);">
+            Em vez de medir o movimento quadrado por quadrado em um grid rígido, a perseguição utiliza a <strong>Vantagem de Distância (VD)</strong>: um rastreador linear que mede a margem de segurança entre cada sobrevivente e o perseguidor implacável.
+          </p>
+        </div>
+      </section>
+
+      <!-- 1. INICIATIVA -->
+      <section class="subsection" id="iniciativa">
+        <div class="section-heading">
+          <h2>1. Iniciativa</h2>
+          <p>
+            No início de uma cena de perseguição, todos os envolvidos (fugitivos e a criatura) rolam <strong>Iniciativa</strong> utilizando o dado do seu atributo de <span class="attr-fdm-vigor">Vigor</span>.
+          </p>
+          <p>
+            As ações ocorrem em ordem decrescente de turnos (do maior para o menor resultado). A cada rodada completa, o Mestre descreve o avanço da ameaça e novos perigos do ambiente.
+          </p>
+        </div>
+      </section>
+
+      <!-- 2. NÍVEIS DE DISTÂNCIA (VD) -->
+      <section class="subsection" id="niveis-distancia">
+        <div class="section-heading">
+          <h2>2. Níveis de Distância (VD)</h2>
+          <p>
+            A posição relativa de cada sobrevivente em relação ao perseguidor é medida por uma escala de <strong>0 a 5 VD</strong>:
+          </p>
+        </div>
+
+        <div class="vd-track-container" style="max-width: 850px; margin: 0 auto var(--space-2xl);">
+          <div class="vd-track">
+            
+            <div class="vd-step danger">
+              <div class="vd-number">0</div>
+              <div class="vd-label">Pego</div>
+              <p class="vd-desc">Alcance corporal. Confronto direto iniciado.</p>
+            </div>
+
+            <div class="vd-step danger">
+              <div class="vd-number">1</div>
+              <div class="vd-label">Muito Perto</div>
+              <p class="vd-desc">Colado às suas costas. Pavor ensurdecedor.</p>
+            </div>
+
+            <div class="vd-step">
+              <div class="vd-number">2</div>
+              <div class="vd-label">Curta Distância</div>
+              <p class="vd-desc">Visão clara da ameaça. Mínima margem de manobra.</p>
+            </div>
+
+            <div class="vd-step">
+              <div class="vd-number">3</div>
+              <div class="vd-label">Média Distância</div>
+              <p class="vd-desc">Margem equilibrada de segurança.</p>
+            </div>
+
+            <div class="vd-step">
+              <div class="vd-number">4</div>
+              <div class="vd-label">Longa Distância</div>
+              <p class="vd-desc">Grande vantagem de espaço e fôlego.</p>
+            </div>
+
+            <div class="vd-step safe">
+              <div class="vd-number">5</div>
+              <div class="vd-label">Seguro</div>
+              <p class="vd-desc">Zona segura alcançada ou perseguidor despistado.</p>
+            </div>
+
+          </div>
+
+          <div class="callout callout-warning" style="margin-top: var(--space-xl); font-size: 0.9rem; line-height: 1.7;">
+            <strong style="color: #fff;">O que acontece ao ser Pego (VD 0)?</strong><br>
+            Quando o VD de um sobrevivente é reduzido a zero, inicia-se um <strong>combate direto normal</strong> entre ele e o perseguidor (sem vantagens de ataque concedidas para nenhum dos lados). Em seu turno, o sobrevivente capturado pode escolher:
+            <ul style="margin: 8px 0 0; padding-left: 20px;">
+              <li>Realizar um teste de <span class="attr-fdm-vigor">Vigor</span> ou <span class="attr-fdm-forca">Força</span> para se desvencilhar, empurrar o monstro e fugir, <strong>redefinindo seu valor imediatamente para VD 2</strong>;</li>
+              <li>Ou aceitar o combate e lutar diretamente contra a criatura.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. ECONOMIA DE AÇÕES & MOVIMENTO -->
+      <section class="subsection" id="acoes-movimento">
+        <div class="section-heading">
+          <h2>3. Economia de Ações &amp; Movimento</h2>
+          <p>
+            Para avançar e abrir distância do perigo, o sobrevivente gasta sua <strong>Ação Padrão</strong> escolhendo um dos dois tipos de corrida:
+          </p>
+        </div>
+
+        <div class="perseguicao-action-grid" style="max-width: 850px; margin: 0 auto var(--space-2xl);">
+          
+          <div class="action-card">
+            <div class="action-card-header">
+              <h3 class="action-card-title">Disparada Padrão</h3>
+              <span class="action-badge">CT 7</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
+              O personagem foca em manter uma corrida ágil e constante, gastando sua Ação Padrão para fazer um teste de <strong>Disparada (<span class="attr-fdm-vigor">Vigor</span>)</strong>:
+            </p>
+            <ul style="font-size: 0.85rem; color: var(--text-secondary); margin: 0; padding-left: 18px; line-height: 1.6;">
+              <li><strong>Sucesso:</strong> Corre em velocidade máxima e ganha <strong>+1 VD</strong>.</li>
+              <li><strong>Falha:</strong> Perde o ritmo, anda apenas metade do seu movimento e <strong>diminui -1 VD</strong> (o perseguidor ganha terreno).</li>
+            </ul>
+          </div>
+
+          <div class="action-card" style="border-left-color: var(--accent-red-bright);">
+            <div class="action-card-header">
+              <h3 class="action-card-title">Disparada Desesperada</h3>
+              <span class="action-badge" style="background: rgba(255, 17, 51, 0.35); border-color: var(--accent-red-bright); color: #fff;">CT 10</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
+              O personagem força cada músculo do corpo ao limite extremo, arriscando tudo em um sprint alucinado:
+            </p>
+            <ul style="font-size: 0.85rem; color: var(--text-secondary); margin: 0; padding-left: 18px; line-height: 1.6;">
+              <li><strong>Sucesso:</strong> Dá um pique absurdo e ganha <strong>+2 VD</strong>.</li>
+              <li><strong>Falha:</strong> Tropeça ou perde o fôlego, anda apenas metade do movimento, <strong>diminui -1 VD</strong> e perde a sua <strong>Ação Bônus</strong> naquele turno.</li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 4. AÇÕES SOB PRESSÃO -->
+      <section class="subsection" id="acoes-sob-pressao">
+        <div class="section-heading">
+          <h2>4. Ações sob Pressão</h2>
+          <p>
+            Em vez de apenas correr, o sobrevivente pode gastar sua <strong>Ação Padrão</strong> para interagir com o ambiente e mudar o ritmo da fuga:
+          </p>
+        </div>
+
+        <div style="max-width: 850px; margin: 0 auto var(--space-2xl); display: flex; flex-direction: column; gap: var(--space-lg);">
+          
+          <div class="fdm-card" style="border-left: 3px solid var(--attr-fdm-forca);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-sm); flex-wrap: wrap; gap: 8px;">
+              <h3 style="font-family: var(--font-heading); font-size: 1.15rem; color: #fff; margin: 0; display: flex; align-items: center; gap: 8px;">
+                🚪 Criar Barricadas
+              </h3>
+              <span class="action-badge">Ação Padrão &bull; Força</span>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: var(--space-sm);">
+              Derrubar estantes pesadas, bater portas corta-fogo, puxar grades enferrujadas ou jogar entulho no corredor para bloquear a passagem.
+            </p>
+            <div class="callout callout-info" style="font-size: 0.85rem; line-height: 1.6; margin: 0;">
+              <strong>Regra de Execução:</strong> Para realizar esta ação, o sobrevivente <strong>reduz seu próprio VD em -1</strong> (pelo tempo gasto manipulando o obstáculo) e rola um teste de <span class="attr-fdm-forca">Força</span>.<br>
+              &bull; <strong>Falha:</strong> A barricada cede, quebra ou emperra sem segurar o perigo.<br>
+              &bull; <strong>Sucesso:</strong> A barricada é posicionada. Quando o perseguidor alcançar aquele ponto, ele deve gastar <strong>1 ação inteira</strong> para remover ou arrombar o obstáculo. Esse tempo ganho <strong>aumenta o VD de todos os fugitivos em +1</strong>.
+            </div>
+          </div>
+
+          <div class="fdm-card" style="border-left: 3px solid var(--attr-fdm-vigor);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-sm); flex-wrap: wrap; gap: 8px;">
+              <h3 style="font-family: var(--font-heading); font-size: 1.15rem; color: #fff; margin: 0; display: flex; align-items: center; gap: 8px;">
+                📦 Ocultar-se
+              </h3>
+              <span class="action-badge">Ação Padrão &bull; Furtividade</span>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: var(--space-sm);">
+              Quebrar a linha de visão do perseguidor dobrando uma esquina, entrando em uma sala lateral ou entrando em um armário/fenda.
+            </p>
+            <div class="callout callout-info" style="font-size: 0.85rem; line-height: 1.6; margin: 0;">
+              <strong>Requisito:</strong> O personagem precisa estar a pelo menos <strong>VD 2</strong> e realizar um teste de <strong>Furtividade (<span class="attr-fdm-vigor">Vigor</span>)</strong>.<br>
+              &bull; <strong>Sucesso:</strong> O personagem sai da perseguição ativa e inicia a <strong>Mecânica de Se Esconder</strong>.
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 5. MECÂNICA DE SE ESCONDER -->
+      <section class="subsection" id="se-esconder">
+        <div class="section-heading">
+          <h2>5. Mecânica de Se Esconder</h2>
+          <p>
+            Quando um personagem se oculta com sucesso e o perseguidor decide vasculhar a área ao perceber que a presa sumiu, inicia-se uma rodada de busca e silêncio absoluto:
+          </p>
+        </div>
+
+        <div class="fdm-card highlight" style="max-width: 850px; margin: 0 auto var(--space-2xl);">
+          <ul style="font-size: 0.9rem; color: var(--text-primary); line-height: 1.8; margin: 0; padding-left: 20px;">
+            <li><strong>Iniciativa da Busca:</strong> Rola-se uma nova iniciativa entre o personagem escondido e o perseguidor. O personagem escondido <strong>sempre começa primeiro</strong>.</li>
+            <li><strong>Turno do Personagem Escondido:</strong> Ele pode escolher uma de duas opções:
+              <ul style="margin-top: 6px; padding-left: 20px; color: var(--text-secondary);">
+                <li><strong>Sair do Esconderijo:</strong> Abandonar o local e correr, reiniciando a perseguição padrão caso o perseguidor o veja;</li>
+                <li><strong>Controlar a Respiração:</strong> Realizar um teste de <strong><span class="attr-fdm-saude">Saúde</span></strong> durante toda a rodada para controlar os batimentos cardíacos, abafar o arfar e não emitir nenhum ruído sob o pânico.</li>
+              </ul>
+            </li>
+            <li><strong>3 Falhas e Descoberta:</strong> Caso quem está se escondendo <strong>falhe 3 vezes</strong> no teste de Saúde, o perseguidor o encontra no esconderijo e um <strong>combate direto</strong> começa imediatamente.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 6. OBSTÁCULOS -->
+      <section class="subsection" id="obstaculos">
+        <div class="section-heading">
+          <h2>6. Obstáculos</h2>
+          <p>
+            Durante as perseguições, o cenário apresentará perigos imprevistos, caminhos bloqueados e armadilhas ambientais narradas pelo Mestre. A superação desses perigos exigirá testes de perícias variadas:
+          </p>
+        </div>
+
+        <div class="fdm-card" style="max-width: 850px; margin: 0 auto var(--space-2xl);">
+          <div class="mech-stat-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+            <div class="mech-stat">
+              <div class="mech-stat-label">Acrobacia</div>
+              <div class="mech-stat-value" style="font-size: 0.85rem; font-weight: normal; color: var(--text-secondary);">Saltar buracos no piso, passar por janelas quebradas ou frestas estreitas.</div>
+            </div>
+            <div class="mech-stat">
+              <div class="mech-stat-label">Atletismo</div>
+              <div class="mech-stat-value" style="font-size: 0.85rem; font-weight: normal; color: var(--text-secondary);">Pular vãos extensos ou escalar paredes de entulho desabadas.</div>
+            </div>
+            <div class="mech-stat">
+              <div class="mech-stat-label">Percepção / Sobrevivência</div>
+              <div class="mech-stat-value" style="font-size: 0.85rem; font-weight: normal; color: var(--text-secondary);">Enxergar atalhos funcionais a tempo ou desviar de becos sem saída.</div>
+            </div>
+            <div class="mech-stat">
+              <div class="mech-stat-label">Astúcia / Força</div>
+              <div class="mech-stat-value" style="font-size: 0.85rem; font-weight: normal; color: var(--text-secondary);">Destrancar trancas rápidas ou forçar portas emperradas.</div>
+            </div>
+          </div>
+          <div class="callout callout-danger" style="margin-top: var(--space-md); font-size: 0.85rem;">
+            <strong>Consequência de Falha:</strong> Falhar em um teste de obstáculo faz o personagem perder tempo, resultando na perda de <strong>-1 VD</strong> (ou sofrendo dano físico à Saúde). Uma boa distribuição de atributos e perícias no grupo é crucial para ninguém ficar travado.
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. TESTE DE FÔLEGO -->
+      <section class="subsection" id="teste-folego">
+        <div class="section-heading">
+          <h2>7. Teste de Fôlego</h2>
+          <p>
+            Manter o ritmo máximo de fuga sem parar sobrecarrega violentamente o organismo:
+          </p>
+        </div>
+
+        <div class="fdm-card" style="max-width: 850px; margin: 0 auto var(--space-2xl); border-left: 3px solid var(--attr-fdm-saude);">
+          <p style="font-size: 0.9rem; color: var(--text-primary); line-height: 1.8; margin-bottom: var(--space-sm);">
+            A partir da <strong>3ª rodada consecutiva de corrida</strong>, ao final do seu turno, o personagem deve realizar um teste de <strong><span class="attr-fdm-saude">Saúde</span></strong> (<span class="dice">CT 12</span>, aumentando em <strong>+2 na CT</strong> a cada rodada adicional).
+          </p>
+          <div class="callout callout-warning" style="margin: 0; font-size: 0.85rem;">
+            <strong>Falha:</strong> O personagem entra em estado de <strong>Exaustão Momentânea</strong> — seu próximo teste de Disparada sofre penalidade de <strong>-1 degrau no dado</strong> (ex: <span class="dice">d12</span> vira <span class="dice">d8</span>) e ele fica impedido de utilizar a <em>Disparada Desesperada</em>.
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. PRESSÃO PSICOLÓGICA -->
+      <section class="subsection" id="pressao-psicologica">
+        <div class="section-heading">
+          <h2>8. Pressão Psicológica</h2>
+          <p>
+            O terror de ouvir os passos, a respiração pesada ou os rugidos da criatura colada nas suas costas despedaça a sanidade:
+          </p>
+        </div>
+
+        <div class="fdm-card" style="max-width: 850px; margin: 0 auto var(--space-2xl); border-left: 3px solid var(--accent-red);">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-sm);">
+            <h3 style="font-family: var(--font-heading); font-size: 1.1rem; color: #fff; margin: 0;">
+              Presença Aterradora (VD 1 — Muito Perto)
+            </h3>
+            <span class="action-badge">Estresse Contínuo</span>
+          </div>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; margin: 0;">
+            Se o turno de um personagem terminar com ele em <strong>VD 1 (Muito Perto)</strong>, o pavor imediato de ser devorado causa <strong>Dano Mental na Barra de Estresse</strong> (<span class="dice">1d4</span> pontos de estresse).
+          </p>
+        </div>
+      </section>
+
+      <!-- 9. CONDIÇÕES DE ENCERRAMENTO -->
+      <section class="subsection" id="encerramento">
+        <div class="section-heading">
+          <h2>9. Condições de Encerramento</h2>
+          <p>
+            A cena de perseguição é finalizada quando uma das seguintes condições for atingida:
+          </p>
+        </div>
+
+        <div style="max-width: 850px; margin: 0 auto var(--space-2xl); display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-md);">
+          
+          <div class="fdm-card" style="border-top: 3px solid #10b981;">
+            <h3 style="font-family: var(--font-heading); font-size: 1rem; color: #10b981; margin-top: 0;">1. Zona Segura</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
+              O personagem atinge <strong>VD 5 (Seguro)</strong>, tranca-se atrás de uma comporta reforçada ou salta em um veículo em fuga.
+            </p>
+          </div>
+
+          <div class="fdm-card" style="border-top: 3px solid #06b6d4;">
+            <h3 style="font-family: var(--font-heading); font-size: 1rem; color: #06b6d4; margin-top: 0;">2. Despistar o Perseguidor</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
+              O sobrevivente se oculta com sucesso e a criatura desiste da busca, perdendo completamente o rastro do alvo.
+            </p>
+          </div>
+
+          <div class="fdm-card" style="border-top: 3px solid var(--accent-red);">
+            <h3 style="font-family: var(--font-heading); font-size: 1rem; color: var(--accent-red-bright); margin-top: 0;">3. Confronto Direto</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
+              Os sobreviventes decidem parar e enfrentar a ameaça em um combate corporal direto até derrotá-la.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
