@@ -1095,7 +1095,16 @@ const MesaApp = {
             stMax: raw.st_max !== undefined ? raw.st_max : (raw.stMax || 44),
             stressPoints: raw.stress_points !== undefined ? raw.stress_points : (raw.stressPoints || 0),
             stressPointsMax: raw.stress_points_max !== undefined ? raw.stress_points_max : (raw.stressPointsMax || 6),
-            atributos: typeof raw.atributos === 'string' ? JSON.parse(raw.atributos || '{}') : (raw.atributos || {}),
+            atributos: (() => {
+              const parsed = typeof raw.atributos === 'string' ? JSON.parse(raw.atributos || '{}') : (raw.atributos || {});
+              const clean = {};
+              for (const [k, v] of Object.entries(parsed)) {
+                if (!k.startsWith('_') && !k.startsWith('$') && typeof v !== 'object') {
+                  clean[k] = v;
+                }
+              }
+              return clean;
+            })(),
             bonus: typeof raw.bonus === 'string' ? JSON.parse(raw.bonus || '[]') : (raw.bonus || []),
             pericias: typeof raw.pericias === 'string' ? JSON.parse(raw.pericias || '[]') : (raw.pericias || []),
             habilidades: (typeof raw.habilidades === 'string' ? JSON.parse(raw.habilidades || '[]') : (raw.habilidades || []))
@@ -1528,9 +1537,10 @@ const MesaApp = {
       { origem: `Arquétipo (${player.arquetipo || 'Curioso'})`, desc: '+d4 em Mente' }
     ];
 
-    // Atributos limpos
-    let attrsHtml = Object.keys(rawAttrs).map((k, idx) => {
-      let val = typeof rawAttrs[k] === 'object' ? rawAttrs[k].val : rawAttrs[k];
+    // Atributos limpos (ignora metadados e namespaces internos como _wuitter)
+    let validKeys = Object.keys(rawAttrs).filter(k => !k.startsWith('_') && !k.startsWith('$') && typeof rawAttrs[k] !== 'object');
+    let attrsHtml = validKeys.map((k, idx) => {
+      let val = rawAttrs[k];
       return `
         <div class="attr-open-item" style="--attr-idx: ${idx};">
           <span class="attr-open-name">${k}</span>
