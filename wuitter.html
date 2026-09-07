@@ -386,21 +386,20 @@
      MODAL: RESPOSTAS / THREAD
      ============================================================ -->
 <div class="w-modal-overlay" id="w-comments-modal">
-  <div class="w-modal-card">
+  <div class="w-modal-card" style="max-width: 600px;">
     <div class="w-modal-header">
-      <h3 class="w-modal-title">Respostas &bull; Thread</h3>
+      <h3 class="w-modal-title">Conversa &bull; Respostas</h3>
       <button class="w-modal-close" onclick="window.wuitter.closeModals()">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
-    <div class="w-modal-body">
+    <div class="w-modal-body" style="padding: 16px;">
       <div id="w-modal-post-target"></div>
       
-      <div style="display: flex; gap: 10px; margin: 12px 0;">
-        <input type="text" class="w-form-input" id="w-comment-input" placeholder="Poste sua resposta..." onkeydown="if(event.key==='Enter') document.getElementById('w-btn-send-comment').click();">
-        <button class="w-btn-post-sm" id="w-btn-send-comment">Responder</button>
-      </div>
+      <!-- Caixa de Envio de Resposta -->
+      <div id="w-modal-reply-box-wrap"></div>
 
+      <!-- Lista de Respostas / Comentários -->
       <div class="w-comments-thread" id="w-comments-container"></div>
     </div>
   </div>

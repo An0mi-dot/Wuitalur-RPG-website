@@ -470,6 +470,20 @@ class WuitterSystem {
         }
         break;
       }
+      case 'DELETE_COMMENT': {
+        const { postId, commentId } = data.payload;
+        const post = this.posts.find(p => p.id === postId);
+        if (post && post.comments) {
+          post.comments = post.comments.filter(c => c.id !== commentId);
+          this.savePostsLocal();
+          this.updatePostStatsInDOM(postId);
+          const modal = document.getElementById('w-comments-modal');
+          if (modal && modal.classList.contains('active')) {
+            this.openCommentsModal(postId);
+          }
+        }
+        break;
+      }
     }
   }
 
@@ -502,6 +516,49 @@ class WuitterSystem {
     if (replyBtn) {
       const span = replyBtn.querySelector('span');
       if (span) span.textContent = commentsCount > 0 ? commentsCount : '';
+    }
+
+    // Atualiza preview inline de respostas se houver
+    let repliesWrap = card.querySelector('.w-inline-replies-wrap');
+    if (post.comments && post.comments.length > 0) {
+      const contentArea = card.querySelector('.w-wuit-content-area');
+      if (contentArea) {
+        if (!repliesWrap) {
+          repliesWrap = document.createElement('div');
+          repliesWrap.className = 'w-inline-replies-wrap';
+          contentArea.appendChild(repliesWrap);
+        }
+        repliesWrap.innerHTML = `
+          ${post.comments.slice(-2).map(c => {
+            const cAuthor = this.getAccountById(c.authorId);
+            const cBadge = this.renderBadgeSvg(cAuthor.badge);
+            return `
+              <div class="w-inline-reply-item">
+                <div class="w-clickable-profile" onclick="window.wuitter.viewProfile('${cAuthor.id}')">
+                  ${this.renderAvatarHtml(cAuthor, 'sm')}
+                </div>
+                <div class="w-inline-reply-body">
+                  <div class="w-inline-reply-header">
+                    <span class="w-inline-reply-name" onclick="window.wuitter.viewProfile('${cAuthor.id}')">${cAuthor.name}</span>
+                    ${cBadge}
+                    <span class="w-inline-reply-handle">${cAuthor.handle}</span>
+                    <span class="w-wuit-dot">&bull;</span>
+                    <span class="w-wuit-time">${this.formatTime(c.timestamp)}</span>
+                  </div>
+                  <div class="w-inline-reply-text">${this.formatText(c.text)}</div>
+                </div>
+              </div>
+            `;
+          }).join('')}
+          ${post.comments.length > 2 ? `
+            <button class="w-btn-show-more-replies" onclick="window.wuitter.openCommentsModal('${post.id}')">
+              Ver todas as ${post.comments.length} respostas
+            </button>
+          ` : ''}
+        `;
+      }
+    } else if (repliesWrap) {
+      repliesWrap.remove();
     }
   }
 
@@ -1396,8 +1453,36 @@ class WuitterSystem {
 
     const commentsCount = post.comments ? post.comments.length : 0;
     const canDelete = this.isMaster() || (this.authenticatedAccount && this.authenticatedAccount.id === post.authorId);
-    const isLiked = this.authenticatedAccount && post.likedBy && post.likedBy.includes(this.authenticatedAccount.id);
-    const isRewuited = this.authenticatedAccount && post.rewuitedBy && post.rewuitedBy.includes(this.authenticatedAccount.id);
+    const inlineRepliesHtml = (post.comments && post.comments.length > 0) ? `
+      <div class="w-inline-replies-wrap">
+        ${post.comments.slice(-2).map(c => {
+          const cAuthor = this.getAccountById(c.authorId);
+          const cBadge = this.renderBadgeSvg(cAuthor.badge);
+          return `
+            <div class="w-inline-reply-item">
+              <div class="w-clickable-profile" onclick="window.wuitter.viewProfile('${cAuthor.id}')">
+                ${this.renderAvatarHtml(cAuthor, 'sm')}
+              </div>
+              <div class="w-inline-reply-body">
+                <div class="w-inline-reply-header">
+                  <span class="w-inline-reply-name" onclick="window.wuitter.viewProfile('${cAuthor.id}')">${cAuthor.name}</span>
+                  ${cBadge}
+                  <span class="w-inline-reply-handle">${cAuthor.handle}</span>
+                  <span class="w-wuit-dot">&bull;</span>
+                  <span class="w-wuit-time">${this.formatTime(c.timestamp)}</span>
+                </div>
+                <div class="w-inline-reply-text">${this.formatText(c.text)}</div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+        ${post.comments.length > 2 ? `
+          <button class="w-btn-show-more-replies" onclick="window.wuitter.openCommentsModal('${post.id}')">
+            Ver todas as ${post.comments.length} respostas
+          </button>
+        ` : ''}
+      </div>
+    ` : '';
 
     return `
       <article class="w-wuit-card ${isNew ? 'new-incoming' : ''}" id="post_${post.id}">
@@ -1444,6 +1529,7 @@ class WuitterSystem {
               ${SVG_ICONS.share}
             </button>
           </div>
+          ${inlineRepliesHtml}
         </div>
       </article>
     `;
@@ -1733,79 +1819,179 @@ class WuitterSystem {
     const modal = document.getElementById('w-comments-modal');
     const container = document.getElementById('w-comments-container');
     const targetPostPreview = document.getElementById('w-modal-post-target');
-    const sendBtn = document.getElementById('w-btn-send-comment');
+    const replyBoxWrap = document.getElementById('w-modal-reply-box-wrap');
 
     if (!modal || !container || !targetPostPreview) return;
 
     const author = this.getAccountById(post.authorId);
+    const badgeSvg = this.renderBadgeSvg(author.badge);
+
+    const mediaHtml = post.media ? `
+      <div style="margin-top: 10px; border-radius: var(--w-radius-md); overflow: hidden; max-height: 220px; border: 1px solid var(--w-border); background: #000; cursor: pointer;" onclick="window.wuitter.openLightbox('${post.media}')">
+        <img src="${post.media}" style="width: 100%; max-height: 220px; object-fit: contain; display: block;" alt="Mídia do Wuit">
+      </div>
+    ` : '';
+
     targetPostPreview.innerHTML = `
-      <div style="display: flex; gap: 10px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--w-border);">
-        <div class="w-clickable-profile" onclick="window.wuitter.viewProfile('${author.id}'); window.wuitter.closeModals();">
-          ${this.renderAvatarHtml(author, 'sm')}
+      <div class="w-reply-target-post">
+        <div class="w-reply-target-left">
+          <div class="w-clickable-profile" onclick="window.wuitter.viewProfile('${author.id}'); window.wuitter.closeModals();">
+            ${this.renderAvatarHtml(author, 'normal')}
+          </div>
+          <div class="w-reply-thread-line"></div>
         </div>
-        <div>
-          <div style="font-weight: 700; font-size: 0.9rem; color: #fff; cursor: pointer;" onclick="window.wuitter.viewProfile('${author.id}'); window.wuitter.closeModals();">${author.name} <span style="color: var(--w-text-muted); font-weight: normal;">${author.handle}</span></div>
-          <div style="font-size: 0.88rem; color: var(--w-text-main); margin-top: 4px;">${this.formatText(post.text)}</div>
+        <div class="w-reply-target-content">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+            <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+              <span class="w-wuit-name" onclick="window.wuitter.viewProfile('${author.id}'); window.wuitter.closeModals();">${author.name}</span>
+              ${badgeSvg}
+              <span class="w-wuit-handle" onclick="window.wuitter.viewProfile('${author.id}'); window.wuitter.closeModals();">${author.handle}</span>
+              <span class="w-wuit-dot">&bull;</span>
+              <span class="w-wuit-time">${this.formatTime(post.timestamp)}</span>
+            </div>
+          </div>
+          <div style="font-size: 0.98rem; line-height: 1.45; color: #fff; white-space: pre-wrap;">
+            ${this.formatText(post.text)}
+          </div>
+          ${mediaHtml}
         </div>
       </div>
     `;
 
+    if (replyBoxWrap) {
+      if (!this.authenticatedAccount) {
+        replyBoxWrap.innerHTML = `
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px dashed var(--w-border); border-radius: var(--w-radius-md); padding: 12px; text-align: center; margin-bottom: 16px;">
+            <p style="font-size: 0.85rem; color: var(--w-text-muted); margin-bottom: 8px;">Identifique-se com seu token para responder nesta conversa.</p>
+            <button class="w-btn-post-primary" style="font-size: 0.8rem; padding: 6px 14px;" onclick="window.wuitter.openTokenModal()">Autenticar Token</button>
+          </div>
+        `;
+      } else {
+        const postingAcc = this.getPostingAccount();
+        replyBoxWrap.innerHTML = `
+          <div class="w-reply-box-card">
+            <div class="w-clickable-profile" onclick="window.wuitter.viewProfile('${postingAcc.id}'); window.wuitter.closeModals();">
+              ${this.renderAvatarHtml(postingAcc, 'normal')}
+            </div>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-size: 0.8rem; color: var(--w-text-muted); margin-bottom: 6px;">
+                Em resposta a <span style="color: var(--w-primary); font-weight: 600;">${author.handle}</span>
+                ${this.isMaster() && postingAcc.id !== this.authenticatedAccount.id ? `<span style="color: var(--w-accent-gold); font-weight: 700; margin-left: 6px;">(Postando como ${postingAcc.name})</span>` : ''}
+              </div>
+              <textarea id="w-reply-textarea" class="w-reply-textarea" placeholder="Postar sua resposta..." rows="2"></textarea>
+              <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 8px; gap: 8px;">
+                <button class="w-btn-post-primary" style="padding: 6px 16px; font-size: 0.85rem;" onclick="window.wuitter.submitReply('${post.id}')">
+                  Responder
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        setTimeout(() => {
+          const textarea = document.getElementById('w-reply-textarea');
+          if (textarea) {
+            textarea.focus();
+            textarea.addEventListener('keydown', (e) => {
+              if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                window.wuitter.submitReply(postId);
+              }
+            });
+          }
+        }, 50);
+      }
+    }
+
     if (post.comments && post.comments.length > 0) {
       container.innerHTML = post.comments.map(c => {
         const cAuthor = this.getAccountById(c.authorId);
+        const cBadge = this.renderBadgeSvg(cAuthor.badge);
+        const canDelete = this.isMaster() || (this.authenticatedAccount && this.authenticatedAccount.id === c.authorId);
         return `
-          <div class="w-comment-item">
+          <div class="w-comment-item" id="comment_${c.id}">
             <div class="w-clickable-profile" onclick="window.wuitter.viewProfile('${cAuthor.id}'); window.wuitter.closeModals();">
-              ${this.renderAvatarHtml(cAuthor, 'sm')}
+              ${this.renderAvatarHtml(cAuthor, 'normal')}
             </div>
-            <div style="flex: 1;">
-              <div style="display: flex; align-items: center; justify-content: space-between;">
-                <span style="font-weight: 700; font-size: 0.85rem; color: #fff; cursor: pointer;" onclick="window.wuitter.viewProfile('${cAuthor.id}'); window.wuitter.closeModals();">${cAuthor.name}</span>
-                <span style="font-size: 0.75rem; color: var(--w-text-muted);">${this.formatTime(c.timestamp)}</span>
+            <div class="w-comment-main">
+              <div class="w-comment-header">
+                <div class="w-comment-author-info">
+                  <span class="w-comment-name" onclick="window.wuitter.viewProfile('${cAuthor.id}'); window.wuitter.closeModals();">${cAuthor.name}</span>
+                  ${cBadge}
+                  <span class="w-comment-handle" onclick="window.wuitter.viewProfile('${cAuthor.id}'); window.wuitter.closeModals();">${cAuthor.handle}</span>
+                  <span class="w-wuit-dot">&bull;</span>
+                  <span class="w-comment-time">${this.formatTime(c.timestamp)}</span>
+                </div>
+                ${canDelete ? `
+                  <button class="w-delete-btn" onclick="window.wuitter.deleteComment('${post.id}', '${c.id}')" title="Excluir Resposta">
+                    ${SVG_ICONS.trash}
+                  </button>
+                ` : ''}
               </div>
-              <p style="font-size: 0.85rem; color: var(--w-text-main); margin-top: 2px;">${this.formatText(c.text)}</p>
+              <div class="w-comment-text">${this.formatText(c.text)}</div>
             </div>
           </div>
         `;
       }).join('');
     } else {
-      container.innerHTML = `<p style="color: var(--w-text-muted); font-size: 0.85rem; text-align: center; padding: 12px 0;">Nenhuma resposta ainda.</p>`;
-    }
-
-    if (sendBtn) {
-      sendBtn.onclick = async () => {
-        if (!this.authenticatedAccount) {
-          this.openTokenModal();
-          return;
-        }
-        const commentInput = document.getElementById('w-comment-input');
-        const cText = commentInput ? commentInput.value.trim() : '';
-        if (!cText) return;
-
-        const postingAcc = this.getPostingAccount();
-
-        const newComment = {
-          id: 'c_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
-          authorId: postingAcc.id,
-          text: cText,
-          timestamp: Date.now()
-        };
-
-        if (!post.comments) post.comments = [];
-        post.comments.push(newComment);
-
-        this.savePostsLocal();
-        this.updatePostStatsInDOM(postId);
-
-        this.broadcastSync('ADD_COMMENT', { postId: postId, comment: newComment });
-        await this.syncToCloud();
-
-        if (commentInput) commentInput.value = '';
-        this.openCommentsModal(postId);
-      };
+      container.innerHTML = `<p style="color: var(--w-text-muted); font-size: 0.88rem; text-align: center; padding: 20px 0;">Nenhuma resposta nesta conversa ainda. Seja o primeiro a responder!</p>`;
     }
 
     modal.classList.add('active');
+  }
+
+  async submitReply(postId) {
+    if (!this.authenticatedAccount) {
+      this.openTokenModal();
+      return;
+    }
+    const post = this.posts.find(p => p.id === postId);
+    if (!post) return;
+
+    const textarea = document.getElementById('w-reply-textarea');
+    const text = textarea ? textarea.value.trim() : '';
+    if (!text) return;
+
+    const postingAcc = this.getPostingAccount();
+    const newComment = {
+      id: 'c_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+      authorId: postingAcc.id,
+      text: text,
+      timestamp: Date.now()
+    };
+
+    if (!post.comments) post.comments = [];
+    post.comments.push(newComment);
+
+    this.savePostsLocal();
+    this.updatePostStatsInDOM(postId);
+    this.broadcastSync('ADD_COMMENT', { postId: postId, comment: newComment });
+    await this.syncToCloud();
+
+    if (textarea) textarea.value = '';
+    this.openCommentsModal(postId);
+    this.renderFeed();
+  }
+
+  async deleteComment(postId, commentId) {
+    const post = this.posts.find(p => p.id === postId);
+    if (!post || !post.comments) return;
+
+    const comment = post.comments.find(c => c.id === commentId);
+    if (!comment) return;
+
+    const canDelete = this.isMaster() || (this.authenticatedAccount && this.authenticatedAccount.id === comment.authorId);
+    if (!canDelete) return;
+
+    if (confirm('Tem certeza que deseja excluir esta resposta?')) {
+      post.comments = post.comments.filter(c => c.id !== commentId);
+      this.savePostsLocal();
+      this.updatePostStatsInDOM(postId);
+      this.broadcastSync('DELETE_COMMENT', { postId: postId, commentId: commentId });
+      await this.syncToCloud();
+      this.openCommentsModal(postId);
+      this.renderFeed();
+    }
   }
 
   openPropModal(postId) {
