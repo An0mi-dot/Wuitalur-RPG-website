@@ -174,7 +174,7 @@ const DEFAULT_ACCOUNTS = [
     handle: '@odara',
     bio: 'Guardiã de relíquias antigas e intérprete de línguas esquecidas do arquipélago.',
     avatarLetter: 'O',
-    avatarImage: '',
+    avatarImage: 'assets/odara_wuitter.png',
     avatarColor: '#ec4899',
     badge: 'none',
     isMaster: false
