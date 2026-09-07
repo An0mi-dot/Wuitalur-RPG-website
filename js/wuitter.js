@@ -1161,7 +1161,7 @@ O racionamento de energia nos Distritos 3 e 4 vigorará entre 01:00 e 05:00 de s
 
 #CafeNevoa #BaristaLife #Fragktus #ColegioPrimordio #Alquimia`,
         timestamp: now - (240 * 60 * 1000),
-        timeDisplay: '28/06/2061',
+        timeDisplay: '01/06/2061',
         likes: 68,
         likedBy: [],
         rewuits: 15,
@@ -1173,7 +1173,7 @@ O racionamento de energia nos Distritos 3 e 4 vigorará entre 01:00 e 05:00 de s
             authorId: 'npc_viktor_cronista',
             text: `Guarda uma garrafa térmica de café duplo bem amargo pra mim, @sara. A noite de análises no laboratório vai ser longa.`,
             timestamp: now - (230 * 60 * 1000),
-            timeDisplay: '28/06/2061',
+            timeDisplay: '01/06/2061',
             replyToCommentId: null,
             replyToHandle: null
           },
@@ -1182,7 +1182,7 @@ O racionamento de energia nos Distritos 3 e 4 vigorará entre 01:00 e 05:00 de s
             authorId: 'npc_sara',
             text: `Separado e bem forte, doutor! Passa aqui pela porta lateral que não tem a fila dos fiscais da alfândega.`,
             timestamp: now - (220 * 60 * 1000),
-            timeDisplay: '28/06/2061',
+            timeDisplay: '01/06/2061',
             replyToCommentId: 'c_seed_barista_1',
             replyToHandle: '@viktor_cronista'
           }
@@ -1197,7 +1197,7 @@ Alguém mais sentiu cheiro de cobre queimado?
 
 #DistritoComercial #PaladiumEstranho #AlquimiaUrbana`,
         timestamp: now - (300 * 60 * 1000),
-        timeDisplay: '24/06/2061',
+        timeDisplay: '28/05/2061',
         likes: 45,
         likedBy: [],
         rewuits: 11,
@@ -1209,7 +1209,7 @@ Alguém mais sentiu cheiro de cobre queimado?
             authorId: 'npc_viktor_cronista',
             text: `Não respire sem lenço ou máscara de feltro, @sara. Os filtros de purificação do Setor 3 estão entupidos desde o início da semana.`,
             timestamp: now - (290 * 60 * 1000),
-            timeDisplay: '24/06/2061',
+            timeDisplay: '28/05/2061',
             replyToCommentId: null,
             replyToHandle: null
           },
@@ -1218,7 +1218,7 @@ Alguém mais sentiu cheiro de cobre queimado?
             authorId: 'npc_leo_mecanico',
             text: `Fumaça arroxeada com cheiro de cobre é assinatura de sublimação de nitrato de éter. Alguém descartou reagente na tubulação sem neutralizar.`,
             timestamp: now - (280 * 60 * 1000),
-            timeDisplay: '24/06/2061',
+            timeDisplay: '28/05/2061',
             replyToCommentId: null,
             replyToHandle: null
           }
@@ -1231,7 +1231,7 @@ Alguém mais sentiu cheiro de cobre queimado?
 
 #VidaDeEstudante #ColegioPrimordio #Herbologia #CafeNevoa`,
         timestamp: now - (360 * 60 * 1000),
-        timeDisplay: '19/06/2061',
+        timeDisplay: '22/05/2061',
         likes: 54,
         likedBy: [],
         rewuits: 10,
@@ -1248,7 +1248,7 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
 
 #CafeNevoa #PaladiumDaily #ChadeBruxa`,
         timestamp: now - (420 * 60 * 1000),
-        timeDisplay: '12/06/2061',
+        timeDisplay: '15/05/2061',
         likes: 39,
         likedBy: [],
         rewuits: 9,
@@ -1260,7 +1260,7 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
             authorId: 'npc_bichinhos_wui',
             text: `Se for o furãozinho albino com coleira de latão, o nome dele é Pipoca e ele é viciado em eletricidade estática. Peço perdão em nome da comunidade pet!`,
             timestamp: now - (410 * 60 * 1000),
-            timeDisplay: '12/06/2061',
+            timeDisplay: '15/05/2061',
             replyToCommentId: null,
             replyToHandle: null
           },
@@ -1269,7 +1269,7 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
             authorId: 'npc_sara',
             text: `Ele quase virou uma torrada no condensador do balcão! Mas ele ganhou um pedaço de biscoito de aveia e perdoei.`,
             timestamp: now - (400 * 60 * 1000),
-            timeDisplay: '12/06/2061',
+            timeDisplay: '15/05/2061',
             replyToCommentId: 'c_seed_sara_1_1',
             replyToHandle: '@fauna_verdes'
           }
