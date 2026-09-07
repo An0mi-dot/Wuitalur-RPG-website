@@ -7,6 +7,7 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/wuitter.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="wuitter-body">
 
@@ -78,10 +79,14 @@
        COLUNA CENTRAL: FEED & COMPOSIÇÃO
        ============================================================ -->
   <main class="w-main-feed">
-    <!-- Header com Abas -->
+    <!-- Header com Abas e Indicador de Tempo Real -->
     <header class="w-feed-header">
       <div class="w-header-title-bar">
         <h1 class="w-header-title">Página Inicial</h1>
+        <div class="w-realtime-status-pill" id="w-realtime-badge" title="Sincronização em tempo real via WebSocket">
+          <span class="w-realtime-dot"></span>
+          <span class="w-realtime-text">Tempo Real</span>
+        </div>
       </div>
       <div class="w-feed-tabs">
         <button class="w-feed-tab active" data-tab="para-voce">Para você</button>
