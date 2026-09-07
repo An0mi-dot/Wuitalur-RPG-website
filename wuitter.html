@@ -40,6 +40,12 @@
           <span>Explorar</span>
         </button>
 
+        <!-- Botão Principal de Autenticar Token -->
+        <button class="w-nav-item w-nav-token-btn" id="w-nav-token-item" onclick="window.wuitter.openTokenModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5L11 9l-1.5-1.5L8 9l-4 4a5.66 5.66 0 1 0 8 8l4-4 1.5 1.5 1.5-1.5 1.5 1.5 1.5-1.5 1.5 1.5 2-2z"/></svg>
+          <span id="w-nav-token-label">Autenticar Token</span>
+        </button>
+
         <!-- Botão Exclusivo do Mestre (exibido apenas para o Mestre) -->
         <button class="w-nav-item w-nav-master-btn" id="w-nav-master-item" style="display: none; color: var(--w-accent-gold);" onclick="window.wuitter.openMasterPanelModal()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -63,7 +69,7 @@
       </nav>
 
       <!-- Botão Wuitar -->
-      <button class="w-btn-post-primary" onclick="const input = document.getElementById('w-compose-input'); if(input){ input.focus(); }">
+      <button class="w-btn-post-primary" onclick="if(!window.wuitter.authenticatedAccount){ window.wuitter.openTokenModal(); } else { const input = document.getElementById('w-compose-input'); if(input){ input.focus(); } }">
         <svg class="w-mobile-post-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
         <span>Wuitar</span>
       </button>
@@ -83,9 +89,15 @@
     <header class="w-feed-header">
       <div class="w-header-title-bar">
         <h1 class="w-header-title">Página Inicial</h1>
-        <div class="w-realtime-status-pill online" id="w-realtime-badge" title="Sincronização em tempo real via Nuvem e WebSocket">
-          <span class="w-realtime-dot"></span>
-          <span class="w-realtime-text">Tempo Real Ativo</span>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button class="w-btn-header-token" onclick="window.wuitter.openTokenModal()" id="w-header-token-btn" title="Autenticar ou Trocar Token">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5L11 9l-1.5-1.5L8 9l-4 4a5.66 5.66 0 1 0 8 8l4-4 1.5 1.5 1.5-1.5 1.5 1.5 1.5-1.5 1.5 1.5 2-2z"/></svg>
+            <span id="w-header-token-text">Autenticar Token</span>
+          </button>
+          <div class="w-realtime-status-pill online" id="w-realtime-badge" title="Sincronização em tempo real via Nuvem e WebSocket">
+            <span class="w-realtime-dot"></span>
+            <span class="w-realtime-text">Tempo Real Ativo</span>
+          </div>
         </div>
       </div>
       <div class="w-feed-tabs">

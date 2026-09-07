@@ -1558,7 +1558,7 @@ const MesaApp = {
     let habsHtml = habs.filter(h => h && h.nome && !isDarkVision(h.nome)).map((h, idx) => `
       <li class="hab-open-item" style="--hab-idx: ${idx};">
         <div class="hab-open-title">
-          ✦ ${h.nome}
+          - ${h.nome}
           ${h.custo ? `<span class="hab-open-cost">${h.custo}</span>` : ''}
         </div>
         <p class="hab-open-desc">${h.desc}</p>
@@ -2564,7 +2564,7 @@ const MesaDice = {
     // 6. Log no chat da mesa
     const breakdown = diceResults.map(d => `[d${d.sides}: ${d.val}]`).join(' + ');
     const modStr = this.modifier !== 0 ? (this.modifier > 0 ? ` + ${this.modifier}` : ` - ${Math.abs(this.modifier)}`) : '';
-    const chatContent = `Rolou ${breakdown}${modStr} ➔ Total: ${total}`;
+    const chatContent = `Rolou ${breakdown}${modStr} -> Total: ${total}`;
 
     MesaChat.receiveMessage({
       id: 'dice_' + Date.now(),

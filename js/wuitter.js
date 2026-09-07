@@ -163,6 +163,8 @@ const DEFAULT_ACCOUNTS = [
     badge: 'none',
     isMaster: false
   }
+];
+
 class WuitterSystem {
   constructor() {
     this.accounts = [];
@@ -850,7 +852,8 @@ class WuitterSystem {
   renderSidebarAuth() {
     const authContainer = document.getElementById('w-auth-section');
     const masterNavBtn = document.getElementById('w-nav-master-item');
-    if (!authContainer) return;
+    const navTokenLabel = document.getElementById('w-nav-token-label');
+    const headerTokenText = document.getElementById('w-header-token-text');
 
     const isMaster = this.isMaster();
 
@@ -859,18 +862,28 @@ class WuitterSystem {
     }
 
     if (!this.authenticatedAccount) {
-      authContainer.innerHTML = `
-        <div class="w-auth-box-unlogged">
-          <p class="w-auth-unlogged-text">Conecte o token do seu personagem para wuitar.</p>
-          <button class="w-btn-post-primary" style="padding: 9px 16px; width: 100%; font-size: 0.88rem;" onclick="window.wuitter.openTokenModal()">
-            Autenticar Token
-          </button>
-        </div>
-      `;
+      if (navTokenLabel) navTokenLabel.textContent = 'Autenticar Token';
+      if (headerTokenText) headerTokenText.textContent = 'Autenticar Token';
+
+      if (authContainer) {
+        authContainer.innerHTML = `
+          <div class="w-auth-box-unlogged">
+            <p class="w-auth-unlogged-text">Conecte o token do seu personagem para wuitar.</p>
+            <button class="w-btn-post-primary" style="padding: 9px 16px; width: 100%; font-size: 0.88rem;" onclick="window.wuitter.openTokenModal()">
+              Autenticar Token
+            </button>
+          </div>
+        `;
+      }
       return;
     }
 
     const acc = this.authenticatedAccount;
+
+    if (navTokenLabel) navTokenLabel.textContent = 'Trocar Token';
+    if (headerTokenText) headerTokenText.textContent = `${acc.name} (Trocar)`;
+
+    if (authContainer) {
 
     authContainer.innerHTML = `
       <div class="w-persona-card-auth">
@@ -903,6 +916,7 @@ class WuitterSystem {
         </button>
       </div>
     `;
+    }
   }
 
   renderComposeHeader() {
