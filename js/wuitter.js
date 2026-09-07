@@ -341,15 +341,33 @@ class WuitterSystem {
         if (wData) {
           let hasChanges = false;
 
-          // Atualiza posts da nuvem
-          if (Array.isArray(wData.posts)) {
-            const currentJson = JSON.stringify(this.posts);
-            const remoteJson = JSON.stringify(wData.posts);
-            if (currentJson !== remoteJson) {
-              this.posts = wData.posts;
-              this.savePostsLocal();
-              hasChanges = true;
-            }
+          // Atualiza e mescla posts da nuvem com os posts do universo
+          const remotePosts = Array.isArray(wData.posts) ? wData.posts : [];
+          const seedPosts = this.getInitialSeedPosts();
+          
+          const postMap = new Map();
+          // 1. Posts do universo
+          seedPosts.forEach(p => postMap.set(p.id, p));
+          // 2. Posts remotos (atualizam os do universo se tiverem curtidas/respostas ou novos posts)
+          remotePosts.forEach(p => postMap.set(p.id, p));
+          // 3. Posts locais criados pelo usuário
+          this.posts.forEach(p => {
+            if (!postMap.has(p.id)) postMap.set(p.id, p);
+          });
+
+          const mergedPosts = Array.from(postMap.values());
+          mergedPosts.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+          if (JSON.stringify(this.posts) !== JSON.stringify(mergedPosts)) {
+            this.posts = mergedPosts;
+            this.ensureOrganicBaselineEngagement();
+            this.savePostsLocal();
+            hasChanges = true;
+          }
+
+          // Se a nuvem tinha menos posts que o nosso conjunto completo, atualiza o Supabase
+          if (remotePosts.length < mergedPosts.length) {
+            this.syncToCloud();
           }
 
           // Atualiza contas customizadas da nuvem (adicionando, atualizando e removendo excluidas)
@@ -693,6 +711,64 @@ class WuitterSystem {
   getInitialSeedPosts() {
     const now = Date.now();
     return [
+      {
+        id: 'wuit_seed_gov_alerta_1',
+        authorId: 'npc_gov_paladium',
+        text: `[ALERTA DE SEGURANÇA — CHANCELARIA DE PALADIUM]\nMANDADO DE CAPTURA PÚBLICA\n\nInformações comprovadas que levem à custódia de Kaelen, o Silencioso, foragido do Setor Penitenciário de Ferro-Velho, serão recompensadas com 500 moedas de prata pelo Tesouro Municipal.\n\nO indivíduo responde por invasão de arquivos do Conclave e quebra de lacres etéreos. Denúncias podem ser feitas em qualquer posto da Guarda.\n\n#AlertaPaladium #SegurancaMetropolitana #Recompensa`,
+        timestamp: now - (18 * 60 * 1000),
+        likes: 62,
+        likedBy: [],
+        rewuits: 25,
+        rewuitedBy: [],
+        media: '',
+        comments: [
+          {
+            id: 'c_seed_alerta_1',
+            authorId: 'char_1',
+            text: `A guarnição do 2º Batalhão já bloqueou as saídas pelos canais do Porto Velho? A última pista indicava rota de fuga pelas docas.`,
+            timestamp: now - (14 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_alerta_2',
+            authorId: 'npc_sara',
+            text: `Trancando a porta do café com duas voltas e barra de ferro hoje à noite.`,
+            timestamp: now - (10 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          }
+        ]
+      },
+      {
+        id: 'wuit_seed_sara_nevoa_2',
+        authorId: 'npc_sara',
+        text: `Acabei de ver uma fumaça arroxeada saindo do bueiro em frente à Torre do Sino. Não sei se era vazamento de resíduo alquímico ou magia clandestina, mas meu gato lunar se recusou terminantemente a passar perto da calçada.\n\nAlguém mais sentiu cheiro de cobre queimado?\n\n#DistritoComercial #PaladiumEstranho #AlquimiaUrbana`,
+        timestamp: now - (32 * 60 * 1000),
+        likes: 45,
+        likedBy: [],
+        rewuits: 11,
+        rewuitedBy: [],
+        media: '',
+        comments: [
+          {
+            id: 'c_seed_sara_nevoa_1',
+            authorId: 'npc_viktor_cronista',
+            text: `Não respire sem lenço ou máscara de feltro, @sara. Os filtros de purificação do Setor 3 estão entupidos desde o início da semana.`,
+            timestamp: now - (27 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_sara_nevoa_2',
+            authorId: 'char_3',
+            text: `Fumaça arroxeada com cheiro de cobre é assinatura de sublimação de nitrato de éter. Alguém descartou reagente sem neutralizar na água.`,
+            timestamp: now - (22 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          }
+        ]
+      },
       {
         id: 'wuit_seed_gov_1',
         authorId: 'npc_gov_paladium',
@@ -1132,13 +1208,28 @@ class WuitterSystem {
   }
 
   getAccountById(id) {
-    return this.accounts.find(a => a.id === id) || {
+    if (!id) {
+      return {
+        id: 'anon',
+        name: 'Cidadão de Paladium',
+        handle: '@cidadao',
+        avatarLetter: 'C',
+        avatarImage: '',
+        avatarColor: '#475569',
+        badge: 'none'
+      };
+    }
+    let acc = this.accounts.find(a => a.id === id);
+    if (!acc) {
+      acc = DEFAULT_ACCOUNTS.find(a => a.id === id);
+    }
+    return acc || {
       id: id,
-      name: 'Desconhecido',
-      handle: '@desconhecido',
-      avatarLetter: '?',
+      name: id.replace(/^(npc_|char_)/, '').replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+      handle: `@${id.replace(/^(npc_|char_)/, '')}`,
+      avatarLetter: id.charAt(0).toUpperCase(),
       avatarImage: '',
-      avatarColor: '#374151',
+      avatarColor: '#475569',
       badge: 'none'
     };
   }
