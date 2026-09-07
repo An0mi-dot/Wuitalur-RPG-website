@@ -47,6 +47,19 @@ body.wuitter-body {
   line-height: 1.45;
 }
 
+body.wuitter-body h1,
+body.wuitter-body h2,
+body.wuitter-body h3,
+body.wuitter-body h4,
+body.wuitter-body h5,
+body.wuitter-body h6,
+body.wuitter-body button,
+body.wuitter-body input,
+body.wuitter-body textarea,
+body.wuitter-body select {
+  font-family: var(--w-font-sans) !important;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
