@@ -46,7 +46,7 @@ const DEFAULT_ACCOUNTS = [
     hashes: MASTER_HASHES,
     name: 'Mestre',
     handle: '@mestre',
-    bio: '',
+    bio: 'Narrador e arquiteto de Wuitalur. Controle de eventos globais, anomalias e decretos do destino.',
     avatarLetter: 'M',
     avatarImage: '',
     avatarColor: '#ff1133',
@@ -60,7 +60,7 @@ const DEFAULT_ACCOUNTS = [
     hashes: ['2dd19af57e1afab99db2a52767841b4188121375b4e107e25f1e19b5a08074b7', '67444813cdcd8add28ec10fe6184264bd4acddcd339083da3cee52779ef2b52f'],
     name: 'Thulita',
     handle: '@thulita',
-    bio: '',
+    bio: 'Investigadora da Guarda & perita em rastreamento etéreo. Sempre em busca de pistas que não façam sentido.',
     avatarLetter: 'T',
     avatarImage: '',
     avatarColor: '#10b981',
@@ -74,7 +74,7 @@ const DEFAULT_ACCOUNTS = [
     hashes: ['1c3b0fa0bb6d1186cbfbde84001fd11845b5a68922a1029288319fdffd1325fa', '113917ac98d6019f27deda3d987664c09f8fd5c12da07f5981485dfe2a0b62b2'],
     name: 'Minerva',
     handle: '@minerva',
-    bio: '',
+    bio: 'Médica de campo e estudiosa de patologias arcanas. Café sem açúcar e prontuários em dia.',
     avatarLetter: 'M',
     avatarImage: '',
     avatarColor: '#8b5cf6',
@@ -88,7 +88,7 @@ const DEFAULT_ACCOUNTS = [
     hashes: ['f95666157dd397d4157d44720f05c660446b23b6c3140aa2bcb8ca5761a47f28', '25bf418695fe134c210bdf931fc5893b2d7a292f7ed262c008ecd759cb11983e'],
     name: 'Eric',
     handle: '@eric',
-    bio: '',
+    bio: 'Alquimista tático e especialista em compostos voláteis. Se explodiu, provavelmente fui eu.',
     avatarLetter: 'E',
     avatarImage: '',
     avatarColor: '#ef4444',
@@ -102,7 +102,7 @@ const DEFAULT_ACCOUNTS = [
     hashes: ['8b7903ff85b96269fee9ef4165adc18ae24ce32f20e3de2c5daa3ffd17e002bd', '50677632f0e9c26b7573bd471219e6ebea8cfb44cd12c34251a39f8cdfb5d660'],
     name: 'Pera',
     handle: '@pera',
-    bio: '',
+    bio: 'Navegadora e cartógrafa das correntes de éter. Conheço cada beco e cada rota de fuga.',
     avatarLetter: 'P',
     avatarImage: '',
     avatarColor: '#f59e0b',
@@ -116,7 +116,7 @@ const DEFAULT_ACCOUNTS = [
     hashes: ['7f42d2ea1b3752c523f50d69830e942858b6c0980c4638bdbaf215d94c76bb73', '8877df43636ee69b3b5e0953869ec2a80c9844ddc6bc9247cf64c29d2a75c09c'],
     name: 'Willian',
     handle: '@willian',
-    bio: '',
+    bio: 'Armeiro e entusiasta de engenhocas mecânicas. Nunca confie em um mecanismo que não faça barulho.',
     avatarLetter: 'W',
     avatarImage: '',
     avatarColor: '#06b6d4',
@@ -130,7 +130,7 @@ const DEFAULT_ACCOUNTS = [
     hashes: ['b38466b6c44627df5485939cb241d72a86f54008b87e828a144fdd78aee213cb', '4e6dd809209ad92ce0a547b2b1a5473c610c2c0bb5139bec6ce6fd2b5e65e964'],
     name: 'John Doe',
     handle: '@johndoe',
-    bio: '',
+    bio: 'Observador discreto. Não faço perguntas que eu não queira saber a resposta.',
     avatarLetter: 'J',
     avatarImage: '',
     avatarColor: '#3b82f6',
@@ -144,7 +144,7 @@ const DEFAULT_ACCOUNTS = [
     hashes: ['187542c177a73f8011cb57622b694f3ec8ffd5c11ea61ea1de5378c85ce24451', '397303bab301646c0c74e253491aeb2ffdbe9cfc6f9395dbd9748583b5d81330'],
     name: 'Odara',
     handle: '@odara',
-    bio: '',
+    bio: 'Guardiã de relíquias antigas e intérprete de línguas esquecidas do arquipélago.',
     avatarLetter: 'O',
     avatarImage: '',
     avatarColor: '#ec4899',
@@ -158,10 +158,108 @@ const DEFAULT_ACCOUNTS = [
     hashes: ['a1a0efb57f6f279826e7419fa6630b4cd85d6bcb8e69cb191916a28d428a72c6', 'dacd72e3e91ae602668271fa5eecbe67ad6efd099ba82a29dddf6e20d3a52926'],
     name: 'Canneth',
     handle: '@canneth',
-    bio: '',
+    bio: 'Especialista em segurança arcana e sobrevivência urbana. Cuidado onde pisa em Paladium.',
     avatarLetter: 'C',
     avatarImage: '',
     avatarColor: '#14b8a6',
+    badge: 'none',
+    isMaster: false
+  },
+  {
+    id: 'npc_gov_paladium',
+    slot: null,
+    tokens: ['PALADIUM-GOV', 'GOV-PALADIUM'],
+    hashes: [],
+    name: 'Governo de Paladium',
+    handle: '@gov_paladium',
+    bio: 'Canal Oficial do Governo & Departamento de Segurança e Ordem de Paladium. Comunicados da Chancelaria, decretos civis, registros penitenciários e mandados de custódia da metrópole.',
+    avatarLetter: 'G',
+    avatarImage: '',
+    avatarColor: '#1e3a8a',
+    badge: 'gold',
+    isMaster: false
+  },
+  {
+    id: 'npc_sara',
+    slot: null,
+    tokens: ['SARA-WUI', 'SARA-VITORINO'],
+    hashes: [],
+    name: 'Sara Vitorino',
+    handle: '@sara',
+    bio: 'Estudante de Alquimia Aplicada & barista no Café Névoa (Distrito Comercial). Amante de gatos lunares e chás duvidosos. Se você ouviu a sirene das 2h da manhã, não pergunte.',
+    avatarLetter: 'S',
+    avatarImage: '',
+    avatarColor: '#f43f5e',
+    badge: 'none',
+    isMaster: false
+  },
+  {
+    id: 'npc_paladium_art',
+    slot: null,
+    tokens: ['PALADIUM-ART'],
+    hashes: [],
+    name: 'Galeria Paladium | Arte & Conceito',
+    handle: '@paladium_art',
+    bio: 'Página dedicada aos artistas independentes, murais de rua e ilustrações conceituais do Distrito Alto e Baixo de Paladium. Curadoria visual da metrópole.',
+    avatarLetter: 'A',
+    avatarImage: '',
+    avatarColor: '#8b5cf6',
+    badge: 'blue',
+    isMaster: false
+  },
+  {
+    id: 'npc_bichinhos_wui',
+    slot: null,
+    tokens: ['BICHINHOS-WUI'],
+    hashes: [],
+    name: 'Bichinhos & Fauna de Wuitalur',
+    handle: '@bichinhos_wui',
+    bio: 'O lado mais dócil de Wuitalur. Apreciação de mascotes mágicos, furões de éter, corujas mecânicas e animais de estimação dos cidadãos. Envios abertos!',
+    avatarLetter: 'B',
+    avatarImage: '',
+    avatarColor: '#10b981',
+    badge: 'blue',
+    isMaster: false
+  },
+  {
+    id: 'npc_gazeta_paladium',
+    slot: null,
+    tokens: ['GAZETA-PALADIUM'],
+    hashes: [],
+    name: 'A Gazeta de Paladium',
+    handle: '@gazeta_paladium',
+    bio: 'Jornalismo independente e informes em tempo real. O que o Governo de Paladium esconde nos gabinetes, a nossa equipe apura nos becos, portos e tavernas.',
+    avatarLetter: 'G',
+    avatarImage: '',
+    avatarColor: '#d97706',
+    badge: 'blue',
+    isMaster: false
+  },
+  {
+    id: 'npc_viktor_cronista',
+    slot: null,
+    tokens: ['VIKTOR-CRONISTA'],
+    hashes: [],
+    name: 'Dr. Viktor Ramos',
+    handle: '@viktor_cronista',
+    bio: 'Pesquisador de flutuações etéreas no Instituto Tecnológico de Paladium. Cético profissional, cronista urbano e consumidor crônico de café amargo.',
+    avatarLetter: 'V',
+    avatarImage: '',
+    avatarColor: '#64748b',
+    badge: 'none',
+    isMaster: false
+  },
+  {
+    id: 'npc_leo_mecanico',
+    slot: null,
+    tokens: ['LEO-MECANICO'],
+    hashes: [],
+    name: 'Léo das Engrenagens',
+    handle: '@leo_engrenagens',
+    bio: 'Oficina de Reparos (Setor 4 - Distrito Baixo). Conserto caldeiras a vapor, autômatos, próteses de bronze e relógios arcanos. Não vendo peças pro governo.',
+    avatarLetter: 'L',
+    avatarImage: '',
+    avatarColor: '#ea580c',
     badge: 'none',
     isMaster: false
   }
@@ -589,6 +687,300 @@ class WuitterSystem {
     }
   }
 
+  getInitialSeedPosts() {
+    const now = Date.now();
+    return [
+      {
+        id: 'wuit_seed_gov_1',
+        authorId: 'npc_gov_paladium',
+        text: `[DEPARTAMENTO DE SEGURANÇA PÚBLICA — PALADIUM]\nREGISTRO DE OPERAÇÃO #3088\n\nDurante a madrugada, a Guarda Metropolitana efetuou a prisão em flagrante de 3 indivíduos no Distrito Portuário por contrabando de condutores de éter não catalogados e falsificação de selos alfandegários.\n\nOs detidos foram encaminhados à Penitenciária de Alta Contenção de Ferro-Velho. Qualquer movimentação suspeita nas docas deve ser reportada imediatamente à guarnição central.\n\n#PaladiumSegura #OperacaoDocas #LeiEOrdem`,
+        timestamp: now - (42 * 60 * 1000),
+        likes: 54,
+        likedBy: [],
+        rewuits: 14,
+        rewuitedBy: [],
+        media: '',
+        comments: [
+          {
+            id: 'c_seed_gov_1_1',
+            authorId: 'npc_gazeta_paladium',
+            text: `A Guarda só esqueceu de mencionar que o 'contrabando' eram geradores antigos que abasteciam a clínica comunitária do Distrito Baixo após o racionamento decretado pelo próprio Senado.`,
+            timestamp: now - (35 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_gov_1_2',
+            authorId: 'npc_gov_paladium',
+            text: `A Gazeta de Paladium está advertida formalmente contra a disseminação de narrativas desinformativas acerca de apreensões de materiais com risco de instabilidade.`,
+            timestamp: now - (28 * 60 * 1000),
+            replyToCommentId: 'c_seed_gov_1_1',
+            replyToHandle: '@gazeta_paladium'
+          },
+          {
+            id: 'c_seed_gov_1_3',
+            authorId: 'npc_viktor_cronista',
+            text: `Instabilidade? Desde quando condutores de éter grau 2 têm risco crítico? O relatório técnico de vocês está desatualizado há pelo menos quatro legislaturas.`,
+            timestamp: now - (20 * 60 * 1000),
+            replyToCommentId: 'c_seed_gov_1_2',
+            replyToHandle: '@gov_paladium'
+          },
+          {
+            id: 'c_seed_gov_1_4',
+            authorId: 'npc_sara',
+            text: `Minha luz piscou três vezes às 02:40 e agora entendi o motivo das viaturas descendo a Avenida dos Arcos correndo. Quase derrubei a caldeira de infusão no Café.`,
+            timestamp: now - (15 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          }
+        ]
+      },
+      {
+        id: 'wuit_seed_sara_1',
+        authorId: 'npc_sara',
+        text: `Bom dia para quem acordou com cheiro de ozônio e vapor de caldeira vazando na rua. O Café Névoa já está aberto e o chá de camomila estelar tá saindo com 20% de desconto para quem tiver cara de quem não dormiu por causa do toque de recolher.\n\nE por favor: parem de deixar seus mascotes mágicos mastigarem os fios de cobre da fachada!\n\n#CafeNevoa #PaladiumDaily #ChadeBruxa`,
+        timestamp: now - (2 * 60 * 60 * 1000),
+        likes: 39,
+        likedBy: [],
+        rewuits: 9,
+        rewuitedBy: [],
+        media: '',
+        comments: [
+          {
+            id: 'c_seed_sara_1_1',
+            authorId: 'npc_bichinhos_wui',
+            text: `Se for o furãozinho albino com coleira de latão, o nome dele é Pipoca e ele é viciado em eletricidade estática. Peço perdão em nome da comunidade pet!`,
+            timestamp: now - (105 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_sara_1_2',
+            authorId: 'npc_sara',
+            text: `Ele quase virou uma torrada no condensador do balcão! Mas ele ganhou um pedaço de biscoito de aveia e perdoei.`,
+            timestamp: now - (90 * 60 * 1000),
+            replyToCommentId: 'c_seed_sara_1_1',
+            replyToHandle: '@bichinhos_wui'
+          },
+          {
+            id: 'c_seed_sara_1_3',
+            authorId: 'char_1',
+            text: `Guarda um copo grande de café duplo com calda de açúcar mascavo pra mim, @sara. O plantão na delegacia hoje vai ser longo.`,
+            timestamp: now - (70 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_sara_1_4',
+            authorId: 'npc_sara',
+            text: `Separado e bem forte, @thulita! Passa aqui pela porta lateral que não tem a fila dos fiscais da alfândega.`,
+            timestamp: now - (55 * 60 * 1000),
+            replyToCommentId: 'c_seed_sara_1_3',
+            replyToHandle: '@thulita'
+          }
+        ]
+      },
+      {
+        id: 'wuit_seed_bichinhos_1',
+        authorId: 'npc_bichinhos_wui',
+        text: `Apresentamos: Barnabé, a corujinha-mecânica do mestre Tobias. Ela foi forjada com engrenagens de relógio suíço e penas de latão polido. O trabalho dela é entregar bilhetes e pedir carinho com bicadinhas no dedo.\n\nProtejam essa fofura a todo custo.\n\n#CriaturasDeWu #MascotesMagicos #PaladiumPets`,
+        timestamp: now - (5 * 60 * 60 * 1000),
+        likes: 98,
+        likedBy: [],
+        rewuits: 34,
+        rewuitedBy: [],
+        media: '',
+        comments: [
+          {
+            id: 'c_seed_bichinhos_1_1',
+            authorId: 'npc_paladium_art',
+            text: `A anatomia da asa mecânica nessa peça é de uma delicadeza impressionante. Tobias é um patrimônio vivo do Distrito Baixo.`,
+            timestamp: now - (4 * 60 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_bichinhos_1_2',
+            authorId: 'npc_sara',
+            text: `Eu quero cinco dessas na minha bancada agora mesmo.`,
+            timestamp: now - (230 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_bichinhos_1_3',
+            authorId: 'char_3',
+            text: `Se ela souber carregar frascos de reagente sem derrubar no meio do caminho, pago o dobro do preço da oficina.`,
+            timestamp: now - (200 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          }
+        ]
+      },
+      {
+        id: 'wuit_seed_gazeta_1',
+        authorId: 'npc_gazeta_paladium',
+        text: `URGENTE: Três guardas metropolitanos foram afastados após o sumiço de relatórios confidenciais da Sala de Evidências do Conclave.\n\nO Governo de Paladium ainda não emitiu nota oficial sobre o caso. Fontes anônimas apontam conexão com anomalias registradas no Subsolo 7.\n\n#GazetaInforma #EscandaloPaladium #SegredosDoConclave`,
+        timestamp: now - (8 * 60 * 60 * 1000),
+        likes: 86,
+        likedBy: [],
+        rewuits: 31,
+        rewuitedBy: [],
+        media: '',
+        comments: [
+          {
+            id: 'c_seed_gazeta_1_1',
+            authorId: 'npc_gov_paladium',
+            text: `A Corregedoria Geral trata de assuntos internos com o devido sigilo processual. Especulações infundadas serão objeto de inquérito administrativo.`,
+            timestamp: now - (7 * 60 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_gazeta_1_2',
+            authorId: 'npc_sara',
+            text: `Toda semana um relatório 'misterioso' sumindo nessa cidade... Se eu perder a minha comanda no café já tomo bronca, imagina documento de estado.`,
+            timestamp: now - (380 * 60 * 1000),
+            replyToCommentId: 'c_seed_gazeta_1_1',
+            replyToHandle: '@gov_paladium'
+          }
+        ]
+      },
+      {
+        id: 'wuit_seed_gov_2',
+        authorId: 'npc_gov_paladium',
+        text: `[COMUNICADO OFICIAL DO SENADO DE PALADIUM]\nDECRETO N. 884/26\n\nFica instituída a Tarifa Provisória sobre o Refino de Cristais de Éter Bruto, destinada ao Fundo Emergencial de Contenção Urbana.\n\nO racionamento de energia nos Distritos 3 e 4 vigorará entre 01:00 e 05:00 de segunda a sexta-feira.\n\n#SenadoPaladium #Decreto884 #AdministracaoPublica`,
+        timestamp: now - (14 * 60 * 60 * 1000),
+        likes: 21,
+        likedBy: [],
+        rewuits: 46,
+        rewuitedBy: [],
+        media: '',
+        comments: [
+          {
+            id: 'c_seed_gov_2_1',
+            authorId: 'npc_leo_mecanico',
+            text: `Racionamento no Distrito 4 de novo? Como vou manter as soldas das próteses ligadas de madrugada? Vocês aumentam imposto do cristal e desligam o disjuntor. Piada pronta.`,
+            timestamp: now - (13 * 60 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_gov_2_2',
+            authorId: 'npc_gazeta_paladium',
+            text: `Enquanto isso, a iluminação ornamental do Palácio do Governo permanece acesa 24 horas por dia com cristais de grau puro.`,
+            timestamp: now - (12 * 60 * 60 * 1000),
+            replyToCommentId: 'c_seed_gov_2_1',
+            replyToHandle: '@leo_engrenagens'
+          },
+          {
+            id: 'c_seed_gov_2_3',
+            authorId: 'char_2',
+            text: `Isso vai atrasar a esterilização de equipamentos nos postos de saúde da periferia. Decisão irresponsável que custará caro à saúde pública.`,
+            timestamp: now - (11 * 60 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          }
+        ]
+      },
+      {
+        id: 'wuit_seed_art_1',
+        authorId: 'npc_paladium_art',
+        text: `Estudo em aquarela e nanquim: 'A Névoa Sobre as Cúpulas de Ferro de Paladium ao Entardecer'.\n\nA dualidade entre a imponência do Distrito Alto e a fumaça incansável que sobe das fundições do submundo resume a alma da nossa metrópole.\n\nArtista: M. Valerius (Setor 2).\n\n#ArtePaladium #WuitalurArt #ConceitoVisual #Aquarela`,
+        timestamp: now - (19 * 60 * 60 * 1000),
+        likes: 73,
+        likedBy: [],
+        rewuits: 22,
+        rewuitedBy: [],
+        media: '',
+        comments: [
+          {
+            id: 'c_seed_art_1_1',
+            authorId: 'npc_sara',
+            text: `O contraste do dourado das lamparinas com o céu arroxeado ficou impecável. Dá pra sentir o cheiro de chuva e ferrugem só de olhar.`,
+            timestamp: now - (18 * 60 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_art_1_2',
+            authorId: 'npc_viktor_cronista',
+            text: `Fiel inclusive na densidade da poluição atmosférica. Parabéns ao artista pelo rigor documental.`,
+            timestamp: now - (17 * 60 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          }
+        ]
+      },
+      {
+        id: 'wuit_seed_viktor_1',
+        authorId: 'npc_viktor_cronista',
+        text: `Os sensores do Instituto registraram uma oscilação de 3.4 micro-wu na pressão barométrica perto da Torre do Relógio às 16h. Não se surpreendam se as bússolas começarem a girar no sentido anti-horário amanhã.\n\nDica: recalibrem seus cronômetros antes que a meia-noite chegue adiantada.\n\n#CienciaDeWu #AnomaliasUrbanas #ViktorObserva`,
+        timestamp: now - (25 * 60 * 60 * 1000),
+        likes: 47,
+        likedBy: [],
+        rewuits: 18,
+        rewuitedBy: [],
+        media: '',
+        comments: [
+          {
+            id: 'c_seed_viktor_1_1',
+            authorId: 'char_8',
+            text: `Minha bússola já está apontando pro leste há duas horas. Achei que fosse defeito mecânico no ponteiro.`,
+            timestamp: now - (24 * 60 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_viktor_1_2',
+            authorId: 'npc_viktor_cronista',
+            text: `Não é defeito, @canneth. É a malha etérea da cidade reagindo à sobrecarga dos geradores centrais.`,
+            timestamp: now - (23 * 60 * 60 * 1000),
+            replyToCommentId: 'c_seed_viktor_1_1',
+            replyToHandle: '@canneth'
+          },
+          {
+            id: 'c_seed_viktor_1_3',
+            authorId: 'npc_bichinhos_wui',
+            text: `Isso explica por que os gatos lunares passaram a tarde inteira miando fixados nas paredes vazias!`,
+            timestamp: now - (22 * 60 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          }
+        ]
+      },
+      {
+        id: 'wuit_seed_leo_1',
+        authorId: 'npc_leo_mecanico',
+        text: `Alguém perdeu uma chave inglesa encantada de 14mm com as iniciais 'T.M.' na Rua das Caldeiras? Está aqui na minha bancada. Se for sua, venha buscar e traga uma garrafa de refrigerante de gengibre como resgate.\n\n#OficinaDoLeo #AchadosEPerdidos #PaladiumBaixo`,
+        timestamp: now - (36 * 60 * 60 * 1000),
+        likes: 33,
+        likedBy: [],
+        rewuits: 7,
+        rewuitedBy: [],
+        media: '',
+        comments: [
+          {
+            id: 'c_seed_leo_1_1',
+            authorId: 'char_5',
+            text: `Essa chave é do Tobias da forja de autômatos! Ele passou a manhã inteira xingando em três línguas diferentes procurando essa ferramenta.`,
+            timestamp: now - (35 * 60 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_leo_1_2',
+            authorId: 'npc_leo_mecanico',
+            text: `Avisa ele que tá guardada aqui no cofre, mas o refrigerante de gengibre é inegociável, @willian.`,
+            timestamp: now - (34 * 60 * 60 * 1000),
+            replyToCommentId: 'c_seed_leo_1_1',
+            replyToHandle: '@willian'
+          }
+        ]
+      }
+    ];
+  }
+
   loadLocalCache() {
     const savedAcc = localStorage.getItem(WUITTER_STORAGE_ACCOUNTS);
     if (savedAcc) {
@@ -631,6 +1023,19 @@ class WuitterSystem {
     } else {
       this.posts = [];
     }
+
+    // Mescla posts iniciais do universo para manter o feed vivo
+    const seedPosts = this.getInitialSeedPosts();
+    if (!this.posts || this.posts.length === 0) {
+      this.posts = seedPosts;
+    } else {
+      seedPosts.forEach(seed => {
+        if (!this.posts.some(p => p.id === seed.id)) {
+          this.posts.push(seed);
+        }
+      });
+    }
+    this.savePostsLocal();
   }
 
   saveAccountsLocal() {
