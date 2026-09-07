@@ -55,8 +55,8 @@ const DEFAULT_ACCOUNTS = [
   },
   {
     id: 'char_1',
-    followingCount: 38,
-    followersCount: 312,
+    followingCount: 84,
+    followersCount: '1.840',
     followingList: ['npc_sara', 'char_2', 'char_3', 'char_4', 'char_5', 'char_6', 'char_7', 'char_8', 'npc_gazeta_paladium'],
     followersList: ['npc_sara', 'char_2', 'char_3', 'char_4', 'char_5', 'char_6', 'char_7', 'char_8'],
     slot: 1,
@@ -73,8 +73,8 @@ const DEFAULT_ACCOUNTS = [
   },
   {
     id: 'char_2',
-    followingCount: 29,
-    followersCount: 284,
+    followingCount: 92,
+    followersCount: '2.150',
     followingList: ['npc_sara', 'char_1', 'char_3', 'char_4', 'char_5', 'char_6', 'char_7', 'char_8', 'npc_viktor_cronista'],
     followersList: ['npc_sara', 'char_1', 'char_3', 'char_4', 'char_5', 'char_6', 'char_7', 'char_8'],
     slot: 2,
@@ -91,8 +91,8 @@ const DEFAULT_ACCOUNTS = [
   },
   {
     id: 'char_3',
-    followingCount: 45,
-    followersCount: 198,
+    followingCount: 76,
+    followersCount: '1.420',
     followingList: ['npc_sara', 'char_1', 'char_2', 'char_4', 'char_5', 'char_6', 'char_7', 'char_8', 'npc_leo_mecanico'],
     followersList: ['npc_sara', 'char_1', 'char_2', 'char_4', 'char_5', 'char_6', 'char_7', 'char_8'],
     slot: 3,
@@ -109,8 +109,8 @@ const DEFAULT_ACCOUNTS = [
   },
   {
     id: 'char_4',
-    followingCount: 62,
-    followersCount: 410,
+    followingCount: 115,
+    followersCount: '2.680',
     followingList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_5', 'char_6', 'char_7', 'char_8', 'npc_bichinhos_wui'],
     followersList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_5', 'char_6', 'char_7', 'char_8'],
     slot: 4,
@@ -127,8 +127,8 @@ const DEFAULT_ACCOUNTS = [
   },
   {
     id: 'char_5',
-    followingCount: 25,
-    followersCount: 175,
+    followingCount: 68,
+    followersCount: '1.350',
     followingList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_4', 'char_6', 'char_7', 'char_8', 'npc_leo_mecanico'],
     followersList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_4', 'char_6', 'char_7', 'char_8'],
     slot: 5,
@@ -145,8 +145,8 @@ const DEFAULT_ACCOUNTS = [
   },
   {
     id: 'char_6',
-    followingCount: 12,
-    followersCount: 92,
+    followingCount: 34,
+    followersCount: '890',
     followingList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_4', 'char_5', 'char_7', 'char_8'],
     followersList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_4', 'char_5', 'char_7', 'char_8'],
     slot: 6,
@@ -163,8 +163,8 @@ const DEFAULT_ACCOUNTS = [
   },
   {
     id: 'char_7',
-    followingCount: 41,
-    followersCount: 345,
+    followingCount: 105,
+    followersCount: '2.490',
     followingList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_4', 'char_5', 'char_6', 'char_8', 'npc_paladium_art'],
     followersList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_4', 'char_5', 'char_6', 'char_8'],
     slot: 7,
@@ -181,8 +181,8 @@ const DEFAULT_ACCOUNTS = [
   },
   {
     id: 'char_8',
-    followingCount: 34,
-    followersCount: 260,
+    followingCount: 88,
+    followersCount: '1.760',
     followingList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_4', 'char_5', 'char_6', 'char_7', 'npc_gov_paladium'],
     followersList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_4', 'char_5', 'char_6', 'char_7'],
     slot: 8,
@@ -1292,6 +1292,10 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
             exists.hashes = def.hashes;
             exists.isMaster = def.isMaster;
             if (def.avatarImage) exists.avatarImage = def.avatarImage;
+            if (def.followersCount !== undefined) exists.followersCount = def.followersCount;
+            if (def.followingCount !== undefined) exists.followingCount = def.followingCount;
+            if (def.followingList) exists.followingList = def.followingList;
+            if (def.followersList) exists.followersList = def.followersList;
             if (def.isMaster) {
               exists.name = 'Mestre';
               exists.handle = '@mestre';
