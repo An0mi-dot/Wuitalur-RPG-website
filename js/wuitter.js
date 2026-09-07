@@ -234,7 +234,7 @@ const DEFAULT_ACCOUNTS = [
     handle: '@sara',
     bio: 'Aluna do Colégio Integrado Primórdio de Fragktus & barista no Café Névoa. Amante de gatos, arte, chás e alquimia. (Desaparecimento catalogado em 01/08/2061).',
     avatarLetter: 'S',
-    avatarImage: 'assets/sara_avatar.jpg',
+    avatarImage: 'assets/sara_avatar.jpg?v=2',
     avatarColor: '#f43f5e',
     badge: 'none',
     followingCount: 14,
@@ -879,7 +879,7 @@ Constança Montenegro e Conselho Diretor de Fragktus.
         rewuits: 982,
         rewuitedBy: [],
         lockedReplies: true,
-        media: 'assets/sara_encruzilhada.jpg',
+        media: 'assets/sara_encruzilhada.jpg?v=2',
         comments: []
       },
       {
