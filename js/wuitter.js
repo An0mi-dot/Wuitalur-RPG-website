@@ -102,7 +102,7 @@ const DEFAULT_ACCOUNTS = [
     handle: '@eric',
     bio: 'Alquimista tático e especialista em compostos voláteis. Se explodiu, provavelmente fui eu.',
     avatarLetter: 'E',
-    avatarImage: 'assets/eric_avatar.png',
+    avatarImage: 'assets/eric_wuitter.png',
     avatarColor: '#ef4444',
     badge: 'none',
     isMaster: false
