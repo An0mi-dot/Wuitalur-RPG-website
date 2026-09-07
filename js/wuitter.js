@@ -833,7 +833,7 @@ Constança Montenegro e Conselho Diretor de Fragktus.
           {
             id: 'c_seed_col_1',
             authorId: 'npc_gazeta_paladium',
-            text: `A direção fala em cooperação 'discreta', mas testemunhas viram agentes do Alto Comando de Fragktus apreendendo armários no 3º andar antes mesmo do comunicado ser emitido. O que mais estão escondendo nos corredores do Primórdio?`,
+            text: `A direção fala em cooperação 'discreta', mas a última foto publicada por Sara mostra uma floresta completamente irreconhecível em todos os mapas de Fragktus e Paladium. O que mais estão escondendo nos corredores do Primórdio?`,
             timestamp: now - (4 * 60 * 1000),
             timeDisplay: '02/08/2061',
             replyToCommentId: null,
@@ -860,7 +860,7 @@ Constança Montenegro e Conselho Diretor de Fragktus.
           {
             id: 'c_seed_col_4',
             authorId: 'npc_viktor_cronista',
-            text: `Uma aluna exemplar desaparece e os dois governos transformam o caso em disputa geopolítica de fronteira. A vaidade dos gabinetes de Paladium e Fragktus é repugnante.`,
+            text: `A vegetação na última foto de Sara é completamente anômala e irreconhecível no arquipélago, e ela trancou as respostas antes de sumir. Enquanto isso, os governos transformam a tragédia em disputa de fronteira.`,
             timestamp: now - (1 * 60 * 1000),
             timeDisplay: '03/08/2061',
             replyToCommentId: 'c_seed_col_3',
@@ -874,58 +874,13 @@ Constança Montenegro e Conselho Diretor de Fragktus.
         text: `Até a Encruzilhada.`,
         timestamp: now - (10 * 60 * 1000),
         timeDisplay: '31/06/2061',
-        likes: 218,
+        likes: 2418,
         likedBy: [],
-        rewuits: 84,
+        rewuits: 982,
         rewuitedBy: [],
+        lockedReplies: true,
         media: 'assets/sara_encruzilhada.jpg',
-        comments: [
-          {
-            id: 'c_seed_encruzilhada_1',
-            authorId: 'npc_gazeta_paladium',
-            text: `ATENÇÃO: Último registro fotográfico e público da aluna Sara Auguil antes do desaparecimento catalogado formalmente pelas autoridades em 01/08. Quem tiver pistas sobre a localização exata desta imagem contate a redação ou a Guarda.`,
-            timestamp: now - (8 * 60 * 1000),
-            timeDisplay: '01/08/2061',
-            replyToCommentId: null,
-            replyToHandle: null
-          },
-          {
-            id: 'c_seed_encruzilhada_2',
-            authorId: 'npc_viktor_cronista',
-            text: `Sara? Onde você tirou essa foto? Essa vegetação de fundo e essa névoa âmbar não condizem com nenhum parque catalogado dentro dos limites seguros do distrito. Alguém sabe para onde ela foi?`,
-            timestamp: now - (7 * 60 * 1000),
-            timeDisplay: '01/08/2061',
-            replyToCommentId: null,
-            replyToHandle: null
-          },
-          {
-            id: 'c_seed_encruzilhada_3',
-            authorId: 'npc_fauna_verdes',
-            text: `Sara, seu gato não para de arranhar a porta do Café Névoa desde ontem... onde você foi parar? Volta logo, por favor.`,
-            timestamp: now - (6 * 60 * 1000),
-            timeDisplay: '01/08/2061',
-            replyToCommentId: null,
-            replyToHandle: null
-          },
-          {
-            id: 'c_seed_encruzilhada_4',
-            authorId: 'npc_leo_mecanico',
-            text: `Passei na porta do café ontem e a caldeira de infusão ainda estava acesa e o caderno do balcão aberto. Se alguém tiver notícias dela, avisa a gente no Setor 4.`,
-            timestamp: now - (5 * 60 * 1000),
-            timeDisplay: '02/08/2061',
-            replyToCommentId: null,
-            replyToHandle: null
-          },
-          {
-            id: 'c_seed_encruzilhada_5',
-            authorId: 'npc_paladium_art',
-            text: `Essa iluminação âmbar com densidade na copa das árvores... parece a antiga rota além do marco de contenção da Linha de Ruptura.`,
-            timestamp: now - (4 * 60 * 1000),
-            timeDisplay: '02/08/2061',
-            replyToCommentId: null,
-            replyToHandle: null
-          }
-        ]
+        comments: []
       },
       {
         id: 'wuit_seed_gov_alerta_1',
@@ -2928,7 +2883,17 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
     `;
 
     if (replyBoxWrap) {
-      if (!this.authenticatedAccount) {
+      if (post.lockedReplies) {
+        replyBoxWrap.innerHTML = `
+          <div class="w-locked-replies-banner" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--w-border); border-radius: var(--w-radius-md); padding: 14px 16px; margin: 14px 0; display: flex; align-items: center; gap: 12px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--w-text-muted)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <div style="font-size: 0.88rem; color: var(--w-text-muted); line-height: 1.4;">
+              <strong style="color: #fff; display: block; margin-bottom: 2px;">Quem pode responder?</strong>
+              <span>@${author.name} desativou as respostas para esta publicação.</span>
+            </div>
+          </div>
+        `;
+      } else if (!this.authenticatedAccount) {
         replyBoxWrap.innerHTML = `
           <div style="background: rgba(255, 255, 255, 0.03); border: 1px dashed var(--w-border); border-radius: var(--w-radius-md); padding: 14px; text-align: center; margin: 14px 0;">
             <p style="font-size: 0.88rem; color: var(--w-text-muted); margin-bottom: 8px;">Identifique-se com seu token para responder nesta conversa.</p>
@@ -3021,19 +2986,23 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
         `;
       }).join('');
     } else {
-      container.innerHTML = `<p style="color: var(--w-text-muted); font-size: 0.88rem; text-align: center; padding: 24px 0;">Nenhuma resposta nesta conversa ainda. Seja o primeiro a responder!</p>`;
+      container.innerHTML = post.lockedReplies ? `<p style="color: var(--w-text-muted); font-size: 0.88rem; text-align: center; padding: 24px 0;">As respostas para esta publicação foram desativadas pelo autor.</p>` : `<p style="color: var(--w-text-muted); font-size: 0.88rem; text-align: center; padding: 24px 0;">Nenhuma resposta nesta conversa ainda. Seja o primeiro a responder!</p>`;
     }
 
     modal.classList.add('active');
   }
 
   async submitReply(postId) {
+    const post = this.posts.find(p => p.id === postId);
+    if (!post) return;
+    if (post.lockedReplies) {
+      alert('As respostas para esta publicação foram desativadas pelo autor.');
+      return;
+    }
     if (!this.authenticatedAccount) {
       this.openTokenModal();
       return;
     }
-    const post = this.posts.find(p => p.id === postId);
-    if (!post) return;
 
     const textarea = document.getElementById('w-reply-textarea');
     const text = textarea ? textarea.value.trim() : '';
