@@ -888,7 +888,7 @@ Os detidos foram encaminhados à Penitenciária de Alta Contenção de Ferro-Vel
         authorId: 'npc_sara',
         text: `Bom dia para quem acordou com cheiro de ozônio e vapor de caldeira vazando na rua. O Café Névoa já está aberto e o chá de camomila estelar tá saindo com 20% de desconto para quem tiver cara de quem não dormiu por causa do toque de recolher.
 
-E por favor: parem de deixar seus mascotes mágicos mastigarem os fios de cobre da fachada!
+E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachada!
 
 #CafeNevoa #PaladiumDaily #ChadeBruxa`,
         timestamp: now - (2 * 60 * 60 * 1000),
