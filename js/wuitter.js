@@ -708,13 +708,20 @@ class WuitterSystem {
     }
   }
 
-  getInitialSeedPosts() {
+    getInitialSeedPosts() {
     const now = Date.now();
     return [
       {
         id: 'wuit_seed_gov_alerta_1',
         authorId: 'npc_gov_paladium',
-        text: `[ALERTA DE SEGURANÇA — CHANCELARIA DE PALADIUM]\nMANDADO DE CAPTURA PÚBLICA\n\nInformações comprovadas que levem à custódia de Kaelen, o Silencioso, foragido do Setor Penitenciário de Ferro-Velho, serão recompensadas com 500 moedas de prata pelo Tesouro Municipal.\n\nO indivíduo responde por invasão de arquivos do Conclave e quebra de lacres etéreos. Denúncias podem ser feitas em qualquer posto da Guarda.\n\n#AlertaPaladium #SegurancaMetropolitana #Recompensa`,
+        text: `[ALERTA DE SEGURANÇA — CHANCELARIA DE PALADIUM]
+MANDADO DE CAPTURA PÚBLICA
+
+Informações comprovadas que levem à custódia de Kaelen, o Silencioso, foragido do Setor Penitenciário de Ferro-Velho, serão recompensadas com 500 moedas de prata pelo Tesouro Municipal.
+
+O indivíduo responde por invasão de arquivos do Conclave e quebra de lacres etéreos. Denúncias podem ser feitas em qualquer posto da Guarda.
+
+#AlertaPaladium #SegurancaMetropolitana #Recompensa`,
         timestamp: now - (18 * 60 * 1000),
         likes: 62,
         likedBy: [],
@@ -724,7 +731,7 @@ class WuitterSystem {
         comments: [
           {
             id: 'c_seed_alerta_1',
-            authorId: 'char_1',
+            authorId: 'npc_gazeta_paladium',
             text: `A guarnição do 2º Batalhão já bloqueou as saídas pelos canais do Porto Velho? A última pista indicava rota de fuga pelas docas.`,
             timestamp: now - (14 * 60 * 1000),
             replyToCommentId: null,
@@ -743,7 +750,11 @@ class WuitterSystem {
       {
         id: 'wuit_seed_sara_nevoa_2',
         authorId: 'npc_sara',
-        text: `Acabei de ver uma fumaça arroxeada saindo do bueiro em frente à Torre do Sino. Não sei se era vazamento de resíduo alquímico ou magia clandestina, mas meu gato lunar se recusou terminantemente a passar perto da calçada.\n\nAlguém mais sentiu cheiro de cobre queimado?\n\n#DistritoComercial #PaladiumEstranho #AlquimiaUrbana`,
+        text: `Acabei de ver uma fumaça arroxeada saindo do bueiro em frente à Torre do Sino. Não sei se era vazamento de resíduo alquímico ou magia clandestina, mas meu gato lunar se recusou terminantemente a passar perto da calçada.
+
+Alguém mais sentiu cheiro de cobre queimado?
+
+#DistritoComercial #PaladiumEstranho #AlquimiaUrbana`,
         timestamp: now - (32 * 60 * 1000),
         likes: 45,
         likedBy: [],
@@ -761,8 +772,8 @@ class WuitterSystem {
           },
           {
             id: 'c_seed_sara_nevoa_2',
-            authorId: 'char_3',
-            text: `Fumaça arroxeada com cheiro de cobre é assinatura de sublimação de nitrato de éter. Alguém descartou reagente sem neutralizar na água.`,
+            authorId: 'npc_leo_mecanico',
+            text: `Fumaça arroxeada com cheiro de cobre é assinatura de sublimação de nitrato de éter. Alguém descartou reagente na tubulação sem neutralizar.`,
             timestamp: now - (22 * 60 * 1000),
             replyToCommentId: null,
             replyToHandle: null
@@ -772,7 +783,14 @@ class WuitterSystem {
       {
         id: 'wuit_seed_gov_1',
         authorId: 'npc_gov_paladium',
-        text: `[DEPARTAMENTO DE SEGURANÇA PÚBLICA — PALADIUM]\nREGISTRO DE OPERAÇÃO #3088\n\nDurante a madrugada, a Guarda Metropolitana efetuou a prisão em flagrante de 3 indivíduos no Distrito Portuário por contrabando de condutores de éter não catalogados e falsificação de selos alfandegários.\n\nOs detidos foram encaminhados à Penitenciária de Alta Contenção de Ferro-Velho. Qualquer movimentação suspeita nas docas deve ser reportada imediatamente à guarnição central.\n\n#PaladiumSegura #OperacaoDocas #LeiEOrdem`,
+        text: `[DEPARTAMENTO DE SEGURANÇA PÚBLICA — PALADIUM]
+REGISTRO DE OPERAÇÃO #3088
+
+Durante a madrugada, a Guarda Metropolitana efetuou a prisão em flagrante de 3 indivíduos no Distrito Portuário por contrabando de condutores de éter não catalogados e falsificação de selos alfandegários.
+
+Os detidos foram encaminhados à Penitenciária de Alta Contenção de Ferro-Velho. Qualquer movimentação suspeita nas docas deve ser reportada imediatamente à guarnição central.
+
+#PaladiumSegura #OperacaoDocas #LeiEOrdem`,
         timestamp: now - (42 * 60 * 1000),
         likes: 54,
         likedBy: [],
@@ -817,7 +835,11 @@ class WuitterSystem {
       {
         id: 'wuit_seed_sara_1',
         authorId: 'npc_sara',
-        text: `Bom dia para quem acordou com cheiro de ozônio e vapor de caldeira vazando na rua. O Café Névoa já está aberto e o chá de camomila estelar tá saindo com 20% de desconto para quem tiver cara de quem não dormiu por causa do toque de recolher.\n\nE por favor: parem de deixar seus mascotes mágicos mastigarem os fios de cobre da fachada!\n\n#CafeNevoa #PaladiumDaily #ChadeBruxa`,
+        text: `Bom dia para quem acordou com cheiro de ozônio e vapor de caldeira vazando na rua. O Café Névoa já está aberto e o chá de camomila estelar tá saindo com 20% de desconto para quem tiver cara de quem não dormiu por causa do toque de recolher.
+
+E por favor: parem de deixar seus mascotes mágicos mastigarem os fios de cobre da fachada!
+
+#CafeNevoa #PaladiumDaily #ChadeBruxa`,
         timestamp: now - (2 * 60 * 60 * 1000),
         likes: 39,
         likedBy: [],
@@ -843,8 +865,8 @@ class WuitterSystem {
           },
           {
             id: 'c_seed_sara_1_3',
-            authorId: 'char_1',
-            text: `Guarda um copo grande de café duplo com calda de açúcar mascavo pra mim, @sara. O plantão na delegacia hoje vai ser longo.`,
+            authorId: 'npc_viktor_cronista',
+            text: `Guarda uma garrafa térmica de café duplo bem amargo pra mim, @sara. A noite de análises no laboratório vai ser longa.`,
             timestamp: now - (70 * 60 * 1000),
             replyToCommentId: null,
             replyToHandle: null
@@ -852,17 +874,21 @@ class WuitterSystem {
           {
             id: 'c_seed_sara_1_4',
             authorId: 'npc_sara',
-            text: `Separado e bem forte, @thulita! Passa aqui pela porta lateral que não tem a fila dos fiscais da alfândega.`,
+            text: `Separado e bem forte, doutor! Passa aqui pela porta lateral que não tem a fila dos fiscais da alfândega.`,
             timestamp: now - (55 * 60 * 1000),
             replyToCommentId: 'c_seed_sara_1_3',
-            replyToHandle: '@thulita'
+            replyToHandle: '@viktor_cronista'
           }
         ]
       },
       {
         id: 'wuit_seed_bichinhos_1',
         authorId: 'npc_bichinhos_wui',
-        text: `Apresentamos: Barnabé, a corujinha-mecânica do mestre Tobias. Ela foi forjada com engrenagens de relógio suíço e penas de latão polido. O trabalho dela é entregar bilhetes e pedir carinho com bicadinhas no dedo.\n\nProtejam essa fofura a todo custo.\n\n#CriaturasDeWu #MascotesMagicos #PaladiumPets`,
+        text: `Apresentamos: Barnabé, a corujinha-mecânica do mestre Tobias. Ela foi forjada com engrenagens de relógio suíço e penas de latão polido. O trabalho dela é entregar bilhetes e pedir carinho com bicadinhas no dedo.
+
+Protejam essa fofura a todo custo.
+
+#CriaturasDeWu #MascotesMagicos #PaladiumPets`,
         timestamp: now - (5 * 60 * 60 * 1000),
         likes: 98,
         likedBy: [],
@@ -888,8 +914,8 @@ class WuitterSystem {
           },
           {
             id: 'c_seed_bichinhos_1_3',
-            authorId: 'char_3',
-            text: `Se ela souber carregar frascos de reagente sem derrubar no meio do caminho, pago o dobro do preço da oficina.`,
+            authorId: 'npc_leo_mecanico',
+            text: `Se ela souber carregar ferramentas pequenas sem derrubar no meio do caminho, encomendo duas para a oficina.`,
             timestamp: now - (200 * 60 * 1000),
             replyToCommentId: null,
             replyToHandle: null
@@ -899,7 +925,11 @@ class WuitterSystem {
       {
         id: 'wuit_seed_gazeta_1',
         authorId: 'npc_gazeta_paladium',
-        text: `URGENTE: Três guardas metropolitanos foram afastados após o sumiço de relatórios confidenciais da Sala de Evidências do Conclave.\n\nO Governo de Paladium ainda não emitiu nota oficial sobre o caso. Fontes anônimas apontam conexão com anomalias registradas no Subsolo 7.\n\n#GazetaInforma #EscandaloPaladium #SegredosDoConclave`,
+        text: `URGENTE: Três guardas metropolitanos foram afastados após o sumiço de relatórios confidenciais da Sala de Evidências do Conclave.
+
+O Governo de Paladium ainda não emitiu nota oficial sobre o caso. Fontes anônimas apontam conexão com anomalias registradas no Subsolo 7.
+
+#GazetaInforma #EscandaloPaladium #SegredosDoConclave`,
         timestamp: now - (8 * 60 * 60 * 1000),
         likes: 86,
         likedBy: [],
@@ -928,7 +958,14 @@ class WuitterSystem {
       {
         id: 'wuit_seed_gov_2',
         authorId: 'npc_gov_paladium',
-        text: `[COMUNICADO OFICIAL DO SENADO DE PALADIUM]\nDECRETO N. 884/26\n\nFica instituída a Tarifa Provisória sobre o Refino de Cristais de Éter Bruto, destinada ao Fundo Emergencial de Contenção Urbana.\n\nO racionamento de energia nos Distritos 3 e 4 vigorará entre 01:00 e 05:00 de segunda a sexta-feira.\n\n#SenadoPaladium #Decreto884 #AdministracaoPublica`,
+        text: `[COMUNICADO OFICIAL DO SENADO DE PALADIUM]
+DECRETO N. 884/26
+
+Fica instituída a Tarifa Provisória sobre o Refino de Cristais de Éter Bruto, destinada ao Fundo Emergencial de Contenção Urbana.
+
+O racionamento de energia nos Distritos 3 e 4 vigorará entre 01:00 e 05:00 de segunda a sexta-feira.
+
+#SenadoPaladium #Decreto884 #AdministracaoPublica`,
         timestamp: now - (14 * 60 * 60 * 1000),
         likes: 21,
         likedBy: [],
@@ -954,8 +991,8 @@ class WuitterSystem {
           },
           {
             id: 'c_seed_gov_2_3',
-            authorId: 'char_2',
-            text: `Isso vai atrasar a esterilização de equipamentos nos postos de saúde da periferia. Decisão irresponsável que custará caro à saúde pública.`,
+            authorId: 'npc_sara',
+            text: `Isso vai atrapalhar todo o comércio do distrito. Decisão irresponsável que só prejudica quem trabalha à noite.`,
             timestamp: now - (11 * 60 * 60 * 1000),
             replyToCommentId: null,
             replyToHandle: null
@@ -965,7 +1002,13 @@ class WuitterSystem {
       {
         id: 'wuit_seed_art_1',
         authorId: 'npc_paladium_art',
-        text: `Estudo em aquarela e nanquim: 'A Névoa Sobre as Cúpulas de Ferro de Paladium ao Entardecer'.\n\nA dualidade entre a imponência do Distrito Alto e a fumaça incansável que sobe das fundições do submundo resume a alma da nossa metrópole.\n\nArtista: M. Valerius (Setor 2).\n\n#ArtePaladium #WuitalurArt #ConceitoVisual #Aquarela`,
+        text: `Estudo em aquarela e nanquim: 'A Névoa Sobre as Cúpulas de Ferro de Paladium ao Entardecer'.
+
+A dualidade entre a imponência do Distrito Alto e a fumaça incansável que sobe das fundições do submundo resume a alma da nossa metrópole.
+
+Artista: M. Valerius (Setor 2).
+
+#ArtePaladium #WuitalurArt #ConceitoVisual #Aquarela`,
         timestamp: now - (19 * 60 * 60 * 1000),
         likes: 73,
         likedBy: [],
@@ -994,7 +1037,11 @@ class WuitterSystem {
       {
         id: 'wuit_seed_viktor_1',
         authorId: 'npc_viktor_cronista',
-        text: `Os sensores do Instituto registraram uma oscilação de 3.4 micro-wu na pressão barométrica perto da Torre do Relógio às 16h. Não se surpreendam se as bússolas começarem a girar no sentido anti-horário amanhã.\n\nDica: recalibrem seus cronômetros antes que a meia-noite chegue adiantada.\n\n#CienciaDeWu #AnomaliasUrbanas #ViktorObserva`,
+        text: `Os sensores do Instituto registraram uma oscilação de 3.4 micro-wu na pressão barométrica perto da Torre do Relógio às 16h. Não se surpreendam se as bússolas começarem a girar no sentido anti-horário amanhã.
+
+Dica: recalibrem seus cronômetros antes que a meia-noite chegue adiantada.
+
+#CienciaDeWu #AnomaliasUrbanas #ViktorObserva`,
         timestamp: now - (25 * 60 * 60 * 1000),
         likes: 47,
         likedBy: [],
@@ -1004,8 +1051,8 @@ class WuitterSystem {
         comments: [
           {
             id: 'c_seed_viktor_1_1',
-            authorId: 'char_8',
-            text: `Minha bússola já está apontando pro leste há duas horas. Achei que fosse defeito mecânico no ponteiro.`,
+            authorId: 'npc_leo_mecanico',
+            text: `Minha bússola da bancada já está apontando pro leste há duas horas. Achei que fosse defeito mecânico no ponteiro.`,
             timestamp: now - (24 * 60 * 60 * 1000),
             replyToCommentId: null,
             replyToHandle: null
@@ -1013,10 +1060,10 @@ class WuitterSystem {
           {
             id: 'c_seed_viktor_1_2',
             authorId: 'npc_viktor_cronista',
-            text: `Não é defeito, @canneth. É a malha etérea da cidade reagindo à sobrecarga dos geradores centrais.`,
+            text: `Não é defeito, @leo_engrenagens. É a malha etérea da cidade reagindo à sobrecarga dos geradores centrais.`,
             timestamp: now - (23 * 60 * 60 * 1000),
             replyToCommentId: 'c_seed_viktor_1_1',
-            replyToHandle: '@canneth'
+            replyToHandle: '@leo_engrenagens'
           },
           {
             id: 'c_seed_viktor_1_3',
@@ -1031,7 +1078,9 @@ class WuitterSystem {
       {
         id: 'wuit_seed_leo_1',
         authorId: 'npc_leo_mecanico',
-        text: `Alguém perdeu uma chave inglesa encantada de 14mm com as iniciais 'T.M.' na Rua das Caldeiras? Está aqui na minha bancada. Se for sua, venha buscar e traga uma garrafa de refrigerante de gengibre como resgate.\n\n#OficinaDoLeo #AchadosEPerdidos #PaladiumBaixo`,
+        text: `Alguém perdeu uma chave inglesa encantada de 14mm com as iniciais 'T.M.' na Rua das Caldeiras? Está aqui na minha bancada. Se for sua, venha buscar e traga uma garrafa de refrigerante de gengibre como resgate.
+
+#OficinaDoLeo #AchadosEPerdidos #PaladiumBaixo`,
         timestamp: now - (36 * 60 * 60 * 1000),
         likes: 33,
         likedBy: [],
@@ -1041,8 +1090,8 @@ class WuitterSystem {
         comments: [
           {
             id: 'c_seed_leo_1_1',
-            authorId: 'char_5',
-            text: `Essa chave é do Tobias da forja de autômatos! Ele passou a manhã inteira xingando em três línguas diferentes procurando essa ferramenta.`,
+            authorId: 'npc_paladium_art',
+            text: `Essa chave é do Tobias da forja de autômatos! Ele passou a manhã inteira procurando essa ferramenta.`,
             timestamp: now - (35 * 60 * 60 * 1000),
             replyToCommentId: null,
             replyToHandle: null
@@ -1050,10 +1099,10 @@ class WuitterSystem {
           {
             id: 'c_seed_leo_1_2',
             authorId: 'npc_leo_mecanico',
-            text: `Avisa ele que tá guardada aqui no cofre, mas o refrigerante de gengibre é inegociável, @willian.`,
+            text: `Avisa ele que tá guardada aqui no cofre, mas o refrigerante de gengibre é inegociável, @paladium_art.`,
             timestamp: now - (34 * 60 * 60 * 1000),
             replyToCommentId: 'c_seed_leo_1_1',
-            replyToHandle: '@willian'
+            replyToHandle: '@paladium_art'
           }
         ]
       }
