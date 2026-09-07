@@ -1568,6 +1568,87 @@ body.wuitter-body select {
   cursor: pointer;
 }
 
+/* ============================================================
+   REPLY TO REPLIES (SUB-REPLIES & NESTED THREADING)
+   ============================================================ */
+.w-comment-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.w-comment-action-btn {
+  background: transparent;
+  border: none;
+  color: var(--w-text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: var(--w-radius-full);
+  font-size: 0.78rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.w-comment-action-btn:hover {
+  color: var(--w-primary);
+  background: rgba(29, 155, 240, 0.1);
+}
+
+.w-reply-to-tag {
+  font-size: 0.78rem;
+  color: var(--w-text-muted);
+  margin-bottom: 4px;
+}
+
+.w-reply-to-tag .w-mention {
+  color: var(--w-primary);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.w-reply-to-tag-sm {
+  font-size: 0.74rem;
+  color: var(--w-text-muted);
+  margin-bottom: 2px;
+}
+
+.w-cancel-subreply-btn {
+  background: transparent;
+  border: none;
+  color: var(--w-accent-red);
+  font-size: 0.78rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background 0.15s ease;
+}
+
+.w-cancel-subreply-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+  text-decoration: underline;
+}
+
+.w-inline-reply-action-btn {
+  background: transparent;
+  border: none;
+  color: var(--w-text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.w-inline-reply-action-btn:hover {
+  color: var(--w-primary);
+  background: rgba(29, 155, 240, 0.08);
+}
+
 /* Mobile Responsive */
 @media (max-width: 1050px) {
   .w-sidebar-right {

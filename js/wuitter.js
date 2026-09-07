@@ -180,6 +180,7 @@ class WuitterSystem {
     this.profileTab = 'posts'; // 'posts', 'replies', 'media'
     this.searchQuery = '';
     this.pendingImageBase64 = '';
+    this.activeReplyContext = null;
 
     // Supabase Cloud & Realtime
     this.supabase = null;
@@ -544,9 +545,15 @@ class WuitterSystem {
                     <span class="w-inline-reply-handle">${cAuthor.handle}</span>
                     <span class="w-wuit-dot">&bull;</span>
                     <span class="w-wuit-time">${this.formatTime(c.timestamp)}</span>
-                  </div>
-                  <div class="w-inline-reply-text">${this.formatText(c.text)}</div>
+                ${c.replyToHandle ? `<div class="w-reply-to-tag-sm">Respondendo a <span class="w-mention" onclick="window.wuitter.filterByMention('${c.replyToHandle.replace('@', '')}')">${c.replyToHandle}</span></div>` : ''}
+                <div class="w-inline-reply-text">${this.formatText(c.text)}</div>
+                <div style="margin-top: 4px; display: flex; align-items: center; gap: 8px;">
+                  <button class="w-inline-reply-action-btn" onclick="window.wuitter.setReplyContext('${post.id}', '${c.id}')" title="Responder a ${cAuthor.name}">
+                    ${SVG_ICONS.comment}
+                    <span>Responder</span>
+                  </button>
                 </div>
+              </div>
               </div>
             `;
           }).join('')}
@@ -877,6 +884,7 @@ class WuitterSystem {
     if (removePreviewBtn) {
       removePreviewBtn.addEventListener('click', () => {
         this.pendingImageBase64 = '';
+    this.activeReplyContext = null;
         if (imgInput) imgInput.value = '';
         const preview = document.getElementById('w-compose-preview');
         if (preview) preview.style.display = 'none';
@@ -987,6 +995,7 @@ class WuitterSystem {
     // Reset Compose Box
     if (textarea) textarea.value = '';
     this.pendingImageBase64 = '';
+    this.activeReplyContext = null;
     const imgInput = document.getElementById('w-compose-image-input');
     if (imgInput) imgInput.value = '';
     const preview = document.getElementById('w-compose-preview');
@@ -1542,7 +1551,14 @@ class WuitterSystem {
                   <span class="w-wuit-dot">&bull;</span>
                   <span class="w-wuit-time">${this.formatTime(c.timestamp)}</span>
                 </div>
+                ${c.replyToHandle ? `<div class="w-reply-to-tag-sm">Respondendo a <span class="w-mention" onclick="window.wuitter.filterByMention('${c.replyToHandle.replace('@', '')}')">${c.replyToHandle}</span></div>` : ''}
                 <div class="w-inline-reply-text">${this.formatText(c.text)}</div>
+                <div style="margin-top: 4px; display: flex; align-items: center; gap: 8px;">
+                  <button class="w-inline-reply-action-btn" onclick="window.wuitter.setReplyContext('${post.id}', '${c.id}')" title="Responder a ${cAuthor.name}">
+                    ${SVG_ICONS.comment}
+                    <span>Responder</span>
+                  </button>
+                </div>
               </div>
             </div>
           `;
@@ -1890,6 +1906,28 @@ class WuitterSystem {
     this.openCommentsModal(postId);
   }
 
+  setReplyContext(postId, commentId) {
+    const post = this.posts.find(p => p.id === postId);
+    if (!post || !post.comments) return;
+    const comment = post.comments.find(c => c.id === commentId);
+    if (!comment) return;
+
+    const cAuthor = this.getAccountById(comment.authorId);
+    this.activeReplyContext = {
+      postId: postId,
+      commentId: commentId,
+      authorHandle: cAuthor.handle,
+      authorName: cAuthor.name
+    };
+
+    this.openCommentsModal(postId);
+  }
+
+  cancelReplyContext(postId) {
+    this.activeReplyContext = null;
+    this.openCommentsModal(postId);
+  }
+
   openCommentsModal(postId) {
     const post = this.posts.find(p => p.id === postId);
     if (!post) return;
@@ -1905,8 +1943,8 @@ class WuitterSystem {
     const badgeSvg = this.renderBadgeSvg(author.badge);
 
     const myId = this.authenticatedAccount ? this.authenticatedAccount.id : null;
-    const isLiked = myId && post.likedBy && post.likedBy.includes(myId);
-    const isRewuited = myId && post.rewuitedBy && post.rewuitedBy.includes(myId);
+    const isLiked = Boolean(myId && post.likedBy && post.likedBy.includes(myId));
+    const isRewuited = Boolean(myId && post.rewuitedBy && post.rewuitedBy.includes(myId));
     const commentsCount = post.comments ? post.comments.length : 0;
     const canDelete = this.isMaster() || (this.authenticatedAccount && this.authenticatedAccount.id === post.authorId);
 
@@ -1984,17 +2022,28 @@ class WuitterSystem {
         `;
       } else {
         const postingAcc = this.getPostingAccount();
+        const hasSubReply = Boolean(this.activeReplyContext && this.activeReplyContext.postId === postId);
+        const replyTargetHandle = hasSubReply ? this.activeReplyContext.authorHandle : author.handle;
+
         replyBoxWrap.innerHTML = `
           <div class="w-reply-box-card">
             <div class="w-clickable-profile" onclick="window.wuitter.viewProfile('${postingAcc.id}'); window.wuitter.closeModals();">
               ${this.renderAvatarHtml(postingAcc, 'normal')}
             </div>
             <div style="flex: 1; min-width: 0;">
-              <div style="font-size: 0.82rem; color: var(--w-text-muted); margin-bottom: 6px;">
-                Em resposta a <span style="color: var(--w-primary); font-weight: 600;">${author.handle}</span>
-                ${this.isMaster() && postingAcc.id !== this.authenticatedAccount.id ? `<span style="color: var(--w-accent-gold); font-weight: 700; margin-left: 6px;">(Postando como ${postingAcc.name})</span>` : ''}
+              <div style="font-size: 0.82rem; color: var(--w-text-muted); margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
+                <div>
+                  Em resposta a <span style="color: var(--w-primary); font-weight: 600;">${author.handle}</span>
+                  ${hasSubReply && this.activeReplyContext.authorHandle !== author.handle ? ` e <span style="color: var(--w-primary); font-weight: 600;">${this.activeReplyContext.authorHandle}</span>` : ''}
+                  ${this.isMaster() && postingAcc.id !== this.authenticatedAccount.id ? `<span style="color: var(--w-accent-gold); font-weight: 700; margin-left: 6px;">(Postando como ${postingAcc.name})</span>` : ''}
+                </div>
+                ${hasSubReply ? `
+                  <button class="w-cancel-subreply-btn" onclick="window.wuitter.cancelReplyContext('${post.id}')" title="Cancelar resposta direta">
+                    Cancelar resposta direta
+                  </button>
+                ` : ''}
               </div>
-              <textarea id="w-reply-textarea" class="w-reply-textarea" placeholder="Postar sua resposta..." rows="2"></textarea>
+              <textarea id="w-reply-textarea" class="w-reply-textarea" placeholder="${hasSubReply ? 'Responder a ' + replyTargetHandle + '...' : 'Postar sua resposta...'}" rows="2"></textarea>
               <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 8px; gap: 8px;">
                 <button class="w-btn-post-primary" style="padding: 6px 16px; font-size: 0.85rem;" onclick="window.wuitter.submitReply('${post.id}')">
                   Responder
@@ -2007,6 +2056,7 @@ class WuitterSystem {
         setTimeout(() => {
           const textarea = document.getElementById('w-reply-textarea');
           if (textarea) {
+            textarea.focus();
             textarea.addEventListener('keydown', (e) => {
               if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
                 e.preventDefault();
@@ -2037,12 +2087,19 @@ class WuitterSystem {
                   <span class="w-wuit-dot">&bull;</span>
                   <span class="w-comment-time">${this.formatTime(c.timestamp)}</span>
                 </div>
-                ${canDeleteComment ? `
-                  <button class="w-delete-btn" onclick="window.wuitter.deleteComment('${post.id}', '${c.id}')" title="Excluir Resposta">
-                    ${SVG_ICONS.trash}
+                <div class="w-comment-actions">
+                  <button class="w-comment-action-btn" onclick="window.wuitter.setReplyContext('${post.id}', '${c.id}')" title="Responder a ${cAuthor.name}">
+                    ${SVG_ICONS.comment}
+                    <span style="font-size: 0.75rem; margin-left: 4px;">Responder</span>
                   </button>
-                ` : ''}
+                  ${canDeleteComment ? `
+                    <button class="w-delete-btn" onclick="window.wuitter.deleteComment('${post.id}', '${c.id}')" title="Excluir Resposta">
+                      ${SVG_ICONS.trash}
+                    </button>
+                  ` : ''}
+                </div>
               </div>
+              ${c.replyToHandle ? `<div class="w-reply-to-tag">Respondendo a <span class="w-mention" onclick="window.wuitter.filterByMention('${c.replyToHandle.replace('@', '')}')">${c.replyToHandle}</span></div>` : ''}
               <div class="w-comment-text">${this.formatText(c.text)}</div>
             </div>
           </div>
@@ -2068,15 +2125,21 @@ class WuitterSystem {
     if (!text) return;
 
     const postingAcc = this.getPostingAccount();
+    const hasSubReply = Boolean(this.activeReplyContext && this.activeReplyContext.postId === postId);
+
     const newComment = {
       id: 'c_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
       authorId: postingAcc.id,
       text: text,
-      timestamp: Date.now()
+      timestamp: Date.now(),
+      replyToCommentId: hasSubReply ? this.activeReplyContext.commentId : null,
+      replyToHandle: hasSubReply ? this.activeReplyContext.authorHandle : null
     };
 
     if (!post.comments) post.comments = [];
     post.comments.push(newComment);
+
+    this.activeReplyContext = null;
 
     this.savePostsLocal();
     this.updatePostStatsInDOM(postId);
@@ -2100,6 +2163,9 @@ class WuitterSystem {
 
     if (confirm('Tem certeza que deseja excluir esta resposta?')) {
       post.comments = post.comments.filter(c => c.id !== commentId);
+      if (this.activeReplyContext && this.activeReplyContext.commentId === commentId) {
+        this.activeReplyContext = null;
+      }
       this.savePostsLocal();
       this.updatePostStatsInDOM(postId);
       this.broadcastSync('DELETE_COMMENT', { postId: postId, commentId: commentId });
