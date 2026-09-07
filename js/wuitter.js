@@ -166,6 +166,20 @@ const DEFAULT_ACCOUNTS = [
     isMaster: false
   },
   {
+    id: 'npc_gov_fragktus',
+    slot: null,
+    tokens: ['FRAGKTUS-GOV', 'GOV-FRAGKTUS', 'ALTO-COMANDO'],
+    hashes: [],
+    name: 'Governo & Alto Comando de Fragktus',
+    handle: '@gov_fragktus',
+    bio: 'Gabinete Supremo do Alto Comando Militar e Administração Civil de Fragktus. Defesa territorial, decretos de ordem e comunicados oficiais.',
+    avatarLetter: 'F',
+    avatarImage: '',
+    avatarColor: '#0f766e',
+    badge: 'gold',
+    isMaster: false
+  },
+  {
     id: 'npc_gov_paladium',
     slot: null,
     tokens: ['PALADIUM-GOV', 'GOV-PALADIUM'],
@@ -739,26 +753,34 @@ class WuitterSystem {
           {
             id: 'c_seed_col_1',
             authorId: 'npc_gazeta_paladium',
-            text: `A direção fala em cooperação 'discreta', mas testemunhas viram agentes do Alto Comando apreendendo armários no 3º andar antes mesmo do comunicado ser emitido. O que mais estão escondendo nos corredores do Primórdio?`,
+            text: `A direção fala em cooperação 'discreta', mas testemunhas viram agentes do Alto Comando de Fragktus apreendendo armários no 3º andar antes mesmo do comunicado ser emitido. O que mais estão escondendo nos corredores do Primórdio?`,
             timestamp: now - (8 * 60 * 1000),
             replyToCommentId: null,
             replyToHandle: null
           },
           {
             id: 'c_seed_col_2',
-            authorId: 'npc_gov_paladium',
-            text: `A Guarda Civil e o Alto Comando de Fragktus reiteram que qualquer informação verificada sobre o paradeiro de Sara Auguil deve ser transmitida de imediato aos canais oficiais da Chancelaria. Evitem especulações.`,
-            timestamp: now - (5 * 60 * 1000),
+            authorId: 'npc_gov_fragktus',
+            text: `O Alto Comando Militar de Fragktus reitera que qualquer informação confirmada sobre Sara Auguil deve ser remetida à guarnição central. Advertimos contra a infiltração de agentes não autorizados de potências vizinhas na apuração.`,
+            timestamp: now - (6 * 60 * 1000),
             replyToCommentId: null,
             replyToHandle: null
           },
           {
             id: 'c_seed_col_3',
+            authorId: 'npc_gov_paladium',
+            text: `O Departamento de Segurança de Paladium manifesta repúdio ao descontrole institucional em Fragktus. Reforçamos a vigilância na fronteira norte para impedir que o caos civil transborde para o nosso território.`,
+            timestamp: now - (4 * 60 * 1000),
+            replyToCommentId: 'c_seed_col_2',
+            replyToHandle: '@gov_fragktus'
+          },
+          {
+            id: 'c_seed_col_4',
             authorId: 'npc_viktor_cronista',
-            text: `Uma aluna exemplar desaparece e a preocupação central da diretoria é 'evitar boatos que manchem a honra'. O rigor de Constança Montenegro sempre foi pontual e seletivo.`,
+            text: `Uma aluna exemplar desaparece e os dois governos transformam o caso em disputa geopolítica de fronteira. A vaidade dos gabinetes de Paladium e Fragktus é repugnante.`,
             timestamp: now - (2 * 60 * 1000),
-            replyToCommentId: 'c_seed_col_1',
-            replyToHandle: '@gazeta_paladium'
+            replyToCommentId: 'c_seed_col_3',
+            replyToHandle: '@gov_paladium'
           }
         ]
       },
@@ -837,7 +859,7 @@ Alguém mais sentiu cheiro de cobre queimado?
         text: `[DEPARTAMENTO DE SEGURANÇA PÚBLICA — PALADIUM]
 REGISTRO DE OPERAÇÃO #3088
 
-Durante a madrugada, a Guarda Metropolitana efetuou a prisão em flagrante de 3 indivíduos no Distrito Portuário por contrabando de condutores de éter não catalogados e falsificação de selos alfandegários.
+Durante a madrugada, a Guarda Metropolitana efetuou a prisão em flagrante de 3 indivíduos no Distrito Portuário por contrabando de condutores de éter de grau militar originários de Fragktus com selos alfandegários adulterados.
 
 Os detidos foram encaminhados à Penitenciária de Alta Contenção de Ferro-Velho. Qualquer movimentação suspeita nas docas deve ser reportada imediatamente à guarnição central.
 
@@ -1191,6 +1213,11 @@ Dica: recalibrem seus cronômetros antes que a meia-noite chegue adiantada.
             if (def.id === 'npc_colegio_primordio') {
               exists.name = 'Colégio Integrado Primórdio de Fragktus';
               exists.handle = '@colegio_primordio';
+              exists.badge = 'gold';
+            }
+            if (def.id === 'npc_gov_fragktus') {
+              exists.name = 'Governo & Alto Comando de Fragktus';
+              exists.handle = '@gov_fragktus';
               exists.badge = 'gold';
             }
             if (!exists.avatarLetter) exists.avatarLetter = (exists.name || 'P').charAt(0).toUpperCase();
