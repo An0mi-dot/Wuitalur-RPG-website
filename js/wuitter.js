@@ -232,7 +232,7 @@ const DEFAULT_ACCOUNTS = [
     hashes: [],
     name: 'Sara Auguil',
     handle: '@sara',
-    bio: 'Aluna do Colégio Integrado Primórdio de Fragktus & barista no Café Névoa. Amante de gatos lunares, arte, chás e alquimia. (Desaparecida desde 31/06/2061).',
+    bio: 'Aluna do Colégio Integrado Primórdio de Fragktus & barista no Café Névoa. Amante de gatos lunares, arte, chás e alquimia. (Desaparecimento catalogado em 01/08/2061).',
     avatarLetter: 'S',
     avatarImage: 'assets/sara_avatar.jpg',
     avatarColor: '#f43f5e',
@@ -733,7 +733,7 @@ class WuitterSystem {
                     ${cBadge}
                     <span class="w-inline-reply-handle">${cAuthor.handle}</span>
                     <span class="w-wuit-dot">&bull;</span>
-                    <span class="w-wuit-time">${this.formatTime(c.timestamp)}</span>
+                    <span class="w-wuit-time">${this.formatTime(c.timestamp, c.timeDisplay || c.customDate)}</span>
                 ${c.replyToHandle ? `<div class="w-reply-to-tag-sm">Respondendo a <span class="w-mention" onclick="window.wuitter.filterByMention('${c.replyToHandle.replace('@', '')}')">${c.replyToHandle}</span></div>` : ''}
                 <div class="w-inline-reply-text">${this.formatText(c.text)}</div>
                 <div style="margin-top: 4px; display: flex; align-items: center; gap: 8px;">
@@ -801,10 +801,11 @@ Com estima e rigor,
 Constança Montenegro e Conselho Diretor de Fragktus.
 
 #ColegioPrimordio #Fragktus #ComunicadoOficial #SaraAuguil`,
-        timestamp: now - (10 * 60 * 1000),
-        likes: 92,
+        timestamp: now - (5 * 60 * 1000),
+        timeDisplay: '02/08/2061',
+        likes: 142,
         likedBy: [],
-        rewuits: 48,
+        rewuits: 68,
         rewuitedBy: [],
         media: '',
         comments: [
@@ -812,7 +813,8 @@ Constança Montenegro e Conselho Diretor de Fragktus.
             id: 'c_seed_col_1',
             authorId: 'npc_gazeta_paladium',
             text: `A direção fala em cooperação 'discreta', mas testemunhas viram agentes do Alto Comando de Fragktus apreendendo armários no 3º andar antes mesmo do comunicado ser emitido. O que mais estão escondendo nos corredores do Primórdio?`,
-            timestamp: now - (8 * 60 * 1000),
+            timestamp: now - (4 * 60 * 1000),
+            timeDisplay: '02/08/2061',
             replyToCommentId: null,
             replyToHandle: null
           },
@@ -820,7 +822,8 @@ Constança Montenegro e Conselho Diretor de Fragktus.
             id: 'c_seed_col_2',
             authorId: 'npc_gov_fragktus',
             text: `O Alto Comando Militar de Fragktus reitera que qualquer informação confirmada sobre Sara Auguil deve ser remetida à guarnição central. Advertimos contra a infiltração de agentes não autorizados de potências vizinhas na apuração.`,
-            timestamp: now - (6 * 60 * 1000),
+            timestamp: now - (3 * 60 * 1000),
+            timeDisplay: '02/08/2061',
             replyToCommentId: null,
             replyToHandle: null
           },
@@ -828,7 +831,8 @@ Constança Montenegro e Conselho Diretor de Fragktus.
             id: 'c_seed_col_3',
             authorId: 'npc_gov_paladium',
             text: `O Departamento de Segurança de Paladium manifesta repúdio ao descontrole institucional em Fragktus. Reforçamos a vigilância na fronteira norte para impedir que o caos civil transborde para o nosso território.`,
-            timestamp: now - (4 * 60 * 1000),
+            timestamp: now - (2 * 60 * 1000),
+            timeDisplay: '03/08/2061',
             replyToCommentId: 'c_seed_col_2',
             replyToHandle: '@gov_fragktus'
           },
@@ -836,7 +840,8 @@ Constança Montenegro e Conselho Diretor de Fragktus.
             id: 'c_seed_col_4',
             authorId: 'npc_viktor_cronista',
             text: `Uma aluna exemplar desaparece e os dois governos transformam o caso em disputa geopolítica de fronteira. A vaidade dos gabinetes de Paladium e Fragktus é repugnante.`,
-            timestamp: now - (2 * 60 * 1000),
+            timestamp: now - (1 * 60 * 1000),
+            timeDisplay: '03/08/2061',
             replyToCommentId: 'c_seed_col_3',
             replyToHandle: '@gov_paladium'
           }
@@ -846,51 +851,56 @@ Constança Montenegro e Conselho Diretor de Fragktus.
         id: 'wuit_seed_sara_encruzilhada_1',
         authorId: 'npc_sara',
         text: `Até a Encruzilhada.`,
-        timestamp: now - (15 * 60 * 1000),
+        timestamp: now - (10 * 60 * 1000),
         timeDisplay: '31/06/2061',
-        likes: 184,
+        likes: 218,
         likedBy: [],
-        rewuits: 56,
+        rewuits: 84,
         rewuitedBy: [],
         media: 'assets/sara_encruzilhada.jpg',
         comments: [
           {
             id: 'c_seed_encruzilhada_1',
             authorId: 'npc_gazeta_paladium',
-            text: `ATENÇÃO: Último registro fotográfico e público da aluna Sara Auguil antes do comunicado de desaparecimento emitido pelo Colégio Primórdio. Qualquer informação sobre a localização desta imagem deve ser enviada às autoridades.`,
-            timestamp: now - (13 * 60 * 1000),
+            text: `ATENÇÃO: Último registro fotográfico e público da aluna Sara Auguil antes do desaparecimento catalogado formalmente pelas autoridades em 01/08. Quem tiver pistas sobre a localização exata desta imagem contate a redação ou a Guarda.`,
+            timestamp: now - (8 * 60 * 1000),
+            timeDisplay: '01/08/2061',
             replyToCommentId: null,
             replyToHandle: null
           },
           {
             id: 'c_seed_encruzilhada_2',
             authorId: 'npc_viktor_cronista',
-            text: `Sara? Onde você tirou essa foto? Essa vegetação de fundo e essa névoa âmbar não condizem com nenhum parque catalogado dentro dos limites seguros do distrito.`,
-            timestamp: now - (11 * 60 * 1000),
+            text: `Sara? Onde você tirou essa foto? Essa vegetação de fundo e essa névoa âmbar não condizem com nenhum parque catalogado dentro dos limites seguros do distrito. Alguém sabe para onde ela foi?`,
+            timestamp: now - (7 * 60 * 1000),
+            timeDisplay: '01/08/2061',
             replyToCommentId: null,
             replyToHandle: null
           },
           {
             id: 'c_seed_encruzilhada_3',
             authorId: 'npc_fauna_verdes',
-            text: `Sara, seu gato lunar não para de arranhar a porta do café desde ontem à tarde... onde você foi parar? Volta logo, por favor.`,
-            timestamp: now - (9 * 60 * 1000),
+            text: `Sara, seu gato lunar não para de arranhar a porta do Café Névoa desde ontem... onde você foi parar? Volta logo, por favor.`,
+            timestamp: now - (6 * 60 * 1000),
+            timeDisplay: '01/08/2061',
             replyToCommentId: null,
             replyToHandle: null
           },
           {
             id: 'c_seed_encruzilhada_4',
             authorId: 'npc_leo_mecanico',
-            text: `Passei na porta do café agora cedo e a caldeira de infusão ainda estava acesa e a porta só encostada. Se alguém souber pra onde ela foi, avisa a gente.`,
-            timestamp: now - (7 * 60 * 1000),
+            text: `Passei na porta do café ontem e a caldeira de infusão ainda estava acesa e o caderno do balcão aberto. Se alguém tiver notícias dela, avisa a gente no Setor 4.`,
+            timestamp: now - (5 * 60 * 1000),
+            timeDisplay: '02/08/2061',
             replyToCommentId: null,
             replyToHandle: null
           },
           {
             id: 'c_seed_encruzilhada_5',
             authorId: 'npc_paladium_art',
-            text: `Essa iluminação... parece o antigo marco de transição para a Floresta dos Ecos na Linha de Ruptura.`,
-            timestamp: now - (5 * 60 * 1000),
+            text: `Essa iluminação âmbar com densidade na copa das árvores... parece a antiga rota além do marco de contenção da Linha de Ruptura.`,
+            timestamp: now - (4 * 60 * 1000),
+            timeDisplay: '02/08/2061',
             replyToCommentId: null,
             replyToHandle: null
           }
@@ -907,7 +917,8 @@ Informações comprovadas que levem à custódia de Kaelen, o Silencioso, foragi
 O indivíduo responde por invasão de arquivos do Conclave e quebra de lacres etéreos. Denúncias podem ser feitas em qualquer posto da Guarda.
 
 #AlertaPaladium #SegurancaMetropolitana #Recompensa`,
-        timestamp: now - (25 * 60 * 1000),
+        timestamp: now - (15 * 60 * 1000),
+        timeDisplay: '03/08/2061',
         likes: 62,
         likedBy: [],
         rewuits: 25,
@@ -918,211 +929,17 @@ O indivíduo responde por invasão de arquivos do Conclave e quebra de lacres et
             id: 'c_seed_alerta_1',
             authorId: 'npc_gazeta_paladium',
             text: `A guarnição do 2º Batalhão já bloqueou as saídas pelos canais do Porto Velho? A última pista indicava rota de fuga pelas docas.`,
-            timestamp: now - (20 * 60 * 1000),
+            timestamp: now - (12 * 60 * 1000),
+            timeDisplay: '03/08/2061',
             replyToCommentId: null,
             replyToHandle: null
           },
           {
             id: 'c_seed_alerta_2',
-            authorId: 'npc_sara',
-            text: `Trancando a porta do café com duas voltas e barra de ferro hoje à noite.`,
-            timestamp: now - (18 * 60 * 1000),
-            replyToCommentId: null,
-            replyToHandle: null
-          }
-        ]
-      },
-      {
-        id: 'wuit_seed_sara_barista_1',
-        authorId: 'npc_sara',
-        text: `Primeiro turno das 06h: caldeira de vapor sibilando, grãos de café de Fragktus moídos na hora e cheiro de canela etérea no ar. Se a prova de Alquimia Aplicada do 3º ano no Primórdio for tão difícil quanto o professor Aldous prometeu, vou precisar de três xícaras duplas antes de abrir o colégio.
-
-#CafeNevoa #BaristaLife #Fragktus #ColegioPrimordio #Alquimia`,
-        timestamp: now - (45 * 60 * 1000),
-        likes: 68,
-        likedBy: [],
-        rewuits: 15,
-        rewuitedBy: [],
-        media: '',
-        comments: [
-          {
-            id: 'c_seed_barista_1',
-            authorId: 'npc_viktor_cronista',
-            text: `Guarda uma garrafa térmica de café duplo bem amargo pra mim, @sara. A noite de análises no laboratório vai ser longa.`,
-            timestamp: now - (40 * 60 * 1000),
-            replyToCommentId: null,
-            replyToHandle: null
-          },
-          {
-            id: 'c_seed_barista_2',
-            authorId: 'npc_sara',
-            text: `Separado e bem forte, doutor! Passa aqui pela porta lateral que não tem a fila dos fiscais da alfândega.`,
-            timestamp: now - (35 * 60 * 1000),
-            replyToCommentId: 'c_seed_barista_1',
-            replyToHandle: '@viktor_cronista'
-          }
-        ]
-      },
-      {
-        id: 'wuit_seed_sara_nevoa_2',
-        authorId: 'npc_sara',
-        text: `Acabei de ver uma fumaça arroxeada saindo do bueiro em frente à Torre do Sino. Não sei se era vazamento de resíduo alquímico ou magia clandestina, mas meu gato lunar se recusou terminantemente a passar perto da calçada.
-
-Alguém mais sentiu cheiro de cobre queimado?
-
-#DistritoComercial #PaladiumEstranho #AlquimiaUrbana`,
-        timestamp: now - (60 * 60 * 1000),
-        likes: 45,
-        likedBy: [],
-        rewuits: 11,
-        rewuitedBy: [],
-        media: '',
-        comments: [
-          {
-            id: 'c_seed_sara_nevoa_1',
-            authorId: 'npc_viktor_cronista',
-            text: `Não respire sem lenço ou máscara de feltro, @sara. Os filtros de purificação do Setor 3 estão entupidos desde o início da semana.`,
-            timestamp: now - (55 * 60 * 1000),
-            replyToCommentId: null,
-            replyToHandle: null
-          },
-          {
-            id: 'c_seed_sara_nevoa_2',
             authorId: 'npc_leo_mecanico',
-            text: `Fumaça arroxeada com cheiro de cobre é assinatura de sublimação de nitrato de éter. Alguém descartou reagente na tubulação sem neutralizar.`,
-            timestamp: now - (50 * 60 * 1000),
-            replyToCommentId: null,
-            replyToHandle: null
-          }
-        ]
-      },
-      {
-        id: 'wuit_seed_sara_estudos_1',
-        authorId: 'npc_sara',
-        text: `Tentando conciliar os relatórios de Herbologia do Primórdio com o expediente no Café Névoa. Se eu errar a dosagem de folhas de lótus etéreas de novo, a diretoria vai me colocar de recuperação no semestre inteiro. Pelo menos o aroma de café ajuda a não desmaiar em cima dos pergaminhos.
-
-#VidaDeEstudante #ColegioPrimordio #Herbologia #CafeNevoa`,
-        timestamp: now - (90 * 60 * 1000),
-        likes: 54,
-        likedBy: [],
-        rewuits: 10,
-        rewuitedBy: [],
-        media: '',
-        comments: []
-      },
-      {
-        id: 'wuit_seed_gov_1',
-        authorId: 'npc_gov_paladium',
-        text: `[DEPARTAMENTO DE SEGURANÇA PÚBLICA — PALADIUM]
-REGISTRO DE OPERAÇÃO #3088
-
-Durante a madrugada, a Guarda Metropolitana efetuou a prisão em flagrante de 3 indivíduos no Distrito Portuário por contrabando de condutores de éter de grau militar originários de Fragktus com selos alfandegários adulterados.
-
-Os detidos foram encaminhados à Penitenciária de Alta Contenção de Ferro-Velho. Qualquer movimentação suspeita nas docas deve ser reportada imediatamente à guarnição central.
-
-#PaladiumSegura #OperacaoDocas #LeiEOrdem`,
-        timestamp: now - (120 * 60 * 1000),
-        likes: 54,
-        likedBy: [],
-        rewuits: 14,
-        rewuitedBy: [],
-        media: '',
-        comments: [
-          {
-            id: 'c_seed_gov_1_1',
-            authorId: 'npc_gazeta_paladium',
-            text: `A Guarda só esqueceu de mencionar que o 'contrabando' eram geradores antigos que abasteciam a clínica comunitária do Distrito Baixo após o racionamento decretado pelo próprio Senado.`,
-            timestamp: now - (110 * 60 * 1000),
-            replyToCommentId: null,
-            replyToHandle: null
-          },
-          {
-            id: 'c_seed_gov_1_2',
-            authorId: 'npc_gov_paladium',
-            text: `A Gazeta de Paladium está advertida formalmente contra a disseminação de narrativas desinformativas acerca de apreensões de materiais com risco de instabilidade.`,
-            timestamp: now - (105 * 60 * 1000),
-            replyToCommentId: 'c_seed_gov_1_1',
-            replyToHandle: '@gazeta_paladium'
-          },
-          {
-            id: 'c_seed_gov_1_3',
-            authorId: 'npc_viktor_cronista',
-            text: `Instabilidade? Desde quando condutores de éter grau 2 têm risco crítico? O relatório técnico de vocês está desatualizado há pelo menos quatro legislaturas.`,
-            timestamp: now - (100 * 60 * 1000),
-            replyToCommentId: 'c_seed_gov_1_2',
-            replyToHandle: '@gov_paladium'
-          }
-        ]
-      },
-      {
-        id: 'wuit_seed_sara_1',
-        authorId: 'npc_sara',
-        text: `Bom dia para quem acordou com cheiro de ozônio e vapor de caldeira vazando na rua. O Café Névoa já está aberto e o chá de camomila estelar tá saindo com 20% de desconto para quem tiver cara de quem não dormiu por causa do toque de recolher.
-
-E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachada!
-
-#CafeNevoa #PaladiumDaily #ChadeBruxa`,
-        timestamp: now - (3 * 60 * 60 * 1000),
-        likes: 39,
-        likedBy: [],
-        rewuits: 9,
-        rewuitedBy: [],
-        media: '',
-        comments: [
-          {
-            id: 'c_seed_sara_1_1',
-            authorId: 'npc_bichinhos_wui',
-            text: `Se for o furãozinho albino com coleira de latão, o nome dele é Pipoca e ele é viciado em eletricidade estática. Peço perdão em nome da comunidade pet!`,
-            timestamp: now - (160 * 60 * 1000),
-            replyToCommentId: null,
-            replyToHandle: null
-          },
-          {
-            id: 'c_seed_sara_1_2',
-            authorId: 'npc_sara',
-            text: `Ele quase virou uma torrada no condensador do balcão! Mas ele ganhou um pedaço de biscoito de aveia e perdoei.`,
-            timestamp: now - (150 * 60 * 1000),
-            replyToCommentId: 'c_seed_sara_1_1',
-            replyToHandle: '@fauna_verdes'
-          }
-        ]
-      },
-      {
-        id: 'wuit_seed_bichinhos_1',
-        authorId: 'npc_bichinhos_wui',
-        text: `Apresentamos: Barnabé, a corujinha-mecânica do mestre Tobias. Ela foi forjada com engrenagens de relógio suíço e penas de latão polido. O trabalho dela é entregar bilhetes e pedir carinho com bicadinhas no dedo.
-
-Protejam essa fofura a todo custo.
-
-#FaunaDasTerrasVerdes #MascotesMagicos #PaladiumPets`,
-        timestamp: now - (5 * 60 * 60 * 1000),
-        likes: 98,
-        likedBy: [],
-        rewuits: 34,
-        rewuitedBy: [],
-        media: '',
-        comments: [
-          {
-            id: 'c_seed_bichinhos_1_1',
-            authorId: 'npc_paladium_art',
-            text: `A anatomia da asa mecânica nessa peça é de uma delicadeza impressionante. Tobias é um patrimônio vivo do Distrito Baixo.`,
-            timestamp: now - (4 * 60 * 60 * 1000),
-            replyToCommentId: null,
-            replyToHandle: null
-          },
-          {
-            id: 'c_seed_bichinhos_1_2',
-            authorId: 'npc_sara',
-            text: `Eu quero cinco dessas na minha bancada agora mesmo.`,
-            timestamp: now - (230 * 60 * 1000),
-            replyToCommentId: null,
-            replyToHandle: null
-          },
-          {
-            id: 'c_seed_bichinhos_1_3',
-            authorId: 'npc_leo_mecanico',
-            text: `Se ela souber carregar ferramentas pequenas sem derrubar no meio do caminho, encomendo duas para a oficina.`,
-            timestamp: now - (200 * 60 * 1000),
+            text: `Se esse sujeito passar perto da minha oficina com ferramentas clandestinas, aciono a tranca magnética dos portões na hora.`,
+            timestamp: now - (10 * 60 * 1000),
+            timeDisplay: '03/08/2061',
             replyToCommentId: null,
             replyToHandle: null
           }
@@ -1136,7 +953,8 @@ Protejam essa fofura a todo custo.
 O Governo de Paladium ainda não emitiu nota oficial sobre o caso. Fontes anônimas apontam conexão com anomalias registradas no Subsolo 7.
 
 #GazetaInforma #EscandaloPaladium #SegredosDoConclave`,
-        timestamp: now - (8 * 60 * 60 * 1000),
+        timestamp: now - (25 * 60 * 1000),
+        timeDisplay: '03/08/2061',
         likes: 86,
         likedBy: [],
         rewuits: 31,
@@ -1147,59 +965,101 @@ O Governo de Paladium ainda não emitiu nota oficial sobre o caso. Fontes anôni
             id: 'c_seed_gazeta_1_1',
             authorId: 'npc_gov_paladium',
             text: `A Corregedoria Geral trata de assuntos internos com o devido sigilo processual. Especulações infundadas serão objeto de inquérito administrativo.`,
-            timestamp: now - (7 * 60 * 60 * 1000),
+            timestamp: now - (20 * 60 * 1000),
+            timeDisplay: '03/08/2061',
             replyToCommentId: null,
             replyToHandle: null
           },
           {
             id: 'c_seed_gazeta_1_2',
-            authorId: 'npc_sara',
-            text: `Toda semana um relatório 'misterioso' sumindo nessa cidade... Se eu perder a minha comanda no café já tomo bronca, imagina documento de estado.`,
-            timestamp: now - (380 * 60 * 1000),
+            authorId: 'npc_viktor_cronista',
+            text: `Sumiço de relatórios no Conclave sempre coincide com picos de consumo de éter na rede subterrânea. Não tentem encobrir a verdade.`,
+            timestamp: now - (16 * 60 * 1000),
+            timeDisplay: '03/08/2061',
             replyToCommentId: 'c_seed_gazeta_1_1',
             replyToHandle: '@gov_paladium'
           }
         ]
       },
       {
-        id: 'wuit_seed_gov_2',
+        id: 'wuit_seed_gov_1',
         authorId: 'npc_gov_paladium',
-        text: `[COMUNICADO OFICIAL DO SENADO DE PALADIUM]
-DECRETO N. 884/26
+        text: `[DEPARTAMENTO DE SEGURANÇA PÚBLICA — PALADIUM]
+REGISTRO DE OPERAÇÃO #3088
 
-Fica instituída a Tarifa Provisória sobre o Refino de Cristais de Éter Bruto, destinada ao Fundo Emergencial de Contenção Urbana.
+Durante a madrugada, a Guarda Metropolitana efetuou a prisão em flagrante de 3 indivíduos no Distrito Portuário por contrabando de condutores de éter de grau militar originários de Fragktus com selos alfandegários adulterados.
 
-O racionamento de energia nos Distritos 3 e 4 vigorará entre 01:00 e 05:00 de segunda a sexta-feira.
+Os detidos foram encaminhados à Penitenciária de Alta Contenção de Ferro-Velho. Qualquer movimentação suspeita nas docas deve ser reportada imediatamente à guarnição central.
 
-#SenadoPaladium #Decreto884 #AdministracaoPublica`,
-        timestamp: now - (14 * 60 * 60 * 1000),
-        likes: 21,
+#PaladiumSegura #OperacaoDocas #LeiEOrdem`,
+        timestamp: now - (40 * 60 * 1000),
+        timeDisplay: '02/08/2061',
+        likes: 54,
         likedBy: [],
-        rewuits: 46,
+        rewuits: 14,
         rewuitedBy: [],
         media: '',
         comments: [
           {
-            id: 'c_seed_gov_2_1',
-            authorId: 'npc_leo_mecanico',
-            text: `Racionamento no Distrito 4 de novo? Como vou manter as soldas das próteses ligadas de madrugada? Vocês aumentam imposto do cristal e desligam o disjuntor. Piada pronta.`,
-            timestamp: now - (13 * 60 * 60 * 1000),
+            id: 'c_seed_gov_1_1',
+            authorId: 'npc_gazeta_paladium',
+            text: `A Guarda só esqueceu de mencionar que o 'contrabando' eram geradores antigos que abasteciam a clínica comunitária do Distrito Baixo após o racionamento decretado pelo próprio Senado.`,
+            timestamp: now - (35 * 60 * 1000),
+            timeDisplay: '02/08/2061',
             replyToCommentId: null,
             replyToHandle: null
           },
           {
-            id: 'c_seed_gov_2_2',
-            authorId: 'npc_gazeta_paladium',
-            text: `Enquanto isso, a iluminação ornamental do Palácio do Governo permanece acesa 24 horas por dia com cristais de grau puro.`,
-            timestamp: now - (12 * 60 * 60 * 1000),
-            replyToCommentId: 'c_seed_gov_2_1',
-            replyToHandle: '@leo_engrenagens'
+            id: 'c_seed_gov_1_2',
+            authorId: 'npc_gov_paladium',
+            text: `A Gazeta de Paladium está advertida formalmente contra a disseminação de narrativas desinformativas acerca de apreensões de materiais com risco de instabilidade.`,
+            timestamp: now - (30 * 60 * 1000),
+            timeDisplay: '02/08/2061',
+            replyToCommentId: 'c_seed_gov_1_1',
+            replyToHandle: '@gazeta_paladium'
           },
           {
-            id: 'c_seed_gov_2_3',
-            authorId: 'npc_sara',
-            text: `Isso vai atrapalhar todo o comércio do distrito. Decisão irresponsável que só prejudica quem trabalha à noite.`,
-            timestamp: now - (11 * 60 * 60 * 1000),
+            id: 'c_seed_gov_1_3',
+            authorId: 'npc_viktor_cronista',
+            text: `Instabilidade? Desde quando condutores de éter grau 2 têm risco crítico? O relatório técnico de vocês está desatualizado há pelo menos quatro legislaturas.`,
+            timestamp: now - (25 * 60 * 1000),
+            timeDisplay: '02/08/2061',
+            replyToCommentId: 'c_seed_gov_1_2',
+            replyToHandle: '@gov_paladium'
+          }
+        ]
+      },
+      {
+        id: 'wuit_seed_bichinhos_1',
+        authorId: 'npc_bichinhos_wui',
+        text: `Apresentamos: Barnabé, a corujinha-mecânica do mestre Tobias. Ela foi forjada com engrenagens de relógio e penas de latão polido. O trabalho dela é entregar bilhetes e pedir carinho com bicadinhas no dedo.
+
+Protejam essa fofura a todo custo.
+
+#FaunaDasTerrasVerdes #MascotesMagicos #PaladiumPets`,
+        timestamp: now - (60 * 60 * 1000),
+        timeDisplay: '02/08/2061',
+        likes: 98,
+        likedBy: [],
+        rewuits: 34,
+        rewuitedBy: [],
+        media: '',
+        comments: [
+          {
+            id: 'c_seed_bichinhos_1_1',
+            authorId: 'npc_paladium_art',
+            text: `A anatomia da asa mecânica nessa peça é de uma delicadeza impressionante. Tobias é um patrimônio vivo do Distrito Baixo.`,
+            timestamp: now - (50 * 60 * 1000),
+            timeDisplay: '02/08/2061',
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_bichinhos_1_3',
+            authorId: 'npc_leo_mecanico',
+            text: `Se ela souber carregar ferramentas pequenas sem derrubar no meio do caminho, encomendo duas para a oficina.`,
+            timestamp: now - (45 * 60 * 1000),
+            timeDisplay: '02/08/2061',
             replyToCommentId: null,
             replyToHandle: null
           }
@@ -1215,7 +1075,8 @@ A dualidade entre a imponência do Distrito Alto e a fumaça incansável que sob
 Artista: M. Valerius (Setor 2).
 
 #ArtePaladium #WuitalurArt #ConceitoVisual #Aquarela`,
-        timestamp: now - (19 * 60 * 60 * 1000),
+        timestamp: now - (90 * 60 * 1000),
+        timeDisplay: '01/08/2061',
         likes: 73,
         likedBy: [],
         rewuits: 22,
@@ -1223,18 +1084,11 @@ Artista: M. Valerius (Setor 2).
         media: '',
         comments: [
           {
-            id: 'c_seed_art_1_1',
-            authorId: 'npc_sara',
-            text: `O contraste do dourado das lamparinas com o céu arroxeado ficou impecável. Dá pra sentir o cheiro de chuva e ferrugem só de olhar.`,
-            timestamp: now - (18 * 60 * 60 * 1000),
-            replyToCommentId: null,
-            replyToHandle: null
-          },
-          {
             id: 'c_seed_art_1_2',
             authorId: 'npc_viktor_cronista',
             text: `Fiel inclusive na densidade da poluição atmosférica. Parabéns ao artista pelo rigor documental.`,
-            timestamp: now - (17 * 60 * 60 * 1000),
+            timestamp: now - (80 * 60 * 1000),
+            timeDisplay: '01/08/2061',
             replyToCommentId: null,
             replyToHandle: null
           }
@@ -1248,7 +1102,8 @@ Artista: M. Valerius (Setor 2).
 Dica: recalibrem seus cronômetros antes que a meia-noite chegue adiantada.
 
 #CienciaDeWu #AnomaliasUrbanas #ViktorObserva`,
-        timestamp: now - (25 * 60 * 60 * 1000),
+        timestamp: now - (120 * 60 * 1000),
+        timeDisplay: '01/08/2061',
         likes: 47,
         likedBy: [],
         rewuits: 18,
@@ -1259,7 +1114,8 @@ Dica: recalibrem seus cronômetros antes que a meia-noite chegue adiantada.
             id: 'c_seed_viktor_1_1',
             authorId: 'npc_leo_mecanico',
             text: `Minha bússola da bancada já está apontando pro leste há duas horas. Achei que fosse defeito mecânico no ponteiro.`,
-            timestamp: now - (24 * 60 * 60 * 1000),
+            timestamp: now - (110 * 60 * 1000),
+            timeDisplay: '01/08/2061',
             replyToCommentId: null,
             replyToHandle: null
           },
@@ -1267,7 +1123,8 @@ Dica: recalibrem seus cronômetros antes que a meia-noite chegue adiantada.
             id: 'c_seed_viktor_1_2',
             authorId: 'npc_viktor_cronista',
             text: `Não é defeito, @leo_engrenagens. É a malha etérea da cidade reagindo à sobrecarga dos geradores centrais.`,
-            timestamp: now - (23 * 60 * 60 * 1000),
+            timestamp: now - (105 * 60 * 1000),
+            timeDisplay: '01/08/2061',
             replyToCommentId: 'c_seed_viktor_1_1',
             replyToHandle: '@leo_engrenagens'
           },
@@ -1275,9 +1132,170 @@ Dica: recalibrem seus cronômetros antes que a meia-noite chegue adiantada.
             id: 'c_seed_viktor_1_3',
             authorId: 'npc_bichinhos_wui',
             text: `Isso explica por que os gatos lunares passaram a tarde inteira miando fixados nas paredes vazias!`,
-            timestamp: now - (22 * 60 * 60 * 1000),
+            timestamp: now - (100 * 60 * 1000),
+            timeDisplay: '01/08/2061',
             replyToCommentId: null,
             replyToHandle: null
+          }
+        ]
+      },
+      {
+        id: 'wuit_seed_gov_2',
+        authorId: 'npc_gov_paladium',
+        text: `[COMUNICADO OFICIAL DO SENADO DE PALADIUM]
+DECRETO N. 884/26
+
+Fica instituída a Tarifa Provisória sobre o Refino de Cristais de Éter Bruto, destinada ao Fundo Emergencial de Contenção Urbana.
+
+O racionamento de energia nos Distritos 3 e 4 vigorará entre 01:00 e 05:00 de segunda a sexta-feira.
+
+#SenadoPaladium #Decreto884 #AdministracaoPublica`,
+        timestamp: now - (180 * 60 * 1000),
+        timeDisplay: '30/07/2061',
+        likes: 21,
+        likedBy: [],
+        rewuits: 46,
+        rewuitedBy: [],
+        media: '',
+        comments: [
+          {
+            id: 'c_seed_gov_2_1',
+            authorId: 'npc_leo_mecanico',
+            text: `Racionamento no Distrito 4 de novo? Como vou manter as soldas das próteses ligadas de madrugada? Vocês aumentam imposto do cristal e desligam o disjuntor. Piada pronta.`,
+            timestamp: now - (170 * 60 * 1000),
+            timeDisplay: '30/07/2061',
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_gov_2_2',
+            authorId: 'npc_gazeta_paladium',
+            text: `Enquanto isso, a iluminação ornamental do Palácio do Governo permanece acesa 24 horas por dia com cristais de grau puro.`,
+            timestamp: now - (160 * 60 * 1000),
+            timeDisplay: '30/07/2061',
+            replyToCommentId: 'c_seed_gov_2_1',
+            replyToHandle: '@leo_engrenagens'
+          }
+        ]
+      },
+      {
+        id: 'wuit_seed_sara_barista_1',
+        authorId: 'npc_sara',
+        text: `Primeiro turno das 06h: caldeira de vapor sibilando, grãos de café de Fragktus moídos na hora e cheiro de canela etérea no ar. Se a prova de Alquimia Aplicada do 3º ano no Primórdio for tão difícil quanto o professor Aldous prometeu, vou precisar de três xícaras duplas antes de abrir o colégio.
+
+#CafeNevoa #BaristaLife #Fragktus #ColegioPrimordio #Alquimia`,
+        timestamp: now - (240 * 60 * 1000),
+        timeDisplay: '28/06/2061',
+        likes: 68,
+        likedBy: [],
+        rewuits: 15,
+        rewuitedBy: [],
+        media: '',
+        comments: [
+          {
+            id: 'c_seed_barista_1',
+            authorId: 'npc_viktor_cronista',
+            text: `Guarda uma garrafa térmica de café duplo bem amargo pra mim, @sara. A noite de análises no laboratório vai ser longa.`,
+            timestamp: now - (230 * 60 * 1000),
+            timeDisplay: '28/06/2061',
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_barista_2',
+            authorId: 'npc_sara',
+            text: `Separado e bem forte, doutor! Passa aqui pela porta lateral que não tem a fila dos fiscais da alfândega.`,
+            timestamp: now - (220 * 60 * 1000),
+            timeDisplay: '28/06/2061',
+            replyToCommentId: 'c_seed_barista_1',
+            replyToHandle: '@viktor_cronista'
+          }
+        ]
+      },
+      {
+        id: 'wuit_seed_sara_nevoa_2',
+        authorId: 'npc_sara',
+        text: `Acabei de ver uma fumaça arroxeada saindo do bueiro em frente à Torre do Sino. Não sei se era vazamento de resíduo alquímico ou magia clandestina, mas meu gato lunar se recusou terminantemente a passar perto da calçada.
+
+Alguém mais sentiu cheiro de cobre queimado?
+
+#DistritoComercial #PaladiumEstranho #AlquimiaUrbana`,
+        timestamp: now - (300 * 60 * 1000),
+        timeDisplay: '24/06/2061',
+        likes: 45,
+        likedBy: [],
+        rewuits: 11,
+        rewuitedBy: [],
+        media: '',
+        comments: [
+          {
+            id: 'c_seed_sara_nevoa_1',
+            authorId: 'npc_viktor_cronista',
+            text: `Não respire sem lenço ou máscara de feltro, @sara. Os filtros de purificação do Setor 3 estão entupidos desde o início da semana.`,
+            timestamp: now - (290 * 60 * 1000),
+            timeDisplay: '24/06/2061',
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_sara_nevoa_2',
+            authorId: 'npc_leo_mecanico',
+            text: `Fumaça arroxeada com cheiro de cobre é assinatura de sublimação de nitrato de éter. Alguém descartou reagente na tubulação sem neutralizar.`,
+            timestamp: now - (280 * 60 * 1000),
+            timeDisplay: '24/06/2061',
+            replyToCommentId: null,
+            replyToHandle: null
+          }
+        ]
+      },
+      {
+        id: 'wuit_seed_sara_estudos_1',
+        authorId: 'npc_sara',
+        text: `Tentando conciliar os relatórios de Herbologia do Primórdio com o expediente no Café Névoa. Se eu errar a dosagem de folhas de lótus etéreas de novo, a diretoria vai me colocar de recuperação no semestre inteiro. Pelo menos o aroma de café ajuda a não desmaiar em cima dos pergaminhos.
+
+#VidaDeEstudante #ColegioPrimordio #Herbologia #CafeNevoa`,
+        timestamp: now - (360 * 60 * 1000),
+        timeDisplay: '19/06/2061',
+        likes: 54,
+        likedBy: [],
+        rewuits: 10,
+        rewuitedBy: [],
+        media: '',
+        comments: []
+      },
+      {
+        id: 'wuit_seed_sara_1',
+        authorId: 'npc_sara',
+        text: `Bom dia para quem acordou com cheiro de ozônio e vapor de caldeira vazando na rua. O Café Névoa já está aberto e o chá de camomila estelar tá saindo com 20% de desconto para quem tiver cara de quem não dormiu por causa do toque de recolher.
+
+E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachada!
+
+#CafeNevoa #PaladiumDaily #ChadeBruxa`,
+        timestamp: now - (420 * 60 * 1000),
+        timeDisplay: '12/06/2061',
+        likes: 39,
+        likedBy: [],
+        rewuits: 9,
+        rewuitedBy: [],
+        media: '',
+        comments: [
+          {
+            id: 'c_seed_sara_1_1',
+            authorId: 'npc_bichinhos_wui',
+            text: `Se for o furãozinho albino com coleira de latão, o nome dele é Pipoca e ele é viciado em eletricidade estática. Peço perdão em nome da comunidade pet!`,
+            timestamp: now - (410 * 60 * 1000),
+            timeDisplay: '12/06/2061',
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_sara_1_2',
+            authorId: 'npc_sara',
+            text: `Ele quase virou uma torrada no condensador do balcão! Mas ele ganhou um pedaço de biscoito de aveia e perdoei.`,
+            timestamp: now - (400 * 60 * 1000),
+            timeDisplay: '12/06/2061',
+            replyToCommentId: 'c_seed_sara_1_1',
+            replyToHandle: '@fauna_verdes'
           }
         ]
       }
@@ -2407,7 +2425,7 @@ Dica: recalibrem seus cronômetros antes que a meia-noite chegue adiantada.
                   ${cBadge}
                   <span class="w-inline-reply-handle">${cAuthor.handle}</span>
                   <span class="w-wuit-dot">&bull;</span>
-                  <span class="w-wuit-time">${this.formatTime(c.timestamp)}</span>
+                  <span class="w-wuit-time">${this.formatTime(c.timestamp, c.timeDisplay || c.customDate)}</span>
                 </div>
                 ${c.replyToHandle ? `<div class="w-reply-to-tag-sm">Respondendo a <span class="w-mention" onclick="window.wuitter.filterByMention('${c.replyToHandle.replace('@', '')}')">${c.replyToHandle}</span></div>` : ''}
                 <div class="w-inline-reply-text">${this.formatText(c.text)}</div>
@@ -2943,7 +2961,7 @@ Dica: recalibrem seus cronômetros antes que a meia-noite chegue adiantada.
                   ${cBadge}
                   <span class="w-comment-handle" onclick="window.wuitter.viewProfile('${cAuthor.id}'); window.wuitter.closeModals();">${cAuthor.handle}</span>
                   <span class="w-wuit-dot">&bull;</span>
-                  <span class="w-comment-time">${this.formatTime(c.timestamp)}</span>
+                  <span class="w-comment-time">${this.formatTime(c.timestamp, c.timeDisplay || c.customDate)}</span>
                 </div>
                 <div class="w-comment-actions">
                   <button class="w-comment-action-btn" onclick="window.wuitter.setReplyContext('${post.id}', '${c.id}')" title="Responder a ${cAuthor.name}">
