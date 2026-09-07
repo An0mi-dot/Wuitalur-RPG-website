@@ -102,7 +102,7 @@ const DEFAULT_ACCOUNTS = [
     handle: '@eric',
     bio: 'Alquimista tático e especialista em compostos voláteis. Se explodiu, provavelmente fui eu.',
     avatarLetter: 'E',
-    avatarImage: '',
+    avatarImage: 'assets/eric_avatar.png',
     avatarColor: '#ef4444',
     badge: 'none',
     isMaster: false
@@ -1291,6 +1291,7 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
             exists.tokens = def.tokens;
             exists.hashes = def.hashes;
             exists.isMaster = def.isMaster;
+            if (def.avatarImage) exists.avatarImage = def.avatarImage;
             if (def.isMaster) {
               exists.name = 'Mestre';
               exists.handle = '@mestre';
