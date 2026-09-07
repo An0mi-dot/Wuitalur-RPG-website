@@ -292,6 +292,7 @@ class WuitterSystem {
 
   async init() {
     this.loadLocalCache();
+    this.ensureOrganicBaselineEngagement();
     await this.authenticateWithSavedToken();
     this.initSupabaseClient();
     this.bindEvents();
@@ -299,10 +300,12 @@ class WuitterSystem {
 
     // Busca imediata do banco de dados na nuvem
     await this.fetchCloudFeed();
+    this.ensureOrganicBaselineEngagement();
 
-    // Inicia ouvintes de tempo real e polling contínuo
+    // Inicia ouvintes de tempo real, polling contínuo e engajamento orgânico
     this.initRealtimeSubscriptions();
     this.startBackgroundSync();
+    this.startOrganicEngagementLoop();
   }
 
   initSupabaseClient() {
@@ -1194,6 +1197,87 @@ class WuitterSystem {
     });
   }
 
+  // ---- ENGAJAMENTO ORGÂNICO AUTOMÁTICO (CURTIDAS & RE-WUITS VIVOS) ----
+  ensureOrganicBaselineEngagement() {
+    if (!this.posts || this.posts.length === 0) return;
+    let modified = false;
+
+    this.posts.forEach(post => {
+      // Se o post tiver 0 ou poucas curtidas, atribui um baseline orgânico determinístico
+      if (typeof post.likes !== 'number' || post.likes < 3) {
+        let hash = 0;
+        const str = (post.id || '') + (post.text || '') + (post.authorId || '');
+        for (let i = 0; i < str.length; i++) {
+          hash = ((hash << 5) - hash) + str.charCodeAt(i);
+          hash |= 0;
+        }
+        const absHash = Math.abs(hash);
+
+        // Curtidas variadas entre 6 e 38 dependendo do conteúdo/autor
+        const isOfficialOrNews = post.authorId === 'npc_gov_paladium' || post.authorId === 'npc_gazeta_paladium';
+        const isPetOrArt = post.authorId === 'npc_bichinhos_wui' || post.authorId === 'npc_paladium_art';
+        
+        let baseLikes = (absHash % 28) + 6;
+        if (isOfficialOrNews) baseLikes += 15;
+        if (isPetOrArt) baseLikes += 25;
+
+        let baseRewuits = (absHash % 7);
+        if (isOfficialOrNews) baseRewuits += 5;
+
+        post.likes = Math.max(post.likes || 0, baseLikes);
+        post.rewuits = Math.max(post.rewuits || 0, baseRewuits);
+        if (!post.likedBy) post.likedBy = [];
+        if (!post.rewuitedBy) post.rewuitedBy = [];
+        modified = true;
+      }
+    });
+
+    if (modified) {
+      this.savePostsLocal();
+    }
+  }
+
+  startOrganicEngagementLoop() {
+    const runTick = () => {
+      if (this.posts && this.posts.length > 0) {
+        // Seleciona um post aleatório dos 15 mais recentes para receber engajamento orgânico de cidadãos
+        const recentPool = this.posts.slice(0, Math.min(15, this.posts.length));
+        if (recentPool.length > 0) {
+          const randomIndex = Math.floor(Math.random() * recentPool.length);
+          const targetPost = recentPool[randomIndex];
+
+          if (targetPost) {
+            let updated = false;
+
+            // 65% de chance de somar +1 curtida orgânica (com teto natural de 85)
+            if (Math.random() < 0.65 && (targetPost.likes || 0) < 85) {
+              targetPost.likes = (targetPost.likes || 0) + 1;
+              updated = true;
+            }
+
+            // 20% de chance de somar +1 re-wuit orgânico (com teto natural de 30)
+            if (Math.random() < 0.20 && (targetPost.rewuits || 0) < 30) {
+              targetPost.rewuits = (targetPost.rewuits || 0) + 1;
+              updated = true;
+            }
+
+            if (updated) {
+              this.savePostsLocal();
+              this.updatePostStatsInDOM(targetPost.id);
+            }
+          }
+        }
+      }
+
+      // Próxima interação orgânica aleatória entre 18 e 45 segundos
+      const nextDelay = 18000 + Math.floor(Math.random() * 27000);
+      setTimeout(runTick, nextDelay);
+    };
+
+    // Inicia após 8 segundos da abertura da página
+    setTimeout(runTick, 8000);
+  }
+
   bindEvents() {
     document.querySelectorAll('.w-feed-tab').forEach(tab => {
       tab.addEventListener('click', () => {
@@ -1381,18 +1465,42 @@ class WuitterSystem {
       } catch(e) {}
     }
 
+    // Curtidas iniciais automáticas (entre 2 e 5 curtidas de cidadãos ativos)
+    const initialOrganicLikes = Math.floor(Math.random() * 4) + 2;
+    const initialOrganicRewuits = Math.random() < 0.35 ? 1 : 0;
+
     const newPost = {
       id: 'wuit_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
       authorId: postingAcc.id,
       text: text,
       timestamp: Date.now(),
-      likes: 0,
+      likes: initialOrganicLikes,
       likedBy: [],
-      rewuits: 0,
+      rewuits: initialOrganicRewuits,
       rewuitedBy: [],
       comments: [],
       media: finalMedia
     };
+
+    // Programa curtidas orgânicas adicionais surgindo nos próximos segundos
+    setTimeout(() => {
+      const p = this.posts.find(x => x.id === newPost.id);
+      if (p) {
+        p.likes = (p.likes || 0) + Math.floor(Math.random() * 2) + 1;
+        this.savePostsLocal();
+        this.updatePostStatsInDOM(p.id);
+      }
+    }, 12000 + Math.floor(Math.random() * 15000));
+
+    setTimeout(() => {
+      const p = this.posts.find(x => x.id === newPost.id);
+      if (p) {
+        p.likes = (p.likes || 0) + Math.floor(Math.random() * 3) + 1;
+        if (Math.random() < 0.4) p.rewuits = (p.rewuits || 0) + 1;
+        this.savePostsLocal();
+        this.updatePostStatsInDOM(p.id);
+      }
+    }, 35000 + Math.floor(Math.random() * 25000));
 
     this.posts.unshift(newPost);
     this.savePostsLocal();
