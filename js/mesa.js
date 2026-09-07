@@ -875,9 +875,9 @@ const MesaApp = {
       stressPointsMax: 6,
       atributos: {
         'Mente': 'd16',
-        'Saúde': 'd4',
+        'Saúde': 'd8',
         'Vigor': 'd12',
-        'Força': 'd8'
+        'Força': 'd4'
       },
       bonus: [
         { origem: 'Raça (Vampiro)', desc: '+d4 em testes de Mente e Visão no Escuro (5B)' },
@@ -1108,6 +1108,10 @@ const MesaApp = {
 
           // Garantir que Eric (Slot 3 / Token B8T3) tenha apenas as 3 habilidades corretas
           if (p.token === 'R5K1' || p.slot === 3) {
+            if (p.atributos && typeof p.atributos === 'object') {
+              p.atributos['Saúde'] = 'd8';
+              p.atributos['Força'] = 'd4';
+            }
             p.habilidades = p.habilidades.filter(h => {
               if (!h || !h.nome) return false;
               const clean = h.nome.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
@@ -1181,7 +1185,7 @@ const MesaApp = {
         this.state.players[2] = {
           id: 1, slot: 3, token: 'R5K1', nome: 'Eric "Blade" Tepes Adams', idade: '17 anos', altura: '1,76', raca: 'Vampiro', arquetipo: 'Curioso', imagem: 'assets/eric.png', avatar: 'assets/eric_avatar.png',
           hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 44, stressPoints: 0, stressPointsMax: 6,
-          atributos: { 'Mente': 'd16', 'Saúde': 'd4', 'Vigor': 'd12', 'Força': 'd8' },
+          atributos: { 'Mente': 'd16', 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd4' },
           bonus: [{ origem: 'Raça (Vampiro)', desc: '+d4 em testes de Mente e Visão no Escuro (5B)' }, { origem: 'Arquétipo (Curioso)', desc: '+d4 em testes de Investigação' }],
           pericias: ['Investigação', 'Percepção', 'Disparada', 'Medicina'],
           habilidades: [
