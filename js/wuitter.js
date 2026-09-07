@@ -24,7 +24,9 @@ const SVG_ICONS = {
   trash: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>`,
   image: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`,
   settings: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
-  crown: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`
+  crown: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+  arrowLeft: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>`,
+  calendar: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`
 };
 
 // Hashes oficiais do Mestre (compatíveis com Mesa Virtual)
@@ -173,6 +175,9 @@ class WuitterSystem {
     this.authenticatedAccount = null;
     this.selectedPostingAccountId = null;
     this.activeTab = 'para-voce';
+    this.currentView = 'feed'; // 'feed', 'profile', 'explore'
+    this.profileAccountId = null;
+    this.profileTab = 'posts'; // 'posts', 'replies', 'media'
     this.searchQuery = '';
     this.pendingImageBase64 = '';
 
@@ -765,10 +770,31 @@ class WuitterSystem {
     }
 
     const searchInput = document.getElementById('w-search-input');
+    const searchClearBtn = document.getElementById('w-search-clear-btn');
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
         this.searchQuery = e.target.value.toLowerCase().trim();
+        if (searchClearBtn) {
+          searchClearBtn.style.display = e.target.value.length > 0 ? 'flex' : 'none';
+        }
+        if (this.currentView === 'profile' && this.searchQuery) {
+          this.currentView = 'feed';
+        }
+        this.renderHeader();
+        this.renderProfileHero();
         this.renderFeed();
+      });
+
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          this.clearSearch();
+        }
+      });
+    }
+
+    if (searchClearBtn) {
+      searchClearBtn.addEventListener('click', () => {
+        this.clearSearch();
       });
     }
 
@@ -853,12 +879,251 @@ class WuitterSystem {
     await this.syncToCloud();
   }
 
+  goToFeed() {
+    this.currentView = 'feed';
+    this.profileAccountId = null;
+    this.searchQuery = '';
+    const searchInput = document.getElementById('w-search-input');
+    if (searchInput) searchInput.value = '';
+    const clearBtn = document.getElementById('w-search-clear-btn');
+    if (clearBtn) clearBtn.style.display = 'none';
+    this.updateNavActiveState('home');
+    this.render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  viewProfile(accountId) {
+    if (!accountId) return;
+    const acc = this.getAccountById(accountId);
+    if (!acc) return;
+
+    this.currentView = 'profile';
+    this.profileAccountId = accountId;
+    this.profileTab = 'posts';
+    this.searchQuery = '';
+    const searchInput = document.getElementById('w-search-input');
+    if (searchInput) searchInput.value = '';
+    const clearBtn = document.getElementById('w-search-clear-btn');
+    if (clearBtn) clearBtn.style.display = 'none';
+
+    this.updateNavActiveState(null);
+    this.render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  goToExplore() {
+    this.currentView = 'explore';
+    this.profileAccountId = null;
+    this.updateNavActiveState('explore');
+    this.render();
+    const searchInput = document.getElementById('w-search-input');
+    if (searchInput) {
+      searchInput.focus();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  setProfileTab(tab) {
+    this.profileTab = tab;
+    this.renderProfileHero();
+    this.renderFeed();
+  }
+
+  clearSearch() {
+    this.searchQuery = '';
+    const searchInput = document.getElementById('w-search-input');
+    if (searchInput) searchInput.value = '';
+    const clearBtn = document.getElementById('w-search-clear-btn');
+    if (clearBtn) clearBtn.style.display = 'none';
+    this.render();
+  }
+
+  updateNavActiveState(activeItem) {
+    const homeBtn = document.getElementById('w-nav-home-item');
+    const exploreBtn = document.getElementById('w-nav-explore-item');
+    if (homeBtn) homeBtn.classList.toggle('active', activeItem === 'home');
+    if (exploreBtn) exploreBtn.classList.toggle('active', activeItem === 'explore');
+  }
+
   render() {
+    this.renderHeader();
     this.renderSidebarAuth();
+    this.renderProfileHero();
     this.renderComposeHeader();
     this.renderFeed();
     this.renderMasterPanel();
     this.renderTrends();
+  }
+
+  renderHeader() {
+    const header = document.getElementById('w-feed-header');
+    if (!header) return;
+
+    if (this.currentView === 'profile' && this.profileAccountId) {
+      const acc = this.getAccountById(this.profileAccountId);
+      const userPosts = this.posts.filter(p => p.authorId === acc.id);
+      header.innerHTML = `
+        <div class="w-header-title-bar">
+          <div style="display: flex; align-items: center;">
+            <button class="w-btn-back" onclick="window.wuitter.goToFeed()" title="Voltar ao Feed">
+              ${SVG_ICONS.arrowLeft}
+            </button>
+            <div class="w-header-user-info">
+              <h1 class="w-header-title" style="font-size: 1.15rem; display: flex; align-items: center; gap: 5px;">
+                ${acc.name}
+                ${this.renderBadgeSvg(acc.badge)}
+              </h1>
+              <span class="w-header-subtitle">${userPosts.length} Wuit${userPosts.length === 1 ? '' : 's'}</span>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <button class="w-btn-header-token" onclick="window.wuitter.openTokenModal()" id="w-header-token-btn" title="Autenticar ou Trocar Token">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5L11 9l-1.5-1.5L8 9l-4 4a5.66 5.66 0 1 0 8 8l4-4 1.5 1.5 1.5-1.5 1.5 1.5 1.5-1.5 1.5 1.5 2-2z"/></svg>
+              <span id="w-header-token-text">${this.authenticatedAccount ? `${this.authenticatedAccount.name} (Trocar)` : 'Autenticar Token'}</span>
+            </button>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    if (this.searchQuery) {
+      header.innerHTML = `
+        <div class="w-header-title-bar">
+          <div style="display: flex; align-items: center;">
+            <button class="w-btn-back" onclick="window.wuitter.clearSearch()" title="Limpar Busca">
+              ${SVG_ICONS.arrowLeft}
+            </button>
+            <div class="w-header-user-info">
+              <h1 class="w-header-title" style="font-size: 1.15rem;">Busca: "${this.searchQuery}"</h1>
+              <span class="w-header-subtitle">Resultados em tempo real</span>
+            </div>
+          </div>
+          <button class="w-btn-header-token" onclick="window.wuitter.clearSearch()" style="font-size: 0.75rem;">
+            Limpar busca
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    if (this.currentView === 'explore') {
+      header.innerHTML = `
+        <div class="w-header-title-bar">
+          <h1 class="w-header-title">Explorar Wuitter</h1>
+          <div class="w-realtime-status-pill online" id="w-realtime-badge">
+            <span class="w-realtime-dot"></span>
+            <span class="w-realtime-text">Tempo Real Ativo</span>
+          </div>
+        </div>
+        <div class="w-feed-tabs">
+          <button class="w-feed-tab active">Em alta / Recentes</button>
+        </div>
+      `;
+      return;
+    }
+
+    // Feed Principal
+    header.innerHTML = `
+      <div class="w-header-title-bar">
+        <h1 class="w-header-title">Página Inicial</h1>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button class="w-btn-header-token" onclick="window.wuitter.openTokenModal()" id="w-header-token-btn" title="Autenticar ou Trocar Token">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5L11 9l-1.5-1.5L8 9l-4 4a5.66 5.66 0 1 0 8 8l4-4 1.5 1.5 1.5-1.5 1.5 1.5 1.5-1.5 1.5 1.5 2-2z"/></svg>
+            <span id="w-header-token-text">${this.authenticatedAccount ? `${this.authenticatedAccount.name} (Trocar)` : 'Autenticar Token'}</span>
+          </button>
+          <div class="w-realtime-status-pill online" id="w-realtime-badge" title="Sincronização em tempo real via Nuvem e WebSocket">
+            <span class="w-realtime-dot"></span>
+            <span class="w-realtime-text">Tempo Real Ativo</span>
+          </div>
+        </div>
+      </div>
+      <div class="w-feed-tabs">
+        <button class="w-feed-tab active" data-tab="para-voce">Para você</button>
+      </div>
+    `;
+  }
+
+  renderProfileHero() {
+    const container = document.getElementById('w-profile-hero-container');
+    const composeSection = document.getElementById('w-compose-section');
+    if (!container) return;
+
+    if (this.currentView !== 'profile' || !this.profileAccountId) {
+      container.style.display = 'none';
+      if (composeSection) composeSection.style.display = (this.currentView === 'feed' && !this.searchQuery) ? 'block' : 'none';
+      return;
+    }
+
+    if (composeSection) composeSection.style.display = 'none';
+    container.style.display = 'block';
+
+    const acc = this.getAccountById(this.profileAccountId);
+    const isMe = this.authenticatedAccount && this.authenticatedAccount.id === acc.id;
+    const canEdit = this.isMaster() || isMe;
+
+    const bgGradient = acc.avatarColor ? `linear-gradient(135deg, ${acc.avatarColor}44 0%, #0c0f17 100%)` : `linear-gradient(135deg, #1e293b 0%, #0f172a 100%)`;
+    const roleText = acc.isMaster ? 'Mestre da Mesa' : (acc.slot ? `Investigador &bull; Slot ${acc.slot}` : 'Personagem de Wuitalur');
+
+    container.innerHTML = `
+      <div class="w-profile-hero">
+        <div class="w-profile-banner" style="background: ${bgGradient};"></div>
+        <div class="w-profile-main">
+          <div class="w-profile-top-row">
+            <div class="w-avatar profile-avatar" style="background-color: ${acc.avatarColor || '#1e293b'};">
+              ${acc.avatarImage ? `<img src="${acc.avatarImage}" class="w-avatar profile-avatar" alt="${acc.name}">` : (acc.avatarLetter || acc.name.charAt(0)).toUpperCase()}
+            </div>
+            <div class="w-profile-actions">
+              ${canEdit ? `
+                <button class="w-btn-edit-profile" onclick="window.wuitter.openEditProfileModal(window.wuitter.getAccountById('${acc.id}'))">
+                  Editar Perfil
+                </button>
+              ` : (this.authenticatedAccount ? `
+                <button class="w-btn-edit-profile" style="background: #fff; color: #000; border-color: #fff;" onclick="alert('Você está acompanhando as postagens de ${acc.name}.')">
+                  Seguindo
+                </button>
+              ` : `
+                <button class="w-btn-edit-profile" onclick="window.wuitter.openTokenModal()">
+                  Conectar Token
+                </button>
+              `)}
+            </div>
+          </div>
+
+          <div class="w-profile-names">
+            <div class="w-profile-display-name">
+              ${acc.name}
+              ${this.renderBadgeSvg(acc.badge)}
+            </div>
+            <div class="w-profile-handle">${acc.handle}</div>
+          </div>
+
+          ${acc.bio ? `<div class="w-profile-bio">${this.formatText(acc.bio)}</div>` : ''}
+
+          <div class="w-profile-meta-row">
+            <div class="w-profile-meta-item">
+              ${SVG_ICONS.crown}
+              <span>${roleText}</span>
+            </div>
+            <div class="w-profile-meta-item">
+              ${SVG_ICONS.calendar}
+              <span>Rede In-Universe &bull; Wuitalur</span>
+            </div>
+          </div>
+
+          <div class="w-profile-stats">
+            <div><span class="w-profile-stat-count">${Math.max(1, this.accounts.length - 1)}</span> <span class="w-profile-stat-label">Seguindo</span></div>
+            <div><span class="w-profile-stat-count">${Math.max(1, this.accounts.length)}</span> <span class="w-profile-stat-label">Seguidores</span></div>
+          </div>
+
+          <div class="w-profile-nav-tabs">
+            <button class="w-profile-tab ${this.profileTab === 'posts' ? 'active' : ''}" onclick="window.wuitter.setProfileTab('posts')">Wuits</button>
+            <button class="w-profile-tab ${this.profileTab === 'replies' ? 'active' : ''}" onclick="window.wuitter.setProfileTab('replies')">Respostas</button>
+            <button class="w-profile-tab ${this.profileTab === 'media' ? 'active' : ''}" onclick="window.wuitter.setProfileTab('media')">Mídia</button>
+          </div>
+        </div>
+      </div>
+    `;
   }
 
   renderSidebarAuth() {
@@ -896,38 +1161,37 @@ class WuitterSystem {
     if (headerTokenText) headerTokenText.textContent = `${acc.name} (Trocar)`;
 
     if (authContainer) {
-
-    authContainer.innerHTML = `
-      <div class="w-persona-card-auth">
-        <div class="w-persona-info">
-          ${this.renderAvatarHtml(acc, 'normal')}
-          <div class="w-persona-names">
-            <span class="w-persona-name">
-              ${acc.name}
-              ${this.renderBadgeSvg(acc.badge)}
-            </span>
-            <span class="w-persona-handle">${acc.handle}</span>
+      authContainer.innerHTML = `
+        <div class="w-persona-card-auth w-clickable-profile" onclick="window.wuitter.viewProfile('${acc.id}')" title="Ver meu perfil">
+          <div class="w-persona-info">
+            ${this.renderAvatarHtml(acc, 'normal')}
+            <div class="w-persona-names">
+              <span class="w-persona-name">
+                ${acc.name}
+                ${this.renderBadgeSvg(acc.badge)}
+              </span>
+              <span class="w-persona-handle">${acc.handle}</span>
+            </div>
           </div>
         </div>
-      </div>
-      
-      ${isMaster ? `
-        <button class="w-gm-btn w-gm-btn-highlight" onclick="window.wuitter.openMasterPanelModal()" style="width: 100%; margin-top: 8px; justify-content: center;">
-          ${SVG_ICONS.crown}
-          <span>Painel do Mestre</span>
-        </button>
-      ` : ''}
+        
+        ${isMaster ? `
+          <button class="w-gm-btn w-gm-btn-highlight" onclick="window.wuitter.openMasterPanelModal()" style="width: 100%; margin-top: 8px; justify-content: center;">
+            ${SVG_ICONS.crown}
+            <span>Painel do Mestre</span>
+          </button>
+        ` : ''}
 
-      <div style="display: flex; gap: 6px; margin-top: 8px;">
-        <button class="w-gm-btn" style="flex: 1; padding: 6px 10px; font-size: 0.78rem; justify-content: center;" onclick="window.wuitter.openEditProfileModal(window.wuitter.authenticatedAccount)">
-          ${SVG_ICONS.settings}
-          <span>Editar Perfil</span>
-        </button>
-        <button class="w-gm-btn" style="color: var(--w-accent-red); padding: 6px 10px; font-size: 0.78rem;" onclick="window.wuitter.logout()" title="Sair da Conta">
-          Sair
-        </button>
-      </div>
-    `;
+        <div style="display: flex; gap: 6px; margin-top: 8px;">
+          <button class="w-gm-btn" style="flex: 1; padding: 6px 10px; font-size: 0.78rem; justify-content: center;" onclick="window.wuitter.openEditProfileModal(window.wuitter.authenticatedAccount)">
+            ${SVG_ICONS.settings}
+            <span>Editar Perfil</span>
+          </button>
+          <button class="w-gm-btn" style="color: var(--w-accent-red); padding: 6px 10px; font-size: 0.78rem;" onclick="window.wuitter.logout()" title="Sair da Conta">
+            Sair
+          </button>
+        </div>
+      `;
     }
   }
 
@@ -936,7 +1200,11 @@ class WuitterSystem {
     const postingAcc = this.getPostingAccount();
 
     if (avatarEl) {
-      avatarEl.innerHTML = this.renderAvatarHtml(postingAcc, 'normal');
+      avatarEl.innerHTML = `
+        <div class="w-clickable-profile" onclick="window.wuitter.viewProfile('${postingAcc.id}')" title="Ver perfil">
+          ${this.renderAvatarHtml(postingAcc, 'normal')}
+        </div>
+      `;
     }
 
     const masterSelectWrap = document.getElementById('w-master-selector-wrap');
@@ -1003,20 +1271,41 @@ class WuitterSystem {
 
     return escaped
       .replace(/#([a-zA-Z0-9_]+)/g, '<a href="javascript:void(0)" class="w-tag" onclick="window.wuitter.filterByTag(\'$1\')">#$1</a>')
-      .replace(/@([a-zA-Z0-9_]+)/g, '<a href="javascript:void(0)" class="w-mention" onclick="window.wuitter.filterByMention(\'$1\')">@$1</a>');
+      .replace(/@([a-zA-Z0-9_]+)/g, (match, p1) => {
+        const target = this.accounts.find(a => a.handle.toLowerCase() === `@${p1.toLowerCase()}`);
+        if (target) {
+          return `<a href="javascript:void(0)" class="w-mention" onclick="window.wuitter.viewProfile('${target.id}')">@${p1}</a>`;
+        }
+        return `<a href="javascript:void(0)" class="w-mention" onclick="window.wuitter.filterByMention('${p1}')">@${p1}</a>`;
+      });
   }
 
   filterByTag(tag) {
     const searchInput = document.getElementById('w-search-input');
+    const clearBtn = document.getElementById('w-search-clear-btn');
     if (searchInput) searchInput.value = `#${tag}`;
+    if (clearBtn) clearBtn.style.display = 'flex';
     this.searchQuery = `#${tag}`.toLowerCase();
+    if (this.currentView === 'profile') this.currentView = 'feed';
+    this.renderHeader();
+    this.renderProfileHero();
     this.renderFeed();
   }
 
   filterByMention(mention) {
+    const target = this.accounts.find(a => a.handle.toLowerCase() === `@${mention.toLowerCase()}`);
+    if (target) {
+      this.viewProfile(target.id);
+      return;
+    }
     const searchInput = document.getElementById('w-search-input');
+    const clearBtn = document.getElementById('w-search-clear-btn');
     if (searchInput) searchInput.value = `@${mention}`;
+    if (clearBtn) clearBtn.style.display = 'flex';
     this.searchQuery = `@${mention}`.toLowerCase();
+    if (this.currentView === 'profile') this.currentView = 'feed';
+    this.renderHeader();
+    this.renderProfileHero();
     this.renderFeed();
   }
 
@@ -1026,26 +1315,73 @@ class WuitterSystem {
 
     let filtered = [...this.posts];
 
+    // 1. Filtragem por perfil se estiver no perfil
+    if (this.currentView === 'profile' && this.profileAccountId) {
+      const accId = this.profileAccountId;
+      if (this.profileTab === 'posts') {
+        filtered = filtered.filter(p => p.authorId === accId);
+      } else if (this.profileTab === 'replies') {
+        filtered = filtered.filter(p => p.authorId === accId || (p.comments && p.comments.some(c => c.authorId === accId)));
+      } else if (this.profileTab === 'media') {
+        filtered = filtered.filter(p => p.authorId === accId && !!p.media);
+      }
+    }
+
+    // 2. Filtragem por Busca
     if (this.searchQuery) {
+      const q = this.searchQuery;
       filtered = filtered.filter(p => {
         const author = this.getAccountById(p.authorId);
-        return p.text.toLowerCase().includes(this.searchQuery) ||
-               author.name.toLowerCase().includes(this.searchQuery) ||
-               author.handle.toLowerCase().includes(this.searchQuery);
+        const textMatch = p.text && p.text.toLowerCase().includes(q);
+        const authorNameMatch = author.name && author.name.toLowerCase().includes(q);
+        const handleMatch = author.handle && author.handle.toLowerCase().includes(q);
+        const commentMatch = p.comments && p.comments.some(c => c.text && c.text.toLowerCase().includes(q));
+        return textMatch || authorNameMatch || handleMatch || commentMatch;
       });
     }
 
+    let bannerHtml = '';
+    if (this.searchQuery) {
+      bannerHtml = `
+        <div class="w-search-active-banner">
+          <span>Buscando por: <strong>${this.searchQuery}</strong> (${filtered.length} wuit${filtered.length === 1 ? '' : 's'})</span>
+          <a onclick="window.wuitter.clearSearch()">Limpar</a>
+        </div>
+      `;
+    }
+
     if (filtered.length === 0) {
+      let emptyMsg = 'Nenhum Wuit no momento';
+      let emptySub = 'Autentique seu token de personagem e seja o primeiro a postar!';
+
+      if (this.currentView === 'profile') {
+        const acc = this.getAccountById(this.profileAccountId);
+        if (this.profileTab === 'media') {
+          emptyMsg = `@${acc.name} ainda não publicou nenhuma foto`;
+          emptySub = 'Quando fotos forem anexadas aos Wuits, elas aparecerão aqui.';
+        } else if (this.profileTab === 'replies') {
+          emptyMsg = `@${acc.name} ainda não tem respostas registradas`;
+          emptySub = 'Respostas a outros wuits aparecerão aqui.';
+        } else {
+          emptyMsg = `@${acc.name} ainda não wuitou`;
+          emptySub = 'Quando este personagem postar, seus wuits aparecerão aqui.';
+        }
+      } else if (this.searchQuery) {
+        emptyMsg = `Nenhum resultado para "${this.searchQuery}"`;
+        emptySub = 'Tente buscar por outras palavras-chave, nomes de personagens ou #hashtags.';
+      }
+
       feedContainer.innerHTML = `
+        ${bannerHtml}
         <div style="padding: 50px 20px; text-align: center; color: var(--w-text-muted);">
-          <p style="font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 6px;">Nenhum Wuit no momento</p>
-          <p style="font-size: 0.9rem;">Autentique seu token de personagem e seja o primeiro a postar!</p>
+          <p style="font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 6px;">${emptyMsg}</p>
+          <p style="font-size: 0.9rem;">${emptySub}</p>
         </div>
       `;
       return;
     }
 
-    feedContainer.innerHTML = filtered.map(post => this.renderPostCard(post, post.id === highlightPostId)).join('');
+    feedContainer.innerHTML = bannerHtml + filtered.map(post => this.renderPostCard(post, post.id === highlightPostId)).join('');
   }
 
   renderPostCard(post, isNew = false) {
@@ -1065,13 +1401,15 @@ class WuitterSystem {
 
     return `
       <article class="w-wuit-card ${isNew ? 'new-incoming' : ''}" id="post_${post.id}">
-        ${this.renderAvatarHtml(author, 'normal')}
+        <div class="w-clickable-profile" onclick="window.wuitter.viewProfile('${author.id}')" title="Ver perfil de ${author.name}">
+          ${this.renderAvatarHtml(author, 'normal')}
+        </div>
         <div class="w-wuit-content-area">
           <div class="w-wuit-meta">
             <div class="w-wuit-author-info">
-              <span class="w-wuit-name" onclick="window.wuitter.filterByMention('${author.handle.replace('@', '')}')">${author.name}</span>
+              <span class="w-wuit-name" onclick="window.wuitter.viewProfile('${author.id}')">${author.name}</span>
               ${badgeSvg}
-              <span class="w-wuit-handle">${author.handle}</span>
+              <span class="w-wuit-handle" onclick="window.wuitter.viewProfile('${author.id}')">${author.handle}</span>
               <span class="w-wuit-dot">&bull;</span>
               <span class="w-wuit-time">${this.formatTime(post.timestamp)}</span>
             </div>
@@ -1402,9 +1740,11 @@ class WuitterSystem {
     const author = this.getAccountById(post.authorId);
     targetPostPreview.innerHTML = `
       <div style="display: flex; gap: 10px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--w-border);">
-        ${this.renderAvatarHtml(author, 'sm')}
+        <div class="w-clickable-profile" onclick="window.wuitter.viewProfile('${author.id}'); window.wuitter.closeModals();">
+          ${this.renderAvatarHtml(author, 'sm')}
+        </div>
         <div>
-          <div style="font-weight: 700; font-size: 0.9rem; color: #fff;">${author.name} <span style="color: var(--w-text-muted); font-weight: normal;">${author.handle}</span></div>
+          <div style="font-weight: 700; font-size: 0.9rem; color: #fff; cursor: pointer;" onclick="window.wuitter.viewProfile('${author.id}'); window.wuitter.closeModals();">${author.name} <span style="color: var(--w-text-muted); font-weight: normal;">${author.handle}</span></div>
           <div style="font-size: 0.88rem; color: var(--w-text-main); margin-top: 4px;">${this.formatText(post.text)}</div>
         </div>
       </div>
@@ -1415,10 +1755,12 @@ class WuitterSystem {
         const cAuthor = this.getAccountById(c.authorId);
         return `
           <div class="w-comment-item">
-            ${this.renderAvatarHtml(cAuthor, 'sm')}
+            <div class="w-clickable-profile" onclick="window.wuitter.viewProfile('${cAuthor.id}'); window.wuitter.closeModals();">
+              ${this.renderAvatarHtml(cAuthor, 'sm')}
+            </div>
             <div style="flex: 1;">
               <div style="display: flex; align-items: center; justify-content: space-between;">
-                <span style="font-weight: 700; font-size: 0.85rem; color: #fff;">${cAuthor.name}</span>
+                <span style="font-weight: 700; font-size: 0.85rem; color: #fff; cursor: pointer;" onclick="window.wuitter.viewProfile('${cAuthor.id}'); window.wuitter.closeModals();">${cAuthor.name}</span>
                 <span style="font-size: 0.75rem; color: var(--w-text-muted);">${this.formatTime(c.timestamp)}</span>
               </div>
               <p style="font-size: 0.85rem; color: var(--w-text-main); margin-top: 2px;">${this.formatText(c.text)}</p>

@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wuitter — Rede Social In-Universe — Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/variables.css?v=2.2">
-  <link rel="stylesheet" href="css/wuitter.css?v=2.2">
+  <link rel="stylesheet" href="css/variables.css?v=2.3">
+  <link rel="stylesheet" href="css/wuitter.css?v=2.3">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="wuitter-body">
@@ -30,12 +30,12 @@
 
       <!-- Menu de Navegação Principal -->
       <nav class="w-nav-list">
-        <button class="w-nav-item active" onclick="window.wuitter.activeTab = 'para-voce'; window.wuitter.searchQuery = ''; document.getElementById('w-search-input').value = ''; window.wuitter.renderFeed();">
+        <button class="w-nav-item active" id="w-nav-home-item" onclick="window.wuitter.goToFeed()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           <span>Página Inicial</span>
         </button>
 
-        <button class="w-nav-item" onclick="document.getElementById('w-search-input').focus();">
+        <button class="w-nav-item" id="w-nav-explore-item" onclick="window.wuitter.goToExplore()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <span>Explorar</span>
         </button>
@@ -86,27 +86,15 @@
        ============================================================ -->
   <main class="w-main-feed">
     <!-- Header com Abas e Indicador de Tempo Real -->
-    <header class="w-feed-header">
-      <div class="w-header-title-bar">
-        <h1 class="w-header-title">Página Inicial</h1>
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <button class="w-btn-header-token" onclick="window.wuitter.openTokenModal()" id="w-header-token-btn" title="Autenticar ou Trocar Token">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5L11 9l-1.5-1.5L8 9l-4 4a5.66 5.66 0 1 0 8 8l4-4 1.5 1.5 1.5-1.5 1.5 1.5 1.5-1.5 1.5 1.5 2-2z"/></svg>
-            <span id="w-header-token-text">Autenticar Token</span>
-          </button>
-          <div class="w-realtime-status-pill online" id="w-realtime-badge" title="Sincronização em tempo real via Nuvem e WebSocket">
-            <span class="w-realtime-dot"></span>
-            <span class="w-realtime-text">Tempo Real Ativo</span>
-          </div>
-        </div>
-      </div>
-      <div class="w-feed-tabs">
-        <button class="w-feed-tab active" data-tab="para-voce">Para você</button>
-      </div>
+    <header class="w-feed-header" id="w-feed-header">
+      <!-- Renderizado dinamicamente pelo wuitter.js (Página Inicial, Perfil ou Busca) -->
     </header>
 
+    <!-- Container de Perfil Visualizado (Estilo X/Twitter) -->
+    <div id="w-profile-hero-container" style="display: none;"></div>
+
     <!-- Caixa de Criação de Post -->
-    <section class="w-compose-box">
+    <section class="w-compose-box" id="w-compose-section">
       <!-- Seletor do Mestre (aparece apenas quando o Mestre está logado) -->
       <div id="w-master-selector-wrap" class="w-master-selector-banner" style="display: none;">
         <div class="w-master-badge-title">
@@ -168,7 +156,10 @@
     <div class="w-search-wrap">
       <div class="w-search-box">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="w-search-input" placeholder="Buscar no Wuitter ou #hashtag...">
+        <input type="text" id="w-search-input" placeholder="Buscar no Wuitter ou #hashtag..." autocomplete="off">
+        <button type="button" class="w-search-clear-btn" id="w-search-clear-btn" title="Limpar busca" style="display: none;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
       </div>
     </div>
 
@@ -446,6 +437,6 @@
   <img class="w-lightbox-img" id="w-lightbox-img" src="" alt="Zoom da Foto">
 </div>
 
-<script src="js/wuitter.js?v=2.2"></script>
+<script src="js/wuitter.js?v=2.3"></script>
 </body>
 </html>
