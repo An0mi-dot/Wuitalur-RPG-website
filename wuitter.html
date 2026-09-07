@@ -17,19 +17,19 @@
        ============================================================ -->
   <aside class="w-sidebar-left">
     <div>
-      <!-- Logo do Wuitter -->
-      <a href="wuitter.html" class="w-logo-area">
+      <!-- Logo do Wuitter com W estilizado -->
+      <a href="wuitter.html" class="w-logo-area" title="Wuitter">
         <div class="w-logo-icon">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 4l7.5 7.5L4 19M20 4l-7.5 7.5L20 19"/>
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 4l4.5 16L12 9l4.5 11L21 4"/>
           </svg>
         </div>
         <span class="w-logo-text">Wuitter</span>
       </a>
 
-      <!-- Menu de Navegação -->
+      <!-- Menu de Navegação Principal -->
       <nav class="w-nav-list">
-        <button class="w-nav-item active" onclick="window.wuitter.activeTab = 'para-voce'; window.wuitter.renderFeed();">
+        <button class="w-nav-item active" onclick="window.wuitter.activeTab = 'para-voce'; window.wuitter.searchQuery = ''; document.getElementById('w-search-input').value = ''; window.wuitter.renderFeed();">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           <span>Página Inicial</span>
         </button>
@@ -37,6 +37,12 @@
         <button class="w-nav-item" onclick="document.getElementById('w-search-input').focus();">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <span>Explorar</span>
+        </button>
+
+        <!-- Botão Exclusivo do Mestre (exibido apenas para o Mestre) -->
+        <button class="w-nav-item w-nav-master-btn" id="w-nav-master-item" style="display: none; color: var(--w-accent-gold);" onclick="window.wuitter.openMasterPanelModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Painel do Mestre</span>
         </button>
 
         <a href="mesa.html" class="w-nav-item" style="color: #f59e0b;">
@@ -56,13 +62,14 @@
       </nav>
 
       <!-- Botão Wuitar -->
-      <button class="w-btn-post-primary" onclick="document.getElementById('w-compose-input').focus();">
+      <button class="w-btn-post-primary" onclick="const input = document.getElementById('w-compose-input'); if(input){ input.focus(); }">
+        <svg class="w-mobile-post-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
         <span>Wuitar</span>
       </button>
     </div>
 
     <!-- Seção de Conta / Autenticação -->
-    <div id="w-auth-section" style="margin-top: auto; padding-top: 12px;">
+    <div id="w-auth-section" class="w-auth-section-wrap">
       <!-- Preenchido dinamicamente pelo wuitter.js -->
     </div>
   </aside>
@@ -83,39 +90,40 @@
 
     <!-- Caixa de Criação de Post -->
     <section class="w-compose-box">
-      <!-- Seletor do Mestre (aparece somente quando o Mestre está logado) -->
-      <div id="w-master-selector-wrap" style="display: none; width: 100%; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed var(--w-border);">
-        <label style="font-size: 0.78rem; font-weight: 800; color: var(--w-accent-gold); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 4px;">
-          Controle do Mestre &bull; Wuitar como:
-        </label>
-        <select class="w-form-select" id="w-master-account-select" style="font-size: 0.88rem; padding: 6px 10px; border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.05); color: #fff;">
-          <!-- Preenchido dinamicamente com todas as contas -->
+      <!-- Seletor do Mestre (aparece apenas quando o Mestre está logado) -->
+      <div id="w-master-selector-wrap" class="w-master-selector-banner" style="display: none;">
+        <div class="w-master-badge-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Controle do Mestre &bull; Wuitar como:</span>
+        </div>
+        <select class="w-form-select w-master-select-input" id="w-master-account-select">
+          <!-- Preenchido dinamicamente com todas as contas cadastradas -->
         </select>
       </div>
 
-      <div style="display: flex; gap: 12px; width: 100%;">
+      <div class="w-compose-layout">
         <div id="w-compose-avatar-wrap"></div>
         <div class="w-compose-main">
           <textarea class="w-compose-textarea" id="w-compose-input" placeholder="O que está acontecendo?"></textarea>
           
-          <!-- Preview de Imagem Anexada -->
-          <div class="w-compose-preview" id="w-compose-preview">
-            <img id="w-compose-preview-img" src="" alt="Anexo">
-            <button class="w-compose-preview-remove" id="w-remove-preview-btn" title="Remover Imagem">
+          <!-- Preview de Foto Local / Imagem Anexada -->
+          <div class="w-compose-preview" id="w-compose-preview" style="display: none;">
+            <img id="w-compose-preview-img" src="" alt="Anexo do Wuit">
+            <button type="button" class="w-compose-preview-remove" id="w-remove-preview-btn" title="Remover Foto">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
           </div>
 
           <div class="w-compose-toolbar">
             <div class="w-compose-tools">
-              <!-- Anexar Imagem Local (SEM VÍDEO) -->
-              <label class="w-tool-btn" title="Anexar Imagem (Arquivo Local)" style="cursor: pointer;">
-                <input type="file" id="w-compose-image-input" accept="image/png, image/jpeg, image/gif, image/webp" style="display: none;">
+              <!-- Anexar Foto Local (ARQUIVOS DE IMAGEM: PNG, JPG, GIF, WEBP — SEM VÍDEO) -->
+              <label class="w-tool-btn" title="Anexar Foto Local (PNG, JPG, GIF, WEBP)" style="cursor: pointer;">
+                <input type="file" id="w-compose-image-input" accept="image/png, image/jpeg, image/jpg, image/gif, image/webp" style="display: none;">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
               </label>
 
-              <!-- Inserir Imagem por Link/URL -->
-              <button class="w-tool-btn" id="w-tool-img-url" title="Inserir Imagem por Link (URL)">
+              <!-- Inserir Foto por Link/URL -->
+              <button type="button" class="w-tool-btn" id="w-tool-img-url" title="Inserir Foto por Link Direto (URL)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
               </button>
             </div>
@@ -143,33 +151,23 @@
     <div class="w-search-wrap">
       <div class="w-search-box">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="w-search-input" placeholder="Buscar no Wuitter ou por #hashtag...">
+        <input type="text" id="w-search-input" placeholder="Buscar no Wuitter ou #hashtag...">
       </div>
     </div>
 
-    <!-- Trending Topics -->
-    <section class="w-widget-card">
-      <div class="w-widget-header">
-        <span>O que está acontecendo</span>
-      </div>
-      <div class="w-widget-list" id="w-trends-list">
-        <!-- Inserido dinamicamente -->
-      </div>
-    </section>
-
-    <!-- Painel Exclusivo do Mestre -->
-    <section class="w-widget-card" id="w-gm-panel-container" style="display: none; border-color: rgba(245, 158, 11, 0.4);">
-      <div class="w-widget-header" style="background: rgba(245, 158, 11, 0.08); border-bottom: 1px solid var(--w-border);">
-        <span style="color: var(--w-accent-gold); display: flex; align-items: center; gap: 6px;">
+    <!-- Painel Exclusivo do Mestre (Lateral Desktop) -->
+    <section class="w-widget-card" id="w-gm-panel-container" style="display: none; border-color: rgba(245, 158, 11, 0.45); box-shadow: 0 4px 20px rgba(245, 158, 11, 0.08);">
+      <div class="w-widget-header" style="background: rgba(245, 158, 11, 0.12); border-bottom: 1px solid rgba(245, 158, 11, 0.25);">
+        <span style="color: var(--w-accent-gold); display: flex; align-items: center; gap: 8px; font-weight: 800;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           Painel do Mestre
         </span>
       </div>
       
-      <div style="padding: 12px 16px; border-bottom: 1px solid var(--w-border);">
-        <span style="font-size: 0.8rem; font-weight: 700; color: var(--w-text-muted); text-transform: uppercase;">Gerenciar Contas &amp; NPCs:</span>
+      <div style="padding: 10px 16px; border-bottom: 1px solid var(--w-border); background: rgba(0,0,0,0.2);">
+        <span style="font-size: 0.78rem; font-weight: 800; color: var(--w-text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Gerenciar Contas &amp; NPCs:</span>
       </div>
-      <div class="w-widget-list" id="w-gm-accounts-list" style="max-height: 240px; overflow-y: auto;">
+      <div class="w-widget-list" id="w-gm-accounts-list" style="max-height: 250px; overflow-y: auto;">
         <!-- Lista de contas com botão de editar -->
       </div>
 
@@ -188,8 +186,59 @@
         </button>
       </div>
     </section>
+
+    <!-- Trending Topics -->
+    <section class="w-widget-card">
+      <div class="w-widget-header">
+        <span>O que está acontecendo</span>
+      </div>
+      <div class="w-widget-list" id="w-trends-list">
+        <!-- Inserido dinamicamente -->
+      </div>
+    </section>
   </aside>
 
+</div>
+
+<!-- ============================================================
+     MODAL: PAINEL GERAL DO MESTRE (RESPONSIVO & COMPLETO)
+     ============================================================ -->
+<div class="w-modal-overlay" id="w-master-modal">
+  <div class="w-modal-card" style="max-width: 620px;">
+    <div class="w-modal-header" style="border-bottom-color: rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.08);">
+      <h3 class="w-modal-title" style="color: var(--w-accent-gold); display: flex; align-items: center; gap: 8px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Painel de Administração do Mestre
+      </h3>
+      <button class="w-modal-close" onclick="window.wuitter.closeModals()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="w-modal-body">
+      <p style="font-size: 0.88rem; color: var(--w-text-muted); margin-bottom: 14px;">
+        Controle central do Wuitter. Você pode configurar qualquer personagem, cadastrar novos NPCs, ajustar selos de verificação e alternar a conta que wuitar.
+      </p>
+
+      <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+        <button class="w-btn-post-primary" style="flex: 1; padding: 10px 14px; font-size: 0.88rem;" onclick="window.wuitter.openNewAccountModal()">
+          + Cadastrar Novo NPC
+        </button>
+        <button class="w-gm-btn" style="padding: 10px 14px; font-size: 0.88rem;" onclick="window.wuitter.exportFeedJson()">
+          Exportar JSON
+        </button>
+        <button class="w-gm-btn" style="padding: 10px 14px; font-size: 0.88rem;" onclick="window.wuitter.importFeedJson()">
+          Importar JSON
+        </button>
+      </div>
+
+      <div class="w-form-group">
+        <label class="w-form-label">Contas Registradas no Wuitter:</label>
+        <div class="w-widget-list" id="w-modal-master-accounts" style="max-height: 280px; overflow-y: auto; border: 1px solid var(--w-border); border-radius: var(--w-radius-md);">
+          <!-- Preenchido dinamicamente -->
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ============================================================
@@ -205,11 +254,11 @@
     </div>
     <div class="w-modal-body">
       <p style="font-size: 0.88rem; color: var(--w-text-muted); margin-bottom: 14px;">
-        Insira o token do seu personagem ou o token de Mestre para acessar sua conta no Wuitter.
+        Insira o token do seu personagem ou o token do <strong>Mestre</strong> (ex: <code>M9X7</code>) para acessar sua conta no Wuitter.
       </p>
       <div class="w-form-group">
         <label class="w-form-label">Código do Token</label>
-        <input type="text" class="w-form-input" id="w-token-input" placeholder="Ex: W4R9, M7Q2, B8T3, M9X7..." style="text-transform: uppercase; font-family: var(--w-font-mono); letter-spacing: 0.08em;">
+        <input type="text" class="w-form-input" id="w-token-input" placeholder="Ex: W4R9, M7Q2, B8T3, M9X7..." style="text-transform: uppercase; font-family: var(--w-font-mono); letter-spacing: 0.08em;" onkeydown="if(event.key==='Enter') window.wuitter.submitTokenFromModal();">
       </div>
       <button class="w-btn-post-primary" onclick="window.wuitter.submitTokenFromModal()">
         Entrar no Wuitter
@@ -340,7 +389,7 @@
       <div id="w-modal-post-target"></div>
       
       <div style="display: flex; gap: 10px; margin: 12px 0;">
-        <input type="text" class="w-form-input" id="w-comment-input" placeholder="Poste sua resposta...">
+        <input type="text" class="w-form-input" id="w-comment-input" placeholder="Poste sua resposta..." onkeydown="if(event.key==='Enter') document.getElementById('w-btn-send-comment').click();">
         <button class="w-btn-post-sm" id="w-btn-send-comment">Responder</button>
       </div>
 
@@ -377,7 +426,7 @@
      MODAL: LIGHTBOX DE IMAGEM
      ============================================================ -->
 <div class="w-modal-overlay" id="w-lightbox-modal" onclick="window.wuitter.closeModals()">
-  <img class="w-lightbox-img" id="w-lightbox-img" src="" alt="Zoom da Imagem">
+  <img class="w-lightbox-img" id="w-lightbox-img" src="" alt="Zoom da Foto">
 </div>
 
 <script src="js/wuitter.js"></script>

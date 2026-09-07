@@ -1,6 +1,6 @@
 /**
  * WUITTER — Sistema de Rede Social In-Universe de Wuitalur RPG
- * Vinculação por Tokens de Personagens, Painel do Mestre, Sem Emojis, Apenas Imagens (Sem Vídeo)
+ * Vinculação por Tokens de Personagens, Painel do Mestre Completo, Suporte a Fotos Locais (Sem Vídeos), Zero Emojis
  */
 
 const WUITTER_STORAGE_POSTS = 'wuitter_posts_v2';
@@ -9,9 +9,9 @@ const WUITTER_STORAGE_TOKEN = 'mesa_token';
 
 // SVGs Dedicados (100% livres de emojis)
 const SVG_ICONS = {
+  wLogo: `<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4l4.5 16L12 9l4.5 11L21 4"/></svg>`,
   verifiedBlue: `<svg class="w-badge-verified w-badge-blue" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>`,
   verifiedGold: `<svg class="w-badge-verified w-badge-gold" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
-  verifiedMaster: `<svg class="w-badge-verified w-badge-gold" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>`,
   comment: `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
   rewuit: `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>`,
   like: `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
@@ -19,20 +19,25 @@ const SVG_ICONS = {
   trash: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>`,
   image: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`,
   settings: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
-  key: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5L11 9l-1.5-1.5L8 9l-4 4a5.66 5.66 0 1 0 8 8l4-4 1.5 1.5 1.5-1.5 1.5 1.5 1.5-1.5 1.5 1.5 2-2z"/></svg>`
+  crown: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`
 };
+
+// Hashes oficiais do Mestre (compatíveis com Mesa Virtual)
+const MASTER_HASHES = [
+  'ffd77d81aa08ae3582779ba189e7dbbabd57da8ceb9aa8b6a64d2988dc552e76', // M9X7
+  '74d06b763fd7ccdd4e86b81b59989c73b923a319c0adda2c243137079434d63d', // WUI-M9X7-MAST
+  '011e063f8402ff1a9263d6cbf115896ce8844f14c8c1a03b1e70992be9fc84b4'  // WUI-MASTER-99
+];
+
+const MASTER_PLAIN_TOKENS = ['M9X7', 'WUI-M9X7-MAST', 'WUI-MASTER-99', 'MESTRE', 'MASTER', 'ADM', 'ADMIN', 'GM', 'M9X7-MAST'];
 
 // Contas Padrão Vinculadas aos Tokens do Sistema
 const DEFAULT_ACCOUNTS = [
   {
     id: 'mestre',
     slot: null,
-    tokens: ['M9X7', 'WUI-M9X7-MAST', 'WUI-MASTER-99'],
-    hashes: [
-      'ffd77d81aa08ae3582779ba189e7dbbabd57da8ceb9aa8b6a64d2988dc552e76',
-      '74d06b763fd7ccdd4e86b81b59989c73b923a319c0adda2c243137079434d63d',
-      '011e063f8402ff1a9263d6cbf115896ce8844f14c8c1a03b1e70992be9fc84b4'
-    ],
+    tokens: MASTER_PLAIN_TOKENS,
+    hashes: MASTER_HASHES,
     name: 'Mestre',
     handle: '@mestre',
     bio: '',
@@ -160,9 +165,9 @@ class WuitterSystem {
   constructor() {
     this.accounts = [];
     this.posts = [];
-    this.myToken = localStorage.getItem(WUITTER_STORAGE_TOKEN) || null;
-    this.authenticatedAccount = null; // A conta vinculada ao token do usuário logado
-    this.selectedPostingAccountId = null; // Para o Mestre poder wuitar como qualquer conta
+    this.myToken = localStorage.getItem(WUITTER_STORAGE_TOKEN) || localStorage.getItem('wuitter_token') || null;
+    this.authenticatedAccount = null;
+    this.selectedPostingAccountId = null;
     this.activeTab = 'para-voce';
     this.searchQuery = '';
     this.pendingImageBase64 = '';
@@ -203,24 +208,28 @@ class WuitterSystem {
     if (saved) {
       try {
         this.accounts = JSON.parse(saved);
-        // Garantir que todas as contas padrão existam
+        // Garante que todas as contas padrão existam e tenham os tokens mais recentes
         DEFAULT_ACCOUNTS.forEach(def => {
           const exists = this.accounts.find(a => a.id === def.id);
           if (!exists) {
             this.accounts.push(def);
           } else {
-            // Atualiza tokens e hashes se necessário
             exists.tokens = def.tokens;
             exists.hashes = def.hashes;
             exists.isMaster = def.isMaster;
+            if (def.isMaster) {
+              exists.name = 'Mestre';
+              exists.handle = '@mestre';
+              exists.badge = 'gold';
+            }
             if (!exists.avatarLetter) exists.avatarLetter = (exists.name || 'P').charAt(0).toUpperCase();
           }
         });
       } catch (e) {
-        this.accounts = DEFAULT_ACCOUNTS;
+        this.accounts = [...DEFAULT_ACCOUNTS];
       }
     } else {
-      this.accounts = DEFAULT_ACCOUNTS;
+      this.accounts = [...DEFAULT_ACCOUNTS];
       this.saveAccounts();
     }
   }
@@ -248,8 +257,9 @@ class WuitterSystem {
   }
 
   async authenticateWithSavedToken() {
-    if (this.myToken) {
-      await this.loginWithToken(this.myToken, false);
+    const token = this.myToken || localStorage.getItem(WUITTER_STORAGE_TOKEN) || localStorage.getItem('wuitter_token');
+    if (token) {
+      await this.loginWithToken(token, false);
     }
   }
 
@@ -258,21 +268,39 @@ class WuitterSystem {
     const token = rawToken.trim().toUpperCase();
     const tokenHash = await this.sha256(token);
 
-    // 1. Procura conta correspondente
-    let matched = this.accounts.find(acc => {
-      if (acc.tokens && acc.tokens.includes(token)) return true;
-      if (acc.hashes && acc.hashes.includes(tokenHash)) return true;
-      return false;
-    });
+    // 1. Verifica se é Mestre por token direto ou hash
+    const isDirectMaster = MASTER_PLAIN_TOKENS.includes(token) || MASTER_HASHES.includes(tokenHash) || MASTER_HASHES.includes(token.toLowerCase());
+
+    let matched = null;
+
+    if (isDirectMaster) {
+      matched = this.accounts.find(a => a.id === 'mestre' || a.isMaster === true);
+      if (!matched) {
+        matched = DEFAULT_ACCOUNTS[0];
+        this.accounts.unshift(matched);
+      }
+    } else {
+      // Procura conta de personagem
+      matched = this.accounts.find(acc => {
+        if (acc.tokens && acc.tokens.some(t => t.toUpperCase() === token)) return true;
+        if (acc.hashes && (acc.hashes.includes(tokenHash) || acc.hashes.includes(token.toLowerCase()))) return true;
+        return false;
+      });
+    }
 
     if (matched) {
       this.myToken = token;
       localStorage.setItem(WUITTER_STORAGE_TOKEN, token);
+      localStorage.setItem('wuitter_token', token);
       this.authenticatedAccount = matched;
       this.selectedPostingAccountId = matched.id;
 
       if (showAlert) {
-        alert(`Autenticado com sucesso como ${matched.name}!`);
+        if (matched.isMaster) {
+          alert('Autenticado com sucesso como MESTRE! Painel do Mestre e ferramentas liberados.');
+        } else {
+          alert(`Autenticado com sucesso como ${matched.name}!`);
+        }
       }
       this.render();
       return true;
@@ -287,6 +315,7 @@ class WuitterSystem {
   logout() {
     this.myToken = null;
     localStorage.removeItem(WUITTER_STORAGE_TOKEN);
+    localStorage.removeItem('wuitter_token');
     this.authenticatedAccount = null;
     this.selectedPostingAccountId = null;
     this.render();
@@ -324,7 +353,7 @@ class WuitterSystem {
   }
 
   bindEvents() {
-    // Tabs
+    // Abas de Feed
     document.querySelectorAll('.w-feed-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('.w-feed-tab').forEach(t => t.classList.remove('active'));
@@ -334,7 +363,7 @@ class WuitterSystem {
       });
     });
 
-    // Compose Textarea
+    // Textarea do Composer
     const textarea = document.getElementById('w-compose-input');
     const charCounter = document.getElementById('w-char-counter');
     const postBtn = document.getElementById('w-btn-post');
@@ -347,23 +376,47 @@ class WuitterSystem {
           postBtn.disabled = (!this.authenticatedAccount) || (len === 0 && !this.pendingImageBase64);
         }
       });
+
+      // Suporte para colar imagens da área de transferência (Ctrl+V)
+      textarea.addEventListener('paste', (e) => {
+        const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+        for (let index in items) {
+          const item = items[index];
+          if (item.kind === 'file') {
+            const blob = item.getAsFile();
+            if (blob.type.startsWith('image/')) {
+              e.preventDefault();
+              const reader = new FileReader();
+              reader.onload = (event) => {
+                this.pendingImageBase64 = event.target.result;
+                this.showImagePreview(this.pendingImageBase64);
+                if (postBtn && this.authenticatedAccount) postBtn.disabled = false;
+              };
+              reader.readAsDataURL(blob);
+            } else {
+              alert('Apenas fotos e imagens podem ser anexadas (vídeos não são permitidos).');
+            }
+          }
+        }
+      });
     }
 
-    // Post Submit
+    // Botão de Publicar Wuit
     if (postBtn) {
       postBtn.addEventListener('click', () => {
         this.submitWuit();
       });
     }
 
-    // Image Upload (File) - Apenas imagem, sem vídeo!
+    // Upload de Foto Local (File Input) — Apenas fotos/imagens, SEM VÍDEO
     const imgInput = document.getElementById('w-compose-image-input');
     if (imgInput) {
       imgInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
           if (!file.type.startsWith('image/')) {
-            alert('Apenas arquivos de imagem são permitidos.');
+            alert('Apenas arquivos de imagem e fotos são permitidos (vídeos não são suportados).');
+            imgInput.value = '';
             return;
           }
           const reader = new FileReader();
@@ -377,11 +430,11 @@ class WuitterSystem {
       });
     }
 
-    // Image by URL
+    // Foto por Link / URL
     const imgUrlBtn = document.getElementById('w-tool-img-url');
     if (imgUrlBtn) {
       imgUrlBtn.addEventListener('click', () => {
-        const url = prompt('Insira o link direto da imagem (URL):');
+        const url = prompt('Insira o link direto da imagem/foto (URL):');
         if (url && url.trim()) {
           this.pendingImageBase64 = url.trim();
           this.showImagePreview(this.pendingImageBase64);
@@ -390,11 +443,12 @@ class WuitterSystem {
       });
     }
 
-    // Remove Image Preview
+    // Remover Preview da Imagem
     const removePreviewBtn = document.getElementById('w-remove-preview-btn');
     if (removePreviewBtn) {
       removePreviewBtn.addEventListener('click', () => {
         this.pendingImageBase64 = '';
+        if (imgInput) imgInput.value = '';
         const preview = document.getElementById('w-compose-preview');
         if (preview) preview.style.display = 'none';
         if (textarea && postBtn) {
@@ -403,7 +457,7 @@ class WuitterSystem {
       });
     }
 
-    // Search Input
+    // Barra de Busca
     const searchInput = document.getElementById('w-search-input');
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
@@ -412,31 +466,12 @@ class WuitterSystem {
       });
     }
 
-    // Token Login Modal
-    const loginBtn = document.getElementById('w-nav-login-btn');
-    if (loginBtn) {
-      loginBtn.addEventListener('click', () => {
-        this.openTokenModal();
-      });
-    }
-
-    // Edit Profile Modal
-    const editProfileBtn = document.getElementById('w-btn-edit-profile');
-    if (editProfileBtn) {
-      editProfileBtn.addEventListener('click', () => {
-        this.openEditProfileModal(this.authenticatedAccount);
-      });
-    }
-
-    // GM: Create NPC Account
+    // Ações do Mestre
     const btnNewAccount = document.getElementById('w-gm-new-account');
     if (btnNewAccount) {
-      btnNewAccount.addEventListener('click', () => {
-        this.openNewAccountModal();
-      });
+      btnNewAccount.addEventListener('click', () => this.openNewAccountModal());
     }
 
-    // GM: Export/Import Feed
     const btnExportJson = document.getElementById('w-gm-export-json');
     if (btnExportJson) {
       btnExportJson.addEventListener('click', () => this.exportFeedJson());
@@ -447,7 +482,7 @@ class WuitterSystem {
       btnImportJson.addEventListener('click', () => this.importFeedJson());
     }
 
-    // GM: Master Selector for Posting Account
+    // Seletor de Persona para postar (Mestre)
     const masterAccountSelector = document.getElementById('w-master-account-select');
     if (masterAccountSelector) {
       masterAccountSelector.addEventListener('change', (e) => {
@@ -495,9 +530,11 @@ class WuitterSystem {
     this.posts.unshift(newPost);
     this.savePosts();
 
-    // Reset Compose
+    // Reset Compose Box
     if (textarea) textarea.value = '';
     this.pendingImageBase64 = '';
+    const imgInput = document.getElementById('w-compose-image-input');
+    if (imgInput) imgInput.value = '';
     const preview = document.getElementById('w-compose-preview');
     if (preview) preview.style.display = 'none';
     const charCounter = document.getElementById('w-char-counter');
@@ -518,13 +555,20 @@ class WuitterSystem {
 
   renderSidebarAuth() {
     const authContainer = document.getElementById('w-auth-section');
+    const masterNavBtn = document.getElementById('w-nav-master-item');
     if (!authContainer) return;
+
+    const isMaster = this.isMaster();
+
+    if (masterNavBtn) {
+      masterNavBtn.style.display = isMaster ? 'flex' : 'none';
+    }
 
     if (!this.authenticatedAccount) {
       authContainer.innerHTML = `
-        <div style="padding: 12px; background: var(--w-surface); border: 1px solid var(--w-border); border-radius: var(--w-radius-md); text-align: center;">
-          <p style="font-size: 0.82rem; color: var(--w-text-muted); margin-bottom: 8px;">Conecte o token do seu personagem para wuitar.</p>
-          <button class="w-btn-post-primary" style="padding: 8px 16px; width: 100%; font-size: 0.88rem;" onclick="window.wuitter.openTokenModal()">
+        <div class="w-auth-box-unlogged">
+          <p class="w-auth-unlogged-text">Conecte o token do seu personagem para wuitar.</p>
+          <button class="w-btn-post-primary" style="padding: 9px 16px; width: 100%; font-size: 0.88rem;" onclick="window.wuitter.openTokenModal()">
             Autenticar Token
           </button>
         </div>
@@ -533,10 +577,9 @@ class WuitterSystem {
     }
 
     const acc = this.authenticatedAccount;
-    const isMaster = this.isMaster();
 
     authContainer.innerHTML = `
-      <div class="w-persona-switch-btn" style="cursor: default;">
+      <div class="w-persona-card-auth">
         <div class="w-persona-info">
           ${this.renderAvatarHtml(acc, 'normal')}
           <div class="w-persona-names">
@@ -548,8 +591,16 @@ class WuitterSystem {
           </div>
         </div>
       </div>
+      
+      ${isMaster ? `
+        <button class="w-gm-btn w-gm-btn-highlight" onclick="window.wuitter.openMasterPanelModal()" style="width: 100%; margin-top: 8px; justify-content: center;">
+          ${SVG_ICONS.crown}
+          <span>Painel do Mestre</span>
+        </button>
+      ` : ''}
+
       <div style="display: flex; gap: 6px; margin-top: 8px;">
-        <button class="w-gm-btn" style="flex: 1; padding: 6px 10px; font-size: 0.78rem;" onclick="window.wuitter.openEditProfileModal(window.wuitter.authenticatedAccount)">
+        <button class="w-gm-btn" style="flex: 1; padding: 6px 10px; font-size: 0.78rem; justify-content: center;" onclick="window.wuitter.openEditProfileModal(window.wuitter.authenticatedAccount)">
           ${SVG_ICONS.settings}
           <span>Editar Perfil</span>
         </button>
@@ -561,7 +612,6 @@ class WuitterSystem {
   }
 
   renderComposeHeader() {
-    const composeBox = document.querySelector('.w-compose-box');
     const avatarEl = document.getElementById('w-compose-avatar-wrap');
     const postingAcc = this.getPostingAccount();
 
@@ -615,7 +665,6 @@ class WuitterSystem {
   renderBadgeSvg(badgeType) {
     if (badgeType === 'blue') return SVG_ICONS.verifiedBlue;
     if (badgeType === 'gold') return SVG_ICONS.verifiedGold;
-    if (badgeType === 'master') return SVG_ICONS.verifiedMaster;
     return '';
   }
 
@@ -628,14 +677,14 @@ class WuitterSystem {
   }
 
   formatText(text) {
-    const escaped = text
+    const escaped = (text || '')
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
 
     return escaped
-      .replace(/#(\w+)/g, '<a href="javascript:void(0)" class="w-tag" onclick="window.wuitter.filterByTag('$1')">#$1</a>')
-      .replace(/@(\w+)/g, '<a href="javascript:void(0)" class="w-mention" onclick="window.wuitter.filterByMention('$1')">@$1</a>');
+      .replace(/#([a-zA-Z0-9_]+)/g, '<a href="javascript:void(0)" class="w-tag" onclick="window.wuitter.filterByTag(\'$1\')">#$1</a>')
+      .replace(/@([a-zA-Z0-9_]+)/g, '<a href="javascript:void(0)" class="w-mention" onclick="window.wuitter.filterByMention(\'$1\')">@$1</a>');
   }
 
   filterByTag(tag) {
@@ -686,7 +735,7 @@ class WuitterSystem {
 
     const mediaHtml = post.media ? `
       <div class="w-wuit-media" onclick="window.wuitter.openLightbox('${post.media}')">
-        <img src="${post.media}" alt="Anexo do Wuit" loading="lazy">
+        <img src="${post.media}" alt="Foto do Wuit" loading="lazy">
       </div>
     ` : '';
 
@@ -756,7 +805,7 @@ class WuitterSystem {
 
     if (post.likedBy.includes(myId)) {
       post.likedBy = post.likedBy.filter(id => id !== myId);
-      post.likes = Math.max(0, post.likes - 1);
+      post.likes = Math.max(0, (post.likes || 1) - 1);
     } else {
       post.likedBy.push(myId);
       post.likes = (post.likes || 0) + 1;
@@ -779,7 +828,7 @@ class WuitterSystem {
 
     if (post.rewuitedBy.includes(myId)) {
       post.rewuitedBy = post.rewuitedBy.filter(id => id !== myId);
-      post.rewuits = Math.max(0, post.rewuits - 1);
+      post.rewuits = Math.max(0, (post.rewuits || 1) - 1);
     } else {
       post.rewuitedBy.push(myId);
       post.rewuits = (post.rewuits || 0) + 1;
@@ -828,31 +877,49 @@ class WuitterSystem {
 
     panel.style.display = 'block';
 
+    const renderAccountItem = (acc) => `
+      <div class="w-follow-item" style="padding: 8px 12px; border-bottom: 1px solid var(--w-border-subtle); display: flex; align-items: center; justify-content: space-between;">
+        <div class="w-persona-info">
+          ${this.renderAvatarHtml(acc, 'sm')}
+          <div class="w-persona-names">
+            <span class="w-persona-name">${acc.name} ${this.renderBadgeSvg(acc.badge)}</span>
+            <span class="w-persona-handle">${acc.handle} ${acc.isMaster ? '[Mestre]' : ''}</span>
+          </div>
+        </div>
+        <button class="w-btn-follow" style="padding: 4px 10px; font-size: 0.75rem;" onclick="window.wuitter.openEditProfileModal(window.wuitter.getAccountById('${acc.id}'))">
+          Editar
+        </button>
+      </div>
+    `;
+
     const accountListEl = document.getElementById('w-gm-accounts-list');
     if (accountListEl) {
-      accountListEl.innerHTML = this.accounts.map(acc => `
-        <div class="w-follow-item" style="padding: 8px 12px; border-bottom: 1px solid var(--w-border-subtle);">
-          <div class="w-persona-info">
-            ${this.renderAvatarHtml(acc, 'sm')}
-            <div class="w-persona-names">
-              <span class="w-persona-name">${acc.name} ${this.renderBadgeSvg(acc.badge)}</span>
-              <span class="w-persona-handle">${acc.handle} ${acc.isMaster ? '[Mestre]' : ''}</span>
-            </div>
-          </div>
-          <button class="w-btn-follow" style="padding: 4px 10px; font-size: 0.75rem;" onclick="window.wuitter.openEditProfileModal(window.wuitter.getAccountById('${acc.id}'))">
-            Editar
-          </button>
-        </div>
-      `).join('');
+      accountListEl.innerHTML = this.accounts.map(renderAccountItem).join('');
+    }
+
+    const modalMasterAccounts = document.getElementById('w-modal-master-accounts');
+    if (modalMasterAccounts) {
+      modalMasterAccounts.innerHTML = this.accounts.map(renderAccountItem).join('');
     }
   }
 
   // Modais
+  openMasterPanelModal() {
+    if (!this.isMaster()) {
+      this.openTokenModal();
+      return;
+    }
+    this.renderMasterPanel();
+    const modal = document.getElementById('w-master-modal');
+    if (modal) modal.classList.add('active');
+  }
+
   openTokenModal() {
     const modal = document.getElementById('w-token-modal');
     const input = document.getElementById('w-token-input');
     if (input) input.value = '';
     if (modal) modal.classList.add('active');
+    setTimeout(() => { if (input) input.focus(); }, 100);
   }
 
   async submitTokenFromModal() {
@@ -1058,7 +1125,7 @@ class WuitterSystem {
       <div class="w-prop-card" style="max-width: 520px; margin: 0 auto;">
         <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--w-border); padding-bottom: 10px; margin-bottom: 12px;">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--w-primary)" stroke-width="2.5"><path d="M4 4l7.5 7.5L4 19M20 4l-7.5 7.5L20 19"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--w-primary)" stroke-width="2.8"><path d="M3 4l4.5 16L12 9l4.5 11L21 4"/></svg>
             <span style="font-weight: 900; font-size: 0.95rem; letter-spacing: 0.05em; color: #fff;">WUITTER &bull; REGISTRO DE REDE</span>
           </div>
           <span style="font-size: 0.75rem; color: var(--w-text-muted); font-family: var(--w-font-mono);">EVIDÊNCIA #${post.id.slice(-6)}</span>
