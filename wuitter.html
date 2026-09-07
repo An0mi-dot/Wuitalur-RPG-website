@@ -13,7 +13,7 @@
 <div class="wuitter-layout">
 
   <!-- ============================================================
-       COLUNA ESQUERDA: NAVEGAÇÃO & PERFIL ATIVO
+       COLUNA ESQUERDA: NAVEGAÇÃO & CONTA CONECTADA
        ============================================================ -->
   <aside class="w-sidebar-left">
     <div>
@@ -39,11 +39,6 @@
           <span>Explorar</span>
         </button>
 
-        <button class="w-nav-item" onclick="window.wuitter.openPersonaModal();">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          <span>Trocar Persona</span>
-        </button>
-
         <a href="mesa.html" class="w-nav-item" style="color: #f59e0b;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           <span>Mesa Virtual</span>
@@ -66,20 +61,10 @@
       </button>
     </div>
 
-    <!-- Perfil Ativo / Trocar Autor -->
-    <button class="w-persona-switch-btn" id="w-persona-switch-btn" title="Clique para alternar de perfil/persona">
-      <div class="w-persona-info">
-        <div class="w-avatar" id="w-active-avatar">EB</div>
-        <div class="w-persona-names">
-          <span class="w-persona-name">
-            <span id="w-active-name">Detetive Eric Blade</span>
-            <span id="w-active-badge"></span>
-          </span>
-          <span class="w-persona-handle" id="w-active-handle">@eric_blade</span>
-        </div>
-      </div>
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--w-text-muted)" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
-    </button>
+    <!-- Seção de Conta / Autenticação -->
+    <div id="w-auth-section" style="margin-top: auto; padding-top: 12px;">
+      <!-- Preenchido dinamicamente pelo wuitter.js -->
+    </div>
   </aside>
 
   <!-- ============================================================
@@ -93,47 +78,52 @@
       </div>
       <div class="w-feed-tabs">
         <button class="w-feed-tab active" data-tab="para-voce">Para você</button>
-        <button class="w-feed-tab" data-tab="seguindo">Seguindo</button>
-        <button class="w-feed-tab" data-tab="noticias">Alertas &bull; Notícias</button>
       </div>
     </header>
 
     <!-- Caixa de Criação de Post -->
     <section class="w-compose-box">
-      <div class="w-avatar" id="w-compose-avatar">EB</div>
-      <div class="w-compose-main">
-        <textarea class="w-compose-textarea" id="w-compose-input" placeholder="O que está acontecendo no submundo de Wuitalur?"></textarea>
-        
-        <!-- Preview de Imagem Anexada -->
-        <div class="w-compose-preview" id="w-compose-preview">
-          <img id="w-compose-preview-img" src="" alt="Anexo">
-          <button class="w-compose-preview-remove" id="w-remove-preview-btn" title="Remover Imagem">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </button>
-        </div>
+      <!-- Seletor do Mestre (aparece somente quando o Mestre está logado) -->
+      <div id="w-master-selector-wrap" style="display: none; width: 100%; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed var(--w-border);">
+        <label style="font-size: 0.78rem; font-weight: 800; color: var(--w-accent-gold); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 4px;">
+          Controle do Mestre &bull; Wuitar como:
+        </label>
+        <select class="w-form-select" id="w-master-account-select" style="font-size: 0.88rem; padding: 6px 10px; border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.05); color: #fff;">
+          <!-- Preenchido dinamicamente com todas as contas -->
+        </select>
+      </div>
 
-        <div class="w-compose-toolbar">
-          <div class="w-compose-tools">
-            <!-- Anexar Arquivo Local -->
-            <label class="w-tool-btn" title="Anexar Imagem Local" style="cursor: pointer;">
-              <input type="file" id="w-compose-image-input" accept="image/*" style="display: none;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            </label>
-
-            <!-- Inserir URL de Imagem -->
-            <button class="w-tool-btn" id="w-tool-img-url" title="Inserir Imagem por Link/URL">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-            </button>
-
-            <!-- Alternar Categoria/Tag de Alerta -->
-            <button class="w-tool-btn" id="w-tool-tag" title="Alternar Categoria (Alerta / Notícia / Conclave)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div style="display: flex; gap: 12px; width: 100%;">
+        <div id="w-compose-avatar-wrap"></div>
+        <div class="w-compose-main">
+          <textarea class="w-compose-textarea" id="w-compose-input" placeholder="O que está acontecendo?"></textarea>
+          
+          <!-- Preview de Imagem Anexada -->
+          <div class="w-compose-preview" id="w-compose-preview">
+            <img id="w-compose-preview-img" src="" alt="Anexo">
+            <button class="w-compose-preview-remove" id="w-remove-preview-btn" title="Remover Imagem">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
           </div>
 
-          <div class="w-compose-submit-wrap">
-            <span class="w-char-counter" id="w-char-counter">0/280</span>
-            <button class="w-btn-post-sm" id="w-btn-post" disabled>Wuitar</button>
+          <div class="w-compose-toolbar">
+            <div class="w-compose-tools">
+              <!-- Anexar Imagem Local (SEM VÍDEO) -->
+              <label class="w-tool-btn" title="Anexar Imagem (Arquivo Local)" style="cursor: pointer;">
+                <input type="file" id="w-compose-image-input" accept="image/png, image/jpeg, image/gif, image/webp" style="display: none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </label>
+
+              <!-- Inserir Imagem por Link/URL -->
+              <button class="w-tool-btn" id="w-tool-img-url" title="Inserir Imagem por Link (URL)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              </button>
+            </div>
+
+            <div class="w-compose-submit-wrap">
+              <span class="w-char-counter" id="w-char-counter">0/280</span>
+              <button class="w-btn-post-sm" id="w-btn-post" disabled>Wuitar</button>
+            </div>
           </div>
         </div>
       </div>
@@ -167,37 +157,34 @@
       </div>
     </section>
 
-    <!-- Quem Seguir -->
-    <section class="w-widget-card">
-      <div class="w-widget-header">
-        <span>Quem seguir</span>
+    <!-- Painel Exclusivo do Mestre -->
+    <section class="w-widget-card" id="w-gm-panel-container" style="display: none; border-color: rgba(245, 158, 11, 0.4);">
+      <div class="w-widget-header" style="background: rgba(245, 158, 11, 0.08); border-bottom: 1px solid var(--w-border);">
+        <span style="color: var(--w-accent-gold); display: flex; align-items: center; gap: 6px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Painel do Mestre
+        </span>
       </div>
-      <div class="w-widget-list" id="w-suggestions-list">
-        <!-- Inserido dinamicamente -->
+      
+      <div style="padding: 12px 16px; border-bottom: 1px solid var(--w-border);">
+        <span style="font-size: 0.8rem; font-weight: 700; color: var(--w-text-muted); text-transform: uppercase;">Gerenciar Contas &amp; NPCs:</span>
       </div>
-    </section>
+      <div class="w-widget-list" id="w-gm-accounts-list" style="max-height: 240px; overflow-y: auto;">
+        <!-- Lista de contas com botão de editar -->
+      </div>
 
-    <!-- Ferramentas do Mestre & Gestão de Props -->
-    <section class="w-widget-card">
-      <div class="w-widget-header">
-        <span>Painel do Mestre (RPG)</span>
-      </div>
       <div class="w-gm-panel">
-        <button class="w-gm-btn" id="w-gm-new-persona">
+        <button class="w-gm-btn" id="w-gm-new-account">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
-          <span>Criar Nova Persona / NPC</span>
+          <span>Criar Nova Conta / NPC</span>
         </button>
         <button class="w-gm-btn" id="w-gm-export-json">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span>Exportar Feed da Sessão (JSON)</span>
+          <span>Exportar Feed (JSON)</span>
         </button>
         <button class="w-gm-btn" id="w-gm-import-json">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-          <span>Importar Feed de Sessão</span>
-        </button>
-        <button class="w-gm-btn" id="w-gm-reset-feed" style="color: var(--w-accent-red);">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
-          <span>Restaurar Posts Padrão</span>
+          <span>Importar Feed (JSON)</span>
         </button>
       </div>
     </section>
@@ -206,34 +193,100 @@
 </div>
 
 <!-- ============================================================
-     MODAL: SELEÇÃO DE PERSONA
+     MODAL: AUTENTICAÇÃO DE TOKEN
      ============================================================ -->
-<div class="w-modal-overlay" id="w-persona-modal">
-  <div class="w-modal-card">
+<div class="w-modal-overlay" id="w-token-modal">
+  <div class="w-modal-card" style="max-width: 440px;">
     <div class="w-modal-header">
-      <h3 class="w-modal-title">Alternar Persona Ativa</h3>
+      <h3 class="w-modal-title">Autenticar Token</h3>
       <button class="w-modal-close" onclick="window.wuitter.closeModals()">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
     <div class="w-modal-body">
-      <div id="w-persona-modal-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
-      <div style="margin-top: 16px; border-top: 1px solid var(--w-border); padding-top: 12px; text-align: center;">
-        <button class="w-btn-post-primary" style="padding: 10px 20px; width: auto;" onclick="window.wuitter.closeModals(); window.wuitter.openNewPersonaModal();">
-          + Criar Outro Personagem / NPC
-        </button>
+      <p style="font-size: 0.88rem; color: var(--w-text-muted); margin-bottom: 14px;">
+        Insira o token do seu personagem ou o token de Mestre para acessar sua conta no Wuitter.
+      </p>
+      <div class="w-form-group">
+        <label class="w-form-label">Código do Token</label>
+        <input type="text" class="w-form-input" id="w-token-input" placeholder="Ex: W4R9, M7Q2, B8T3, M9X7..." style="text-transform: uppercase; font-family: var(--w-font-mono); letter-spacing: 0.08em;">
       </div>
+      <button class="w-btn-post-primary" onclick="window.wuitter.submitTokenFromModal()">
+        Entrar no Wuitter
+      </button>
     </div>
   </div>
 </div>
 
 <!-- ============================================================
-     MODAL: CRIAR NOVA PERSONA
+     MODAL: EDITAR PERFIL
      ============================================================ -->
-<div class="w-modal-overlay" id="w-new-persona-modal">
+<div class="w-modal-overlay" id="w-edit-profile-modal">
   <div class="w-modal-card">
     <div class="w-modal-header">
-      <h3 class="w-modal-title">Cadastrar Novo Perfil / NPC</h3>
+      <h3 class="w-modal-title">Editar Perfil</h3>
+      <button class="w-modal-close" onclick="window.wuitter.closeModals()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="w-modal-body">
+      <input type="hidden" id="w-edit-target-id">
+      
+      <div class="w-form-group">
+        <label class="w-form-label">Nome do Personagem</label>
+        <input type="text" class="w-form-input" id="w-edit-name">
+      </div>
+
+      <div class="w-form-group">
+        <label class="w-form-label">@Handle (Nome de Usuário)</label>
+        <input type="text" class="w-form-input" id="w-edit-handle">
+      </div>
+
+      <div class="w-form-group">
+        <label class="w-form-label">Biografia / Descrição do Perfil</label>
+        <textarea class="w-form-textarea" id="w-edit-bio" rows="3" placeholder="Escreva uma breve descrição para o seu perfil..."></textarea>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="w-form-group">
+          <label class="w-form-label">Letra do Avatar (1-2 Letras)</label>
+          <input type="text" class="w-form-input" id="w-edit-avatar-letter" maxlength="2">
+        </div>
+        <div class="w-form-group">
+          <label class="w-form-label">Cor de Fundo do Avatar</label>
+          <input type="color" class="w-form-input" id="w-edit-avatar-color" style="height: 42px; padding: 2px;">
+        </div>
+      </div>
+
+      <div class="w-form-group">
+        <label class="w-form-label">Foto de Perfil (URL de Imagem Opcional)</label>
+        <input type="text" class="w-form-input" id="w-edit-avatar-img" placeholder="https://exemplo.com/minha-foto.png">
+      </div>
+
+      <!-- Selo (visível apenas para o Mestre) -->
+      <div class="w-form-group" id="w-edit-badge-group" style="display: none;">
+        <label class="w-form-label">Selo de Verificado (Exclusivo Mestre)</label>
+        <select class="w-form-select" id="w-edit-badge-select">
+          <option value="none">Nenhum</option>
+          <option value="blue">Azul (Investigador / Oficial)</option>
+          <option value="gold">Dourado (Mestre / Conclave / Imprensa)</option>
+        </select>
+      </div>
+
+      <button class="w-btn-post-primary" onclick="window.wuitter.saveProfileChanges()">
+        Salvar Alterações
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL: CRIAR NOVA CONTA (MESTRE)
+     ============================================================ -->
+<div class="w-modal-overlay" id="w-new-account-modal">
+  <div class="w-modal-card">
+    <div class="w-modal-header">
+      <h3 class="w-modal-title">Cadastrar Nova Conta / NPC</h3>
       <button class="w-modal-close" onclick="window.wuitter.closeModals()">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
@@ -241,38 +294,39 @@
     <div class="w-modal-body">
       <div class="w-form-group">
         <label class="w-form-label">Nome de Exibição</label>
-        <input type="text" class="w-form-input" id="w-new-persona-name" placeholder="Ex: Sargento Morales, Rádio Pirata, etc.">
+        <input type="text" class="w-form-input" id="w-new-acc-name" placeholder="Ex: Sargento Morales, Rádio Pirata...">
       </div>
       <div class="w-form-group">
         <label class="w-form-label">@Handle (Nome de Usuário)</label>
-        <input type="text" class="w-form-input" id="w-new-persona-handle" placeholder="Ex: @morales_policia">
+        <input type="text" class="w-form-input" id="w-new-acc-handle" placeholder="Ex: @morales_policia">
+      </div>
+      <div class="w-form-group">
+        <label class="w-form-label">Token de Acesso Opcional (para dar ao jogador)</label>
+        <input type="text" class="w-form-input" id="w-new-acc-token" placeholder="Ex: NPC1, RAD9..." style="text-transform: uppercase;">
       </div>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
         <div class="w-form-group">
-          <label class="w-form-label">Iniciais do Avatar (2 Letras)</label>
-          <input type="text" class="w-form-input" id="w-new-persona-avatar" maxlength="2" placeholder="Ex: SM">
+          <label class="w-form-label">Cor do Avatar</label>
+          <input type="color" class="w-form-input" id="w-new-acc-color" value="#ff1133" style="height: 42px; padding: 2px;">
         </div>
         <div class="w-form-group">
-          <label class="w-form-label">Cor de Fundo do Avatar</label>
-          <input type="color" class="w-form-input" id="w-new-persona-color" value="#ff1133" style="height: 42px; padding: 2px;">
+          <label class="w-form-label">Selo</label>
+          <select class="w-form-select" id="w-new-acc-badge">
+            <option value="none">Nenhum</option>
+            <option value="blue">Azul</option>
+            <option value="gold">Dourado</option>
+          </select>
         </div>
       </div>
-      <div class="w-form-group">
-        <label class="w-form-label">Selo de Verificação</label>
-        <select class="w-form-select" id="w-new-persona-badge">
-          <option value="none">Nenhum (Cidadão / Usuário Comum)</option>
-          <option value="blue">Azul (Investigador / Oficial)</option>
-          <option value="gold">Dourado (Imprensa / Conclave)</option>
-          <option value="red">Vermelho (Alerta Máximo / Perigo)</option>
-        </select>
-      </div>
-      <button class="w-btn-post-primary" onclick="window.wuitter.saveNewPersona()">Salvar e Usar Perfil</button>
+      <button class="w-btn-post-primary" onclick="window.wuitter.saveNewAccount()">
+        Cadastrar Conta
+      </button>
     </div>
   </div>
 </div>
 
 <!-- ============================================================
-     MODAL: COMENTÁRIOS / THREAD
+     MODAL: RESPOSTAS / THREAD
      ============================================================ -->
 <div class="w-modal-overlay" id="w-comments-modal">
   <div class="w-modal-card">
@@ -285,7 +339,6 @@
     <div class="w-modal-body">
       <div id="w-modal-post-target"></div>
       
-      <!-- Input de Novo Comentário -->
       <div style="display: flex; gap: 10px; margin: 12px 0;">
         <input type="text" class="w-form-input" id="w-comment-input" placeholder="Poste sua resposta...">
         <button class="w-btn-post-sm" id="w-btn-send-comment">Responder</button>
@@ -309,7 +362,7 @@
     </div>
     <div class="w-modal-body" style="text-align: center;">
       <p style="font-size: 0.85rem; color: var(--w-text-muted); margin-bottom: 14px;">
-        Este cartão representa a evidência digital do Wuit para mostrar aos jogadores ou anexar ao diário de investigação.
+        Evidência digital gerada a partir do Wuit para consulta dos investigadores.
       </p>
       <div id="w-prop-render-area"></div>
       <div style="margin-top: 16px; display: flex; justify-content: center; gap: 12px;">

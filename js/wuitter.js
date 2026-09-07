@@ -1,231 +1,324 @@
 /**
- * WUITTER — Motor Lógico & Rede Social In-Universe de Wuitalur RPG
- * 100% SVG Icons, Zero Emojis, LocalStorage Persistence & RPG Prop Generator
+ * WUITTER — Sistema de Rede Social In-Universe de Wuitalur RPG
+ * Vinculação por Tokens de Personagens, Painel do Mestre, Sem Emojis, Apenas Imagens (Sem Vídeo)
  */
 
-const WUITTER_STORAGE_KEY_POSTS = 'wuitter_posts_v1';
-const WUITTER_STORAGE_KEY_PERSONAS = 'wuitter_personas_v1';
-const WUITTER_STORAGE_KEY_ACTIVE = 'wuitter_active_persona_v1';
-const WUITTER_STORAGE_KEY_FOLLOWS = 'wuitter_following_v1';
+const WUITTER_STORAGE_POSTS = 'wuitter_posts_v2';
+const WUITTER_STORAGE_ACCOUNTS = 'wuitter_accounts_v2';
+const WUITTER_STORAGE_TOKEN = 'mesa_token';
 
-// SVGs
+// SVGs Dedicados (100% livres de emojis)
 const SVG_ICONS = {
-  verifiedBlue: `<svg class="w-badge-verified w-badge-blue" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>`,
-  verifiedGold: `<svg class="w-badge-verified w-badge-gold" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
-  verifiedRed: `<svg class="w-badge-verified w-badge-red" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/></svg>`,
+  verifiedBlue: `<svg class="w-badge-verified w-badge-blue" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>`,
+  verifiedGold: `<svg class="w-badge-verified w-badge-gold" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+  verifiedMaster: `<svg class="w-badge-verified w-badge-gold" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>`,
   comment: `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
   rewuit: `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>`,
   like: `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
   share: `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>`,
   trash: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>`,
   image: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`,
-  alert: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`
+  settings: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
+  key: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5L11 9l-1.5-1.5L8 9l-4 4a5.66 5.66 0 1 0 8 8l4-4 1.5 1.5 1.5-1.5 1.5 1.5 1.5-1.5 1.5 1.5 2-2z"/></svg>`
 };
 
-// Default Personas
-const DEFAULT_PERSONAS = [
+// Contas Padrão Vinculadas aos Tokens do Sistema
+const DEFAULT_ACCOUNTS = [
   {
-    id: 'eric_blade',
-    name: 'Detetive Eric Blade',
-    handle: '@eric_blade',
-    avatar: 'EB',
-    avatarBg: '#ff1133',
-    badge: 'blue',
-    bio: 'Investigador independente. Especialista em anomalias e crimes sem explicação.',
-    isDefault: true
-  },
-  {
-    id: 'gazeta_wuitalur',
-    name: 'Gazeta de Wuitalur',
-    handle: '@gazeta_wuitalur',
-    avatar: 'GW',
-    avatarBg: '#1d9bf0',
+    id: 'mestre',
+    slot: null,
+    tokens: ['M9X7', 'WUI-M9X7-MAST', 'WUI-MASTER-99'],
+    hashes: [
+      'ffd77d81aa08ae3582779ba189e7dbbabd57da8ceb9aa8b6a64d2988dc552e76',
+      '74d06b763fd7ccdd4e86b81b59989c73b923a319c0adda2c243137079434d63d',
+      '011e063f8402ff1a9263d6cbf115896ce8844f14c8c1a03b1e70992be9fc84b4'
+    ],
+    name: 'Mestre',
+    handle: '@mestre',
+    bio: '',
+    avatarLetter: 'M',
+    avatarImage: '',
+    avatarColor: '#ff1133',
     badge: 'gold',
-    bio: 'O maior portal de notícias do continente. Cobertura factual 24 horas.',
-    isDefault: true
+    isMaster: true
   },
   {
-    id: 'conclave_oficial',
-    name: 'Conclave de Investigação',
-    handle: '@conclave_oficial',
-    avatar: 'CO',
-    avatarBg: '#f59e0b',
-    badge: 'gold',
-    bio: 'Registro e contenção de eventos paranormais e fios do pesadelo.',
-    isDefault: true
+    id: 'char_1',
+    slot: 1,
+    tokens: ['W4R9', 'WUI-W4R9-9K2M'],
+    hashes: ['6d6b9e504b9a07f490b068e62a6d5a5b4beb6d5ab51c949a8ab8f1950c1261d2', '43c11d372feae45dd633a6a37286cf1a44f0c1278235b2ef7dc49d2d309c20b5'],
+    name: 'Thulita',
+    handle: '@thulita',
+    bio: '',
+    avatarLetter: 'T',
+    avatarImage: '',
+    avatarColor: '#10b981',
+    badge: 'none',
+    isMaster: false
   },
   {
-    id: 'helena_rossi',
-    name: 'Dra. Helena Rossi',
-    handle: '@helena_med',
-    avatar: 'HR',
-    avatarBg: '#10b981',
-    badge: 'blue',
-    bio: 'Médica-legista no Hospital Central. Não acredito no sobrenatural até ver a autópsia.',
-    isDefault: true
+    id: 'char_2',
+    slot: 2,
+    tokens: ['M7Q2', 'WUI-M7Q2-4L1B'],
+    hashes: ['2619977a9e5e0522d65a338b053fe9d668b9ffd7a26fb694f4f89a332a2573ee', 'caa37dd424c75c8bcc49096685ff408930c6409922491c2b7465694b67934fd9'],
+    name: 'Minerva',
+    handle: '@minerva',
+    bio: '',
+    avatarLetter: 'M',
+    avatarImage: '',
+    avatarColor: '#8b5cf6',
+    badge: 'none',
+    isMaster: false
   },
   {
-    id: 'sussurros_noturnos',
-    name: 'Sussurros da Noite',
-    handle: '@sussurros_noturnos',
-    avatar: 'SN',
-    avatarBg: '#a855f7',
-    badge: 'red',
-    bio: 'O que a polícia não conta, eu posto. Olhem para cima às 3h.',
-    isDefault: true
+    id: 'char_3',
+    slot: 3,
+    tokens: ['B8T3', 'WUI-B8T3-7X8A'],
+    hashes: ['63c816ce5724c99e47758d2bca36cd1c41b210bc3d295922731867746c891527', '9f741eaf72fb7c0417ecdf910cd18132a7cc6945a91655a38fc00dd3f20da436'],
+    name: 'Eric',
+    handle: '@eric',
+    bio: '',
+    avatarLetter: 'E',
+    avatarImage: '',
+    avatarColor: '#ef4444',
+    badge: 'none',
+    isMaster: false
+  },
+  {
+    id: 'char_4',
+    slot: 4,
+    tokens: ['P3R4', 'WUI-P3R4-3D9V'],
+    hashes: ['50aedd3f6c1ec1bbd96b4462cf11f9e51365b6d7657a092c857df19ecd7f22c6', '610c3adf93b9f4f25d5169ba2ece084e06a2d6491db68eb10ffaf49e0e4cb29c'],
+    name: 'Pera',
+    handle: '@pera',
+    bio: '',
+    avatarLetter: 'P',
+    avatarImage: '',
+    avatarColor: '#f59e0b',
+    badge: 'none',
+    isMaster: false
+  },
+  {
+    id: 'char_5',
+    slot: 5,
+    tokens: ['K4R5', 'WUI-K4R5-8F2Q'],
+    hashes: ['04d7fd5ceb247311a8f46bb5f5d353a927ac7fd25776cafbdd3ac9f70182a2b8', '1ed723041d29cae397ffc8fafc052009b36a001e601be6d3a5aba3ceea9ccaa9'],
+    name: 'Willian',
+    handle: '@willian',
+    bio: '',
+    avatarLetter: 'W',
+    avatarImage: '',
+    avatarColor: '#06b6d4',
+    badge: 'none',
+    isMaster: false
+  },
+  {
+    id: 'char_6',
+    slot: 6,
+    tokens: ['J9D6', 'WUI-J9D6-5M7N'],
+    hashes: ['f25cf5826fd56f85266d0aeb7d1e361d4035ceb0dac146166c1a8ad28ec03735', '409f7205e3d6398aaa57d0f6058e66d10a2ea22502faa4ba6c442af7353cff94'],
+    name: 'John Doe',
+    handle: '@johndoe',
+    bio: '',
+    avatarLetter: 'J',
+    avatarImage: '',
+    avatarColor: '#3b82f6',
+    badge: 'none',
+    isMaster: false
+  },
+  {
+    id: 'char_7',
+    slot: 7,
+    tokens: ['O7D7', 'WUI-O7D7-2H4Z'],
+    hashes: ['ba486a269e0fb9deac1c37f61ccb38be5cae83fd47ac6743adeddc8772681530', 'b094e8349e61a7092f6e0b54356560900cd295e9b6f29e4690e73a7899fc368b'],
+    name: 'Odara',
+    handle: '@odara',
+    bio: '',
+    avatarLetter: 'O',
+    avatarImage: '',
+    avatarColor: '#ec4899',
+    badge: 'none',
+    isMaster: false
+  },
+  {
+    id: 'char_8',
+    slot: 8,
+    tokens: ['C8B8', 'WUI-C8B8-6P1K'],
+    hashes: ['7d704a54101b1028e1dc54f3eb0fe527a6c358746a25008236e2b3940fb7b97c', '0a218ab04615fd7a9e9a69da55aabde2faadf19b62e4ba78902b34a83331fd23'],
+    name: 'Canneth',
+    handle: '@canneth',
+    bio: '',
+    avatarLetter: 'C',
+    avatarImage: '',
+    avatarColor: '#14b8a6',
+    badge: 'none',
+    isMaster: false
   }
 ];
 
-// Default Posts
-const DEFAULT_POSTS = [
-  {
-    id: 'wuit_1',
-    authorId: 'conclave_oficial',
-    text: 'COMUNICADO OFICIAL: Registramos um surto anômalo no setor norte da cidade. Nossos investigadores já estão no local analisando os Pontos de Interesse. Não se aproximem do casarão antigo. #Alerta #Conclave #FiosDoMedo',
-    category: 'conclave',
-    timestamp: Date.now() - 1000 * 60 * 25, // 25 min ago
-    likes: 142,
-    liked: false,
-    rewuits: 58,
-    rewuited: false,
-    comments: [
-      {
-        id: 'c1',
-        authorId: 'sussurros_noturnos',
-        text: 'Eles estão mentindo. Ouvimos gritos de dentro do casarão desde as 22h!',
-        timestamp: Date.now() - 1000 * 60 * 18
-      }
-    ],
-    media: ''
-  },
-  {
-    id: 'wuit_2',
-    authorId: 'gazeta_wuitalur',
-    text: 'URGENTE: Blecaute inexplicável atinge 4 bairros centrais simultaneamente. Testemunhas afirmam ter visto figuras sem rosto nos corredores do metrô. Autoridades pedem para a população trancar portas e janelas. #BlackoutNoCentro #GazetaNews',
-    category: 'alerta',
-    timestamp: Date.now() - 1000 * 60 * 52,
-    likes: 389,
-    liked: false,
-    rewuits: 210,
-    rewuited: false,
-    comments: [],
-    media: ''
-  },
-  {
-    id: 'wuit_3',
-    authorId: 'eric_blade',
-    text: 'Encontrei um símbolo talhado na madeira do quarto 204. A tinta ainda estava fresca... mas o prédio está abandonado há duas décadas. Não é um crime comum. #Investigacao #EricBlade',
-    category: 'noticia',
-    timestamp: Date.now() - 1000 * 60 * 120,
-    likes: 95,
-    liked: false,
-    rewuits: 34,
-    rewuited: false,
-    comments: [
-      {
-        id: 'c2',
-        authorId: 'helena_rossi',
-        text: 'Eric, passe no laboratório assim que puder. Os exames toxicológicos da vítima chegaram e não fazem sentido.',
-        timestamp: Date.now() - 1000 * 60 * 85
-      }
-    ],
-    media: ''
-  }
-];
-
-class WuitterApp {
+class WuitterSystem {
   constructor() {
-    this.personas = [];
+    this.accounts = [];
     this.posts = [];
-    this.activePersonaId = 'eric_blade';
+    this.myToken = localStorage.getItem(WUITTER_STORAGE_TOKEN) || null;
+    this.authenticatedAccount = null; // A conta vinculada ao token do usuário logado
+    this.selectedPostingAccountId = null; // Para o Mestre poder wuitar como qualquer conta
     this.activeTab = 'para-voce';
     this.searchQuery = '';
-    this.followingIds = ['gazeta_wuitalur', 'conclave_oficial'];
     this.pendingImageBase64 = '';
-    this.pendingCategory = 'none';
 
     this.init();
   }
 
-  init() {
-    this.loadState();
+  async init() {
+    this.loadAccounts();
+    this.loadPosts();
+    await this.authenticateWithSavedToken();
     this.bindEvents();
     this.render();
   }
 
-  loadState() {
-    // Load Personas
-    const savedPersonas = localStorage.getItem(WUITTER_STORAGE_KEY_PERSONAS);
-    if (savedPersonas) {
+  // Hash SHA-256 helper
+  async sha256(text) {
+    if (!text) return '';
+    try {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(text.trim().toUpperCase());
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    } catch(e) {
+      let hash = 0;
+      const str = text.trim().toUpperCase();
+      for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash |= 0;
+      }
+      return 'fb_' + Math.abs(hash).toString(16);
+    }
+  }
+
+  loadAccounts() {
+    const saved = localStorage.getItem(WUITTER_STORAGE_ACCOUNTS);
+    if (saved) {
       try {
-        this.personas = JSON.parse(savedPersonas);
+        this.accounts = JSON.parse(saved);
+        // Garantir que todas as contas padrão existam
+        DEFAULT_ACCOUNTS.forEach(def => {
+          const exists = this.accounts.find(a => a.id === def.id);
+          if (!exists) {
+            this.accounts.push(def);
+          } else {
+            // Atualiza tokens e hashes se necessário
+            exists.tokens = def.tokens;
+            exists.hashes = def.hashes;
+            exists.isMaster = def.isMaster;
+            if (!exists.avatarLetter) exists.avatarLetter = (exists.name || 'P').charAt(0).toUpperCase();
+          }
+        });
       } catch (e) {
-        this.personas = DEFAULT_PERSONAS;
+        this.accounts = DEFAULT_ACCOUNTS;
       }
     } else {
-      this.personas = DEFAULT_PERSONAS;
-      this.savePersonas();
+      this.accounts = DEFAULT_ACCOUNTS;
+      this.saveAccounts();
     }
+  }
 
-    // Load Active Persona
-    const savedActive = localStorage.getItem(WUITTER_STORAGE_KEY_ACTIVE);
-    if (savedActive && this.personas.some(p => p.id === savedActive)) {
-      this.activePersonaId = savedActive;
-    } else {
-      this.activePersonaId = this.personas[0].id;
-    }
+  saveAccounts() {
+    localStorage.setItem(WUITTER_STORAGE_ACCOUNTS, JSON.stringify(this.accounts));
+  }
 
-    // Load Following
-    const savedFollows = localStorage.getItem(WUITTER_STORAGE_KEY_FOLLOWS);
-    if (savedFollows) {
+  loadPosts() {
+    const saved = localStorage.getItem(WUITTER_STORAGE_POSTS);
+    if (saved) {
       try {
-        this.followingIds = JSON.parse(savedFollows);
+        this.posts = JSON.parse(saved);
       } catch (e) {
-        this.followingIds = ['gazeta_wuitalur', 'conclave_oficial'];
-      }
-    }
-
-    // Load Posts
-    const savedPosts = localStorage.getItem(WUITTER_STORAGE_KEY_POSTS);
-    if (savedPosts) {
-      try {
-        this.posts = JSON.parse(savedPosts);
-      } catch (e) {
-        this.posts = DEFAULT_POSTS;
+        this.posts = [];
       }
     } else {
-      this.posts = DEFAULT_POSTS;
+      this.posts = [];
       this.savePosts();
     }
   }
 
   savePosts() {
-    localStorage.setItem(WUITTER_STORAGE_KEY_POSTS, JSON.stringify(this.posts));
+    localStorage.setItem(WUITTER_STORAGE_POSTS, JSON.stringify(this.posts));
   }
 
-  savePersonas() {
-    localStorage.setItem(WUITTER_STORAGE_KEY_PERSONAS, JSON.stringify(this.personas));
+  async authenticateWithSavedToken() {
+    if (this.myToken) {
+      await this.loginWithToken(this.myToken, false);
+    }
   }
 
-  saveActivePersona() {
-    localStorage.setItem(WUITTER_STORAGE_KEY_ACTIVE, this.activePersonaId);
+  async loginWithToken(rawToken, showAlert = true) {
+    if (!rawToken) return false;
+    const token = rawToken.trim().toUpperCase();
+    const tokenHash = await this.sha256(token);
+
+    // 1. Procura conta correspondente
+    let matched = this.accounts.find(acc => {
+      if (acc.tokens && acc.tokens.includes(token)) return true;
+      if (acc.hashes && acc.hashes.includes(tokenHash)) return true;
+      return false;
+    });
+
+    if (matched) {
+      this.myToken = token;
+      localStorage.setItem(WUITTER_STORAGE_TOKEN, token);
+      this.authenticatedAccount = matched;
+      this.selectedPostingAccountId = matched.id;
+
+      if (showAlert) {
+        alert(`Autenticado com sucesso como ${matched.name}!`);
+      }
+      this.render();
+      return true;
+    } else {
+      if (showAlert) {
+        alert('Token inválido. Verifique o código fornecido.');
+      }
+      return false;
+    }
   }
 
-  saveFollows() {
-    localStorage.setItem(WUITTER_STORAGE_KEY_FOLLOWS, JSON.stringify(this.followingIds));
+  logout() {
+    this.myToken = null;
+    localStorage.removeItem(WUITTER_STORAGE_TOKEN);
+    this.authenticatedAccount = null;
+    this.selectedPostingAccountId = null;
+    this.render();
   }
 
-  getActivePersona() {
-    return this.personas.find(p => p.id === this.activePersonaId) || this.personas[0];
+  isMaster() {
+    return this.authenticatedAccount && this.authenticatedAccount.isMaster === true;
   }
 
-  getPersonaById(id) {
-    return this.personas.find(p => p.id === id) || {
+  getPostingAccount() {
+    if (this.isMaster() && this.selectedPostingAccountId) {
+      return this.accounts.find(a => a.id === this.selectedPostingAccountId) || this.authenticatedAccount;
+    }
+    return this.authenticatedAccount || {
+      id: 'visitante',
+      name: 'Visitante Não Autenticado',
+      handle: '@visitante',
+      avatarLetter: '?',
+      avatarImage: '',
+      avatarColor: '#374151',
+      badge: 'none'
+    };
+  }
+
+  getAccountById(id) {
+    return this.accounts.find(a => a.id === id) || {
       id: id,
       name: 'Desconhecido',
       handle: '@desconhecido',
-      avatar: '?',
-      avatarBg: '#374151',
+      avatarLetter: '?',
+      avatarImage: '',
+      avatarColor: '#374151',
       badge: 'none'
     };
   }
@@ -233,7 +326,7 @@ class WuitterApp {
   bindEvents() {
     // Tabs
     document.querySelectorAll('.w-feed-tab').forEach(tab => {
-      tab.addEventListener('click', (e) => {
+      tab.addEventListener('click', () => {
         document.querySelectorAll('.w-feed-tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         this.activeTab = tab.dataset.tab;
@@ -241,7 +334,7 @@ class WuitterApp {
       });
     });
 
-    // Compose textarea
+    // Compose Textarea
     const textarea = document.getElementById('w-compose-input');
     const charCounter = document.getElementById('w-char-counter');
     const postBtn = document.getElementById('w-btn-post');
@@ -250,48 +343,54 @@ class WuitterApp {
       textarea.addEventListener('input', () => {
         const len = textarea.value.length;
         if (charCounter) charCounter.textContent = `${len}/280`;
-        if (postBtn) postBtn.disabled = len === 0 && !this.pendingImageBase64;
+        if (postBtn) {
+          postBtn.disabled = (!this.authenticatedAccount) || (len === 0 && !this.pendingImageBase64);
+        }
       });
     }
 
-    // Post Button
+    // Post Submit
     if (postBtn) {
       postBtn.addEventListener('click', () => {
-        this.createPost();
+        this.submitWuit();
       });
     }
 
-    // Image upload
+    // Image Upload (File) - Apenas imagem, sem vídeo!
     const imgInput = document.getElementById('w-compose-image-input');
     if (imgInput) {
       imgInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
+          if (!file.type.startsWith('image/')) {
+            alert('Apenas arquivos de imagem são permitidos.');
+            return;
+          }
           const reader = new FileReader();
           reader.onload = (re) => {
             this.pendingImageBase64 = re.target.result;
             this.showImagePreview(this.pendingImageBase64);
-            if (postBtn) postBtn.disabled = false;
+            if (postBtn && this.authenticatedAccount) postBtn.disabled = false;
           };
           reader.readAsDataURL(file);
         }
       });
     }
 
-    // Image URL button
+    // Image by URL
     const imgUrlBtn = document.getElementById('w-tool-img-url');
     if (imgUrlBtn) {
       imgUrlBtn.addEventListener('click', () => {
-        const url = prompt('Insira a URL direta da imagem:');
+        const url = prompt('Insira o link direto da imagem (URL):');
         if (url && url.trim()) {
           this.pendingImageBase64 = url.trim();
           this.showImagePreview(this.pendingImageBase64);
-          if (postBtn) postBtn.disabled = false;
+          if (postBtn && this.authenticatedAccount) postBtn.disabled = false;
         }
       });
     }
 
-    // Remove Preview
+    // Remove Image Preview
     const removePreviewBtn = document.getElementById('w-remove-preview-btn');
     if (removePreviewBtn) {
       removePreviewBtn.addEventListener('click', () => {
@@ -304,29 +403,6 @@ class WuitterApp {
       });
     }
 
-    // Tag button
-    const tagBtn = document.getElementById('w-tool-tag');
-    if (tagBtn) {
-      tagBtn.addEventListener('click', () => {
-        const options = ['none', 'alerta', 'noticia', 'conclave'];
-        const currentIdx = options.indexOf(this.pendingCategory);
-        const nextIdx = (currentIdx + 1) % options.length;
-        this.pendingCategory = options[nextIdx];
-        
-        tagBtn.style.color = this.pendingCategory === 'alerta' ? 'var(--w-accent-red)' :
-                             this.pendingCategory === 'noticia' ? 'var(--w-primary)' :
-                             this.pendingCategory === 'conclave' ? 'var(--w-accent-gold)' : 'var(--w-text-muted)';
-      });
-    }
-
-    // Persona Switcher Click
-    const personaSwitchBtn = document.getElementById('w-persona-switch-btn');
-    if (personaSwitchBtn) {
-      personaSwitchBtn.addEventListener('click', () => {
-        this.openPersonaModal();
-      });
-    }
-
     // Search Input
     const searchInput = document.getElementById('w-search-input');
     if (searchInput) {
@@ -336,36 +412,47 @@ class WuitterApp {
       });
     }
 
-    // GM Panel Buttons
-    const btnNewPersona = document.getElementById('w-gm-new-persona');
-    if (btnNewPersona) {
-      btnNewPersona.addEventListener('click', () => {
-        this.openNewPersonaModal();
+    // Token Login Modal
+    const loginBtn = document.getElementById('w-nav-login-btn');
+    if (loginBtn) {
+      loginBtn.addEventListener('click', () => {
+        this.openTokenModal();
       });
     }
 
+    // Edit Profile Modal
+    const editProfileBtn = document.getElementById('w-btn-edit-profile');
+    if (editProfileBtn) {
+      editProfileBtn.addEventListener('click', () => {
+        this.openEditProfileModal(this.authenticatedAccount);
+      });
+    }
+
+    // GM: Create NPC Account
+    const btnNewAccount = document.getElementById('w-gm-new-account');
+    if (btnNewAccount) {
+      btnNewAccount.addEventListener('click', () => {
+        this.openNewAccountModal();
+      });
+    }
+
+    // GM: Export/Import Feed
     const btnExportJson = document.getElementById('w-gm-export-json');
     if (btnExportJson) {
-      btnExportJson.addEventListener('click', () => {
-        this.exportFeedJson();
-      });
+      btnExportJson.addEventListener('click', () => this.exportFeedJson());
     }
 
     const btnImportJson = document.getElementById('w-gm-import-json');
     if (btnImportJson) {
-      btnImportJson.addEventListener('click', () => {
-        this.importFeedJson();
-      });
+      btnImportJson.addEventListener('click', () => this.importFeedJson());
     }
 
-    const btnResetDefault = document.getElementById('w-gm-reset-feed');
-    if (btnResetDefault) {
-      btnResetDefault.addEventListener('click', () => {
-        if (confirm('Deseja restaurar os posts padrão do Wuitter? Seus posts personalizados serão mantidos.')) {
-          this.posts = DEFAULT_POSTS;
-          this.savePosts();
-          this.renderFeed();
-        }
+    // GM: Master Selector for Posting Account
+    const masterAccountSelector = document.getElementById('w-master-account-select');
+    if (masterAccountSelector) {
+      masterAccountSelector.addEventListener('change', (e) => {
+        this.selectedPostingAccountId = e.target.value;
+        this.renderComposeHeader();
       });
     }
   }
@@ -379,22 +466,28 @@ class WuitterApp {
     }
   }
 
-  createPost() {
+  submitWuit() {
+    if (!this.authenticatedAccount) {
+      this.openTokenModal();
+      return;
+    }
+
     const textarea = document.getElementById('w-compose-input');
     const text = textarea ? textarea.value.trim() : '';
 
     if (!text && !this.pendingImageBase64) return;
 
+    const postingAcc = this.getPostingAccount();
+
     const newPost = {
       id: 'wuit_' + Date.now(),
-      authorId: this.activePersonaId,
+      authorId: postingAcc.id,
       text: text,
-      category: this.pendingCategory !== 'none' ? this.pendingCategory : '',
       timestamp: Date.now(),
       likes: 0,
-      liked: false,
+      likedBy: [],
       rewuits: 0,
-      rewuited: false,
+      rewuitedBy: [],
       comments: [],
       media: this.pendingImageBase64 || ''
     };
@@ -405,7 +498,6 @@ class WuitterApp {
     // Reset Compose
     if (textarea) textarea.value = '';
     this.pendingImageBase64 = '';
-    this.pendingCategory = 'none';
     const preview = document.getElementById('w-compose-preview');
     if (preview) preview.style.display = 'none';
     const charCounter = document.getElementById('w-char-counter');
@@ -417,43 +509,118 @@ class WuitterApp {
   }
 
   render() {
-    this.renderActivePersona();
+    this.renderSidebarAuth();
+    this.renderComposeHeader();
     this.renderFeed();
+    this.renderMasterPanel();
     this.renderTrends();
-    this.renderSuggestions();
   }
 
-  renderActivePersona() {
-    const active = this.getActivePersona();
-    
-    // Sidebar profile
-    const avatarEl = document.getElementById('w-active-avatar');
-    const nameEl = document.getElementById('w-active-name');
-    const handleEl = document.getElementById('w-active-handle');
-    const badgeEl = document.getElementById('w-active-badge');
+  renderSidebarAuth() {
+    const authContainer = document.getElementById('w-auth-section');
+    if (!authContainer) return;
+
+    if (!this.authenticatedAccount) {
+      authContainer.innerHTML = `
+        <div style="padding: 12px; background: var(--w-surface); border: 1px solid var(--w-border); border-radius: var(--w-radius-md); text-align: center;">
+          <p style="font-size: 0.82rem; color: var(--w-text-muted); margin-bottom: 8px;">Conecte o token do seu personagem para wuitar.</p>
+          <button class="w-btn-post-primary" style="padding: 8px 16px; width: 100%; font-size: 0.88rem;" onclick="window.wuitter.openTokenModal()">
+            Autenticar Token
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    const acc = this.authenticatedAccount;
+    const isMaster = this.isMaster();
+
+    authContainer.innerHTML = `
+      <div class="w-persona-switch-btn" style="cursor: default;">
+        <div class="w-persona-info">
+          ${this.renderAvatarHtml(acc, 'normal')}
+          <div class="w-persona-names">
+            <span class="w-persona-name">
+              ${acc.name}
+              ${this.renderBadgeSvg(acc.badge)}
+            </span>
+            <span class="w-persona-handle">${acc.handle}</span>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 6px; margin-top: 8px;">
+        <button class="w-gm-btn" style="flex: 1; padding: 6px 10px; font-size: 0.78rem;" onclick="window.wuitter.openEditProfileModal(window.wuitter.authenticatedAccount)">
+          ${SVG_ICONS.settings}
+          <span>Editar Perfil</span>
+        </button>
+        <button class="w-gm-btn" style="color: var(--w-accent-red); padding: 6px 10px; font-size: 0.78rem;" onclick="window.wuitter.logout()" title="Sair da Conta">
+          Sair
+        </button>
+      </div>
+    `;
+  }
+
+  renderComposeHeader() {
+    const composeBox = document.querySelector('.w-compose-box');
+    const avatarEl = document.getElementById('w-compose-avatar-wrap');
+    const postingAcc = this.getPostingAccount();
 
     if (avatarEl) {
-      avatarEl.textContent = active.avatar;
-      avatarEl.style.backgroundColor = active.avatarBg;
-    }
-    if (nameEl) nameEl.textContent = active.name;
-    if (handleEl) handleEl.textContent = active.handle;
-    if (badgeEl) {
-      badgeEl.innerHTML = active.badge === 'blue' ? SVG_ICONS.verifiedBlue :
-                          active.badge === 'gold' ? SVG_ICONS.verifiedGold :
-                          active.badge === 'red' ? SVG_ICONS.verifiedRed : '';
+      avatarEl.innerHTML = this.renderAvatarHtml(postingAcc, 'normal');
     }
 
-    // Compose avatar
-    const composeAvatar = document.getElementById('w-compose-avatar');
-    if (composeAvatar) {
-      composeAvatar.textContent = active.avatar;
-      composeAvatar.style.backgroundColor = active.avatarBg;
+    // Seletor de contas para o Mestre
+    const masterSelectWrap = document.getElementById('w-master-selector-wrap');
+    if (masterSelectWrap) {
+      if (this.isMaster()) {
+        masterSelectWrap.style.display = 'block';
+        const selectEl = document.getElementById('w-master-account-select');
+        if (selectEl) {
+          selectEl.innerHTML = this.accounts.map(a => `
+            <option value="${a.id}" ${a.id === this.selectedPostingAccountId ? 'selected' : ''}>
+              ${a.name} (${a.handle}) ${a.isMaster ? '[MESTRE]' : ''}
+            </option>
+          `).join('');
+        }
+      } else {
+        masterSelectWrap.style.display = 'none';
+      }
     }
+
+    const postBtn = document.getElementById('w-btn-post');
+    const textarea = document.getElementById('w-compose-input');
+    if (postBtn && textarea) {
+      if (!this.authenticatedAccount) {
+        textarea.placeholder = 'Autentique seu token de personagem para poder wuitar...';
+        textarea.disabled = true;
+        postBtn.disabled = true;
+      } else {
+        textarea.placeholder = `O que está acontecendo, ${postingAcc.name}?`;
+        textarea.disabled = false;
+        postBtn.disabled = textarea.value.trim().length === 0 && !this.pendingImageBase64;
+      }
+    }
+  }
+
+  renderAvatarHtml(account, size = 'normal') {
+    const sizeClass = size === 'lg' ? 'lg' : size === 'sm' ? 'sm' : '';
+    if (account.avatarImage) {
+      return `<img src="${account.avatarImage}" class="w-avatar ${sizeClass}" alt="${account.name}">`;
+    }
+    const letter = (account.avatarLetter || account.name.charAt(0) || 'P').toUpperCase();
+    const bg = account.avatarColor || '#1f2937';
+    return `<div class="w-avatar ${sizeClass}" style="background-color: ${bg};">${letter}</div>`;
+  }
+
+  renderBadgeSvg(badgeType) {
+    if (badgeType === 'blue') return SVG_ICONS.verifiedBlue;
+    if (badgeType === 'gold') return SVG_ICONS.verifiedGold;
+    if (badgeType === 'master') return SVG_ICONS.verifiedMaster;
+    return '';
   }
 
   formatTime(timestamp) {
-    const diff = Math.floor((Date.now() - timestamp) / 1000); // seconds
+    const diff = Math.floor((Date.now() - timestamp) / 1000);
     if (diff < 60) return `${diff}s`;
     if (diff < 3600) return `${Math.floor(diff / 60)}m`;
     if (diff < 86400) return `${Math.floor(diff / 3600)}h`;
@@ -461,13 +628,11 @@ class WuitterApp {
   }
 
   formatText(text) {
-    // Escape HTML
     const escaped = text
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
 
-    // Format #hashtags and @mentions
     return escaped
       .replace(/#(\w+)/g, '<a href="javascript:void(0)" class="w-tag" onclick="window.wuitter.filterByTag('$1')">#$1</a>')
       .replace(/@(\w+)/g, '<a href="javascript:void(0)" class="w-mention" onclick="window.wuitter.filterByMention('$1')">@$1</a>');
@@ -493,29 +658,20 @@ class WuitterApp {
 
     let filtered = [...this.posts];
 
-    // Filter by Tab
-    if (this.activeTab === 'seguindo') {
-      filtered = filtered.filter(p => this.followingIds.includes(p.authorId) || p.authorId === this.activePersonaId);
-    } else if (this.activeTab === 'noticias') {
-      filtered = filtered.filter(p => p.category === 'alerta' || p.category === 'noticia' || p.category === 'conclave');
-    }
-
-    // Filter by Search Query
     if (this.searchQuery) {
       filtered = filtered.filter(p => {
-        const author = this.getPersonaById(p.authorId);
+        const author = this.getAccountById(p.authorId);
         return p.text.toLowerCase().includes(this.searchQuery) ||
                author.name.toLowerCase().includes(this.searchQuery) ||
-               author.handle.toLowerCase().includes(this.searchQuery) ||
-               (p.category && p.category.toLowerCase().includes(this.searchQuery));
+               author.handle.toLowerCase().includes(this.searchQuery);
       });
     }
 
     if (filtered.length === 0) {
       feedContainer.innerHTML = `
-        <div style="padding: 40px 20px; text-align: center; color: var(--w-text-muted);">
-          <p style="font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 6px;">Nenhum Wuit encontrado</p>
-          <p style="font-size: 0.9rem;">Tente buscar por outro termo ou poste um novo Wuit no feed.</p>
+        <div style="padding: 50px 20px; text-align: center; color: var(--w-text-muted);">
+          <p style="font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 6px;">Nenhum Wuit no momento</p>
+          <p style="font-size: 0.9rem;">Autentique seu token de personagem e seja o primeiro a postar!</p>
         </div>
       `;
       return;
@@ -525,16 +681,8 @@ class WuitterApp {
   }
 
   renderPostCard(post) {
-    const author = this.getPersonaById(post.authorId);
-    const badgeSvg = author.badge === 'blue' ? SVG_ICONS.verifiedBlue :
-                     author.badge === 'gold' ? SVG_ICONS.verifiedGold :
-                     author.badge === 'red' ? SVG_ICONS.verifiedRed : '';
-
-    const categoryHtml = post.category ? `
-      <div class="w-category-tag ${post.category}">
-        ${post.category === 'alerta' ? 'Alerta Urgente' : post.category === 'conclave' ? 'Registro Conclave' : 'Imprensa'}
-      </div>
-    ` : '';
+    const author = this.getAccountById(post.authorId);
+    const badgeSvg = this.renderBadgeSvg(author.badge);
 
     const mediaHtml = post.media ? `
       <div class="w-wuit-media" onclick="window.wuitter.openLightbox('${post.media}')">
@@ -543,13 +691,13 @@ class WuitterApp {
     ` : '';
 
     const commentsCount = post.comments ? post.comments.length : 0;
-    const canDelete = post.authorId === this.activePersonaId;
+    const canDelete = this.isMaster() || (this.authenticatedAccount && this.authenticatedAccount.id === post.authorId);
+    const isLiked = this.authenticatedAccount && post.likedBy && post.likedBy.includes(this.authenticatedAccount.id);
+    const isRewuited = this.authenticatedAccount && post.rewuitedBy && post.rewuitedBy.includes(this.authenticatedAccount.id);
 
     return `
       <article class="w-wuit-card" id="post_${post.id}">
-        <div class="w-avatar" style="background-color: ${author.avatarBg};" title="${author.name}">
-          ${author.avatar}
-        </div>
+        ${this.renderAvatarHtml(author, 'normal')}
         <div class="w-wuit-content-area">
           <div class="w-wuit-meta">
             <div class="w-wuit-author-info">
@@ -566,32 +714,26 @@ class WuitterApp {
             ` : ''}
           </div>
 
-          ${categoryHtml}
-
           <div class="w-wuit-text">${this.formatText(post.text)}</div>
 
           ${mediaHtml}
 
           <div class="w-wuit-actions">
-            <!-- Comentar -->
             <button class="w-action-btn reply" onclick="window.wuitter.openCommentsModal('${post.id}')" title="Responder">
               ${SVG_ICONS.comment}
               <span>${commentsCount > 0 ? commentsCount : ''}</span>
             </button>
 
-            <!-- Re-wuitar -->
-            <button class="w-action-btn rewuit ${post.rewuited ? 'active' : ''}" onclick="window.wuitter.toggleRewuit('${post.id}')" title="Re-wuitar">
+            <button class="w-action-btn rewuit ${isRewuited ? 'active' : ''}" onclick="window.wuitter.toggleRewuit('${post.id}')" title="Re-wuitar">
               ${SVG_ICONS.rewuit}
               <span>${post.rewuits > 0 ? post.rewuits : ''}</span>
             </button>
 
-            <!-- Curtir -->
-            <button class="w-action-btn like ${post.liked ? 'active' : ''}" onclick="window.wuitter.toggleLike('${post.id}')" title="Curtir">
+            <button class="w-action-btn like ${isLiked ? 'active' : ''}" onclick="window.wuitter.toggleLike('${post.id}')" title="Curtir">
               ${SVG_ICONS.like}
               <span>${post.likes > 0 ? post.likes : ''}</span>
             </button>
 
-            <!-- Exportar como Pista (Prop) -->
             <button class="w-action-btn share" onclick="window.wuitter.openPropModal('${post.id}')" title="Gerar Cartão de Pista (Prop RPG)">
               ${SVG_ICONS.share}
             </button>
@@ -602,15 +744,22 @@ class WuitterApp {
   }
 
   toggleLike(postId) {
+    if (!this.authenticatedAccount) {
+      this.openTokenModal();
+      return;
+    }
     const post = this.posts.find(p => p.id === postId);
     if (!post) return;
 
-    if (post.liked) {
-      post.liked = false;
+    if (!post.likedBy) post.likedBy = [];
+    const myId = this.authenticatedAccount.id;
+
+    if (post.likedBy.includes(myId)) {
+      post.likedBy = post.likedBy.filter(id => id !== myId);
       post.likes = Math.max(0, post.likes - 1);
     } else {
-      post.liked = true;
-      post.likes += 1;
+      post.likedBy.push(myId);
+      post.likes = (post.likes || 0) + 1;
     }
 
     this.savePosts();
@@ -618,15 +767,22 @@ class WuitterApp {
   }
 
   toggleRewuit(postId) {
+    if (!this.authenticatedAccount) {
+      this.openTokenModal();
+      return;
+    }
     const post = this.posts.find(p => p.id === postId);
     if (!post) return;
 
-    if (post.rewuited) {
-      post.rewuited = false;
+    if (!post.rewuitedBy) post.rewuitedBy = [];
+    const myId = this.authenticatedAccount.id;
+
+    if (post.rewuitedBy.includes(myId)) {
+      post.rewuitedBy = post.rewuitedBy.filter(id => id !== myId);
       post.rewuits = Math.max(0, post.rewuits - 1);
     } else {
-      post.rewuited = true;
-      post.rewuits += 1;
+      post.rewuitedBy.push(myId);
+      post.rewuits = (post.rewuits || 0) + 1;
     }
 
     this.savePosts();
@@ -642,18 +798,17 @@ class WuitterApp {
   }
 
   renderTrends() {
-    const trendsContainer = document.getElementById('w-trends-list');
-    if (!trendsContainer) return;
+    const container = document.getElementById('w-trends-list');
+    if (!container) return;
 
     const trends = [
-      { tag: 'BlackoutNoCentro', cat: 'Urgente em Wuitalur', count: '14,2 mil wuits' },
-      { tag: 'FiosDoMedo', cat: 'Sobrenatural &bull; Em alta', count: '9,8 mil wuits' },
-      { tag: 'PesadeloNaMansao', cat: 'Mistério &bull; Casos Arquivados', count: '6,4 mil wuits' },
-      { tag: 'Conclave', cat: 'Instituição &bull; Notícias', count: '4,1 mil wuits' },
-      { tag: 'EricBlade', cat: 'Detetives Particulares', count: '2,9 mil wuits' }
+      { tag: 'FiosDoMedo', cat: 'Mistério &bull; Em alta', count: '12,4 mil wuits' },
+      { tag: 'Pesadelo', cat: 'Sobrenatural', count: '8,1 mil wuits' },
+      { tag: 'Conclave', cat: 'Instituição', count: '5,9 mil wuits' },
+      { tag: 'Investigacao', cat: 'Casos sem Solução', count: '3,2 mil wuits' }
     ];
 
-    trendsContainer.innerHTML = trends.map(t => `
+    container.innerHTML = trends.map(t => `
       <div class="w-trend-item" onclick="window.wuitter.filterByTag('${t.tag}')">
         <span class="w-trend-cat">${t.cat}</span>
         <span class="w-trend-tag">#${t.tag}</span>
@@ -662,130 +817,160 @@ class WuitterApp {
     `).join('');
   }
 
-  renderSuggestions() {
-    const container = document.getElementById('w-suggestions-list');
-    if (!container) return;
+  renderMasterPanel() {
+    const panel = document.getElementById('w-gm-panel-container');
+    if (!panel) return;
 
-    const suggestions = this.personas.filter(p => p.id !== this.activePersonaId).slice(0, 3);
+    if (!this.isMaster()) {
+      panel.style.display = 'none';
+      return;
+    }
 
-    container.innerHTML = suggestions.map(p => {
-      const isFollowing = this.followingIds.includes(p.id);
-      return `
-        <div class="w-follow-item">
+    panel.style.display = 'block';
+
+    const accountListEl = document.getElementById('w-gm-accounts-list');
+    if (accountListEl) {
+      accountListEl.innerHTML = this.accounts.map(acc => `
+        <div class="w-follow-item" style="padding: 8px 12px; border-bottom: 1px solid var(--w-border-subtle);">
           <div class="w-persona-info">
-            <div class="w-avatar sm" style="background-color: ${p.avatarBg};">${p.avatar}</div>
+            ${this.renderAvatarHtml(acc, 'sm')}
             <div class="w-persona-names">
-              <span class="w-persona-name">${p.name}</span>
-              <span class="w-persona-handle">${p.handle}</span>
+              <span class="w-persona-name">${acc.name} ${this.renderBadgeSvg(acc.badge)}</span>
+              <span class="w-persona-handle">${acc.handle} ${acc.isMaster ? '[Mestre]' : ''}</span>
             </div>
           </div>
-          <button class="w-btn-follow ${isFollowing ? 'active' : ''}" onclick="window.wuitter.toggleFollow('${p.id}')">
-            ${isFollowing ? 'Seguindo' : 'Seguir'}
+          <button class="w-btn-follow" style="padding: 4px 10px; font-size: 0.75rem;" onclick="window.wuitter.openEditProfileModal(window.wuitter.getAccountById('${acc.id}'))">
+            Editar
           </button>
         </div>
-      `;
-    }).join('');
-  }
-
-  toggleFollow(personaId) {
-    if (this.followingIds.includes(personaId)) {
-      this.followingIds = this.followingIds.filter(id => id !== personaId);
-    } else {
-      this.followingIds.push(personaId);
-    }
-    this.saveFollows();
-    this.renderSuggestions();
-    if (this.activeTab === 'seguindo') {
-      this.renderFeed();
+      `).join('');
     }
   }
 
-  // Persona Modal
-  openPersonaModal() {
-    const modal = document.getElementById('w-persona-modal');
-    const list = document.getElementById('w-persona-modal-list');
-    if (!modal || !list) return;
+  // Modais
+  openTokenModal() {
+    const modal = document.getElementById('w-token-modal');
+    const input = document.getElementById('w-token-input');
+    if (input) input.value = '';
+    if (modal) modal.classList.add('active');
+  }
 
-    list.innerHTML = this.personas.map(p => `
-      <div class="w-follow-item" style="cursor: pointer; border-radius: var(--w-radius-md);" onclick="window.wuitter.selectPersona('${p.id}')">
-        <div class="w-persona-info">
-          <div class="w-avatar" style="background-color: ${p.avatarBg};">${p.avatar}</div>
-          <div class="w-persona-names">
-            <span class="w-persona-name">${p.name} ${p.id === this.activePersonaId ? '<span style="color: var(--w-primary); font-size: 0.75rem;">(Ativo)</span>' : ''}</span>
-            <span class="w-persona-handle">${p.handle}</span>
-          </div>
-        </div>
-        <button class="w-btn-post-sm" style="padding: 4px 12px; font-size: 0.8rem;">
-          ${p.id === this.activePersonaId ? 'Selecionado' : 'Usar'}
-        </button>
-      </div>
-    `).join('');
+  async submitTokenFromModal() {
+    const input = document.getElementById('w-token-input');
+    const token = input ? input.value.trim() : '';
+    if (!token) return;
+
+    const success = await this.loginWithToken(token, true);
+    if (success) {
+      this.closeModals();
+    }
+  }
+
+  openEditProfileModal(account) {
+    if (!account) return;
+    const modal = document.getElementById('w-edit-profile-modal');
+    if (!modal) return;
+
+    document.getElementById('w-edit-target-id').value = account.id;
+    document.getElementById('w-edit-name').value = account.name || '';
+    document.getElementById('w-edit-handle').value = account.handle || '';
+    document.getElementById('w-edit-bio').value = account.bio || '';
+    document.getElementById('w-edit-avatar-letter').value = account.avatarLetter || account.name.charAt(0) || '';
+    document.getElementById('w-edit-avatar-color').value = account.avatarColor || '#ff1133';
+    document.getElementById('w-edit-avatar-img').value = account.avatarImage || '';
+
+    // Selo de verificado: apenas o Mestre pode alterar
+    const badgeGroup = document.getElementById('w-edit-badge-group');
+    if (badgeGroup) {
+      badgeGroup.style.display = this.isMaster() ? 'block' : 'none';
+      document.getElementById('w-edit-badge-select').value = account.badge || 'none';
+    }
 
     modal.classList.add('active');
   }
 
-  selectPersona(personaId) {
-    this.activePersonaId = personaId;
-    this.saveActivePersona();
-    this.renderActivePersona();
-    this.renderSuggestions();
-    this.renderFeed();
-    this.closeModals();
-  }
+  saveProfileChanges() {
+    const targetId = document.getElementById('w-edit-target-id').value;
+    const acc = this.accounts.find(a => a.id === targetId);
+    if (!acc) return;
 
-  openNewPersonaModal() {
-    const modal = document.getElementById('w-new-persona-modal');
-    if (modal) modal.classList.add('active');
-  }
-
-  saveNewPersona() {
-    const nameInput = document.getElementById('w-new-persona-name');
-    const handleInput = document.getElementById('w-new-persona-handle');
-    const avatarInput = document.getElementById('w-new-persona-avatar');
-    const badgeSelect = document.getElementById('w-new-persona-badge');
-    const colorInput = document.getElementById('w-new-persona-color');
-
-    const name = nameInput ? nameInput.value.trim() : '';
-    let handle = handleInput ? handleInput.value.trim() : '';
-    const avatar = avatarInput ? avatarInput.value.trim().toUpperCase().slice(0, 2) : '??';
-    const badge = badgeSelect ? badgeSelect.value : 'none';
-    const color = colorInput ? colorInput.value : '#3b82f6';
+    const name = document.getElementById('w-edit-name').value.trim();
+    let handle = document.getElementById('w-edit-handle').value.trim();
+    const bio = document.getElementById('w-edit-bio').value.trim();
+    const avatarLetter = document.getElementById('w-edit-avatar-letter').value.trim().toUpperCase().slice(0, 2);
+    const avatarColor = document.getElementById('w-edit-avatar-color').value;
+    const avatarImg = document.getElementById('w-edit-avatar-img').value.trim();
 
     if (!name || !handle) {
-      alert('Por favor, informe Nome e @Handle.');
+      alert('Nome e @Handle são obrigatórios.');
       return;
     }
 
     if (!handle.startsWith('@')) handle = '@' + handle;
 
-    const id = 'persona_' + Date.now();
-    const newPersona = {
-      id: id,
-      name: name,
-      handle: handle,
-      avatar: avatar || name.slice(0, 2).toUpperCase(),
-      avatarBg: color,
-      badge: badge,
-      isDefault: false
-    };
+    acc.name = name;
+    acc.handle = handle;
+    acc.bio = bio;
+    acc.avatarLetter = avatarLetter || name.charAt(0).toUpperCase();
+    acc.avatarColor = avatarColor;
+    acc.avatarImage = avatarImg;
 
-    this.personas.push(newPersona);
-    this.savePersonas();
-    this.activePersonaId = id;
-    this.saveActivePersona();
+    if (this.isMaster()) {
+      const badgeSelect = document.getElementById('w-edit-badge-select');
+      if (badgeSelect) acc.badge = badgeSelect.value;
+    }
 
-    this.renderActivePersona();
-    this.renderSuggestions();
-    this.renderFeed();
+    this.saveAccounts();
     this.closeModals();
-
-    // Reset inputs
-    if (nameInput) nameInput.value = '';
-    if (handleInput) handleInput.value = '';
-    if (avatarInput) avatarInput.value = '';
+    this.render();
+    alert('Perfil atualizado com sucesso!');
   }
 
-  // Comments / Thread Modal
+  openNewAccountModal() {
+    if (!this.isMaster()) return;
+    const modal = document.getElementById('w-new-account-modal');
+    if (modal) modal.classList.add('active');
+  }
+
+  saveNewAccount() {
+    if (!this.isMaster()) return;
+
+    const name = document.getElementById('w-new-acc-name').value.trim();
+    let handle = document.getElementById('w-new-acc-handle').value.trim();
+    const token = document.getElementById('w-new-acc-token').value.trim().toUpperCase();
+    const badge = document.getElementById('w-new-acc-badge').value;
+    const color = document.getElementById('w-new-acc-color').value;
+
+    if (!name || !handle) {
+      alert('Nome e @Handle são obrigatórios.');
+      return;
+    }
+
+    if (!handle.startsWith('@')) handle = '@' + handle;
+
+    const id = 'acc_' + Date.now();
+    const newAcc = {
+      id: id,
+      slot: null,
+      tokens: token ? [token] : [],
+      hashes: [],
+      name: name,
+      handle: handle,
+      bio: '',
+      avatarLetter: name.charAt(0).toUpperCase(),
+      avatarImage: '',
+      avatarColor: color,
+      badge: badge,
+      isMaster: false
+    };
+
+    this.accounts.push(newAcc);
+    this.saveAccounts();
+    this.closeModals();
+    this.render();
+    alert('Nova conta cadastrada com sucesso!');
+  }
+
   openCommentsModal(postId) {
     const post = this.posts.find(p => p.id === postId);
     if (!post) return;
@@ -797,11 +982,10 @@ class WuitterApp {
 
     if (!modal || !container || !targetPostPreview) return;
 
-    // Render Original Post summary
-    const author = this.getPersonaById(post.authorId);
+    const author = this.getAccountById(post.authorId);
     targetPostPreview.innerHTML = `
       <div style="display: flex; gap: 10px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--w-border);">
-        <div class="w-avatar sm" style="background-color: ${author.avatarBg};">${author.avatar}</div>
+        ${this.renderAvatarHtml(author, 'sm')}
         <div>
           <div style="font-weight: 700; font-size: 0.9rem; color: #fff;">${author.name} <span style="color: var(--w-text-muted); font-weight: normal;">${author.handle}</span></div>
           <div style="font-size: 0.88rem; color: var(--w-text-main); margin-top: 4px;">${this.formatText(post.text)}</div>
@@ -809,13 +993,12 @@ class WuitterApp {
       </div>
     `;
 
-    // Render Comments
     if (post.comments && post.comments.length > 0) {
       container.innerHTML = post.comments.map(c => {
-        const cAuthor = this.getPersonaById(c.authorId);
+        const cAuthor = this.getAccountById(c.authorId);
         return `
           <div class="w-comment-item">
-            <div class="w-avatar sm" style="background-color: ${cAuthor.avatarBg};">${cAuthor.avatar}</div>
+            ${this.renderAvatarHtml(cAuthor, 'sm')}
             <div style="flex: 1;">
               <div style="display: flex; align-items: center; justify-content: space-between;">
                 <span style="font-weight: 700; font-size: 0.85rem; color: #fff;">${cAuthor.name}</span>
@@ -827,19 +1010,25 @@ class WuitterApp {
         `;
       }).join('');
     } else {
-      container.innerHTML = `<p style="color: var(--w-text-muted); font-size: 0.85rem; text-align: center; padding: 12px 0;">Nenhuma resposta ainda. Seja o primeiro a responder!</p>`;
+      container.innerHTML = `<p style="color: var(--w-text-muted); font-size: 0.85rem; text-align: center; padding: 12px 0;">Nenhuma resposta ainda.</p>`;
     }
 
     if (sendBtn) {
       sendBtn.onclick = () => {
+        if (!this.authenticatedAccount) {
+          this.openTokenModal();
+          return;
+        }
         const commentInput = document.getElementById('w-comment-input');
         const cText = commentInput ? commentInput.value.trim() : '';
         if (!cText) return;
 
+        const postingAcc = this.getPostingAccount();
+
         if (!post.comments) post.comments = [];
         post.comments.push({
           id: 'c_' + Date.now(),
-          authorId: this.activePersonaId,
+          authorId: postingAcc.id,
           text: cText,
           timestamp: Date.now()
         });
@@ -854,7 +1043,6 @@ class WuitterApp {
     modal.classList.add('active');
   }
 
-  // Prop Snapshot Modal
   openPropModal(postId) {
     const post = this.posts.find(p => p.id === postId);
     if (!post) return;
@@ -863,10 +1051,8 @@ class WuitterApp {
     const container = document.getElementById('w-prop-render-area');
     if (!modal || !container) return;
 
-    const author = this.getPersonaById(post.authorId);
-    const badgeSvg = author.badge === 'blue' ? SVG_ICONS.verifiedBlue :
-                     author.badge === 'gold' ? SVG_ICONS.verifiedGold :
-                     author.badge === 'red' ? SVG_ICONS.verifiedRed : '';
+    const author = this.getAccountById(post.authorId);
+    const badgeSvg = this.renderBadgeSvg(author.badge);
 
     container.innerHTML = `
       <div class="w-prop-card" style="max-width: 520px; margin: 0 auto;">
@@ -879,7 +1065,7 @@ class WuitterApp {
         </div>
 
         <div style="display: flex; gap: 12px; margin-bottom: 12px;">
-          <div class="w-avatar" style="background-color: ${author.avatarBg};">${author.avatar}</div>
+          ${this.renderAvatarHtml(author, 'normal')}
           <div>
             <div style="font-weight: 700; color: #fff; font-size: 0.95rem; display: flex; align-items: center; gap: 4px;">
               ${author.name} ${badgeSvg}
@@ -888,7 +1074,7 @@ class WuitterApp {
           </div>
         </div>
 
-        <div style="font-size: 1.05rem; line-height: 1.5; color: #fff; margin-bottom: 14px; white-space: pre-wrap;">
+        <div style="font-size: 1.05rem; line-height: 1.5; color: #fff; margin-bottom: 14px; white-space: pre-wrap; text-align: left;">
           ${this.formatText(post.text)}
         </div>
 
@@ -896,7 +1082,7 @@ class WuitterApp {
 
         <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--w-border); padding-top: 10px; font-size: 0.8rem; color: var(--w-text-muted); font-family: var(--w-font-mono);">
           <span>${new Date(post.timestamp).toLocaleString('pt-BR')}</span>
-          <span>${post.likes} Curtidas &bull; ${post.rewuits} Re-wuits</span>
+          <span>${post.likes || 0} Curtidas &bull; ${post.rewuits || 0} Re-wuits</span>
         </div>
       </div>
     `;
@@ -904,7 +1090,6 @@ class WuitterApp {
     modal.classList.add('active');
   }
 
-  // Lightbox
   openLightbox(src) {
     const modal = document.getElementById('w-lightbox-modal');
     const img = document.getElementById('w-lightbox-img');
@@ -914,12 +1099,11 @@ class WuitterApp {
     }
   }
 
-  // JSON Export / Import
   exportFeedJson() {
     const data = {
-      version: '1.0',
+      version: '2.0',
       exportedAt: new Date().toISOString(),
-      personas: this.personas,
+      accounts: this.accounts,
       posts: this.posts
     };
     const jsonStr = JSON.stringify(data, null, 2);
@@ -927,7 +1111,7 @@ class WuitterApp {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `wuitter_backup_${Date.now()}.json`;
+    a.download = `wuitter_feed_${Date.now()}.json`;
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -947,12 +1131,12 @@ class WuitterApp {
               this.posts = data.posts;
               this.savePosts();
             }
-            if (data.personas && Array.isArray(data.personas)) {
-              this.personas = data.personas;
-              this.savePersonas();
+            if (data.accounts && Array.isArray(data.accounts)) {
+              this.accounts = data.accounts;
+              this.saveAccounts();
             }
             this.render();
-            alert('Feed e Personas importados com sucesso!');
+            alert('Feed e Contas importados com sucesso!');
           } catch (err) {
             alert('Arquivo JSON inválido.');
           }
@@ -968,7 +1152,6 @@ class WuitterApp {
   }
 }
 
-// Global initialization
 document.addEventListener('DOMContentLoaded', () => {
-  window.wuitter = new WuitterApp();
+  window.wuitter = new WuitterSystem();
 });
