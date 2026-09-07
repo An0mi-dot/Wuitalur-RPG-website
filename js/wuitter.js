@@ -232,7 +232,7 @@ const DEFAULT_ACCOUNTS = [
     hashes: [],
     name: 'Sara Auguil',
     handle: '@sara',
-    bio: 'Aluna do Colégio Integrado Primórdio de Fragktus & barista no Café Névoa. Amante de gatos lunares, arte, chás e alquimia. (Desaparecimento catalogado em 01/08/2061).',
+    bio: 'Aluna do Colégio Integrado Primórdio de Fragktus & barista no Café Névoa. Amante de gatos, arte, chás e alquimia. (Desaparecimento catalogado em 01/08/2061).',
     avatarLetter: 'S',
     avatarImage: 'assets/sara_avatar.jpg',
     avatarColor: '#f43f5e',
@@ -414,12 +414,33 @@ class WuitterSystem {
           // Atualiza e mescla posts da nuvem com os posts do universo
           const remotePosts = Array.isArray(wData.posts) ? wData.posts : [];
           const seedPosts = this.getInitialSeedPosts();
+          const seedMap = new Map();
+          seedPosts.forEach(s => seedMap.set(s.id, s));
           
           const postMap = new Map();
-          // 1. Posts do universo
+          // 1. Posts do universo (dados atualizados de texto, datas e comentarios oficiais)
           seedPosts.forEach(p => postMap.set(p.id, p));
-          // 2. Posts remotos (atualizam os do universo se tiverem curtidas/respostas ou novos posts)
-          remotePosts.forEach(p => postMap.set(p.id, p));
+
+          // 2. Posts remotos (atualizam curtidas/respostas e trazem novos posts criados por usuarios)
+          remotePosts.forEach(p => {
+            if (seedMap.has(p.id)) {
+              const seed = seedMap.get(p.id);
+              postMap.set(p.id, {
+                ...seed,
+                likes: Math.max(seed.likes || 0, p.likes || 0),
+                likedBy: Array.from(new Set([...(seed.likedBy || []), ...(p.likedBy || [])])),
+                rewuits: Math.max(seed.rewuits || 0, p.rewuits || 0),
+                rewuitedBy: Array.from(new Set([...(seed.rewuitedBy || []), ...(p.rewuitedBy || [])])),
+                comments: [
+                  ...seed.comments,
+                  ...(p.comments || []).filter(c => !seed.comments.some(sc => sc.id === c.id))
+                ]
+              });
+            } else {
+              postMap.set(p.id, p);
+            }
+          });
+
           // 3. Posts locais criados pelo usuário
           this.posts.forEach(p => {
             if (!postMap.has(p.id)) postMap.set(p.id, p);
@@ -733,7 +754,7 @@ class WuitterSystem {
                     ${cBadge}
                     <span class="w-inline-reply-handle">${cAuthor.handle}</span>
                     <span class="w-wuit-dot">&bull;</span>
-                    <span class="w-wuit-time">${this.formatTime(c.timestamp, c.timeDisplay || c.customDate)}</span>
+                    <span class="w-wuit-time">${c.timeDisplay || c.customDate || this.formatTime(c.timestamp)}</span>
                 ${c.replyToHandle ? `<div class="w-reply-to-tag-sm">Respondendo a <span class="w-mention" onclick="window.wuitter.filterByMention('${c.replyToHandle.replace('@', '')}')">${c.replyToHandle}</span></div>` : ''}
                 <div class="w-inline-reply-text">${this.formatText(c.text)}</div>
                 <div style="margin-top: 4px; display: flex; align-items: center; gap: 8px;">
@@ -880,7 +901,7 @@ Constança Montenegro e Conselho Diretor de Fragktus.
           {
             id: 'c_seed_encruzilhada_3',
             authorId: 'npc_fauna_verdes',
-            text: `Sara, seu gato lunar não para de arranhar a porta do Café Névoa desde ontem... onde você foi parar? Volta logo, por favor.`,
+            text: `Sara, seu gato não para de arranhar a porta do Café Névoa desde ontem... onde você foi parar? Volta logo, por favor.`,
             timestamp: now - (6 * 60 * 1000),
             timeDisplay: '01/08/2061',
             replyToCommentId: null,
@@ -1131,7 +1152,7 @@ Dica: recalibrem seus cronômetros antes que a meia-noite chegue adiantada.
           {
             id: 'c_seed_viktor_1_3',
             authorId: 'npc_bichinhos_wui',
-            text: `Isso explica por que os gatos lunares passaram a tarde inteira miando fixados nas paredes vazias!`,
+            text: `Isso explica por que os gatos passaram a tarde inteira miando fixados nas paredes vazias!`,
             timestamp: now - (100 * 60 * 1000),
             timeDisplay: '01/08/2061',
             replyToCommentId: null,
@@ -1215,7 +1236,7 @@ O racionamento de energia nos Distritos 3 e 4 vigorará entre 01:00 e 05:00 de s
       {
         id: 'wuit_seed_sara_nevoa_2',
         authorId: 'npc_sara',
-        text: `Acabei de ver uma fumaça arroxeada saindo do bueiro em frente à Torre do Sino. Não sei se era vazamento de resíduo alquímico ou magia clandestina, mas meu gato lunar se recusou terminantemente a passar perto da calçada.
+        text: `Acabei de ver uma fumaça arroxeada saindo do bueiro em frente à Torre do Sino. Não sei se era vazamento de resíduo alquímico ou magia clandestina, mas meu gato se recusou terminantemente a passar perto da calçada.
 
 Alguém mais sentiu cheiro de cobre queimado?
 
@@ -1365,17 +1386,35 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
       this.posts = [];
     }
 
-    // Mescla posts iniciais do universo para manter o feed vivo
+    // Mescla posts iniciais do universo para manter o feed vivo e datas atualizadas
     const seedPosts = this.getInitialSeedPosts();
-    if (!this.posts || this.posts.length === 0) {
-      this.posts = seedPosts;
-    } else {
-      seedPosts.forEach(seed => {
-        if (!this.posts.some(p => p.id === seed.id)) {
-          this.posts.push(seed);
-        }
-      });
-    }
+    const seedMap = new Map();
+    seedPosts.forEach(s => seedMap.set(s.id, s));
+
+    // Atualiza posts salvos no cache local com as novas definicoes de seed
+    this.posts = this.posts.map(p => {
+      if (seedMap.has(p.id)) {
+        const seed = seedMap.get(p.id);
+        return {
+          ...seed,
+          likes: Math.max(seed.likes || 0, p.likes || 0),
+          likedBy: Array.from(new Set([...(seed.likedBy || []), ...(p.likedBy || [])])),
+          rewuits: Math.max(seed.rewuits || 0, p.rewuits || 0),
+          rewuitedBy: Array.from(new Set([...(seed.rewuitedBy || []), ...(p.rewuitedBy || [])])),
+          comments: [
+            ...seed.comments,
+            ...(p.comments || []).filter(c => !seed.comments.some(sc => sc.id === c.id))
+          ]
+        };
+      }
+      return p;
+    });
+
+    seedPosts.forEach(seed => {
+      if (!this.posts.some(p => p.id === seed.id)) {
+        this.posts.push(seed);
+      }
+    });
     this.savePostsLocal();
   }
 
@@ -2425,7 +2464,7 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
                   ${cBadge}
                   <span class="w-inline-reply-handle">${cAuthor.handle}</span>
                   <span class="w-wuit-dot">&bull;</span>
-                  <span class="w-wuit-time">${this.formatTime(c.timestamp, c.timeDisplay || c.customDate)}</span>
+                  <span class="w-wuit-time">${c.timeDisplay || c.customDate || this.formatTime(c.timestamp)}</span>
                 </div>
                 ${c.replyToHandle ? `<div class="w-reply-to-tag-sm">Respondendo a <span class="w-mention" onclick="window.wuitter.filterByMention('${c.replyToHandle.replace('@', '')}')">${c.replyToHandle}</span></div>` : ''}
                 <div class="w-inline-reply-text">${this.formatText(c.text)}</div>
@@ -2459,7 +2498,7 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
               ${badgeSvg}
               <span class="w-wuit-handle" onclick="window.wuitter.viewProfile('${author.id}')">${author.handle}</span>
               <span class="w-wuit-dot">&bull;</span>
-              <span class="w-wuit-time">${this.formatTime(post.timestamp, post.timeDisplay || post.customDate)}</span>
+              <span class="w-wuit-time">${post.timeDisplay || post.customDate || this.formatTime(post.timestamp)}</span>
             </div>
             ${canDelete ? `
               <button class="w-delete-btn" onclick="window.wuitter.deletePost('${post.id}')" title="Excluir Wuit">
@@ -2830,7 +2869,7 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
       </div>
     ` : '';
 
-    const formattedDate = new Date(post.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + ' · ' + new Date(post.timestamp).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short', year: 'numeric' });
+    const formattedDate = post.timeDisplay || post.customDate || (new Date(post.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + ' · ' + new Date(post.timestamp).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short', year: 'numeric' }));
 
     targetPostPreview.innerHTML = `
       <div class="w-modal-tweet-detail">
@@ -2961,7 +3000,7 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
                   ${cBadge}
                   <span class="w-comment-handle" onclick="window.wuitter.viewProfile('${cAuthor.id}'); window.wuitter.closeModals();">${cAuthor.handle}</span>
                   <span class="w-wuit-dot">&bull;</span>
-                  <span class="w-comment-time">${this.formatTime(c.timestamp, c.timeDisplay || c.customDate)}</span>
+                  <span class="w-comment-time">${c.timeDisplay || c.customDate || this.formatTime(c.timestamp)}</span>
                 </div>
                 <div class="w-comment-actions">
                   <button class="w-comment-action-btn" onclick="window.wuitter.setReplyContext('${post.id}', '${c.id}')" title="Responder a ${cAuthor.name}">
@@ -3089,7 +3128,7 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
         ${post.media ? `<div style="border-radius: 8px; overflow: hidden; margin-bottom: 12px; border: 1px solid var(--w-border);"><img src="${post.media}" style="width: 100%; display: block;"></div>` : ''}
 
         <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--w-border); padding-top: 10px; font-size: 0.8rem; color: var(--w-text-muted); font-family: var(--w-font-mono);">
-          <span>${new Date(post.timestamp).toLocaleString('pt-BR')}</span>
+          <span>${post.timeDisplay || post.customDate || new Date(post.timestamp).toLocaleString('pt-BR')}</span>
           <span>${post.likes || 0} Curtidas &bull; ${post.rewuits || 0} Re-wuits</span>
         </div>
       </div>
