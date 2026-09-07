@@ -259,11 +259,11 @@
     </div>
     <div class="w-modal-body">
       <p style="font-size: 0.88rem; color: var(--w-text-muted); margin-bottom: 14px;">
-        Insira o token do seu personagem ou o token do <strong>Mestre</strong> (ex: <code>M9X7</code>) para acessar sua conta no Wuitter.
+        Insira o token do seu personagem ou o token do Mestre para acessar sua conta no Wuitter.
       </p>
       <div class="w-form-group">
         <label class="w-form-label">Código do Token</label>
-        <input type="text" class="w-form-input" id="w-token-input" placeholder="Ex: W4R9, M7Q2, B8T3, M9X7..." style="text-transform: uppercase; font-family: var(--w-font-mono); letter-spacing: 0.08em;" onkeydown="if(event.key==='Enter') window.wuitter.submitTokenFromModal();">
+        <input type="text" class="w-form-input" id="w-token-input" placeholder="Digite seu token..." style="text-transform: uppercase; font-family: var(--w-font-mono); letter-spacing: 0.08em;" onkeydown="if(event.key==='Enter') window.wuitter.submitTokenFromModal();">
       </div>
       <button class="w-btn-post-primary" onclick="window.wuitter.submitTokenFromModal()">
         Entrar no Wuitter
@@ -356,7 +356,7 @@
       </div>
       <div class="w-form-group">
         <label class="w-form-label">Token de Acesso Opcional (para dar ao jogador)</label>
-        <input type="text" class="w-form-input" id="w-new-acc-token" placeholder="Ex: NPC1, RAD9..." style="text-transform: uppercase;">
+        <input type="text" class="w-form-input" id="w-new-acc-token" placeholder="Token de acesso (opcional)" style="text-transform: uppercase;">
       </div>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
         <div class="w-form-group">
