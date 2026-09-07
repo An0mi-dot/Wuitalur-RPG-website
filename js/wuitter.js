@@ -1154,21 +1154,7 @@ class WuitterSystem {
   renderTrends() {
     const container = document.getElementById('w-trends-list');
     if (!container) return;
-
-    const trends = [
-      { tag: 'FiosDoMedo', cat: 'Mistério &bull; Em alta', count: '12,4 mil wuits' },
-      { tag: 'Pesadelo', cat: 'Sobrenatural', count: '8,1 mil wuits' },
-      { tag: 'Conclave', cat: 'Instituição', count: '5,9 mil wuits' },
-      { tag: 'Investigacao', cat: 'Casos sem Solução', count: '3,2 mil wuits' }
-    ];
-
-    container.innerHTML = trends.map(t => `
-      <div class="w-trend-item" onclick="window.wuitter.filterByTag('${t.tag}')">
-        <span class="w-trend-cat">${t.cat}</span>
-        <span class="w-trend-tag">#${t.tag}</span>
-        <span class="w-trend-count">${t.count}</span>
-      </div>
-    `).join('');
+    container.innerHTML = '';
   }
 
   renderMasterPanel() {
