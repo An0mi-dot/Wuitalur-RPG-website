@@ -1445,6 +1445,10 @@ class WuitterSystem {
     const author = this.getAccountById(post.authorId);
     const badgeSvg = this.renderBadgeSvg(author.badge);
 
+    const myId = this.authenticatedAccount ? this.authenticatedAccount.id : null;
+    const isLiked = Boolean(myId && post.likedBy && post.likedBy.includes(myId));
+    const isRewuited = Boolean(myId && post.rewuitedBy && post.rewuitedBy.includes(myId));
+
     const mediaHtml = post.media ? `
       <div class="w-wuit-media" onclick="window.wuitter.openLightbox('${post.media}')">
         <img src="${post.media}" alt="Foto do Wuit" loading="lazy">
