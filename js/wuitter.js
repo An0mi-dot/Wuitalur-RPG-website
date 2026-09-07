@@ -245,16 +245,13 @@ class WuitterSystem {
             }
           }
 
-          // Atualiza contas customizadas da nuvem
-          if (Array.isArray(wData.accounts) && wData.accounts.length > 0) {
-            wData.accounts.forEach(ra => {
-              const idx = this.accounts.findIndex(a => a.id === ra.id);
-              if (idx !== -1) {
-                this.accounts[idx] = ra;
-              } else {
-                this.accounts.push(ra);
-              }
-            });
+          // Atualiza contas customizadas da nuvem (adicionando, atualizando e removendo excluidas)
+          const remoteCustomAccounts = Array.isArray(wData.accounts) ? wData.accounts.filter(a => !a.slot && !a.isMaster && a.name && a.name.toLowerCase() !== 'pindolla') : [];
+          const defaultBaseAccounts = this.accounts.filter(a => a.slot || a.isMaster);
+          const currentCustomAccounts = this.accounts.filter(a => !a.slot && !a.isMaster);
+
+          if (JSON.stringify(currentCustomAccounts) !== JSON.stringify(remoteCustomAccounts)) {
+            this.accounts = [...defaultBaseAccounts, ...remoteCustomAccounts];
             this.saveAccountsLocal();
             hasChanges = true;
           }
@@ -456,6 +453,18 @@ class WuitterSystem {
         }
         break;
       }
+      case 'DELETE_ACCOUNT': {
+        const accountId = data.payload.accountId;
+        if (accountId) {
+          this.accounts = this.accounts.filter(a => a.id !== accountId);
+          if (this.selectedPostingAccountId === accountId) {
+            this.selectedPostingAccountId = this.authenticatedAccount ? this.authenticatedAccount.id : null;
+          }
+          this.saveAccountsLocal();
+          this.render();
+        }
+        break;
+      }
     }
   }
 
@@ -537,8 +546,11 @@ class WuitterSystem {
       }
     } else {
       this.accounts = [...DEFAULT_ACCOUNTS];
-      this.saveAccountsLocal();
     }
+
+    // Remove contas excluidas se ainda estiverem no storage local
+    this.accounts = this.accounts.filter(a => a && a.name && a.name.toLowerCase() !== 'pindolla' && a.handle !== '@pindolla');
+    this.saveAccountsLocal();
 
     const savedPosts = localStorage.getItem(WUITTER_STORAGE_POSTS);
     if (savedPosts) {
@@ -1179,7 +1191,9 @@ class WuitterSystem {
 
     panel.style.display = 'block';
 
-    const renderAccountItem = (acc) => `
+    const renderAccountItem = (acc) => {
+      const isCustom = !acc.slot && !acc.isMaster;
+      return `
       <div class="w-follow-item" style="padding: 8px 12px; border-bottom: 1px solid var(--w-border-subtle); display: flex; align-items: center; justify-content: space-between;">
         <div class="w-persona-info">
           ${this.renderAvatarHtml(acc, 'sm')}
@@ -1188,11 +1202,19 @@ class WuitterSystem {
             <span class="w-persona-handle">${acc.handle} ${acc.isMaster ? '[Mestre]' : ''}</span>
           </div>
         </div>
-        <button class="w-btn-follow" style="padding: 4px 10px; font-size: 0.75rem;" onclick="window.wuitter.openEditProfileModal(window.wuitter.getAccountById('${acc.id}'))">
-          Editar
-        </button>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <button class="w-btn-follow" style="padding: 4px 10px; font-size: 0.75rem;" onclick="window.wuitter.openEditProfileModal(window.wuitter.getAccountById('${acc.id}'))">
+            Editar
+          </button>
+          ${isCustom ? `
+            <button class="w-delete-btn" style="color: var(--w-accent-red); padding: 4px;" onclick="window.wuitter.deleteAccount('${acc.id}')" title="Excluir Conta">
+              ${SVG_ICONS.trash}
+            </button>
+          ` : ''}
+        </div>
       </div>
     `;
+    };
 
     const accountListEl = document.getElementById('w-gm-accounts-list');
     if (accountListEl) {
@@ -1343,6 +1365,27 @@ class WuitterSystem {
     this.closeModals();
     this.render();
     alert('Nova conta cadastrada e sincronizada com sucesso!');
+  }
+
+  async deleteAccount(accountId) {
+    if (!this.isMaster()) return;
+    const acc = this.accounts.find(a => a.id === accountId);
+    if (!acc) return;
+    if (acc.isMaster || acc.slot) {
+      alert('Não é possível excluir contas principais de personagens do sistema.');
+      return;
+    }
+    if (confirm(`Tem certeza que deseja excluir a conta "${acc.name}" (${acc.handle})?`)) {
+      this.accounts = this.accounts.filter(a => a.id !== accountId);
+      if (this.selectedPostingAccountId === accountId) {
+        this.selectedPostingAccountId = this.authenticatedAccount ? this.authenticatedAccount.id : null;
+      }
+      this.saveAccountsLocal();
+      this.broadcastSync('DELETE_ACCOUNT', { accountId: accountId });
+      await this.syncToCloud();
+      this.render();
+      alert(`Conta "${acc.name}" excluída com sucesso.`);
+    }
   }
 
   openCommentsModal(postId) {
