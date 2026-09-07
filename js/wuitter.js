@@ -210,12 +210,12 @@ const DEFAULT_ACCOUNTS = [
   {
     id: 'npc_bichinhos_wui',
     slot: null,
-    tokens: ['BICHINHOS-WUI'],
+    tokens: ['FAUNA-VERDES', 'BICHINHOS-WUI'],
     hashes: [],
-    name: 'Bichinhos & Fauna de Wuitalur',
-    handle: '@bichinhos_wui',
-    bio: 'O lado mais dócil de Wuitalur. Apreciação de mascotes mágicos, furões de éter, corujas mecânicas e animais de estimação dos cidadãos. Envios abertos!',
-    avatarLetter: 'B',
+    name: 'Fauna das Terras Verdes',
+    handle: '@fauna_verdes',
+    bio: 'O lado mais fascinante das Terras Verdes e de Wuitalur. Apreciação de mascotes mágicos, furões de éter, corujas mecânicas e fauna silvestre dos viajantes. Envios abertos!',
+    avatarLetter: 'F',
     avatarImage: '',
     avatarColor: '#10b981',
     badge: 'blue',
@@ -861,7 +861,7 @@ E por favor: parem de deixar seus mascotes mágicos mastigarem os fios de cobre 
             text: `Ele quase virou uma torrada no condensador do balcão! Mas ele ganhou um pedaço de biscoito de aveia e perdoei.`,
             timestamp: now - (90 * 60 * 1000),
             replyToCommentId: 'c_seed_sara_1_1',
-            replyToHandle: '@bichinhos_wui'
+            replyToHandle: '@fauna_verdes'
           },
           {
             id: 'c_seed_sara_1_3',
@@ -888,7 +888,7 @@ E por favor: parem de deixar seus mascotes mágicos mastigarem os fios de cobre 
 
 Protejam essa fofura a todo custo.
 
-#CriaturasDeWu #MascotesMagicos #PaladiumPets`,
+#FaunaDasTerrasVerdes #MascotesMagicos #PaladiumPets`,
         timestamp: now - (5 * 60 * 60 * 1000),
         likes: 98,
         likedBy: [],
@@ -1126,6 +1126,11 @@ Dica: recalibrem seus cronômetros antes que a meia-noite chegue adiantada.
               exists.name = 'Mestre';
               exists.handle = '@mestre';
               exists.badge = 'gold';
+            }
+            if (def.id === 'npc_bichinhos_wui') {
+              exists.name = 'Fauna das Terras Verdes';
+              exists.handle = '@fauna_verdes';
+              exists.avatarLetter = 'F';
             }
             if (!exists.avatarLetter) exists.avatarLetter = (exists.name || 'P').charAt(0).toUpperCase();
           }
