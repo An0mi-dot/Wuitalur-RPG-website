@@ -431,9 +431,9 @@ class WuitterSystem {
                 likedBy: Array.from(new Set([...(seed.likedBy || []), ...(p.likedBy || [])])),
                 rewuits: Math.max(seed.rewuits || 0, p.rewuits || 0),
                 rewuitedBy: Array.from(new Set([...(seed.rewuitedBy || []), ...(p.rewuitedBy || [])])),
-                comments: [
+                comments: seed.lockedReplies ? [] : [
                   ...seed.comments,
-                  ...(p.comments || []).filter(c => !seed.comments.some(sc => sc.id === c.id))
+                  ...(p.comments || []).filter(c => !c.id.startsWith('c_seed_') && !seed.comments.some(sc => sc.id === c.id))
                 ]
               });
             } else {
@@ -1356,9 +1356,9 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
           likedBy: Array.from(new Set([...(seed.likedBy || []), ...(p.likedBy || [])])),
           rewuits: Math.max(seed.rewuits || 0, p.rewuits || 0),
           rewuitedBy: Array.from(new Set([...(seed.rewuitedBy || []), ...(p.rewuitedBy || [])])),
-          comments: [
+          comments: seed.lockedReplies ? [] : [
             ...seed.comments,
-            ...(p.comments || []).filter(c => !seed.comments.some(sc => sc.id === c.id))
+            ...(p.comments || []).filter(c => !c.id.startsWith('c_seed_') && !seed.comments.some(sc => sc.id === c.id))
           ]
         };
       }
