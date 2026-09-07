@@ -656,6 +656,7 @@ body.wuitter-body select {
 }
 
 .w-wuit-card {
+  cursor: pointer;
   display: flex;
   gap: 12px;
   padding: 14px 16px;
@@ -681,7 +682,7 @@ body.wuitter-body select {
 }
 
 .w-wuit-card:hover {
-  background: rgba(255, 255, 255, 0.015);
+  background: rgba(255, 255, 255, 0.025);
 }
 
 .w-wuit-content-area {

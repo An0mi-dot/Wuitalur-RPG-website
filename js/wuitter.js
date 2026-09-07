@@ -1485,7 +1485,7 @@ class WuitterSystem {
     ` : '';
 
     return `
-      <article class="w-wuit-card ${isNew ? 'new-incoming' : ''}" id="post_${post.id}">
+      <article class="w-wuit-card ${isNew ? 'new-incoming' : ''}" id="post_${post.id}" onclick="window.wuitter.handlePostClick(event, '${post.id}')">
         <div class="w-clickable-profile" onclick="window.wuitter.viewProfile('${author.id}')" title="Ver perfil de ${author.name}">
           ${this.renderAvatarHtml(author, 'normal')}
         </div>
@@ -1812,6 +1812,13 @@ class WuitterSystem {
     }
   }
 
+  handlePostClick(event, postId) {
+    if (event.target.closest('button, a, input, textarea, select, .w-clickable-profile, .w-wuit-media, .w-action-btn, .w-delete-btn, .w-inline-reply-item')) {
+      return;
+    }
+    this.openCommentsModal(postId);
+  }
+
   openCommentsModal(postId) {
     const post = this.posts.find(p => p.id === postId);
     if (!post) return;
@@ -1826,34 +1833,72 @@ class WuitterSystem {
     const author = this.getAccountById(post.authorId);
     const badgeSvg = this.renderBadgeSvg(author.badge);
 
+    const myId = this.authenticatedAccount ? this.authenticatedAccount.id : null;
+    const isLiked = myId && post.likedBy && post.likedBy.includes(myId);
+    const isRewuited = myId && post.rewuitedBy && post.rewuitedBy.includes(myId);
+    const commentsCount = post.comments ? post.comments.length : 0;
+    const canDelete = this.isMaster() || (this.authenticatedAccount && this.authenticatedAccount.id === post.authorId);
+
     const mediaHtml = post.media ? `
-      <div style="margin-top: 10px; border-radius: var(--w-radius-md); overflow: hidden; max-height: 220px; border: 1px solid var(--w-border); background: #000; cursor: pointer;" onclick="window.wuitter.openLightbox('${post.media}')">
-        <img src="${post.media}" style="width: 100%; max-height: 220px; object-fit: contain; display: block;" alt="Mídia do Wuit">
+      <div style="margin-top: 12px; border-radius: var(--w-radius-md); overflow: hidden; max-height: 280px; border: 1px solid var(--w-border); background: #000; cursor: pointer;" onclick="window.wuitter.openLightbox('${post.media}')">
+        <img src="${post.media}" style="width: 100%; max-height: 280px; object-fit: contain; display: block;" alt="Mídia do Wuit">
       </div>
     ` : '';
 
+    const formattedDate = new Date(post.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + ' · ' + new Date(post.timestamp).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short', year: 'numeric' });
+
     targetPostPreview.innerHTML = `
-      <div class="w-reply-target-post">
-        <div class="w-reply-target-left">
-          <div class="w-clickable-profile" onclick="window.wuitter.viewProfile('${author.id}'); window.wuitter.closeModals();">
-            ${this.renderAvatarHtml(author, 'normal')}
-          </div>
-          <div class="w-reply-thread-line"></div>
-        </div>
-        <div class="w-reply-target-content">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-            <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-              <span class="w-wuit-name" onclick="window.wuitter.viewProfile('${author.id}'); window.wuitter.closeModals();">${author.name}</span>
-              ${badgeSvg}
-              <span class="w-wuit-handle" onclick="window.wuitter.viewProfile('${author.id}'); window.wuitter.closeModals();">${author.handle}</span>
-              <span class="w-wuit-dot">&bull;</span>
-              <span class="w-wuit-time">${this.formatTime(post.timestamp)}</span>
+      <div class="w-modal-tweet-detail">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="w-clickable-profile" onclick="window.wuitter.viewProfile('${author.id}'); window.wuitter.closeModals();">
+              ${this.renderAvatarHtml(author, 'normal')}
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; gap: 4px;">
+                <span class="w-wuit-name" style="font-size: 1rem;" onclick="window.wuitter.viewProfile('${author.id}'); window.wuitter.closeModals();">${author.name}</span>
+                ${badgeSvg}
+              </div>
+              <div class="w-wuit-handle" style="font-size: 0.85rem;" onclick="window.wuitter.viewProfile('${author.id}'); window.wuitter.closeModals();">${author.handle}</div>
             </div>
           </div>
-          <div style="font-size: 0.98rem; line-height: 1.45; color: #fff; white-space: pre-wrap;">
-            ${this.formatText(post.text)}
-          </div>
-          ${mediaHtml}
+          ${canDelete ? `
+            <button class="w-delete-btn" onclick="window.wuitter.deletePost('${post.id}'); window.wuitter.closeModals();" title="Excluir Wuit">
+              ${SVG_ICONS.trash}
+            </button>
+          ` : ''}
+        </div>
+
+        <div style="font-size: 1.15rem; line-height: 1.5; color: #fff; white-space: pre-wrap; margin-bottom: 12px; word-break: break-word;">
+          ${this.formatText(post.text)}
+        </div>
+
+        ${mediaHtml}
+
+        <div style="padding: 12px 0; border-top: 1px solid var(--w-border-subtle); border-bottom: 1px solid var(--w-border-subtle); margin-top: 12px; font-size: 0.88rem; color: var(--w-text-muted); display: flex; gap: 16px; flex-wrap: wrap;">
+          <span>${formattedDate}</span>
+          <span>&bull;</span>
+          <span><strong style="color: #fff;">${post.likes || 0}</strong> Curtida${(post.likes || 0) === 1 ? '' : 's'}</span>
+          <span><strong style="color: #fff;">${post.rewuits || 0}</strong> Re-wuit${(post.rewuits || 0) === 1 ? '' : 's'}</span>
+          <span><strong style="color: #fff;">${commentsCount}</strong> Resposta${commentsCount === 1 ? '' : 's'}</span>
+        </div>
+
+        <div class="w-wuit-actions" style="margin-top: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--w-border); max-width: 400px;">
+          <button class="w-action-btn reply" title="Responder" onclick="document.getElementById('w-reply-textarea')?.focus()">
+            ${SVG_ICONS.comment}
+            <span>${commentsCount > 0 ? commentsCount : ''}</span>
+          </button>
+          <button class="w-action-btn rewuit ${isRewuited ? 'active' : ''}" onclick="window.wuitter.toggleRewuit('${post.id}').then(() => window.wuitter.openCommentsModal('${post.id}'))" title="Re-wuitar">
+            ${SVG_ICONS.rewuit}
+            <span>${post.rewuits > 0 ? post.rewuits : ''}</span>
+          </button>
+          <button class="w-action-btn like ${isLiked ? 'active' : ''}" onclick="window.wuitter.toggleLike('${post.id}').then(() => window.wuitter.openCommentsModal('${post.id}'))" title="Curtir">
+            ${SVG_ICONS.like}
+            <span>${post.likes > 0 ? post.likes : ''}</span>
+          </button>
+          <button class="w-action-btn share" onclick="window.wuitter.openPropModal('${post.id}')" title="Gerar Cartão de Pista (Prop RPG)">
+            ${SVG_ICONS.share}
+          </button>
         </div>
       </div>
     `;
@@ -1861,9 +1906,9 @@ class WuitterSystem {
     if (replyBoxWrap) {
       if (!this.authenticatedAccount) {
         replyBoxWrap.innerHTML = `
-          <div style="background: rgba(255, 255, 255, 0.03); border: 1px dashed var(--w-border); border-radius: var(--w-radius-md); padding: 12px; text-align: center; margin-bottom: 16px;">
-            <p style="font-size: 0.85rem; color: var(--w-text-muted); margin-bottom: 8px;">Identifique-se com seu token para responder nesta conversa.</p>
-            <button class="w-btn-post-primary" style="font-size: 0.8rem; padding: 6px 14px;" onclick="window.wuitter.openTokenModal()">Autenticar Token</button>
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px dashed var(--w-border); border-radius: var(--w-radius-md); padding: 14px; text-align: center; margin: 14px 0;">
+            <p style="font-size: 0.88rem; color: var(--w-text-muted); margin-bottom: 8px;">Identifique-se com seu token para responder nesta conversa.</p>
+            <button class="w-btn-post-primary" style="font-size: 0.82rem; padding: 6px 14px;" onclick="window.wuitter.openTokenModal()">Autenticar Token</button>
           </div>
         `;
       } else {
@@ -1874,7 +1919,7 @@ class WuitterSystem {
               ${this.renderAvatarHtml(postingAcc, 'normal')}
             </div>
             <div style="flex: 1; min-width: 0;">
-              <div style="font-size: 0.8rem; color: var(--w-text-muted); margin-bottom: 6px;">
+              <div style="font-size: 0.82rem; color: var(--w-text-muted); margin-bottom: 6px;">
                 Em resposta a <span style="color: var(--w-primary); font-weight: 600;">${author.handle}</span>
                 ${this.isMaster() && postingAcc.id !== this.authenticatedAccount.id ? `<span style="color: var(--w-accent-gold); font-weight: 700; margin-left: 6px;">(Postando como ${postingAcc.name})</span>` : ''}
               </div>
@@ -1891,7 +1936,6 @@ class WuitterSystem {
         setTimeout(() => {
           const textarea = document.getElementById('w-reply-textarea');
           if (textarea) {
-            textarea.focus();
             textarea.addEventListener('keydown', (e) => {
               if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
                 e.preventDefault();
@@ -1907,7 +1951,7 @@ class WuitterSystem {
       container.innerHTML = post.comments.map(c => {
         const cAuthor = this.getAccountById(c.authorId);
         const cBadge = this.renderBadgeSvg(cAuthor.badge);
-        const canDelete = this.isMaster() || (this.authenticatedAccount && this.authenticatedAccount.id === c.authorId);
+        const canDeleteComment = this.isMaster() || (this.authenticatedAccount && this.authenticatedAccount.id === c.authorId);
         return `
           <div class="w-comment-item" id="comment_${c.id}">
             <div class="w-clickable-profile" onclick="window.wuitter.viewProfile('${cAuthor.id}'); window.wuitter.closeModals();">
@@ -1922,7 +1966,7 @@ class WuitterSystem {
                   <span class="w-wuit-dot">&bull;</span>
                   <span class="w-comment-time">${this.formatTime(c.timestamp)}</span>
                 </div>
-                ${canDelete ? `
+                ${canDeleteComment ? `
                   <button class="w-delete-btn" onclick="window.wuitter.deleteComment('${post.id}', '${c.id}')" title="Excluir Resposta">
                     ${SVG_ICONS.trash}
                   </button>
@@ -1934,7 +1978,7 @@ class WuitterSystem {
         `;
       }).join('');
     } else {
-      container.innerHTML = `<p style="color: var(--w-text-muted); font-size: 0.88rem; text-align: center; padding: 20px 0;">Nenhuma resposta nesta conversa ainda. Seja o primeiro a responder!</p>`;
+      container.innerHTML = `<p style="color: var(--w-text-muted); font-size: 0.88rem; text-align: center; padding: 24px 0;">Nenhuma resposta nesta conversa ainda. Seja o primeiro a responder!</p>`;
     }
 
     modal.classList.add('active');
