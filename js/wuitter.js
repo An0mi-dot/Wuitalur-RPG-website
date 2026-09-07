@@ -728,6 +728,60 @@ class WuitterSystem {
     };
   }
 
+  async optimizeImage(fileOrBlobOrDataUrl, maxWidth = 1200, maxHeight = 1200, quality = 0.8) {
+    if (!fileOrBlobOrDataUrl) return '';
+    return new Promise((resolve) => {
+      const processImg = (src) => {
+        const img = new Image();
+        img.onload = () => {
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxWidth || height > maxHeight) {
+            if (width > height) {
+              height = Math.round((height * maxWidth) / width);
+              width = maxWidth;
+            } else {
+              width = Math.round((width * maxHeight) / height);
+              height = maxHeight;
+            }
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // WebP ou JPEG comprimido
+          let dataUrl = canvas.toDataURL('image/webp', quality);
+          if (!dataUrl.startsWith('data:image/webp')) {
+            dataUrl = canvas.toDataURL('image/jpeg', quality);
+          }
+          resolve(dataUrl);
+        };
+        img.onerror = () => {
+          // Em caso de erro na decodificação, retorna original
+          resolve(typeof fileOrBlobOrDataUrl === 'string' ? fileOrBlobOrDataUrl : '');
+        };
+        img.src = src;
+      };
+
+      if (typeof fileOrBlobOrDataUrl === 'string') {
+        if (fileOrBlobOrDataUrl.startsWith('data:image')) {
+          processImg(fileOrBlobOrDataUrl);
+        } else {
+          resolve(fileOrBlobOrDataUrl);
+        }
+      } else {
+        const reader = new FileReader();
+        reader.onload = (e) => processImg(e.target.result);
+        reader.onerror = () => resolve('');
+        reader.readAsDataURL(fileOrBlobOrDataUrl);
+      }
+    });
+  }
+
   bindEvents() {
     document.querySelectorAll('.w-feed-tab').forEach(tab => {
       tab.addEventListener('click', () => {
@@ -751,21 +805,24 @@ class WuitterSystem {
         }
       });
 
-      textarea.addEventListener('paste', (e) => {
+      textarea.addEventListener('paste', async (e) => {
         const items = (e.clipboardData || e.originalEvent.clipboardData).items;
         for (let index in items) {
           const item = items[index];
           if (item.kind === 'file') {
             const blob = item.getAsFile();
-            if (blob.type.startsWith('image/')) {
+            if (blob && blob.type.startsWith('image/')) {
               e.preventDefault();
-              const reader = new FileReader();
-              reader.onload = (event) => {
-                this.pendingImageBase64 = event.target.result;
-                this.showImagePreview(this.pendingImageBase64);
-                if (postBtn && this.authenticatedAccount) postBtn.disabled = false;
-              };
-              reader.readAsDataURL(blob);
+              try {
+                const optimized = await this.optimizeImage(blob, 1200, 1200, 0.8);
+                if (optimized) {
+                  this.pendingImageBase64 = optimized;
+                  this.showImagePreview(this.pendingImageBase64);
+                  if (postBtn && this.authenticatedAccount) postBtn.disabled = false;
+                }
+              } catch(err) {
+                console.warn('Erro ao processar imagem colada:', err);
+              }
             } else {
               alert('Apenas fotos e imagens podem ser anexadas (vídeos não são permitidos).');
             }
@@ -782,7 +839,7 @@ class WuitterSystem {
 
     const imgInput = document.getElementById('w-compose-image-input');
     if (imgInput) {
-      imgInput.addEventListener('change', (e) => {
+      imgInput.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (file) {
           if (!file.type.startsWith('image/')) {
@@ -790,13 +847,16 @@ class WuitterSystem {
             imgInput.value = '';
             return;
           }
-          const reader = new FileReader();
-          reader.onload = (re) => {
-            this.pendingImageBase64 = re.target.result;
-            this.showImagePreview(this.pendingImageBase64);
-            if (postBtn && this.authenticatedAccount) postBtn.disabled = false;
-          };
-          reader.readAsDataURL(file);
+          try {
+            const optimized = await this.optimizeImage(file, 1200, 1200, 0.8);
+            if (optimized) {
+              this.pendingImageBase64 = optimized;
+              this.showImagePreview(this.pendingImageBase64);
+              if (postBtn && this.authenticatedAccount) postBtn.disabled = false;
+            }
+          } catch(err) {
+            console.warn('Erro ao processar arquivo de imagem:', err);
+          }
         }
       });
     }
@@ -901,6 +961,13 @@ class WuitterSystem {
 
     const postingAcc = this.getPostingAccount();
 
+    let finalMedia = this.pendingImageBase64 || '';
+    if (finalMedia && finalMedia.startsWith('data:image') && finalMedia.length > 150000) {
+      try {
+        finalMedia = await this.optimizeImage(finalMedia, 1200, 1200, 0.78);
+      } catch(e) {}
+    }
+
     const newPost = {
       id: 'wuit_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
       authorId: postingAcc.id,
@@ -911,7 +978,7 @@ class WuitterSystem {
       rewuits: 0,
       rewuitedBy: [],
       comments: [],
-      media: this.pendingImageBase64 || ''
+      media: finalMedia
     };
 
     this.posts.unshift(newPost);
