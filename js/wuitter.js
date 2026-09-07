@@ -1,6 +1,6 @@
 /**
- * WUITTER — Sistema de Rede Social In-Universe de Wuitalur RPG
- * Sincronização em Tempo Real (Supabase Realtime WebSocket + BroadcastChannel Local), Zero Emojis
+ * WUITTER — Rede Social In-Universe de Wuitalur RPG
+ * Sincronização Persistente em Nuvem (Supabase DB + WebSocket + Polling), Zero Emojis
  */
 
 const WUITTER_STORAGE_POSTS = 'wuitter_posts_v2';
@@ -177,41 +177,155 @@ class WuitterSystem {
     this.searchQuery = '';
     this.pendingImageBase64 = '';
 
-    // Realtime Channels
+    // Supabase Cloud & Realtime
     this.supabase = null;
     this.realtimeChannel = null;
     this.localBroadcast = null;
-    this.isRealtimeConnected = false;
+    this.isSyncing = false;
+    this.lastCloudSyncTime = 0;
 
     this.init();
   }
 
   async init() {
-    this.loadAccounts();
-    this.loadPosts();
+    this.loadLocalCache();
     await this.authenticateWithSavedToken();
-    this.initRealtimeSync();
+    this.initSupabaseClient();
     this.bindEvents();
     this.render();
+
+    // Busca imediata do banco de dados na nuvem
+    await this.fetchCloudFeed();
+
+    // Inicia ouvintes de tempo real e polling contínuo
+    this.initRealtimeSubscriptions();
+    this.startBackgroundSync();
   }
 
-  // ---- SINCRONIZAÇÃO EM TEMPO REAL (SUPABASE WEBSOCKET & BROADCAST LOCAL) ----
-  initRealtimeSync() {
-    // 1. Canal Local de Navegador (entre abas abertas)
+  initSupabaseClient() {
+    try {
+      if (window.supabase && SUPABASE_CONFIG.url && SUPABASE_CONFIG.key) {
+        this.supabase = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.key);
+      }
+    } catch(err) {
+      console.warn('Erro ao inicializar Supabase client:', err);
+    }
+  }
+
+  // ---- PERSISTÊNCIA NA NUVEM (SUPABASE) ----
+  async fetchCloudFeed(silent = false) {
+    if (!this.supabase) return;
+
+    try {
+      const { data, error } = await this.supabase
+        .from('personagens')
+        .select('atributos')
+        .eq('id', 3)
+        .single();
+
+      if (error) {
+        if (!silent) console.warn('Erro ao carregar Wuitter do Supabase:', error);
+        return;
+      }
+
+      if (data && data.atributos) {
+        const rawAtributos = typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos;
+        const wData = rawAtributos._wuitter;
+
+        if (wData) {
+          let hasChanges = false;
+
+          // Atualiza posts da nuvem
+          if (Array.isArray(wData.posts)) {
+            const currentJson = JSON.stringify(this.posts);
+            const remoteJson = JSON.stringify(wData.posts);
+            if (currentJson !== remoteJson) {
+              this.posts = wData.posts;
+              this.savePostsLocal();
+              hasChanges = true;
+            }
+          }
+
+          // Atualiza contas customizadas da nuvem
+          if (Array.isArray(wData.accounts) && wData.accounts.length > 0) {
+            wData.accounts.forEach(ra => {
+              const idx = this.accounts.findIndex(a => a.id === ra.id);
+              if (idx !== -1) {
+                this.accounts[idx] = ra;
+              } else {
+                this.accounts.push(ra);
+              }
+            });
+            this.saveAccountsLocal();
+            hasChanges = true;
+          }
+
+          if (hasChanges) {
+            this.render();
+          }
+        }
+      }
+    } catch(err) {
+      if (!silent) console.warn('Exceção ao buscar feed da nuvem:', err);
+    }
+  }
+
+  async syncToCloud() {
+    if (!this.supabase || this.isSyncing) return;
+    this.isSyncing = true;
+
+    try {
+      // 1. Busca os atributos atuais para não sobrescrever dados da mesa
+      const { data: currentRecord } = await this.supabase
+        .from('personagens')
+        .select('atributos')
+        .eq('id', 3)
+        .single();
+
+      let atributosObj = {};
+      if (currentRecord && currentRecord.atributos) {
+        atributosObj = typeof currentRecord.atributos === 'string' ? JSON.parse(currentRecord.atributos) : currentRecord.atributos;
+      }
+
+      // Adiciona / atualiza o namespace _wuitter com posts e contas
+      atributosObj._wuitter = {
+        posts: this.posts.slice(0, 150), // mantem até 150 posts recentes
+        accounts: this.accounts.filter(a => !a.slot), // contas customizadas
+        updatedAt: Date.now()
+      };
+
+      // 2. Grava no Supabase
+      await this.supabase
+        .from('personagens')
+        .update({
+          atributos: atributosObj,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', 3);
+
+      this.lastCloudSyncTime = Date.now();
+    } catch(err) {
+      console.warn('Erro ao sincronizar Wuitter com a nuvem:', err);
+    } finally {
+      this.isSyncing = false;
+    }
+  }
+
+  // ---- SINCRONIZAÇÃO EM TEMPO REAL (WEBSOCKET + POLLING) ----
+  initRealtimeSubscriptions() {
+    // 1. Canal Local de Navegador (entre abas)
     try {
       if (typeof BroadcastChannel !== 'undefined') {
-        this.localBroadcast = new BroadcastChannel('wuitter_local_sync_v2');
+        this.localBroadcast = new BroadcastChannel('wuitter_local_sync_v3');
         this.localBroadcast.onmessage = (e) => {
           if (e.data) {
             this.handleIncomingSync(e.data);
           }
         };
       }
-    } catch(err) {
-      console.warn('BroadcastChannel local indisponível:', err);
-    }
+    } catch(err) {}
 
-    // Ouvinte de storage para redundância local
+    // Storage local cross-tab
     window.addEventListener('storage', (e) => {
       if (e.key === WUITTER_STORAGE_POSTS && e.newValue) {
         try {
@@ -219,56 +333,30 @@ class WuitterSystem {
           this.renderFeed();
         } catch(err) {}
       }
-      if (e.key === WUITTER_STORAGE_ACCOUNTS && e.newValue) {
-        try {
-          this.accounts = JSON.parse(e.newValue);
-          this.render();
-        } catch(err) {}
-      }
     });
 
-    // 2. Supabase Realtime WebSocket Global (todos os jogadores e mestre na internet)
-    try {
-      if (window.supabase && SUPABASE_CONFIG.url && SUPABASE_CONFIG.key) {
-        this.supabase = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.key);
-        
-        this.realtimeChannel = this.supabase.channel('wuitter_global_realtime', {
-          config: {
-            broadcast: { self: false, ack: false }
+    // 2. Supabase Realtime (Postgres Changes + Broadcast WebSocket)
+    if (this.supabase) {
+      this.realtimeChannel = this.supabase
+        .channel('wuitter_realtime_channel')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'personagens' }, (payload) => {
+          // Atualização recebida do banco de dados na nuvem
+          this.fetchCloudFeed(true);
+        })
+        .on('broadcast', { event: 'wuitter_event' }, (msg) => {
+          if (msg && msg.payload) {
+            this.handleIncomingSync(msg.payload);
           }
-        });
-
-        this.realtimeChannel
-          .on('broadcast', { event: 'wuitter_event' }, (message) => {
-            if (message && message.payload) {
-              this.handleIncomingSync(message.payload);
-            }
-          })
-          .subscribe((status) => {
-            const badge = document.getElementById('w-realtime-badge');
-            if (status === 'SUBSCRIBED') {
-              this.isRealtimeConnected = true;
-              if (badge) {
-                badge.classList.add('online');
-                const textEl = badge.querySelector('.w-realtime-text');
-                if (textEl) textEl.textContent = 'Tempo Real Ativo';
-              }
-              console.log('Wuitter Realtime conectado com sucesso via WebSocket.');
-              // Solicita feed atualizado se necessário
-              this.broadcastSync('REQUEST_SYNC', {});
-            } else if (status === 'CLOSED' || status === 'CHANNEL_ERROR') {
-              this.isRealtimeConnected = false;
-              if (badge) {
-                badge.classList.remove('online');
-                const textEl = badge.querySelector('.w-realtime-text');
-                if (textEl) textEl.textContent = 'Modo Local';
-              }
-            }
-          });
-      }
-    } catch(err) {
-      console.warn('Supabase Realtime não pôde ser iniciado:', err);
+        })
+        .subscribe();
     }
+  }
+
+  startBackgroundSync() {
+    // Polling inteligente a cada 4 segundos como garantia de tempo real
+    setInterval(() => {
+      this.fetchCloudFeed(true);
+    }, 4000);
   }
 
   broadcastSync(action, payload) {
@@ -279,24 +367,18 @@ class WuitterSystem {
       senderToken: this.myToken
     };
 
-    // 1. Envia via BroadcastChannel local (0ms de latência)
     if (this.localBroadcast) {
-      try {
-        this.localBroadcast.postMessage(message);
-      } catch(e) {}
+      try { this.localBroadcast.postMessage(message); } catch(e) {}
     }
 
-    // 2. Envia via Supabase Realtime WebSocket
-    if (this.realtimeChannel && this.isRealtimeConnected) {
+    if (this.realtimeChannel) {
       try {
         this.realtimeChannel.send({
           type: 'broadcast',
           event: 'wuitter_event',
           payload: message
         });
-      } catch(e) {
-        console.warn('Erro ao enviar evento realtime:', e);
-      }
+      } catch(e) {}
     }
   }
 
@@ -308,7 +390,7 @@ class WuitterSystem {
         const post = data.payload.post;
         if (post && !this.posts.some(p => p.id === post.id)) {
           this.posts.unshift(post);
-          this.savePosts();
+          this.savePostsLocal();
           this.renderFeed(post.id);
         }
         break;
@@ -317,7 +399,7 @@ class WuitterSystem {
         const postId = data.payload.postId;
         if (postId) {
           this.posts = this.posts.filter(p => p.id !== postId);
-          this.savePosts();
+          this.savePostsLocal();
           this.renderFeed();
         }
         break;
@@ -328,7 +410,7 @@ class WuitterSystem {
         if (post) {
           post.likedBy = likedBy;
           post.likes = likes;
-          this.savePosts();
+          this.savePostsLocal();
           this.updatePostStatsInDOM(postId);
         }
         break;
@@ -339,7 +421,7 @@ class WuitterSystem {
         if (post) {
           post.rewuitedBy = rewuitedBy;
           post.rewuits = rewuits;
-          this.savePosts();
+          this.savePostsLocal();
           this.updatePostStatsInDOM(postId);
         }
         break;
@@ -351,9 +433,8 @@ class WuitterSystem {
           if (!post.comments) post.comments = [];
           if (!post.comments.some(c => c.id === comment.id)) {
             post.comments.push(comment);
-            this.savePosts();
+            this.savePostsLocal();
             this.updatePostStatsInDOM(postId);
-            // Se o modal de comentários desse post estiver aberto, atualiza
             const modal = document.getElementById('w-comments-modal');
             if (modal && modal.classList.contains('active')) {
               this.openCommentsModal(postId);
@@ -371,39 +452,7 @@ class WuitterSystem {
           } else {
             this.accounts.push(acc);
           }
-          this.saveAccounts();
-          this.render();
-        }
-        break;
-      }
-      case 'REQUEST_SYNC': {
-        // Se formos o mestre ou tivermos posts, enviamos o feed atualizado
-        if (this.posts.length > 0) {
-          this.broadcastSync('SYNC_RESPONSE', { posts: this.posts, accounts: this.accounts });
-        }
-        break;
-      }
-      case 'SYNC_RESPONSE': {
-        const remotePosts = data.payload.posts;
-        const remoteAccounts = data.payload.accounts;
-        if (remotePosts && Array.isArray(remotePosts) && remotePosts.length >= this.posts.length) {
-          // Mesclar posts
-          const map = new Map();
-          [...remotePosts, ...this.posts].forEach(p => {
-            if (!map.has(p.id)) map.set(p.id, p);
-          });
-          this.posts = Array.from(map.values()).sort((a,b) => b.timestamp - a.timestamp);
-          this.savePosts();
-          this.renderFeed();
-        }
-        if (remoteAccounts && Array.isArray(remoteAccounts)) {
-          remoteAccounts.forEach(ra => {
-            const exists = this.accounts.find(a => a.id === ra.id);
-            if (!exists) {
-              this.accounts.push(ra);
-            }
-          });
-          this.saveAccounts();
+          this.saveAccountsLocal();
           this.render();
         }
         break;
@@ -463,12 +512,11 @@ class WuitterSystem {
     }
   }
 
-  loadAccounts() {
-    const saved = localStorage.getItem(WUITTER_STORAGE_ACCOUNTS);
-    if (saved) {
+  loadLocalCache() {
+    const savedAcc = localStorage.getItem(WUITTER_STORAGE_ACCOUNTS);
+    if (savedAcc) {
       try {
-        this.accounts = JSON.parse(saved);
-        // Garante que todas as contas padrão existam e tenham os tokens mais recentes
+        this.accounts = JSON.parse(savedAcc);
         DEFAULT_ACCOUNTS.forEach(def => {
           const exists = this.accounts.find(a => a.id === def.id);
           if (!exists) {
@@ -490,29 +538,26 @@ class WuitterSystem {
       }
     } else {
       this.accounts = [...DEFAULT_ACCOUNTS];
-      this.saveAccounts();
+      this.saveAccountsLocal();
     }
-  }
 
-  saveAccounts() {
-    localStorage.setItem(WUITTER_STORAGE_ACCOUNTS, JSON.stringify(this.accounts));
-  }
-
-  loadPosts() {
-    const saved = localStorage.getItem(WUITTER_STORAGE_POSTS);
-    if (saved) {
+    const savedPosts = localStorage.getItem(WUITTER_STORAGE_POSTS);
+    if (savedPosts) {
       try {
-        this.posts = JSON.parse(saved);
+        this.posts = JSON.parse(savedPosts);
       } catch (e) {
         this.posts = [];
       }
     } else {
       this.posts = [];
-      this.savePosts();
     }
   }
 
-  savePosts() {
+  saveAccountsLocal() {
+    localStorage.setItem(WUITTER_STORAGE_ACCOUNTS, JSON.stringify(this.accounts));
+  }
+
+  savePostsLocal() {
     localStorage.setItem(WUITTER_STORAGE_POSTS, JSON.stringify(this.posts));
   }
 
@@ -528,7 +573,6 @@ class WuitterSystem {
     const token = rawToken.trim().toUpperCase();
     const tokenHash = await this.sha256(token);
 
-    // 1. Verifica se é Mestre por token direto ou hash
     const isDirectMaster = MASTER_PLAIN_TOKENS.includes(token) || MASTER_HASHES.includes(tokenHash) || MASTER_HASHES.includes(token.toLowerCase());
 
     let matched = null;
@@ -540,7 +584,6 @@ class WuitterSystem {
         this.accounts.unshift(matched);
       }
     } else {
-      // Procura conta de personagem
       matched = this.accounts.find(acc => {
         if (acc.tokens && acc.tokens.some(t => t.toUpperCase() === token)) return true;
         if (acc.hashes && (acc.hashes.includes(tokenHash) || acc.hashes.includes(token.toLowerCase()))) return true;
@@ -613,7 +656,6 @@ class WuitterSystem {
   }
 
   bindEvents() {
-    // Abas de Feed
     document.querySelectorAll('.w-feed-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('.w-feed-tab').forEach(t => t.classList.remove('active'));
@@ -623,7 +665,6 @@ class WuitterSystem {
       });
     });
 
-    // Textarea do Composer
     const textarea = document.getElementById('w-compose-input');
     const charCounter = document.getElementById('w-char-counter');
     const postBtn = document.getElementById('w-btn-post');
@@ -637,7 +678,6 @@ class WuitterSystem {
         }
       });
 
-      // Suporte para colar fotos da área de transferência (Ctrl+V)
       textarea.addEventListener('paste', (e) => {
         const items = (e.clipboardData || e.originalEvent.clipboardData).items;
         for (let index in items) {
@@ -661,14 +701,12 @@ class WuitterSystem {
       });
     }
 
-    // Botão de Publicar Wuit
     if (postBtn) {
       postBtn.addEventListener('click', () => {
         this.submitWuit();
       });
     }
 
-    // Upload de Foto Local (File Input) — Apenas fotos/imagens, SEM VÍDEO
     const imgInput = document.getElementById('w-compose-image-input');
     if (imgInput) {
       imgInput.addEventListener('change', (e) => {
@@ -690,7 +728,6 @@ class WuitterSystem {
       });
     }
 
-    // Foto por Link / URL
     const imgUrlBtn = document.getElementById('w-tool-img-url');
     if (imgUrlBtn) {
       imgUrlBtn.addEventListener('click', () => {
@@ -703,7 +740,6 @@ class WuitterSystem {
       });
     }
 
-    // Remover Preview da Imagem
     const removePreviewBtn = document.getElementById('w-remove-preview-btn');
     if (removePreviewBtn) {
       removePreviewBtn.addEventListener('click', () => {
@@ -717,7 +753,6 @@ class WuitterSystem {
       });
     }
 
-    // Barra de Busca
     const searchInput = document.getElementById('w-search-input');
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
@@ -726,7 +761,6 @@ class WuitterSystem {
       });
     }
 
-    // Ações do Mestre
     const btnNewAccount = document.getElementById('w-gm-new-account');
     if (btnNewAccount) {
       btnNewAccount.addEventListener('click', () => this.openNewAccountModal());
@@ -742,7 +776,6 @@ class WuitterSystem {
       btnImportJson.addEventListener('click', () => this.importFeedJson());
     }
 
-    // Seletor de Persona para postar (Mestre)
     const masterAccountSelector = document.getElementById('w-master-account-select');
     if (masterAccountSelector) {
       masterAccountSelector.addEventListener('change', (e) => {
@@ -761,7 +794,7 @@ class WuitterSystem {
     }
   }
 
-  submitWuit() {
+  async submitWuit() {
     if (!this.authenticatedAccount) {
       this.openTokenModal();
       return;
@@ -788,10 +821,7 @@ class WuitterSystem {
     };
 
     this.posts.unshift(newPost);
-    this.savePosts();
-
-    // Transmite instantaneamente para todos os outros usuários conectados via WebSocket
-    this.broadcastSync('NEW_POST', { post: newPost });
+    this.savePostsLocal();
 
     // Reset Compose Box
     if (textarea) textarea.value = '';
@@ -806,6 +836,10 @@ class WuitterSystem {
     if (postBtn) postBtn.disabled = true;
 
     this.renderFeed(newPost.id);
+
+    // Transmite instantaneamente para os outros usuários e grava no Supabase Cloud
+    this.broadcastSync('NEW_POST', { post: newPost });
+    await this.syncToCloud();
   }
 
   render() {
@@ -882,7 +916,6 @@ class WuitterSystem {
       avatarEl.innerHTML = this.renderAvatarHtml(postingAcc, 'normal');
     }
 
-    // Seletor de contas para o Mestre
     const masterSelectWrap = document.getElementById('w-master-selector-wrap');
     if (masterSelectWrap) {
       if (this.isMaster()) {
@@ -1055,7 +1088,7 @@ class WuitterSystem {
     `;
   }
 
-  toggleLike(postId) {
+  async toggleLike(postId) {
     if (!this.authenticatedAccount) {
       this.openTokenModal();
       return;
@@ -1074,14 +1107,14 @@ class WuitterSystem {
       post.likes = (post.likes || 0) + 1;
     }
 
-    this.savePosts();
+    this.savePostsLocal();
     this.updatePostStatsInDOM(postId);
 
-    // Transmite a curtida em tempo real
     this.broadcastSync('TOGGLE_LIKE', { postId: postId, likedBy: post.likedBy, likes: post.likes });
+    await this.syncToCloud();
   }
 
-  toggleRewuit(postId) {
+  async toggleRewuit(postId) {
     if (!this.authenticatedAccount) {
       this.openTokenModal();
       return;
@@ -1100,21 +1133,21 @@ class WuitterSystem {
       post.rewuits = (post.rewuits || 0) + 1;
     }
 
-    this.savePosts();
+    this.savePostsLocal();
     this.updatePostStatsInDOM(postId);
 
-    // Transmite o re-wuit em tempo real
     this.broadcastSync('TOGGLE_REWUIT', { postId: postId, rewuitedBy: post.rewuitedBy, rewuits: post.rewuits });
+    await this.syncToCloud();
   }
 
-  deletePost(postId) {
+  async deletePost(postId) {
     if (confirm('Tem certeza que deseja excluir este Wuit?')) {
       this.posts = this.posts.filter(p => p.id !== postId);
-      this.savePosts();
+      this.savePostsLocal();
       this.renderFeed();
 
-      // Transmite a exclusão em tempo real para os demais usuários
       this.broadcastSync('DELETE_POST', { postId: postId });
+      await this.syncToCloud();
     }
   }
 
@@ -1218,7 +1251,6 @@ class WuitterSystem {
     document.getElementById('w-edit-avatar-color').value = account.avatarColor || '#ff1133';
     document.getElementById('w-edit-avatar-img').value = account.avatarImage || '';
 
-    // Selo de verificado: apenas o Mestre pode alterar
     const badgeGroup = document.getElementById('w-edit-badge-group');
     if (badgeGroup) {
       badgeGroup.style.display = this.isMaster() ? 'block' : 'none';
@@ -1228,7 +1260,7 @@ class WuitterSystem {
     modal.classList.add('active');
   }
 
-  saveProfileChanges() {
+  async saveProfileChanges() {
     const targetId = document.getElementById('w-edit-target-id').value;
     const acc = this.accounts.find(a => a.id === targetId);
     if (!acc) return;
@@ -1259,12 +1291,13 @@ class WuitterSystem {
       if (badgeSelect) acc.badge = badgeSelect.value;
     }
 
-    this.saveAccounts();
+    this.saveAccountsLocal();
     this.broadcastSync('UPDATE_ACCOUNT', { account: acc });
+    await this.syncToCloud();
 
     this.closeModals();
     this.render();
-    alert('Perfil atualizado com sucesso!');
+    alert('Perfil atualizado e sincronizado com sucesso!');
   }
 
   openNewAccountModal() {
@@ -1273,7 +1306,7 @@ class WuitterSystem {
     if (modal) modal.classList.add('active');
   }
 
-  saveNewAccount() {
+  async saveNewAccount() {
     if (!this.isMaster()) return;
 
     const name = document.getElementById('w-new-acc-name').value.trim();
@@ -1306,12 +1339,13 @@ class WuitterSystem {
     };
 
     this.accounts.push(newAcc);
-    this.saveAccounts();
+    this.saveAccountsLocal();
     this.broadcastSync('UPDATE_ACCOUNT', { account: newAcc });
+    await this.syncToCloud();
 
     this.closeModals();
     this.render();
-    alert('Nova conta cadastrada com sucesso!');
+    alert('Nova conta cadastrada e sincronizada com sucesso!');
   }
 
   openCommentsModal(postId) {
@@ -1357,7 +1391,7 @@ class WuitterSystem {
     }
 
     if (sendBtn) {
-      sendBtn.onclick = () => {
+      sendBtn.onclick = async () => {
         if (!this.authenticatedAccount) {
           this.openTokenModal();
           return;
@@ -1378,11 +1412,11 @@ class WuitterSystem {
         if (!post.comments) post.comments = [];
         post.comments.push(newComment);
 
-        this.savePosts();
+        this.savePostsLocal();
         this.updatePostStatsInDOM(postId);
 
-        // Transmite o comentário em tempo real
         this.broadcastSync('ADD_COMMENT', { postId: postId, comment: newComment });
+        await this.syncToCloud();
 
         if (commentInput) commentInput.value = '';
         this.openCommentsModal(postId);
@@ -1473,20 +1507,20 @@ class WuitterSystem {
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = (re) => {
+        reader.onload = async (re) => {
           try {
             const data = JSON.parse(re.target.result);
             if (data.posts && Array.isArray(data.posts)) {
               this.posts = data.posts;
-              this.savePosts();
+              this.savePostsLocal();
             }
             if (data.accounts && Array.isArray(data.accounts)) {
               this.accounts = data.accounts;
-              this.saveAccounts();
+              this.saveAccountsLocal();
             }
-            this.broadcastSync('SYNC_RESPONSE', { posts: this.posts, accounts: this.accounts });
             this.render();
-            alert('Feed e Contas importados e sincronizados com sucesso!');
+            await this.syncToCloud();
+            alert('Feed e Contas importados e sincronizados com sucesso na Nuvem!');
           } catch (err) {
             alert('Arquivo JSON inválido.');
           }
