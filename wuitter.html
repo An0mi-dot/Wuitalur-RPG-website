@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wuitter — Rede Social In-Universe — Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/variables.css?v=3.5">
-  <link rel="stylesheet" href="css/wuitter.css?v=3.5">
+  <link rel="stylesheet" href="css/variables.css?v=3.6">
+  <link rel="stylesheet" href="css/wuitter.css?v=3.6">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="wuitter-body">
@@ -430,12 +430,29 @@
 </div>
 
 <!-- ============================================================
+     MODAL: SEGUIDORES & SEGUINDO (CONEXÕES)
+     ============================================================ -->
+<div class="w-modal-overlay" id="w-connections-modal">
+  <div class="w-modal-card" style="max-width: 500px;">
+    <div class="w-modal-header">
+      <h3 class="w-modal-title" id="w-connections-modal-title">Seguidores</h3>
+      <button class="w-modal-close" onclick="window.wuitter.closeModals()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="w-modal-body" style="padding: 0; max-height: 420px; overflow-y: auto;">
+      <div id="w-connections-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
      MODAL: LIGHTBOX DE IMAGEM
      ============================================================ -->
 <div class="w-modal-overlay" id="w-lightbox-modal" onclick="window.wuitter.closeModals()">
   <img class="w-lightbox-img" id="w-lightbox-img" src="" alt="Zoom da Foto">
 </div>
 
-<script src="js/wuitter.js?v=3.5"></script>
+<script src="js/wuitter.js?v=3.6"></script>
 </body>
 </html>

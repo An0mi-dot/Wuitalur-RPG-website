@@ -55,6 +55,10 @@ const DEFAULT_ACCOUNTS = [
   },
   {
     id: 'char_1',
+    followingCount: 38,
+    followersCount: 312,
+    followingList: ['npc_sara', 'char_2', 'char_3', 'char_4', 'char_5', 'char_6', 'char_7', 'char_8', 'npc_gazeta_paladium'],
+    followersList: ['npc_sara', 'char_2', 'char_3', 'char_4', 'char_5', 'char_6', 'char_7', 'char_8'],
     slot: 1,
     tokens: ['X7V2', 'WUI-X7V2-THUL'],
     hashes: ['2dd19af57e1afab99db2a52767841b4188121375b4e107e25f1e19b5a08074b7', '67444813cdcd8add28ec10fe6184264bd4acddcd339083da3cee52779ef2b52f'],
@@ -69,6 +73,10 @@ const DEFAULT_ACCOUNTS = [
   },
   {
     id: 'char_2',
+    followingCount: 29,
+    followersCount: 284,
+    followingList: ['npc_sara', 'char_1', 'char_3', 'char_4', 'char_5', 'char_6', 'char_7', 'char_8', 'npc_viktor_cronista'],
+    followersList: ['npc_sara', 'char_1', 'char_3', 'char_4', 'char_5', 'char_6', 'char_7', 'char_8'],
     slot: 2,
     tokens: ['N3L8', 'WUI-N3L8-MINE'],
     hashes: ['1c3b0fa0bb6d1186cbfbde84001fd11845b5a68922a1029288319fdffd1325fa', '113917ac98d6019f27deda3d987664c09f8fd5c12da07f5981485dfe2a0b62b2'],
@@ -83,6 +91,10 @@ const DEFAULT_ACCOUNTS = [
   },
   {
     id: 'char_3',
+    followingCount: 45,
+    followersCount: 198,
+    followingList: ['npc_sara', 'char_1', 'char_2', 'char_4', 'char_5', 'char_6', 'char_7', 'char_8', 'npc_leo_mecanico'],
+    followersList: ['npc_sara', 'char_1', 'char_2', 'char_4', 'char_5', 'char_6', 'char_7', 'char_8'],
     slot: 3,
     tokens: ['R5K1', 'WUI-R5K1-ERIC'],
     hashes: ['f95666157dd397d4157d44720f05c660446b23b6c3140aa2bcb8ca5761a47f28', '25bf418695fe134c210bdf931fc5893b2d7a292f7ed262c008ecd759cb11983e'],
@@ -97,6 +109,10 @@ const DEFAULT_ACCOUNTS = [
   },
   {
     id: 'char_4',
+    followingCount: 62,
+    followersCount: 410,
+    followingList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_5', 'char_6', 'char_7', 'char_8', 'npc_bichinhos_wui'],
+    followersList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_5', 'char_6', 'char_7', 'char_8'],
     slot: 4,
     tokens: ['H2Q9', 'WUI-H2Q9-PERA'],
     hashes: ['8b7903ff85b96269fee9ef4165adc18ae24ce32f20e3de2c5daa3ffd17e002bd', '50677632f0e9c26b7573bd471219e6ebea8cfb44cd12c34251a39f8cdfb5d660'],
@@ -111,6 +127,10 @@ const DEFAULT_ACCOUNTS = [
   },
   {
     id: 'char_5',
+    followingCount: 25,
+    followersCount: 175,
+    followingList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_4', 'char_6', 'char_7', 'char_8', 'npc_leo_mecanico'],
+    followersList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_4', 'char_6', 'char_7', 'char_8'],
     slot: 5,
     tokens: ['J8W4', 'WUI-J8W4-WILL'],
     hashes: ['7f42d2ea1b3752c523f50d69830e942858b6c0980c4638bdbaf215d94c76bb73', '8877df43636ee69b3b5e0953869ec2a80c9844ddc6bc9247cf64c29d2a75c09c'],
@@ -125,6 +145,10 @@ const DEFAULT_ACCOUNTS = [
   },
   {
     id: 'char_6',
+    followingCount: 12,
+    followersCount: 92,
+    followingList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_4', 'char_5', 'char_7', 'char_8'],
+    followersList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_4', 'char_5', 'char_7', 'char_8'],
     slot: 6,
     tokens: ['T6D3', 'WUI-T6D3-JOHN'],
     hashes: ['b38466b6c44627df5485939cb241d72a86f54008b87e828a144fdd78aee213cb', '4e6dd809209ad92ce0a547b2b1a5473c610c2c0bb5139bec6ce6fd2b5e65e964'],
@@ -139,6 +163,10 @@ const DEFAULT_ACCOUNTS = [
   },
   {
     id: 'char_7',
+    followingCount: 41,
+    followersCount: 345,
+    followingList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_4', 'char_5', 'char_6', 'char_8', 'npc_paladium_art'],
+    followersList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_4', 'char_5', 'char_6', 'char_8'],
     slot: 7,
     tokens: ['Y4M7', 'WUI-Y4M7-ODAR'],
     hashes: ['187542c177a73f8011cb57622b694f3ec8ffd5c11ea61ea1de5378c85ce24451', '397303bab301646c0c74e253491aeb2ffdbe9cfc6f9395dbd9748583b5d81330'],
@@ -153,6 +181,10 @@ const DEFAULT_ACCOUNTS = [
   },
   {
     id: 'char_8',
+    followingCount: 34,
+    followersCount: 260,
+    followingList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_4', 'char_5', 'char_6', 'char_7', 'npc_gov_paladium'],
+    followersList: ['npc_sara', 'char_1', 'char_2', 'char_3', 'char_4', 'char_5', 'char_6', 'char_7'],
     slot: 8,
     tokens: ['F9C5', 'WUI-F9C5-CANN'],
     hashes: ['a1a0efb57f6f279826e7419fa6630b4cd85d6bcb8e69cb191916a28d428a72c6', 'dacd72e3e91ae602668271fa5eecbe67ad6efd099ba82a29dddf6e20d3a52926'],
@@ -196,15 +228,25 @@ const DEFAULT_ACCOUNTS = [
   {
     id: 'npc_sara',
     slot: null,
-    tokens: ['SARA-AUGUIL', 'SARA-WUI', 'SARA-VITORINO'],
+    tokens: ['SARA-AUGUIL', 'SARA-WUI', 'SARA-VITORINO', 'SARA'],
     hashes: [],
     name: 'Sara Auguil',
     handle: '@sara',
-    bio: 'Aluna do Colégio Integrado Primórdio de Fragktus & barista no Café Névoa. Amante de gatos lunares, chás e alquimia. (Última atividade registrada há poucos dias...)',
+    bio: 'Aluna do Colégio Integrado Primórdio de Fragktus & barista no Café Névoa. Amante de gatos lunares, arte, chás e alquimia. (Desaparecida desde 31/06/2061).',
     avatarLetter: 'S',
-    avatarImage: '',
+    avatarImage: 'assets/sara_avatar.jpg',
     avatarColor: '#f43f5e',
     badge: 'none',
+    followingCount: 14,
+    followersCount: '1.428',
+    followingList: [
+      'char_1', 'char_2', 'char_3', 'char_4', 'char_5', 'char_6', 'char_7', 'char_8',
+      'npc_colegio_primordio', 'npc_bichinhos_wui', 'npc_paladium_art', 'npc_leo_mecanico', 'npc_viktor_cronista', 'npc_gazeta_paladium'
+    ],
+    followersList: [
+      'char_1', 'char_2', 'char_3', 'char_4', 'char_5', 'char_6', 'char_7', 'char_8',
+      'npc_colegio_primordio', 'npc_bichinhos_wui', 'npc_paladium_art', 'npc_leo_mecanico', 'npc_viktor_cronista'
+    ],
     isMaster: false
   },
   {
@@ -742,7 +784,23 @@ class WuitterSystem {
       {
         id: 'wuit_seed_colegio_comunicado_1',
         authorId: 'npc_colegio_primordio',
-        text: `COMUNICADO OFICIAL À COMUNIDADE ESCOLAR E FAMÍLIAS DE FRAGKTUS\n\nÉ com profundo pesar e extrema consternação que a Direção do Colégio Integrado Primórdio de Fragktus se manifesta diante dos recentes e alarmantes acontecimentos que abalaram a nossa instituição: o desaparecimento de nossa distinta aluna, Sara Auguil.\n\nCompreendemos a angústia que se instalou nos corações dos familiares, dos colegas de classe e de todo o corpo docente. Em momentos de tamanha incerteza, nossa prioridade inegociável permanece sendo a segurança, a integridade e a ordem dentro de nossos muros.\n\nReafirmamos publicamente que a administração do Colégio Primórdio está em cooperação irrestrita e contínua com a Guarda Civil e com o Alto Comando Militar de Fragktus. Todas as dependências da instituição, bem como registros acadêmicos e laudos pertinentes, foram colocados à inteira disposição das autoridades para assegurar uma investigação célere, rigorosa e discreta.\n\nPedimos a todas as famílias e estudantes que mantenham a serenidade e a compostura condizentes com a tradição de nosso colégio. Solicitamos expressamente que se evite a propagação de boatos levianos ou especulações que possam interferir nos trabalhos oficiais ou manchar a honra dos envolvidos.\n\nPermanecemos firmes na fé de que a ordem será restabelecida e que Sara retornará em segurança ao nosso convívio.\n\nCom estima e rigor,\n\nConstança Montenegro e Conselho Diretor de Fragktus.\n\n#ColegioPrimordio #Fragktus #ComunicadoOficial #SaraAuguil`,
+        text: `COMUNICADO OFICIAL À COMUNIDADE ESCOLAR E FAMÍLIAS DE FRAGKTUS
+
+É com profundo pesar e extrema consternação que a Direção do Colégio Integrado Primórdio de Fragktus se manifesta diante dos recentes e alarmantes acontecimentos que abalaram a nossa instituição: o desaparecimento de nossa distinta aluna, Sara Auguil.
+
+Compreendemos a angústia que se instalou nos corações dos familiares, dos colegas de classe e de todo o corpo docente. Em momentos de tamanha incerteza, nossa prioridade inegociável permanece sendo a segurança, a integridade e a ordem dentro de nossos muros.
+
+Reafirmamos publicamente que a administração do Colégio Primórdio está em cooperação irrestrita e contínua com a Guarda Civil e com o Alto Comando Militar de Fragktus. Todas as dependências da instituição, bem como registros acadêmicos e laudos pertinentes, foram colocados à inteira disposição das autoridades para assegurar uma investigação célere, rigorosa e discreta.
+
+Pedimos a todas as famílias e estudantes que mantenham a serenidade e a compostura condizentes com a tradição de nosso colégio. Solicitamos expressamente que se evite a propagação de boatos levianos ou especulações que possam interferir nos trabalhos oficiais ou manchar a honra dos envolvidos.
+
+Permanecemos firmes na fé de que a ordem será restabelecida e que Sara retornará em segurança ao nosso convívio.
+
+Com estima e rigor,
+
+Constança Montenegro e Conselho Diretor de Fragktus.
+
+#ColegioPrimordio #Fragktus #ComunicadoOficial #SaraAuguil`,
         timestamp: now - (10 * 60 * 1000),
         likes: 92,
         likedBy: [],
@@ -785,6 +843,60 @@ class WuitterSystem {
         ]
       },
       {
+        id: 'wuit_seed_sara_encruzilhada_1',
+        authorId: 'npc_sara',
+        text: `Até a Encruzilhada.`,
+        timestamp: now - (15 * 60 * 1000),
+        timeDisplay: '31/06/2061',
+        likes: 184,
+        likedBy: [],
+        rewuits: 56,
+        rewuitedBy: [],
+        media: 'assets/sara_encruzilhada.jpg',
+        comments: [
+          {
+            id: 'c_seed_encruzilhada_1',
+            authorId: 'npc_gazeta_paladium',
+            text: `ATENÇÃO: Último registro fotográfico e público da aluna Sara Auguil antes do comunicado de desaparecimento emitido pelo Colégio Primórdio. Qualquer informação sobre a localização desta imagem deve ser enviada às autoridades.`,
+            timestamp: now - (13 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_encruzilhada_2',
+            authorId: 'npc_viktor_cronista',
+            text: `Sara? Onde você tirou essa foto? Essa vegetação de fundo e essa névoa âmbar não condizem com nenhum parque catalogado dentro dos limites seguros do distrito.`,
+            timestamp: now - (11 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_encruzilhada_3',
+            authorId: 'npc_fauna_verdes',
+            text: `Sara, seu gato lunar não para de arranhar a porta do café desde ontem à tarde... onde você foi parar? Volta logo, por favor.`,
+            timestamp: now - (9 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_encruzilhada_4',
+            authorId: 'npc_leo_mecanico',
+            text: `Passei na porta do café agora cedo e a caldeira de infusão ainda estava acesa e a porta só encostada. Se alguém souber pra onde ela foi, avisa a gente.`,
+            timestamp: now - (7 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_encruzilhada_5',
+            authorId: 'npc_paladium_art',
+            text: `Essa iluminação... parece o antigo marco de transição para a Floresta dos Ecos na Linha de Ruptura.`,
+            timestamp: now - (5 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          }
+        ]
+      },
+      {
         id: 'wuit_seed_gov_alerta_1',
         authorId: 'npc_gov_paladium',
         text: `[ALERTA DE SEGURANÇA — CHANCELARIA DE PALADIUM]
@@ -795,7 +907,7 @@ Informações comprovadas que levem à custódia de Kaelen, o Silencioso, foragi
 O indivíduo responde por invasão de arquivos do Conclave e quebra de lacres etéreos. Denúncias podem ser feitas em qualquer posto da Guarda.
 
 #AlertaPaladium #SegurancaMetropolitana #Recompensa`,
-        timestamp: now - (18 * 60 * 1000),
+        timestamp: now - (25 * 60 * 1000),
         likes: 62,
         likedBy: [],
         rewuits: 25,
@@ -806,7 +918,7 @@ O indivíduo responde por invasão de arquivos do Conclave e quebra de lacres et
             id: 'c_seed_alerta_1',
             authorId: 'npc_gazeta_paladium',
             text: `A guarnição do 2º Batalhão já bloqueou as saídas pelos canais do Porto Velho? A última pista indicava rota de fuga pelas docas.`,
-            timestamp: now - (14 * 60 * 1000),
+            timestamp: now - (20 * 60 * 1000),
             replyToCommentId: null,
             replyToHandle: null
           },
@@ -814,9 +926,40 @@ O indivíduo responde por invasão de arquivos do Conclave e quebra de lacres et
             id: 'c_seed_alerta_2',
             authorId: 'npc_sara',
             text: `Trancando a porta do café com duas voltas e barra de ferro hoje à noite.`,
-            timestamp: now - (10 * 60 * 1000),
+            timestamp: now - (18 * 60 * 1000),
             replyToCommentId: null,
             replyToHandle: null
+          }
+        ]
+      },
+      {
+        id: 'wuit_seed_sara_barista_1',
+        authorId: 'npc_sara',
+        text: `Primeiro turno das 06h: caldeira de vapor sibilando, grãos de café de Fragktus moídos na hora e cheiro de canela etérea no ar. Se a prova de Alquimia Aplicada do 3º ano no Primórdio for tão difícil quanto o professor Aldous prometeu, vou precisar de três xícaras duplas antes de abrir o colégio.
+
+#CafeNevoa #BaristaLife #Fragktus #ColegioPrimordio #Alquimia`,
+        timestamp: now - (45 * 60 * 1000),
+        likes: 68,
+        likedBy: [],
+        rewuits: 15,
+        rewuitedBy: [],
+        media: '',
+        comments: [
+          {
+            id: 'c_seed_barista_1',
+            authorId: 'npc_viktor_cronista',
+            text: `Guarda uma garrafa térmica de café duplo bem amargo pra mim, @sara. A noite de análises no laboratório vai ser longa.`,
+            timestamp: now - (40 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_barista_2',
+            authorId: 'npc_sara',
+            text: `Separado e bem forte, doutor! Passa aqui pela porta lateral que não tem a fila dos fiscais da alfândega.`,
+            timestamp: now - (35 * 60 * 1000),
+            replyToCommentId: 'c_seed_barista_1',
+            replyToHandle: '@viktor_cronista'
           }
         ]
       },
@@ -828,7 +971,7 @@ O indivíduo responde por invasão de arquivos do Conclave e quebra de lacres et
 Alguém mais sentiu cheiro de cobre queimado?
 
 #DistritoComercial #PaladiumEstranho #AlquimiaUrbana`,
-        timestamp: now - (32 * 60 * 1000),
+        timestamp: now - (60 * 60 * 1000),
         likes: 45,
         likedBy: [],
         rewuits: 11,
@@ -839,7 +982,7 @@ Alguém mais sentiu cheiro de cobre queimado?
             id: 'c_seed_sara_nevoa_1',
             authorId: 'npc_viktor_cronista',
             text: `Não respire sem lenço ou máscara de feltro, @sara. Os filtros de purificação do Setor 3 estão entupidos desde o início da semana.`,
-            timestamp: now - (27 * 60 * 1000),
+            timestamp: now - (55 * 60 * 1000),
             replyToCommentId: null,
             replyToHandle: null
           },
@@ -847,11 +990,25 @@ Alguém mais sentiu cheiro de cobre queimado?
             id: 'c_seed_sara_nevoa_2',
             authorId: 'npc_leo_mecanico',
             text: `Fumaça arroxeada com cheiro de cobre é assinatura de sublimação de nitrato de éter. Alguém descartou reagente na tubulação sem neutralizar.`,
-            timestamp: now - (22 * 60 * 1000),
+            timestamp: now - (50 * 60 * 1000),
             replyToCommentId: null,
             replyToHandle: null
           }
         ]
+      },
+      {
+        id: 'wuit_seed_sara_estudos_1',
+        authorId: 'npc_sara',
+        text: `Tentando conciliar os relatórios de Herbologia do Primórdio com o expediente no Café Névoa. Se eu errar a dosagem de folhas de lótus etéreas de novo, a diretoria vai me colocar de recuperação no semestre inteiro. Pelo menos o aroma de café ajuda a não desmaiar em cima dos pergaminhos.
+
+#VidaDeEstudante #ColegioPrimordio #Herbologia #CafeNevoa`,
+        timestamp: now - (90 * 60 * 1000),
+        likes: 54,
+        likedBy: [],
+        rewuits: 10,
+        rewuitedBy: [],
+        media: '',
+        comments: []
       },
       {
         id: 'wuit_seed_gov_1',
@@ -864,7 +1021,7 @@ Durante a madrugada, a Guarda Metropolitana efetuou a prisão em flagrante de 3 
 Os detidos foram encaminhados à Penitenciária de Alta Contenção de Ferro-Velho. Qualquer movimentação suspeita nas docas deve ser reportada imediatamente à guarnição central.
 
 #PaladiumSegura #OperacaoDocas #LeiEOrdem`,
-        timestamp: now - (42 * 60 * 1000),
+        timestamp: now - (120 * 60 * 1000),
         likes: 54,
         likedBy: [],
         rewuits: 14,
@@ -875,7 +1032,7 @@ Os detidos foram encaminhados à Penitenciária de Alta Contenção de Ferro-Vel
             id: 'c_seed_gov_1_1',
             authorId: 'npc_gazeta_paladium',
             text: `A Guarda só esqueceu de mencionar que o 'contrabando' eram geradores antigos que abasteciam a clínica comunitária do Distrito Baixo após o racionamento decretado pelo próprio Senado.`,
-            timestamp: now - (35 * 60 * 1000),
+            timestamp: now - (110 * 60 * 1000),
             replyToCommentId: null,
             replyToHandle: null
           },
@@ -883,7 +1040,7 @@ Os detidos foram encaminhados à Penitenciária de Alta Contenção de Ferro-Vel
             id: 'c_seed_gov_1_2',
             authorId: 'npc_gov_paladium',
             text: `A Gazeta de Paladium está advertida formalmente contra a disseminação de narrativas desinformativas acerca de apreensões de materiais com risco de instabilidade.`,
-            timestamp: now - (28 * 60 * 1000),
+            timestamp: now - (105 * 60 * 1000),
             replyToCommentId: 'c_seed_gov_1_1',
             replyToHandle: '@gazeta_paladium'
           },
@@ -891,17 +1048,9 @@ Os detidos foram encaminhados à Penitenciária de Alta Contenção de Ferro-Vel
             id: 'c_seed_gov_1_3',
             authorId: 'npc_viktor_cronista',
             text: `Instabilidade? Desde quando condutores de éter grau 2 têm risco crítico? O relatório técnico de vocês está desatualizado há pelo menos quatro legislaturas.`,
-            timestamp: now - (20 * 60 * 1000),
+            timestamp: now - (100 * 60 * 1000),
             replyToCommentId: 'c_seed_gov_1_2',
             replyToHandle: '@gov_paladium'
-          },
-          {
-            id: 'c_seed_gov_1_4',
-            authorId: 'npc_sara',
-            text: `Minha luz piscou três vezes às 02:40 e agora entendi o motivo das viaturas descendo a Avenida dos Arcos correndo. Quase derrubei a caldeira de infusão no Café.`,
-            timestamp: now - (15 * 60 * 1000),
-            replyToCommentId: null,
-            replyToHandle: null
           }
         ]
       },
@@ -913,7 +1062,7 @@ Os detidos foram encaminhados à Penitenciária de Alta Contenção de Ferro-Vel
 E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachada!
 
 #CafeNevoa #PaladiumDaily #ChadeBruxa`,
-        timestamp: now - (2 * 60 * 60 * 1000),
+        timestamp: now - (3 * 60 * 60 * 1000),
         likes: 39,
         likedBy: [],
         rewuits: 9,
@@ -924,7 +1073,7 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
             id: 'c_seed_sara_1_1',
             authorId: 'npc_bichinhos_wui',
             text: `Se for o furãozinho albino com coleira de latão, o nome dele é Pipoca e ele é viciado em eletricidade estática. Peço perdão em nome da comunidade pet!`,
-            timestamp: now - (105 * 60 * 1000),
+            timestamp: now - (160 * 60 * 1000),
             replyToCommentId: null,
             replyToHandle: null
           },
@@ -932,25 +1081,9 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
             id: 'c_seed_sara_1_2',
             authorId: 'npc_sara',
             text: `Ele quase virou uma torrada no condensador do balcão! Mas ele ganhou um pedaço de biscoito de aveia e perdoei.`,
-            timestamp: now - (90 * 60 * 1000),
+            timestamp: now - (150 * 60 * 1000),
             replyToCommentId: 'c_seed_sara_1_1',
             replyToHandle: '@fauna_verdes'
-          },
-          {
-            id: 'c_seed_sara_1_3',
-            authorId: 'npc_viktor_cronista',
-            text: `Guarda uma garrafa térmica de café duplo bem amargo pra mim, @sara. A noite de análises no laboratório vai ser longa.`,
-            timestamp: now - (70 * 60 * 1000),
-            replyToCommentId: null,
-            replyToHandle: null
-          },
-          {
-            id: 'c_seed_sara_1_4',
-            authorId: 'npc_sara',
-            text: `Separado e bem forte, doutor! Passa aqui pela porta lateral que não tem a fila dos fiscais da alfândega.`,
-            timestamp: now - (55 * 60 * 1000),
-            replyToCommentId: 'c_seed_sara_1_3',
-            replyToHandle: '@viktor_cronista'
           }
         ]
       },
@@ -1145,37 +1278,6 @@ Dica: recalibrem seus cronômetros antes que a meia-noite chegue adiantada.
             timestamp: now - (22 * 60 * 60 * 1000),
             replyToCommentId: null,
             replyToHandle: null
-          }
-        ]
-      },
-      {
-        id: 'wuit_seed_leo_1',
-        authorId: 'npc_leo_mecanico',
-        text: `Alguém perdeu uma chave inglesa encantada de 14mm com as iniciais 'T.M.' na Rua das Caldeiras? Está aqui na minha bancada. Se for sua, venha buscar e traga uma garrafa de refrigerante de gengibre como resgate.
-
-#OficinaDoLeo #AchadosEPerdidos #PaladiumBaixo`,
-        timestamp: now - (36 * 60 * 60 * 1000),
-        likes: 33,
-        likedBy: [],
-        rewuits: 7,
-        rewuitedBy: [],
-        media: '',
-        comments: [
-          {
-            id: 'c_seed_leo_1_1',
-            authorId: 'npc_paladium_art',
-            text: `Essa chave é do Tobias da forja de autômatos! Ele passou a manhã inteira procurando essa ferramenta.`,
-            timestamp: now - (35 * 60 * 60 * 1000),
-            replyToCommentId: null,
-            replyToHandle: null
-          },
-          {
-            id: 'c_seed_leo_1_2',
-            authorId: 'npc_leo_mecanico',
-            text: `Avisa ele que tá guardada aqui no cofre, mas o refrigerante de gengibre é inegociável, @paladium_art.`,
-            timestamp: now - (34 * 60 * 60 * 1000),
-            replyToCommentId: 'c_seed_leo_1_1',
-            replyToHandle: '@paladium_art'
           }
         ]
       }
@@ -1991,8 +2093,14 @@ Dica: recalibrem seus cronômetros antes que a meia-noite chegue adiantada.
           </div>
 
           <div class="w-profile-stats">
-            <div><span class="w-profile-stat-count">${Math.max(1, this.accounts.length - 1)}</span> <span class="w-profile-stat-label">Seguindo</span></div>
-            <div><span class="w-profile-stat-count">${Math.max(1, this.accounts.length)}</span> <span class="w-profile-stat-label">Seguidores</span></div>
+            <div style="cursor: pointer;" onclick="window.wuitter.openConnectionsModal('${acc.id}', 'following')" title="Ver quem ${acc.name} segue">
+              <span class="w-profile-stat-count">${acc.followingCount !== undefined ? acc.followingCount : Math.max(1, this.accounts.length - 1)}</span> 
+              <span class="w-profile-stat-label">Seguindo</span>
+            </div>
+            <div style="cursor: pointer;" onclick="window.wuitter.openConnectionsModal('${acc.id}', 'followers')" title="Ver seguidores de ${acc.name}">
+              <span class="w-profile-stat-count">${acc.followersCount !== undefined ? acc.followersCount : Math.max(1, this.accounts.length)}</span> 
+              <span class="w-profile-stat-label">Seguidores</span>
+            </div>
           </div>
 
           <div class="w-profile-nav-tabs">
@@ -2134,9 +2242,13 @@ Dica: recalibrem seus cronômetros antes que a meia-noite chegue adiantada.
     return '';
   }
 
-  formatTime(timestamp) {
+  formatTime(timestamp, customDisplay = null) {
+    if (customDisplay) return customDisplay;
+    if (typeof timestamp === 'string' && (timestamp.includes('/') || timestamp.includes('-') || timestamp.includes(':'))) {
+      return timestamp;
+    }
     const diff = Math.floor((Date.now() - timestamp) / 1000);
-    if (diff < 60) return `${diff}s`;
+    if (diff < 60) return `${Math.max(1, diff)}s`;
     if (diff < 3600) return `${Math.floor(diff / 60)}m`;
     if (diff < 86400) return `${Math.floor(diff / 3600)}h`;
     return `${Math.floor(diff / 86400)}d`;
@@ -2329,7 +2441,7 @@ Dica: recalibrem seus cronômetros antes que a meia-noite chegue adiantada.
               ${badgeSvg}
               <span class="w-wuit-handle" onclick="window.wuitter.viewProfile('${author.id}')">${author.handle}</span>
               <span class="w-wuit-dot">&bull;</span>
-              <span class="w-wuit-time">${this.formatTime(post.timestamp)}</span>
+              <span class="w-wuit-time">${this.formatTime(post.timestamp, post.timeDisplay || post.customDate)}</span>
             </div>
             ${canDelete ? `
               <button class="w-delete-btn" onclick="window.wuitter.deletePost('${post.id}')" title="Excluir Wuit">
