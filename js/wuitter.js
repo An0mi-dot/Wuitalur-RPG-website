@@ -182,15 +182,29 @@ const DEFAULT_ACCOUNTS = [
   {
     id: 'npc_sara',
     slot: null,
-    tokens: ['SARA-WUI', 'SARA-VITORINO'],
+    tokens: ['SARA-AUGUIL', 'SARA-WUI', 'SARA-VITORINO'],
     hashes: [],
-    name: 'Sara Vitorino',
+    name: 'Sara Auguil',
     handle: '@sara',
-    bio: 'Estudante de Alquimia Aplicada & barista no Café Névoa (Distrito Comercial). Amante de gatos lunares e chás duvidosos. Se você ouviu a sirene das 2h da manhã, não pergunte.',
+    bio: 'Aluna do Colégio Integrado Primórdio de Fragktus & barista no Café Névoa. Amante de gatos lunares, chás e alquimia. (Última atividade registrada há poucos dias...)',
     avatarLetter: 'S',
     avatarImage: '',
     avatarColor: '#f43f5e',
     badge: 'none',
+    isMaster: false
+  },
+  {
+    id: 'npc_colegio_primordio',
+    slot: null,
+    tokens: ['COLEGIO-PRIMORDIO', 'PRIMORDIO-FRAGKTUS'],
+    hashes: [],
+    name: 'Colégio Integrado Primórdio de Fragktus',
+    handle: '@colegio_primordio',
+    bio: 'Instituição de ensino tradicional de Fragktus. Tradição, disciplina e excelência acadêmica. Sob Direção de Constança Montenegro e Conselho Diretor.',
+    avatarLetter: 'P',
+    avatarImage: '',
+    avatarColor: '#1e293b',
+    badge: 'gold',
     isMaster: false
   },
   {
@@ -712,6 +726,43 @@ class WuitterSystem {
     const now = Date.now();
     return [
       {
+        id: 'wuit_seed_colegio_comunicado_1',
+        authorId: 'npc_colegio_primordio',
+        text: `COMUNICADO OFICIAL À COMUNIDADE ESCOLAR E FAMÍLIAS DE FRAGKTUS\n\nÉ com profundo pesar e extrema consternação que a Direção do Colégio Integrado Primórdio de Fragktus se manifesta diante dos recentes e alarmantes acontecimentos que abalaram a nossa instituição: o desaparecimento de nossa distinta aluna, Sara Auguil.\n\nCompreendemos a angústia que se instalou nos corações dos familiares, dos colegas de classe e de todo o corpo docente. Em momentos de tamanha incerteza, nossa prioridade inegociável permanece sendo a segurança, a integridade e a ordem dentro de nossos muros.\n\nReafirmamos publicamente que a administração do Colégio Primórdio está em cooperação irrestrita e contínua com a Guarda Civil e com o Alto Comando Militar de Fragktus. Todas as dependências da instituição, bem como registros acadêmicos e laudos pertinentes, foram colocados à inteira disposição das autoridades para assegurar uma investigação célere, rigorosa e discreta.\n\nPedimos a todas as famílias e estudantes que mantenham a serenidade e a compostura condizentes com a tradição de nosso colégio. Solicitamos expressamente que se evite a propagação de boatos levianos ou especulações que possam interferir nos trabalhos oficiais ou manchar a honra dos envolvidos.\n\nPermanecemos firmes na fé de que a ordem será restabelecida e que Sara retornará em segurança ao nosso convívio.\n\nCom estima e rigor,\n\nConstança Montenegro e Conselho Diretor de Fragktus.\n\n#ColegioPrimordio #Fragktus #ComunicadoOficial #SaraAuguil`,
+        timestamp: now - (10 * 60 * 1000),
+        likes: 92,
+        likedBy: [],
+        rewuits: 48,
+        rewuitedBy: [],
+        media: '',
+        comments: [
+          {
+            id: 'c_seed_col_1',
+            authorId: 'npc_gazeta_paladium',
+            text: `A direção fala em cooperação 'discreta', mas testemunhas viram agentes do Alto Comando apreendendo armários no 3º andar antes mesmo do comunicado ser emitido. O que mais estão escondendo nos corredores do Primórdio?`,
+            timestamp: now - (8 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_col_2',
+            authorId: 'npc_gov_paladium',
+            text: `A Guarda Civil e o Alto Comando de Fragktus reiteram que qualquer informação verificada sobre o paradeiro de Sara Auguil deve ser transmitida de imediato aos canais oficiais da Chancelaria. Evitem especulações.`,
+            timestamp: now - (5 * 60 * 1000),
+            replyToCommentId: null,
+            replyToHandle: null
+          },
+          {
+            id: 'c_seed_col_3',
+            authorId: 'npc_viktor_cronista',
+            text: `Uma aluna exemplar desaparece e a preocupação central da diretoria é 'evitar boatos que manchem a honra'. O rigor de Constança Montenegro sempre foi pontual e seletivo.`,
+            timestamp: now - (2 * 60 * 1000),
+            replyToCommentId: 'c_seed_col_1',
+            replyToHandle: '@gazeta_paladium'
+          }
+        ]
+      },
+      {
         id: 'wuit_seed_gov_alerta_1',
         authorId: 'npc_gov_paladium',
         text: `[ALERTA DE SEGURANÇA — CHANCELARIA DE PALADIUM]
@@ -1131,6 +1182,16 @@ Dica: recalibrem seus cronômetros antes que a meia-noite chegue adiantada.
               exists.name = 'Fauna das Terras Verdes';
               exists.handle = '@fauna_verdes';
               exists.avatarLetter = 'F';
+            }
+            if (def.id === 'npc_sara') {
+              exists.name = 'Sara Auguil';
+              exists.handle = '@sara';
+              exists.bio = def.bio;
+            }
+            if (def.id === 'npc_colegio_primordio') {
+              exists.name = 'Colégio Integrado Primórdio de Fragktus';
+              exists.handle = '@colegio_primordio';
+              exists.badge = 'gold';
             }
             if (!exists.avatarLetter) exists.avatarLetter = (exists.name || 'P').charAt(0).toUpperCase();
           }
