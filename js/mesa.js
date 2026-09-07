@@ -687,21 +687,20 @@ const MesaApp = {
   
   // HASHES SHA-256 DO MESTRE (Zero exposição em texto puro no código do cliente)
   MASTER_HASHES: [
-    'ffd77d81aa08ae3582779ba189e7dbbabd57da8ceb9aa8b6a64d2988dc552e76', // M9X7
-    '74d06b763fd7ccdd4e86b81b59989c73b923a319c0adda2c243137079434d63d', // WUI-M9X7-MAST
-    '011e063f8402ff1a9263d6cbf115896ce8844f14c8c1a03b1e70992be9fc84b4'  // WUI-MASTER-99
+    '3be80f43b640706663346f0b1fb5aa2a9c26e6b6d27a934139854e111355a93b', // Z9K4
+    'c43cc5a2574d90e4a87d2ba0db242c99b3cdc0cbfd8c94448724b591320953ef'  // WUI-Z9K4-MAST
   ],
 
   // HASHES SHA-256 DOS SLOTS PADRÃO DA MESA
   SLOT_HASHES: {
-    1: ['6d6b9e504b9a07f490b068e62a6d5a5b4beb6d5ab51c949a8ab8f1950c1261d2', '43c11d372feae45dd633a6a37286cf1a44f0c1278235b2ef7dc49d2d309c20b5'], // Thulita (W4R9 / WUI-W4R9-9K2M)
-    2: ['2619977a9e5e0522d65a338b053fe9d668b9ffd7a26fb694f4f89a332a2573ee', 'caa37dd424c75c8bcc49096685ff408930c6409922491c2b7465694b67934fd9'], // Minerva (M7Q2 / WUI-M7Q2-4L1B)
-    3: ['63c816ce5724c99e47758d2bca36cd1c41b210bc3d295922731867746c891527', '9f741eaf72fb7c0417ecdf910cd18132a7cc6945a91655a38fc00dd3f20da436'], // Eric (B8T3 / WUI-B8T3-7X8A)
-    4: ['50aedd3f6c1ec1bbd96b4462cf11f9e51365b6d7657a092c857df19ecd7f22c6', '610c3adf93b9f4f25d5169ba2ece084e06a2d6491db68eb10ffaf49e0e4cb29c'], // Pera (P3R4 / WUI-P3R4-3D9V)
-    5: ['04d7fd5ceb247311a8f46bb5f5d353a927ac7fd25776cafbdd3ac9f70182a2b8', '1ed723041d29cae397ffc8fafc052009b36a001e601be6d3a5aba3ceea9ccaa9'], // Willian (K4R5 / WUI-K4R5-8F2Q)
-    6: ['f25cf5826fd56f85266d0aeb7d1e361d4035ceb0dac146166c1a8ad28ec03735', '409f7205e3d6398aaa57d0f6058e66d10a2ea22502faa4ba6c442af7353cff94'], // John Doe (J9D6 / WUI-J9D6-5M7N)
-    7: ['ba486a269e0fb9deac1c37f61ccb38be5cae83fd47ac6743adeddc8772681530', 'b094e8349e61a7092f6e0b54356560900cd295e9b6f29e4690e73a7899fc368b'], // Odara (O7D7 / WUI-O7D7-2H4Z)
-    8: ['7d704a54101b1028e1dc54f3eb0fe527a6c358746a25008236e2b3940fb7b97c', '0a218ab04615fd7a9e9a69da55aabde2faadf19b62e4ba78902b34a83331fd23']  // Canneth (C8B8 / WUI-C8B8-6P1K)
+    1: ['2dd19af57e1afab99db2a52767841b4188121375b4e107e25f1e19b5a08074b7', '67444813cdcd8add28ec10fe6184264bd4acddcd339083da3cee52779ef2b52f'], // Thulita (X7V2 / WUI-X7V2-THUL)
+    2: ['1c3b0fa0bb6d1186cbfbde84001fd11845b5a68922a1029288319fdffd1325fa', '113917ac98d6019f27deda3d987664c09f8fd5c12da07f5981485dfe2a0b62b2'], // Minerva (N3L8 / WUI-N3L8-MINE)
+    3: ['f95666157dd397d4157d44720f05c660446b23b6c3140aa2bcb8ca5761a47f28', '25bf418695fe134c210bdf931fc5893b2d7a292f7ed262c008ecd759cb11983e'], // Eric (R5K1 / WUI-R5K1-ERIC)
+    4: ['8b7903ff85b96269fee9ef4165adc18ae24ce32f20e3de2c5daa3ffd17e002bd', '50677632f0e9c26b7573bd471219e6ebea8cfb44cd12c34251a39f8cdfb5d660'], // Pera (H2Q9 / WUI-H2Q9-PERA)
+    5: ['7f42d2ea1b3752c523f50d69830e942858b6c0980c4638bdbaf215d94c76bb73', '8877df43636ee69b3b5e0953869ec2a80c9844ddc6bc9247cf64c29d2a75c09c'], // Willian (J8W4 / WUI-J8W4-WILL)
+    6: ['b38466b6c44627df5485939cb241d72a86f54008b87e828a144fdd78aee213cb', '4e6dd809209ad92ce0a547b2b1a5473c610c2c0bb5139bec6ce6fd2b5e65e964'], // John Doe (T6D3 / WUI-T6D3-JOHN)
+    7: ['187542c177a73f8011cb57622b694f3ec8ffd5c11ea61ea1de5378c85ce24451', '397303bab301646c0c74e253491aeb2ffdbe9cfc6f9395dbd9748583b5d81330'], // Odara (Y4M7 / WUI-Y4M7-ODAR)
+    8: ['a1a0efb57f6f279826e7419fa6630b4cd85d6bcb8e69cb191916a28d428a72c6', 'dacd72e3e91ae602668271fa5eecbe67ad6efd099ba82a29dddf6e20d3a52926']   // Canneth (F9C5 / WUI-F9C5-CANN)
   },
 
   supabase: null,
@@ -793,7 +792,7 @@ const MesaApp = {
     this.state.players[0] = {
       id: 2,
       slot: 1,
-      token: 'W4R9',
+      token: 'X7V2',
       nome: 'Thulita De La Benevidez',
       idade: '18 anos',
       altura: '1,40',
@@ -828,7 +827,7 @@ const MesaApp = {
     this.state.players[1] = {
       id: 3,
       slot: 2,
-      token: 'M7Q2',
+      token: 'N3L8',
       nome: 'Sanguiminerva "Minerva" Qamari Von Adams',
       idade: '18 anos',
       altura: '1,78m',
@@ -861,7 +860,7 @@ const MesaApp = {
     this.state.players[2] = {
       id: 1,
       slot: 3,
-      token: 'B8T3',
+      token: 'R5K1',
       nome: 'Eric "Blade" Tepes Adams',
       idade: '17 anos',
       altura: '1,76',
@@ -896,7 +895,7 @@ const MesaApp = {
     this.state.players[3] = {
       id: 4,
       slot: 4,
-      token: 'P3R4',
+      token: 'H2Q9',
       nome: 'Pera Hylidae da Silva',
       idade: '18 anos',
       altura: '1,58m',
@@ -930,7 +929,7 @@ const MesaApp = {
     this.state.players[4] = {
       id: 5,
       slot: 5,
-      token: 'K4R5',
+      token: 'J8W4',
       nome: 'Willian Kars',
       idade: '17 anos',
       altura: '1,86m',
@@ -963,7 +962,7 @@ const MesaApp = {
     this.state.players[5] = {
       id: 6,
       slot: 6,
-      token: 'J9D6',
+      token: 'T6D3',
       nome: 'John Doe',
       idade: '899 dias (Autômato)',
       altura: '2,20m',
@@ -996,7 +995,7 @@ const MesaApp = {
     this.state.players[6] = {
       id: 7,
       slot: 7,
-      token: 'O7D7',
+      token: 'Y4M7',
       nome: 'Odara De La Benevidez',
       idade: '18 anos',
       altura: '1,42m',
@@ -1029,7 +1028,7 @@ const MesaApp = {
     this.state.players[7] = {
       id: 8,
       slot: 8,
-      token: 'C8B8',
+      token: 'F9C5',
       nome: "Canneth 'Blinko' Biloxi",
       idade: '18 anos',
       altura: '1,75m',
@@ -1108,7 +1107,7 @@ const MesaApp = {
           };
 
           // Garantir que Eric (Slot 3 / Token B8T3) tenha apenas as 3 habilidades corretas
-          if (p.token === 'B8T3' || p.slot === 3) {
+          if (p.token === 'R5K1' || p.slot === 3) {
             p.habilidades = p.habilidades.filter(h => {
               if (!h || !h.nome) return false;
               const clean = h.nome.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
@@ -1131,12 +1130,12 @@ const MesaApp = {
             }
           }
 
-          if (p.token === 'W4R9' || p.slot === 1) {
+          if (p.token === 'X7V2' || p.slot === 1) {
             p.imagem = 'assets/thulita.png';
             p.avatar = 'assets/thulita_avatar.png';
           }
 
-          if (p.token === 'B8T3' || p.slot === 3) {
+          if (p.token === 'R5K1' || p.slot === 3) {
             p.imagem = 'assets/eric.png';
             p.avatar = 'assets/eric_avatar.png';
           }
@@ -1150,7 +1149,7 @@ const MesaApp = {
       // Garante que Thulita (Slot 1), Minerva (Slot 2) e Eric (Slot 3) estejam presentes
       if (!this.state.players[0]) {
         this.state.players[0] = {
-          id: 2, slot: 1, token: 'W4R9', nome: 'Thulita De La Benevidez', idade: '18 anos', altura: '1,40', raca: 'Dragão Anão', arquetipo: 'Popular', imagem: 'assets/thulita.png', avatar: 'assets/thulita_avatar.png',
+          id: 2, slot: 1, token: 'X7V2', nome: 'Thulita De La Benevidez', idade: '18 anos', altura: '1,40', raca: 'Dragão Anão', arquetipo: 'Popular', imagem: 'assets/thulita.png', avatar: 'assets/thulita_avatar.png',
           hp: 14, hpMax: 14, pe: 10, peMax: 10, st: 0, stMax: 32, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Saúde': 'd12', 'Vigor': 'd16', 'Força': 'd4', 'Mente': 'd8' },
           bonus: [{ origem: 'Raça (Dragão Anão)', desc: '+d4 em testes de Mente' }, { origem: 'Arquétipo (Popular)', desc: '+d4 em Testes Sociais' }],
@@ -1165,7 +1164,7 @@ const MesaApp = {
 
       if (!this.state.players[1]) {
         this.state.players[1] = {
-          id: 3, slot: 2, token: 'M7Q2', nome: 'Sanguiminerva "Minerva" Qamari Von Adams', idade: '18 anos', altura: '1,78m', raca: 'Vampira', arquetipo: 'Nerd',
+          id: 3, slot: 2, token: 'N3L8', nome: 'Sanguiminerva "Minerva" Qamari Von Adams', idade: '18 anos', altura: '1,78m', raca: 'Vampira', arquetipo: 'Nerd',
           hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 40, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd4', 'Mente': 'd16' },
           bonus: [{ origem: 'Raça (Vampira)', desc: '+d4 em testes de Mente e Visão no Escuro (5B)' }, { origem: 'Arquétipo (Nerd)', desc: '+d4 em Testes de Mente' }],
@@ -1180,7 +1179,7 @@ const MesaApp = {
 
       if (!this.state.players[2]) {
         this.state.players[2] = {
-          id: 1, slot: 3, token: 'B8T3', nome: 'Eric "Blade" Tepes Adams', idade: '17 anos', altura: '1,76', raca: 'Vampiro', arquetipo: 'Curioso', imagem: 'assets/eric.png', avatar: 'assets/eric_avatar.png',
+          id: 1, slot: 3, token: 'R5K1', nome: 'Eric "Blade" Tepes Adams', idade: '17 anos', altura: '1,76', raca: 'Vampiro', arquetipo: 'Curioso', imagem: 'assets/eric.png', avatar: 'assets/eric_avatar.png',
           hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 44, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Mente': 'd16', 'Saúde': 'd4', 'Vigor': 'd12', 'Força': 'd8' },
           bonus: [{ origem: 'Raça (Vampiro)', desc: '+d4 em testes de Mente e Visão no Escuro (5B)' }, { origem: 'Arquétipo (Curioso)', desc: '+d4 em testes de Investigação' }],
@@ -1195,7 +1194,7 @@ const MesaApp = {
 
       if (!this.state.players[3]) {
         this.state.players[3] = {
-          id: 4, slot: 4, token: 'P3R4', nome: 'Pera Hylidae da Silva', idade: '18 anos', altura: '1,58m', raca: 'Animalesco', arquetipo: 'Rebelde', classe: 'Adivinha',
+          id: 4, slot: 4, token: 'H2Q9', nome: 'Pera Hylidae da Silva', idade: '18 anos', altura: '1,58m', raca: 'Animalesco', arquetipo: 'Rebelde', classe: 'Adivinha',
           hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 24, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Mente': 'd4', 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd16' },
           bonus: [
@@ -1213,7 +1212,7 @@ const MesaApp = {
 
       if (!this.state.players[4]) {
         this.state.players[4] = {
-          id: 5, slot: 5, token: 'K4R5', nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão',
+          id: 5, slot: 5, token: 'J8W4', nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão',
           hp: 15, hpMax: 15, pe: 10, peMax: 10, st: 0, stMax: 28, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Saúde': 'd4', 'Vigor': 'd16', 'Força': 'd12', 'Mente': 'd8' },
           bonus: [
@@ -1231,7 +1230,7 @@ const MesaApp = {
 
       if (!this.state.players[5]) {
         this.state.players[5] = {
-          id: 6, slot: 6, token: 'J9D6', nome: 'John Doe', idade: '899 dias (Autômato)', altura: '2,20m', raca: 'E.X.O.s', arquetipo: 'Palhaço',
+          id: 6, slot: 6, token: 'T6D3', nome: 'John Doe', idade: '899 dias (Autômato)', altura: '2,20m', raca: 'E.X.O.s', arquetipo: 'Palhaço',
           hp: 16, hpMax: 16, pe: 13, peMax: 13, st: 0, stMax: 32, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Força': 'd16', 'Mente': 'd12', 'Saúde': 'd8', 'Vigor': 'd4' },
           bonus: [
@@ -1249,7 +1248,7 @@ const MesaApp = {
 
       if (!this.state.players[6]) {
         this.state.players[6] = {
-          id: 7, slot: 7, token: 'O7D7', nome: 'Odara De La Benevidez', idade: '18 anos', altura: '1,42m', raca: 'Dragão Anão', arquetipo: 'Gótica',
+          id: 7, slot: 7, token: 'Y4M7', nome: 'Odara De La Benevidez', idade: '18 anos', altura: '1,42m', raca: 'Dragão Anão', arquetipo: 'Gótica',
           hp: 14, hpMax: 14, pe: 10, peMax: 10, st: 0, stMax: 36, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Força': 'd16', 'Mente': 'd12', 'Saúde': 'd8', 'Vigor': 'd4' },
           bonus: [
@@ -1267,7 +1266,7 @@ const MesaApp = {
 
       if (!this.state.players[7]) {
         this.state.players[7] = {
-          id: 8, slot: 8, token: 'C8B8', nome: "Canneth 'Blinko' Biloxi", idade: '18 anos', altura: '1,75m', raca: 'Animalesco', arquetipo: 'Teimoso',
+          id: 8, slot: 8, token: 'F9C5', nome: "Canneth 'Blinko' Biloxi", idade: '18 anos', altura: '1,75m', raca: 'Animalesco', arquetipo: 'Teimoso',
           hp: 17, hpMax: 17, pe: 10, peMax: 10, st: 0, stMax: 36, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Vigor': 'd12', 'Saúde': 'd8', 'Força': 'd4', 'Mente': 'd16' },
           bonus: [
@@ -1921,7 +1920,7 @@ const MesaChat = {
 
   getCurrentSender() {
     if (MesaApp.state.isMaster) {
-      return { name: 'Mestre', isMaster: true, token: 'M9X7' };
+      return { name: 'Mestre', isMaster: true, token: 'Z9K4' };
     }
 
     if (MesaApp.state.myToken) {

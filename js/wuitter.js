@@ -29,12 +29,11 @@ const SVG_ICONS = {
 
 // Hashes oficiais do Mestre (compatíveis com Mesa Virtual)
 const MASTER_HASHES = [
-  'ffd77d81aa08ae3582779ba189e7dbbabd57da8ceb9aa8b6a64d2988dc552e76', // M9X7
-  '74d06b763fd7ccdd4e86b81b59989c73b923a319c0adda2c243137079434d63d', // WUI-M9X7-MAST
-  '011e063f8402ff1a9263d6cbf115896ce8844f14c8c1a03b1e70992be9fc84b4'  // WUI-MASTER-99
+  '3be80f43b640706663346f0b1fb5aa2a9c26e6b6d27a934139854e111355a93b', // Z9K4
+  'c43cc5a2574d90e4a87d2ba0db242c99b3cdc0cbfd8c94448724b591320953ef'  // WUI-Z9K4-MAST
 ];
 
-const MASTER_PLAIN_TOKENS = ['M9X7', 'WUI-M9X7-MAST', 'WUI-MASTER-99', 'MESTRE', 'MASTER', 'ADM', 'ADMIN', 'GM', 'M9X7-MAST'];
+const MASTER_PLAIN_TOKENS = ['Z9K4', 'WUI-Z9K4-MAST', 'MESTRE', 'MASTER', 'ADM', 'ADMIN', 'GM', 'Z9K4-MAST'];
 
 // Contas Padrão Vinculadas aos Tokens do Sistema
 const DEFAULT_ACCOUNTS = [
@@ -55,8 +54,8 @@ const DEFAULT_ACCOUNTS = [
   {
     id: 'char_1',
     slot: 1,
-    tokens: ['W4R9', 'WUI-W4R9-9K2M'],
-    hashes: ['6d6b9e504b9a07f490b068e62a6d5a5b4beb6d5ab51c949a8ab8f1950c1261d2', '43c11d372feae45dd633a6a37286cf1a44f0c1278235b2ef7dc49d2d309c20b5'],
+    tokens: ['X7V2', 'WUI-X7V2-THUL'],
+    hashes: ['2dd19af57e1afab99db2a52767841b4188121375b4e107e25f1e19b5a08074b7', '67444813cdcd8add28ec10fe6184264bd4acddcd339083da3cee52779ef2b52f'],
     name: 'Thulita',
     handle: '@thulita',
     bio: '',
@@ -69,8 +68,8 @@ const DEFAULT_ACCOUNTS = [
   {
     id: 'char_2',
     slot: 2,
-    tokens: ['M7Q2', 'WUI-M7Q2-4L1B'],
-    hashes: ['2619977a9e5e0522d65a338b053fe9d668b9ffd7a26fb694f4f89a332a2573ee', 'caa37dd424c75c8bcc49096685ff408930c6409922491c2b7465694b67934fd9'],
+    tokens: ['N3L8', 'WUI-N3L8-MINE'],
+    hashes: ['1c3b0fa0bb6d1186cbfbde84001fd11845b5a68922a1029288319fdffd1325fa', '113917ac98d6019f27deda3d987664c09f8fd5c12da07f5981485dfe2a0b62b2'],
     name: 'Minerva',
     handle: '@minerva',
     bio: '',
@@ -83,8 +82,8 @@ const DEFAULT_ACCOUNTS = [
   {
     id: 'char_3',
     slot: 3,
-    tokens: ['B8T3', 'WUI-B8T3-7X8A'],
-    hashes: ['63c816ce5724c99e47758d2bca36cd1c41b210bc3d295922731867746c891527', '9f741eaf72fb7c0417ecdf910cd18132a7cc6945a91655a38fc00dd3f20da436'],
+    tokens: ['R5K1', 'WUI-R5K1-ERIC'],
+    hashes: ['f95666157dd397d4157d44720f05c660446b23b6c3140aa2bcb8ca5761a47f28', '25bf418695fe134c210bdf931fc5893b2d7a292f7ed262c008ecd759cb11983e'],
     name: 'Eric',
     handle: '@eric',
     bio: '',
@@ -97,8 +96,8 @@ const DEFAULT_ACCOUNTS = [
   {
     id: 'char_4',
     slot: 4,
-    tokens: ['P3R4', 'WUI-P3R4-3D9V'],
-    hashes: ['50aedd3f6c1ec1bbd96b4462cf11f9e51365b6d7657a092c857df19ecd7f22c6', '610c3adf93b9f4f25d5169ba2ece084e06a2d6491db68eb10ffaf49e0e4cb29c'],
+    tokens: ['H2Q9', 'WUI-H2Q9-PERA'],
+    hashes: ['8b7903ff85b96269fee9ef4165adc18ae24ce32f20e3de2c5daa3ffd17e002bd', '50677632f0e9c26b7573bd471219e6ebea8cfb44cd12c34251a39f8cdfb5d660'],
     name: 'Pera',
     handle: '@pera',
     bio: '',
@@ -111,8 +110,8 @@ const DEFAULT_ACCOUNTS = [
   {
     id: 'char_5',
     slot: 5,
-    tokens: ['K4R5', 'WUI-K4R5-8F2Q'],
-    hashes: ['04d7fd5ceb247311a8f46bb5f5d353a927ac7fd25776cafbdd3ac9f70182a2b8', '1ed723041d29cae397ffc8fafc052009b36a001e601be6d3a5aba3ceea9ccaa9'],
+    tokens: ['J8W4', 'WUI-J8W4-WILL'],
+    hashes: ['7f42d2ea1b3752c523f50d69830e942858b6c0980c4638bdbaf215d94c76bb73', '8877df43636ee69b3b5e0953869ec2a80c9844ddc6bc9247cf64c29d2a75c09c'],
     name: 'Willian',
     handle: '@willian',
     bio: '',
@@ -125,8 +124,8 @@ const DEFAULT_ACCOUNTS = [
   {
     id: 'char_6',
     slot: 6,
-    tokens: ['J9D6', 'WUI-J9D6-5M7N'],
-    hashes: ['f25cf5826fd56f85266d0aeb7d1e361d4035ceb0dac146166c1a8ad28ec03735', '409f7205e3d6398aaa57d0f6058e66d10a2ea22502faa4ba6c442af7353cff94'],
+    tokens: ['T6D3', 'WUI-T6D3-JOHN'],
+    hashes: ['b38466b6c44627df5485939cb241d72a86f54008b87e828a144fdd78aee213cb', '4e6dd809209ad92ce0a547b2b1a5473c610c2c0bb5139bec6ce6fd2b5e65e964'],
     name: 'John Doe',
     handle: '@johndoe',
     bio: '',
@@ -139,8 +138,8 @@ const DEFAULT_ACCOUNTS = [
   {
     id: 'char_7',
     slot: 7,
-    tokens: ['O7D7', 'WUI-O7D7-2H4Z'],
-    hashes: ['ba486a269e0fb9deac1c37f61ccb38be5cae83fd47ac6743adeddc8772681530', 'b094e8349e61a7092f6e0b54356560900cd295e9b6f29e4690e73a7899fc368b'],
+    tokens: ['Y4M7', 'WUI-Y4M7-ODAR'],
+    hashes: ['187542c177a73f8011cb57622b694f3ec8ffd5c11ea61ea1de5378c85ce24451', '397303bab301646c0c74e253491aeb2ffdbe9cfc6f9395dbd9748583b5d81330'],
     name: 'Odara',
     handle: '@odara',
     bio: '',
@@ -153,8 +152,8 @@ const DEFAULT_ACCOUNTS = [
   {
     id: 'char_8',
     slot: 8,
-    tokens: ['C8B8', 'WUI-C8B8-6P1K'],
-    hashes: ['7d704a54101b1028e1dc54f3eb0fe527a6c358746a25008236e2b3940fb7b97c', '0a218ab04615fd7a9e9a69da55aabde2faadf19b62e4ba78902b34a83331fd23'],
+    tokens: ['F9C5', 'WUI-F9C5-CANN'],
+    hashes: ['a1a0efb57f6f279826e7419fa6630b4cd85d6bcb8e69cb191916a28d428a72c6', 'dacd72e3e91ae602668271fa5eecbe67ad6efd099ba82a29dddf6e20d3a52926'],
     name: 'Canneth',
     handle: '@canneth',
     bio: '',
@@ -164,8 +163,6 @@ const DEFAULT_ACCOUNTS = [
     badge: 'none',
     isMaster: false
   }
-];
-
 class WuitterSystem {
   constructor() {
     this.accounts = [];
