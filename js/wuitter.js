@@ -499,9 +499,9 @@ class WuitterSystem {
         atributosObj = typeof currentRecord.atributos === 'string' ? JSON.parse(currentRecord.atributos) : currentRecord.atributos;
       }
 
-      // Adiciona / atualiza o namespace _wuitter com posts e contas
+      // Adiciona / atualiza o namespace _wuitter com posts e contas (limite otimizado)
       atributosObj._wuitter = {
-        posts: this.posts.slice(0, 150), // mantem até 150 posts recentes
+        posts: this.posts.slice(0, 40), // mantem até 40 posts mais recentes para economizar tráfego
         accounts: this.accounts.filter(a => !a.slot), // contas customizadas
         updatedAt: Date.now()
       };
@@ -523,7 +523,7 @@ class WuitterSystem {
     }
   }
 
-  // ---- SINCRONIZAÇÃO EM TEMPO REAL (WEBSOCKET + POLLING) ----
+  // ---- SINCRONIZAÇÃO EM TEMPO REAL (WEBSOCKET + POLLING ECONÔMICO) ----
   initRealtimeSubscriptions() {
     // 1. Canal Local de Navegador (entre abas)
     try {
@@ -547,13 +547,17 @@ class WuitterSystem {
       }
     });
 
-    // 2. Supabase Realtime (Postgres Changes + Broadcast WebSocket)
+    // 2. Supabase Realtime (Postgres Changes filtrado + Broadcast WebSocket)
     if (this.supabase) {
+      let lastChangeFetch = 0;
       this.realtimeChannel = this.supabase
         .channel('wuitter_realtime_channel')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'personagens' }, (payload) => {
-          // Atualização recebida do banco de dados na nuvem
-          this.fetchCloudFeed(true);
+        .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'personagens', filter: 'id=eq.3' }, (payload) => {
+          const now = Date.now();
+          if (now - lastChangeFetch > 8000) {
+            lastChangeFetch = now;
+            this.fetchCloudFeed(true);
+          }
         })
         .on('broadcast', { event: 'wuitter_event' }, (msg) => {
           if (msg && msg.payload) {
@@ -565,10 +569,12 @@ class WuitterSystem {
   }
 
   startBackgroundSync() {
-    // Polling inteligente a cada 4 segundos como garantia de tempo real
+    // Sincronização em background econômica: a cada 120s e somente se a aba estiver ativa
     setInterval(() => {
-      this.fetchCloudFeed(true);
-    }, 4000);
+      if (document.visibilityState === 'visible') {
+        this.fetchCloudFeed(true);
+      }
+    }, 120000);
   }
 
   broadcastSync(action, payload) {
@@ -1496,7 +1502,7 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
     };
   }
 
-  async optimizeImage(fileOrBlobOrDataUrl, maxWidth = 1200, maxHeight = 1200, quality = 0.8) {
+  async optimizeImage(fileOrBlobOrDataUrl, maxWidth = 600, maxHeight = 600, quality = 0.65) {
     if (!fileOrBlobOrDataUrl) return '';
     return new Promise((resolve) => {
       const processImg = (src) => {
