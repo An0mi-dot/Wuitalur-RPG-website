@@ -1972,6 +1972,10 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
       const payload = {
         username: 'WuB - Utilities',
         avatar_url: botAvatar,
+        content: '@everyone',
+        allowed_mentions: {
+          parse: ['everyone']
+        },
         embeds: [
           {
             color: 3224886, // Cinza técnico escuro (#313336)
