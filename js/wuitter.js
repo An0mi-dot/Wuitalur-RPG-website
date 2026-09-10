@@ -1569,6 +1569,47 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
     });
   }
 
+  // ---- SERVIÇO DE HOSPEDAGEM PÚBLICA DE IMAGENS (ZERO CONSUMO DE SUPABASE) ----
+  async uploadImageToHosting(fileOrBlob) {
+    // 1. Otimiza a imagem localmente (máx 1200x1200px) para upload instantâneo
+    const optimizedDataUrl = await this.optimizeImage(fileOrBlob, 1200, 1200, 0.82);
+    if (!optimizedDataUrl) {
+      throw new Error('Não foi possível processar a imagem localmente.');
+    }
+
+    // 2. Extrai base64 puro
+    const base64Data = optimizedDataUrl.replace(/^data:image\/[a-z0-9]+;base64,/, '');
+
+    // 3. Envia para o FreeImage.host API (Hospedagem pública direta com CDN iili.io)
+    const formData = new URLSearchParams();
+    formData.append('key', '6d207e02198a847aa98d0a2a901485a5');
+    formData.append('action', 'upload');
+    formData.append('source', base64Data);
+    formData.append('format', 'json');
+
+    const response = await fetch('https://freeimage.host/api/1/upload', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: formData.toString()
+    });
+
+    if (!response.ok) {
+      throw new Error(`Servidor de imagem retornou status ${response.status}`);
+    }
+
+    const resJson = await response.json();
+    if (resJson && resJson.image && resJson.image.url) {
+      return resJson.image.url;
+    } else if (resJson && resJson.image && resJson.image.display_url) {
+      return resJson.image.display_url;
+    } else {
+      const errMsg = (resJson && resJson.error && resJson.error.message) || 'Falha na resposta do servidor de imagens.';
+      throw new Error(errMsg);
+    }
+  }
+
   // ---- ENGAJAMENTO ORGÂNICO AUTOMÁTICO (CURTIDAS & RE-WUITS VIVOS) ----
   ensureOrganicBaselineEngagement() {
     if (!this.posts || this.posts.length === 0) return;
@@ -1709,22 +1750,41 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
     if (imgInput) {
       imgInput.addEventListener('change', async (e) => {
         const file = e.target.files[0];
-        if (file) {
-          if (!file.type.startsWith('image/')) {
-            alert('Apenas arquivos de imagem e fotos são permitidos (vídeos não são suportados).');
-            imgInput.value = '';
-            return;
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+          alert('Apenas arquivos de imagem e fotos são permitidos (PNG, JPG, GIF, WEBP).');
+          imgInput.value = '';
+          return;
+        }
+
+        const preview = document.getElementById('w-compose-preview');
+        const previewImg = document.getElementById('w-compose-preview-img');
+        const loadingBox = document.getElementById('w-compose-loading');
+        
+        try {
+          if (preview) preview.style.display = 'block';
+          if (previewImg) previewImg.style.display = 'none';
+          if (loadingBox) {
+            loadingBox.style.display = 'block';
+            loadingBox.textContent = 'Enviando imagem para servidor de arquivos...';
           }
-          try {
-            const optimized = await this.optimizeImage(file, 1200, 1200, 0.8);
-            if (optimized) {
-              this.pendingImageBase64 = optimized;
-              this.showImagePreview(this.pendingImageBase64);
-              if (postBtn && this.authenticatedAccount) postBtn.disabled = false;
-            }
-          } catch(err) {
-            console.warn('Erro ao processar arquivo de imagem:', err);
+          if (postBtn) postBtn.disabled = true;
+
+          const directUrl = await this.uploadImageToHosting(file);
+          if (directUrl) {
+            this.pendingImageBase64 = directUrl; // armazena o link direto da imagem
+            if (loadingBox) loadingBox.style.display = 'none';
+            this.showImagePreview(directUrl);
+            if (postBtn && this.authenticatedAccount) postBtn.disabled = false;
           }
+        } catch(err) {
+          console.error('Erro no upload da imagem:', err);
+          if (loadingBox) loadingBox.style.display = 'none';
+          if (preview) preview.style.display = 'none';
+          alert('Não foi possível fazer o upload da foto: ' + (err.message || 'Erro de conexão') + '. Você pode inserir o link direto clicando no ícone ao lado.');
+        } finally {
+          imgInput.value = '';
         }
       });
     }
@@ -1745,9 +1805,11 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
     if (removePreviewBtn) {
       removePreviewBtn.addEventListener('click', () => {
         this.pendingImageBase64 = '';
-    this.activeReplyContext = null;
+        this.activeReplyContext = null;
         if (imgInput) imgInput.value = '';
         const preview = document.getElementById('w-compose-preview');
+        const loadingBox = document.getElementById('w-compose-loading');
+        if (loadingBox) loadingBox.style.display = 'none';
         if (preview) preview.style.display = 'none';
         if (textarea && postBtn) {
           postBtn.disabled = textarea.value.trim().length === 0;
@@ -1811,8 +1873,11 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
   showImagePreview(src) {
     const preview = document.getElementById('w-compose-preview');
     const previewImg = document.getElementById('w-compose-preview-img');
+    const loadingBox = document.getElementById('w-compose-loading');
+    if (loadingBox) loadingBox.style.display = 'none';
     if (preview && previewImg) {
       previewImg.src = src;
+      previewImg.style.display = 'block';
       preview.style.display = 'block';
     }
   }
@@ -1830,12 +1895,7 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
 
     const postingAcc = this.getPostingAccount();
 
-    let finalMedia = this.pendingImageBase64 || '';
-    if (finalMedia && finalMedia.startsWith('data:image') && finalMedia.length > 150000) {
-      try {
-        finalMedia = await this.optimizeImage(finalMedia, 1200, 1200, 0.78);
-      } catch(e) {}
-    }
+    const finalMedia = this.pendingImageBase64 || '';
 
     // Curtidas iniciais automáticas (entre 2 e 5 curtidas de cidadãos ativos)
     const initialOrganicLikes = Math.floor(Math.random() * 4) + 2;
