@@ -1966,11 +1966,26 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
 
     try {
       const webhookUrl = 'https://discord.com/api/webhooks/1547404294196568084/mjWt56XVHa1MP3HJldeJgcUyghoxGHPqxiESd2h_f2GeHyHkkKYIkRzSWwFO2-_1CU0u';
+      const botAvatar = 'https://cdn.discordapp.com/avatars/1288806072328650818/c32978a4fd5a5aff0a77df81d29e28dd.png?size=256';
       const handle = author.handle ? (author.handle.startsWith('@') ? author.handle : '@' + author.handle) : '@usuario';
       
       const payload = {
         username: 'WuB - Utilities',
-        content: `${handle} Fez uma nova postagem.`
+        avatar_url: botAvatar,
+        embeds: [
+          {
+            color: 3224886, // Cinza técnico escuro (#313336)
+            author: {
+              name: 'WUITTER • NOTIFICAÇÃO PUSH',
+              icon_url: botAvatar
+            },
+            description: `\`[NOVA PUBLICAÇÃO]\`\n**${handle}** Fez uma nova postagem.`,
+            footer: {
+              text: 'Dispositivo • Paladium OS'
+            },
+            timestamp: new Date().toISOString()
+          }
+        ]
       };
 
       await fetch(webhookUrl, {
