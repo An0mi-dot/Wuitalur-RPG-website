@@ -1976,14 +1976,10 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
           {
             color: 3224886, // Cinza técnico escuro (#313336)
             author: {
-              name: 'WUITTER • NOTIFICAÇÃO PUSH',
+              name: 'WUITTER • NOTIFICAÇÃO',
               icon_url: botAvatar
             },
-            description: `\`[NOVA PUBLICAÇÃO]\`\n**${handle}** Fez uma nova postagem.`,
-            footer: {
-              text: 'Dispositivo • Paladium OS'
-            },
-            timestamp: new Date().toISOString()
+            description: `\`[NOVA PUBLICAÇÃO]\`\n**${handle}** Fez uma nova postagem.`
           }
         ]
       };
