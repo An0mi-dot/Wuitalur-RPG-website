@@ -767,22 +767,22 @@ class WuitterSystem {
                 <div class="w-clickable-profile" onclick="window.wuitter.viewProfile('${cAuthor.id}')">
                   ${this.renderAvatarHtml(cAuthor, 'sm')}
                 </div>
-                <div class="w-inline-reply-body">
                   <div class="w-inline-reply-header">
                     <span class="w-inline-reply-name" onclick="window.wuitter.viewProfile('${cAuthor.id}')">${cAuthor.name}</span>
                     ${cBadge}
                     <span class="w-inline-reply-handle">${cAuthor.handle}</span>
                     <span class="w-wuit-dot">&bull;</span>
                     <span class="w-wuit-time">${c.timeDisplay || c.customDate || this.formatTime(c.timestamp)}</span>
-                ${c.replyToHandle ? `<div class="w-reply-to-tag-sm">Respondendo a <span class="w-mention" onclick="window.wuitter.filterByMention('${c.replyToHandle.replace('@', '')}')">${c.replyToHandle}</span></div>` : ''}
-                <div class="w-inline-reply-text">${this.formatText(c.text)}</div>
-                <div style="margin-top: 4px; display: flex; align-items: center; gap: 8px;">
-                  <button class="w-inline-reply-action-btn" onclick="window.wuitter.setReplyContext('${post.id}', '${c.id}')" title="Responder a ${cAuthor.name}">
-                    ${SVG_ICONS.comment}
-                    <span>Responder</span>
-                  </button>
+                  </div>
+                  ${c.replyToHandle ? `<div class="w-reply-to-tag-sm">Respondendo a <span class="w-mention" onclick="window.wuitter.filterByMention('${c.replyToHandle.replace('@', '')}')">${c.replyToHandle}</span></div>` : ''}
+                  <div class="w-inline-reply-text">${this.formatText(c.text)}</div>
+                  <div style="margin-top: 4px; display: flex; align-items: center; gap: 8px;">
+                    <button class="w-inline-reply-action-btn" onclick="window.wuitter.setReplyContext('${post.id}', '${c.id}')" title="Responder a ${cAuthor.name}">
+                      ${SVG_ICONS.comment}
+                      <span>Responder</span>
+                    </button>
+                  </div>
                 </div>
-              </div>
               </div>
             `;
           }).join('')}
@@ -3083,11 +3083,12 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
       container.innerHTML = post.comments.map(c => {
         const cAuthor = this.getAccountById(c.authorId);
         const cBadge = this.renderBadgeSvg(cAuthor.badge);
+        const isNested = Boolean(c.replyToCommentId);
         const canDeleteComment = this.isMaster() || (this.authenticatedAccount && this.authenticatedAccount.id === c.authorId);
         return `
-          <div class="w-comment-item" id="comment_${c.id}">
+          <div class="w-comment-item ${isNested ? 'nested-reply' : ''}" id="comment_${c.id}">
             <div class="w-clickable-profile" onclick="window.wuitter.viewProfile('${cAuthor.id}'); window.wuitter.closeModals();">
-              ${this.renderAvatarHtml(cAuthor, 'normal')}
+              ${this.renderAvatarHtml(cAuthor, isNested ? 'sm' : 'normal')}
             </div>
             <div class="w-comment-main">
               <div class="w-comment-header">

@@ -1133,11 +1133,14 @@ body.wuitter-body select {
   border-radius: var(--w-radius-md);
   padding: 8px 12px;
   font-size: 0.88rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .w-inline-reply-body {
   flex: 1;
   min-width: 0;
+  width: 100%;
 }
 
 .w-inline-reply-header {
@@ -1146,6 +1149,8 @@ body.wuitter-body select {
   gap: 6px;
   font-size: 0.8rem;
   margin-bottom: 2px;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
 .w-inline-reply-name {
@@ -1165,6 +1170,10 @@ body.wuitter-body select {
   color: var(--w-text-main);
   line-height: 1.4;
   word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  width: 100%;
+  margin-top: 2px;
 }
 
 .w-btn-show-more-replies {
@@ -1257,9 +1266,23 @@ body.wuitter-body select {
   border: 1px solid var(--w-border);
   border-radius: var(--w-radius-md);
   transition: background 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
 }
 .w-comment-item:hover {
   background: rgba(255, 255, 255, 0.03);
+}
+
+.w-comment-item.nested-reply {
+  margin-left: 20px;
+  border-left: 3px solid var(--w-primary);
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.w-comment-main {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
 }
 
 .w-comment-header {
@@ -1267,6 +1290,8 @@ body.wuitter-body select {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 4px;
+  gap: 8px;
+  width: 100%;
 }
 
 .w-comment-author-info {
@@ -1274,6 +1299,8 @@ body.wuitter-body select {
   align-items: center;
   gap: 6px;
   font-size: 0.88rem;
+  flex-wrap: wrap;
+  min-width: 0;
 }
 
 .w-comment-name {
@@ -1295,6 +1322,10 @@ body.wuitter-body select {
   color: var(--w-text-main);
   line-height: 1.45;
   word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  width: 100%;
+  margin-top: 2px;
 }
 
 /* Lightbox Image Preview */
