@@ -1985,7 +1985,7 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
               name: 'WUITTER • NOTIFICAÇÃO',
               icon_url: botAvatar
             },
-            description: `\`[NOVA PUBLICAÇÃO]\`\n**${handle}** Fez uma nova postagem.`
+            description: '[NOVA PUBLICAÇÃO]\n' + handle + ' Fez uma nova postagem.'
           }
         ]
       };
