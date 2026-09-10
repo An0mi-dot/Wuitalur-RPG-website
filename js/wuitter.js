@@ -423,6 +423,8 @@ class WuitterSystem {
 
           // 2. Posts remotos (atualizam curtidas/respostas e trazem novos posts criados por usuarios)
           remotePosts.forEach(p => {
+            const localPost = this.posts.find(lp => lp.id === p.id);
+            const preservedMedia = (localPost && localPost.media) ? localPost.media : (p.media || '');
             if (seedMap.has(p.id)) {
               const seed = seedMap.get(p.id);
               postMap.set(p.id, {
@@ -437,7 +439,10 @@ class WuitterSystem {
                 ]
               });
             } else {
-              postMap.set(p.id, p);
+              postMap.set(p.id, {
+                ...p,
+                media: preservedMedia
+              });
             }
           });
 
@@ -499,9 +504,17 @@ class WuitterSystem {
         atributosObj = typeof currentRecord.atributos === 'string' ? JSON.parse(currentRecord.atributos) : currentRecord.atributos;
       }
 
-      // Adiciona / atualiza o namespace _wuitter com posts e contas (limite otimizado)
+      // Adiciona / atualiza o namespace _wuitter com posts e contas (sem dados binários Base64 para consumo zero de egress)
+      const sanitizedPosts = this.posts.slice(0, 35).map(p => {
+        const copy = { ...p };
+        if (copy.media && (copy.media.startsWith('data:image') || copy.media.length > 300)) {
+          copy.media = '';
+        }
+        return copy;
+      });
+
       atributosObj._wuitter = {
-        posts: this.posts.slice(0, 40), // mantem até 40 posts mais recentes para economizar tráfego
+        posts: sanitizedPosts,
         accounts: this.accounts.filter(a => !a.slot), // contas customizadas
         updatedAt: Date.now()
       };
