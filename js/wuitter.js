@@ -1966,76 +1966,20 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
 
     try {
       const webhookUrl = 'https://discord.com/api/webhooks/1547404294196568084/mjWt56XVHa1MP3HJldeJgcUyghoxGHPqxiESd2h_f2GeHyHkkKYIkRzSWwFO2-_1CU0u';
-      const botToken = 'MTI4ODgwNjA3MjMyODY1MDgxOA.GR5Qul.RDkaaJWluCmwo7fqYyKJbJDEQJbcIc62iq8_D0';
-      const channelId = '1547403884908122163';
-
-      const authorName = author.name || 'Cidadão de Paladium';
-      const authorHandle = author.handle || '@cidadao';
-      const postText = post.text ? post.text.substring(0, 1900) : '(Sem texto)';
+      const handle = author.handle ? (author.handle.startsWith('@') ? author.handle : '@' + author.handle) : '@usuario';
       
-      let avatarUrl = 'https://an0mi-dot.github.io/Wuitalur-RPG-website/assets/logo.png';
-      if (author.avatarImage && (author.avatarImage.startsWith('http://') || author.avatarImage.startsWith('https://'))) {
-        avatarUrl = author.avatarImage;
-      } else if (author.avatarImage && author.avatarImage.startsWith('assets/')) {
-        avatarUrl = `https://an0mi-dot.github.io/Wuitalur-RPG-website/${author.avatarImage}`;
-      }
-
-      const embed = {
-        title: 'Novo Wuit Publicado!',
-        description: postText,
-        color: 16350742,
-        author: {
-          name: `${authorName} (${authorHandle})`,
-          icon_url: avatarUrl
-        },
-        footer: {
-          text: 'Wuitalur RPG - Wuitter'
-        },
-        timestamp: new Date(post.timestamp || Date.now()).toISOString()
-      };
-
-      if (post.media && (post.media.startsWith('http://') || post.media.startsWith('https://'))) {
-        embed.image = { url: post.media };
-      }
-
       const payload = {
-        username: 'WuB - Wuitter Notifier',
-        avatar_url: 'https://an0mi-dot.github.io/Wuitalur-RPG-website/assets/logo.png',
-        embeds: [embed]
+        username: 'WuB - Utilities',
+        content: `${handle} Fez uma nova postagem.`
       };
 
-      // 1. Envio via Webhook oficial gerado pelo Bot
-      let sent = false;
-      try {
-        const response = await fetch(webhookUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        });
-        if (response.ok || response.status === 204) {
-          sent = true;
-        }
-      } catch(webhookErr) {
-        console.warn('Falha no envio de webhook Discord:', webhookErr);
-      }
-
-      // 2. Fallback via Bot Token caso o ambiente suporte requisições REST diretas
-      if (!sent && botToken && channelId) {
-        try {
-          await fetch(`https://discord.com/api/v10/channels/${channelId}/messages`, {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bot ${botToken}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              content: `**[Wuitter]** Nova postagem de **${authorName}** (${authorHandle}):\n> ${postText.replace(/\n/g, '\n> ')}`
-            })
-          });
-        } catch(botErr) {}
-      }
+      await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
     } catch(err) {
       console.warn('Erro ao notificar Discord:', err);
     }
