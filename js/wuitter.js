@@ -1953,7 +1953,9 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
     this.renderFeed(newPost.id);
 
     // Envia notificação instantânea para o canal do Discord através do Bot
-    this.sendDiscordNotification(newPost, postingAcc);
+    try {
+      await this.sendDiscordNotification(newPost, postingAcc);
+    } catch(e) {}
 
     // Transmite instantaneamente para os outros usuários e grava no Supabase Cloud
     this.broadcastSync('NEW_POST', { post: newPost });
@@ -1967,7 +1969,7 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
     try {
       const webhookUrl = 'https://discord.com/api/webhooks/1547404294196568084/mjWt56XVHa1MP3HJldeJgcUyghoxGHPqxiESd2h_f2GeHyHkkKYIkRzSWwFO2-_1CU0u';
       const botAvatar = 'https://cdn.discordapp.com/avatars/1288806072328650818/c32978a4fd5a5aff0a77df81d29e28dd.png?size=256';
-      const handle = author.handle ? (author.handle.startsWith('@') ? author.handle : '@' + author.handle) : '@usuario';
+      const handle = author.handle ? (author.handle.startsWith('@') ? author.handle : '@' + author.handle) : (author.name ? '@' + author.name.toLowerCase().replace(/\s+/g, '') : '@usuario');
       
       const payload = {
         username: 'WuB - Utilities',
@@ -1993,7 +1995,8 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        keepalive: true
       });
     } catch(err) {
       console.warn('Erro ao notificar Discord:', err);
