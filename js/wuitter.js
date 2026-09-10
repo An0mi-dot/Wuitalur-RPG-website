@@ -1574,40 +1574,69 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
     // 1. Otimiza a imagem localmente (máx 1200x1200px) para upload instantâneo
     const optimizedDataUrl = await this.optimizeImage(fileOrBlob, 1200, 1200, 0.82);
     if (!optimizedDataUrl) {
-      throw new Error('Não foi possível processar a imagem localmente.');
+      throw new Error('Não foi possível processar o arquivo de imagem.');
     }
 
-    // 2. Extrai base64 puro
-    const base64Data = optimizedDataUrl.replace(/^data:image\/[a-z0-9]+;base64,/, '');
+    const base64Clean = optimizedDataUrl.replace(/^data:image\/[a-z0-9]+;base64,/, '');
 
-    // 3. Envia para o FreeImage.host API (Hospedagem pública direta com CDN iili.io)
-    const formData = new URLSearchParams();
-    formData.append('key', '6d207e02198a847aa98d0a2a901485a5');
-    formData.append('action', 'upload');
-    formData.append('source', base64Data);
-    formData.append('format', 'json');
+    // 2. Serviço Primário: Imgur API (rápido, CDN de alta velocidade, suporte nativo a CORS no browser)
+    const imgurKeys = ['546c25a59c58ad7', 'e8e663a8a07c134', 'b30349b1a1cf647', '7447eafe737c359'];
+    for (const key of imgurKeys) {
+      try {
+        const formData = new FormData();
+        formData.append('image', base64Clean);
+        formData.append('type', 'base64');
 
-    const response = await fetch('https://freeimage.host/api/1/upload', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: formData.toString()
-    });
+        const response = await fetch('https://api.imgur.com/3/image', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Client-ID ' + key
+          },
+          body: formData
+        });
 
-    if (!response.ok) {
-      throw new Error(`Servidor de imagem retornou status ${response.status}`);
+        if (response.ok) {
+          const resJson = await response.json();
+          if (resJson && resJson.data && resJson.data.link) {
+            return resJson.data.link;
+          }
+        }
+      } catch(err) {
+        console.warn('Tentativa de upload via Imgur falhou:', err);
+      }
     }
 
-    const resJson = await response.json();
-    if (resJson && resJson.image && resJson.image.url) {
-      return resJson.image.url;
-    } else if (resJson && resJson.image && resJson.image.display_url) {
-      return resJson.image.display_url;
-    } else {
-      const errMsg = (resJson && resJson.error && resJson.error.message) || 'Falha na resposta do servidor de imagens.';
-      throw new Error(errMsg);
+    // 3. Serviço Secundário de Fallback: Catbox / Litterbox
+    try {
+      const byteCharacters = atob(base64Clean);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: 'image/png' });
+
+      const form = new FormData();
+      form.append('reqtype', 'fileupload');
+      form.append('time', '72h');
+      form.append('fileToUpload', blob, 'wuitter_' + Date.now() + '.png');
+
+      const catboxRes = await fetch('https://litterbox.catbox.moe/resources/internals/api.php', {
+        method: 'POST',
+        body: form
+      });
+
+      if (catboxRes.ok) {
+        const catboxUrl = await catboxRes.text();
+        if (catboxUrl && catboxUrl.startsWith('http')) {
+          return catboxUrl.trim();
+        }
+      }
+    } catch(err) {
+      console.warn('Tentativa de upload via Litterbox falhou:', err);
     }
+
+    throw new Error('Serviço de imagens indisponível. Você pode colar o link direto clicando no botão ao lado.');
   }
 
   // ---- ENGAJAMENTO ORGÂNICO AUTOMÁTICO (CURTIDAS & RE-WUITS VIVOS) ----
