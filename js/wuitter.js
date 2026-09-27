@@ -156,7 +156,7 @@ const DEFAULT_ACCOUNTS = [
     handle: '@johndoe',
     bio: 'Observador discreto. Não faço perguntas que eu não queira saber a resposta.',
     avatarLetter: 'J',
-    avatarImage: '',
+    avatarImage: 'assets/john_wuitter.png',
     avatarColor: '#3b82f6',
     badge: 'none',
     isMaster: false

@@ -1,0 +1,12 @@
+# Sistema de Backups (mantidos localmente mas não enviados para a web)
+backups_sistema/
+_archive/
+*.bak
+*.tmp
+
+# SO e Metadados
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
