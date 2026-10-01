@@ -4454,123 +4454,271 @@ body.mesa-body.area-refugio-gustavo {
 
 .master-dossier-header h3 {
   margin: 4px 0 0 0;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   font-weight: 900;
   color: #fee2e2;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
-.area-table-wrapper {
-  overflow-x: auto;
-  border-radius: 2px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  scrollbar-width: thin;
-  scrollbar-color: #ef4444 #0a0101;
+.master-dossier-subtitle {
+  font-size: 0.8rem;
+  color: #a1a1aa;
+  margin: 4px 0 0 0;
+  line-height: 1.4;
+  font-family: monospace;
 }
 
-.area-poi-table {
+/* Barra de Navegação Rápida entre os 10 Pontos de Interesse */
+.area-poi-quicknav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 14px 0 18px 0;
+  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 4px;
+}
+
+.poi-nav-btn {
+  background: #18181b;
+  border: 1px solid #3f3f46;
+  color: #d4d4d8;
+  font-family: monospace;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.poi-nav-btn:hover {
+  background: #ef4444;
+  color: #fff;
+  border-color: #ef4444;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+}
+
+/* Container dos Cards de Ponto de Interesse */
+.area-poi-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* Card Individual de Ponto de Interesse (Layout 1:1 com a Referência Oficial) */
+.poi-card {
+  background: #09090b;
+  border: 1.5px solid #3f3f46;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+  transition: border-color 0.2s ease;
+}
+
+.poi-card:hover {
+  border-color: rgba(239, 68, 68, 0.6);
+}
+
+/* 1. CABEÇALHO DO PONTO DE INTERESSE */
+.poi-header-block {
+  background: #111215;
+  border-bottom: 2px solid #27272a;
+  padding: 14px 18px;
+  position: relative;
+}
+
+.poi-header-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.poi-index-badge {
+  font-family: monospace;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  padding: 2px 7px;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
+.poi-header-title {
+  margin: 0 0 6px 0;
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.25;
+}
+
+.poi-header-desc {
+  margin: 0;
+  font-size: 0.86rem;
+  color: #cbd5e1;
+  line-height: 1.5;
+}
+
+/* 2. QUADRO DE PERÍCIAS */
+.poi-skills-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  background: #0f1013;
+  border-bottom: 1px solid #27272a;
+}
+
+.poi-skills-table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: 0.8rem;
-  color: #e4e4e7;
-  background: #080101;
+  font-size: 0.83rem;
 }
 
-.area-poi-table thead {
-  background: #1c0505;
-  border-bottom: 2px solid #ef4444;
+.poi-skills-table thead {
+  background: #27272a;
+  border-bottom: 2px solid #3f3f46;
 }
 
-.area-poi-table th {
-  padding: 10px 12px;
+.poi-skills-table th {
+  padding: 8px 14px;
   font-family: monospace;
   font-weight: 800;
-  color: #fca5a5;
+  color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-size: 0.75rem;
-  border-right: 1px solid rgba(239, 68, 68, 0.2);
+  font-size: 0.76rem;
+  border-right: 1px solid #3f3f46;
 }
 
-.area-poi-table th:last-child {
+.poi-skills-table th:last-child {
   border-right: none;
 }
 
-.area-poi-table tbody tr {
+.poi-skills-table th.th-pericia {
+  width: 24%;
+}
+
+.poi-skills-table th.th-dt {
+  width: 10%;
+  text-align: center;
+}
+
+.poi-skills-table th.th-info {
+  width: 66%;
+}
+
+.poi-skills-table tbody tr {
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  transition: background 0.15s ease;
 }
 
-.area-poi-table tbody tr:nth-child(even) {
-  background: rgba(255, 255, 255, 0.02);
+.poi-skills-table tbody tr:last-child {
+  border-bottom: none;
 }
 
-.area-poi-table tbody tr:hover {
-  background: rgba(239, 68, 68, 0.12);
+/* Tonalidades de cores suaves por perícia exatamente como na referência */
+.poi-skills-table tr.skill-tint-0 {
+  background: rgba(245, 158, 11, 0.08);
+}
+.poi-skills-table tr.skill-tint-1 {
+  background: rgba(34, 197, 94, 0.08);
+}
+.poi-skills-table tr.skill-tint-2 {
+  background: rgba(14, 165, 233, 0.08);
+}
+.poi-skills-table tr.skill-tint-3 {
+  background: rgba(168, 85, 247, 0.08);
 }
 
-.area-poi-table td {
-  padding: 9px 12px;
-  line-height: 1.4;
+.poi-skills-table td {
+  padding: 10px 14px;
   vertical-align: top;
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  line-height: 1.45;
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-.area-poi-table td:last-child {
+.poi-skills-table td:last-child {
   border-right: none;
 }
 
-.poi-num {
+.poi-skill-cell {
+  font-weight: 700;
+  color: #f1f5f9;
+  letter-spacing: 0.02em;
+}
+
+.poi-dt-cell {
+  text-align: center;
   font-family: monospace;
   font-weight: 900;
-  color: #ef4444;
-  display: inline-block;
-  text-align: center;
-  width: 100%;
+  font-size: 0.95rem;
+  color: #fbbf24;
 }
 
-.poi-name-title {
-  font-weight: 800;
-  color: #fff;
+.poi-info-cell {
+  color: #e2e8f0;
+}
+
+/* 3. DESCRIÇÃO CONTEXTUAL (ÍCONE DO LIVRO + SEGREDO DO MESTRE) */
+.poi-context-block {
+  background: #18181b;
+  border-top: 1px solid #27272a;
+  padding: 14px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.poi-book-icon-wrap {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  color: #f4f4f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+.poi-book-svg {
+  width: 26px;
+  height: 26px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
+.poi-context-content {
+  flex: 1;
+}
+
+.poi-context-label {
   display: block;
-  margin-bottom: 2px;
-}
-
-.poi-name-detail {
-  font-size: 0.72rem;
-  color: #a1a1aa;
-}
-
-.poi-clue-highlight {
-  color: #fef08a;
-  font-size: 0.78rem;
-}
-
-.poi-npc-tag {
-  display: inline-block;
   font-family: monospace;
-  font-size: 0.72rem;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 2px 6px;
-  border-radius: 2px;
-  color: #93c5fd;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #a1a1aa;
+  text-transform: uppercase;
   margin-bottom: 4px;
 }
 
-.poi-skill-pill {
-  display: inline-block;
-  font-family: monospace;
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 2px;
-  background: rgba(234, 179, 8, 0.15);
-  border: 1px solid #eab308;
-  color: #fde047;
-  text-transform: uppercase;
+.poi-context-content p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #e2e8f0;
+  line-height: 1.55;
+}
+
+.poi-context-content p + p {
+  margin-top: 6px;
 }
 
 /* Responsividade Mobile para Áreas */

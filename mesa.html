@@ -340,27 +340,20 @@
             <!-- Atmosfera, Descrição Geral e Rumores -->
           </div>
 
-          <!-- Seção Exclusiva do Mestre: Tabela dos 10 Pontos de Interesse -->
+          <!-- Seção Exclusiva do Mestre: 10 Pontos de Interesse Estruturados -->
           <div id="area-master-dossier" class="area-master-dossier" style="display: none;">
             <div class="master-dossier-header">
               <span class="dossier-badge">[CONFIDENCIAL • ACESSO DO MESTRE]</span>
-              <h3>10 PONTOS DE INTERESSE & PISTAS INVESTIGATIVAS</h3>
+              <h3>10 PONTOS DE INTERESSE DA LOCALIDADE</h3>
+              <p class="master-dossier-subtitle">Estrutura oficial: Cabeçalho com descrição sensorial inicial, Quadro de Perícias escalonado por DT e Descrição Contextual com os segredos da trama.</p>
             </div>
-            <div class="area-table-wrapper">
-              <table class="area-poi-table" id="area-poi-table">
-                <thead>
-                  <tr>
-                    <th style="width: 36px;">#</th>
-                    <th style="width: 23%;">Ponto de Interesse</th>
-                    <th>Pista / Segredo Oculto</th>
-                    <th style="width: 22%;">NPC / Conexão</th>
-                    <th style="width: 14%;">Perícia</th>
-                  </tr>
-                </thead>
-                <tbody id="area-poi-tbody">
-                  <!-- Linhas preenchidas via JS -->
-                </tbody>
-              </table>
+
+            <!-- Índice de Navegação Rápida entre os 10 Pontos -->
+            <div id="area-poi-quicknav" class="area-poi-quicknav"></div>
+
+            <!-- Lista dos 10 Cards Estruturados de Ponto de Interesse -->
+            <div id="area-poi-cards-container" class="area-poi-cards-container">
+              <!-- Renderizado dinamicamente via MesaAreaManager conforme o modelo da referência -->
             </div>
           </div>
         </div>
