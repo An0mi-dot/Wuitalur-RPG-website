@@ -62,9 +62,10 @@ html, body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 35% 45%, var(--mesa-orange) 0%, var(--mesa-ink-red) 45%, var(--mesa-orange-dark) 75%, #120200 100%);
+    radial-gradient(circle at 35% 45%, var(--area-ambient-1, var(--mesa-orange)) 0%, var(--area-ambient-2, var(--mesa-ink-red)) 45%, var(--area-ambient-3, var(--mesa-orange-dark)) 75%, var(--area-ambient-dark, #120200) 100%);
   z-index: 0;
   animation: mesaBgPulse 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transition: background 0.8s ease;
 }
 
 @keyframes mesaBgPulse {
@@ -269,29 +270,30 @@ html, body {
   inset: 0;
   background: #050100;
   border-radius: 2px 6px 3px 7px;
-  border: 5px solid var(--mesa-orange);
+  border: 5px solid var(--area-accent, var(--mesa-orange));
   box-shadow:
     0 0 0 1px #000,
-    0 0 25px rgba(255, 85, 0, 0.3),
+    0 0 25px var(--area-glow, rgba(255, 85, 0, 0.3)),
     0 30px 80px rgba(0, 0, 0, 0.95),
     inset 0 0 120px rgba(0, 0, 0, 0.9);
   filter: url(#nanquim-rough);
   animation: mesaBoardReveal 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
   overflow: hidden; /* Imagem fica estritamente contida abaixo das bordas */
+  transition: border-color 0.8s ease, box-shadow 0.8s ease;
 }
 
 @keyframes mesaBoardReveal {
   0% {
     opacity: 0;
     transform: scale(0.88);
-    box-shadow: 0 0 60px rgba(255, 85, 0, 0.7);
+    box-shadow: 0 0 60px var(--area-glow, rgba(255, 85, 0, 0.7));
   }
   100% {
     opacity: 1;
     transform: scale(1);
     box-shadow:
       0 0 0 1px #000,
-      0 0 25px rgba(255, 85, 0, 0.3),
+      0 0 25px var(--area-glow, rgba(255, 85, 0, 0.3)),
       0 30px 80px rgba(0, 0, 0, 0.95),
       inset 0 0 120px rgba(0, 0, 0, 0.9);
   }
@@ -300,10 +302,11 @@ html, body {
 .board-ink-inner-border {
   position: absolute;
   inset: 8px;
-  border: 1.5px dashed rgba(255, 85, 0, 0.35);
+  border: 1.5px dashed var(--area-accent-trans, rgba(255, 85, 0, 0.35));
   border-radius: 2px;
   pointer-events: none;
   z-index: 5; /* Borda tracejada fica sobre a imagem */
+  transition: border-color 0.8s ease;
 }
 
 .board-crosshair-c {
@@ -3995,5 +3998,563 @@ body.mp-drawer-open .mesa-board-container,
     background: rgba(255, 255, 255, 0.04);
     border-color: rgba(255, 255, 255, 0.15);
     color: #a1a1aa;
+  }
+}
+
+/* ============================================================
+   SISTEMA DE ÁREAS & MAPA DE INVESTIGAÇÃO — WUITALUR RPG
+   Atmosferas Visuais, Mapa Interativo & Dossiê do Mestre
+   ============================================================ */
+
+/* 1. PALETAS TEMÁTICAS DAS ÁREAS */
+body.mesa-body.area-mina-de-prata {
+  --area-ambient-1: #c2410c;
+  --area-ambient-2: #7c2d12;
+  --area-ambient-3: #3a1005;
+  --area-ambient-dark: #120300;
+  --area-accent: #f97316;
+  --area-accent-trans: rgba(249, 115, 22, 0.4);
+  --area-glow: rgba(249, 115, 22, 0.4);
+  --area-badge-bg: rgba(249, 115, 22, 0.15);
+}
+
+body.mesa-body.area-colegio-primordio {
+  --area-ambient-1: #0f766e;
+  --area-ambient-2: #115e59;
+  --area-ambient-3: #042f2e;
+  --area-ambient-dark: #011716;
+  --area-accent: #14b8a6;
+  --area-accent-trans: rgba(20, 184, 166, 0.4);
+  --area-glow: rgba(20, 184, 166, 0.45);
+  --area-badge-bg: rgba(20, 184, 166, 0.15);
+}
+
+body.mesa-body.area-cafe-da-nevoa {
+  --area-ambient-1: #6b21a8;
+  --area-ambient-2: #581c87;
+  --area-ambient-3: #2e1065;
+  --area-ambient-dark: #130324;
+  --area-accent: #c084fc;
+  --area-accent-trans: rgba(192, 132, 252, 0.4);
+  --area-glow: rgba(192, 132, 252, 0.45);
+  --area-badge-bg: rgba(192, 132, 252, 0.15);
+}
+
+body.mesa-body.area-clinica-renovare {
+  --area-ambient-1: #0369a1;
+  --area-ambient-2: #075985;
+  --area-ambient-3: #0c4a6e;
+  --area-ambient-dark: #031726;
+  --area-accent: #38bdf8;
+  --area-accent-trans: rgba(56, 189, 248, 0.4);
+  --area-glow: rgba(56, 189, 248, 0.45);
+  --area-badge-bg: rgba(56, 189, 248, 0.15);
+}
+
+body.mesa-body.area-ferro-velho {
+  --area-ambient-1: #4d7c0f;
+  --area-ambient-2: #3f6212;
+  --area-ambient-3: #1a2e05;
+  --area-ambient-dark: #0d1702;
+  --area-accent: #84cc16;
+  --area-accent-trans: rgba(132, 204, 22, 0.4);
+  --area-glow: rgba(132, 204, 22, 0.45);
+  --area-badge-bg: rgba(132, 204, 22, 0.15);
+}
+
+body.mesa-body.area-floresta-proibida {
+  --area-ambient-1: #064e3b;
+  --area-ambient-2: #065f46;
+  --area-ambient-3: #022c22;
+  --area-ambient-dark: #01150f;
+  --area-accent: #10b981;
+  --area-accent-trans: rgba(16, 185, 129, 0.4);
+  --area-glow: rgba(16, 185, 129, 0.45);
+  --area-badge-bg: rgba(16, 185, 129, 0.15);
+}
+
+body.mesa-body.area-refugio-gustavo {
+  --area-ambient-1: #991b1b;
+  --area-ambient-2: #7f1d1d;
+  --area-ambient-3: #450a0a;
+  --area-ambient-dark: #1b0303;
+  --area-accent: #ef4444;
+  --area-accent-trans: rgba(239, 68, 68, 0.4);
+  --area-glow: rgba(239, 68, 68, 0.45);
+  --area-badge-bg: rgba(239, 68, 68, 0.15);
+}
+
+/* 2. MODAL DE ESCOLHA DE ÁREA / MAPA */
+.area-map-modal-dialog {
+  max-width: 900px !important;
+  width: 94% !important;
+  max-height: 88vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--mesa-orange) #080200;
+}
+
+.area-map-subtitle {
+  font-size: 0.82rem;
+  color: #a1a1aa;
+  margin: -10px 0 18px 0;
+  text-align: center;
+  letter-spacing: 0.04em;
+  font-family: monospace;
+}
+
+.area-map-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.area-map-card {
+  background: rgba(18, 6, 2, 0.75);
+  border: 2px solid rgba(255, 85, 0, 0.3);
+  border-radius: 4px;
+  padding: 16px 14px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.22s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+}
+
+.area-map-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--card-accent, var(--mesa-orange));
+  background: rgba(28, 10, 4, 0.9);
+  box-shadow: 0 6px 20px var(--card-glow, rgba(255, 85, 0, 0.35));
+}
+
+.area-map-card.selected {
+  border-color: var(--card-accent, #fff) !important;
+  box-shadow: 0 0 18px var(--card-glow, rgba(255, 255, 255, 0.5)), inset 0 0 12px rgba(255, 255, 255, 0.08) !important;
+  background: rgba(35, 12, 5, 0.95);
+}
+
+.area-map-card.is-current {
+  border-width: 2px;
+}
+
+.area-card-current-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  border-radius: 2px;
+  background: #16a34a;
+  color: #fff;
+  text-transform: uppercase;
+  font-family: monospace;
+  box-shadow: 0 0 8px rgba(22, 163, 74, 0.6);
+}
+
+.area-card-top-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.area-card-symbol-wrap {
+  width: 42px;
+  height: 42px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--card-accent, rgba(255, 85, 0, 0.4));
+  flex-shrink: 0;
+  box-shadow: 0 0 10px var(--card-glow, transparent);
+}
+
+.area-card-titles {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.area-card-name {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #f4f4f5;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+.area-card-type {
+  font-size: 0.72rem;
+  color: #a1a1aa;
+  font-family: monospace;
+}
+
+.area-card-desc-snippet {
+  font-size: 0.76rem;
+  color: #d4d4d8;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.area-card-footer-tags {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  font-size: 0.68rem;
+  font-family: monospace;
+}
+
+.area-card-danger-badge {
+  color: #f87171;
+  font-weight: 700;
+}
+
+.area-card-pois-badge {
+  color: #fbbf24;
+  font-weight: 700;
+}
+
+.area-map-footer {
+  margin-top: 8px;
+  padding: 14px 16px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 85, 0, 0.25);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.area-map-preview-note {
+  font-size: 0.85rem;
+  color: #e4e4e7;
+  line-height: 1.4;
+  font-family: monospace;
+}
+
+.area-map-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* 3. MODAL DE INFORMAÇÕES DA ÁREA & DOSSIÊ DO MESTRE */
+.area-info-modal-dialog {
+  max-width: 1060px !important;
+  width: 95% !important;
+  max-height: 90vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--mesa-orange) #080200;
+}
+
+.area-info-header {
+  border-bottom: 2px solid var(--area-accent, var(--mesa-orange));
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.area-header-identity {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.area-header-symbol {
+  font-size: 2.2rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid var(--area-accent, var(--mesa-orange));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 16px var(--area-glow, rgba(255, 85, 0, 0.4));
+}
+
+.area-header-titles h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #fff;
+}
+
+.area-header-titles p {
+  margin: 4px 0 0 0;
+  font-size: 0.82rem;
+  color: #a1a1aa;
+  font-family: monospace;
+}
+
+.area-header-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.area-meta-tag {
+  font-size: 0.72rem;
+  font-family: monospace;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #d4d4d8;
+  text-transform: uppercase;
+}
+
+.area-meta-tag.danger {
+  border-color: #ef4444;
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.area-public-info {
+  background: rgba(12, 4, 2, 0.6);
+  border: 1px solid rgba(255, 85, 0, 0.25);
+  border-radius: 4px;
+  padding: 16px 18px;
+  margin-bottom: 22px;
+}
+
+.area-public-info h4 {
+  margin: 0 0 8px 0;
+  font-size: 0.85rem;
+  color: var(--area-accent, var(--mesa-orange));
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: monospace;
+}
+
+.area-public-info p {
+  margin: 0 0 10px 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: #e4e4e7;
+}
+
+.area-public-info p:last-child {
+  margin-bottom: 0;
+}
+
+.area-rumor-box {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.4);
+  border-left: 3px solid #eab308;
+  border-radius: 0 2px 2px 0;
+  font-style: italic;
+  font-size: 0.82rem;
+  color: #fef08a;
+  line-height: 1.45;
+}
+
+/* 4. DOSSIÊ EXCLUSIVO DO MESTRE (TABELA DE 10 POIs) */
+.area-master-dossier {
+  background: #0d0202;
+  border: 2px solid #ef4444;
+  box-shadow: 0 0 25px rgba(239, 68, 68, 0.25), inset 0 0 20px rgba(0, 0, 0, 0.8);
+  border-radius: 4px;
+  padding: 18px;
+  position: relative;
+  margin-top: 16px;
+}
+
+.master-dossier-header {
+  margin-bottom: 14px;
+  border-bottom: 1px dashed rgba(239, 68, 68, 0.4);
+  padding-bottom: 10px;
+}
+
+.dossier-badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-family: monospace;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid #ef4444;
+  padding: 2px 8px;
+  margin-bottom: 6px;
+  border-radius: 2px;
+  animation: pulseMasterBadge 2s infinite ease-in-out;
+}
+
+@keyframes pulseMasterBadge {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 0.55; }
+}
+
+.master-dossier-header h3 {
+  margin: 4px 0 0 0;
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: #fee2e2;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.area-table-wrapper {
+  overflow-x: auto;
+  border-radius: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  scrollbar-width: thin;
+  scrollbar-color: #ef4444 #0a0101;
+}
+
+.area-poi-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.8rem;
+  color: #e4e4e7;
+  background: #080101;
+}
+
+.area-poi-table thead {
+  background: #1c0505;
+  border-bottom: 2px solid #ef4444;
+}
+
+.area-poi-table th {
+  padding: 10px 12px;
+  font-family: monospace;
+  font-weight: 800;
+  color: #fca5a5;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+  border-right: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.area-poi-table th:last-child {
+  border-right: none;
+}
+
+.area-poi-table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background 0.15s ease;
+}
+
+.area-poi-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.area-poi-table tbody tr:hover {
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.area-poi-table td {
+  padding: 9px 12px;
+  line-height: 1.4;
+  vertical-align: top;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.area-poi-table td:last-child {
+  border-right: none;
+}
+
+.poi-num {
+  font-family: monospace;
+  font-weight: 900;
+  color: #ef4444;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+}
+
+.poi-name-title {
+  font-weight: 800;
+  color: #fff;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.poi-name-detail {
+  font-size: 0.72rem;
+  color: #a1a1aa;
+}
+
+.poi-clue-highlight {
+  color: #fef08a;
+  font-size: 0.78rem;
+}
+
+.poi-npc-tag {
+  display: inline-block;
+  font-family: monospace;
+  font-size: 0.72rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 2px 6px;
+  border-radius: 2px;
+  color: #93c5fd;
+  margin-bottom: 4px;
+}
+
+.poi-skill-pill {
+  display: inline-block;
+  font-family: monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 2px;
+  background: rgba(234, 179, 8, 0.15);
+  border: 1px solid #eab308;
+  color: #fde047;
+  text-transform: uppercase;
+}
+
+/* Responsividade Mobile para Áreas */
+@media (max-width: 768px) {
+  .area-map-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .area-info-modal-dialog {
+    padding: 20px 14px !important;
+  }
+  
+  .area-header-identity {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .area-poi-table {
+    font-size: 0.74rem;
+  }
+  
+  .area-poi-table th, 
+  .area-poi-table td {
+    padding: 7px 8px;
   }
 }

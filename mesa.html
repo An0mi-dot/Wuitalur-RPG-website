@@ -8,9 +8,9 @@
   <meta http-equiv="Expires" content="0">
   <title>Mesa Virtual - Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/variables.css?v=2.9.9">
-  <link rel="stylesheet" href="css/components.css?v=2.9.9">
-  <link rel="stylesheet" href="css/mesa.css?v=2.9.9">
+  <link rel="stylesheet" href="css/variables.css?v=3.0.0">
+  <link rel="stylesheet" href="css/components.css?v=3.0.0">
+  <link rel="stylesheet" href="css/mesa.css?v=3.0.0">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -111,6 +111,22 @@
             <path d="M16 16h.01"></path>
           </svg>
           Rolar Dado
+        </button>
+
+        <!-- Botão Escolher Área (Exclusivo do Mestre) -->
+        <button id="nav-choose-area-btn" class="ink-tag" onclick="MesaAreaManager.openMapModal()" style="display: none; border-color: #f59e0b; color: #fbbf24;" title="Abrir Mapa e Escolher Área">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+            <line x1="8" y1="2" x2="8" y2="18"></line>
+            <line x1="16" y1="6" x2="16" y2="22"></line>
+          </svg>
+          <span>Escolher Área</span>
+        </button>
+
+        <!-- Botão Sobre a Área Atual -->
+        <button id="nav-about-area-btn" class="ink-tag" onclick="MesaAreaManager.openAboutAreaModal()" title="Informações e Pistas da Área Atual">
+          <span id="nav-about-area-icon">📍</span>
+          <span id="nav-about-area-label">Sobre: Mina de Prata</span>
         </button>
 
         <div class="token-btn-wrapper" style="position: relative; display: inline-flex;">
@@ -280,6 +296,72 @@
       </div>
     </div>
 
+    <!-- Modal do Mapa Tático de Áreas -->
+    <div id="area-map-modal" class="mesa-modal-overlay">
+      <div class="mesa-modal ink-modal area-map-modal-dialog">
+        <button class="mesa-modal-close" onclick="MesaApp.closeModal('area-map-modal')">&times;</button>
+        <div class="ink-ribbon-title">MAPA DE INVESTIGAÇÃO • FRAGKTUS & MINA DE PRATA</div>
+        <p class="area-map-subtitle">Selecione uma localidade para inspecionar pistas ou deslocar o grupo de investigação.</p>
+        
+        <div class="area-map-container">
+          <div id="area-map-grid" class="area-map-grid">
+            <!-- Renderizado dinamicamente via MesaAreaManager -->
+          </div>
+
+          <div class="area-map-footer">
+            <div id="area-map-preview-note" class="area-map-preview-note">
+              Selecione uma área no mapa acima para ver seus detalhes.
+            </div>
+            <div class="area-map-actions">
+              <button id="area-confirm-travel-btn" class="mesa-btn ink-tag primary" style="display: none;" onclick="MesaAreaManager.confirmSelectedArea()">
+                DESLOCAR GRUPO PARA ESTA ÁREA
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Informações da Área & Pontos de Interesse -->
+    <div id="area-info-modal" class="mesa-modal-overlay">
+      <div class="mesa-modal ink-modal area-info-modal-dialog">
+        <button class="mesa-modal-close" onclick="MesaApp.closeModal('area-info-modal')">&times;</button>
+        <div id="area-info-header" class="area-info-header">
+          <!-- Renderizado dinamicamente -->
+        </div>
+
+        <div class="area-info-body">
+          <div id="area-public-info" class="area-public-info">
+            <!-- Atmosfera, Descrição Geral e Rumores -->
+          </div>
+
+          <!-- Seção Exclusiva do Mestre: Tabela dos 10 Pontos de Interesse -->
+          <div id="area-master-dossier" class="area-master-dossier" style="display: none;">
+            <div class="master-dossier-header">
+              <span class="dossier-badge">[CONFIDENCIAL • ACESSO DO MESTRE]</span>
+              <h3>10 PONTOS DE INTERESSE & PISTAS INVESTIGATIVAS</h3>
+            </div>
+            <div class="area-table-wrapper">
+              <table class="area-poi-table" id="area-poi-table">
+                <thead>
+                  <tr>
+                    <th style="width: 36px;">#</th>
+                    <th style="width: 23%;">Ponto de Interesse</th>
+                    <th>Pista / Segredo Oculto</th>
+                    <th style="width: 22%;">NPC / Conexão</th>
+                    <th style="width: 14%;">Perícia</th>
+                  </tr>
+                </thead>
+                <tbody id="area-poi-tbody">
+                  <!-- Linhas preenchidas via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- BACKDROP PARA FECHAR O MENU MOBILE AO CLICAR FORA -->
     <div id="mesa-mobile-backdrop" class="mesa-mobile-backdrop" onclick="MesaMobileMenu.close()"></div>
 
@@ -346,6 +428,22 @@
             <span>Rolar Dados</span>
           </button>
 
+          <!-- Sobre Área Atual (Mobile) -->
+          <button class="mobile-menu-item" onclick="MesaAreaManager.openAboutAreaModal(); MesaMobileMenu.close()">
+            <span class="m-item-icon">📍</span>
+            <span id="mobile-about-area-label">Sobre: Mina de Prata</span>
+          </button>
+
+          <!-- Escolher Área - Mestre (Mobile) -->
+          <button id="mobile-choose-area-item" class="mobile-menu-item master-item" onclick="MesaAreaManager.openMapModal(); MesaMobileMenu.close()" style="display: none; color: #fbbf24;">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+              <line x1="8" y1="2" x2="8" y2="18"></line>
+              <line x1="16" y1="6" x2="16" y2="22"></line>
+            </svg>
+            <span>Escolher Área (Mestre)</span>
+          </button>
+
           <!-- Token de Autenticação -->
           <button class="mobile-menu-item" onclick="MesaApp.openTokenModal(); MesaMobileMenu.close()">
             <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -367,6 +465,6 @@
       </div>
     </div>
 
-<script src="js/mesa.js?v=2.9.9"></script>
+<script src="js/mesa.js?v=3.0.0"></script>
 </body>
 </html>

@@ -733,6 +733,7 @@ const MesaApp = {
     MesaChat.init();
     MesaReactions.init();
     MesaDice.init();
+    MesaAreaManager.init();
     this.updateTokenBtnState();
   },
 
@@ -765,19 +766,30 @@ const MesaApp = {
     const tokenBtn = document.getElementById('nav-token-btn');
     const tokenLabel = document.getElementById('nav-token-label');
     const alertBadge = document.getElementById('token-alert-badge');
-    if (!tokenBtn) return;
+    const chooseAreaBtn = document.getElementById('nav-choose-area-btn');
+    const mobileChooseAreaItem = document.getElementById('mobile-choose-area-item');
 
     if (this.state.isMaster) {
       if (tokenLabel) tokenLabel.textContent = 'Mestre Ativo';
       if (alertBadge) alertBadge.style.display = 'none';
+      if (chooseAreaBtn) chooseAreaBtn.style.display = 'inline-flex';
+      if (mobileChooseAreaItem) mobileChooseAreaItem.style.display = 'flex';
     } else if (this.state.myToken) {
       if (tokenLabel) {
         tokenLabel.textContent = this.state.myPlayerSlot ? `Slot ${this.state.myPlayerSlot} Conectado` : 'Token Ativo';
       }
       if (alertBadge) alertBadge.style.display = 'none';
+      if (chooseAreaBtn) chooseAreaBtn.style.display = 'none';
+      if (mobileChooseAreaItem) mobileChooseAreaItem.style.display = 'none';
     } else {
       if (tokenLabel) tokenLabel.textContent = 'Token';
       if (alertBadge) alertBadge.style.display = 'flex';
+      if (chooseAreaBtn) chooseAreaBtn.style.display = 'none';
+      if (mobileChooseAreaItem) mobileChooseAreaItem.style.display = 'none';
+    }
+
+    if (window.MesaAreaManager && typeof MesaAreaManager.updateMasterButtons === 'function') {
+      MesaAreaManager.updateMasterButtons();
     }
   },
 
@@ -2006,7 +2018,15 @@ const MesaChat = {
       }
     });
 
-    // 5. Postgres Changes para novas mensagens gravadas
+    // 5. WebSocket Broadcast de Mudança de Área / Mapa em Tempo Real
+    this.channel.on('broadcast', { event: 'area_changed' }, (payload) => {
+      const data = payload.payload;
+      if (data && data.areaId && window.MesaAreaManager) {
+        MesaAreaManager.applyArea(data.areaId, false);
+      }
+    });
+
+    // 6. Postgres Changes para novas mensagens gravadas
     this.channel.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mensagens_chat' }, (payload) => {
       const msg = payload.new;
       this.receiveMessage({
@@ -2639,7 +2659,436 @@ const MesaDice = {
 };
 
 
-// ---- 7. MOTOR DO MENU FLUTUANTE HAMBÚRGUER MOBILE ----
+// ============================================================
+// 7. SISTEMA DE ÁREAS & MAPA DE INVESTIGAÇÃO — WUITALUR RPG
+// 7 Áreas Canônicas, 10 Pontos de Interesse cada, Sincronização em Tempo Real
+// ============================================================
+
+const MESA_AREAS = {
+  'mina-de-prata': {
+    id: 'mina-de-prata',
+    name: 'Condomínio Mina de Prata',
+    shortName: 'Mina de Prata',
+    symbol: '🏰',
+    themeClass: 'area-mina-de-prata',
+    district: 'Residencial de Alta Renda • Zona Sul de Fragktus',
+    dangerLevel: 'Vigilância Privada & Câmeras Ocultas',
+    dangerLevelClass: 'danger',
+    ambience: 'Mansões neoclássicas, ruas silenciosas de paralelepípedo molhado, névoa baixa e o ranger distante de portões de ferro.',
+    lore: 'Enclave da elite de Fragktus onde morava Sara Auguil e onde se escondem os interesses de figuras influentes da cidade. Sob a fachada de opulência e segurança armada, moradores sussurram sobre carros pretos sem placas circulando de madrugada e documentos queimados nos fundos das propriedades.',
+    rumor: '«Na noite em que Sara sumiu, os postes da Alameda dos Ipês piscaram três vezes e o sistema de câmeras da guarita apagou por exatamente dez minutos.»',
+    pois: [
+      { num: 1, name: 'Mansão Auguil (Quarto de Sara)', detail: 'Residência principal da família', clue: 'Vestígios de quimioterápicos ocultos no fundo falso do guarda-roupa e um bilhete rasgado: "Não confie na Clínica".', connection: 'Mãe divorciada / Dr. Alvarez', skill: 'Investigação' },
+      { num: 2, name: 'Guarita Principal do Condomínio', detail: 'Acesso controlado 24h', clue: 'Registro de portaria com rasura de caneta na entrada de um sedan preto à 01h14 na noite do desaparecimento.', connection: 'Valdir (Vigia Noturno)', skill: 'Percepção / Intimidação' },
+      { num: 3, name: 'Alameda dos Ipês (Lote 14)', detail: 'Casa abandonada em inventário', clue: 'Marcas de pneus recentes na grama e bitucas de cigarro importado da marca usada pela cúpula da Renovare.', connection: 'Anônimo / Renovare', skill: 'Sobrevivência' },
+      { num: 4, name: 'Painel Elétrico do Setor B', detail: 'Subestação de distribuição', clue: 'Disjuntores sabotados com corte cirúrgico de alicate industrial às 00h45 de 31 de junho.', connection: 'Eletricista terceirizado', skill: 'Tecnologia' },
+      { num: 5, name: 'Praça Central & Fonte Seca', detail: 'Monumento central de pedra', clue: 'Símbolo circular entalhado na pedra da fonte com giz carmesim, idêntico aos rabiscos do diário de Trisha.', connection: 'Trisha Auguil', skill: 'Ocultismo / Percepção' },
+      { num: 6, name: 'Lixeira Comunitária do Bloco C', detail: 'Depósito de descarte seletivo', clue: 'Fragmentos triturados de um exame de sangue com carimbo da Renovare e o nome de Sara Auguil ilegível.', connection: 'Funcionários da limpeza', skill: 'Investigação' },
+      { num: 7, name: 'Estufa do Sr. Horácio', detail: 'Vizinho aposentado e paranóico', clue: 'Horácio observava a casa de Sara com telescópio; gravou áudio de uma discussão violenta na véspera.', connection: 'Horácio (Vizinho)', skill: 'Diplomacia / Lábia' },
+      { num: 8, name: 'Drenagem Pluvial dos Fundos', detail: 'Galerias de escoamento pluvial', clue: 'Grade de esgoto desparafusada com pedaço de tecido preto preso aos espinhos de ferro; rota de fuga a pé.', connection: 'Rato do Ferro-Velho', skill: 'Atletismo' },
+      { num: 9, name: 'Garagem da Mansão Auguil', detail: 'Estacionamento subterrâneo', clue: 'Carro de Sara ainda estacionado, mas os pneus têm resquícios de terra vermelha típica da Mata do Norte.', connection: 'Sara Auguil', skill: 'Investigação / Ciências' },
+      { num: 10, name: 'Sala de Monitoramento Central', detail: 'Central de segurança interna', clue: 'Backup em fita magnética que o síndico foi instruído a deletar; ainda contém os últimos 15 frames intactos.', connection: 'Robson (Síndico subornado)', skill: 'Hackeamento' }
+    ]
+  },
+  'colegio-primordio': {
+    id: 'colegio-primordio',
+    name: 'Colégio Integrado Primórdio',
+    shortName: 'Colégio Primórdio',
+    symbol: '🏫',
+    themeClass: 'area-colegio-primordio',
+    district: 'Setor Estudantil & Cívico • Centro de Fragktus',
+    dangerLevel: 'Inspetores Rígidos & Vigilância Escolar',
+    dangerLevelClass: 'warning',
+    ambience: 'Corredores ecoantes com cheiro de cera velha e desinfetante hospitalar, murais com fotos desbotadas e armários metálicos enferrujados.',
+    lore: 'O colégio mais tradicional de Fragktus, onde Sara e seus colegas estudavam. Sob o verniz da disciplina impecável, circulam segredos sombrios sobre chantagens entre grêmios, favores concedidos a filhos de diretores e o silenciamento sistemático de alunos que faziam perguntas demais.',
+    rumor: '«Sara não foi assistir à última aula de química. Testemunhas dizem que ela foi vista discutindo aos prantos atrás da arquibancada com alguém de jaleco branco.»',
+    pois: [
+      { num: 1, name: 'Armário 108 de Sara Auguil', detail: 'Corredor do 2º Ano B', clue: 'Diário de notas com a página do dia 30/06 arrancada e uma chave de vestiário colada atrás do espelho.', connection: 'Sara Auguil', skill: 'Ladinagem / Percepção' },
+      { num: 2, name: 'Laboratório de Química B', detail: 'Bancadas de ensaios e reagentes', clue: 'Fórmulas farmacêuticas copiadas clandestinamente no quadro com anotações de dosagens letais de sedativos.', connection: 'Prof. Moreira (Química)', skill: 'Ciências / Investigação' },
+      { num: 3, name: 'Diretoria e Arquivos Mortos', detail: 'Gabinete executivo escolar', clue: 'Ficha escolar de Trisha e Sara com anotações sigilosas e pedido formal de transferência nunca enviado.', connection: 'Diretora Heloísa', skill: 'Furtividade / Lábia' },
+      { num: 4, name: 'Atrás da Arquibancada da Quadra', detail: 'Ponto cego das câmeras escolares', clue: 'Garrafa de café térmico com o logo do Café da Névoa e marcas de duas pessoas sentadas na chuva.', connection: 'Eric / John Doe', skill: 'Percepção' },
+      { num: 5, name: 'Mural do Grêmio Estudantil', detail: 'Painel comunitário de avisos', clue: 'Cartaz de Sara com os olhos perfurados por caneta e panfleto rasgado da Clínica Renovare no chão.', connection: 'Grêmio Estudantil', skill: 'Investigação / Psicologia' },
+      { num: 6, name: 'Vestiário Feminino Trancado', detail: 'Armários esportivos do fundo', clue: 'O armário da chave escondida contém pen drive com fotos de prontuários médicos carimbados "Cobaias Nível 3".', connection: 'Sara Auguil', skill: 'Ladinagem / Tecnologia' },
+      { num: 7, name: 'Bicicletário dos Fundos', detail: 'Acesso pelo pátio norte', clue: 'Bicicleta de Sara com pneu furado intencionalmente para impedir fuga rápida na tarde do sumiço.', connection: 'Vigilante escolar', skill: 'Percepção' },
+      { num: 8, name: 'Biblioteca (Periódicos Antigos)', detail: 'Acervo histórico de microfilmes', clue: 'Jornais de 2060 com a notícia do sumiço de Trisha; margens rabiscadas com o nome do Dr. Alvarez.', connection: 'Bibliotecária', skill: 'Investigação' },
+      { num: 9, name: 'Servidor da Sala de Informática', detail: 'Rack de rede e registros de log', clue: 'Registros mostram que Sara pesquisou sobre "efeitos colaterais do Composto R" 2 horas antes de desaparecer.', connection: 'Monitor de Informática', skill: 'Tecnologia' },
+      { num: 10, name: 'Banheiro Abandonado do 3º Andar', detail: 'Interditado por vazamento', clue: 'Espelho quebrado e grafite em tinta fosforescente: "Eles sabem o que Trisha viu. Eu sou a próxima."', connection: 'Sara Auguil', skill: 'Percepção / Ocultismo' }
+    ]
+  },
+  'cafe-da-nevoa': {
+    id: 'cafe-da-nevoa',
+    name: 'Café da Névoa',
+    shortName: 'Café da Névoa',
+    symbol: '☕',
+    themeClass: 'area-cafe-da-nevoa',
+    district: 'Bairro Operário & Boêmio • Centro Velho',
+    dangerLevel: 'Informantes nas Sombras & Escutas Ocultas',
+    dangerLevelClass: 'warning',
+    ambience: 'Luz lilás tênue, aroma de café torrado misturado à umidade do asfalto, vinil chiando na vitrola e janelas embaçadas pelo vapor.',
+    lore: 'Fundado por Trisha Auguil e herdado à força por Sara aos 18 anos. Era o refúgio das irmãs contra a pressão familiar e o epicentro onde Trisha ouvia conversas que nunca deveria ter escutado. Depois que Trisha sumiu, o café virou um antro de clientes calados e informantes discretos.',
+    rumor: '«Trisha nunca saiu de Fragktus. As caixas de suprimentos que chegam toda terça trazem mais do que grãos de café.»',
+    pois: [
+      { num: 1, name: 'Balcão Principal e Caixa', detail: 'Atendimento e registro comercial', clue: 'Gaveta com fundo duplo escondendo caderno contábil com repasses financeiros anônimos sob a sigla "R-LAB".', connection: 'Trisha Auguil', skill: 'Investigação / Ladinagem' },
+      { num: 2, name: 'Mesa 4 (Canto Escuro)', detail: 'Mesa reservada junto à janela', clue: 'Gravador de fita cassete em miniatura colado sob o tampo com 12 minutos de conversa sobre a clínica.', connection: 'Cliente anônimo', skill: 'Percepção / Tecnologia' },
+      { num: 3, name: 'Estoque de Grãos e Sacarias', detail: 'Despensa dos fundos', clue: 'Saco de café com pacote lacrado contendo ampolas líquidas sem rótulo e etiqueta de remessa industrial.', connection: 'Entregador de suprimentos', skill: 'Investigação' },
+      { num: 4, name: 'Escritório Particular de Trisha', detail: 'Sala trancada no mezanino', clue: 'Cofre de combinação na parede atrás do quadro com fotos das irmãs; cartas de ameaça guardadas.', connection: 'Trisha / Sara', skill: 'Ladinagem / Investigação' },
+      { num: 5, name: 'Vitrola e Coleção de Vinis', detail: 'Aparelho de som clássico', clue: 'Capa de disco de blues contendo mapa desenhado à mão dos túneis de drenagem entre o Café e o Ferro-Velho.', connection: 'Trisha Auguil', skill: 'Percepção' },
+      { num: 6, name: 'Mural de Fotos dos Clientes', detail: 'Painel de lembranças da casa', clue: 'Foto de Sara tirada 3 dias antes do sumiço; no reflexo do espelho atrás dela, vê-se um homem vigiando.', connection: 'Frequentadores', skill: 'Percepção / Intuição' },
+      { num: 7, name: 'Porão Subterrâneo Úmido', detail: 'Abaixo do alçapão da despensa', clue: 'Cama dobrável e cobertores que serviram de esconderijo temporário para alguém nas últimas 48 horas.', connection: 'Fugitivo / Gustavo', skill: 'Sobrevivência' },
+      { num: 8, name: 'Fogão Industrial da Cozinha', detail: 'Área de preparo do café', clue: 'Cinzas no forno com pedaços de receitas médicas prescritas pela Clínica Renovare para Sara Auguil.', connection: 'Cozinheiro', skill: 'Investigação' },
+      { num: 9, name: 'Beco dos Fundos do Café', detail: 'Saída para ruela estreita', clue: 'Mancha de graxa fresca e pegadas de bota militar saindo da porta de emergência em direção ao bueiro.', connection: 'Sabotador', skill: 'Rastreamento' },
+      { num: 10, name: 'Telefone Fixo de Parede', detail: 'Aparelho de disco antigo', clue: 'O botão de rediscagem rápida liga para um ramal desconhecido que toca três vezes e desliga com bipe.', connection: 'Operadora local', skill: 'Tecnologia' }
+    ]
+  },
+  'clinica-renovare': {
+    id: 'clinica-renovare',
+    name: 'Clínica Renovare',
+    shortName: 'Clínica Renovare',
+    symbol: '🏥',
+    themeClass: 'area-clinica-renovare',
+    district: 'Complexo Médico Privado • Zona Nobre de Fragktus',
+    dangerLevel: 'Segurança Armada, Biometria & Protocolos Ocultos',
+    dangerLevelClass: 'danger',
+    ambience: 'Luzes brancas frias, cheiro esterilizante de álcool e ozônio, portas com sensores magnéticos e murmúrios abafados atrás de vidros fumê.',
+    lore: 'Instituição médica de prestígio internacional responsável por tratamentos experimentais de ponta. Onde Sara tratava em segredo absoluto seu câncer terminal sob os cuidados do renomado Dr. Alvarez. Os registros médicos oficiais mostram apenas consultas de rotina, mas alas subterrâneas abrigam projetos que a ética médica baniu há décadas.',
+    rumor: '«Pacientes que dão entrada no 4º subsolo não recebem alta: recebem novos atestados de óbito ou desaparecem do sistema nacional de saúde.»',
+    pois: [
+      { num: 1, name: 'Recepção e Totem de Triagem', detail: 'Saguão monumental em mármore', clue: 'Terminal com agendamentos sigilosos do Dr. Alvarez marcados com o código interno "Protocolo Lázaro".', connection: 'Recepcionista tensa', skill: 'Hackeamento / Lábia' },
+      { num: 2, name: 'Consultório 402 (Dr. Alvarez)', detail: 'Sala da diretoria clínica', clue: 'Prontuário físico de Sara com laudos alterados e notas: "Progresso anômalo — manter sob contenção".', connection: 'Dr. Alvarez', skill: 'Furtividade / Investigação' },
+      { num: 3, name: 'Laboratório de Citologia', detail: 'Ala restrita de biologia celular', clue: 'Centrífugas e tubos criogênicos com amostras de sangue rotuladas "S.A. - Amostra Vital Nº 7".', connection: 'Biomédico plantonista', skill: 'Ciências / Furtividade' },
+      { num: 4, name: 'Ala de Internação 3B (Leito 14)', detail: 'Quarto de isolamento acústico', clue: 'Cama com tiras de contenção de couro gastas e marcas de unhas profundas na cabeceira metálica.', connection: 'Enfermeira-chefe', skill: 'Medicina / Percepção' },
+      { num: 5, name: 'Farmácia de Alto Custo', detail: 'Dispensário blindado', clue: 'Registro de entrega de anestésico experimental não regulamentado entregue direto a veículo corporativo.', connection: 'Farmacêutico corrupto', skill: 'Investigação' },
+      { num: 6, name: 'Incinerador de Resíduos Hospitalares', detail: 'Subsolo técnico industrial', clue: 'Tambor de cinzas onde foi descartado crachá de identificação de visitante com a foto de Trisha Auguil.', connection: 'Operador do incinerador', skill: 'Investigação / Sobrevivência' },
+      { num: 7, name: 'Elevador de Serviço do Subsolo 2', detail: 'Acesso às câmaras de teste', clue: 'Painel que exige cartão magnético nível alfa para descer até as salas de isolamento celular.', connection: 'Guarda de segurança', skill: 'Ladinagem / Hackeamento' },
+      { num: 8, name: 'Datacenter Médico Central', detail: 'Sala de servidores climatizada', clue: 'Servidores protegidos por criptografia contendo vídeos das reações orgânicas durante os testes clínicos.', connection: 'Administrador de TI', skill: 'Tecnologia / Hackeamento' },
+      { num: 9, name: 'Sala de Descanso dos Médicos', detail: 'Lounge interno dos cirurgiões', clue: 'Jaleco manchado com substância luminescente abandonado junto a um molho de chaves de armário.', connection: 'Equipe cirúrgica', skill: 'Percepção' },
+      { num: 10, name: 'Doca de Cargas e Ambulâncias', detail: 'Pátio de saída de emergência', clue: 'Ambulância descaracterizada com o GPS indicando deslocamentos noturnos frequentes para a Mata do Norte.', connection: 'Motorista de resgate', skill: 'Investigação / Rastreamento' }
+    ]
+  },
+  'ferro-velho': {
+    id: 'ferro-velho',
+    name: 'Ferro-Velho do Rato',
+    shortName: 'Ferro-Velho do Rato',
+    symbol: '⚙️',
+    themeClass: 'area-ferro-velho',
+    district: 'Distrito Industrial & Sucata • Periferia Norte',
+    dangerLevel: 'Cães de Guarda, Sucata Pesada & Mercenários',
+    dangerLevelClass: 'danger',
+    ambience: 'Montanhas de carcaças enferrujadas sob o céu cinzento de fuligem, poças de óleo diesel refletindo néon barato e latidos agressivos de cães acorrentados.',
+    lore: 'Oficialmente um pátio de reciclagem e desmanche de autopeças. Nos bastidores, é a central clandestina onde veículos incriminadores são triturados, peças de tecnologia roubadas são desmontadas e onde o temido "Rato" vende informações valiosas a quem tiver moedas ou ameaças suficientes.',
+    rumor: '«Um sedan preto blindado foi guinchado para cá às quatro da manhã seguinte ao sumiço da garota. Até o meio-dia, o carro já tinha virado um bloco de aço compactado.»',
+    pois: [
+      { num: 1, name: 'Contêiner Escritório do Rato', detail: 'Cabine blindada elevada', clue: 'O Rato guarda em uma caixa de charutos três celulares descartáveis e uma carteira falsa no nome de Sara.', connection: 'O Rato (Rei da Sucata)', skill: 'Intimidação / Lábia' },
+      { num: 2, name: 'Prensa Hidráulica Industrial', detail: 'Compactador de aço pesado', clue: 'Raspas de tinta preta metálica e fragmento de para-choque de sedan de luxo preso na engrenagem.', connection: 'Mecânico da prensa', skill: 'Percepção / Investigação' },
+      { num: 3, name: 'Canil dos Molossos de Guarda', detail: 'Cercado de arame galvanizado', clue: 'Cães latindo furiosos na direção de um bueiro coberto por chapas de ferro; sinal de intrusos recentes.', connection: 'Tratador dos cães', skill: 'Adestramento / Furtividade' },
+      { num: 4, name: 'Pilha de Sucata Tecnológica', detail: 'Descarte de componentes e placas', clue: 'Rastreador veicular GPS desmontado que registrou o trajeto da Mansão Auguil até a entrada da floresta.', connection: 'Técnico de sucata', skill: 'Tecnologia' },
+      { num: 5, name: 'Galpão de Peças Clandestinas', detail: 'Hangar de desmontagem rápida', clue: 'Caixa térmica médica abandonada com o logotipo da Renovare usada para transporte biológico sigiloso.', connection: 'Operário do galpão', skill: 'Investigação / Medicina' },
+      { num: 6, name: 'Guarita do Vigia Elevada', detail: 'Torre de observação improvisada', clue: 'Monitor analógico que gravou homens armados descarregando um fardo cilíndrico na calada da noite.', connection: 'Vigia noturno', skill: 'Hackeamento / Intimidação' },
+      { num: 7, name: 'Vala de Óleo Queimado', detail: 'Depósito de descarte lubrificante', clue: 'Chaveiro com miniatura de xícara de café (brinde oficial do Café da Névoa) flutuando no óleo negro.', connection: 'Mecânico de frotas', skill: 'Percepção' },
+      { num: 8, name: 'Oficina de Clonação de Placas', detail: 'Bancada de estamparia ilegal', clue: 'Matrizes de prensa de placas automotivas idênticas às da frota da Renovare e da segurança pública.', connection: 'Falsificador', skill: 'Ladinagem' },
+      { num: 9, name: 'Fogueira de Incineração de Fios', detail: 'Queimador a céu aberto', clue: 'Restos de mochila escolar feminina de Sara com zíperes derretidos e páginas de caderno de desenho.', connection: 'Catador de cobre', skill: 'Investigação' },
+      { num: 10, name: 'Galeria Pluvial sob o Caminhão', detail: 'Acesso ao sistema de esgoto', clue: 'Túnel de drenagem sob uma carcaça de caminhão que conecta diretamente à entrada da Mata do Norte.', connection: 'Contrabandista local', skill: 'Sobrevivência / Atletismo' }
+    ]
+  },
+  'floresta-proibida': {
+    id: 'floresta-proibida',
+    name: 'A Mata do Norte',
+    shortName: 'Mata do Norte',
+    symbol: '🌲',
+    themeClass: 'area-floresta-proibida',
+    district: 'Reserva Florestal Fechada • Zona Rural',
+    dangerLevel: 'Fauna Alterada, Névoa Tóxica & Armadilhas',
+    dangerLevelClass: 'danger',
+    ambience: 'Árvores centenárias retorcidas, neblina espessa que engole os faróis, silêncio sepulcral quebrado apenas pelo estalar de galhos e arame farpado enferrujado.',
+    lore: 'Área de preservação ambiental isolada pelas autoridades municipais sob alegação de contaminação do solo e desabamentos de antigas minas. Trilhas fechadas ocultam instalações subterrâneas desativadas da época da fundação de Fragktus e clareiras onde eventos anômalos foram registrados.',
+    rumor: '«Guardas florestais privados não usam fardas do Estado: usam coletes pretos táticos e atiram sem aviso contra qualquer um que passe da cerca do KM 18.»',
+    pois: [
+      { num: 1, name: 'Portão Militarizado do KM 18', detail: 'Posto de controle da estrada', clue: 'Cancelas com refletores halógenos e placas de perigo biológico; sensores de movimento ocultos no solo.', connection: 'Guarda mercenário', skill: 'Furtividade / Ladinagem' },
+      { num: 2, name: 'Clareira da Árvore Oca', detail: 'Carvalho centenário retorcido', clue: 'Tronco de carvalho com marcas de garras e um rádio militar quebrado sintonizado na frequência da clínica.', connection: 'Desconhecido', skill: 'Sobrevivência / Tecnologia' },
+      { num: 3, name: 'Boca da Antiga Mina de Carvão', detail: 'Entrada de túnel subterrâneo', clue: 'Trilhos enferrujados e fiação recente de gerador a diesel alimentando lâmpadas UV nos túneis fundos.', connection: 'Operário da mina', skill: 'Percepção / Atletismo' },
+      { num: 4, name: 'Trilhas de Lama Vermelha', detail: 'Caminho de terra cortado na mata', clue: 'Rastros de pneus de caminhão pesado levando até uma cerca cortada por alicate corta-vergalhão.', connection: 'Rastreador', skill: 'Rastreamento' },
+      { num: 5, name: 'Acampamento Improvisado', detail: 'Clareira oculta entre pinheiros', clue: 'Fogueira extinta há 48h, restos de ração de sobrevivência e frascos de analgésicos fortes de Sara.', connection: 'Fugitivo misterioso', skill: 'Investigação / Medicina' },
+      { num: 6, name: 'Pântano das Águas Negras', detail: 'Charco fétido entre as ravinas', clue: 'Vegetação necrosada ao redor de um tonel azul de polietileno vazando líquido leitoso fosforescente.', connection: 'N/A', skill: 'Ciências / Sobrevivência' },
+      { num: 7, name: 'Cabana do Guarda Florestal', detail: 'Posto avançado em ruínas', clue: 'Diário de campo manuscrito relatando comboios noturnos de furgões transportando pessoas vendadas.', connection: 'Guarda aposentado', skill: 'Investigação' },
+      { num: 8, name: 'Cerca Perimetral Rompida', detail: 'Divisa do setor norte', clue: 'Buraco escavado sob a cerca de arame farpado com tufos de cabelo preto e o cordão de prata de Sara.', connection: 'Sara Auguil', skill: 'Percepção / Rastreamento' },
+      { num: 9, name: 'Torre de Transmissão Abandonada', detail: 'Antena repetidora no topo do morro', clue: 'Módulo de transmissão que emite sinal criptografado intermitente em código morse repetindo coordenadas.', connection: 'Operador clandestino', skill: 'Tecnologia' },
+      { num: 10, name: 'Bunker de Concreto Camuflado', detail: 'Construção militar enterrada', clue: 'Porta blindada com fechamento pneumático, marcas de projéteis recentes e sistema de trava por código.', connection: 'Sentinela do bunker', skill: 'Força / Hackeamento' }
+    ]
+  },
+  'refugio-gustavo': {
+    id: 'refugio-gustavo',
+    name: 'Refúgio do Gustavo',
+    shortName: 'Refúgio do Gustavo',
+    symbol: '🛡️',
+    themeClass: 'area-refugio-gustavo',
+    district: 'Bunker Subterrâneo Clandestino • Localização Confidencial',
+    dangerLevel: 'Paranoia Extrema, Armadilhas Caseiras & Escutas',
+    dangerLevelClass: 'danger',
+    ambience: 'Luz de emergência vermelha, paredes forradas com cortiça e mapas repletos de linhas vermelhas de barbante ligando fotos, documentos e fita isolante.',
+    lore: 'O esconderijo ultra-secreto montado por Gustavo, um ex-investigador / confidente que vinha ajudando Sara a desvendar o que realmente aconteceu com Trisha. O local é blindado contra rastreamento eletrônico e reúne as maiores peças do quebra-cabeça conspiratório que envolve toda a cidade.',
+    rumor: '«Gustavo não confia nem na própria sombra. Para falar com ele, você precisa saber a senha correta ou desarmar as armadilhas da porta.»',
+    pois: [
+      { num: 1, name: 'Mural Conspiratório de Fios Vermelhos', detail: 'Painel de cortiça na parede mestre', clue: 'Mapa completo de Fragktus ligando a Mansão Auguil, a Clínica Renovare e o Café da Névoa ao Dr. Alvarez.', connection: 'Gustavo', skill: 'Investigação / Percepção' },
+      { num: 2, name: 'Mesa de Interceptação e Escutas', detail: 'Bancada com receptores de rádio', clue: 'Rádio interceptador sintonizado nos canais de segurança privada da Renovare captando códigos de patrulha.', connection: 'Gustavo', skill: 'Tecnologia / Hackeamento' },
+      { num: 3, name: 'Armário de Armas e Suprimentos', detail: 'Caixa metálica camuflada', clue: 'Fitas isolantes, kits cirúrgicos de campo, lanternas táticas e um revólver calibre .38 carregado.', connection: 'Gustavo', skill: 'Armamento / Sobrevivência' },
+      { num: 4, name: 'Terminal Computacional Air-Gapped', detail: 'PC isolado da internet', clue: 'Pastas criptografadas contendo vídeos das câmeras do condomínio na noite em que Sara desapareceu.', connection: 'Gustavo', skill: 'Hackeamento / Tecnologia' },
+      { num: 5, name: 'Cofre de Chão Chumbado', detail: 'Embaixo do piso falso', clue: 'Pasta com certidão de nascimento secreta e testamento biológico de Trisha e Sara Auguil.', connection: 'Gustavo / Advogado', skill: 'Ladinagem / Investigação' },
+      { num: 6, name: 'Bancada de Neutralizantes Químicos', detail: 'Laboratório improvisado', clue: 'Frascos com antídotos caseiros formulados por Gustavo para neutralizar o sedativo usado pela clínica.', connection: 'Gustavo', skill: 'Farmácia / Medicina' },
+      { num: 7, name: 'Porta de Acesso com Armadilha Elétrica', detail: 'Trinco e maçaneta eletrificados', clue: 'Fios desencapados ligados a um capacitor de micro-ondas prontos para eletrocutar invasores.', connection: 'Invasores', skill: 'Ladinagem / Destreza' },
+      { num: 8, name: 'Duto de Ventilação para o Esgoto', detail: 'Rota de evacuação rápida', clue: 'Tubo de aço com escada de marinheiro que sai em um bueiro a três quarteirões do refúgio.', connection: 'N/A', skill: 'Atletismo / Furtividade' },
+      { num: 9, name: 'Gravador Telefônico de Fita Magnética', detail: 'Secretária eletrônica analógica', clue: 'Última mensagem gravada: voz trêmula de Sara sussurrando: "Eles estão na porta, Gustavo. Eles chegaram."', connection: 'Sara Auguil', skill: 'Psicologia / Percepção' },
+      { num: 10, name: 'Caderno Negro de Anotações', detail: 'Anotações táticas de Gustavo', clue: 'Lista com os nomes dos 8 personagens jogadores e observações psicológicas sobre em quem ele confia.', connection: 'Gustavo', skill: 'Investigação / Intuição' }
+    ]
+  }
+};
+
+const MesaAreaManager = {
+  currentAreaId: 'mina-de-prata',
+  selectedAreaId: 'mina-de-prata',
+
+  init() {
+    const saved = localStorage.getItem('mesa_current_area');
+    if (saved && MESA_AREAS[saved]) {
+      this.currentAreaId = saved;
+    }
+    this.selectedAreaId = this.currentAreaId;
+    this.applyArea(this.currentAreaId, false);
+    this.updateMasterButtons();
+  },
+
+  updateMasterButtons() {
+    const isMaster = MesaApp && MesaApp.state && MesaApp.state.isMaster;
+    const chooseAreaBtn = document.getElementById('nav-choose-area-btn');
+    const mobileChooseAreaItem = document.getElementById('mobile-choose-area-item');
+    if (chooseAreaBtn) {
+      chooseAreaBtn.style.display = isMaster ? 'inline-flex' : 'none';
+    }
+    if (mobileChooseAreaItem) {
+      mobileChooseAreaItem.style.display = isMaster ? 'flex' : 'none';
+    }
+  },
+
+  openMapModal() {
+    const grid = document.getElementById('area-map-grid');
+    if (!grid) return;
+
+    this.selectedAreaId = this.currentAreaId;
+    grid.innerHTML = '';
+
+    Object.values(MESA_AREAS).forEach(area => {
+      const isCurrent = area.id === this.currentAreaId;
+      const isSelected = area.id === this.selectedAreaId;
+
+      const card = document.createElement('div');
+      card.className = `area-map-card ${isCurrent ? 'is-current' : ''} ${isSelected ? 'selected' : ''}`;
+      card.id = `area-card-${area.id}`;
+      card.onclick = () => this.selectAreaPreview(area.id);
+
+      card.innerHTML = `
+        ${isCurrent ? '<div class="area-card-current-badge">Área Atual</div>' : ''}
+        <div class="area-card-top-row">
+          <div class="area-card-symbol-wrap">${area.symbol}</div>
+          <div class="area-card-titles">
+            <span class="area-card-name">${area.name}</span>
+            <span class="area-card-type">${area.district}</span>
+          </div>
+        </div>
+        <div class="area-card-desc-snippet">${area.lore}</div>
+        <div class="area-card-footer-tags">
+          <span class="area-card-danger-badge">${area.dangerLevel}</span>
+          <span class="area-card-pois-badge">10 Pistas</span>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    this.updatePreviewNote();
+
+    const isMaster = MesaApp && MesaApp.state && MesaApp.state.isMaster;
+    const confirmBtn = document.getElementById('area-confirm-travel-btn');
+    if (confirmBtn) {
+      confirmBtn.style.display = isMaster ? 'inline-flex' : 'none';
+    }
+
+    const modal = document.getElementById('area-map-modal');
+    if (modal) modal.classList.add('active');
+  },
+
+  selectAreaPreview(areaId) {
+    this.selectedAreaId = areaId;
+    document.querySelectorAll('.area-map-card').forEach(c => c.classList.remove('selected'));
+    const target = document.getElementById(`area-card-${areaId}`);
+    if (target) target.classList.add('selected');
+    this.updatePreviewNote();
+  },
+
+  updatePreviewNote() {
+    const preview = document.getElementById('area-map-preview-note');
+    const area = MESA_AREAS[this.selectedAreaId];
+    if (!preview || !area) return;
+
+    const isCurrent = area.id === this.currentAreaId;
+    const isMaster = MesaApp && MesaApp.state && MesaApp.state.isMaster;
+
+    preview.innerHTML = `
+      <strong>${area.symbol} ${area.name}</strong> • <em>${area.district}</em><br/>
+      <span style="color: #a1a1aa; font-size: 0.78rem;">${area.ambience}</span>
+      ${isCurrent ? '<br/><span style="color: #4ade80; font-weight: bold;">[ Grupo já se encontra nesta localidade ]</span>' : ''}
+      ${!isMaster && !isCurrent ? '<br/><span style="color: #fbbf24;">(Apenas o Mestre pode autorizar deslocamento do grupo)</span>' : ''}
+    `;
+
+    const confirmBtn = document.getElementById('area-confirm-travel-btn');
+    if (confirmBtn && isMaster) {
+      confirmBtn.disabled = isCurrent;
+      confirmBtn.style.opacity = isCurrent ? '0.5' : '1';
+      confirmBtn.textContent = isCurrent ? 'GRUPO JÁ NESTA ÁREA' : `DESLOCAR GRUPO PARA ${area.shortName.toUpperCase()}`;
+    }
+  },
+
+  confirmSelectedArea() {
+    if (!MesaApp || !MesaApp.state || !MesaApp.state.isMaster) {
+      alert("Apenas o Mestre tem permissão para deslocar a área da mesa.");
+      return;
+    }
+
+    if (this.selectedAreaId === this.currentAreaId) {
+      this.closeModals();
+      return;
+    }
+
+    this.applyArea(this.selectedAreaId, true);
+    this.closeModals();
+  },
+
+  applyArea(areaId, shouldBroadcast = false) {
+    const area = MESA_AREAS[areaId];
+    if (!area) return;
+
+    this.currentAreaId = areaId;
+    this.selectedAreaId = areaId;
+    localStorage.setItem('mesa_current_area', areaId);
+
+    // Remove classes anteriores de área do body
+    Object.values(MESA_AREAS).forEach(a => {
+      document.body.classList.remove(a.themeClass);
+    });
+    document.body.classList.add(area.themeClass);
+
+    // Atualiza botões da barra superior e mobile
+    const aboutBtnLabel = document.getElementById('nav-about-area-label');
+    const mobileAboutBtnLabel = document.getElementById('mobile-about-area-label');
+    const aboutBtnIcon = document.getElementById('nav-about-area-icon');
+
+    if (aboutBtnLabel) aboutBtnLabel.textContent = `Sobre: ${area.shortName || area.name}`;
+    if (mobileAboutBtnLabel) mobileAboutBtnLabel.textContent = `Sobre: ${area.shortName || area.name}`;
+    if (aboutBtnIcon) aboutBtnIcon.textContent = area.symbol;
+
+    if (shouldBroadcast && MesaChat && MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'area_changed',
+        payload: {
+          areaId: area.id,
+          name: area.name,
+          timestamp: Date.now()
+        }
+      });
+
+      // Notificação amigável no chat para os jogadores
+      if (typeof MesaChat.receiveMessage === 'function') {
+        MesaChat.receiveMessage({
+          id: 'area-alert-' + Date.now(),
+          sender_name: 'SISTEMA DA MESA',
+          is_master: true,
+          content: `📍 O MESTRE deslocou o grupo para: [ ${area.name} ]`,
+          created_at: new Date().toISOString()
+        });
+      }
+    }
+  },
+
+  openAboutAreaModal(areaId = null) {
+    const targetId = areaId || this.currentAreaId;
+    const area = MESA_AREAS[targetId];
+    if (!area) return;
+
+    // Cabeçalho
+    const header = document.getElementById('area-info-header');
+    if (header) {
+      header.innerHTML = `
+        <div class="area-header-identity">
+          <div class="area-header-symbol">${area.symbol}</div>
+          <div class="area-header-titles">
+            <h2>${area.name}</h2>
+            <p>${area.district}</p>
+          </div>
+        </div>
+        <div class="area-header-meta">
+          <span class="area-meta-tag ${area.dangerLevelClass}">${area.dangerLevel}</span>
+          <span class="area-meta-tag">10 Pistas Investigativas</span>
+        </div>
+      `;
+    }
+
+    // Informações Públicas
+    const publicInfo = document.getElementById('area-public-info');
+    if (publicInfo) {
+      publicInfo.innerHTML = `
+        <h4>ATMOSFERA & CENÁRIO</h4>
+        <p>${area.ambience}</p>
+        <h4 style="margin-top: 14px;">HISTÓRIA & CONTEXTO LOCAL</h4>
+        <p>${area.lore}</p>
+        <div class="area-rumor-box">
+          <strong>RUMOR INVESTIGATIVO:</strong> ${area.rumor}
+        </div>
+      `;
+    }
+
+    // Dossiê do Mestre (10 POIs)
+    const isMaster = MesaApp && MesaApp.state && MesaApp.state.isMaster;
+    const masterDossier = document.getElementById('area-master-dossier');
+    const poiTbody = document.getElementById('area-poi-tbody');
+
+    if (masterDossier) {
+      masterDossier.style.display = isMaster ? 'block' : 'none';
+    }
+
+    if (isMaster && poiTbody) {
+      poiTbody.innerHTML = '';
+      area.pois.forEach(poi => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><span class="poi-num">${poi.num < 10 ? '0' + poi.num : poi.num}</span></td>
+          <td>
+            <span class="poi-name-title">${poi.name}</span>
+            <span class="poi-name-detail">${poi.detail}</span>
+          </td>
+          <td>
+            <span class="poi-clue-highlight">${poi.clue}</span>
+          </td>
+          <td>
+            <span class="poi-npc-tag">${poi.connection}</span>
+          </td>
+          <td>
+            <span class="poi-skill-pill">${poi.skill}</span>
+          </td>
+        `;
+        poiTbody.appendChild(tr);
+      });
+    }
+
+    const modal = document.getElementById('area-info-modal');
+    if (modal) modal.classList.add('active');
+  },
+
+  closeModals() {
+    MesaApp.closeModal('area-map-modal');
+    MesaApp.closeModal('area-info-modal');
+  }
+};
+
+
+// ---- 8. MOTOR DO MENU FLUTUANTE HAMBÚRGUER MOBILE ----
 const MesaMobileMenu = {
   isOpen: false,
 
@@ -2688,9 +3137,14 @@ const MesaMobileMenu = {
     const groupLabel = document.getElementById('mobile-menu-group-label');
     const fabAlert = document.getElementById('mobile-fab-alert-pip');
     const fichaModal = document.getElementById('ficha-modal');
+    const mobileChooseArea = document.getElementById('mobile-choose-area-item');
 
     const isMaster = MesaApp && MesaApp.state && MesaApp.state.isMaster;
     const myToken = MesaApp && MesaApp.state && MesaApp.state.myToken;
+
+    if (mobileChooseArea) {
+      mobileChooseArea.style.display = isMaster ? 'flex' : 'none';
+    }
 
     if (tokenLabel) {
       if (isMaster) {
