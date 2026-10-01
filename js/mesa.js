@@ -2669,7 +2669,7 @@ const MESA_AREAS = {
     id: 'mina-de-prata',
     name: 'Condomínio Mina de Prata',
     shortName: 'Mina de Prata',
-    symbol: '🏰',
+    svgIcon: '<svg class="area-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 9h.01M15 9h.01M9 13h.01M15 13h.01"></path></svg>',
     themeClass: 'area-mina-de-prata',
     district: 'Residencial de Alta Renda • Zona Sul de Fragktus',
     dangerLevel: 'Vigilância Privada & Câmeras Ocultas',
@@ -2694,7 +2694,7 @@ const MESA_AREAS = {
     id: 'colegio-primordio',
     name: 'Colégio Integrado Primórdio',
     shortName: 'Colégio Primórdio',
-    symbol: '🏫',
+    svgIcon: '<svg class="area-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>',
     themeClass: 'area-colegio-primordio',
     district: 'Setor Estudantil & Cívico • Centro de Fragktus',
     dangerLevel: 'Inspetores Rígidos & Vigilância Escolar',
@@ -2719,7 +2719,7 @@ const MESA_AREAS = {
     id: 'cafe-da-nevoa',
     name: 'Café da Névoa',
     shortName: 'Café da Névoa',
-    symbol: '☕',
+    svgIcon: '<svg class="area-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3"></path></svg>',
     themeClass: 'area-cafe-da-nevoa',
     district: 'Bairro Operário & Boêmio • Centro Velho',
     dangerLevel: 'Informantes nas Sombras & Escutas Ocultas',
@@ -2744,7 +2744,7 @@ const MESA_AREAS = {
     id: 'clinica-renovare',
     name: 'Clínica Renovare',
     shortName: 'Clínica Renovare',
-    symbol: '🏥',
+    svgIcon: '<svg class="area-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"></rect><path d="M12 8v8M8 12h8"></path></svg>',
     themeClass: 'area-clinica-renovare',
     district: 'Complexo Médico Privado • Zona Nobre de Fragktus',
     dangerLevel: 'Segurança Armada, Biometria & Protocolos Ocultos',
@@ -2769,7 +2769,7 @@ const MESA_AREAS = {
     id: 'ferro-velho',
     name: 'Ferro-Velho do Rato',
     shortName: 'Ferro-Velho do Rato',
-    symbol: '⚙️',
+    svgIcon: '<svg class="area-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>',
     themeClass: 'area-ferro-velho',
     district: 'Distrito Industrial & Sucata • Periferia Norte',
     dangerLevel: 'Cães de Guarda, Sucata Pesada & Mercenários',
@@ -2794,7 +2794,7 @@ const MESA_AREAS = {
     id: 'floresta-proibida',
     name: 'A Mata do Norte',
     shortName: 'Mata do Norte',
-    symbol: '🌲',
+    svgIcon: '<svg class="area-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L5 12h4l-3 6h5v4h2v-4h5l-3-6h4L12 2z"></path></svg>',
     themeClass: 'area-floresta-proibida',
     district: 'Reserva Florestal Fechada • Zona Rural',
     dangerLevel: 'Fauna Alterada, Névoa Tóxica & Armadilhas',
@@ -2819,7 +2819,7 @@ const MESA_AREAS = {
     id: 'refugio-gustavo',
     name: 'Refúgio do Gustavo',
     shortName: 'Refúgio do Gustavo',
-    symbol: '🛡️',
+    svgIcon: '<svg class="area-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M12 8v4M12 16h.01"></path></svg>',
     themeClass: 'area-refugio-gustavo',
     district: 'Bunker Subterrâneo Clandestino • Localização Confidencial',
     dangerLevel: 'Paranoia Extrema, Armadilhas Caseiras & Escutas',
@@ -2887,7 +2887,7 @@ const MesaAreaManager = {
       card.innerHTML = `
         ${isCurrent ? '<div class="area-card-current-badge">Área Atual</div>' : ''}
         <div class="area-card-top-row">
-          <div class="area-card-symbol-wrap">${area.symbol}</div>
+          <div class="area-card-symbol-wrap">${area.svgIcon}</div>
           <div class="area-card-titles">
             <span class="area-card-name">${area.name}</span>
             <span class="area-card-type">${area.district}</span>
@@ -2931,7 +2931,10 @@ const MesaAreaManager = {
     const isMaster = MesaApp && MesaApp.state && MesaApp.state.isMaster;
 
     preview.innerHTML = `
-      <strong>${area.symbol} ${area.name}</strong> • <em>${area.district}</em><br/>
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+        <span style="display: inline-flex; width: 18px; height: 18px;">${area.svgIcon}</span>
+        <strong>${area.name}</strong> • <em>${area.district}</em>
+      </div>
       <span style="color: #a1a1aa; font-size: 0.78rem;">${area.ambience}</span>
       ${isCurrent ? '<br/><span style="color: #4ade80; font-weight: bold;">[ Grupo já se encontra nesta localidade ]</span>' : ''}
       ${!isMaster && !isCurrent ? '<br/><span style="color: #fbbf24;">(Apenas o Mestre pode autorizar deslocamento do grupo)</span>' : ''}
@@ -2974,14 +2977,16 @@ const MesaAreaManager = {
     });
     document.body.classList.add(area.themeClass);
 
-    // Atualiza botões da barra superior e mobile
+    // Atualiza botões da barra superior e mobile com SVGs
     const aboutBtnLabel = document.getElementById('nav-about-area-label');
     const mobileAboutBtnLabel = document.getElementById('mobile-about-area-label');
     const aboutBtnIcon = document.getElementById('nav-about-area-icon');
+    const mobileAboutBtnIcon = document.getElementById('mobile-about-area-icon');
 
     if (aboutBtnLabel) aboutBtnLabel.textContent = `Sobre: ${area.shortName || area.name}`;
     if (mobileAboutBtnLabel) mobileAboutBtnLabel.textContent = `Sobre: ${area.shortName || area.name}`;
-    if (aboutBtnIcon) aboutBtnIcon.textContent = area.symbol;
+    if (aboutBtnIcon) aboutBtnIcon.innerHTML = area.svgIcon;
+    if (mobileAboutBtnIcon) mobileAboutBtnIcon.innerHTML = area.svgIcon;
 
     if (shouldBroadcast && MesaChat && MesaChat.channel) {
       MesaChat.channel.send({
@@ -3000,7 +3005,7 @@ const MesaAreaManager = {
           id: 'area-alert-' + Date.now(),
           sender_name: 'SISTEMA DA MESA',
           is_master: true,
-          content: `📍 O MESTRE deslocou o grupo para: [ ${area.name} ]`,
+          content: `[ÁREA] O Mestre deslocou a investigação para: [ ${area.name} ]`,
           created_at: new Date().toISOString()
         });
       }
@@ -3017,7 +3022,7 @@ const MesaAreaManager = {
     if (header) {
       header.innerHTML = `
         <div class="area-header-identity">
-          <div class="area-header-symbol">${area.symbol}</div>
+          <div class="area-header-symbol">${area.svgIcon}</div>
           <div class="area-header-titles">
             <h2>${area.name}</h2>
             <p>${area.district}</p>

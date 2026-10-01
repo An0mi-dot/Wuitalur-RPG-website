@@ -4164,6 +4164,36 @@ body.mesa-body.area-refugio-gustavo {
   gap: 10px;
 }
 
+.area-svg-icon {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.area-btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 4px;
+}
+
+.area-btn-icon .area-svg-icon,
+.area-btn-icon .ink-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.m-item-icon .area-svg-icon,
+.m-item-icon .ink-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+}
+
 .area-card-symbol-wrap {
   width: 42px;
   height: 42px;
@@ -4171,11 +4201,16 @@ body.mesa-body.area-refugio-gustavo {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
   background: rgba(0, 0, 0, 0.4);
   border: 1px solid var(--card-accent, rgba(255, 85, 0, 0.4));
   flex-shrink: 0;
   box-shadow: 0 0 10px var(--card-glow, transparent);
+  color: var(--card-accent, var(--mesa-orange));
+}
+
+.area-card-symbol-wrap .area-svg-icon {
+  width: 24px;
+  height: 24px;
 }
 
 .area-card-titles {
@@ -4283,7 +4318,6 @@ body.mesa-body.area-refugio-gustavo {
 }
 
 .area-header-symbol {
-  font-size: 2.2rem;
   width: 56px;
   height: 56px;
   border-radius: 4px;
@@ -4293,6 +4327,12 @@ body.mesa-body.area-refugio-gustavo {
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 16px var(--area-glow, rgba(255, 85, 0, 0.4));
+  color: var(--area-accent, var(--mesa-orange));
+}
+
+.area-header-symbol .area-svg-icon {
+  width: 32px;
+  height: 32px;
 }
 
 .area-header-titles h2 {

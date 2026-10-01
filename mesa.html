@@ -8,9 +8,9 @@
   <meta http-equiv="Expires" content="0">
   <title>Mesa Virtual - Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/variables.css?v=3.0.0">
-  <link rel="stylesheet" href="css/components.css?v=3.0.0">
-  <link rel="stylesheet" href="css/mesa.css?v=3.0.0">
+  <link rel="stylesheet" href="css/variables.css?v=3.0.1">
+  <link rel="stylesheet" href="css/components.css?v=3.0.1">
+  <link rel="stylesheet" href="css/mesa.css?v=3.0.1">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -125,7 +125,12 @@
 
         <!-- Botão Sobre a Área Atual -->
         <button id="nav-about-area-btn" class="ink-tag" onclick="MesaAreaManager.openAboutAreaModal()" title="Informações e Pistas da Área Atual">
-          <span id="nav-about-area-icon">📍</span>
+          <span id="nav-about-area-icon" class="area-btn-icon">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+          </span>
           <span id="nav-about-area-label">Sobre: Mina de Prata</span>
         </button>
 
@@ -430,7 +435,12 @@
 
           <!-- Sobre Área Atual (Mobile) -->
           <button class="mobile-menu-item" onclick="MesaAreaManager.openAboutAreaModal(); MesaMobileMenu.close()">
-            <span class="m-item-icon">📍</span>
+            <span class="m-item-icon" id="mobile-about-area-icon">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </span>
             <span id="mobile-about-area-label">Sobre: Mina de Prata</span>
           </button>
 
@@ -465,6 +475,6 @@
       </div>
     </div>
 
-<script src="js/mesa.js?v=3.0.0"></script>
+<script src="js/mesa.js?v=3.0.1"></script>
 </body>
 </html>
