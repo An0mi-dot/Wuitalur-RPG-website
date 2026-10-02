@@ -120,7 +120,7 @@ const DEFAULT_ACCOUNTS = [
     handle: '@pera',
     bio: 'Navegadora e cartógrafa das correntes de éter. Conheço cada beco e cada rota de fuga.',
     avatarLetter: 'P',
-    avatarImage: '',
+    avatarImage: 'assets/pera_wuitter.png',
     avatarColor: '#f59e0b',
     badge: 'none',
     isMaster: false

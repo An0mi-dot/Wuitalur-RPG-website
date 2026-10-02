@@ -908,6 +908,8 @@ const MesaApp = {
       raca: 'Animalesco',
       arquetipo: 'Rebelde',
       classe: 'Adivinha',
+      imagem: 'assets/pera.png',
+      avatar: 'assets/pera_avatar.png',
       hp: 12, hpMax: 12,
       pe: 10, peMax: 10,
       st: 0, stMax: 24,
@@ -1009,6 +1011,8 @@ const MesaApp = {
       altura: '1,42m',
       raca: 'Dragão Anão',
       arquetipo: 'Gótica',
+      imagem: 'assets/odara.png',
+      avatar: 'assets/odara_avatar.png',
       hp: 14, hpMax: 14,
       pe: 10, peMax: 10,
       st: 0, stMax: 36,
@@ -1161,9 +1165,19 @@ const MesaApp = {
             p.avatar = 'assets/eric_avatar.png';
           }
 
+          if (p.token === 'H2Q9' || p.slot === 4) {
+            p.imagem = 'assets/pera.png';
+            p.avatar = 'assets/pera_avatar.png';
+          }
+
           if (p.token === 'T6D3' || p.slot === 6) {
             p.imagem = 'assets/john.png';
             p.avatar = 'assets/john_avatar.png';
+          }
+
+          if (p.token === 'Y4M7' || p.slot === 7) {
+            p.imagem = 'assets/odara.png';
+            p.avatar = 'assets/odara_avatar.png';
           }
 
           if (p.slot >= 1 && p.slot <= 8) {
@@ -1221,6 +1235,7 @@ const MesaApp = {
       if (!this.state.players[3]) {
         this.state.players[3] = {
           id: 4, slot: 4, token: 'H2Q9', nome: 'Pera Hylidae da Silva', idade: '18 anos', altura: '1,58m', raca: 'Animalesco', arquetipo: 'Rebelde', classe: 'Adivinha',
+          imagem: 'assets/pera.png', avatar: 'assets/pera_avatar.png',
           hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 24, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Mente': 'd4', 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd16' },
           bonus: [
@@ -1275,6 +1290,7 @@ const MesaApp = {
       if (!this.state.players[6]) {
         this.state.players[6] = {
           id: 7, slot: 7, token: 'Y4M7', nome: 'Odara De La Benevidez', idade: '18 anos', altura: '1,42m', raca: 'Dragão Anão', arquetipo: 'Gótica',
+          imagem: 'assets/odara.png', avatar: 'assets/odara_avatar.png',
           hp: 14, hpMax: 14, pe: 10, peMax: 10, st: 0, stMax: 36, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Força': 'd16', 'Mente': 'd12', 'Saúde': 'd8', 'Vigor': 'd4' },
           bonus: [
