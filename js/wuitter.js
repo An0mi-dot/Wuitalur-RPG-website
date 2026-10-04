@@ -84,7 +84,7 @@ const DEFAULT_ACCOUNTS = [
     handle: '@minerva',
     bio: 'Médica de campo e estudiosa de patologias arcanas. Café sem açúcar e prontuários em dia.',
     avatarLetter: 'M',
-    avatarImage: 'assets/minerva_wuitter.png',
+    avatarImage: 'assets/minerva_wuitter.png?v=2',
     avatarColor: '#8b5cf6',
     badge: 'none',
     isMaster: false

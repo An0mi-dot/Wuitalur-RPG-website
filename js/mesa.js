@@ -839,8 +839,8 @@ const MesaApp = {
       altura: '1,78m',
       raca: 'Vampira',
       arquetipo: 'Nerd',
-      imagem: 'assets/minerva.png',
-      avatar: 'assets/minerva_avatar.png',
+      imagem: 'assets/minerva.png?v=2',
+      avatar: 'assets/minerva_avatar.png?v=2',
       hp: 12, hpMax: 12,
       pe: 10, peMax: 10,
       st: 0, stMax: 40,
@@ -1161,8 +1161,8 @@ const MesaApp = {
           }
 
           if (p.token === 'N3L8' || p.slot === 2) {
-            p.imagem = 'assets/minerva.png';
-            p.avatar = 'assets/minerva_avatar.png';
+            p.imagem = 'assets/minerva.png?v=2';
+            p.avatar = 'assets/minerva_avatar.png?v=2';
           }
 
           if (p.token === 'R5K1' || p.slot === 3) {
@@ -1205,7 +1205,7 @@ const MesaApp = {
       if (!this.state.players[1]) {
         this.state.players[1] = {
           id: 3, slot: 2, token: 'N3L8', nome: 'Sanguiminerva "Minerva" Qamari Von Adams', idade: '18 anos', altura: '1,78m', raca: 'Vampira', arquetipo: 'Nerd',
-          imagem: 'assets/minerva.png', avatar: 'assets/minerva_avatar.png',
+          imagem: 'assets/minerva.png?v=2', avatar: 'assets/minerva_avatar.png?v=2',
           hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 40, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd4', 'Mente': 'd16' },
           bonus: [{ origem: 'Raça (Vampira)', desc: '+d4 em testes de Mente e Visão no Escuro (5B)' }, { origem: 'Arquétipo (Nerd)', desc: '+d4 em Testes de Mente' }],
