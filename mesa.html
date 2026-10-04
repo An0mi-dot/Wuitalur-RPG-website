@@ -354,7 +354,7 @@
 
     <!-- Modal do Mapa Tático de Áreas -->
     <div id="area-map-modal" class="mesa-modal-overlay">
-      <div class="mesa-modal ink-modal area-map-modal-dialog">
+      <div class="mesa-modal area-map-modal-dialog">
         <button class="mesa-modal-close" onclick="MesaApp.closeModal('area-map-modal')">&times;</button>
         <div class="ink-ribbon-title">MAPA DE INVESTIGAÇÃO • FRAGKTUS & MINA DE PRATA</div>
         
@@ -379,7 +379,7 @@
 
     <!-- Modal de Informações da Área & Pontos de Interesse -->
     <div id="area-info-modal" class="mesa-modal-overlay">
-      <div class="mesa-modal ink-modal area-info-modal-dialog">
+      <div class="mesa-modal area-info-modal-dialog">
         <button class="mesa-modal-close" onclick="MesaApp.closeModal('area-info-modal')">&times;</button>
         <div id="area-info-header" class="area-info-header">
           <!-- Renderizado dinamicamente -->
@@ -394,7 +394,7 @@
           <div id="area-master-dossier" class="area-master-dossier" style="display: none;">
             <div class="master-dossier-header">
               <span class="dossier-badge">[CONFIDENCIAL • ACESSO DO MESTRE]</span>
-              <h3>10 PONTOS DE INTERESSE DA LOCALIDADE</h3>
+              <h3 id="master-dossier-title">PONTOS DE INTERESSE DA LOCALIDADE</h3>
               <p class="master-dossier-subtitle">Estrutura oficial: Cabeçalho com descrição sensorial inicial, Quadro de Perícias escalonado por DT e Descrição Contextual com os segredos da trama.</p>
             </div>
 
@@ -412,7 +412,7 @@
 
     <!-- Modal de Dossiê de NPC (Consulta Exclusiva de Sessão / Mestre) -->
     <div id="npc-dossier-modal" class="mesa-modal-overlay">
-      <div class="mesa-modal ink-modal npc-dossier-modal-dialog">
+      <div class="mesa-modal npc-dossier-modal-dialog">
         <button class="mesa-modal-close" onclick="MesaApp.closeModal('npc-dossier-modal')">&times;</button>
         <div class="ink-ribbon-title" style="margin-bottom: 14px;">DOSSIÊ CONFIDENCIAL DE NPC • CAMPANHA</div>
         <div id="npc-dossier-content" class="npc-dossier-content">

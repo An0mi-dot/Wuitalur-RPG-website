@@ -4368,25 +4368,51 @@ body.mesa-body.area-refugio-gustavo {
 
 /* 3. MODAL DE INFORMAÇÕES DA ÁREA & DOSSIÊ DO MESTRE */
 .area-info-modal-dialog {
-  max-width: 1060px !important;
+  max-width: 1040px !important;
   width: 95% !important;
   max-height: 90vh;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--mesa-orange) #080200;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  filter: none !important;
+  background: #0d0f15 !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.95), 0 0 35px rgba(0, 0, 0, 0.8) !important;
+  padding: 26px 28px !important;
+}
+
+.area-map-modal-dialog {
+  filter: none !important;
+  background: #0d0f15 !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 8px !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+.npc-dossier-modal-dialog {
+  filter: none !important;
+  background: #0d0f15 !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 8px !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  -webkit-font-smoothing: antialiased !important;
 }
 
 .area-info-header {
-  border-bottom: 2px solid var(--area-accent, var(--mesa-orange));
-  padding-bottom: 14px;
-  margin-bottom: 16px;
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.12);
+  padding-bottom: 16px;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 14px;
 }
 
 .area-header-identity {
@@ -4396,36 +4422,38 @@ body.mesa-body.area-refugio-gustavo {
 }
 
 .area-header-symbol {
-  width: 56px;
-  height: 56px;
-  border-radius: 6px;
-  background: rgba(0, 0, 0, 0.6);
-  border: 2px solid var(--area-accent, var(--mesa-orange));
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  background: rgba(20, 24, 33, 0.9);
+  border: 1.5px solid var(--area-accent, #14b8a6);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 16px var(--area-glow, rgba(255, 85, 0, 0.4));
-  color: var(--area-accent, var(--mesa-orange));
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 12px var(--area-glow, rgba(20, 184, 166, 0.3));
+  color: var(--area-accent, #14b8a6);
+  flex-shrink: 0;
 }
 
 .area-header-symbol .area-svg-icon {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
 }
 
 .area-header-titles h2 {
   margin: 0;
-  font-size: 1.35rem;
+  font-size: 1.4rem;
   font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: #fff;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .area-header-titles p {
   margin: 4px 0 0 0;
-  font-size: 0.85rem;
-  color: #cbd5e1;
+  font-size: 0.88rem;
+  color: #94a3b8;
+  font-weight: 500;
 }
 
 .area-header-meta {
@@ -4437,136 +4465,265 @@ body.mesa-body.area-refugio-gustavo {
 .area-meta-tag {
   font-size: 0.74rem;
   font-weight: 700;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #e4e4e7;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #e2e8f0;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+}
+
+.area-meta-tag.warning {
+  border-color: rgba(245, 158, 11, 0.5);
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.12);
 }
 
 .area-meta-tag.danger {
-  border-color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.5);
   color: #fca5a5;
-  background: rgba(239, 68, 68, 0.15);
+  background: rgba(239, 68, 68, 0.12);
 }
 
+/* Painel de Informações Públicas */
 .area-public-info {
-  background: rgba(12, 4, 2, 0.6);
-  border: 1px solid rgba(255, 85, 0, 0.25);
-  border-radius: 6px;
-  padding: 16px 18px;
-  margin-bottom: 22px;
+  background: #12151e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 22px 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
-.area-public-info h4 {
-  margin: 0 0 8px 0;
-  font-size: 0.86rem;
-  color: var(--area-accent, var(--mesa-orange));
-  letter-spacing: 0.05em;
+.area-section-header {
+  margin-bottom: 12px;
+}
+
+.area-section-title {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--area-accent, #14b8a6);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   font-weight: 800;
 }
 
-.area-public-info p {
-  margin: 0 0 10px 0;
-  font-size: 0.9rem;
-  line-height: 1.55;
-  color: #e4e4e7;
+.area-atmosphere-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.area-public-info p:last-child {
-  margin-bottom: 0;
+.area-atmosphere-p {
+  margin: 0;
+  font-size: 0.94rem;
+  line-height: 1.7;
+  color: #cbd5e1;
+  font-weight: 400;
+  text-align: justify;
+}
+
+/* Caixa de Requisitos de Acesso Exclusiva do Mestre */
+.area-access-box {
+  background: rgba(45, 26, 5, 0.65);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-left: 4px solid #f59e0b;
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin-top: 18px;
+}
+
+.area-access-badge {
+  color: #fbbf24;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+
+.area-access-box p {
+  margin: 0;
+  color: #fef3c7;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+/* Bloco de NPCs do Mestre */
+.area-master-npcs-block {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.area-master-section-title {
+  color: #38bdf8;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+
+.area-npcs-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mesa-npc-tag-btn {
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 4px;
+  color: #bae6fd;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  font-family: inherit;
+}
+
+.mesa-npc-tag-btn:hover {
+  background: rgba(56, 189, 248, 0.25);
+  border-color: #38bdf8;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Bloco de Saídas / Conexões */
+.area-exits-block {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.area-exits-title {
+  color: #fb923c;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+
+.area-exits-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mesa-exit-btn {
+  background: rgba(251, 146, 60, 0.1);
+  border: 1px solid rgba(251, 146, 60, 0.35);
+  border-radius: 4px;
+  color: #fed7aa;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  font-family: inherit;
+}
+
+.mesa-exit-btn:hover {
+  background: rgba(251, 146, 60, 0.25);
+  border-color: #fb923c;
+  color: #ffffff;
+  transform: translateY(-1px);
 }
 
 .area-rumor-box {
-  margin-top: 14px;
-  padding: 12px 16px;
-  background: rgba(0, 0, 0, 0.45);
+  margin-top: 18px;
+  padding: 14px 18px;
+  background: rgba(234, 179, 8, 0.08);
   border-left: 3px solid #eab308;
-  border-radius: 0 4px 4px 0;
-  font-style: italic;
-  font-size: 0.86rem;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.88rem;
   color: #fef08a;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
-/* 4. DOSSIÊ EXCLUSIVO DO MESTRE (TABELA DE 10 POIs — TIPOGRAFIA LIMPA E ALINHADA) */
+.area-rumor-box strong {
+  color: #fde047;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  margin-right: 4px;
+}
+
+/* 4. DOSSIÊ EXCLUSIVO DO MESTRE (PONTOS DE INTERESSE) */
 .area-master-dossier {
-  background: #0d0202;
-  border: 2px solid #ef4444;
-  box-shadow: 0 0 25px rgba(239, 68, 68, 0.25), inset 0 0 20px rgba(0, 0, 0, 0.8);
-  border-radius: 6px;
-  padding: 20px;
+  background: #10121a;
+  border: 1.5px solid rgba(239, 68, 68, 0.5);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  border-radius: 8px;
+  padding: 24px;
   position: relative;
-  margin-top: 16px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  margin-top: 24px;
+  filter: none !important;
 }
 
 .master-dossier-header {
-  margin-bottom: 14px;
-  border-bottom: 1px dashed rgba(239, 68, 68, 0.4);
-  padding-bottom: 10px;
+  margin-bottom: 16px;
+  border-bottom: 1px dashed rgba(239, 68, 68, 0.35);
+  padding-bottom: 14px;
 }
 
 .dossier-badge {
   display: inline-block;
   font-size: 0.72rem;
   font-weight: 800;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   color: #ef4444;
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid #ef4444;
-  padding: 3px 9px;
-  margin-bottom: 6px;
-  border-radius: 3px;
-  animation: pulseMasterBadge 2s infinite ease-in-out;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  padding: 3px 10px;
+  margin-bottom: 8px;
+  border-radius: 4px;
   text-transform: uppercase;
 }
 
-@keyframes pulseMasterBadge {
-  0%, 100% { opacity: 0.95; }
-  50% { opacity: 0.6; }
-}
-
 .master-dossier-header h3 {
-  margin: 4px 0 0 0;
-  font-size: 1.15rem;
+  margin: 0;
+  font-size: 1.2rem;
   font-weight: 800;
   color: #fee2e2;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
 }
 
 .master-dossier-subtitle {
-  font-size: 0.85rem;
-  color: #cbd5e1;
-  margin: 5px 0 0 0;
+  font-size: 0.86rem;
+  color: #94a3b8;
+  margin: 6px 0 0 0;
   line-height: 1.5;
 }
 
-/* Barra de Navegação Rápida entre os 10 Pontos de Interesse */
+/* Barra de Navegação Rápida entre os Pontos de Interesse */
 .area-poi-quicknav {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin: 14px 0 18px 0;
-  padding: 8px 10px;
-  background: rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(239, 68, 68, 0.25);
-  border-radius: 4px;
+  gap: 8px;
+  margin: 16px 0 20px 0;
+  padding: 10px 14px;
+  background: #090a0f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
 }
 
 .poi-nav-btn {
-  background: #18181b;
-  border: 1px solid #3f3f46;
-  color: #e4e4e7;
-  font-size: 0.78rem;
+  background: #181b26;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #cbd5e1;
+  font-size: 0.8rem;
   font-weight: 600;
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.18s ease;
@@ -4577,50 +4734,51 @@ body.mesa-body.area-refugio-gustavo {
   background: #ef4444;
   color: #ffffff;
   border-color: #ef4444;
-  box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+  transform: translateY(-1px);
 }
 
 /* Container dos Cards de Ponto de Interesse */
 .area-poi-cards-container {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 24px;
 }
 
 /* Card Individual de Ponto de Interesse */
 .poi-card {
-  background: #09090b;
-  border: 1.5px solid #3f3f46;
-  border-radius: 6px;
+  background: #141722;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
   transition: border-color 0.2s ease;
+  filter: none !important;
 }
 
 .poi-card:hover {
-  border-color: rgba(239, 68, 68, 0.6);
+  border-color: rgba(239, 68, 68, 0.5);
 }
 
 /* 1. CABEÇALHO DO PONTO DE INTERESSE */
 .poi-header-block {
-  background: #111215;
-  border-bottom: 2px solid #27272a;
-  padding: 14px 18px;
-  position: relative;
+  background: #181c2b;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 18px 22px;
 }
 
 .poi-header-badge-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .poi-index-badge {
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.05em;
-  color: #ef4444;
+  color: #f87171;
   background: rgba(239, 68, 68, 0.12);
   border: 1px solid rgba(239, 68, 68, 0.35);
   padding: 3px 8px;
@@ -4629,50 +4787,49 @@ body.mesa-body.area-refugio-gustavo {
 }
 
 .poi-header-title {
-  margin: 0 0 6px 0;
-  font-size: 1.05rem;
-  font-weight: 800;
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
   color: #ffffff;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  line-height: 1.3;
+  letter-spacing: 0.01em;
+  line-height: 1.35;
 }
 
 .poi-header-desc {
   margin: 0;
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   color: #cbd5e1;
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 /* 2. QUADRO DE PERÍCIAS (TABELA LIMPA E ALINHADA) */
 .poi-skills-table-wrap {
   width: 100%;
   overflow-x: auto;
-  background: #0f1013;
-  border-bottom: 1px solid #27272a;
+  background: #0f1118;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .poi-skills-table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: 0.86rem;
+  font-size: 0.88rem;
 }
 
 .poi-skills-table thead {
-  background: #27272a;
-  border-bottom: 2px solid #3f3f46;
+  background: #1a1e2c;
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.12);
 }
 
 .poi-skills-table th {
-  padding: 9px 14px;
+  padding: 11px 16px;
   font-weight: 700;
-  color: #ffffff;
+  color: #94a3b8;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
-  font-size: 0.78rem;
-  border-right: 1px solid #3f3f46;
+  letter-spacing: 0.04em;
+  font-size: 0.76rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .poi-skills-table th:last-child {
@@ -4680,20 +4837,20 @@ body.mesa-body.area-refugio-gustavo {
 }
 
 .poi-skills-table th.th-pericia {
-  width: 22%;
+  width: 24%;
 }
 
 .poi-skills-table th.th-dt {
-  width: 10%;
+  width: 12%;
   text-align: center;
 }
 
 .poi-skills-table th.th-info {
-  width: 68%;
+  width: 64%;
 }
 
 .poi-skills-table tbody tr {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .poi-skills-table tbody tr:last-child {
@@ -4701,23 +4858,23 @@ body.mesa-body.area-refugio-gustavo {
 }
 
 .poi-skills-table tr.skill-tint-0 {
-  background: rgba(245, 158, 11, 0.08);
+  background: rgba(245, 158, 11, 0.05);
 }
 .poi-skills-table tr.skill-tint-1 {
-  background: rgba(34, 197, 94, 0.08);
+  background: rgba(34, 197, 94, 0.05);
 }
 .poi-skills-table tr.skill-tint-2 {
-  background: rgba(14, 165, 233, 0.08);
+  background: rgba(14, 165, 233, 0.05);
 }
 .poi-skills-table tr.skill-tint-3 {
-  background: rgba(168, 85, 247, 0.08);
+  background: rgba(168, 85, 247, 0.05);
 }
 
 .poi-skills-table td {
-  padding: 10px 14px;
+  padding: 12px 16px;
   vertical-align: top;
-  line-height: 1.5;
-  border-right: 1px solid rgba(255, 255, 255, 0.07);
+  line-height: 1.55;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .poi-skills-table td:last-child {
@@ -4733,207 +4890,68 @@ body.mesa-body.area-refugio-gustavo {
 .poi-dt-cell {
   text-align: center;
   font-weight: 800;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   color: #fbbf24;
-}
-
-.poi-info-cell {
-  color: #e2e8f0;
-}
-
-/* 3. DESCRIÇÃO CONTEXTUAL */
-.poi-context-block {
-  background: #18181b;
-  border-top: 1px solid #27272a;
-  padding: 14px 18px;
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-}
-
-.poi-book-icon-wrap {
-  width: 32px;
-  height: 32px;
-  flex-shrink: 0;
-  color: #f4f4f5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 2px;
-}
-
-.poi-book-svg {
-  width: 26px;
-  height: 26px;
-  stroke: currentColor;
-  stroke-width: 2;
-  fill: none;
-}
-
-.poi-context-content {
-  flex: 1;
-}
-
-.poi-context-label {
-  display: block;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: #a1a1aa;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-
-.poi-context-content p {
-  margin: 0;
-  font-size: 0.88rem;
-  color: #e2e8f0;
-  line-height: 1.58;
-}
-
-.poi-context-content p + p {
-  margin-top: 6px;
-}
-
-/* Responsividade Mobile para Áreas & Mapa de Estradas */
-@media (max-width: 768px) {
-  .area-roadmap-board {
-    height: 480px;
-  }
-  
-  .area-node-symbol-wrap {
-    width: 58px;
-    height: 58px;
-  }
-  
-  .area-node-symbol-wrap .area-svg-icon {
-    width: 34px;
-    height: 34px;
-  }
-
-  .area-map-node:hover .area-node-symbol-wrap {
-    transform: scale(1.6);
-  }
-
-  .area-node-name {
-    font-size: 0.74rem;
-    padding: 3px 8px;
-  }
-
-  .area-info-modal-dialog {
-    padding: 20px 14px !important;
-  }
-  
-  .area-header-identity {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-  
-  .poi-skills-table {
-    font-size: 0.78rem;
-  }
-  
-  .poi-skills-table th, 
-  .poi-skills-table td {
-    padding: 8px 10px;
-  }
-}
-
-/* ---- MODAL DE DOSSIÊ DE NPC NA MESA VIRTUAL ---- */
-.npc-dossier-modal-dialog {
-  max-width: 820px !important;
-  width: 92% !important;
-  max-height: 88vh;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--mesa-orange) #080200;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
 }
 
 .mesa-pdi-dt-badge {
   display: inline-block;
-  font-weight: 900;
-  font-size: 0.92rem;
-  color: #09090b;
-  background: #fbbf24;
-  border: 1.5px solid #d97706;
-  border-radius: 4px;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
   padding: 2px 8px;
-  box-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
 }
 
+.poi-info-cell {
+  color: #cbd5e1;
+}
+
+/* 3. NOTAS DO MESTRE (DESTAQUE VISUAL DE LEITURA RÁPIDA) */
 .mesa-master-notes-box {
-  background: #140404;
-  border-top: 1.5px solid #7f1d1d;
-  padding: 14px 18px;
+  background: #171320;
+  border-top: 1px solid rgba(168, 85, 247, 0.25);
+  border-left: 3.5px solid #a855f7;
+  padding: 16px 20px;
   display: flex;
-  align-items: flex-start;
   gap: 14px;
+  align-items: flex-start;
 }
 
 .mesa-master-notes-icon {
-  width: 28px;
-  height: 28px;
-  border-radius: 4px;
-  background: rgba(239, 68, 68, 0.2);
-  border: 1px solid #ef4444;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  color: #c084fc;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ef4444;
   flex-shrink: 0;
   margin-top: 2px;
 }
 
+.mesa-master-notes-content {
+  flex: 1;
+}
+
 .mesa-master-notes-label {
   display: block;
-  font-size: 0.72rem;
-  font-weight: 900;
-  letter-spacing: 0.05em;
-  color: #fca5a5;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #c084fc;
   text-transform: uppercase;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
-.mesa-npc-tag-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: #181922;
-  border: 1px solid #38bdf8;
-  color: #38bdf8;
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
+.mesa-master-notes-content p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #e9d5ff;
+  line-height: 1.6;
 }
-
-.mesa-npc-tag-btn:hover {
-  background: #38bdf8;
-  color: #09090b;
-}
-
-.mesa-exit-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: #181922;
-  border: 1px solid rgba(255, 119, 0, 0.5);
-  color: #ff9933;
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.mesa-exit-btn:hover {
-  background: #ff7700;
-  color: #ffffff;
-}
-

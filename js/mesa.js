@@ -2690,7 +2690,7 @@ const MESA_AREAS = {
     "district": "Setor Estudantil & Cívico • Centro de Fragktus",
     "dangerLevel": "Inspetores Rígidos & Vigilância Escolar",
     "dangerLevelClass": "warning",
-    "ambience": "Corredores ecoantes com cheiro de cera velha e desinfetante hospitalar, murais com fotos desbotadas e armários metálicos enferrujados.",
+    "ambience": "A arquitetura impõe-se de forma rígida e asseada. Os corredores longos possuem pisos de mosaico polido que refletem uma luz fluorescente pálida, ladeados por filas intermináveis de cacifos de metal verde-oliva. Os passos ecoam de forma seca e solitária nas paredes frias, transmitindo a sensação constante de vigilância e de que as conversas nunca são verdadeiramente privadas. No pátio central e no ginásio, a grandiosidade da infraestrutura serve apenas para reforçar a pequenez e a vulnerabilidade de quem ali estuda.\n\nO ar carrega uma mistura enjoativa de cera de polir, papel velho da biblioteca e desinfetante forte — o aroma da limpeza extrema, usado pela direção para apagar rapidamente qualquer vestígio de fraqueza, dor ou escândalo. Durante as aulas, um silêncio opressivo domina os pisos, quebrado apenas pelo tiquetaque rígido dos relógios de parede e pelo som distante e calculista de sapatos de salto alto a ecoar no rés-do-chão.\n\nA pressão social paira densa nos intervalos. Os alunos, filhos da elite local, agrupam-se com posturas impecáveis e olhares de julgamento, criando um ecossistema hostil a quem não partilha do mesmo estatuto. É um espaço claustrofóbico e profundamente hipócrita, onde o arranjo de flores mortas no corredor contrasta com a ordem imaculada da instituição, provando aos investigadores que o sofrimento ali não é tratado, mas sim silenciado de imediato.",
     "lore": "O colégio mais tradicional de Fragktus, onde Sara e seus colegas estudavam. Sob o verniz da disciplina impecável, circulam segredos sombrios sobre chantagens entre grêmios, favores concedidos a filhos de diretores e o silenciamento sistemático de alunos que faziam perguntas demais.",
     "rumor": "«Sara não foi assistir à última aula de química. Testemunhas dizem que ela foi vista discutindo aos prantos atrás da arquibancada com alguém de jaleco branco.»",
     "pois": [
@@ -3085,6 +3085,7 @@ const MesaAreaManager = {
     const areaName = area.nome || area.name;
     const pdiList = area.pontos_de_interesse || area.pois || [];
     const pdiCount = pdiList.length;
+    const isMasterUser = Boolean(MesaApp && MesaApp.state && MesaApp.state.isMaster);
 
     // Cabeçalho da Área
     const header = document.getElementById('area-info-header');
@@ -3099,7 +3100,7 @@ const MesaAreaManager = {
         </div>
         <div class="area-header-meta">
           <span class="area-meta-tag ${area.dangerLevelClass || 'warning'}">${area.dangerLevel}</span>
-          <span class="area-meta-tag">${pdiCount} Pontos de Interesse</span>
+          <span class="area-meta-tag">${pdiCount} ${pdiCount === 1 ? 'Ponto de Interesse' : 'Pontos de Interesse'}</span>
         </div>
       `;
     }
@@ -3107,22 +3108,28 @@ const MesaAreaManager = {
     // Informações Públicas (Visíveis a todos)
     const publicInfo = document.getElementById('area-public-info');
     if (publicInfo) {
-      const atmosfera = area.resumo_atmosfera || area.ambience || '';
-      const acesso = area.requisitos_acesso ? `
-        <div style="background: rgba(30, 24, 10, 0.6); border: 1.5px solid rgba(245, 158, 11, 0.4); border-left: 4px solid #f59e0b; border-radius: 4px; padding: 12px 14px; margin-top: 12px;">
-          <strong style="color: #fbbf24; font-size: 0.78rem; text-transform: uppercase; display: block; margin-bottom: 4px;">REQUISITOS DE ACESSO & CONDIÇÕES:</strong>
-          <span style="color: #fef3c7; font-size: 0.86rem; line-height: 1.45;">${area.requisitos_acesso}</span>
+      const atmosferaText = area.resumo_atmosfera || area.ambience || '';
+      const atmosferaParagraphs = atmosferaText
+        .split(/\n\s*\n/)
+        .filter(p => p.trim().length > 0)
+        .map(p => `<p class="area-atmosphere-p">${p.trim()}</p>`)
+        .join('');
+
+      // Requisitos de Acesso (EXCLUSIVO DO MESTRE)
+      const acesso = (isMasterUser && area.requisitos_acesso) ? `
+        <div class="area-access-box">
+          <div class="area-access-badge">[EXCLUSIVO DO MESTRE] REQUISITOS DE ACESSO & CONDIÇÕES</div>
+          <p>${area.requisitos_acesso}</p>
         </div>
       ` : '';
 
       // NPCs presentes com botões clicáveis para abrir o modal de NPC (EXCLUSIVO DO MESTRE)
-      const isMasterUser = MesaApp && MesaApp.state && MesaApp.state.isMaster;
       let npcsHtml = '';
       if (isMasterUser && area.npcs_presentes && area.npcs_presentes.length > 0) {
         npcsHtml = `
-          <div style="margin-top: 14px;">
-            <strong style="color: #38bdf8; font-size: 0.76rem; text-transform: uppercase; display: block; margin-bottom: 6px;">[MESTRE] NPCS PRESENTES NESTA ÁREA (CLIQUE PARA ABRIR DOSSIÊ):</strong>
-            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <div class="area-master-npcs-block">
+            <strong class="area-master-section-title">[MESTRE] NPCS PRESENTES NESTA ÁREA (CLIQUE PARA ABRIR DOSSIÊ):</strong>
+            <div class="area-npcs-tags-row">
               ${area.npcs_presentes.map(npcId => {
                 const npc = (window.CAMPAIGN_NPCS && window.CAMPAIGN_NPCS[npcId]);
                 const npcName = npc ? npc.nome.split('•')[0].trim() : npcId;
@@ -3140,9 +3147,9 @@ const MesaAreaManager = {
       let exitsHtml = '';
       if (area.conexoes_saida && area.conexoes_saida.length > 0) {
         exitsHtml = `
-          <div style="margin-top: 14px;">
-            <strong style="color: #ff9933; font-size: 0.76rem; text-transform: uppercase; display: block; margin-bottom: 6px;">ROTAS & CONEXÕES DE SAÍDA:</strong>
-            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <div class="area-exits-block">
+            <strong class="area-exits-title">ROTAS & CONEXÕES DE SAÍDA:</strong>
+            <div class="area-exits-row">
               ${area.conexoes_saida.map(ex => {
                 return `<button type="button" class="mesa-exit-btn" onclick="MesaAreaManager.openAboutAreaModal('${ex.area_id}')" title="${ex.gancho}">
                   ${ex.nome} &rarr;
@@ -3154,31 +3161,42 @@ const MesaAreaManager = {
       }
 
       publicInfo.innerHTML = `
-        <h4 style="margin: 0 0 6px 0; color: var(--area-accent, var(--mesa-orange)); font-size: 0.85rem; text-transform: uppercase;">ATMOSFERA & CENÁRIO</h4>
-        <p style="margin: 0; font-size: 0.9rem; line-height: 1.55; color: #e4e4e7;">${atmosfera}</p>
+        <div class="area-section-header">
+          <h4 class="area-section-title">ATMOSFERA & CENÁRIO</h4>
+        </div>
+        <div class="area-atmosphere-content">
+          ${atmosferaParagraphs}
+        </div>
         ${acesso}
         ${npcsHtml}
         ${exitsHtml}
-        ${area.lore ? `<h4 style="margin-top: 14px;">HISTÓRIA & CONTEXTO LOCAL</h4><p>${area.lore}</p>` : ''}
+        ${area.lore ? `<div class="area-lore-block"><h4 class="area-section-title" style="margin-top: 20px;">HISTÓRIA & CONTEXTO LOCAL</h4><p class="area-atmosphere-p">${area.lore}</p></div>` : ''}
         ${area.rumor ? `<div class="area-rumor-box"><strong>RUMOR INVESTIGATIVO:</strong> ${area.rumor}</div>` : ''}
       `;
     }
 
     // Dossiê do Mestre (Pontos de Interesse Estruturados)
-    const isMaster = MesaApp && MesaApp.state && MesaApp.state.isMaster;
     const masterDossier = document.getElementById('area-master-dossier');
     const cardsContainer = document.getElementById('area-poi-cards-container');
     const quickNav = document.getElementById('area-poi-quicknav');
+    const masterDossierTitle = document.getElementById('master-dossier-title');
 
-    if (masterDossier) {
-      masterDossier.style.display = isMaster ? 'block' : 'none';
+    if (masterDossierTitle) {
+      masterDossierTitle.textContent = `${pdiCount} ${pdiCount === 1 ? 'PONTO DE INTERESSE DA LOCALIDADE' : 'PONTOS DE INTERESSE DA LOCALIDADE'}`;
     }
 
-    if (isMaster && cardsContainer) {
+    if (masterDossier) {
+      masterDossier.style.display = isMasterUser ? 'block' : 'none';
+    }
+
+    if (isMasterUser && cardsContainer) {
       cardsContainer.innerHTML = '';
       if (quickNav) quickNav.innerHTML = '';
 
-      const pdiList = area.pontos_de_interesse || area.pois || [];
+      if (pdiList.length === 0) {
+        cardsContainer.innerHTML = '<div style="color: #94a3b8; font-size: 0.9rem; padding: 20px 0; text-align: center;">Nenhum ponto de interesse registrado nesta área ainda.</div>';
+      }
+
       pdiList.forEach((poi, idx) => {
         const num = poi.num || (idx + 1);
         const title = (poi.cabecalho && poi.cabecalho.nome) || poi.title || `Ponto de Interesse ${num}`;
@@ -3189,7 +3207,7 @@ const MesaAreaManager = {
         if (quickNav) {
           const navBtn = document.createElement('button');
           navBtn.className = 'poi-nav-btn';
-          const shortTitle = title.length > 20 ? title.substring(0, 20) + '...' : title;
+          const shortTitle = title.length > 24 ? title.substring(0, 24) + '...' : title;
           navBtn.textContent = `#${num} ${shortTitle}`;
           navBtn.title = title;
           navBtn.onclick = () => {
@@ -3248,9 +3266,9 @@ const MesaAreaManager = {
             <div class="mesa-master-notes-icon" title="Segredo do Mestre">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
             </div>
-            <div style="flex: 1;">
+            <div class="mesa-master-notes-content">
               <span class="mesa-master-notes-label">[NOTAS DO MESTRE • SEGREDO CONFIDENCIAL]</span>
-              <p style="margin: 0; font-size: 0.88rem; color: #fee2e2; line-height: 1.55;">${masterNotes}</p>
+              <p>${masterNotes}</p>
             </div>
           </div>
         `;
