@@ -2681,822 +2681,411 @@ const MesaDice = {
 // ============================================================
 
 const MESA_AREAS = {
-  'mina-de-prata': {
-    id: 'mina-de-prata',
-    name: "Condomínio Mina de Prata",
-    shortName: "Mina de Prata",
-    svgIcon: '<svg class="area-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 9h.01M15 9h.01M9 13h.01M15 13h.01"></path></svg>',
-    themeClass: 'area-mina-de-prata',
-    district: "Residencial de Alta Renda • Zona Sul de Fragktus",
-    dangerLevel: "Vigilância Privada & Câmeras Ocultas",
-    dangerLevelClass: 'danger',
-    ambience: "Mansões neoclássicas, ruas silenciosas de paralelepípedo molhado, névoa baixa e o ranger distante de portões de ferro.",
-    lore: "Enclave da elite de Fragktus onde morava Sara Auguil e onde se escondem os interesses de figuras influentes da cidade. Sob a fachada de opulência e segurança armada, moradores sussurram sobre carros pretos sem placas circulando de madrugada e documentos queimados nos fundos das propriedades.",
-    rumor: "«Na noite em que Sara sumiu, os postes da Alameda dos Ipês piscaram três vezes e o sistema de câmeras da guarita apagou por exatamente dez minutos.»",
-    pois: [
+  "colegio-primordio": {
+    "id": "colegio-primordio",
+    "name": "Colégio Integrado Primórdio",
+    "shortName": "Colégio Primórdio",
+    "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 10v6M2 10l10-5 10 5-10 5z\"></path><path d=\"M6 12v5c3 3 9 3 12 0v-5\"></path></svg>",
+    "themeClass": "area-colegio-primordio",
+    "district": "Setor Estudantil & Cívico • Centro de Fragktus",
+    "dangerLevel": "Inspetores Rígidos & Vigilância Escolar",
+    "dangerLevelClass": "warning",
+    "ambience": "Corredores ecoantes com cheiro de cera velha e desinfetante hospitalar, murais com fotos desbotadas e armários metálicos enferrujados.",
+    "lore": "O colégio mais tradicional de Fragktus, onde Sara e seus colegas estudavam. Sob o verniz da disciplina impecável, circulam segredos sombrios sobre chantagens entre grêmios, favores concedidos a filhos de diretores e o silenciamento sistemático de alunos que faziam perguntas demais.",
+    "rumor": "«Sara não foi assistir à última aula de química. Testemunhas dizem que ela foi vista discutindo aos prantos atrás da arquibancada com alguém de jaleco branco.»",
+    "pois": [
       {
-        num: 1,
-        title: "QUARTO DE SARA (MANSÃO AUGUIL)",
-        headerDesc: "O quarto no segundo andar permanece exatamente como na noite do desaparecimento. Cama impecavelmente forrada, janelas de vidro fumê entreabertas e um aroma residual de lavanda tentando disfarçar um cheiro químico acre.",
-        skills: [
-          { skill: "Investigação", dt: 6, info: "Sob o fundo falso da gaveta inferior do guarda-roupa, há frascos vazios de morfina e um bilhete rasgado: 'Não confie na Dra. Melissa. Ela entregou Trisha'." },
-          { skill: "Percepção", dt: 6, info: "A tranca da janela foi forçada de dentro para fora; no parapeito externo de alvenaria há vestígios de terra preta e folhas de pinheiro." },
-          { skill: "Percepção", dt: 8, info: "Pequenas manchas de sangue seco estão camufladas no rodapé de madeira ao lado da cama, condizentes com crises hemorrágicas limpas às pressas." }
+        "num": 1,
+        "title": "ARMÁRIO 108 DE SARA AUGUIL",
+        "headerDesc": "Armário de latão verde-escuro no corredor do 2º Ano B, com a tinta descascada nos cantos e adesivos antigos de bandas colados na porta.",
+        "skills": [
+          {
+            "skill": "Ladinagem",
+            "dt": 6,
+            "info": "O cadeado cede com facilidade. Dentro, atrás de livros didáticos pesados, há uma chave de vestiário colada atrás do espelho de plástico."
+          },
+          {
+            "skill": "Investigação",
+            "dt": 8,
+            "info": "Caderno de anotações com a folha de 30/06 arrancada e o rascunho a lápis de uma árvore gigantesca com olhos: 'Ele prometeu que a dor no peito vai parar'."
+          }
         ],
-        context: "Sara escondia de todos o avanço implacável do sarcoma terminal. Na madrugada de 31 de junho, ela fugiu pela janela para evitar os sensores do alarme residencial, já determinada a atender ao chamado de 'Ele' na floresta."
+        "context": "Sara usava o armário para ocultar os registros de suas pesquisas sobre o que ocorrera com Trisha, temendo que os inspetores revistassem sua mochila."
       },
       {
-        num: 2,
-        title: "GUARITA PRINCIPAL DE MINA DE PRATA",
-        headerDesc: "Cabine blindada com vidros espelhados e cancelas eletrônicas no acesso único do condomínio fechado, guarnecida pelo vigia Valdir sob chuva fina constante.",
-        skills: [
-          { skill: "Percepção", dt: 6, info: "O caderno de registro físico de veículos tem a página da madrugada de 31/06 com duas linhas cobertas por corretivo líquido espesso." },
-          { skill: "Lábia", dt: 8, info: "Valdir admite sob pressão que recebeu ordem direta e pagamento da Diretora Constança Montenegro para abrir a cancela e desligar o alarme entre 01h00 e 01h30." },
-          { skill: "Tecnologia", dt: 10, info: "O switch de rede da guarita teve o log de gravação das câmeras deletado remotamente a partir de um IP residencial da Alameda dos Ipês." }
+        "num": 2,
+        "title": "LABORATÓRIO DE QUÍMICA B",
+        "headerDesc": "Sala com bancadas de granito polido, bicos de Bunsen, frascos de reagentes e vidrarias sob luz fluorescente fria que zune continuamente.",
+        "skills": [
+          {
+            "skill": "Ciências",
+            "dt": 6,
+            "info": "No quadro-negro dos fundos há a fórmula residual de um sedativo hipnótico potente de manipulação controlada, fora do currículo didático."
+          },
+          {
+            "skill": "Investigação",
+            "dt": 8,
+            "info": "O livro de controle de reagentes acusa a retirada de compostos anestésicos autorizada pelo carimbo oficial da Diretora Constança."
+          }
         ],
-        context: "Constança utilizou sua autoridade incontestável na diretoria do condomínio para criar uma janela cega de fuga, garantindo que o transporte de Sara não gerasse registros formais de tráfego."
+        "context": "Constança manipulava insumos da escola para preparar chás calmantes que oferecia aos alunos selecionados, reduzindo sua resistência psicológica."
       },
       {
-        num: 3,
-        title: "ALAMEDA DOS IPÊS (LOTE 14 - CASA EM OBRAS)",
-        headerDesc: "Imóvel vizinho à residência de Sara cercado por tapumes de madeira compensada e caçambas de entulho molhadas de chuva, em ponto cego da iluminação pública.",
-        skills: [
-          { skill: "Sobrevivência", dt: 6, info: "Marcas de pneus largos de um SUV executivo recente manobrando em marcha à ré na terra fofa da calçada." },
-          { skill: "Percepção", dt: 8, info: "Bitucas de cigarro de cravo importado com filtro dourado jogadas perto do tapume, a mesma marca cara consumida exclusivamente por Constança Montenegro." }
+        "num": 3,
+        "title": "GABINETE DA DIRETORA CONSTANÇA MONTENEGRO",
+        "headerDesc": "Sala suntuosa com piso de madeira nobre, estantes repletas de tomos jurídicos, diplomas aristocráticos e grandes cortinas de veludo carmesim.",
+        "skills": [
+          {
+            "skill": "Furtividade",
+            "dt": 6,
+            "info": "Permite esgueirar-se pela sala sem disparar o sensor de movimento da recepção."
+          },
+          {
+            "skill": "Investigação",
+            "dt": 8,
+            "info": "Pasta confidencial contendo cópias autenticadas dos prontuários de Sara e Trisha com carimbo da Renovare e anotação manual: 'Sem amparo familiar. Pacto selado'."
+          },
+          {
+            "skill": "Percepção",
+            "dt": 10,
+            "info": "Atrás do quadro do fundador na parede há um cofre cuja combinação é a data de desaparecimento de Trisha (041260)."
+          }
         ],
-        context: "O veículo oficial da diretora aguardou Sara neste lote durante 25 minutos. Sara desceu do muro e entrou no veículo voluntariamente, já debilitada pelas dores do câncer."
+        "context": "Constança gerenciava o colégio como um viveiro onde mapeava alunos desenganados, vendo a entrega das jovens a 'Ele' como um favor piedoso e um sacrifício sagrado para a família."
       },
       {
-        num: 4,
-        title: "QUADRO DE DISTRIBUIÇÃO ELÉTRICA (SETOR NORTE)",
-        headerDesc: "Gabinete metálico cinzento com sinalização de alta tensão instalado na divisa dos muros do condomínio com a vegetação nativa.",
-        skills: [
-          { skill: "Tecnologia", dt: 6, info: "Os disjuntores da cerca perimetral e dos postes de iluminação foram desligados cirurgicamente com a chave mestra de serviço da administração." },
-          { skill: "Investigação", dt: 8, info: "No chão de brita ao lado do poste há um crachá plástico de visitante temporário com o timbre da Clínica Renovare esquecido na pressa." }
+        "num": 4,
+        "title": "MEMORIAL DE FLORES NO SAGUÃO CENTRAL",
+        "headerDesc": "Altar público montado pela administração da escola, composto por retratos emoldurados de Sara rodeados por dezenas de crisântemos e lírios brancos.",
+        "skills": [
+          {
+            "skill": "Percepção",
+            "dt": 6,
+            "info": "Escondido entre as folhas dos vasos há um bilhete anônimo de um estudante: 'Vocês sabem que ela não fugiu. Parem de fingir luto'."
+          },
+          {
+            "skill": "Ocultismo",
+            "dt": 8,
+            "info": "A distribuição geométrica das flores e velas eletrônicas reproduz exatamente o círculo de ancoragem da entidade da floresta."
+          }
         ],
-        context: "O corte momentâneo de energia às 00h45 de 31/06 foi planejado para apagar os holofotes do perímetro no instante em que Sara e seus condutores deixavam o perímetro seguro."
+        "context": "O memorial foi erguido por Constança com duplo propósito: encerrar oficialmente os questionamentos da comunidade e energeticamente fechar o ciclo de Sara no mundo dos vivos."
       },
       {
-        num: 5,
-        title: "PRAÇA DOS FUNDADORES & FONTE SECA",
-        headerDesc: "Espaço paisagístico central com bancos de ferro fundido e uma fonte ornamental de mármore desligada, encimada pelo brasão em relevo da família Montenegro.",
-        skills: [
-          { skill: "Ocultismo", dt: 6, info: "Na base da fonte há marcas circulares e espirais raspadas na pedra com giz carmesim, reproduzindo símbolos idênticos aos cadernos de Trisha de 2060." },
-          { skill: "Percepção", dt: 8, info: "Moedas coloniais de prata do século XIX foram depositadas na água estagnada do fundo como oferenda ritualística periódica." }
+        "num": 5,
+        "title": "SALA DO PROFESSOR EDWARD (HISTÓRIA REGIONAL)",
+        "headerDesc": "Gabinete entulhado de pilhas de livros antigos, recortes de jornais do século XIX, mapas coloniais de Fragktus e fósseis minerais sobre a escrivaninha.",
+        "skills": [
+          {
+            "skill": "História",
+            "dt": 6,
+            "info": "Edward revela que a cada 25 anos registros da cidade documentam jovens debilitados que entram descalços na floresta ao norte e nunca mais retornam."
+          },
+          {
+            "skill": "Investigação",
+            "dt": 8,
+            "info": "Ele apresenta crônicas de 1910 sobre 'Ele': um organismo primordial da terra que oferece ausência eterna de dor em troca da assimilação voluntária da alma."
+          }
         ],
-        context: "A dinastia Montenegro realiza oferendas neste marco há mais de um século para renovar o pacto de prosperidade e imunidade mantido com a entidade ancestral que reside na floresta."
+        "context": "Edward é o único acadêmico que compreende a verdade mística de Fragktus, mas silenciou por décadas por receio de ser internado ou assassinado pela elite."
       },
       {
-        num: 6,
-        title: "LIXEIRA COMUNITÁRIA DO BLOCO C",
-        headerDesc: "Depósito de descarte seletivo com contêineres plásticos fechados sob uma cobertura de telha de fibrocimento nos fundos da alameda.",
-        skills: [
-          { skill: "Investigação", dt: 6, info: "Sacola descartável contendo laudos triturados da Clínica Renovare: resultados de biópsia confirmando sarcoma inoperável em Sara Auguil." },
-          { skill: "Percepção", dt: 8, info: "Envelope timbrado do Colégio Primórdio com nota marginal da diretoria: 'Aluna sem herdeiros diretos. Apta para alívio e descanso'." }
+        "num": 6,
+        "title": "ATRÁS DA ARQUIBANCADA DA QUADRA POLIESPORTIVA",
+        "headerDesc": "Espaço sombrio e empoeirado sob os degraus de concreto da arquibancada, ponto cego habitual para conversas sigilosas dos estudantes.",
+        "skills": [
+          {
+            "skill": "Percepção",
+            "dt": 6,
+            "info": "Copo térmico descartável com o logotipo do Café da Névoa e marcas de duas pessoas que permaneceram sentadas conversando sob a chuva na véspera."
+          },
+          {
+            "skill": "Psicologia",
+            "dt": 8,
+            "info": "Gustavo conversou com Sara aqui; um áudio gravado no celular dele revela Sara chorando e dizendo: 'A quimioterapia não está funcionando, Gustavo. Eu só quero que a dor pare'."
+          }
         ],
-        context: "O descarte feito pelo motorista de Constança comprova o esquema de monitoramento clandestino de alunos terminais articulado entre a escola nobre e a médica particular."
+        "context": "O último momento de vulnerabilidade em que Sara quase revelou sua intenção aos amigos mais próximos antes de ser abordada pela diretora."
       },
       {
-        num: 7,
-        title: "ESTUFA DO SR. HORÁCIO (VIZINHO APOSENTADO)",
-        headerDesc: "Estufa de vidro repleta de orquídeas raras nos fundos do lote vizinho, onde um telescópio astronômico e blocos de anotações estão montados junto à janela.",
-        skills: [
-          { skill: "Lábia", dt: 6, info: "Horácio revela que desconfiava dos movimentos noturnos na casa de Sara e começou a anotar placas de carros e horários em um caderninho." },
-          { skill: "Percepção", dt: 8, info: "O gravador de fita de Horácio capturou trecho de uma conversa sussurrada na calçada: a voz gélida de Constança dizendo 'Trisha encontrou a paz nas raízes, Sara. Você também encontrará'." }
+        "num": 7,
+        "title": "SALA DO GRÊMIO ESTUDANTIL",
+        "headerDesc": "Sala caótica com sofás puídos, cartazes de protesto empilhados, computadores antigos e murais com comunicados estudantis.",
+        "skills": [
+          {
+            "skill": "Investigação",
+            "dt": 6,
+            "info": "Um rascunho de abaixo-assinado exigindo investigações reais sobre o sumiço de Trisha em 2060, censurado pela administração com ameaça de suspensão geral."
+          },
+          {
+            "skill": "Lábia",
+            "dt": 8,
+            "info": "O líder estudantil confessa que membros da reitoria confiscaram os panfletos sobre Sara no dia seguinte ao desaparecimento."
+          }
         ],
-        context: "O aposentado gravou acidentalmente a manipulação psicológica executada por Constança, mas teme retaliações dos advogados influentes da diretoria."
+        "context": "A máquina institucional do colégio agiu de imediato para blindar o nome da instituição contra qualquer repercussão policial."
       },
       {
-        num: 8,
-        title: "GRADE DE DRENAGEM PLUVIAL (DIVISA NORTE)",
-        headerDesc: "Canaleta de concreto e tubulação de águas pluviais que passa sob a base do muro de cinco metros que delimita o condomínio com a reserva da mata.",
-        skills: [
-          { skill: "Atletismo", dt: 6, info: "A grade de ferro fundido teve duas barras serradas por alicate industrial, criando vão suficiente para a passagem rastejante de uma pessoa." },
-          { skill: "Percepção", dt: 8, info: "Um retalho de lã vermelha do sobretudo de Sara está preso nos dentes de ferro, embebido em orvalho e seiva vegetal escura." }
+        "num": 8,
+        "title": "VESTIÁRIO FEMININO (ARMÁRIO TRANCADO)",
+        "headerDesc": "Vestiário esportivo subterrâneo com chão de azulejos brancos manchados e fileiras de armários numerados com respiradouros.",
+        "skills": [
+          {
+            "skill": "Ladinagem",
+            "dt": 6,
+            "info": "A chave pequena encontrada no armário 108 destranca o compartimento de fundo duplo do armário 44."
+          },
+          {
+            "skill": "Tecnologia",
+            "dt": 8,
+            "info": "Pen drive contendo gravações de áudio clandestinas feitas por Sara das consultas com a Dra. Melissa Vane, onde a médica insiste na venda dos bens de Trisha."
+          }
         ],
-        context: "A rota de escape a pé usada por Sara para atravessar o muro sem tocar nos sensores perimetrais e alcançar a estrada de terra onde o carro a aguardava."
+        "context": "Sara já desconfiava da cumplicidade da clínica e arquivou as evidências no vestiário para que não fossem encontradas durante eventuais buscas em seu quarto."
       },
       {
-        num: 9,
-        title: "GARAGEM DA MANSÃO AUGUIL",
-        headerDesc: "Ampla garagem subterrânea com piso de epóxi cinza. O carro compacto de Sara permanece estacionado debaixo de uma fina camada de poeira.",
-        skills: [
-          { skill: "Investigação", dt: 6, info: "O porta-malas está destrancado, contendo a mochila escolar de Sara com materiais didáticos intactos, provando que não houve preparação de viagem." },
-          { skill: "Sobrevivência", dt: 8, info: "Resquícios de terra vermelha ácida incrustados nas ranhuras dos pneus, um tipo de solo argiloso característico apenas do interior da Mata do Norte." }
+        "num": 9,
+        "title": "BICICLETÁRIO DOS FUNDOS",
+        "headerDesc": "Pátio cercado por alambrado alto onde alunos guardam bicicletas, próximo ao portão de serviço por onde transitam veículos de entrega.",
+        "skills": [
+          {
+            "skill": "Percepção",
+            "dt": 6,
+            "info": "A bicicleta de Sara permanece acorrentada com os pneus deliberadamente perfurados por instrumento perfurocortante fino."
+          },
+          {
+            "skill": "Investigação",
+            "dt": 8,
+            "info": "Marcas de pneus de sedan no asfalto do portão de carga registradas às 17h30 de 31/06, horário em que Sara teve que aceitar carona da diretora."
+          }
         ],
-        context: "Sara já havia visitado a orla da floresta dias antes, seguindo os sussurros que ouviu no Café da Névoa para se certificar de que a promessa da entidade era real."
+        "context": "A sabotagem do transporte de Sara forçou a garota a aceitar a carona de Constança, iniciando o isolamento final que culminou na entrega na floresta."
       },
       {
-        num: 10,
-        title: "SALA DE MONITORAMENTO & SERVIDORES",
-        headerDesc: "Sala trancada na sede administrativa de Mina de Prata, equipada com racks refrigerados e múltiplos monitores exibindo as câmeras do condomínio.",
-        skills: [
-          { skill: "Hackeamento", dt: 8, info: "Recupera arquivos temporários da lixeira do servidor: 15 frames corrompidos gravados à 01h12 mostrando Sara caminhando em direção ao sedan preto da diretoria." },
-          { skill: "Investigação", dt: 10, info: "Registros de transferência bancária comprovam que o síndico Robson recebeu um pix vultoso da Fundação Montenegro na manhã de 01 de julho." }
+        "num": 10,
+        "title": "SALA DE SERVIDORES DE TI DO COLÉGIO",
+        "headerDesc": "Compartimento refrigerado anexo à biblioteca com racks de rede, modems e servidores de controle acadêmico.",
+        "skills": [
+          {
+            "skill": "Hackeamento",
+            "dt": 8,
+            "info": "O histórico de buscas acadêmicas de Sara mostra consultas repetidas sobre: 'lenda de Ele Fragktus', 'tempo de sobrevida sarcoma grau 4' e 'Trisha Auguil desaparecida'."
+          },
+          {
+            "skill": "Investigação",
+            "dt": 10,
+            "info": "Recupera um e-mail rascunhado por Sara endereçado a Gustavo que não chegou a ser enviado: 'Gustavo, se eu não voltar, vá ao ferro-velho do Rato'."
+          }
         ],
-        context: "A prova cabal que desmonta a narrativa de 'fuga voluntária para longe da cidade': Sara foi acolhida e transportada pela pessoa de maior confiança da elite de Fragktus."
+        "context": "A pista textual direta que orienta o grupo de jogadores a buscar o mecânico da periferia para desvendar a movimentação do veículo de Constança."
       }
     ]
   },
-  'colegio-primordio': {
-    id: 'colegio-primordio',
-    name: "Colégio Integrado Primórdio",
-    shortName: "Colégio Primórdio",
-    svgIcon: '<svg class="area-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>',
-    themeClass: 'area-colegio-primordio',
-    district: "Setor Estudantil & Cívico • Centro de Fragktus",
-    dangerLevel: "Inspetores Rígidos & Vigilância Escolar",
-    dangerLevelClass: 'warning',
-    ambience: "Corredores ecoantes com cheiro de cera velha e desinfetante hospitalar, murais com fotos desbotadas e armários metálicos enferrujados.",
-    lore: "O colégio mais tradicional de Fragktus, onde Sara e seus colegas estudavam. Sob o verniz da disciplina impecável, circulam segredos sombrios sobre chantagens entre grêmios, favores concedidos a filhos de diretores e o silenciamento sistemático de alunos que faziam perguntas demais.",
-    rumor: "«Sara não foi assistir à última aula de química. Testemunhas dizem que ela foi vista discutindo aos prantos atrás da arquibancada com alguém de jaleco branco.»",
-    pois: [
+  "floresta-proibida": {
+    "id": "floresta-proibida",
+    "name": "A Mata do Norte",
+    "shortName": "Mata do Norte",
+    "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 2L5 12h4l-3 6h5v4h2v-4h5l-3-6h4L12 2z\"></path></svg>",
+    "themeClass": "area-floresta-proibida",
+    "district": "Reserva Florestal Fechada • Zona Rural",
+    "dangerLevel": "Fauna Alterada, Névoa Tóxica & Armadilhas",
+    "dangerLevelClass": "danger",
+    "ambience": "Árvores centenárias retorcidas, neblina espessa que engole os faróis, silêncio sepulcral quebrado apenas pelo estalar de galhos e arame farpado enferrujado.",
+    "lore": "Área de preservação ambiental isolada pelas autoridades municipais sob alegação de contaminação do solo e desabamentos de antigas minas. Trilhas fechadas ocultam instalações subterrâneas desativadas da época da fundação de Fragktus e clareiras onde eventos anômalos foram registrados.",
+    "rumor": "«Guardas florestais privados não usam fardas do Estado: usam coletes pretos táticos e atiram sem aviso contra qualquer um que passe da cerca do KM 18.»",
+    "pois": [
       {
-        num: 1,
-        title: "ARMÁRIO 108 DE SARA AUGUIL",
-        headerDesc: "Armário de latão verde-escuro no corredor do 2º Ano B, com a tinta descascada nos cantos e adesivos antigos de bandas colados na porta.",
-        skills: [
-          { skill: "Ladinagem", dt: 6, info: "O cadeado cede com facilidade. Dentro, atrás de livros didáticos pesados, há uma chave de vestiário colada atrás do espelho de plástico." },
-          { skill: "Investigação", dt: 8, info: "Caderno de anotações com a folha de 30/06 arrancada e o rascunho a lápis de uma árvore gigantesca com olhos: 'Ele prometeu que a dor no peito vai parar'." }
+        "num": 1,
+        "title": "O CARVALHO ANCESTRAL & O ALTAR DE RAÍZES",
+        "headerDesc": "Colossal carvalho de dezenas de metros de altura no centro de uma clareira silenciosa e enevoada, cujas raízes expostas formam muralhas orgânicas contorcidas.",
+        "skills": [
+          {
+            "skill": "Ocultismo",
+            "dt": 6,
+            "info": "O ponto focal da entidade 'Ele'. As raízes formam um casulo oco no tronco onde vidas humanas desenganadas são absorvidas para o 'mundo feliz'."
+          },
+          {
+            "skill": "Percepção",
+            "dt": 8,
+            "info": "No interior do oco há o sapato de Sara e fitas de tecido de seu vestido entrelaçadas em cipós que sangram seiva vegetal preta aromática."
+          },
+          {
+            "skill": "Sobrevivência",
+            "dt": 10,
+            "info": "Sob a névoa, a silhueta vegetal serena de Sara e Trisha Auguil pode ser entrevista na madeira viva: suas feições estão em paz, livres de dor."
+          }
         ],
-        context: "Sara usava o armário para ocultar os registros de suas pesquisas sobre o que ocorrera com Trisha, temendo que os inspetores revistassem sua mochila."
+        "context": "O clímax da investigação: Sara não foi assassinada por violência convencional, mas manipulada para se entregar voluntariamente à entidade para reencontrar a irmã e escapar do câncer incurável."
       },
       {
-        num: 2,
-        title: "LABORATÓRIO DE QUÍMICA B",
-        headerDesc: "Sala com bancadas de granito polido, bicos de Bunsen, frascos de reagentes e vidrarias sob luz fluorescente fria que zune continuamente.",
-        skills: [
-          { skill: "Ciências", dt: 6, info: "No quadro-negro dos fundos há a fórmula residual de um sedativo hipnótico potente de manipulação controlada, fora do currículo didático." },
-          { skill: "Investigação", dt: 8, info: "O livro de controle de reagentes acusa a retirada de compostos anestésicos autorizada pelo carimbo oficial da Diretora Constança." }
+        "num": 2,
+        "title": "PORTÃO MILITARIZADO DO KM 18",
+        "headerDesc": "Cancelas duplas reforçadas com cerca concertina cortante, refletores halógenos e guarita guarnecida por seguranças particulares armados dos Montenegro.",
+        "skills": [
+          {
+            "skill": "Furtividade",
+            "dt": 6,
+            "info": "Permite contornar os refletores e sensores de movimento pelas ravinas laterais de mata densa."
+          },
+          {
+            "skill": "Investigação",
+            "dt": 8,
+            "info": "Os guardas operam sob contrato privado direto da Fundação Montenegro, com ordem expressa de atirar em qualquer civil sob pretexto de 'quarentena ambiental'."
+          }
         ],
-        context: "Constança manipulava insumos da escola para preparar chás calmantes que oferecia aos alunos selecionados, reduzindo sua resistência psicológica."
+        "context": "A barreira física estabelecida pela elite para garantir que nenhum policial ou investigador curioso chegue perto da clareira do pacto."
       },
       {
-        num: 3,
-        title: "GABINETE DA DIRETORA CONSTANÇA MONTENEGRO",
-        headerDesc: "Sala suntuosa com piso de madeira nobre, estantes repletas de tomos jurídicos, diplomas aristocráticos e grandes cortinas de veludo carmesim.",
-        skills: [
-          { skill: "Furtividade", dt: 6, info: "Permite esgueirar-se pela sala sem disparar o sensor de movimento da recepção." },
-          { skill: "Investigação", dt: 8, info: "Pasta confidencial contendo cópias autenticadas dos prontuários de Sara e Trisha com carimbo da Renovare e anotação manual: 'Sem amparo familiar. Pacto selado'." },
-          { skill: "Percepção", dt: 10, info: "Atrás do quadro do fundador na parede há um cofre cuja combinação é a data de desaparecimento de Trisha (041260)." }
+        "num": 3,
+        "title": "TRILHAS DE PNEUS NA LAMA VERMELHA",
+        "headerDesc": "Estrada de terra batida que termina bruscamente na beira de um precipício de vegetação virgem, com profundos sulcos de pneus na lama recente.",
+        "skills": [
+          {
+            "skill": "Sobrevivência",
+            "dt": 6,
+            "info": "Identifica os sulcos dos pneus do SUV de Constança manobrando na orla às 02h30 da madrugada de 01/07."
+          },
+          {
+            "skill": "Percepção",
+            "dt": 8,
+            "info": "Pegadas elegantes de salto alto de Constança descendo na terra e pegadas lentas e cambaleantes de Sara avançando descalça entre os galhos da mata."
+          }
         ],
-        context: "Constança gerenciava o colégio como um viveiro onde mapeava alunos desenganados, vendo a entrega das jovens a 'Ele' como um favor piedoso e um sacrifício sagrado para a família."
+        "context": "A cena da entrega física: Constança não precisou usar violência física, apenas abriu a porta do carro e indicou a direção da clareira a Sara."
       },
       {
-        num: 4,
-        title: "MEMORIAL DE FLORES NO SAGUÃO CENTRAL",
-        headerDesc: "Altar público montado pela administração da escola, composto por retratos emoldurados de Sara rodeados por dezenas de crisântemos e lírios brancos.",
-        skills: [
-          { skill: "Percepção", dt: 6, info: "Escondido entre as folhas dos vasos há um bilhete anônimo de um estudante: 'Vocês sabem que ela não fugiu. Parem de fingir luto'." },
-          { skill: "Ocultismo", dt: 8, info: "A distribuição geométrica das flores e velas eletrônicas reproduz exatamente o círculo de ancoragem da entidade da floresta." }
+        "num": 4,
+        "title": "ACAMPAMENTO ABANDONADO DOS FUNDOS",
+        "headerDesc": "Tenda camuflada militar abandonada sob pinheiros altos, com gerador a gasolina desligado, caixas de ração militar e equipamentos de monitoramento biométrico.",
+        "skills": [
+          {
+            "skill": "Investigação",
+            "dt": 6,
+            "info": "Relatórios de telemetria cardíaca transmitidos por sensores colocados em Sara no instante de sua chegada à clareira."
+          },
+          {
+            "skill": "Medicina",
+            "dt": 8,
+            "info": "O gráfico demonstra que os batimentos de Sara desaceleraram harmonicamente e os espasmos de dor cessaram no exato momento da fusão com as raízes."
+          }
         ],
-        context: "O memorial foi erguido por Constança com duplo propósito: encerrar oficialmente os questionamentos da comunidade e energeticamente fechar o ciclo de Sara no mundo dos vivos."
+        "context": "A equipe médica da Dra. Melissa monitorou os sinais vitais de Sara até o instante da simbiose com a floresta."
       },
       {
-        num: 5,
-        title: "SALA DO PROFESSOR EDWARD (HISTÓRIA REGIONAL)",
-        headerDesc: "Gabinete entulhado de pilhas de livros antigos, recortes de jornais do século XIX, mapas coloniais de Fragktus e fósseis minerais sobre a escrivaninha.",
-        skills: [
-          { skill: "História", dt: 6, info: "Edward revela que a cada 25 anos registros da cidade documentam jovens debilitados que entram descalços na floresta ao norte e nunca mais retornam." },
-          { skill: "Investigação", dt: 8, info: "Ele apresenta crônicas de 1910 sobre 'Ele': um organismo primordial da terra que oferece ausência eterna de dor em troca da assimilação voluntária da alma." }
+        "num": 5,
+        "title": "A BOCA DA MINA DE PRATA COLONIAL",
+        "headerDesc": "Entrada de túnel subterrâneo escavado no século XIX com escoras de madeira apodrecida e trilhos enferrujados adentrando a montanha rochosa.",
+        "skills": [
+          {
+            "skill": "História",
+            "dt": 6,
+            "info": "Inscrições antigas nas vigas de sustentação revelam que o primeiro pacto da família Montenegro com 'Ele' ocorreu aqui durante a fundação de Fragktus em 1880."
+          },
+          {
+            "skill": "Ocultismo",
+            "dt": 8,
+            "info": "Murais rupestres mostram que a prosperidade mineral da cidade foi obtida entregando periodicamente pessoas sem vigor vital à floresta."
+          }
         ],
-        context: "Edward é o único acadêmico que compreende a verdade mística de Fragktus, mas silenciou por décadas por receio de ser internado ou assassinado pela elite."
+        "context": "A origem secular da conspiração: a opulência de Fragktus foi construída sobre o pacto simbiótico estabelecido na mina."
       },
       {
-        num: 6,
-        title: "ATRÁS DA ARQUIBANCADA DA QUADRA POLIESPORTIVA",
-        headerDesc: "Espaço sombrio e empoeirado sob os degraus de concreto da arquibancada, ponto cego habitual para conversas sigilosas dos estudantes.",
-        skills: [
-          { skill: "Percepção", dt: 6, info: "Copo térmico descartável com o logotipo do Café da Névoa e marcas de duas pessoas que permaneceram sentadas conversando sob a chuva na véspera." },
-          { skill: "Psicologia", dt: 8, info: "Gustavo conversou com Sara aqui; um áudio gravado no celular dele revela Sara chorando e dizendo: 'A quimioterapia não está funcionando, Gustavo. Eu só quero que a dor pare'." }
+        "num": 6,
+        "title": "O CHARCO DAS ÁGUAS NEGRAS",
+        "headerDesc": "Brejo estagnado entre ravinas íngremes, coberto por uma névoa espessa sulfurosa com vegetação petrificada ao redor.",
+        "skills": [
+          {
+            "skill": "Ciências",
+            "dt": 6,
+            "info": "A água possui resina orgânica idêntica àquela encontrada nos olhos petrificados do gato morto no beco do café."
+          },
+          {
+            "skill": "Percepção",
+            "dt": 8,
+            "info": "No reflexo das águas escuras, vultos humanoides parecem acenar em repouso absoluto sob a lâmina d'água."
+          }
         ],
-        context: "O último momento de vulnerabilidade em que Sara quase revelou sua intenção aos amigos mais próximos antes de ser abordada pela diretora."
+        "context": "As manifestações ilusórias da entidade para desorientar e atrair intrusos para o lodo pantanoso."
       },
       {
-        num: 7,
-        title: "SALA DO GRÊMIO ESTUDANTIL",
-        headerDesc: "Sala caótica com sofás puídos, cartazes de protesto empilhados, computadores antigos e murais com comunicados estudantis.",
-        skills: [
-          { skill: "Investigação", dt: 6, info: "Um rascunho de abaixo-assinado exigindo investigações reais sobre o sumiço de Trisha em 2060, censurado pela administração com ameaça de suspensão geral." },
-          { skill: "Lábia", dt: 8, info: "O líder estudantil confessa que membros da reitoria confiscaram os panfletos sobre Sara no dia seguinte ao desaparecimento." }
+        "num": 7,
+        "title": "CABANA EM RUÍNAS DO GUARDA-FLORESTAL",
+        "headerDesc": "Construção de madeira carcomida com teto desmoronado, coberta por heras e musgos espessos no meio da trilha abandonada.",
+        "skills": [
+          {
+            "skill": "Investigação",
+            "dt": 6,
+            "info": "Diário manuscrito do antigo guarda florestal registrando que Trisha Auguil foi trazida no porta-malas do carro da diretoria em 2060."
+          },
+          {
+            "skill": "Percepção",
+            "dt": 8,
+            "info": "Revólver calibre .38 descarregado no chão com cápsulas disparadas contra as raízes que invadiram as paredes do quarto."
+          }
         ],
-        context: "A máquina institucional do colégio agiu de imediato para blindar o nome da instituição contra qualquer repercussão policial."
+        "context": "O guarda tentou intervir no sequestro de Trisha e foi consumido pela floresta para preservar o segredo dos Montenegro."
       },
       {
-        num: 8,
-        title: "VESTIÁRIO FEMININO (ARMÁRIO TRANCADO)",
-        headerDesc: "Vestiário esportivo subterrâneo com chão de azulejos brancos manchados e fileiras de armários numerados com respiradouros.",
-        skills: [
-          { skill: "Ladinagem", dt: 6, info: "A chave pequena encontrada no armário 108 destranca o compartimento de fundo duplo do armário 44." },
-          { skill: "Tecnologia", dt: 8, info: "Pen drive contendo gravações de áudio clandestinas feitas por Sara das consultas com a Dra. Melissa Vane, onde a médica insiste na venda dos bens de Trisha." }
+        "num": 8,
+        "title": "A CERCA PERIMETRAL CORTADA (KM 22)",
+        "headerDesc": "Trecho da cerca de arame farpado que delimita a serra, aberto com alicate industrial entre árvores retorcidas.",
+        "skills": [
+          {
+            "skill": "Percepção",
+            "dt": 6,
+            "info": "O cordão de prata de formatura com o nome gravado de Sara Auguil preso em uma ponta do arame farpado."
+          },
+          {
+            "skill": "Sobrevivência",
+            "dt": 8,
+            "info": "Pegadas quadrúpedes com sulcos de madeira viva escoltando as marcas de pés de Sara em direção ao coração da floresta."
+          }
         ],
-        context: "Sara já desconfiava da cumplicidade da clínica e arquivou as evidências no vestiário para que não fossem encontradas durante eventuais buscas em seu quarto."
+        "context": "'Ele' enviou suas criaturas menores para guiar Sara pelo caminho seguro da mata até o altar das raízes."
       },
       {
-        num: 9,
-        title: "BICICLETÁRIO DOS FUNDOS",
-        headerDesc: "Pátio cercado por alambrado alto onde alunos guardam bicicletas, próximo ao portão de serviço por onde transitam veículos de entrega.",
-        skills: [
-          { skill: "Percepção", dt: 6, info: "A bicicleta de Sara permanece acorrentada com os pneus deliberadamente perfurados por instrumento perfurocortante fino." },
-          { skill: "Investigação", dt: 8, info: "Marcas de pneus de sedan no asfalto do portão de carga registradas às 17h30 de 31/06, horário em que Sara teve que aceitar carona da diretora." }
+        "num": 9,
+        "title": "POSTO DE TRANSMISSÃO DE RÁDIO ABANDONADO",
+        "headerDesc": "Torre de comunicação metálica enferrujada no pico mais alto da reserva, com cabos rompidos estalando com o vento gelado.",
+        "skills": [
+          {
+            "skill": "Tecnologia",
+            "dt": 6,
+            "info": "A antena capta as transmissões de ondas curtas emitidas desesperadamente do quarto de Gustavo em sinal intermitente."
+          },
+          {
+            "skill": "Percepção",
+            "dt": 8,
+            "info": "Os cipós que cobrem a torre ressoam emitindo sussurros audíveis em coro: 'Não há mais dor aqui... estamos em paz'."
+          }
         ],
-        context: "A sabotagem do transporte de Sara forçou a garota a aceitar a carona de Constança, iniciando o isolamento final que culminou na entrega na floresta."
+        "context": "A entidade reverbera as vozes de Trisha e Sara através do magnetismo da torre, atormentando a mente de Gustavo na cidade."
       },
       {
-        num: 10,
-        title: "SALA DE SERVIDORES DE TI DO COLÉGIO",
-        headerDesc: "Compartimento refrigerado anexo à biblioteca com racks de rede, modems e servidores de controle acadêmico.",
-        skills: [
-          { skill: "Hackeamento", dt: 8, info: "O histórico de buscas acadêmicas de Sara mostra consultas repetidas sobre: 'lenda de Ele Fragktus', 'tempo de sobrevida sarcoma grau 4' e 'Trisha Auguil desaparecida'." },
-          { skill: "Investigação", dt: 10, info: "Recupera um e-mail rascunhado por Sara endereçado a Gustavo que não chegou a ser enviado: 'Gustavo, se eu não voltar, vá ao ferro-velho do Rato'." }
+        "num": 10,
+        "title": "O CASULO SUBTERRÂNEO DE TRISHA E SARA",
+        "headerDesc": "Câmara natural sob as raízes mestras do carvalho, iluminada por esporos verdes bioluminescentes flutuando no ar perfumado de terra e jasmim.",
+        "skills": [
+          {
+            "skill": "Ocultismo",
+            "dt": 8,
+            "info": "Comprova que as almas e memórias de Trisha e Sara estão entrelaçadas em harmonia indestrutível com a entidade da mata."
+          },
+          {
+            "skill": "Medicina",
+            "dt": 10,
+            "info": "Qualquer tentativa cirúrgica ou física de extirpar seus corpos das raízes acarretaria a morte cerebral imediata de ambas."
+          }
         ],
-        context: "A pista textual direta que orienta o grupo de jogadores a buscar o mecânico da periferia para desvendar a movimentação do veículo de Constança."
-      }
-    ]
-  },
-  'cafe-da-nevoa': {
-    id: 'cafe-da-nevoa',
-    name: "Café da Névoa",
-    shortName: "Café da Névoa",
-    svgIcon: '<svg class="area-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3"></path></svg>',
-    themeClass: 'area-cafe-da-nevoa',
-    district: "Bairro Operário & Boêmio • Centro Velho",
-    dangerLevel: "Informantes nas Sombras & Escutas Ocultas",
-    dangerLevelClass: 'warning',
-    ambience: "Luz lilás tênue, aroma de café torrado misturado à umidade do asfalto, vinil chiando na vitrola e janelas embaçadas pelo vapor.",
-    lore: "Fundado por Trisha Auguil e herdado à força por Sara aos 18 anos. Era o refúgio das irmãs contra a pressão familiar e o epicentro onde Trisha ouvia conversas que nunca deveria ter escutado. Depois que Trisha sumiu, o café virou um antro de clientes calados e informantes discretos.",
-    rumor: "«Trisha nunca saiu de Fragktus. As caixas de suprimentos que chegam toda terça trazem mais do que grãos de café.»",
-    pois: [
-      {
-        num: 1,
-        title: "BECO DOS FUNDOS & A PORTA DE SERVIÇO",
-        headerDesc: "Ruela estreita e mal iluminada atrás do café, onde latas de lixo e caixotes de madeira acumulam poças de chuva sob um lampião amarelo piscante.",
-        skills: [
-          { skill: "Ocultismo", dt: 6, info: "Mancha circular de terra calcinada onde um gato de rua morreu em convulsão após ter seu corpo tomado temporariamente por 'Ele'." },
-          { skill: "Percepção", dt: 8, info: "A carcaça preservada do gato esconde olhos transformados em resina vegetal âmbar, com raízes finas brotando das mandíbulas." }
-        ],
-        context: "O local exato onde o pacto de Sara foi selado 12 dias antes do sumiço. A entidade falou com Sara através do felino moribundo, prometendo reencontro com Trisha e alívio de suas dores na floresta."
-      },
-      {
-        num: 2,
-        title: "BALCÃO PRINCIPAL & CAIXA REGISTRADORA",
-        headerDesc: "Balcão imponente de madeira escura polida, máquina de expresso de latão brilhante e uma lousa de parede com receitas e recados com giz lilás.",
-        skills: [
-          { skill: "Investigação", dt: 6, info: "Fundo falso da gaveta de cédulas esconde um caderno contábil com propostas de compra milionárias do imóvel feitas por empresas de fachada de Constança, todas recusadas por Trisha." },
-          { skill: "Percepção", dt: 8, info: "Entalhe fresco na madeira sob o tampo do balcão feito com estilete: '31 de Junho - Eu vou encontrar você, Trisha'." }
-        ],
-        context: "O Café da Névoa era o símbolo da independência das irmãs Auguil. A recusa de Trisha em vender o imóvel desencadeou a perseguição que terminou em seu sumiço em 2060."
-      },
-      {
-        num: 3,
-        title: "MESA 4 (CANTO JUNTO À JANELA)",
-        headerDesc: "Mesa redonda reservada em um recanto com poltronas aveludadas e cortinas pesadas, com vista para as ruas enevoadas do centro antigo.",
-        skills: [
-          { skill: "Percepção", dt: 6, info: "Gravador magnético em miniatura fixado com fita adesiva reforçada embaixo do centro da mesa." },
-          { skill: "Tecnologia", dt: 8, info: "A fita revela a Dra. Melissa Vane conversando com Sara: 'Seu corpo não vai aguentar mais um mês, Sara. Fale com a Constança. Ela conhece o caminho para o mundo feliz'." }
-        ],
-        context: "Sara registrou a abordagem direta de sua médica a empurrando para a órbita da diretora, comprovando a coordenação médica e psicológica do plano."
-      },
-      {
-        num: 4,
-        title: "DESPENSA & ESTOQUE DE GRÃOS",
-        headerDesc: "Cômodo fechado e escuro com prateleiras até o teto repletas de sacos de café de juta, caixas de xaropes aromáticos e sacarias de especiarias.",
-        skills: [
-          { skill: "Investigação", dt: 6, info: "Embaixo de sacos de café velhos há uma caixa térmica lacrada com o logotipo da Clínica Renovare: 'Material Biológico Confidencial - Paciente T. Auguil (2060)'." },
-          { skill: "Sobrevivência", dt: 8, info: "Marcas desesperadas de unhas arranhando a alvenaria atrás das prateleiras, deixadas por Trisha durante sua contenção antes de sumir." }
-        ],
-        context: "Trisha também foi drogada e sequestrada neste mesmo local em 2060, evidenciando o padrão de ação idêntico aplicado a ambas as irmãs."
-      },
-      {
-        num: 5,
-        title: "ESCRITÓRIO DE TRISHA NO MEZANINO",
-        headerDesc: "Sala no segundo andar do café com janelas de vidro canelado, mesa de mogno com livros de poesia, pastas fiscais e fotos de infância das irmãs.",
-        skills: [
-          { skill: "Ladinagem", dt: 6, info: "Destranca o cofre de combinação embutido na parede atrás do quadro com fotos de família." },
-          { skill: "Investigação", dt: 8, info: "Cartas formais de intimação e ameaças veladas de desapropriação assinadas pelo departamento jurídico do Condomínio Mina de Prata." }
-        ],
-        context: "As irmãs Auguil resistiram por meses à pressão financeira da elite antes de Constança recorrer à manipulação e ao pacto sobrenatural."
-      },
-      {
-        num: 6,
-        title: "VITROLA ANTIGA & DISCO EM LOOP",
-        headerDesc: "Aparelho de som vintage com corneta dourada girando lentamente um vinil de blues melancólico que chia a cada volta na agulha.",
-        skills: [
-          { skill: "Percepção", dt: 6, info: "O vinil está arranhado deliberadamente para repetir em loop um compasso específico de 5 segundos." },
-          { skill: "Ocultismo", dt: 8, info: "A frequência harmônica emitida pelo chiado atrai neblina e ressoa com as correntes de vento que descem da Mata do Norte." }
-        ],
-        context: "Sara mantinha essa gravação tocando para tentar silenciar as vozes e sussurros que ouvia em sua cabeça após o encontro no beco."
-      },
-      {
-        num: 7,
-        title: "PORÃO SUBTERRÂNEO SOB O ALÇAPÃO",
-        headerDesc: "Abaixo de um alçapão de madeira atrás do balcão, uma escada íngreme leva a um porão de pedra rústica com cheiro de mofo e terra úmida.",
-        skills: [
-          { skill: "Sobrevivência", dt: 6, info: "Colchão improvisado, garrafas de água e embalagens de ração mostram que Gustavo utilizou o porão como esconderijo de vigilância após o sumiço de Sara." },
-          { skill: "Investigação", dt: 8, info: "Esboço de mapa desenhado por Gustavo marcando as rotas dos veículos de segurança privada entre o café, o colégio e a floresta." }
-        ],
-        context: "Gustavo permaneceu no café por 72 horas após Sara desaparecer, reunindo as primeiras pistas antes de recuar para seu bunker impenetrável."
-      },
-      {
-        num: 8,
-        title: "FOGÃO E COZINHA DO CAFÉ",
-        headerDesc: "Cozinha compacta de aço inoxidável com fogão industrial, bancadas de preparo de bolos e armários de utensílios de cerâmica.",
-        skills: [
-          { skill: "Investigação", dt: 6, info: "Dentro da fornalha apagada há cinzas de receitas de remédios controlados emitidas pela Renovare para Sara Auguil parcialmente queimadas." },
-          { skill: "Ciências", dt: 8, info: "Resíduos em uma caneca de cerâmica confirmam a presença de infusão de plantas nativas da mata misturadas a alcaloides anestésicos potentes." }
-        ],
-        context: "Sara consumia as infusões fornecidas por Constança para suportar a dor física, alheia ao fato de que as ervas aceleravam sua receptividade psíquica a 'Ele'."
-      },
-      {
-        num: 9,
-        title: "MURAL DE RECADOS & FOTOS DOS FREQUENTADORES",
-        headerDesc: "Painel de cortiça repleto de bilhetes carinhosos de clientes fiéis, fotografias instantâneas e desenhos em guardanapos de papel.",
-        skills: [
-          { skill: "Percepção", dt: 6, info: "Uma foto tirada na véspera do sumiço mostra Sara pálida e sorridente; no reflexo da vidraça da rua atrás dela é nítido o sedan preto de Constança estacionado." },
-          { skill: "Psicologia", dt: 8, info: "Os últimos recados deixados por Sara para os clientes no mural funcionam como uma carta de despedida consciente e resignada." }
-        ],
-        context: "Sara sabia que seus dias como humana estavam contados e utilizou o mural para se despedir sem alarmar as pessoas ao seu redor."
-      },
-      {
-        num: 10,
-        title: "TELEFONE FIXO DE DISCO NO CORREDOR",
-        headerDesc: "Aparelho telefônico analógico preto de baquelite parafusado na parede de azulejos perto do banheiro dos fundos.",
-        skills: [
-          { skill: "Tecnologia", dt: 6, info: "Dispositivo de escuta telefônica com bateria autônoma instalado no interior do circuito da campainha do aparelho." },
-          { skill: "Investigação", dt: 8, info: "O sinal da escuta transmite diretamente para a frequência da empresa de segurança contratada pelo condomínio Mina de Prata." }
-        ],
-        context: "Todas as conversas e pedidos de socorro de Sara foram interceptados em tempo real pela rede de Constança, impedindo qualquer fuga imprevista."
-      }
-    ]
-  },
-  'clinica-renovare': {
-    id: 'clinica-renovare',
-    name: "Clínica Renovare",
-    shortName: "Clínica Renovare",
-    svgIcon: '<svg class="area-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"></rect><path d="M12 8v8M8 12h8"></path></svg>',
-    themeClass: 'area-clinica-renovare',
-    district: "Complexo Médico Privado • Zona Nobre de Fragktus",
-    dangerLevel: "Segurança Armada, Biometria & Protocolos Ocultos",
-    dangerLevelClass: 'danger',
-    ambience: "Luzes brancas frias, cheiro esterilizante de álcool e ozônio, portas com sensores magnéticos e murmúrios abafados atrás de vidros fumê.",
-    lore: "Instituição médica de prestígio internacional responsável por tratamentos experimentais de ponta. Onde Sara tratava em segredo absoluto seu câncer terminal sob os cuidados do renomado Dr. Alvarez. Os registros médicos oficiais mostram apenas consultas de rotina, mas alas subterrâneas abrigam projetos que a ética médica baniu há décadas.",
-    rumor: "«Pacientes que dão entrada no 4º subsolo não recebem alta: recebem novos atestados de óbito ou desaparecem do sistema nacional de saúde.»",
-    pois: [
-      {
-        num: 1,
-        title: "CONSULTÓRIO 402 (DRA. MELISSA VANE)",
-        headerDesc: "Consultório executivo impecável com piso de porcelanato branco, mesa de vidro com computador touch-screen e estantes com tratados de oncologia contemporânea.",
-        skills: [
-          { skill: "Furtividade", dt: 6, info: "Permite acessar a sala pelos fundos sem acionar a fechadura biométrica inteligente." },
-          { skill: "Investigação", dt: 8, info: "Prontuário físico original de Sara Auguil atestando sarcoma metastático irreversível, acompanhado do memorando confidencial: 'Vítima aceita. Encaminhar para Constança Montenegro'." },
-          { skill: "Medicina", dt: 10, info: "As dosagens prescritas para Sara foram calculadas para dopar sua consciência sem curar a neoplasia, facilitando sua condução mental." }
-        ],
-        context: "A médica particular da elite atuava como o filtro diagnóstico da conspiração, confirmando quais alunos estavam condenados e sem perspectiva de recuperação familiar."
-      },
-      {
-        num: 2,
-        title: "TERMINAL DE TRIAGEM & PRONTUÁRIOS DIGITAIS",
-        headerDesc: "Totens de atendimento automatizado no saguão central da clínica, conectados ao servidor médico interno de Fragktus.",
-        skills: [
-          { skill: "Hackeamento", dt: 8, info: "Localiza a exclusão deliberada das fichas de internação de Sara e Trisha Auguil, com backup transferido para o IP residencial da família Montenegro." },
-          { skill: "Investigação", dt: 10, info: "Lista oculta com quatro novos nomes de estudantes terminais do Colégio Primórdio marcados como 'próximos candidatos para descanso'." }
-        ],
-        context: "A rotina da clínica é permanente: novos jovens desenganados continuam sendo catalogados para futuras renovações do pacto."
-      },
-      {
-        num: 3,
-        title: "LABORATÓRIO DE CITOLOGIA & AMOSTRAS BIOLÓGICAS",
-        headerDesc: "Ambiente hermético com freezers criogênicos de aço inoxidável, centrífugas digitais e estufas bacteriológicas sob lâmpadas germicidas UV.",
-        skills: [
-          { skill: "Ciências", dt: 6, info: "Tubos criogênicos marcados 'S.A. - Biópsia 12 Dias': as células tumorais de Sara pararam de se multiplicar e começaram a sintetizar fibras de celulose viva." },
-          { skill: "Percepção", dt: 8, info: "Sob luz ultravioleta, as amostras de sangue de Sara emitem suave bioluminescência esmeralda idêntica à seiva da mata." }
-        ],
-        context: "O contato com a entidade iniciou a transformação celular de Sara antes mesmo de sua ida física para a floresta: a doença estava sendo engolida pela vida vegetal."
-      },
-      {
-        num: 4,
-        title: "ALA DE INTERNAÇÃO VIP (LEITO 03)",
-        headerDesc: "Suíte hospitalar privativa de alto padrão com cortinas acústicas, monitor cardíaco desativado e janela panorâmica com vista para o jardim interno.",
-        skills: [
-          { skill: "Percepção", dt: 6, info: "Embaixo do estrado da cama hospitalar há uma flor silvestre seca que só floresce na copa dos pinheiros centenários da floresta ao norte." },
-          { skill: "Investigação", dt: 8, info: "Documento de alta médica precoce assinado por Constança Montenegro como 'tutora temporária' à revelia da legislação civil." }
-        ],
-        context: "Constança retirou Sara deste quarto dois dias antes do sumiço oficial e a levou para a mansão em Mina de Prata para os ritos preparatórios finais."
-      },
-      {
-        num: 5,
-        title: "FARMÁCIA CENTRAL DE MANIPULAÇÃO",
-        headerDesc: "Câmara farmacêutica blindada com armários refrigerados, balanças analíticas e cofre de substâncias entorpecentes e venenos biológicos.",
-        skills: [
-          { skill: "Investigação", dt: 6, info: "Registros de dispensação sem prescrição médica de sedativos neurológicos pesados e anestésicos cirúrgicos veterinários." },
-          { skill: "Lábia", dt: 8, info: "O farmacêutico de plantão admite que entregava caixas térmicas com sedativos diretamente ao motorista particular da diretora escolar semanalmente." }
-        ],
-        context: "Os fármacos eram utilizados para assegurar que as vítimas permanecessem em transe dócil e sem dor aguda durante a noite da entrega."
-      },
-      {
-        num: 6,
-        title: "INCINERADOR DE RESÍDUOS HOSPITALARES (SUBSOLO)",
-        headerDesc: "Fornalha industrial de queima contínua no segundo subsolo da clínica, com canos de exaustão e caçambas de descarte biológico.",
-        skills: [
-          { skill: "Investigação", dt: 6, info: "No depósito de cinzas resfriadas, encontram-se fragmentos de metal da fivela da bolsa escolar de Trisha Auguil destruída em dezembro de 2060." },
-          { skill: "Sobrevivência", dt: 8, info: "Resíduos de cinza com forte odor de madeira resinosa de pinheiro misturada a desinfetante hospitalar." }
-        ],
-        context: "Provas materiais da internação e dos pertences de Trisha foram eliminadas neste incinerador para apagar os laços entre a clínica e o primeiro desaparecimento."
-      },
-      {
-        num: 7,
-        title: "ELEVADOR DE SERVIÇO & ACESSO RESTRITO",
-        headerDesc: "Monta-cargas metálico de serviço com grades sanfonadas, descendo para níveis subterrâneos não indicados no painel de botões principal.",
-        skills: [
-          { skill: "Ladinagem", dt: 8, info: "Burla o leitor de cartão magnético e acessa o terceiro subsolo técnico não constante na planta aprovada na prefeitura." },
-          { skill: "Percepção", dt: 8, info: "As paredes de concreto armado do fosso do elevador foram rompidas por grossas raízes negras que penetram nas galerias da clínica." }
-        ],
-        context: "A presença das raízes sob a clínica demonstra que 'Ele' estende sua influência biológica pelo subsolo da cidade até os prédios dos cúmplices do pacto."
-      },
-      {
-        num: 8,
-        title: "SALA DE SEGURANÇA & CIRCUITO INTERNO",
-        headerDesc: "Central de monitoramento com computadores e telas transmitindo as imagens de dezenas de câmeras das alas e corredores da clínica.",
-        skills: [
-          { skill: "Tecnologia", dt: 6, info: "Gravações da madrugada de 30 de junho mostram Constança Montenegro conduzindo Sara Auguil em cadeira de rodas pela porta da doca de ambulâncias." },
-          { skill: "Intimidação", dt: 8, info: "O operador de segurança confessa que foi instruído pela diretoria a sobrescrever o trecho da filmagem com arquivos vazios." }
-        ],
-        context: "Registro visual incontestável da transferência da jovem do leito da clínica para a custódia direta de Constança."
-      },
-      {
-        num: 9,
-        title: "SALA DE DESCANSO DOS MÉDICOS",
-        headerDesc: "Lounge exclusivo com poltronas reclináveis, cafeteira expresso e armários individuais com chaves para a equipe médica sênior.",
-        skills: [
-          { skill: "Investigação", dt: 6, info: "No armário pessoal da Dra. Melissa Vane há uma apólice de seguro de vida milionária no nome de Sara Auguil com a clínica indicada como recebedora dos fundos." },
-          { skill: "Percepção", dt: 8, info: "Pingente de prata em formato de árvore ressecada guardado na gaveta da médica, o mesmo emblema heráldico da família Montenegro." }
-        ],
-        context: "A recompensa financeira e social que garantiu a cumplicidade ativa da médica na facilitação do sumiço das irmãs Auguil."
-      },
-      {
-        num: 10,
-        title: "DOCA DE CARGAS & AMBULÂNCIA DESCARACTERIZADA",
-        headerDesc: "Pátio coberto e fechado nos fundos do complexo hospitalar, projetado para entrada e saída discreta de veículos de emergência e resgate.",
-        skills: [
-          { skill: "Investigação", dt: 6, info: "Furgão médico branco sem logotipos ou sirene, com marcas de barro vermelho ressecado nos para-lamas e pneus todo-terreno." },
-          { skill: "Tecnologia", dt: 8, info: "O navegador GPS integrado ao furgão registrou itinerário direto na madrugada de 01/07 entre a clínica e o KM 18 da rodovia da floresta." }
-        ],
-        context: "O veículo que transportou os cilindros de oxigênio e os medicamentos de suporte que mantiveram Sara estável até a entrega na mata."
-      }
-    ]
-  },
-  'ferro-velho': {
-    id: 'ferro-velho',
-    name: "Ferro-Velho do Rato",
-    shortName: "Ferro-Velho do Rato",
-    svgIcon: '<svg class="area-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>',
-    themeClass: 'area-ferro-velho',
-    district: "Distrito Industrial & Sucata • Periferia Norte",
-    dangerLevel: "Cães de Guarda, Sucata Pesada & Mercenários",
-    dangerLevelClass: 'danger',
-    ambience: "Montanhas de carcaças enferrujadas sob o céu cinzento de fuligem, poças de óleo diesel refletindo néon barato e latidos agressivos de cães acorrentados.",
-    lore: "Oficialmente um pátio de reciclagem e desmanche de autopeças. Nos bastidores, é a central clandestina onde veículos incriminadores são triturados, peças de tecnologia roubadas são desmontadas e onde o temido 'Rato' vende informações valiosas a quem tiver moedas ou ameaças suficientes.",
-    rumor: "«Um sedan preto blindado foi guinchado para cá às quatro da manhã seguinte ao sumiço da garota. Até o meio-dia, o carro já tinha virado um bloco de aço compactado.»",
-    pois: [
-      {
-        num: 1,
-        title: "CONTÊINER ESCRITÓRIO DO RATO",
-        headerDesc: "Contêiner enferrujado adaptado com mesa desordenada, ventilador ruidoso, pilhas de notas fiscais falsificadas e monitores analógicos em preto e branco.",
-        skills: [
-          { skill: "Intimidação", dt: 6, info: "O Rato cede sob ameaça e entrega uma caixa de charutos com cartões de visita de Constança Montenegro e maços de dinheiro vivo." },
-          { skill: "Investigação", dt: 8, info: "Anotações com a placa oficial do sedan de luxo de Constança e a ordem manuscrita: 'Troca de para-choque e descarte das peças avariadas na madrugada de 01/07'." }
-        ],
-        context: "O Rato realizou serviços clandestinos de funilaria para a diretora após o carro colidir com galhos na entrada da mata, guardando recibos para futura extorsão."
-      },
-      {
-        num: 2,
-        title: "PRENSA HIDRÁULICA INDUSTRIAL",
-        headerDesc: "Gigantesca máquina compactadora de sucata com êmbolo de aço capaz de reduzir automóveis a blocos sólidos de metal sob toneladas de pressão.",
-        skills: [
-          { skill: "Percepção", dt: 6, info: "Entre as lâminas de ferro há lascas de tinta preta metálica fresca e o brasão da montadora do sedan da reitoria escolar." },
-          { skill: "Investigação", dt: 8, info: "Raspas de resina vegetal e cascas de pinheiro presas no metal do para-choque amassado antes de ser compactado." }
-        ],
-        context: "O para-choque avariado na estrada da mata foi destruído na prensa poucas horas após o sumiço de Sara para eliminar qualquer vestígio de batida."
-      },
-      {
-        num: 3,
-        title: "CÂMERAS CLANDESTINAS NA ESTRADA DA FLORESTA",
-        headerDesc: "Câmeras de vigilância instaladas ilegalmente pelo Rato em postes podres de madeira na rodovia vicinal que leva à cerca da reserva florestal.",
-        skills: [
-          { skill: "Tecnologia", dt: 6, info: "Recupera gravação da noite de 31/06 para 01/07 às 02h14: o sedan preto de Constança trafegando em alta velocidade rumo à mata." },
-          { skill: "Percepção", dt: 8, info: "A imagem congelada permite ver Sara imóvel com a cabeça apoiada no vidro do banco do passageiro e Constança ao volante." }
-        ],
-        context: "A evidência visual central do caso: Sara não fugiu sozinha; foi levada diretamente por Constança para a orla da mata."
-      },
-      {
-        num: 4,
-        title: "CANIL DOS MOLOSSOS DE GUARDA",
-        headerDesc: "Cercado de arame farpado onde três cães de grande porte rosnam furiosamente diante de qualquer aproximação estranha.",
-        skills: [
-          { skill: "Adestramento", dt: 6, info: "Acalma os animais utilizando comida ou demonstração firme de autoridade física." },
-          { skill: "Percepção", dt: 8, info: "Os cães ladram obstinadamente na direção da boca de uma tubulação de drenagem coberta por chapas de aço." }
-        ],
-        context: "Os animais farejam a umidade doce e pútrida que sopra da tubulação que conecta os limites do ferro-velho à reserva da floresta."
-      },
-      {
-        num: 5,
-        title: "PILHA DE ELETRÔNICOS & SUCATA DIGITAL",
-        headerDesc: "Enorme depósito a céu aberto com dezenas de carcaças de computadores, rádios veiculares, baterias e placas eletrônicas empilhadas.",
-        skills: [
-          { skill: "Tecnologia", dt: 8, info: "Encontra o módulo receptor de rádio da segurança de Mina de Prata vendido clandestinamente pelo vigia Valdir para o Rato." },
-          { skill: "Investigação", dt: 8, info: "O áudio armazenado na memória interna registra o diálogo entre o vigia e Constança confirmando que o alarme perimetral foi religado após a passagem do carro." }
-        ],
-        context: "Rato comprou o equipamento para revender peças, sem perceber que a memória flash preservou a comunicação incriminadora."
-      },
-      {
-        num: 6,
-        title: "GALPÃO DE PEÇAS & MOTORES CLANDESTINOS",
-        headerDesc: "Hangar escuro e abafado repleto de motores dependurados em talhas de corrente e prateleiras com ferramentas pneumáticas pesadas.",
-        skills: [
-          { skill: "Investigação", dt: 6, info: "Caixa de ferramentas que oculta placas de trânsito clonadas compatíveis com a frota de serviços públicos de Fragktus." },
-          { skill: "Ladinagem", dt: 8, info: "Recibos de pagamentos regulares feitos pelo Colégio Integrado Primórdio sob o disfarce contábil de 'descarte ecológico de sucatas'." }
-        ],
-        context: "Constança comprava o silêncio do Rato injetando verbas escolares no negócio ilegal de autopeças do ferro-velho."
-      },
-      {
-        num: 7,
-        title: "VALA DE ÓLEO & DESCARTE QUÍMICO",
-        headerDesc: "Fosso comprido cavado na terra batida onde dezenas de litros de óleo de motor usado e solventes industriais formam uma poça viscosa negra.",
-        skills: [
-          { skill: "Percepção", dt: 6, info: "Chaveiro metálico em forma de xícara de café gravado com o nome 'Trisha' boiando na borda oleosa da vala." },
-          { skill: "Investigação", dt: 8, info: "O item pertencia à bolsa de Trisha descartada pelos capangas de Constança em dezembro de 2060 após seu desaparecimento." }
-        ],
-        context: "A evidência material que conecta o destino de Sara à tragédia ocorrida com sua irmã Trisha exatamente no mesmo ecossistema criminoso."
-      },
-      {
-        num: 8,
-        title: "TRAILER ELEVADO DE VIGILÂNCIA",
-        headerDesc: "Trailer de acampamento antigo calçado em dormentes de ferrovia no ponto mais alto do ferro-velho, usado como guarita pelos vigias do Rato.",
-        skills: [
-          { skill: "Investigação", dt: 6, info: "Binóculo militar de visão noturna e cadernos anotando frequências de rádio de ondas curtas operadas por Gustavo." },
-          { skill: "Sobrevivência", dt: 8, info: "Um ajudante confessa aterrorizado que já viu figuras humanas feitas de galhos se movendo na margem da floresta durante madrugadas de nevoeiro." }
-        ],
-        context: "Os capangas da periferia respeitam e temem a floresta porque já presenciaram as manifestações de 'Ele' na fronteira do bairro."
-      },
-      {
-        num: 9,
-        title: "FOGUEIRA DE INCINERAÇÃO DE COBRE",
-        headerDesc: "Tambor de óleo cortado com brasas ainda quentes e fumaça escura de plástico queimado, usado para limpar fiações e queimar evidências.",
-        skills: [
-          { skill: "Investigação", dt: 6, info: "Fivelas metálicas chamuscadas da mochila escolar de Sara Auguil e a placa de identificação com seu nome parcialmente derretida." },
-          { skill: "Percepção", dt: 8, info: "Fragmento de página de caderno chamuscada onde Sara escreveu: 'A dor vai acabar. Trisha está me esperando nas árvores'." }
-        ],
-        context: "Constança entregou a mochila de Sara para incineração para simular que a jovem viajara para outra localidade levando seus pertences."
-      },
-      {
-        num: 10,
-        title: "TÚNEL DE DRENAGEM PARA A MATA DO NORTE",
-        headerDesc: "Tubulação de concreto armado de 1,5m de diâmetro sob uma carcaça de caminhão betoneira, com fluxo de água correndo em direção à mata.",
-        skills: [
-          { skill: "Atletismo", dt: 6, info: "Permite avançar pelo interior da galeria subterrânea, evitando o cerco armado da guarita do KM 18." },
-          { skill: "Percepção", dt: 8, info: "Marcas de pés descalços de mulher na lama do fundo do túnel seguindo em direção à clareira da floresta." }
-        ],
-        context: "A rota clandestina de pedestres utilizada pelos intermediários para acessar a orla da floresta sem chamar a atenção dos bloqueios policiais."
-      }
-    ]
-  },
-  'floresta-proibida': {
-    id: 'floresta-proibida',
-    name: "A Mata do Norte",
-    shortName: "Mata do Norte",
-    svgIcon: '<svg class="area-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L5 12h4l-3 6h5v4h2v-4h5l-3-6h4L12 2z"></path></svg>',
-    themeClass: 'area-floresta-proibida',
-    district: "Reserva Florestal Fechada • Zona Rural",
-    dangerLevel: "Fauna Alterada, Névoa Tóxica & Armadilhas",
-    dangerLevelClass: 'danger',
-    ambience: "Árvores centenárias retorcidas, neblina espessa que engole os faróis, silêncio sepulcral quebrado apenas pelo estalar de galhos e arame farpado enferrujado.",
-    lore: "Área de preservação ambiental isolada pelas autoridades municipais sob alegação de contaminação do solo e desabamentos de antigas minas. Trilhas fechadas ocultam instalações subterrâneas desativadas da época da fundação de Fragktus e clareiras onde eventos anômalos foram registrados.",
-    rumor: "«Guardas florestais privados não usam fardas do Estado: usam coletes pretos táticos e atiram sem aviso contra qualquer um que passe da cerca do KM 18.»",
-    pois: [
-      {
-        num: 1,
-        title: "O CARVALHO ANCESTRAL & O ALTAR DE RAÍZES",
-        headerDesc: "Colossal carvalho de dezenas de metros de altura no centro de uma clareira silenciosa e enevoada, cujas raízes expostas formam muralhas orgânicas contorcidas.",
-        skills: [
-          { skill: "Ocultismo", dt: 6, info: "O ponto focal da entidade 'Ele'. As raízes formam um casulo oco no tronco onde vidas humanas desenganadas são absorvidas para o 'mundo feliz'." },
-          { skill: "Percepção", dt: 8, info: "No interior do oco há o sapato de Sara e fitas de tecido de seu vestido entrelaçadas em cipós que sangram seiva vegetal preta aromática." },
-          { skill: "Sobrevivência", dt: 10, info: "Sob a névoa, a silhueta vegetal serena de Sara e Trisha Auguil pode ser entrevista na madeira viva: suas feições estão em paz, livres de dor." }
-        ],
-        context: "O clímax da investigação: Sara não foi assassinada por violência convencional, mas manipulada para se entregar voluntariamente à entidade para reencontrar a irmã e escapar do câncer incurável."
-      },
-      {
-        num: 2,
-        title: "PORTÃO MILITARIZADO DO KM 18",
-        headerDesc: "Cancelas duplas reforçadas com cerca concertina cortante, refletores halógenos e guarita guarnecida por seguranças particulares armados dos Montenegro.",
-        skills: [
-          { skill: "Furtividade", dt: 6, info: "Permite contornar os refletores e sensores de movimento pelas ravinas laterais de mata densa." },
-          { skill: "Investigação", dt: 8, info: "Os guardas operam sob contrato privado direto da Fundação Montenegro, com ordem expressa de atirar em qualquer civil sob pretexto de 'quarentena ambiental'." }
-        ],
-        context: "A barreira física estabelecida pela elite para garantir que nenhum policial ou investigador curioso chegue perto da clareira do pacto."
-      },
-      {
-        num: 3,
-        title: "TRILHAS DE PNEUS NA LAMA VERMELHA",
-        headerDesc: "Estrada de terra batida que termina bruscamente na beira de um precipício de vegetação virgem, com profundos sulcos de pneus na lama recente.",
-        skills: [
-          { skill: "Sobrevivência", dt: 6, info: "Identifica os sulcos dos pneus do SUV de Constança manobrando na orla às 02h30 da madrugada de 01/07." },
-          { skill: "Percepção", dt: 8, info: "Pegadas elegantes de salto alto de Constança descendo na terra e pegadas lentas e cambaleantes de Sara avançando descalça entre os galhos da mata." }
-        ],
-        context: "A cena da entrega física: Constança não precisou usar violência física, apenas abriu a porta do carro e indicou a direção da clareira a Sara."
-      },
-      {
-        num: 4,
-        title: "ACAMPAMENTO ABANDONADO DOS FUNDOS",
-        headerDesc: "Tenda camuflada militar abandonada sob pinheiros altos, com gerador a gasolina desligado, caixas de ração militar e equipamentos de monitoramento biométrico.",
-        skills: [
-          { skill: "Investigação", dt: 6, info: "Relatórios de telemetria cardíaca transmitidos por sensores colocados em Sara no instante de sua chegada à clareira." },
-          { skill: "Medicina", dt: 8, info: "O gráfico demonstra que os batimentos de Sara desaceleraram harmonicamente e os espasmos de dor cessaram no exato momento da fusão com as raízes." }
-        ],
-        context: "A equipe médica da Dra. Melissa monitorou os sinais vitais de Sara até o instante da simbiose com a floresta."
-      },
-      {
-        num: 5,
-        title: "A BOCA DA MINA DE PRATA COLONIAL",
-        headerDesc: "Entrada de túnel subterrâneo escavado no século XIX com escoras de madeira apodrecida e trilhos enferrujados adentrando a montanha rochosa.",
-        skills: [
-          { skill: "História", dt: 6, info: "Inscrições antigas nas vigas de sustentação revelam que o primeiro pacto da família Montenegro com 'Ele' ocorreu aqui durante a fundação de Fragktus em 1880." },
-          { skill: "Ocultismo", dt: 8, info: "Murais rupestres mostram que a prosperidade mineral da cidade foi obtida entregando periodicamente pessoas sem vigor vital à floresta." }
-        ],
-        context: "A origem secular da conspiração: a opulência de Fragktus foi construída sobre o pacto simbiótico estabelecido na mina."
-      },
-      {
-        num: 6,
-        title: "O CHARCO DAS ÁGUAS NEGRAS",
-        headerDesc: "Brejo estagnado entre ravinas íngremes, coberto por uma névoa espessa sulfurosa com vegetação petrificada ao redor.",
-        skills: [
-          { skill: "Ciências", dt: 6, info: "A água possui resina orgânica idêntica àquela encontrada nos olhos petrificados do gato morto no beco do café." },
-          { skill: "Percepção", dt: 8, info: "No reflexo das águas escuras, vultos humanoides parecem acenar em repouso absoluto sob a lâmina d'água." }
-        ],
-        context: "As manifestações ilusórias da entidade para desorientar e atrair intrusos para o lodo pantanoso."
-      },
-      {
-        num: 7,
-        title: "CABANA EM RUÍNAS DO GUARDA-FLORESTAL",
-        headerDesc: "Construção de madeira carcomida com teto desmoronado, coberta por heras e musgos espessos no meio da trilha abandonada.",
-        skills: [
-          { skill: "Investigação", dt: 6, info: "Diário manuscrito do antigo guarda florestal registrando que Trisha Auguil foi trazida no porta-malas do carro da diretoria em 2060." },
-          { skill: "Percepção", dt: 8, info: "Revólver calibre .38 descarregado no chão com cápsulas disparadas contra as raízes que invadiram as paredes do quarto." }
-        ],
-        context: "O guarda tentou intervir no sequestro de Trisha e foi consumido pela floresta para preservar o segredo dos Montenegro."
-      },
-      {
-        num: 8,
-        title: "A CERCA PERIMETRAL CORTADA (KM 22)",
-        headerDesc: "Trecho da cerca de arame farpado que delimita a serra, aberto com alicate industrial entre árvores retorcidas.",
-        skills: [
-          { skill: "Percepção", dt: 6, info: "O cordão de prata de formatura com o nome gravado de Sara Auguil preso em uma ponta do arame farpado." },
-          { skill: "Sobrevivência", dt: 8, info: "Pegadas quadrúpedes com sulcos de madeira viva escoltando as marcas de pés de Sara em direção ao coração da floresta." }
-        ],
-        context: "'Ele' enviou suas criaturas menores para guiar Sara pelo caminho seguro da mata até o altar das raízes."
-      },
-      {
-        num: 9,
-        title: "POSTO DE TRANSMISSÃO DE RÁDIO ABANDONADO",
-        headerDesc: "Torre de comunicação metálica enferrujada no pico mais alto da reserva, com cabos rompidos estalando com o vento gelado.",
-        skills: [
-          { skill: "Tecnologia", dt: 6, info: "A antena capta as transmissões de ondas curtas emitidas desesperadamente do quarto de Gustavo em sinal intermitente." },
-          { skill: "Percepção", dt: 8, info: "Os cipós que cobrem a torre ressoam emitindo sussurros audíveis em coro: 'Não há mais dor aqui... estamos em paz'." }
-        ],
-        context: "A entidade reverbera as vozes de Trisha e Sara através do magnetismo da torre, atormentando a mente de Gustavo na cidade."
-      },
-      {
-        num: 10,
-        title: "O CASULO SUBTERRÂNEO DE TRISHA E SARA",
-        headerDesc: "Câmara natural sob as raízes mestras do carvalho, iluminada por esporos verdes bioluminescentes flutuando no ar perfumado de terra e jasmim.",
-        skills: [
-          { skill: "Ocultismo", dt: 8, info: "Comprova que as almas e memórias de Trisha e Sara estão entrelaçadas em harmonia indestrutível com a entidade da mata." },
-          { skill: "Medicina", dt: 10, info: "Qualquer tentativa cirúrgica ou física de extirpar seus corpos das raízes acarretaria a morte cerebral imediata de ambas." }
-        ],
-        context: "O dilema moral final para os jogadores: punir Constança e expor a hipocrisia de Fragktus sabendo que Sara e Trisha encontraram o descanso eterno na floresta."
-      }
-    ]
-  },
-  'refugio-gustavo': {
-    id: 'refugio-gustavo',
-    name: "Refúgio do Gustavo",
-    shortName: "Refúgio do Gustavo",
-    svgIcon: '<svg class="area-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M12 8v4M12 16h.01"></path></svg>',
-    themeClass: 'area-refugio-gustavo',
-    district: "Bunker Subterrâneo Clandestino • Localização Confidencial",
-    dangerLevel: "Paranoia Extrema, Armadilhas Caseiras & Escutas",
-    dangerLevelClass: 'danger',
-    ambience: "Luz de emergência vermelha, paredes forradas com cortiça e mapas repletos de linhas vermelhas de barbante ligando fotos, documentos e fita isolante.",
-    lore: "O esconderijo ultra-secreto montado por Gustavo, um ex-investigador / confidente que vinha ajudando Sara a desvendar o que realmente aconteceu com Trisha. O local é blindado contra rastreamento eletrônico e reúne as maiores peças do quebra-cabeça conspiratório que envolve toda a cidade.",
-    rumor: "«Gustavo não confia nem na própria sombra. Para falar com ele, você precisa saber a senha correta ou desarmar as armadilhas da porta.»",
-    pois: [
-      {
-        num: 1,
-        title: "MURAL CONSPIRATÓRIO DAS LINHAS VERMELHAS",
-        headerDesc: "Parede inteira forrada de cortiça com dezenas de recortes de jornais de 2060 e 2061, retratos de Sara e Trisha e fios de lã vermelha cruzando o mapa de Fragktus.",
-        skills: [
-          { skill: "Investigação", dt: 6, info: "Os fios vermelhos conectam geometricamente três locais: a mansão de Constança em Mina de Prata, a Clínica Renovare e o ferro-velho do Rato." },
-          { skill: "Percepção", dt: 8, info: "Gustavo calculou o intervalo de tempo entre o diagnóstico terminal e o sumiço: exatamente seis meses de manipulação psicológica em ambos os casos." }
-        ],
-        context: "Gustavo já havia decifrado toda a engrenagem do esquema criminoso, necessitando apenas de cúmplices confiáveis para obter as provas materiais."
-      },
-      {
-        num: 2,
-        title: "BANCADA DE ESCUTAS & INTERCEPTAÇÃO DE RÁDIO",
-        headerDesc: "Mesa de aço repleta de receptores de radiofrequência militares, antenas direcionais, fones acolchoados e gravadores de fita cassete em operação contínua.",
-        skills: [
-          { skill: "Tecnologia", dt: 6, info: "Rádio sintonizado na frequência dos vigilantes privados de Mina de Prata gravando os diálogos da patrulha." },
-          { skill: "Investigação", dt: 8, info: "Gravação da voz de Constança orientando a queima de arquivos no ferro-velho do Rato na manhã de 01/07." }
-        ],
-        context: "A chave que Gustavo entrega aos personagens para demonstrar que o desaparecimento de Sara foi uma entrega premeditada."
-      },
-      {
-        num: 3,
-        title: "TERMINAL COMPUTACIONAL AIR-GAPPED",
-        headerDesc: "Desktop robusto com três telas panorâmicas sem placas de wi-fi ou cabos de internet, isolado fisicamente para evitar invasões da polícia ou de hackers.",
-        skills: [
-          { skill: "Hackeamento", dt: 8, info: "Descriptografa os vídeos capturados clandestinamente por Gustavo dos acessos da guarita de Mina de Prata na noite de 31 de junho." },
-          { skill: "Percepção", dt: 8, info: "O vídeo em alta resolução mostra o sedan preto de Constança cruzando o portão sem ser parado pelo vigia Valdir." }
-        ],
-        context: "A gravação visual definitiva que desmonta qualquer tentativa da diretora de negar que esteve com Sara naquela madrugada."
-      },
-      {
-        num: 4,
-        title: "ARMÁRIO DE ARMAS & EQUIPAMENTOS TÁTICOS",
-        headerDesc: "Armário de aço reforçado com fechadura de combinação mecânica, munições, lanternas táticas e coletes à prova de balas leves.",
-        skills: [
-          { skill: "Armamento", dt: 6, info: "Revólver Rossi calibre .38 carregado com munição expansiva, granadas de fumaça e lanternas de alta intensidade." },
-          { skill: "Sobrevivência", dt: 8, info: "Kits cirúrgicos de campo com ampolas de atropina e adrenalina preparados para reverter sedações farmacológicas." }
-        ],
-        context: "Gustavo estava pronto para tentar resgatar Sara sozinho caso ninguém aceitasse ajudá-lo a enfrentar a elite de Fragktus."
-      },
-      {
-        num: 5,
-        title: "COFRE DE CHÃO SOB A PLACA DE AÇO",
-        headerDesc: "Compartimento estanque oculto sob uma placa de aço parafusada no chão de concreto, disfarçada por um tapete de borracha.",
-        skills: [
-          { skill: "Ladinagem", dt: 6, info: "Abre o mecanismo de trava mecânica do cofre de chão." },
-          { skill: "Investigação", dt: 8, info: "Dossiê jurídico com certidões comprovando que a Fundação Montenegro tentou quatro vezes comprar o imóvel do Café da Névoa antes dos sumiços." }
-        ],
-        context: "A evidência de cobiça imobiliária que serve de base para levar os cúmplices a julgamento na justiça comum."
-      },
-      {
-        num: 6,
-        title: "SECRETÁRIA ELETRÔNICA & GRAVAÇÃO MAGNÉTICA 07",
-        headerDesc: "Aparelho analógico de secretária telefônica conectado a uma linha clonada do telefone do quarto de Sara na mansão Auguil.",
-        skills: [
-          { skill: "Percepção", dt: 6, info: "A última mensagem registrada às 19h00 de 31/06: a voz gélida de Constança dizendo 'O caminho está preparado, Sara. Trisha está esperando'." },
-          { skill: "Psicologia", dt: 8, info: "A resposta entrecortada pelo choro de Sara: 'A dor tá insuportável... eu quero que pare, Constança'." }
-        ],
-        context: "O registro em áudio que comprova o estado de desespero físico e a manipulação final sofrida por Sara horas antes de seu sumiço."
-      },
-      {
-        num: 7,
-        title: "BANCADA DE QUÍMICA & ANTÍDOTOS EXPERIMENTAIS",
-        headerDesc: "Bancada com tubos de ensaio, destilador caseiro e frascos âmbar de reagentes químicos sintetizados por Gustavo.",
-        skills: [
-          { skill: "Ciências", dt: 6, info: "Gustavo conseguiu furtar amostras do sedativo usado pela clínica e desenvolveu ampolas de um estimulante capaz de quebrar o transe hipnótico." },
-          { skill: "Medicina", dt: 8, info: "O antídoto pode ser administrado nos personagens ou em NPCs para neutralizar toxinas alucinógenas." }
-        ],
-        context: "Recurso mecânico de jogo valioso para ajudar os investigadores a enfrentar os capangas dopados de Constança."
-      },
-      {
-        num: 8,
-        title: "PORTA BLINDADA COM CIRCUITO DE ALTA VOLTAGEM",
-        headerDesc: "Porta de cofre de aço maciço com trancas de barra quádrupla e cabos grossos de cobre ligados a capacitores elétricos na maçaneta.",
-        skills: [
-          { skill: "Ladinagem", dt: 8, info: "Desarma a armadilha elétrica de 2.000 volts antes de encostar na maçaneta sem sofrer choque incapacitante." },
-          { skill: "Tecnologia", dt: 6, info: "Identifica a chave geral camuflada no batente externo para desativar a corrente de alta voltagem." }
-        ],
-        context: "O sistema defensivo paranoico de Gustavo contra os mercenários que ele sabia que Constança mandaria para silenciá-lo."
-      },
-      {
-        num: 9,
-        title: "DUTO DE EVACUAÇÃO PARA O SISTEMA DE GALERIAS",
-        headerDesc: "Tubo de ventilação reforçado no canto inferior da sala com escada de marinheiro que dá acesso a uma galeria de esgoto pluvial.",
-        skills: [
-          { skill: "Atletismo", dt: 6, info: "Rota de fuga rápida que permite ao grupo sair em um bueiro seguro a três quadras de distância caso o bunker seja cercado." },
-          { skill: "Furtividade", dt: 8, info: "Permite sair e entrar sem que os olheiros da segurança privada posicionados nas esquinas percebam." }
-        ],
-        context: "A rota de emergência que garante que o grupo não fique encurralado pelos capangas da diretora."
-      },
-      {
-        num: 10,
-        title: "DIÁRIO CONFIDENCIAL DE GUSTAVO SOBRE OS JOGADORES",
-        headerDesc: "Caderno de capa de couro preta com fecho elástico sobre a cama de solteiro de Gustavo, repleto de anotações datadas com caligrafia obsessiva.",
-        skills: [
-          { skill: "Investigação", dt: 6, info: "O caderno lista o nome de cada personagem jogador da mesa, seus vínculos com Sara e suas motivações individuais." },
-          { skill: "Intuição", dt: 8, info: "Gustavo registrou: 'Eles são os únicos que ainda se importam com a verdade. Se eu morrer ou for pego, deixo tudo nas mãos deles'." }
-        ],
-        context: "A validação narrativa dos jogadores como os verdadeiros detetives e herdeiros da investigação de Sara Auguil."
+        "context": "O dilema moral final para os jogadores: punir Constança e expor a hipocrisia de Fragktus sabendo que Sara e Trisha encontraram o descanso eterno na floresta."
       }
     ]
   }
 };
 
-
 const MesaAreaManager = {
-  currentAreaId: 'mina-de-prata',
-  selectedAreaId: 'mina-de-prata',
+  currentAreaId: 'colegio-primordio',
+  selectedAreaId: 'colegio-primordio',
 
   init() {
     const saved = localStorage.getItem('mesa_current_area');
@@ -3540,54 +3129,19 @@ const MesaAreaManager = {
     board.innerHTML = '';
 
     const ROADMAP_CONFIG = {
-      'floresta-proibida': {
-        xPct: 50, yPct: 15,
-        color: '#10b981',
-        glow: 'rgba(16, 185, 129, 0.75)',
-        roadD: 'M 500 295 C 490 235, 510 170, 500 135',
-        roadTwinD: 'M 508 295 C 498 235, 518 170, 508 135'
-      },
-      'ferro-velho': {
-        xPct: 18, yPct: 24,
-        color: '#84cc16',
-        glow: 'rgba(132, 204, 22, 0.75)',
-        roadD: 'M 470 305 C 385 260, 285 210, 220 170',
-        roadTwinD: 'M 475 312 C 390 267, 290 217, 225 177'
-      },
-      'mina-de-prata': {
-        xPct: 82, yPct: 24,
-        color: '#f97316',
-        glow: 'rgba(249, 115, 22, 0.75)',
-        roadD: 'M 530 305 C 615 260, 715 210, 780 170',
-        roadTwinD: 'M 525 312 C 610 267, 710 217, 775 177'
-      },
       'colegio-primordio': {
-        xPct: 15, yPct: 56,
+        xPct: 24, yPct: 50,
         color: '#14b8a6',
         glow: 'rgba(20, 184, 166, 0.75)',
-        roadD: 'M 465 325 C 375 330, 275 340, 195 355',
-        roadTwinD: 'M 465 333 C 375 338, 275 348, 195 363'
+        roadD: 'M 280 320 C 380 320, 460 320, 500 320',
+        roadTwinD: 'M 280 328 C 380 328, 460 328, 500 328'
       },
-      'clinica-renovare': {
-        xPct: 85, yPct: 56,
-        color: '#38bdf8',
-        glow: 'rgba(56, 189, 248, 0.75)',
-        roadD: 'M 535 325 C 625 330, 725 340, 805 355',
-        roadTwinD: 'M 535 333 C 625 338, 725 348, 805 363'
-      },
-      'cafe-da-nevoa': {
-        xPct: 29, yPct: 84,
-        color: '#c084fc',
-        glow: 'rgba(192, 132, 252, 0.75)',
-        roadD: 'M 475 340 C 410 400, 360 455, 320 495',
-        roadTwinD: 'M 481 346 C 416 406, 366 461, 326 501'
-      },
-      'refugio-gustavo': {
-        xPct: 71, yPct: 84,
-        color: '#ef4444',
-        glow: 'rgba(239, 68, 68, 0.75)',
-        roadD: 'M 525 340 C 590 400, 640 455, 680 495',
-        roadTwinD: 'M 519 346 C 584 406, 634 461, 674 501'
+      'floresta-proibida': {
+        xPct: 76, yPct: 50,
+        color: '#10b981',
+        glow: 'rgba(16, 185, 129, 0.75)',
+        roadD: 'M 500 320 C 540 320, 620 320, 720 320',
+        roadTwinD: 'M 500 328 C 540 328, 620 328, 720 328'
       }
     };
 
