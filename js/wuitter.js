@@ -84,7 +84,7 @@ const DEFAULT_ACCOUNTS = [
     handle: '@minerva',
     bio: 'Médica de campo e estudiosa de patologias arcanas. Café sem açúcar e prontuários em dia.',
     avatarLetter: 'M',
-    avatarImage: '',
+    avatarImage: 'assets/minerva_wuitter.png',
     avatarColor: '#8b5cf6',
     badge: 'none',
     isMaster: false
@@ -120,7 +120,7 @@ const DEFAULT_ACCOUNTS = [
     handle: '@pera',
     bio: 'Navegadora e cartógrafa das correntes de éter. Conheço cada beco e cada rota de fuga.',
     avatarLetter: 'P',
-    avatarImage: 'assets/pera_wuitter.png',
+    avatarImage: '',
     avatarColor: '#f59e0b',
     badge: 'none',
     isMaster: false

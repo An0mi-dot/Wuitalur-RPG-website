@@ -839,6 +839,8 @@ const MesaApp = {
       altura: '1,78m',
       raca: 'Vampira',
       arquetipo: 'Nerd',
+      imagem: 'assets/minerva.png',
+      avatar: 'assets/minerva_avatar.png',
       hp: 12, hpMax: 12,
       pe: 10, peMax: 10,
       st: 0, stMax: 40,
@@ -908,8 +910,6 @@ const MesaApp = {
       raca: 'Animalesco',
       arquetipo: 'Rebelde',
       classe: 'Adivinha',
-      imagem: 'assets/pera.png',
-      avatar: 'assets/pera_avatar.png',
       hp: 12, hpMax: 12,
       pe: 10, peMax: 10,
       st: 0, stMax: 24,
@@ -1160,14 +1160,14 @@ const MesaApp = {
             p.avatar = 'assets/thulita_avatar.png';
           }
 
+          if (p.token === 'N3L8' || p.slot === 2) {
+            p.imagem = 'assets/minerva.png';
+            p.avatar = 'assets/minerva_avatar.png';
+          }
+
           if (p.token === 'R5K1' || p.slot === 3) {
             p.imagem = 'assets/eric.png';
             p.avatar = 'assets/eric_avatar.png';
-          }
-
-          if (p.token === 'H2Q9' || p.slot === 4) {
-            p.imagem = 'assets/pera.png';
-            p.avatar = 'assets/pera_avatar.png';
           }
 
           if (p.token === 'T6D3' || p.slot === 6) {
@@ -1205,6 +1205,7 @@ const MesaApp = {
       if (!this.state.players[1]) {
         this.state.players[1] = {
           id: 3, slot: 2, token: 'N3L8', nome: 'Sanguiminerva "Minerva" Qamari Von Adams', idade: '18 anos', altura: '1,78m', raca: 'Vampira', arquetipo: 'Nerd',
+          imagem: 'assets/minerva.png', avatar: 'assets/minerva_avatar.png',
           hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 40, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd4', 'Mente': 'd16' },
           bonus: [{ origem: 'Raça (Vampira)', desc: '+d4 em testes de Mente e Visão no Escuro (5B)' }, { origem: 'Arquétipo (Nerd)', desc: '+d4 em Testes de Mente' }],
@@ -1235,7 +1236,6 @@ const MesaApp = {
       if (!this.state.players[3]) {
         this.state.players[3] = {
           id: 4, slot: 4, token: 'H2Q9', nome: 'Pera Hylidae da Silva', idade: '18 anos', altura: '1,58m', raca: 'Animalesco', arquetipo: 'Rebelde', classe: 'Adivinha',
-          imagem: 'assets/pera.png', avatar: 'assets/pera_avatar.png',
           hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 24, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Mente': 'd4', 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd16' },
           bonus: [
