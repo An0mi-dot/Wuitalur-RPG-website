@@ -839,8 +839,8 @@ const MesaApp = {
       altura: '1,78m',
       raca: 'Vampira',
       arquetipo: 'Nerd',
-      imagem: 'assets/minerva.png?v=2',
-      avatar: 'assets/minerva_avatar.png?v=2',
+      imagem: 'assets/minerva.png?v=3',
+      avatar: 'assets/minerva_avatar.png?v=3',
       hp: 12, hpMax: 12,
       pe: 10, peMax: 10,
       st: 0, stMax: 40,
@@ -1011,8 +1011,8 @@ const MesaApp = {
       altura: '1,42m',
       raca: 'Dragão Anão',
       arquetipo: 'Gótica',
-      imagem: 'assets/odara.png',
-      avatar: 'assets/odara_avatar.png',
+      imagem: 'assets/odara.png?v=3',
+      avatar: 'assets/odara_avatar.png?v=3',
       hp: 14, hpMax: 14,
       pe: 10, peMax: 10,
       st: 0, stMax: 36,
@@ -1161,8 +1161,8 @@ const MesaApp = {
           }
 
           if (p.token === 'N3L8' || p.slot === 2) {
-            p.imagem = 'assets/minerva.png?v=2';
-            p.avatar = 'assets/minerva_avatar.png?v=2';
+            p.imagem = 'assets/minerva.png?v=3';
+            p.avatar = 'assets/minerva_avatar.png?v=3';
           }
 
           if (p.token === 'R5K1' || p.slot === 3) {
@@ -1176,8 +1176,8 @@ const MesaApp = {
           }
 
           if (p.token === 'Y4M7' || p.slot === 7) {
-            p.imagem = 'assets/odara.png';
-            p.avatar = 'assets/odara_avatar.png';
+            p.imagem = 'assets/odara.png?v=3';
+            p.avatar = 'assets/odara_avatar.png?v=3';
           }
 
           if (p.slot >= 1 && p.slot <= 8) {
@@ -1205,7 +1205,7 @@ const MesaApp = {
       if (!this.state.players[1]) {
         this.state.players[1] = {
           id: 3, slot: 2, token: 'N3L8', nome: 'Sanguiminerva "Minerva" Qamari Von Adams', idade: '18 anos', altura: '1,78m', raca: 'Vampira', arquetipo: 'Nerd',
-          imagem: 'assets/minerva.png?v=2', avatar: 'assets/minerva_avatar.png?v=2',
+          imagem: 'assets/minerva.png?v=3', avatar: 'assets/minerva_avatar.png?v=3',
           hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 40, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd4', 'Mente': 'd16' },
           bonus: [{ origem: 'Raça (Vampira)', desc: '+d4 em testes de Mente e Visão no Escuro (5B)' }, { origem: 'Arquétipo (Nerd)', desc: '+d4 em Testes de Mente' }],
@@ -1290,7 +1290,7 @@ const MesaApp = {
       if (!this.state.players[6]) {
         this.state.players[6] = {
           id: 7, slot: 7, token: 'Y4M7', nome: 'Odara De La Benevidez', idade: '18 anos', altura: '1,42m', raca: 'Dragão Anão', arquetipo: 'Gótica',
-          imagem: 'assets/odara.png', avatar: 'assets/odara_avatar.png',
+          imagem: 'assets/odara.png?v=3', avatar: 'assets/odara_avatar.png?v=3',
           hp: 14, hpMax: 14, pe: 10, peMax: 10, st: 0, stMax: 36, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Força': 'd16', 'Mente': 'd12', 'Saúde': 'd8', 'Vigor': 'd4' },
           bonus: [

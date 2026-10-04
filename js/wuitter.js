@@ -84,7 +84,7 @@ const DEFAULT_ACCOUNTS = [
     handle: '@minerva',
     bio: 'Médica de campo e estudiosa de patologias arcanas. Café sem açúcar e prontuários em dia.',
     avatarLetter: 'M',
-    avatarImage: 'assets/minerva_wuitter.png?v=2',
+    avatarImage: 'assets/minerva_wuitter.png?v=3',
     avatarColor: '#8b5cf6',
     badge: 'none',
     isMaster: false
@@ -174,7 +174,7 @@ const DEFAULT_ACCOUNTS = [
     handle: '@odara',
     bio: 'Guardiã de relíquias antigas e intérprete de línguas esquecidas do arquipélago.',
     avatarLetter: 'O',
-    avatarImage: 'assets/odara_wuitter.png',
+    avatarImage: 'assets/odara_wuitter.png?v=3',
     avatarColor: '#ec4899',
     badge: 'none',
     isMaster: false
