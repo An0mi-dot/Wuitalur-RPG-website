@@ -1,12 +1,13 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Campanha Principal — Wuitalur RPG</title>
+  <title>Dossiê da Campanha • Fragktus & Mina de Prata — Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/variables.css">
-  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/variables.css?v=3.1.0">
+  <link rel="stylesheet" href="css/components.css?v=3.1.0">
+  <link rel="stylesheet" href="css/campaign.css?v=3.1.0">
 </head>
 <body>
 
@@ -20,7 +21,8 @@
       </div>
     </div>
     <nav class="sidebar-nav">
-            <div class="sidebar-section-title">Extras</div>
+      <div class="sidebar-section-title">Extras</div>
+      <a href="campanha.html" class="sidebar-link active" style="color: #ef4444;"><span class="icon"></span> Campanha</a>
       <a href="suplementos.html" class="sidebar-link"><span class="icon"></span> Suplementos</a>
       <a href="mesa.html" class="sidebar-link" style="color: #ff7700;"><span class="icon"></span> Mesa Virtual</a>
       <a href="wuitter.html" class="sidebar-link" style="color: #1d9bf0;"><span class="icon"></span> Wuitter</a>
@@ -56,10 +58,11 @@
   <div class="main-wrapper">
 
     <header class="page-header">
-      <h1>Campanha Principal</h1>
+      <h1>Dossiê da Campanha • Fragktus & Mina de Prata</h1>
       <div style="position:relative">
         <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
         <div class="wiki-dropdown" id="wiki-menu-dropdown">
+          <a href="mesa.html" class="wiki-dropdown-item"><span class="icon">&#x25B6;</span> Mesa Virtual</a>
           <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
           <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
           <a href="criador.html" class="wiki-dropdown-item"><span class="icon">&#x270E;</span> Criador de Ficha</a>
@@ -71,18 +74,27 @@
 
       <section class="subsection">
         <div class="section-heading">
-          <h2>A Purificação</h2>
-          <p>A história atual e principal do RPG.</p>
+          <h2>A Purificação • Central de Consulta do Mestre</h2>
+          <p>Consulta canônica de Áreas (Locais de Investigação, Pontos de Interesse e Notas do Mestre) e Dossiê de NPCs para condução fluida das sessões de jogo.</p>
         </div>
 
+        <div class="campaign-dashboard">
+          <!-- SELETOR DE ABAS: ÁREAS / NPCS -->
+          <nav id="campaign-tab-nav" class="campaign-tab-nav"></nav>
+
+          <!-- CONTEÚDO PRINCIPAL (ÁREAS OU NPCS) -->
+          <div id="campaign-view-container" class="campaign-view-container"></div>
+        </div>
       </section>
 
     </main>
   </div>
 </div>
 
-<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">☰</button>
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
 
 <script src="js/main.js"></script>
+<script src="js/campaign-data.js?v=3.1.0"></script>
+<script src="js/campaign.js?v=3.1.0"></script>
 </body>
 </html>

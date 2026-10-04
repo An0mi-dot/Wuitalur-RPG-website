@@ -3512,11 +3512,19 @@ const MesaAreaManager = {
     const isMaster = MesaApp && MesaApp.state && MesaApp.state.isMaster;
     const chooseAreaBtn = document.getElementById('nav-choose-area-btn');
     const mobileChooseAreaItem = document.getElementById('mobile-choose-area-item');
+    const npcsBtn = document.getElementById('nav-npcs-btn');
+    const mobileNpcsItem = document.getElementById('mobile-npcs-item');
     if (chooseAreaBtn) {
       chooseAreaBtn.style.display = isMaster ? 'inline-flex' : 'none';
     }
     if (mobileChooseAreaItem) {
       mobileChooseAreaItem.style.display = isMaster ? 'flex' : 'none';
+    }
+    if (npcsBtn) {
+      npcsBtn.style.display = isMaster ? 'inline-flex' : 'none';
+    }
+    if (mobileNpcsItem) {
+      mobileNpcsItem.style.display = isMaster ? 'flex' : 'none';
     }
   },
 
@@ -3764,8 +3772,11 @@ const MesaAreaManager = {
 
   openAboutAreaModal(areaId = null) {
     const targetId = areaId || this.currentAreaId;
-    const area = MESA_AREAS[targetId];
+    const area = (window.CAMPAIGN_AREAS && window.CAMPAIGN_AREAS[targetId]) || MESA_AREAS[targetId];
     if (!area) return;
+
+    const areaName = area.nome || area.name;
+    const pdiCount = (area.pontos_de_interesse && area.pontos_de_interesse.length) || (area.pois && area.pois.length) || 10;
 
     // Cabeçalho da Área
     const header = document.getElementById('area-info-header');
@@ -3774,13 +3785,13 @@ const MesaAreaManager = {
         <div class="area-header-identity">
           <div class="area-header-symbol">${area.svgIcon}</div>
           <div class="area-header-titles">
-            <h2>${area.name}</h2>
+            <h2>${areaName}</h2>
             <p>${area.district}</p>
           </div>
         </div>
         <div class="area-header-meta">
-          <span class="area-meta-tag ${area.dangerLevelClass}">${area.dangerLevel}</span>
-          <span class="area-meta-tag">10 Pontos de Interesse</span>
+          <span class="area-meta-tag ${area.dangerLevelClass || 'warning'}">${area.dangerLevel}</span>
+          <span class="area-meta-tag">${pdiCount} Pontos de Interesse</span>
         </div>
       `;
     }
@@ -3788,18 +3799,63 @@ const MesaAreaManager = {
     // Informações Públicas (Visíveis a todos)
     const publicInfo = document.getElementById('area-public-info');
     if (publicInfo) {
-      publicInfo.innerHTML = `
-        <h4>ATMOSFERA & CENÁRIO</h4>
-        <p>${area.ambience}</p>
-        <h4 style="margin-top: 14px;">HISTÓRIA & CONTEXTO LOCAL</h4>
-        <p>${area.lore}</p>
-        <div class="area-rumor-box">
-          <strong>RUMOR INVESTIGATIVO:</strong> ${area.rumor}
+      const atmosfera = area.resumo_atmosfera || area.ambience || '';
+      const acesso = area.requisitos_acesso ? `
+        <div style="background: rgba(30, 24, 10, 0.6); border: 1.5px solid rgba(245, 158, 11, 0.4); border-left: 4px solid #f59e0b; border-radius: 4px; padding: 12px 14px; margin-top: 12px;">
+          <strong style="color: #fbbf24; font-size: 0.78rem; text-transform: uppercase; display: block; margin-bottom: 4px;">REQUISITOS DE ACESSO & CONDIÇÕES:</strong>
+          <span style="color: #fef3c7; font-size: 0.86rem; line-height: 1.45;">${area.requisitos_acesso}</span>
         </div>
+      ` : '';
+
+      // NPCs presentes com botões clicáveis para abrir o modal de NPC
+      let npcsHtml = '';
+      if (area.npcs_presentes && area.npcs_presentes.length > 0) {
+        npcsHtml = `
+          <div style="margin-top: 14px;">
+            <strong style="color: #94a3b8; font-size: 0.76rem; text-transform: uppercase; display: block; margin-bottom: 6px;">NPCS PRESENTES NESTA ÁREA (CLIQUE PARA ABRIR DOSSIÊ):</strong>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              ${area.npcs_presentes.map(npcId => {
+                const npc = (window.CAMPAIGN_NPCS && window.CAMPAIGN_NPCS[npcId]);
+                const npcName = npc ? npc.nome.split('•')[0].trim() : npcId;
+                return `<button type="button" class="mesa-npc-tag-btn" onclick="MesaAreaManager.openNpcModal('${npcId}')">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  ${npcName}
+                </button>`;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // Conexões de saída
+      let exitsHtml = '';
+      if (area.conexoes_saida && area.conexoes_saida.length > 0) {
+        exitsHtml = `
+          <div style="margin-top: 14px;">
+            <strong style="color: #ff9933; font-size: 0.76rem; text-transform: uppercase; display: block; margin-bottom: 6px;">ROTAS & CONEXÕES DE SAÍDA:</strong>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              ${area.conexoes_saida.map(ex => {
+                return `<button type="button" class="mesa-exit-btn" onclick="MesaAreaManager.openAboutAreaModal('${ex.area_id}')" title="${ex.gancho}">
+                  ${ex.nome} &rarr;
+                </button>`;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      publicInfo.innerHTML = `
+        <h4 style="margin: 0 0 6px 0; color: var(--area-accent, var(--mesa-orange)); font-size: 0.85rem; text-transform: uppercase;">ATMOSFERA & CENÁRIO</h4>
+        <p style="margin: 0; font-size: 0.9rem; line-height: 1.55; color: #e4e4e7;">${atmosfera}</p>
+        ${acesso}
+        ${npcsHtml}
+        ${exitsHtml}
+        ${area.lore ? `<h4 style="margin-top: 14px;">HISTÓRIA & CONTEXTO LOCAL</h4><p>${area.lore}</p>` : ''}
+        ${area.rumor ? `<div class="area-rumor-box"><strong>RUMOR INVESTIGATIVO:</strong> ${area.rumor}</div>` : ''}
       `;
     }
 
-    // Dossiê do Mestre (10 Pontos de Interesse Estruturados: Cabeçalho, Quadro de Perícias e Descrição Contextual)
+    // Dossiê do Mestre (Pontos de Interesse Estruturados)
     const isMaster = MesaApp && MesaApp.state && MesaApp.state.isMaster;
     const masterDossier = document.getElementById('area-master-dossier');
     const cardsContainer = document.getElementById('area-poi-cards-container');
@@ -3813,69 +3869,63 @@ const MesaAreaManager = {
       cardsContainer.innerHTML = '';
       if (quickNav) quickNav.innerHTML = '';
 
-      area.pois.forEach((poi) => {
-        // 1. Botão no QuickNav para navegação instantânea
+      const pdiList = area.pontos_de_interesse || area.pois || [];
+      pdiList.forEach((poi, idx) => {
+        const num = poi.num || (idx + 1);
+        const title = (poi.cabecalho && poi.cabecalho.nome) || poi.title || `Ponto de Interesse ${num}`;
+        const desc = (poi.cabecalho && poi.cabecalho.descricao_publica) || poi.headerDesc || '';
+        const masterNotes = poi.notas_mestre || poi.context || '';
+
+        // 1. Botão QuickNav
         if (quickNav) {
           const navBtn = document.createElement('button');
           navBtn.className = 'poi-nav-btn';
-          const shortTitle = poi.title.length > 20 ? poi.title.substring(0, 20) + '...' : poi.title;
-          navBtn.textContent = `#${poi.num} ${shortTitle}`;
-          navBtn.title = poi.title;
+          const shortTitle = title.length > 20 ? title.substring(0, 20) + '...' : title;
+          navBtn.textContent = `#${num} ${shortTitle}`;
+          navBtn.title = title;
           navBtn.onclick = () => {
-            const el = document.getElementById(`poi-card-${poi.num}`);
+            const el = document.getElementById(`poi-card-${num}`);
             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
           };
           quickNav.appendChild(navBtn);
         }
 
-        // 2. Quadro de Perícias com agrupamento elegante por perícia e cores suaves
-        const skillGroups = [];
-        poi.skills.forEach(item => {
-          if (!skillGroups.length || skillGroups[skillGroups.length - 1].skill !== item.skill) {
-            skillGroups.push({ skill: item.skill, items: [item] });
-          } else {
-            skillGroups[skillGroups.length - 1].items.push(item);
-          }
-        });
-
+        // 2. Quadro de Testes de Perícias
+        const tests = poi.testes || (poi.skills ? poi.skills.map(s => ({ pericia: s.skill, ct_dt: s.dt, informacao_revelada: s.info })) : []);
         let rowsHtml = '';
-        skillGroups.forEach((group, gIdx) => {
-          const tintClass = `skill-tint-${gIdx % 4}`;
-          group.items.forEach((item, itemIdx) => {
-            rowsHtml += `<tr class="${tintClass}">`;
-            if (itemIdx === 0) {
-              const rowspanAttr = group.items.length > 1 ? ` rowspan="${group.items.length}"` : '';
-              rowsHtml += `<td class="poi-skill-cell"${rowspanAttr}>${item.skill}</td>`;
-            }
-            rowsHtml += `
-              <td class="poi-dt-cell">${item.dt}</td>
-              <td class="poi-info-cell">${item.info}</td>
-            </tr>`;
-          });
+        tests.forEach((t, tIdx) => {
+          const tintClass = `skill-tint-${tIdx % 4}`;
+          rowsHtml += `
+            <tr class="${tintClass}">
+              <td class="poi-skill-cell">${t.pericia}</td>
+              <td class="poi-dt-cell"><span class="mesa-pdi-dt-badge">DT ${t.ct_dt}</span></td>
+              <td class="poi-info-cell">${t.informacao_revelada}</td>
+            </tr>
+          `;
         });
 
-        // 3. Card do Ponto de Interesse completo (1:1 com o modelo da referência oficial)
+        // 3. Card do Ponto de Interesse
         const card = document.createElement('div');
         card.className = 'poi-card';
-        card.id = `poi-card-${poi.num}`;
+        card.id = `poi-card-${num}`;
         card.innerHTML = `
-          <!-- CABEÇALHO -->
+          <!-- CABEÇALHO DO PDI -->
           <div class="poi-header-block">
             <div class="poi-header-badge-row">
-              <span class="poi-index-badge">PONTO DE INTERESSE ${poi.num < 10 ? '0' + poi.num : poi.num}</span>
+              <span class="poi-index-badge">PONTO DE INTERESSE ${num < 10 ? '0' + num : num}</span>
             </div>
-            <h4 class="poi-header-title">${poi.title}</h4>
-            <p class="poi-header-desc">${poi.headerDesc}</p>
+            <h4 class="poi-header-title">${title}</h4>
+            <p class="poi-header-desc">${desc}</p>
           </div>
 
-          <!-- QUADRO DE PERÍCIAS -->
+          <!-- QUADRO DE TESTES -->
           <div class="poi-skills-table-wrap">
             <table class="poi-skills-table">
               <thead>
                 <tr>
                   <th class="th-pericia">Perícia</th>
-                  <th class="th-dt">DT</th>
-                  <th class="th-info">Informação</th>
+                  <th class="th-dt">Classe de Teste (CT/DT)</th>
+                  <th class="th-info">Informação Revelada</th>
                 </tr>
               </thead>
               <tbody>
@@ -3884,17 +3934,14 @@ const MesaAreaManager = {
             </table>
           </div>
 
-          <!-- DESCRIÇÃO CONTEXTUAL -->
-          <div class="poi-context-block">
-            <div class="poi-book-icon-wrap" title="Descrição Contextual">
-              <svg class="poi-book-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 1-3-3H2z"></path>
-                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-              </svg>
+          <!-- NOTAS DO MESTRE (DESTAQUE VISUAL DE LEITURA RÁPIDA) -->
+          <div class="mesa-master-notes-box">
+            <div class="mesa-master-notes-icon" title="Segredo do Mestre">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
             </div>
-            <div class="poi-context-content">
-              <span class="poi-context-label">DESCRIÇÃO CONTEXTUAL</span>
-              <p>${poi.context}</p>
+            <div style="flex: 1;">
+              <span class="mesa-master-notes-label">[NOTAS DO MESTRE • SEGREDO CONFIDENCIAL]</span>
+              <p style="margin: 0; font-size: 0.88rem; color: #fee2e2; line-height: 1.55;">${masterNotes}</p>
             </div>
           </div>
         `;
@@ -3907,9 +3954,91 @@ const MesaAreaManager = {
     if (modal) modal.classList.add('active');
   },
 
+  openNpcModal(npcId = null) {
+    const targetId = npcId || 'gustavo';
+    const npcs = window.CAMPAIGN_NPCS || {};
+    const npc = npcs[targetId] || Object.values(npcs)[0];
+    if (!npc) return;
+
+    const modal = document.getElementById('npc-dossier-modal');
+    const content = document.getElementById('npc-dossier-content');
+    if (!modal || !content) return;
+
+    let roleClass = 'aliado';
+    if (npc.ligacao_misterio.toLowerCase().includes('cúmplice') || npc.ligacao_misterio.toLowerCase().includes('mentora')) {
+      roleClass = 'cumplice';
+    } else if (npc.ligacao_misterio.toLowerCase().includes('vítima')) {
+      roleClass = 'vitima';
+    }
+
+    // Seletor rápido de NPCs no topo
+    let npcTabsHtml = '';
+    Object.values(npcs).forEach(n => {
+      const isSelected = n.id === targetId;
+      const shortName = n.nome.split('•')[0].trim();
+      npcTabsHtml += `
+        <button type="button" class="mesa-btn ink-tag ${isSelected ? 'primary' : ''}" style="font-size: 0.78rem; padding: 4px 10px;" onclick="MesaAreaManager.openNpcModal('${n.id}')">
+          ${shortName}
+        </button>
+      `;
+    });
+
+    content.innerHTML = `
+      <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; border-bottom: 1px dashed rgba(255, 255, 255, 0.15); padding-bottom: 10px;">
+        ${npcTabsHtml}
+      </div>
+
+      <div style="border-bottom: 2px solid #38bdf8; padding-bottom: 12px; margin-bottom: 16px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+          <span style="font-size: 0.72rem; font-weight: 800; color: #94a3b8; background: rgba(255, 255, 255, 0.08); padding: 2px 7px; border-radius: 3px;">NPC ID: ${npc.id}</span>
+          <span style="font-size: 0.74rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid #38bdf8;">${npc.ligacao_misterio.split('.')[0]}</span>
+        </div>
+        <h2 style="margin: 0; font-size: 1.25rem; font-weight: 800; color: #ffffff;">${npc.nome}</h2>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div>
+          <span style="font-size: 0.72rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; display: block; margin-bottom: 3px;">Personalidade & Postura</span>
+          <p style="margin: 0; font-size: 0.88rem; color: #e2e8f0; line-height: 1.55;">${npc.personalidade}</p>
+        </div>
+
+        <div>
+          <span style="font-size: 0.72rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; display: block; margin-bottom: 3px;">História Resumida</span>
+          <p style="margin: 0; font-size: 0.88rem; color: #cbd5e1; line-height: 1.55;">${npc.historia_resumida}</p>
+        </div>
+
+        <div>
+          <span style="font-size: 0.72rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; display: block; margin-bottom: 3px;">Informação Livre (Diálogo Casual)</span>
+          <p style="margin: 0; font-size: 0.88rem; color: #e2e8f0; line-height: 1.55;">${npc.informacao_livre}</p>
+        </div>
+
+        <!-- SEGREDO ÚTIL EM DESTAQUE -->
+        <div style="background: rgba(35, 12, 12, 0.75); border: 1.5px solid #ef4444; border-left: 4px solid #ef4444; border-radius: 6px; padding: 14px;">
+          <div style="font-size: 0.75rem; font-weight: 900; color: #fca5a5; text-transform: uppercase; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-6 6l7-7-2-2-7 7v4h4z"></path><path d="M3 15v6h6l11-11-6-6L3 15z"></path></svg>
+            [SEGREDO ÚTIL • PISTA CRUCIAL]
+          </div>
+          <p style="margin: 0; font-size: 0.9rem; color: #fee2e2; line-height: 1.55;">${npc.segredo_util}</p>
+        </div>
+
+        <!-- GATILHO DE REVELAÇÃO EM DESTAQUE -->
+        <div style="background: rgba(30, 24, 10, 0.75); border: 1.5px solid #f59e0b; border-left: 4px solid #f59e0b; border-radius: 6px; padding: 14px;">
+          <div style="font-size: 0.75rem; font-weight: 900; color: #fde68a; text-transform: uppercase; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            [GATILHO DE REVELAÇÃO • REQUISITO EXATO]
+          </div>
+          <p style="margin: 0; font-size: 0.9rem; color: #fef3c7; line-height: 1.55;">${npc.gatilho_revelacao}</p>
+        </div>
+      </div>
+    `;
+
+    modal.classList.add('active');
+  },
+
   closeModals() {
     MesaApp.closeModal('area-map-modal');
     MesaApp.closeModal('area-info-modal');
+    MesaApp.closeModal('npc-dossier-modal');
   }
 };
 

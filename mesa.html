@@ -176,6 +176,15 @@
           <span id="nav-about-area-label">Sobre: Mina de Prata</span>
         </button>
 
+        <!-- Botão Dossiê de NPCs (Exclusivo do Mestre) -->
+        <button id="nav-npcs-btn" class="ink-tag" onclick="MesaAreaManager.openNpcModal()" style="display: none; border-color: #38bdf8; color: #38bdf8;" title="Consultar Dossiê de NPCs da Campanha">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span>Dossiê de NPCs</span>
+        </button>
+
         <div class="token-btn-wrapper" style="position: relative; display: inline-flex;">
           <button id="nav-token-btn" class="ink-tag" onclick="MesaApp.openTokenModal()">
             <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -401,6 +410,17 @@
       </div>
     </div>
 
+    <!-- Modal de Dossiê de NPC (Consulta Exclusiva de Sessão / Mestre) -->
+    <div id="npc-dossier-modal" class="mesa-modal-overlay">
+      <div class="mesa-modal ink-modal npc-dossier-modal-dialog">
+        <button class="mesa-modal-close" onclick="MesaApp.closeModal('npc-dossier-modal')">&times;</button>
+        <div class="ink-ribbon-title" style="margin-bottom: 14px;">DOSSIÊ CONFIDENCIAL DE NPC • CAMPANHA</div>
+        <div id="npc-dossier-content" class="npc-dossier-content">
+          <!-- Renderizado dinamicamente via MesaAreaManager.openNpcModal() -->
+        </div>
+      </div>
+    </div>
+
     <!-- BACKDROP PARA FECHAR O MENU MOBILE AO CLICAR FORA -->
     <div id="mesa-mobile-backdrop" class="mesa-mobile-backdrop" onclick="MesaMobileMenu.close()"></div>
 
@@ -488,6 +508,15 @@
             <span>Escolher Área (Mestre)</span>
           </button>
 
+          <!-- Dossiê de NPCs - Mestre (Mobile) -->
+          <button id="mobile-npcs-item" class="mobile-menu-item master-item" onclick="MesaAreaManager.openNpcModal(); MesaMobileMenu.close()" style="display: none; color: #38bdf8;">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Dossiê de NPCs (Mestre)</span>
+          </button>
+
           <!-- Token de Autenticação -->
           <button class="mobile-menu-item" onclick="MesaApp.openTokenModal(); MesaMobileMenu.close()">
             <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -496,6 +525,15 @@
             <span id="mobile-token-label">Autenticar Token</span>
             <span id="mobile-token-alert-pip" class="token-alert-pip" style="margin-left: auto;">!</span>
           </button>
+
+          <!-- Dossiê Completo da Campanha -->
+          <a href="campanha.html" target="_blank" class="mobile-menu-item" style="color: #a855f7;">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+            <span>Dossiê da Campanha (Wiki)</span>
+          </a>
 
           <!-- Voltar ao Menu Principal -->
           <a href="index.html" class="mobile-menu-item exit-item">
@@ -509,6 +547,7 @@
       </div>
     </div>
 
+<script src="js/campaign-data.js?v=3.1.0"></script>
 <script src="js/mesa.js?v=3.1.0"></script>
 </body>
 </html>

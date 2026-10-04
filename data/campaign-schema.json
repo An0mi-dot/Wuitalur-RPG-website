@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Wuitalur Campaign Schema",
+  "description": "Schemas padronizados para Áreas de Investigação e NPCs da campanha Wuitalur RPG / Fios do Medo.",
+  "definitions": {
+    "TestePericia": {
+      "type": "object",
+      "required": ["pericia", "ct_dt", "informacao_revelada"],
+      "properties": {
+        "pericia": {
+          "type": "string",
+          "description": "Nome da perícia utilizada para o teste (ex: Investigação, Percepção, Ladinagem, Ciências)."
+        },
+        "ct_dt": {
+          "type": ["integer", "string"],
+          "description": "Classe de Teste ou Dificuldade do Teste (CT / DT)."
+        },
+        "informacao_revelada": {
+          "type": "string",
+          "description": "A pista ou detalhe factual revelado aos jogadores caso o teste seja bem-sucedido."
+        }
+      }
+    },
+    "PontoDeInteresse": {
+      "type": "object",
+      "required": ["cabecalho", "testes", "notas_mestre"],
+      "properties": {
+        "cabecalho": {
+          "type": "object",
+          "required": ["nome", "descricao_publica"],
+          "properties": {
+            "nome": {
+              "type": "string",
+              "description": "Nome do Ponto de Interesse (PdI)."
+            },
+            "descricao_publica": {
+              "type": "string",
+              "description": "Descrição pública e sensorial imediata fornecida aos jogadores ao examinarem o local."
+            }
+          }
+        },
+        "testes": {
+          "type": "array",
+          "description": "Tabela ou lista de testes de perícia com suas respectivas DTs e informações reveladas.",
+          "items": {
+            "$ref": "#/definitions/TestePericia"
+          }
+        },
+        "notas_mestre": {
+          "type": "string",
+          "description": "O segredo de bastidores exclusivo do Mestre (conexão com a conspiração e contexto profundo)."
+        }
+      }
+    },
+    "ConexaoSaida": {
+      "type": "object",
+      "required": ["area_id", "nome", "gancho"],
+      "properties": {
+        "area_id": {
+          "type": "string",
+          "description": "ID da área de destino conectada."
+        },
+        "nome": {
+          "type": "string",
+          "description": "Nome da área de destino."
+        },
+        "gancho": {
+          "type": "string",
+          "description": "Como os investigadores podem descobrir ou transitar até a outra área a partir deste local."
+        }
+      }
+    },
+    "Area": {
+      "type": "object",
+      "required": [
+        "id",
+        "nome",
+        "resumo_atmosfera",
+        "requisitos_acesso",
+        "npcs_presentes",
+        "pontos_de_interesse",
+        "conexoes_saida"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Identificador único da área (ex: colegio-primordio)."
+        },
+        "nome": {
+          "type": "string",
+          "description": "Nome oficial da área."
+        },
+        "resumo_atmosfera": {
+          "type": "string",
+          "description": "Descrição visual e sensorial imediata narrada aos jogadores ao chegarem."
+        },
+        "requisitos_acesso": {
+          "type": "string",
+          "description": "Condições, horários ou itens necessários para entrar ou explorar a área."
+        },
+        "npcs_presentes": {
+          "type": "array",
+          "description": "Lista de IDs dos NPCs que frequentam ou residem nesta localidade.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pontos_de_interesse": {
+          "type": "array",
+          "description": "Lista de Pontos de Interesse (PdIs) da área.",
+          "items": {
+            "$ref": "#/definitions/PontoDeInteresse"
+          }
+        },
+        "conexoes_saida": {
+          "type": "array",
+          "description": "Links e ganchos narrativos apontando para outras áreas acessíveis.",
+          "items": {
+            "$ref": "#/definitions/ConexaoSaida"
+          }
+        }
+      }
+    },
+    "NPC": {
+      "type": "object",
+      "required": [
+        "id",
+        "nome",
+        "personalidade",
+        "historia_resumida",
+        "informacao_livre",
+        "segredo_util",
+        "gatilho_revelacao",
+        "ligacao_misterio"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Identificador único do NPC (ex: gustavo)."
+        },
+        "nome": {
+          "type": "string",
+          "description": "Nome completo e papel social do NPC."
+        },
+        "personalidade": {
+          "type": "string",
+          "description": "Traços de comportamento, postura e humor."
+        },
+        "historia_resumida": {
+          "type": "string",
+          "description": "Contexto biográfico e motivações do personagem."
+        },
+        "informacao_livre": {
+          "type": "string",
+          "description": "O que o NPC revela facilmente em conversas casuais e perguntas diretas."
+        },
+        "segredo_util": {
+          "type": "string",
+          "description": "A pista crucial e oculta que o NPC esconde dos investigadores."
+        },
+        "gatilho_revelacao": {
+          "type": "string",
+          "description": "Requisito exato para o NPC entregar o segredo (teste de perícia, chantagem, item específico)."
+        },
+        "ligacao_misterio": {
+          "type": "string",
+          "description": "Papel do NPC na conspiração (ex: Aliado-Chave, Cúmplice, Vítima, etc.)."
+        }
+      }
+    }
+  }
+}
