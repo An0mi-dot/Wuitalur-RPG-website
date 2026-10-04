@@ -60,12 +60,12 @@
     <header class="page-header">
       <h1>Dossiê da Campanha • Fragktus & Mina de Prata</h1>
       <div style="position:relative">
-        <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
+        <button class="wiki-btn" id="wiki-menu-btn" title="Menu" aria-label="Abrir menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
         <div class="wiki-dropdown" id="wiki-menu-dropdown">
-          <a href="mesa.html" class="wiki-dropdown-item"><span class="icon">&#x25B6;</span> Mesa Virtual</a>
-          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
-          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
-          <a href="criador.html" class="wiki-dropdown-item"><span class="icon">&#x270E;</span> Criador de Ficha</a>
+          <a href="mesa.html" class="wiki-dropdown-item"><span class="icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></span> Mesa Virtual</a>
+          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg></span> Changelog</a>
+          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span> Glossário</a>
+          <a href="criador.html" class="wiki-dropdown-item"><span class="icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></span> Criador de Ficha</a>
         </div>
       </div>
     </header>
@@ -79,6 +79,9 @@
         </div>
 
         <div class="campaign-dashboard">
+          <!-- BANNER SUPERIOR DE AUTENTICAÇÃO DO MESTRE -->
+          <div id="campaign-auth-banner" class="campaign-auth-banner"></div>
+
           <!-- SELETOR DE ABAS: ÁREAS / NPCS -->
           <nav id="campaign-tab-nav" class="campaign-tab-nav"></nav>
 
@@ -88,6 +91,33 @@
       </section>
 
     </main>
+  </div>
+</div>
+
+<!-- MODAL DE AUTENTICAÇÃO DO MESTRE -->
+<div id="campaign-auth-modal" class="campaign-modal-backdrop" style="display: none;">
+  <div class="campaign-modal-dialog">
+    <div class="campaign-modal-header">
+      <div class="modal-title-row">
+        <svg class="modal-title-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        <h3>Autenticação do Mestre</h3>
+      </div>
+      <button class="campaign-modal-close" onclick="CampaignApp.closeAuthModal()" aria-label="Fechar">&times;</button>
+    </div>
+    <div class="campaign-modal-body">
+      <p class="modal-instruction">Insira seu Token de Mestre para desbloquear o Dossiê completo de NPCs, segredos confidenciais e notas de bastidores.</p>
+      <form id="campaign-auth-form" onsubmit="event.preventDefault(); CampaignApp.submitModalToken();">
+        <div class="form-group">
+          <label for="campaign-modal-token-input">Token do Mestre</label>
+          <input type="text" id="campaign-modal-token-input" placeholder="Ex: Z9K4" autocomplete="off" autocapitalize="characters" spellcheck="false">
+        </div>
+        <div id="campaign-modal-feedback" class="gate-feedback-msg" style="display: none;"></div>
+        <div class="modal-actions-row">
+          <button type="button" class="btn-cancel" onclick="CampaignApp.closeAuthModal()">Cancelar</button>
+          <button type="submit" class="btn-submit-token" id="campaign-modal-submit-btn">Desbloquear Segredos</button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 

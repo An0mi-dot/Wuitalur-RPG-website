@@ -3514,6 +3514,7 @@ const MesaAreaManager = {
     const mobileChooseAreaItem = document.getElementById('mobile-choose-area-item');
     const npcsBtn = document.getElementById('nav-npcs-btn');
     const mobileNpcsItem = document.getElementById('mobile-npcs-item');
+    const mobileCampaignItem = document.getElementById('mobile-campaign-item');
     if (chooseAreaBtn) {
       chooseAreaBtn.style.display = isMaster ? 'inline-flex' : 'none';
     }
@@ -3525,6 +3526,9 @@ const MesaAreaManager = {
     }
     if (mobileNpcsItem) {
       mobileNpcsItem.style.display = isMaster ? 'flex' : 'none';
+    }
+    if (mobileCampaignItem) {
+      mobileCampaignItem.style.display = isMaster ? 'flex' : 'none';
     }
   },
 
@@ -3807,12 +3811,13 @@ const MesaAreaManager = {
         </div>
       ` : '';
 
-      // NPCs presentes com botões clicáveis para abrir o modal de NPC
+      // NPCs presentes com botões clicáveis para abrir o modal de NPC (EXCLUSIVO DO MESTRE)
+      const isMasterUser = MesaApp && MesaApp.state && MesaApp.state.isMaster;
       let npcsHtml = '';
-      if (area.npcs_presentes && area.npcs_presentes.length > 0) {
+      if (isMasterUser && area.npcs_presentes && area.npcs_presentes.length > 0) {
         npcsHtml = `
           <div style="margin-top: 14px;">
-            <strong style="color: #94a3b8; font-size: 0.76rem; text-transform: uppercase; display: block; margin-bottom: 6px;">NPCS PRESENTES NESTA ÁREA (CLIQUE PARA ABRIR DOSSIÊ):</strong>
+            <strong style="color: #38bdf8; font-size: 0.76rem; text-transform: uppercase; display: block; margin-bottom: 6px;">[MESTRE] NPCS PRESENTES NESTA ÁREA (CLIQUE PARA ABRIR DOSSIÊ):</strong>
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
               ${area.npcs_presentes.map(npcId => {
                 const npc = (window.CAMPAIGN_NPCS && window.CAMPAIGN_NPCS[npcId]);
@@ -3955,6 +3960,11 @@ const MesaAreaManager = {
   },
 
   openNpcModal(npcId = null) {
+    if (!MesaApp || !MesaApp.state || !MesaApp.state.isMaster) {
+      alert("[ACESSO RESTRITO] O Dossiê de NPCs e seus segredos são confidenciais e exclusivos do Mestre. Autentique seu Token de Mestre para consultar.");
+      return;
+    }
+
     const targetId = npcId || 'gustavo';
     const npcs = window.CAMPAIGN_NPCS || {};
     const npc = npcs[targetId] || Object.values(npcs)[0];
