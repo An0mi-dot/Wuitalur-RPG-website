@@ -7,6 +7,43 @@
   box-sizing: border-box;
 }
 
+/* Registros CSS para interpolação nativa suave de cores e gradientes de área */
+@property --area-ambient-1 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #c2410c;
+}
+@property --area-ambient-2 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #7c2d12;
+}
+@property --area-ambient-3 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #3a1005;
+}
+@property --area-ambient-dark {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #120300;
+}
+@property --area-accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f97316;
+}
+@property --area-glow {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgba(249, 115, 22, 0.4);
+}
+@property --area-accent-trans {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgba(249, 115, 22, 0.4);
+}
+
 :root {
   --mesa-orange: #ff5500;
   --mesa-orange-glow: #ff7700;
@@ -42,6 +79,14 @@ html, body {
   font-family: var(--font-base, 'Inter', sans-serif);
   background: #140300;
   user-select: none;
+  transition: --area-ambient-1 1.4s cubic-bezier(0.4, 0, 0.2, 1),
+              --area-ambient-2 1.4s cubic-bezier(0.4, 0, 0.2, 1),
+              --area-ambient-3 1.4s cubic-bezier(0.4, 0, 0.2, 1),
+              --area-ambient-dark 1.4s cubic-bezier(0.4, 0, 0.2, 1),
+              --area-accent 1.4s cubic-bezier(0.4, 0, 0.2, 1),
+              --area-glow 1.4s cubic-bezier(0.4, 0, 0.2, 1),
+              --area-accent-trans 1.4s cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 1.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Ícone SVG Vectorial Nanquim */
@@ -56,7 +101,7 @@ html, body {
   vertical-align: middle;
 }
 
-/* ---- HALFTONE BACKGROUND COM ENTRADA SUAVE ---- */
+/* ---- HALFTONE BACKGROUND COM TRANSIÇÃO SUAVE DE CORES ---- */
 .mesa-body::before {
   content: '';
   position: absolute;
@@ -65,7 +110,7 @@ html, body {
     radial-gradient(circle at 35% 45%, var(--area-ambient-1, var(--mesa-orange)) 0%, var(--area-ambient-2, var(--mesa-ink-red)) 45%, var(--area-ambient-3, var(--mesa-orange-dark)) 75%, var(--area-ambient-dark, #120200) 100%);
   z-index: 0;
   animation: mesaBgPulse 1s cubic-bezier(0.16, 1, 0.3, 1) both;
-  transition: background 0.8s ease;
+  transition: background 1.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes mesaBgPulse {
@@ -89,6 +134,33 @@ html, body {
 @keyframes mesaDotsRise {
   0% { background-position: 0 0; }
   100% { background-position: 0 -60px; }
+}
+
+/* ---- CAMADA DE SOMBRAS DE ÁRVORES — FUNDO DA MATA DO NORTE ---- */
+.mesa-forest-backdrop {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.4s ease;
+  overflow: hidden;
+}
+
+body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
+  opacity: 0.95;
+  visibility: visible;
+}
+
+.forest-trees-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.85));
 }
 
 /* ---- MOLDURA DE TINTA NANQUIM NO PERÍMETRO ---- */
@@ -4084,84 +4156,159 @@ body.mesa-body.area-refugio-gustavo {
   --area-badge-bg: rgba(239, 68, 68, 0.15);
 }
 
-/* 2. MODAL DE ESCOLHA DE ÁREA / MAPA */
+/* 2. MODAL DE ESCOLHA DE ÁREA / MAPA DE ESTRADAS INTERATIVO */
 .area-map-modal-dialog {
-  max-width: 900px !important;
-  width: 94% !important;
-  max-height: 88vh;
+  max-width: 1040px !important;
+  width: 95% !important;
+  max-height: 92vh;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--mesa-orange) #080200;
 }
 
-.area-map-subtitle {
-  font-size: 0.82rem;
-  color: #a1a1aa;
-  margin: -10px 0 18px 0;
-  text-align: center;
-  letter-spacing: 0.04em;
-  font-family: monospace;
-}
-
-.area-map-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 14px;
-  margin-bottom: 20px;
-}
-
-.area-map-card {
-  background: rgba(18, 6, 2, 0.75);
-  border: 2px solid rgba(255, 85, 0, 0.3);
-  border-radius: 4px;
-  padding: 16px 14px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.22s ease-in-out;
+.area-map-container {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  gap: 12px;
 }
 
-.area-map-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--card-accent, var(--mesa-orange));
-  background: rgba(28, 10, 4, 0.9);
-  box-shadow: 0 6px 20px var(--card-glow, rgba(255, 85, 0, 0.35));
+/* Tabuleiro Cartográfico do Mapa de Estradas */
+.area-roadmap-board {
+  position: relative;
+  width: 100%;
+  height: 560px;
+  background: radial-gradient(ellipse at 50% 50%, #151620 0%, #0c0d12 65%, #050508 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.85), 0 8px 30px rgba(0, 0, 0, 0.7);
+  user-select: none;
 }
 
-.area-map-card.selected {
-  border-color: var(--card-accent, #fff) !important;
-  box-shadow: 0 0 18px var(--card-glow, rgba(255, 255, 255, 0.5)), inset 0 0 12px rgba(255, 255, 255, 0.08) !important;
-  background: rgba(35, 12, 5, 0.95);
-}
-
-.area-map-card.is-current {
-  border-width: 2px;
-}
-
-.area-card-current-badge {
+/* Camada SVG de Estradas Interconectadas */
+.roadmap-roads-svg {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  font-size: 0.62rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  padding: 2px 6px;
-  border-radius: 2px;
-  background: #16a34a;
-  color: #fff;
-  text-transform: uppercase;
-  font-family: monospace;
-  box-shadow: 0 0 8px rgba(22, 163, 74, 0.6);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
-.area-card-top-row {
+/* Nós de Localidade no Mapa */
+.area-map-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  z-index: 10;
+  transition: z-index 0.2s ease;
+  outline: none;
+}
+
+.area-map-node:hover {
+  z-index: 60;
+}
+
+/* Pin indicando Área Atual */
+.node-current-pin {
+  position: absolute;
+  top: -24px;
+  background: #16a34a;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border-radius: 3px;
+  box-shadow: 0 0 10px rgba(22, 163, 74, 0.7);
+  white-space: nowrap;
+  pointer-events: none;
+  animation: pulseRoadmapPin 2s infinite ease-in-out;
+  text-transform: uppercase;
+}
+
+@keyframes pulseRoadmapPin {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* Símbolo Grande da Localidade (Padrão 74px) */
+.area-node-symbol-wrap {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: #101116;
+  border: 2.5px solid var(--node-color, #71717a);
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  color: var(--node-color, #e4e4e7);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 12px var(--node-glow, rgba(0, 0, 0, 0.5));
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), 
+              box-shadow 0.25s ease, 
+              border-color 0.25s ease, 
+              background-color 0.25s ease;
+  transform-origin: center center;
+}
+
+.area-node-symbol-wrap .area-svg-icon {
+  width: 44px;
+  height: 44px;
+  stroke-width: 2.2;
+}
+
+/* Efeito de Hover: Fica 2x maior suavemente! */
+.area-map-node:hover .area-node-symbol-wrap {
+  transform: scale(2);
+  background: #181922;
+  border-color: var(--node-color, #f97316);
+  box-shadow: 0 0 35px var(--node-glow, rgba(249, 115, 22, 0.75)), 
+              0 14px 28px rgba(0, 0, 0, 0.95);
+  z-index: 70;
+}
+
+/* Estado Selecionado */
+.area-map-node.selected .area-node-symbol-wrap {
+  border-color: #ffffff;
+  background: #1e202b;
+  box-shadow: 0 0 28px var(--node-glow, rgba(255, 255, 255, 0.7)), 0 0 45px rgba(255, 255, 255, 0.2);
+}
+
+.area-map-node.is-current .area-node-symbol-wrap {
+  border-color: #22c55e;
+}
+
+/* Nome da Localidade (Apenas símbolo e nome, sem descrição) */
+.area-node-name {
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: #f4f4f5;
+  text-align: center;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  background: rgba(8, 8, 12, 0.88);
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.area-map-node:hover .area-node-name {
+  color: #ffffff;
+  border-color: var(--node-color, #f97316);
+  background: rgba(18, 19, 26, 0.96);
+}
+
+.area-map-node.selected .area-node-name {
+  color: #fbbf24;
+  border-color: #fbbf24;
 }
 
 .area-svg-icon {
@@ -4194,94 +4341,23 @@ body.mesa-body.area-refugio-gustavo {
   display: inline-block;
 }
 
-.area-card-symbol-wrap {
-  width: 42px;
-  height: 42px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--card-accent, rgba(255, 85, 0, 0.4));
-  flex-shrink: 0;
-  box-shadow: 0 0 10px var(--card-glow, transparent);
-  color: var(--card-accent, var(--mesa-orange));
-}
-
-.area-card-symbol-wrap .area-svg-icon {
-  width: 24px;
-  height: 24px;
-}
-
-.area-card-titles {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.area-card-name {
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: #f4f4f5;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  line-height: 1.2;
-}
-
-.area-card-type {
-  font-size: 0.72rem;
-  color: #a1a1aa;
-  font-family: monospace;
-}
-
-.area-card-desc-snippet {
-  font-size: 0.76rem;
-  color: #d4d4d8;
-  line-height: 1.35;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.area-card-footer-tags {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: auto;
-  padding-top: 6px;
-  border-top: 1px dashed rgba(255, 255, 255, 0.1);
-  font-size: 0.68rem;
-  font-family: monospace;
-}
-
-.area-card-danger-badge {
-  color: #f87171;
-  font-weight: 700;
-}
-
-.area-card-pois-badge {
-  color: #fbbf24;
-  font-weight: 700;
-}
-
 .area-map-footer {
-  margin-top: 8px;
-  padding: 14px 16px;
-  background: rgba(0, 0, 0, 0.5);
+  margin-top: 10px;
+  padding: 14px 18px;
+  background: rgba(10, 10, 14, 0.85);
   border: 1px solid rgba(255, 85, 0, 0.25);
-  border-radius: 4px;
+  border-radius: 6px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
 .area-map-preview-note {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   color: #e4e4e7;
-  line-height: 1.4;
-  font-family: monospace;
+  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 .area-map-actions {
@@ -4298,6 +4374,8 @@ body.mesa-body.area-refugio-gustavo {
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--mesa-orange) #080200;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 .area-info-header {
@@ -4320,7 +4398,7 @@ body.mesa-body.area-refugio-gustavo {
 .area-header-symbol {
   width: 56px;
   height: 56px;
-  border-radius: 4px;
+  border-radius: 6px;
   background: rgba(0, 0, 0, 0.6);
   border: 2px solid var(--area-accent, var(--mesa-orange));
   display: flex;
@@ -4338,17 +4416,16 @@ body.mesa-body.area-refugio-gustavo {
 .area-header-titles h2 {
   margin: 0;
   font-size: 1.35rem;
-  font-weight: 900;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.03em;
   color: #fff;
 }
 
 .area-header-titles p {
   margin: 4px 0 0 0;
-  font-size: 0.82rem;
-  color: #a1a1aa;
-  font-family: monospace;
+  font-size: 0.85rem;
+  color: #cbd5e1;
 }
 
 .area-header-meta {
@@ -4358,43 +4435,43 @@ body.mesa-body.area-refugio-gustavo {
 }
 
 .area-meta-tag {
-  font-size: 0.72rem;
-  font-family: monospace;
+  font-size: 0.74rem;
   font-weight: 700;
-  padding: 4px 8px;
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.06);
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #d4d4d8;
+  color: #e4e4e7;
   text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .area-meta-tag.danger {
   border-color: #ef4444;
-  color: #f87171;
-  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.15);
 }
 
 .area-public-info {
   background: rgba(12, 4, 2, 0.6);
   border: 1px solid rgba(255, 85, 0, 0.25);
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 16px 18px;
   margin-bottom: 22px;
 }
 
 .area-public-info h4 {
   margin: 0 0 8px 0;
-  font-size: 0.85rem;
+  font-size: 0.86rem;
   color: var(--area-accent, var(--mesa-orange));
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  font-family: monospace;
+  font-weight: 800;
 }
 
 .area-public-info p {
   margin: 0 0 10px 0;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   line-height: 1.55;
   color: #e4e4e7;
 }
@@ -4404,26 +4481,29 @@ body.mesa-body.area-refugio-gustavo {
 }
 
 .area-rumor-box {
-  margin-top: 12px;
-  padding: 10px 14px;
-  background: rgba(0, 0, 0, 0.4);
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.45);
   border-left: 3px solid #eab308;
-  border-radius: 0 2px 2px 0;
+  border-radius: 0 4px 4px 0;
   font-style: italic;
-  font-size: 0.82rem;
+  font-size: 0.86rem;
   color: #fef08a;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
-/* 4. DOSSIÊ EXCLUSIVO DO MESTRE (TABELA DE 10 POIs) */
+/* 4. DOSSIÊ EXCLUSIVO DO MESTRE (TABELA DE 10 POIs — TIPOGRAFIA LIMPA E ALINHADA) */
 .area-master-dossier {
   background: #0d0202;
   border: 2px solid #ef4444;
   box-shadow: 0 0 25px rgba(239, 68, 68, 0.25), inset 0 0 20px rgba(0, 0, 0, 0.8);
-  border-radius: 4px;
-  padding: 18px;
+  border-radius: 6px;
+  padding: 20px;
   position: relative;
   margin-top: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .master-dossier-header {
@@ -4434,39 +4514,38 @@ body.mesa-body.area-refugio-gustavo {
 
 .dossier-badge {
   display: inline-block;
-  font-size: 0.68rem;
-  font-family: monospace;
-  font-weight: 900;
-  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
   color: #ef4444;
   background: rgba(239, 68, 68, 0.15);
   border: 1px solid #ef4444;
-  padding: 2px 8px;
+  padding: 3px 9px;
   margin-bottom: 6px;
-  border-radius: 2px;
+  border-radius: 3px;
   animation: pulseMasterBadge 2s infinite ease-in-out;
+  text-transform: uppercase;
 }
 
 @keyframes pulseMasterBadge {
-  0%, 100% { opacity: 0.9; }
-  50% { opacity: 0.55; }
+  0%, 100% { opacity: 0.95; }
+  50% { opacity: 0.6; }
 }
 
 .master-dossier-header h3 {
   margin: 4px 0 0 0;
   font-size: 1.15rem;
-  font-weight: 900;
+  font-weight: 800;
   color: #fee2e2;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
 }
 
 .master-dossier-subtitle {
-  font-size: 0.8rem;
-  color: #a1a1aa;
-  margin: 4px 0 0 0;
-  line-height: 1.4;
-  font-family: monospace;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  margin: 5px 0 0 0;
+  line-height: 1.5;
 }
 
 /* Barra de Navegação Rápida entre os 10 Pontos de Interesse */
@@ -4484,19 +4563,19 @@ body.mesa-body.area-refugio-gustavo {
 .poi-nav-btn {
   background: #18181b;
   border: 1px solid #3f3f46;
-  color: #d4d4d8;
-  font-family: monospace;
-  font-size: 0.74rem;
-  font-weight: 700;
-  padding: 4px 8px;
-  border-radius: 3px;
+  color: #e4e4e7;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.18s ease;
+  font-family: inherit;
 }
 
 .poi-nav-btn:hover {
   background: #ef4444;
-  color: #fff;
+  color: #ffffff;
   border-color: #ef4444;
   box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
 }
@@ -4508,11 +4587,11 @@ body.mesa-body.area-refugio-gustavo {
   gap: 22px;
 }
 
-/* Card Individual de Ponto de Interesse (Layout 1:1 com a Referência Oficial) */
+/* Card Individual de Ponto de Interesse */
 .poi-card {
   background: #09090b;
   border: 1.5px solid #3f3f46;
-  border-radius: 4px;
+  border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
   transition: border-color 0.2s ease;
@@ -4538,36 +4617,35 @@ body.mesa-body.area-refugio-gustavo {
 }
 
 .poi-index-badge {
-  font-family: monospace;
-  font-size: 0.68rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
   color: #ef4444;
   background: rgba(239, 68, 68, 0.12);
   border: 1px solid rgba(239, 68, 68, 0.35);
-  padding: 2px 7px;
-  border-radius: 2px;
+  padding: 3px 8px;
+  border-radius: 3px;
   text-transform: uppercase;
 }
 
 .poi-header-title {
   margin: 0 0 6px 0;
   font-size: 1.05rem;
-  font-weight: 900;
+  font-weight: 800;
   color: #ffffff;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  line-height: 1.25;
+  line-height: 1.3;
 }
 
 .poi-header-desc {
   margin: 0;
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   color: #cbd5e1;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
-/* 2. QUADRO DE PERÍCIAS */
+/* 2. QUADRO DE PERÍCIAS (TABELA LIMPA E ALINHADA) */
 .poi-skills-table-wrap {
   width: 100%;
   overflow-x: auto;
@@ -4579,7 +4657,7 @@ body.mesa-body.area-refugio-gustavo {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: 0.83rem;
+  font-size: 0.86rem;
 }
 
 .poi-skills-table thead {
@@ -4588,13 +4666,12 @@ body.mesa-body.area-refugio-gustavo {
 }
 
 .poi-skills-table th {
-  padding: 8px 14px;
-  font-family: monospace;
-  font-weight: 800;
+  padding: 9px 14px;
+  font-weight: 700;
   color: #ffffff;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-size: 0.76rem;
+  letter-spacing: 0.03em;
+  font-size: 0.78rem;
   border-right: 1px solid #3f3f46;
 }
 
@@ -4603,7 +4680,7 @@ body.mesa-body.area-refugio-gustavo {
 }
 
 .poi-skills-table th.th-pericia {
-  width: 24%;
+  width: 22%;
 }
 
 .poi-skills-table th.th-dt {
@@ -4612,7 +4689,7 @@ body.mesa-body.area-refugio-gustavo {
 }
 
 .poi-skills-table th.th-info {
-  width: 66%;
+  width: 68%;
 }
 
 .poi-skills-table tbody tr {
@@ -4623,7 +4700,6 @@ body.mesa-body.area-refugio-gustavo {
   border-bottom: none;
 }
 
-/* Tonalidades de cores suaves por perícia exatamente como na referência */
 .poi-skills-table tr.skill-tint-0 {
   background: rgba(245, 158, 11, 0.08);
 }
@@ -4640,7 +4716,7 @@ body.mesa-body.area-refugio-gustavo {
 .poi-skills-table td {
   padding: 10px 14px;
   vertical-align: top;
-  line-height: 1.45;
+  line-height: 1.5;
   border-right: 1px solid rgba(255, 255, 255, 0.07);
 }
 
@@ -4651,13 +4727,12 @@ body.mesa-body.area-refugio-gustavo {
 .poi-skill-cell {
   font-weight: 700;
   color: #f1f5f9;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
 }
 
 .poi-dt-cell {
   text-align: center;
-  font-family: monospace;
-  font-weight: 900;
+  font-weight: 800;
   font-size: 0.95rem;
   color: #fbbf24;
 }
@@ -4666,7 +4741,7 @@ body.mesa-body.area-refugio-gustavo {
   color: #e2e8f0;
 }
 
-/* 3. DESCRIÇÃO CONTEXTUAL (ÍCONE DO LIVRO + SEGREDO DO MESTRE) */
+/* 3. DESCRIÇÃO CONTEXTUAL */
 .poi-context-block {
   background: #18181b;
   border-top: 1px solid #27272a;
@@ -4701,10 +4776,9 @@ body.mesa-body.area-refugio-gustavo {
 
 .poi-context-label {
   display: block;
-  font-family: monospace;
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   color: #a1a1aa;
   text-transform: uppercase;
   margin-bottom: 4px;
@@ -4712,21 +4786,40 @@ body.mesa-body.area-refugio-gustavo {
 
 .poi-context-content p {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   color: #e2e8f0;
-  line-height: 1.55;
+  line-height: 1.58;
 }
 
 .poi-context-content p + p {
   margin-top: 6px;
 }
 
-/* Responsividade Mobile para Áreas */
+/* Responsividade Mobile para Áreas & Mapa de Estradas */
 @media (max-width: 768px) {
-  .area-map-grid {
-    grid-template-columns: 1fr;
+  .area-roadmap-board {
+    height: 480px;
   }
   
+  .area-node-symbol-wrap {
+    width: 58px;
+    height: 58px;
+  }
+  
+  .area-node-symbol-wrap .area-svg-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .area-map-node:hover .area-node-symbol-wrap {
+    transform: scale(1.6);
+  }
+
+  .area-node-name {
+    font-size: 0.74rem;
+    padding: 3px 8px;
+  }
+
   .area-info-modal-dialog {
     padding: 20px 14px !important;
   }
@@ -4737,12 +4830,12 @@ body.mesa-body.area-refugio-gustavo {
     gap: 8px;
   }
   
-  .area-poi-table {
-    font-size: 0.74rem;
+  .poi-skills-table {
+    font-size: 0.78rem;
   }
   
-  .area-poi-table th, 
-  .area-poi-table td {
-    padding: 7px 8px;
+  .poi-skills-table th, 
+  .poi-skills-table td {
+    padding: 8px 10px;
   }
 }

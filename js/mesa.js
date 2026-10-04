@@ -3521,37 +3521,128 @@ const MesaAreaManager = {
   },
 
   openMapModal() {
-    const grid = document.getElementById('area-map-grid');
-    if (!grid) return;
+    const board = document.getElementById('area-roadmap-board') || document.getElementById('area-map-grid');
+    if (!board) return;
 
     this.selectedAreaId = this.currentAreaId;
-    grid.innerHTML = '';
+    board.innerHTML = '';
 
+    const ROADMAP_CONFIG = {
+      'floresta-proibida': {
+        xPct: 50, yPct: 15,
+        color: '#10b981',
+        glow: 'rgba(16, 185, 129, 0.75)',
+        roadD: 'M 500 295 C 490 235, 510 170, 500 135',
+        roadTwinD: 'M 508 295 C 498 235, 518 170, 508 135'
+      },
+      'ferro-velho': {
+        xPct: 18, yPct: 24,
+        color: '#84cc16',
+        glow: 'rgba(132, 204, 22, 0.75)',
+        roadD: 'M 470 305 C 385 260, 285 210, 220 170',
+        roadTwinD: 'M 475 312 C 390 267, 290 217, 225 177'
+      },
+      'mina-de-prata': {
+        xPct: 82, yPct: 24,
+        color: '#f97316',
+        glow: 'rgba(249, 115, 22, 0.75)',
+        roadD: 'M 530 305 C 615 260, 715 210, 780 170',
+        roadTwinD: 'M 525 312 C 610 267, 710 217, 775 177'
+      },
+      'colegio-primordio': {
+        xPct: 15, yPct: 56,
+        color: '#14b8a6',
+        glow: 'rgba(20, 184, 166, 0.75)',
+        roadD: 'M 465 325 C 375 330, 275 340, 195 355',
+        roadTwinD: 'M 465 333 C 375 338, 275 348, 195 363'
+      },
+      'clinica-renovare': {
+        xPct: 85, yPct: 56,
+        color: '#38bdf8',
+        glow: 'rgba(56, 189, 248, 0.75)',
+        roadD: 'M 535 325 C 625 330, 725 340, 805 355',
+        roadTwinD: 'M 535 333 C 625 338, 725 348, 805 363'
+      },
+      'cafe-da-nevoa': {
+        xPct: 29, yPct: 84,
+        color: '#c084fc',
+        glow: 'rgba(192, 132, 252, 0.75)',
+        roadD: 'M 475 340 C 410 400, 360 455, 320 495',
+        roadTwinD: 'M 481 346 C 416 406, 366 461, 326 501'
+      },
+      'refugio-gustavo': {
+        xPct: 71, yPct: 84,
+        color: '#ef4444',
+        glow: 'rgba(239, 68, 68, 0.75)',
+        roadD: 'M 525 340 C 590 400, 640 455, 680 495',
+        roadTwinD: 'M 519 346 C 584 406, 634 461, 674 501'
+      }
+    };
+
+    // 1. Constrói o SVG de Estradas Interconectadas (Estilo Desenho Cartográfico 1:1 com a referência)
+    let roadsSvgHtml = `
+      <svg class="roadmap-roads-svg" viewBox="0 0 1000 640" preserveAspectRatio="none">
+        <defs>
+          <radialGradient id="crossroads-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ff5500" stop-opacity="0.35" />
+            <stop offset="100%" stop-color="#ff5500" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+    `;
+
+    // Leitos largos de terra de cada estrada
+    Object.values(ROADMAP_CONFIG).forEach(cfg => {
+      roadsSvgHtml += `
+        <path d="${cfg.roadD}" fill="none" stroke="#0e1017" stroke-width="24" stroke-linecap="round" />
+        <path d="${cfg.roadD}" fill="none" stroke="rgba(255, 255, 255, 0.06)" stroke-width="20" stroke-linecap="round" />
+      `;
+    });
+
+    // Linhas duplas paralelas (estilo croqui desenhado à mão da referência)
+    Object.values(ROADMAP_CONFIG).forEach(cfg => {
+      roadsSvgHtml += `
+        <path d="${cfg.roadD}" fill="none" stroke="rgba(255, 255, 255, 0.42)" stroke-width="2.2" stroke-linecap="round" />
+        <path d="${cfg.roadTwinD}" fill="none" stroke="rgba(255, 255, 255, 0.42)" stroke-width="2.2" stroke-linecap="round" />
+        <path d="${cfg.roadD}" fill="none" stroke="rgba(249, 115, 22, 0.5)" stroke-width="1.8" stroke-dasharray="6, 8" stroke-linecap="round" />
+      `;
+    });
+
+    // Marco Zero / Encruzilhada Central
+    roadsSvgHtml += `
+        <!-- Brilho e Encruzilhada Central -->
+        <circle cx="500" cy="320" r="50" fill="url(#crossroads-glow)" />
+        <circle cx="500" cy="320" r="28" fill="#0f1015" stroke="rgba(255, 85, 0, 0.6)" stroke-width="2" stroke-dasharray="5, 3" />
+        <circle cx="500" cy="320" r="6" fill="#f97316" />
+        <text x="500" y="324" text-anchor="middle" fill="#a1a1aa" font-size="8.5" font-weight="700" font-family="sans-serif" letter-spacing="1.5">ENCRUZILHADA</text>
+      </svg>
+    `;
+
+    board.innerHTML = roadsSvgHtml;
+
+    // 2. Adiciona os 7 Nós Cartográficos (Apenas Símbolo Grande e Nome)
     Object.values(MESA_AREAS).forEach(area => {
+      const cfg = ROADMAP_CONFIG[area.id] || { xPct: 50, yPct: 50, color: '#f97316', glow: 'rgba(249, 115, 22, 0.6)' };
       const isCurrent = area.id === this.currentAreaId;
       const isSelected = area.id === this.selectedAreaId;
 
-      const card = document.createElement('div');
-      card.className = `area-map-card ${isCurrent ? 'is-current' : ''} ${isSelected ? 'selected' : ''}`;
-      card.id = `area-card-${area.id}`;
-      card.onclick = () => this.selectAreaPreview(area.id);
+      const node = document.createElement('div');
+      node.className = `area-map-node ${isCurrent ? 'is-current' : ''} ${isSelected ? 'selected' : ''}`;
+      node.id = `area-node-${area.id}`;
+      node.style.left = `${cfg.xPct}%`;
+      node.style.top = `${cfg.yPct}%`;
+      node.style.setProperty('--node-color', cfg.color);
+      node.style.setProperty('--node-glow', cfg.glow);
+      node.onclick = () => this.selectAreaPreview(area.id);
 
-      card.innerHTML = `
-        ${isCurrent ? '<div class="area-card-current-badge">Área Atual</div>' : ''}
-        <div class="area-card-top-row">
-          <div class="area-card-symbol-wrap">${area.svgIcon}</div>
-          <div class="area-card-titles">
-            <span class="area-card-name">${area.name}</span>
-            <span class="area-card-type">${area.district}</span>
-          </div>
+      node.innerHTML = `
+        ${isCurrent ? '<span class="node-current-pin">LOCAL ATUAL</span>' : ''}
+        <div class="area-node-symbol-wrap" title="${area.name}">
+          ${area.svgIcon}
         </div>
-        <div class="area-card-desc-snippet">${area.lore}</div>
-        <div class="area-card-footer-tags">
-          <span class="area-card-danger-badge">${area.dangerLevel}</span>
-          <span class="area-card-pois-badge">10 Pontos de Interesse</span>
-        </div>
+        <div class="area-node-name">${area.name}</div>
       `;
-      grid.appendChild(card);
+
+      board.appendChild(node);
     });
 
     this.updatePreviewNote();
@@ -3568,8 +3659,8 @@ const MesaAreaManager = {
 
   selectAreaPreview(areaId) {
     this.selectedAreaId = areaId;
-    document.querySelectorAll('.area-map-card').forEach(c => c.classList.remove('selected'));
-    const target = document.getElementById(`area-card-${areaId}`);
+    document.querySelectorAll('.area-map-node').forEach(n => n.classList.remove('selected'));
+    const target = document.getElementById(`area-node-${areaId}`);
     if (target) target.classList.add('selected');
     this.updatePreviewNote();
   },
@@ -3583,13 +3674,13 @@ const MesaAreaManager = {
     const isMaster = MesaApp && MesaApp.state && MesaApp.state.isMaster;
 
     preview.innerHTML = `
-      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-        <span style="display: inline-flex; width: 18px; height: 18px;">${area.svgIcon}</span>
-        <strong>${area.name}</strong> • <em>${area.district}</em>
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+        <span style="display: inline-flex; width: 20px; height: 20px; color: var(--area-accent, #f97316);">${area.svgIcon}</span>
+        <strong style="color: #ffffff; font-size: 0.96rem;">${area.name}</strong> • <span style="color: #cbd5e1;">${area.district}</span>
       </div>
-      <span style="color: #a1a1aa; font-size: 0.78rem;">${area.ambience}</span>
-      ${isCurrent ? '<br/><span style="color: #4ade80; font-weight: bold;">[ Grupo já se encontra nesta localidade ]</span>' : ''}
-      ${!isMaster && !isCurrent ? '<br/><span style="color: #fbbf24;">(Apenas o Mestre pode autorizar deslocamento do grupo)</span>' : ''}
+      <div style="color: #a1a1aa; font-size: 0.84rem; line-height: 1.45;">${area.ambience}</div>
+      ${isCurrent ? '<div style="color: #4ade80; font-weight: 700; margin-top: 4px; font-size: 0.82rem;">[ Grupo já se encontra nesta localidade ]</div>' : ''}
+      ${!isMaster && !isCurrent ? '<div style="color: #fbbf24; font-size: 0.82rem; margin-top: 4px;">(Apenas o Mestre pode autorizar deslocamento do grupo)</div>' : ''}
     `;
 
     const confirmBtn = document.getElementById('area-confirm-travel-btn');
@@ -3623,11 +3714,18 @@ const MesaAreaManager = {
     this.selectedAreaId = areaId;
     localStorage.setItem('mesa_current_area', areaId);
 
-    // Remove classes anteriores de área do body
+    // Adiciona classe de transição suave de atmosfera e cor no body
+    document.body.classList.add('mesa-area-switching');
+
+    // Remove classes anteriores de área do body e aplica a nova
     Object.values(MESA_AREAS).forEach(a => {
       document.body.classList.remove(a.themeClass);
     });
     document.body.classList.add(area.themeClass);
+
+    setTimeout(() => {
+      document.body.classList.remove('mesa-area-switching');
+    }, 1400);
 
     // Atualiza botões da barra superior e mobile com SVGs
     const aboutBtnLabel = document.getElementById('nav-about-area-label');

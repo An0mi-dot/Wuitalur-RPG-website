@@ -8,9 +8,9 @@
   <meta http-equiv="Expires" content="0">
   <title>Mesa Virtual - Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/variables.css?v=3.0.3">
-  <link rel="stylesheet" href="css/components.css?v=3.0.3">
-  <link rel="stylesheet" href="css/mesa.css?v=3.0.3">
+  <link rel="stylesheet" href="css/variables.css?v=3.1.0">
+  <link rel="stylesheet" href="css/components.css?v=3.1.0">
+  <link rel="stylesheet" href="css/mesa.css?v=3.1.0">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -37,6 +37,48 @@
         </filter>
       </defs>
     </svg>
+
+    <!-- CAMADA DE SOMBRAS DE ÁRVORES — EXCLUSIVA DA MATA DO NORTE -->
+    <div id="mesa-forest-backdrop" class="mesa-forest-backdrop" aria-hidden="true">
+      <svg class="forest-trees-svg" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="forest-mist-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#022c22" stop-opacity="0.25" />
+            <stop offset="60%" stop-color="#011812" stop-opacity="0.7" />
+            <stop offset="100%" stop-color="#000906" stop-opacity="0.95" />
+          </linearGradient>
+          <linearGradient id="tree-sil-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#04382c" stop-opacity="0.8" />
+            <stop offset="100%" stop-color="#000a07" stop-opacity="0.98" />
+          </linearGradient>
+          <linearGradient id="tree-front-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#02231b" stop-opacity="0.9" />
+            <stop offset="100%" stop-color="#000000" stop-opacity="1" />
+          </linearGradient>
+        </defs>
+        <!-- Névoa de fundo da mata -->
+        <rect x="0" y="0" width="1920" height="1080" fill="url(#forest-mist-grad)" />
+
+        <!-- Camada 1: Silhuetas de árvores distantes (fundo verde escuro) -->
+        <path d="M 0 1080 L 0 520 L 40 560 L 70 480 L 110 540 L 150 430 L 190 510 L 240 400 L 290 490 L 340 370 L 390 470 L 450 350 L 510 460 L 580 320 L 640 440 L 710 310 L 770 420 L 830 290 L 890 390 L 960 270 L 1030 400 L 1090 300 L 1150 420 L 1220 310 L 1280 430 L 1350 330 L 1420 460 L 1480 370 L 1540 480 L 1600 390 L 1660 500 L 1720 420 L 1780 520 L 1840 460 L 1890 530 L 1920 480 L 1920 1080 Z" fill="url(#tree-sil-grad)" opacity="0.6" />
+
+        <!-- Camada 2: Árvores médias e galhos densos laterais -->
+        <!-- Lateral Esquerda -->
+        <path d="M 0 1080 L 0 280 L 35 340 L 65 220 L 100 310 L 135 180 L 170 290 L 210 150 L 250 270 L 295 130 L 340 260 L 390 190 L 440 310 L 500 240 L 560 380 L 630 490 L 690 620 L 740 760 L 780 920 L 800 1080 Z" fill="url(#tree-front-grad)" opacity="0.75" />
+        <!-- Lateral Direita -->
+        <path d="M 1920 1080 L 1920 260 L 1880 330 L 1850 200 L 1810 300 L 1775 160 L 1740 280 L 1700 140 L 1660 260 L 1615 120 L 1570 250 L 1520 180 L 1470 300 L 1410 230 L 1350 370 L 1280 480 L 1220 610 L 1170 750 L 1130 910 L 1110 1080 Z" fill="url(#tree-front-grad)" opacity="0.75" />
+
+        <!-- Galhos e copas superiores (sombras projetadas do dossel florestal) -->
+        <path d="M 0 0 L 480 0 C 440 60, 390 90, 320 85 C 370 120, 350 160, 270 145 C 310 190, 280 230, 190 200 C 220 250, 160 280, 90 250 C 110 300, 50 330, 0 310 Z" fill="#01140e" opacity="0.85" />
+        <path d="M 1920 0 L 1440 0 C 1480 65, 1530 95, 1600 85 C 1550 125, 1570 165, 1650 150 C 1610 195, 1640 235, 1730 205 C 1700 255, 1760 285, 1830 255 C 1810 305, 1870 335, 1920 315 Z" fill="#01140e" opacity="0.85" />
+
+        <!-- Sombras de copas altas centrais no topo -->
+        <path d="M 680 0 L 1240 0 C 1220 50, 1190 75, 1140 70 C 1170 110, 1130 135, 1070 120 C 1090 155, 1040 175, 960 160 C 900 175, 850 155, 870 120 C 810 135, 770 110, 800 70 C 750 75, 720 50, 680 0 Z" fill="#01120d" opacity="0.7" />
+
+        <!-- Base densa de troncos e raízes no horizonte inferior -->
+        <path d="M 0 1080 L 1920 1080 L 1920 940 C 1780 920, 1640 950, 1500 930 C 1360 910, 1220 940, 1080 925 C 940 910, 800 945, 660 930 C 520 915, 380 950, 240 935 C 120 920, 40 950, 0 940 Z" fill="#000906" opacity="0.9" />
+      </svg>
+    </div>
 
     <!-- Moldura Perimetral de Tinta Nanquim -->
     <div class="mesa-ink-frame">
@@ -306,11 +348,10 @@
       <div class="mesa-modal ink-modal area-map-modal-dialog">
         <button class="mesa-modal-close" onclick="MesaApp.closeModal('area-map-modal')">&times;</button>
         <div class="ink-ribbon-title">MAPA DE INVESTIGAÇÃO • FRAGKTUS & MINA DE PRATA</div>
-        <p class="area-map-subtitle">Selecione uma localidade para inspecionar pistas ou deslocar o grupo de investigação.</p>
         
         <div class="area-map-container">
-          <div id="area-map-grid" class="area-map-grid">
-            <!-- Renderizado dinamicamente via MesaAreaManager -->
+          <div id="area-roadmap-board" class="area-roadmap-board">
+            <!-- Renderizado dinamicamente via MesaAreaManager: SVG de estradas e 7 nós cartográficos com símbolos grandes e nomes -->
           </div>
 
           <div class="area-map-footer">
@@ -468,6 +509,6 @@
       </div>
     </div>
 
-<script src="js/mesa.js?v=3.0.3"></script>
+<script src="js/mesa.js?v=3.1.0"></script>
 </body>
 </html>
