@@ -2852,7 +2852,6 @@ const MesaAreaManager = {
     const mobileChooseAreaItem = document.getElementById('mobile-choose-area-item');
     const npcsBtn = document.getElementById('nav-npcs-btn');
     const mobileNpcsItem = document.getElementById('mobile-npcs-item');
-    const mobileCampaignItem = document.getElementById('mobile-campaign-item');
     if (chooseAreaBtn) {
       chooseAreaBtn.style.display = isMaster ? 'inline-flex' : 'none';
     }
@@ -2864,9 +2863,6 @@ const MesaAreaManager = {
     }
     if (mobileNpcsItem) {
       mobileNpcsItem.style.display = isMaster ? 'flex' : 'none';
-    }
-    if (mobileCampaignItem) {
-      mobileCampaignItem.style.display = isMaster ? 'flex' : 'none';
     }
   },
 
