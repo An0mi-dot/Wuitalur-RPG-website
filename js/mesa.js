@@ -2768,6 +2768,20 @@ const MesaDice = {
 // ============================================================
 
 const MESA_AREAS = {
+  "none": {
+    "id": "none",
+    "name": "Mesa Livre",
+    "shortName": "Sem Área",
+    "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><line x1=\"4.93\" y1=\"4.93\" x2=\"19.07\" y2=\"19.07\"></line></svg>",
+    "themeClass": "area-none",
+    "district": "",
+    "dangerLevel": "Livre",
+    "dangerLevelClass": "safe",
+    "ambience": "A mesa encontra-se livre. Nenhuma área selecionada.",
+    "lore": "Layout livre.",
+    "rumor": "",
+    "pois": []
+  },
   "colegio-primordio": {
     "id": "colegio-primordio",
     "name": "Colégio Integrado Primórdio",
@@ -2997,6 +3011,13 @@ const MesaAreaManager = {
     board.innerHTML = '';
 
     const ROADMAP_CONFIG = {
+      'none': {
+        xPct: 50, yPct: 80,
+        color: '#6b7280',
+        glow: 'rgba(107, 114, 128, 0.75)',
+        roadD: 'M 500 320 C 500 450, 500 500, 500 512',
+        roadTwinD: 'M 508 320 C 508 450, 508 500, 508 512'
+      },
       'colegio-primordio': {
         xPct: 24, yPct: 50,
         color: '#14b8a6',
@@ -3182,6 +3203,17 @@ const MesaAreaManager = {
     if (mobileAboutBtnLabel) mobileAboutBtnLabel.textContent = `Sobre: ${area.shortName || area.name}`;
     if (aboutBtnIcon) aboutBtnIcon.innerHTML = area.svgIcon;
     if (mobileAboutBtnIcon) mobileAboutBtnIcon.innerHTML = area.svgIcon;
+
+    const aboutBtn = document.getElementById('nav-about-area-btn');
+    const mobileAboutBtn = document.getElementById('mobile-about-area-icon') ? document.getElementById('mobile-about-area-icon').parentElement : null;
+
+    if (area.id === 'none') {
+      if (aboutBtn) aboutBtn.style.display = 'none';
+      if (mobileAboutBtn) mobileAboutBtn.style.display = 'none';
+    } else {
+      if (aboutBtn) aboutBtn.style.display = 'inline-flex';
+      if (mobileAboutBtn) mobileAboutBtn.style.display = 'flex';
+    }
 
     if (shouldBroadcast && MesaChat && MesaChat.channel) {
       MesaChat.channel.send({
