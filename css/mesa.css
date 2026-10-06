@@ -7060,3 +7060,17 @@ html.perf-lite .mesa-chat-panel,
 html.perf-lite .mesa-mobile-menu-drawer,
 html.perf-lite .ink-tag,
 html.perf-lite .nav-auth-chip { filter: none; }
+
+/* Versao da Mesa */
+.mesa-version {
+  position: fixed;
+  bottom: 8px;
+  left: 12px;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.25);
+  font-family: var(--mesa-mono), monospace;
+  z-index: 1000;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: 0.1em;
+}
