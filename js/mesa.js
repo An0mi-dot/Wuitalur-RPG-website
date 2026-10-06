@@ -1,5 +1,5 @@
-﻿/* ============================================================
-   MESA VIRTUAL & ENGINES â€” WUITALUR RPG
+/* ============================================================
+   MESA VIRTUAL & ENGINES — WUITALUR RPG
    - Glitch Background Engine
    - Diagonal Comic Stream Engine (Ficha)
    - State, 4-Char Tokens, Mobile UI & Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
@@ -240,7 +240,7 @@ const FichaParticlesEngine = {
 };
 
 
-// ---- 2.1 MOTOR DE GLITCH DA ILUSTRAÃ‡ÃƒO DA FICHA (MESMA FREQUÃŠNCIA E ESTILO DO BG) ----
+// ---- 2.1 MOTOR DE GLITCH DA ILUSTRAÇÃO DA FICHA (MESMA FREQUÊNCIA E ESTILO DO BG) ----
 const PortraitGlitchEngine = {
   canvas: null,
   ctx: null,
@@ -294,7 +294,7 @@ const PortraitGlitchEngine = {
       for (let i = 0; i < count; i++) {
         this.createGlitch();
       }
-      const nextTime = Math.random() * 2500 + 800; // Mesma frequÃªncia do BG
+      const nextTime = Math.random() * 2500 + 800; // Mesma frequência do BG
       this.spawnTimer = setTimeout(triggerGlitchBurst, nextTime);
     };
 
@@ -395,7 +395,7 @@ const PortraitGlitchEngine = {
 };
 
 
-// ---- 2.2 MOTOR DE GLITCH DA ILUSTRAÃ‡ÃƒO CENTRAL DA MESA (MESMA FREQUÃŠNCIA E ESTILO DO BG) ----
+// ---- 2.2 MOTOR DE GLITCH DA ILUSTRAÇÃO CENTRAL DA MESA (MESMA FREQUÊNCIA E ESTILO DO BG) ----
 const BoardCenterGlitchEngine = {
   canvas: null,
   ctx: null,
@@ -449,7 +449,7 @@ const BoardCenterGlitchEngine = {
       for (let i = 0; i < count; i++) {
         this.createGlitch();
       }
-      const nextTime = Math.random() * 2500 + 800; // Mesma frequÃªncia do BG
+      const nextTime = Math.random() * 2500 + 800; // Mesma frequência do BG
       this.spawnTimer = setTimeout(triggerGlitchBurst, nextTime);
     };
 
@@ -550,7 +550,7 @@ const BoardCenterGlitchEngine = {
 };
 
 
-// ---- 2.2 MOTOR DE SEGURANÃ‡A E PROTEÃ‡ÃƒO CONTRA FORÃ‡A BRUTA (RATE LIMITING & TIMING PROTECTION) ----
+// ---- 2.2 MOTOR DE SEGURANÇA E PROTEÇÃO CONTRA FORÇA BRUTA (RATE LIMITING & TIMING PROTECTION) ----
 const MesaSecurity = {
   STORAGE_KEY_ATTEMPTS: 'mesa_sec_fails',
   STORAGE_KEY_LOCKOUT: 'mesa_sec_lockout_until',
@@ -565,7 +565,7 @@ const MesaSecurity = {
       const hashArray = Array.from(new Uint8Array(hashBuffer));
       return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     } catch(e) {
-      // Fallback simples caso crypto nÃ£o esteja disponÃ­vel
+      // Fallback simples caso crypto não esteja disponível
       let hash = 0;
       const str = text.trim().toUpperCase();
       for (let i = 0; i < str.length; i++) {
@@ -603,7 +603,7 @@ const MesaSecurity = {
 
     let lockoutDuration = 0;
     if (fails >= 8) {
-      lockoutDuration = 300; // 5 minutos de bloqueio contra ataques contÃ­nuos
+      lockoutDuration = 300; // 5 minutos de bloqueio contra ataques contínuos
     } else if (fails >= 5) {
       lockoutDuration = 60;  // 1 minuto de bloqueio
     } else if (fails >= 3) {
@@ -691,7 +691,7 @@ const MesaApp = {
     'c43cc5a2574d90e4a87d2ba0db242c99b3cdc0cbfd8c94448724b591320953ef'
   ],
 
-  // HASHES SHA-256 DOS SLOTS PADRÃƒO DA MESA
+  // HASHES SHA-256 DOS SLOTS PADRÃO DA MESA
   SLOT_HASHES: {
     1: ['2dd19af57e1afab99db2a52767841b4188121375b4e107e25f1e19b5a08074b7', '67444813cdcd8add28ec10fe6184264bd4acddcd339083da3cee52779ef2b52f'], // Slot 1
     2: ['1c3b0fa0bb6d1186cbfbde84001fd11845b5a68922a1029288319fdffd1325fa', '113917ac98d6019f27deda3d987664c09f8fd5c12da07f5981485dfe2a0b62b2'], // Slot 2
@@ -726,7 +726,7 @@ const MesaApp = {
       await this.fetchPlayers();
       this.subscribeToRealtime();
     } else {
-      console.warn("Supabase nÃ£o disponÃ­vel. Exibindo dados locais.");
+      console.warn("Supabase não disponível. Exibindo dados locais.");
       this.loadMockData();
     }
 
@@ -750,7 +750,7 @@ const MesaApp = {
       const candidateToken = saved.trim().toUpperCase();
       const hash = await MesaSecurity.sha256(candidateToken);
 
-      // 1. Verifica se Ã© token do Mestre
+      // 1. Verifica se é token do Mestre
       if (this.MASTER_HASHES.includes(hash)) {
         this.state.isMaster = true;
         this.state.myToken = candidateToken;
@@ -761,7 +761,7 @@ const MesaApp = {
         return true;
       }
 
-      // 2. Verifica se pertence a algum slot padrÃ£o nos hashes locais
+      // 2. Verifica se pertence a algum slot padrão nos hashes locais
       let matchedSlot = null;
       for (const [slotNum, hashes] of Object.entries(this.SLOT_HASHES)) {
         if (hashes.includes(hash)) {
@@ -770,7 +770,7 @@ const MesaApp = {
         }
       }
 
-      // 3. Verifica nos personagens carregados na memÃ³ria
+      // 3. Verifica nos personagens carregados na memória
       let matchedPlayer = null;
       if (matchedSlot && this.state.players[matchedSlot - 1]) {
         matchedPlayer = this.state.players[matchedSlot - 1];
@@ -782,7 +782,7 @@ const MesaApp = {
         }
       }
 
-      // 4. Se nÃ£o achou na memÃ³ria, verifica na base do Supabase
+      // 4. Se não achou na memória, verifica na base do Supabase
       if (!matchedPlayer && this.supabase) {
         try {
           const { data } = await this.supabase
@@ -809,8 +809,8 @@ const MesaApp = {
         this.updateTokenBtnState();
         return true;
       } else {
-        // Token invÃ¡lido na base: limpa para nÃ£o ficar em estado corrompido
-        console.warn("Token salvo nÃ£o encontrado ou invÃ¡lido:", candidateToken);
+        // Token inválido na base: limpa para não ficar em estado corrompido
+        console.warn("Token salvo não encontrado ou inválido:", candidateToken);
         localStorage.removeItem('wu_user_token');
         localStorage.removeItem('mesa_token');
         this.state.myToken = null;
@@ -834,7 +834,7 @@ const MesaApp = {
       const name = (player && player.nome) ? player.nome : (slot ? `Slot ${slot}` : 'jogador');
       return { kind: 'player', name, full: `Autenticado com o token de ${name}`, short: `Token de ${name}` };
     }
-    return { kind: 'none', name: '', full: 'NÃ£o autenticado', short: 'NÃ£o autenticado' };
+    return { kind: 'none', name: '', full: 'Não autenticado', short: 'Não autenticado' };
   },
 
   updateAuthChip() {
@@ -907,7 +907,7 @@ const MesaApp = {
       nome: 'Thulita De La Benevidez',
       idade: '18 anos',
       altura: '1,40',
-      raca: 'DragÃ£o AnÃ£o',
+      raca: 'Dragão Anão',
       arquetipo: 'Popular',
       imagem: 'assets/thulita.png',
       avatar: 'assets/thulita_avatar.png',
@@ -917,20 +917,20 @@ const MesaApp = {
       stressPoints: 0,
       stressPointsMax: 6,
       atributos: {
-        'SaÃºde': 'd12',
+        'Saúde': 'd12',
         'Vigor': 'd16',
-        'ForÃ§a': 'd4',
+        'Força': 'd4',
         'Mente': 'd8'
       },
       bonus: [
-        { origem: 'RaÃ§a (DragÃ£o AnÃ£o)', desc: '+d4 em testes de Mente' },
-        { origem: 'ArquÃ©tipo (Popular)', desc: '+d4 em Testes Sociais' }
+        { origem: 'Raça (Dragão Anão)', desc: '+d4 em testes de Mente' },
+        { origem: 'Arquétipo (Popular)', desc: '+d4 em Testes Sociais' }
       ],
-      pericias: ['Atletismo', 'PercepÃ§Ã£o', 'Acrobacia', 'IntuiÃ§Ã£o'],
+      pericias: ['Atletismo', 'Percepção', 'Acrobacia', 'Intuição'],
       habilidades: [
-        { nome: 'Sopro Ancestral', custo: '4 PE', desc: 'Expele um cone de energia elemental (frio, fogo ou Ã¡cido) de 3m. Inimigos na Ã¡rea sofrem dano igual a uma rolagem de ForÃ§a e devem passar em teste de Vigor (CT 13) ou ficam atordoados por 1 rodada.' },
-        { nome: 'ConexÃ£o Sensorial', custo: '2 PE', desc: 'Usa suas antenas para se comunicar telepaticamente com aliados a atÃ© 20m por 1 cena. Transmite emoÃ§Ãµes, imagens simples e intenÃ§Ãµes.' },
-        { nome: 'Carisma Natural', custo: 'Passiva', desc: 'Testemunhas e habitantes locais sempre confiam em vocÃª e compartilham boatos e segredos da cidade.' }
+        { nome: 'Sopro Ancestral', custo: '4 PE', desc: 'Expele um cone de energia elemental (frio, fogo ou ácido) de 3m. Inimigos na área sofrem dano igual a uma rolagem de Força e devem passar em teste de Vigor (CT 13) ou ficam atordoados por 1 rodada.' },
+        { nome: 'Conexão Sensorial', custo: '2 PE', desc: 'Usa suas antenas para se comunicar telepaticamente com aliados a até 20m por 1 cena. Transmite emoções, imagens simples e intenções.' },
+        { nome: 'Carisma Natural', custo: 'Passiva', desc: 'Testemunhas e habitantes locais sempre confiam em você e compartilham boatos e segredos da cidade.' }
       ]
     };
 
@@ -952,20 +952,20 @@ const MesaApp = {
       stressPoints: 0,
       stressPointsMax: 6,
       atributos: {
-        'SaÃºde': 'd8',
+        'Saúde': 'd8',
         'Vigor': 'd12',
-        'ForÃ§a': 'd4',
+        'Força': 'd4',
         'Mente': 'd16'
       },
       bonus: [
-        { origem: 'RaÃ§a (Vampira)', desc: '+d4 em testes de Mente e VisÃ£o no Escuro (5B)' },
-        { origem: 'ArquÃ©tipo (Nerd)', desc: '+d4 em Testes de Mente' }
+        { origem: 'Raça (Vampira)', desc: '+d4 em testes de Mente e Visão no Escuro (5B)' },
+        { origem: 'Arquétipo (Nerd)', desc: '+d4 em Testes de Mente' }
       ],
-      pericias: ['Furtividade', 'IntimidaÃ§Ã£o', 'InvestigaÃ§Ã£o', 'AstÃºcia'],
+      pericias: ['Furtividade', 'Intimidação', 'Investigação', 'Astúcia'],
       habilidades: [
-        { nome: 'Mordida VampÃ­rica', custo: '3 PE', desc: 'Morde um alvo adjacente para drenar sangue. Causa dano igual a uma rolagem de ForÃ§a e restaura PV iguais Ã  metade do dano causado.' },
-        { nome: 'PresenÃ§a HipnÃ³tica', custo: '2 PE', desc: 'Exerce magnetismo sobrenatural. Ganha vantagem em testes de Mente para intimidar ou convencer atÃ© o fim da cena.' },
-        { nome: 'RaciocÃ­nio LÃ³gico', custo: '2 PE', desc: 'Pode gastar 2 PE para analisar uma cena de enigma, mecanismo ou texto cifrado e deduzir instantaneamente um padrÃ£o oculto.' }
+        { nome: 'Mordida Vampírica', custo: '3 PE', desc: 'Morde um alvo adjacente para drenar sangue. Causa dano igual a uma rolagem de Força e restaura PV iguais à metade do dano causado.' },
+        { nome: 'Presença Hipnótica', custo: '2 PE', desc: 'Exerce magnetismo sobrenatural. Ganha vantagem em testes de Mente para intimidar ou convencer até o fim da cena.' },
+        { nome: 'Raciocínio Lógico', custo: '2 PE', desc: 'Pode gastar 2 PE para analisar uma cena de enigma, mecanismo ou texto cifrado e deduzir instantaneamente um padrão oculto.' }
       ]
     };
 
@@ -988,19 +988,19 @@ const MesaApp = {
       stressPointsMax: 6,
       atributos: {
         'Mente': 'd16',
-        'SaÃºde': 'd8',
+        'Saúde': 'd8',
         'Vigor': 'd12',
-        'ForÃ§a': 'd4'
+        'Força': 'd4'
       },
       bonus: [
-        { origem: 'RaÃ§a (Vampiro)', desc: '+d4 em testes de Mente e VisÃ£o no Escuro (5B)' },
-        { origem: 'ArquÃ©tipo (Curioso)', desc: '+d4 em testes de InvestigaÃ§Ã£o' }
+        { origem: 'Raça (Vampiro)', desc: '+d4 em testes de Mente e Visão no Escuro (5B)' },
+        { origem: 'Arquétipo (Curioso)', desc: '+d4 em testes de Investigação' }
       ],
-      pericias: ['InvestigaÃ§Ã£o', 'PercepÃ§Ã£o', 'Disparada', 'Medicina'],
+      pericias: ['Investigação', 'Percepção', 'Disparada', 'Medicina'],
       habilidades: [
-        { nome: 'Mordida VampÃ­rica', custo: '3 PE', desc: 'Morde um alvo adjacente para drenar sangue. Causa dano igual a uma rolagem de ForÃ§a e restaura PV iguais Ã  metade do dano causado.' },
-        { nome: 'PresenÃ§a HipnÃ³tica', custo: '2 PE', desc: 'Exerce magnetismo sobrenatural. Ganha vantagem em testes de Mente para intimidar ou convencer atÃ© o fim da cena.' },
-        { nome: 'Olhar Investigativo', custo: '2 PE', desc: 'Gasta 2 PE para notar instantaneamente marcas de arranhÃµes, botÃµes falsos ou compartimentos secretos na cena.' }
+        { nome: 'Mordida Vampírica', custo: '3 PE', desc: 'Morde um alvo adjacente para drenar sangue. Causa dano igual a uma rolagem de Força e restaura PV iguais à metade do dano causado.' },
+        { nome: 'Presença Hipnótica', custo: '2 PE', desc: 'Exerce magnetismo sobrenatural. Ganha vantagem em testes de Mente para intimidar ou convencer até o fim da cena.' },
+        { nome: 'Olhar Investigativo', custo: '2 PE', desc: 'Gasta 2 PE para notar instantaneamente marcas de arranhões, botões falsos ou compartimentos secretos na cena.' }
       ]
     };
 
@@ -1022,19 +1022,19 @@ const MesaApp = {
       stressPointsMax: 6,
       atributos: {
         'Mente': 'd4',
-        'SaÃºde': 'd8',
+        'Saúde': 'd8',
         'Vigor': 'd12',
-        'ForÃ§a': 'd16'
+        'Força': 'd16'
       },
       bonus: [
-        { origem: 'RaÃ§a (Animalesco)', desc: '+d4 em testes de Esquiva' },
-        { origem: 'ArquÃ©tipo (Rebelde)', desc: '+d4 em ForÃ§a' }
+        { origem: 'Raça (Animalesco)', desc: '+d4 em testes de Esquiva' },
+        { origem: 'Arquétipo (Rebelde)', desc: '+d4 em Força' }
       ],
-      pericias: ['IntimidaÃ§Ã£o', 'Atletismo', 'Disparada', 'SobrevivÃªncia'],
+      pericias: ['Intimidação', 'Atletismo', 'Disparada', 'Sobrevivência'],
       habilidades: [
-        { nome: 'PercepÃ§Ã£o Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguÃ§am. Ganha vantagem em testes de Mente para detectar presenÃ§as, sons ou cheiros suspeitos por 1 cena.' },
-        { nome: 'Instinto de SobrevivÃªncia', custo: '3 PE', desc: 'Em situaÃ§Ãµes de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou ForÃ§a para a prÃ³xima aÃ§Ã£o.' },
-        { nome: 'DesobediÃªncia Instintiva', custo: 'Passiva', desc: 'Possui vantagem em testes para resistir a ordens forÃ§adas, coerÃ§Ãµes sociais ou hipnoses de entidades.' }
+        { nome: 'Percepção Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguçam. Ganha vantagem em testes de Mente para detectar presenças, sons ou cheiros suspeitos por 1 cena.' },
+        { nome: 'Instinto de Sobrevivência', custo: '3 PE', desc: 'Em situações de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou Força para a próxima ação.' },
+        { nome: 'Desobediência Instintiva', custo: 'Passiva', desc: 'Possui vantagem em testes para resistir a ordens forçadas, coerções sociais ou hipnoses de entidades.' }
       ]
     };
 
@@ -1047,27 +1047,27 @@ const MesaApp = {
       idade: '17 anos',
       altura: '1,86m',
       raca: 'Animalesco',
-      arquetipo: 'ValentÃ£o',
+      arquetipo: 'Valentão',
       hp: 15, hpMax: 15,
       pe: 10, peMax: 10,
       st: 0, stMax: 28,
       stressPoints: 0,
       stressPointsMax: 6,
       atributos: {
-        'SaÃºde': 'd4',
+        'Saúde': 'd4',
         'Vigor': 'd16',
-        'ForÃ§a': 'd12',
+        'Força': 'd12',
         'Mente': 'd8'
       },
       bonus: [
-        { origem: 'RaÃ§a (Animalesco)', desc: '+d4 em testes de Esquiva' },
-        { origem: 'ArquÃ©tipo (ValentÃ£o)', desc: '+d4 em testes de ForÃ§a' }
+        { origem: 'Raça (Animalesco)', desc: '+d4 em testes de Esquiva' },
+        { origem: 'Arquétipo (Valentão)', desc: '+d4 em testes de Força' }
       ],
-      pericias: ['Furtividade', 'Atletismo', 'IntuiÃ§Ã£o', 'Acrobacia'],
+      pericias: ['Furtividade', 'Atletismo', 'Intuição', 'Acrobacia'],
       habilidades: [
-        { nome: 'PercepÃ§Ã£o Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguÃ§am. Ganha vantagem em testes de Mente para detectar presenÃ§as, sons ou cheiros suspeitos por 1 cena.' },
-        { nome: 'Instinto de SobrevivÃªncia', custo: '3 PE', desc: 'Em situaÃ§Ãµes de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou ForÃ§a para a prÃ³xima aÃ§Ã£o.' },
-        { nome: 'IntimidaÃ§Ã£o FÃ­sica', custo: '2 PE', desc: 'Gasta 2 PE para subjugar NPCs humanos ou abrir portas emperradas com uma ombrada violenta.' }
+        { nome: 'Percepção Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguçam. Ganha vantagem em testes de Mente para detectar presenças, sons ou cheiros suspeitos por 1 cena.' },
+        { nome: 'Instinto de Sobrevivência', custo: '3 PE', desc: 'Em situações de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou Força para a próxima ação.' },
+        { nome: 'Intimidação Física', custo: '2 PE', desc: 'Gasta 2 PE para subjugar NPCs humanos ou abrir portas emperradas com uma ombrada violenta.' }
       ]
     };
 
@@ -1077,10 +1077,10 @@ const MesaApp = {
       slot: 6,
       token: 'T6D3',
       nome: 'John Doe',
-      idade: '899 dias (AutÃ´mato)',
+      idade: '899 dias (Autômato)',
       altura: '2,20m',
       raca: 'E.X.O.s',
-      arquetipo: 'PalhaÃ§o',
+      arquetipo: 'Palhaço',
       imagem: 'assets/john.png',
       avatar: 'assets/john_avatar.png',
       hp: 16, hpMax: 16,
@@ -1089,20 +1089,20 @@ const MesaApp = {
       stressPoints: 0,
       stressPointsMax: 6,
       atributos: {
-        'ForÃ§a': 'd16',
+        'Força': 'd16',
         'Mente': 'd12',
-        'SaÃºde': 'd8',
+        'Saúde': 'd8',
         'Vigor': 'd4'
       },
       bonus: [
-        { origem: 'RaÃ§a (E.X.O.s)', desc: 'Autorreparo passivo (recupera 1 PV por turno)' },
-        { origem: 'ArquÃ©tipo (PalhaÃ§o)', desc: '+3 PE MÃ¡ximos' }
+        { origem: 'Raça (E.X.O.s)', desc: 'Autorreparo passivo (recupera 1 PV por turno)' },
+        { origem: 'Arquétipo (Palhaço)', desc: '+3 PE Máximos' }
       ],
-      pericias: ['Atletismo (ForÃ§a)', 'Diplomacia (Mente)', 'IntimidaÃ§Ã£o (ForÃ§a/Mente)', 'PercepÃ§Ã£o (Mente)'],
+      pericias: ['Atletismo (Força)', 'Diplomacia (Mente)', 'Intimidação (Força/Mente)', 'Percepção (Mente)'],
       habilidades: [
-        { nome: 'Quebrar a TensÃ£o', custo: 'Passiva', desc: 'Com uma piada ou comentÃ¡rio sarcÃ¡stico, reduz em 1d4 a Barra de Estresse de todos os aliados apÃ³s um momento de pÃ¢nico.' },
-        { nome: 'Mira TelemÃ©trica', custo: '3 PE', desc: 'Sensores Ã³pticos calculam vento, distÃ¢ncia e trajetÃ³ria. Ganha vantagem em testes de ataque Ã  distÃ¢ncia atÃ© o fim da cena.' },
-        { nome: 'Torque ForÃ§ado', custo: '2 PE', desc: 'Trava engrenagens no solo para aplicar forÃ§a bruta. Ganha +d4 em testes de ForÃ§a para erguer cargas, arrombar portas ou resistir a ser empurrado.' }
+        { nome: 'Quebrar a Tensão', custo: 'Passiva', desc: 'Com uma piada ou comentário sarcástico, reduz em 1d4 a Barra de Estresse de todos os aliados após um momento de pânico.' },
+        { nome: 'Mira Telemétrica', custo: '3 PE', desc: 'Sensores ópticos calculam vento, distância e trajetória. Ganha vantagem em testes de ataque à distância até o fim da cena.' },
+        { nome: 'Torque Forçado', custo: '2 PE', desc: 'Trava engrenagens no solo para aplicar força bruta. Ganha +d4 em testes de Força para erguer cargas, arrombar portas ou resistir a ser empurrado.' }
       ]
     };
 
@@ -1114,8 +1114,8 @@ const MesaApp = {
       nome: 'Odara De La Benevidez',
       idade: '18 anos',
       altura: '1,42m',
-      raca: 'DragÃ£o AnÃ£o',
-      arquetipo: 'GÃ³tica',
+      raca: 'Dragão Anão',
+      arquetipo: 'Gótica',
       imagem: 'assets/odara.png?v=3',
       avatar: 'assets/odara_avatar.png?v=3',
       hp: 14, hpMax: 14,
@@ -1124,24 +1124,24 @@ const MesaApp = {
       stressPoints: 0,
       stressPointsMax: 6,
       atributos: {
-        'ForÃ§a': 'd16',
+        'Força': 'd16',
         'Mente': 'd12',
-        'SaÃºde': 'd8',
+        'Saúde': 'd8',
         'Vigor': 'd4'
       },
       bonus: [
-        { origem: 'RaÃ§a (DragÃ£o AnÃ£o)', desc: '+d4 em testes de Mente' },
-        { origem: 'ArquÃ©tipo (GÃ³tica)', desc: '+3 ReduÃ§Ã£o de Dano Mental' }
+        { origem: 'Raça (Dragão Anão)', desc: '+d4 em testes de Mente' },
+        { origem: 'Arquétipo (Gótica)', desc: '+3 Redução de Dano Mental' }
       ],
-      pericias: ['IntimidaÃ§Ã£o', 'Atletismo', 'IntuiÃ§Ã£o', 'AstÃºcia'],
+      pericias: ['Intimidação', 'Atletismo', 'Intuição', 'Astúcia'],
       habilidades: [
-        { nome: 'Sopro Ancestral', custo: '4 PE', desc: 'Expele um cone de energia elemental (Fogo/Solar, Estase ou Ãcido) em um raio de 3B Ã  sua frente. Inimigos na Ã¡rea devem rolar teste de Destreza (CT 15) ou sofrer 3d10 de dano elemental.' },
-        { nome: 'ConexÃ£o Sensorial', custo: '2 PE', desc: 'As seis antenas permitem comunicaÃ§Ã£o telepÃ¡tica limitada com criaturas a atÃ© 10B, transmitindo emoÃ§Ãµes, intenÃ§Ãµes simples ou imagens mentais.' },
-        { nome: 'Familiaridade com o Macabro', custo: 'Passiva', desc: 'A visÃ£o de cadÃ¡veres, ossadas ou sangue seco nÃ£o provoca dano na sua Barra de Estresse.' }
+        { nome: 'Sopro Ancestral', custo: '4 PE', desc: 'Expele um cone de energia elemental (Fogo/Solar, Estase ou Ácido) em um raio de 3B à sua frente. Inimigos na área devem rolar teste de Destreza (CT 15) ou sofrer 3d10 de dano elemental.' },
+        { nome: 'Conexão Sensorial', custo: '2 PE', desc: 'As seis antenas permitem comunicação telepática limitada com criaturas a até 10B, transmitindo emoções, intenções simples ou imagens mentais.' },
+        { nome: 'Familiaridade com o Macabro', custo: 'Passiva', desc: 'A visão de cadáveres, ossadas ou sangue seco não provoca dano na sua Barra de Estresse.' }
       ]
     };
 
-    // Personagem para Slot 8 (Canneth â€˜Blinkoâ€™ Biloxi)
+    // Personagem para Slot 8 (Canneth ‘Blinko’ Biloxi)
     this.state.players[7] = {
       id: 8,
       slot: 8,
@@ -1158,19 +1158,19 @@ const MesaApp = {
       stressPointsMax: 6,
       atributos: {
         'Vigor': 'd12',
-        'SaÃºde': 'd8',
-        'ForÃ§a': 'd4',
+        'Saúde': 'd8',
+        'Força': 'd4',
         'Mente': 'd16'
       },
       bonus: [
-        { origem: 'RaÃ§a (Animalesco)', desc: '+d4 em testes de Esquiva / Sentidos AguÃ§ados' },
-        { origem: 'ArquÃ©tipo (Teimoso)', desc: 'ResistÃªncia a ser coagido ou derrubado' }
+        { origem: 'Raça (Animalesco)', desc: '+d4 em testes de Esquiva / Sentidos Aguçados' },
+        { origem: 'Arquétipo (Teimoso)', desc: 'Resistência a ser coagido ou derrubado' }
       ],
-      pericias: ['IntimidaÃ§Ã£o', 'Engenharia', 'Atletismo', 'HistÃ³ria'],
+      pericias: ['Intimidação', 'Engenharia', 'Atletismo', 'História'],
       habilidades: [
-        { nome: 'Recusa em Cair', custo: '3 PE', desc: 'Ao sofrer dano que o deixaria com 0 PV, gasta 3 PE para permanecer de pÃ© com exatamente 1 PV (uma vez por sessÃ£o).' },
-        { nome: 'PercepÃ§Ã£o Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguÃ§am. Ganha vantagem em testes de Mente para detectar presenÃ§as, sons ou cheiros suspeitos por 1 cena.' },
-        { nome: 'Instinto de SobrevivÃªncia', custo: '3 PE', desc: 'Em situaÃ§Ãµes de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou ForÃ§a para a prÃ³xima aÃ§Ã£o.' }
+        { nome: 'Recusa em Cair', custo: '3 PE', desc: 'Ao sofrer dano que o deixaria com 0 PV, gasta 3 PE para permanecer de pé com exatamente 1 PV (uma vez por sessão).' },
+        { nome: 'Percepção Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguçam. Ganha vantagem em testes de Mente para detectar presenças, sons ou cheiros suspeitos por 1 cena.' },
+        { nome: 'Instinto de Sobrevivência', custo: '3 PE', desc: 'Em situações de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou Força para a próxima ação.' }
       ]
     };
     
@@ -1235,8 +1235,8 @@ const MesaApp = {
           // Garantir que Eric (Slot 3 / Token B8T3) tenha apenas as 3 habilidades corretas
           if (p.token === 'R5K1' || p.slot === 3) {
             if (p.atributos && typeof p.atributos === 'object') {
-              p.atributos['SaÃºde'] = 'd8';
-              p.atributos['ForÃ§a'] = 'd4';
+              p.atributos['Saúde'] = 'd8';
+              p.atributos['Força'] = 'd4';
             }
             p.habilidades = p.habilidades.filter(h => {
               if (!h || !h.nome) return false;
@@ -1248,7 +1248,7 @@ const MesaApp = {
               p.habilidades.push({
                 nome: 'Olhar Investigativo',
                 custo: '2 PE',
-                desc: 'Gasta 2 PE para notar instantaneamente marcas de arranhÃµes, botÃµes falsos ou compartimentos secretos na cena.'
+                desc: 'Gasta 2 PE para notar instantaneamente marcas de arranhões, botões falsos ou compartimentos secretos na cena.'
               });
             }
 
@@ -1294,15 +1294,15 @@ const MesaApp = {
       // Garante que Thulita (Slot 1), Minerva (Slot 2) e Eric (Slot 3) estejam presentes
       if (!this.state.players[0]) {
         this.state.players[0] = {
-          id: 2, slot: 1, token: 'X7V2', nome: 'Thulita De La Benevidez', idade: '18 anos', altura: '1,40', raca: 'DragÃ£o AnÃ£o', arquetipo: 'Popular', imagem: 'assets/thulita.png', avatar: 'assets/thulita_avatar.png',
+          id: 2, slot: 1, token: 'X7V2', nome: 'Thulita De La Benevidez', idade: '18 anos', altura: '1,40', raca: 'Dragão Anão', arquetipo: 'Popular', imagem: 'assets/thulita.png', avatar: 'assets/thulita_avatar.png',
           hp: 14, hpMax: 14, pe: 10, peMax: 10, st: 0, stMax: 32, stressPoints: 0, stressPointsMax: 6,
-          atributos: { 'SaÃºde': 'd12', 'Vigor': 'd16', 'ForÃ§a': 'd4', 'Mente': 'd8' },
-          bonus: [{ origem: 'RaÃ§a (DragÃ£o AnÃ£o)', desc: '+d4 em testes de Mente' }, { origem: 'ArquÃ©tipo (Popular)', desc: '+d4 em Testes Sociais' }],
-          pericias: ['Atletismo', 'PercepÃ§Ã£o', 'Acrobacia', 'IntuiÃ§Ã£o'],
+          atributos: { 'Saúde': 'd12', 'Vigor': 'd16', 'Força': 'd4', 'Mente': 'd8' },
+          bonus: [{ origem: 'Raça (Dragão Anão)', desc: '+d4 em testes de Mente' }, { origem: 'Arquétipo (Popular)', desc: '+d4 em Testes Sociais' }],
+          pericias: ['Atletismo', 'Percepção', 'Acrobacia', 'Intuição'],
           habilidades: [
-            { nome: 'Sopro Ancestral', custo: '4 PE', desc: 'Expele um cone de energia elemental (frio, fogo ou Ã¡cido) de 3m. Inimigos na Ã¡rea sofrem dano igual a uma rolagem de ForÃ§a e devem passar em teste de Vigor (CT 13) ou ficam atordoados por 1 rodada.' },
-            { nome: 'ConexÃ£o Sensorial', custo: '2 PE', desc: 'Usa suas antenas para se comunicar telepaticamente com aliados a atÃ© 20m por 1 cena. Transmite emoÃ§Ãµes, imagens simples e intenÃ§Ãµes.' },
-            { nome: 'Carisma Natural', custo: 'Passiva', desc: 'Testemunhas e habitantes locais sempre confiam em vocÃª e compartilham boatos e segredos da cidade.' }
+            { nome: 'Sopro Ancestral', custo: '4 PE', desc: 'Expele um cone de energia elemental (frio, fogo ou ácido) de 3m. Inimigos na área sofrem dano igual a uma rolagem de Força e devem passar em teste de Vigor (CT 13) ou ficam atordoados por 1 rodada.' },
+            { nome: 'Conexão Sensorial', custo: '2 PE', desc: 'Usa suas antenas para se comunicar telepaticamente com aliados a até 20m por 1 cena. Transmite emoções, imagens simples e intenções.' },
+            { nome: 'Carisma Natural', custo: 'Passiva', desc: 'Testemunhas e habitantes locais sempre confiam em você e compartilham boatos e segredos da cidade.' }
           ]
         };
       }
@@ -1312,13 +1312,13 @@ const MesaApp = {
           id: 3, slot: 2, token: 'N3L8', nome: 'Sanguiminerva "Minerva" Qamari Von Adams', idade: '18 anos', altura: '1,78m', raca: 'Vampira', arquetipo: 'Nerd',
           imagem: 'assets/minerva.png?v=3', avatar: 'assets/minerva_avatar.png?v=3',
           hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 40, stressPoints: 0, stressPointsMax: 6,
-          atributos: { 'SaÃºde': 'd8', 'Vigor': 'd12', 'ForÃ§a': 'd4', 'Mente': 'd16' },
-          bonus: [{ origem: 'RaÃ§a (Vampira)', desc: '+d4 em testes de Mente e VisÃ£o no Escuro (5B)' }, { origem: 'ArquÃ©tipo (Nerd)', desc: '+d4 em Testes de Mente' }],
-          pericias: ['Furtividade', 'IntimidaÃ§Ã£o', 'InvestigaÃ§Ã£o', 'AstÃºcia'],
+          atributos: { 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd4', 'Mente': 'd16' },
+          bonus: [{ origem: 'Raça (Vampira)', desc: '+d4 em testes de Mente e Visão no Escuro (5B)' }, { origem: 'Arquétipo (Nerd)', desc: '+d4 em Testes de Mente' }],
+          pericias: ['Furtividade', 'Intimidação', 'Investigação', 'Astúcia'],
           habilidades: [
-            { nome: 'Mordida VampÃ­rica', custo: '3 PE', desc: 'Morde um alvo adjacente para drenar sangue. Causa dano igual a uma rolagem de ForÃ§a e restaura PV iguais Ã  metade do dano causado.' },
-            { nome: 'PresenÃ§a HipnÃ³tica', custo: '2 PE', desc: 'Exerce magnetismo sobrenatural. Ganha vantagem em testes de Mente para intimidar ou convencer atÃ© o fim da cena.' },
-            { nome: 'RaciocÃ­nio LÃ³gico', custo: '2 PE', desc: 'Pode gastar 2 PE para analisar uma cena de enigma, mecanismo ou texto cifrado e deduzir instantaneamente um padrÃ£o oculto.' }
+            { nome: 'Mordida Vampírica', custo: '3 PE', desc: 'Morde um alvo adjacente para drenar sangue. Causa dano igual a uma rolagem de Força e restaura PV iguais à metade do dano causado.' },
+            { nome: 'Presença Hipnótica', custo: '2 PE', desc: 'Exerce magnetismo sobrenatural. Ganha vantagem em testes de Mente para intimidar ou convencer até o fim da cena.' },
+            { nome: 'Raciocínio Lógico', custo: '2 PE', desc: 'Pode gastar 2 PE para analisar uma cena de enigma, mecanismo ou texto cifrado e deduzir instantaneamente um padrão oculto.' }
           ]
         };
       }
@@ -1327,13 +1327,13 @@ const MesaApp = {
         this.state.players[2] = {
           id: 1, slot: 3, token: 'R5K1', nome: 'Eric "Blade" Tepes Adams', idade: '17 anos', altura: '1,76', raca: 'Vampiro', arquetipo: 'Curioso', imagem: 'assets/eric.png', avatar: 'assets/eric_avatar.png',
           hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 44, stressPoints: 0, stressPointsMax: 6,
-          atributos: { 'Mente': 'd16', 'SaÃºde': 'd8', 'Vigor': 'd12', 'ForÃ§a': 'd4' },
-          bonus: [{ origem: 'RaÃ§a (Vampiro)', desc: '+d4 em testes de Mente e VisÃ£o no Escuro (5B)' }, { origem: 'ArquÃ©tipo (Curioso)', desc: '+d4 em testes de InvestigaÃ§Ã£o' }],
-          pericias: ['InvestigaÃ§Ã£o', 'PercepÃ§Ã£o', 'Disparada', 'Medicina'],
+          atributos: { 'Mente': 'd16', 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd4' },
+          bonus: [{ origem: 'Raça (Vampiro)', desc: '+d4 em testes de Mente e Visão no Escuro (5B)' }, { origem: 'Arquétipo (Curioso)', desc: '+d4 em testes de Investigação' }],
+          pericias: ['Investigação', 'Percepção', 'Disparada', 'Medicina'],
           habilidades: [
-            { nome: 'Mordida VampÃ­rica', custo: '3 PE', desc: 'Morde um alvo adjacente para drenar sangue. Causa dano igual a uma rolagem de ForÃ§a e restaura PV iguais Ã  metade do dano causado.' },
-            { nome: 'PresenÃ§a HipnÃ³tica', custo: '2 PE', desc: 'Exerce magnetismo sobrenatural. Ganha vantagem em testes de Mente para intimidar ou convencer atÃ© o fim da cena.' },
-            { nome: 'Olhar Investigativo', custo: '2 PE', desc: 'Gasta 2 PE para notar instantaneamente marcas de arranhÃµes, botÃµes falsos ou compartimentos secretos na cena.' }
+            { nome: 'Mordida Vampírica', custo: '3 PE', desc: 'Morde um alvo adjacente para drenar sangue. Causa dano igual a uma rolagem de Força e restaura PV iguais à metade do dano causado.' },
+            { nome: 'Presença Hipnótica', custo: '2 PE', desc: 'Exerce magnetismo sobrenatural. Ganha vantagem em testes de Mente para intimidar ou convencer até o fim da cena.' },
+            { nome: 'Olhar Investigativo', custo: '2 PE', desc: 'Gasta 2 PE para notar instantaneamente marcas de arranhões, botões falsos ou compartimentos secretos na cena.' }
           ]
         };
       }
@@ -1342,71 +1342,71 @@ const MesaApp = {
         this.state.players[3] = {
           id: 4, slot: 4, token: 'H2Q9', nome: 'Pera Hylidae da Silva', idade: '18 anos', altura: '1,58m', raca: 'Animalesco', arquetipo: 'Rebelde', classe: 'Adivinha',
           hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 24, stressPoints: 0, stressPointsMax: 6,
-          atributos: { 'Mente': 'd4', 'SaÃºde': 'd8', 'Vigor': 'd12', 'ForÃ§a': 'd16' },
+          atributos: { 'Mente': 'd4', 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd16' },
           bonus: [
-            { origem: 'RaÃ§a (Animalesco)', desc: '+d4 em testes de Esquiva' },
-            { origem: 'ArquÃ©tipo (Rebelde)', desc: '+d4 em ForÃ§a' }
+            { origem: 'Raça (Animalesco)', desc: '+d4 em testes de Esquiva' },
+            { origem: 'Arquétipo (Rebelde)', desc: '+d4 em Força' }
           ],
-          pericias: ['IntimidaÃ§Ã£o', 'Atletismo', 'Disparada', 'SobrevivÃªncia'],
+          pericias: ['Intimidação', 'Atletismo', 'Disparada', 'Sobrevivência'],
           habilidades: [
-            { nome: 'PercepÃ§Ã£o Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguÃ§am. Ganha vantagem em testes de Mente para detectar presenÃ§as, sons ou cheiros suspeitos por 1 cena.' },
-            { nome: 'Instinto de SobrevivÃªncia', custo: '3 PE', desc: 'Em situaÃ§Ãµes de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou ForÃ§a para a prÃ³xima aÃ§Ã£o.' },
-            { nome: 'DesobediÃªncia Instintiva', custo: 'Passiva', desc: 'Possui vantagem em testes para resistir a ordens forÃ§adas, coerÃ§Ãµes sociais ou hipnoses de entidades.' }
+            { nome: 'Percepção Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguçam. Ganha vantagem em testes de Mente para detectar presenças, sons ou cheiros suspeitos por 1 cena.' },
+            { nome: 'Instinto de Sobrevivência', custo: '3 PE', desc: 'Em situações de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou Força para a próxima ação.' },
+            { nome: 'Desobediência Instintiva', custo: 'Passiva', desc: 'Possui vantagem em testes para resistir a ordens forçadas, coerções sociais ou hipnoses de entidades.' }
           ]
         };
       }
 
       if (!this.state.players[4]) {
         this.state.players[4] = {
-          id: 5, slot: 5, token: 'J8W4', nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'ValentÃ£o',
+          id: 5, slot: 5, token: 'J8W4', nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão',
           hp: 15, hpMax: 15, pe: 10, peMax: 10, st: 0, stMax: 28, stressPoints: 0, stressPointsMax: 6,
-          atributos: { 'SaÃºde': 'd4', 'Vigor': 'd16', 'ForÃ§a': 'd12', 'Mente': 'd8' },
+          atributos: { 'Saúde': 'd4', 'Vigor': 'd16', 'Força': 'd12', 'Mente': 'd8' },
           bonus: [
-            { origem: 'RaÃ§a (Animalesco)', desc: '+d4 em testes de Esquiva' },
-            { origem: 'ArquÃ©tipo (ValentÃ£o)', desc: '+d4 em testes de ForÃ§a' }
+            { origem: 'Raça (Animalesco)', desc: '+d4 em testes de Esquiva' },
+            { origem: 'Arquétipo (Valentão)', desc: '+d4 em testes de Força' }
           ],
-          pericias: ['Furtividade', 'Atletismo', 'IntuiÃ§Ã£o', 'Acrobacia'],
+          pericias: ['Furtividade', 'Atletismo', 'Intuição', 'Acrobacia'],
           habilidades: [
-            { nome: 'PercepÃ§Ã£o Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguÃ§am. Ganha vantagem em testes de Mente para detectar presenÃ§as, sons ou cheiros suspeitos por 1 cena.' },
-            { nome: 'Instinto de SobrevivÃªncia', custo: '3 PE', desc: 'Em situaÃ§Ãµes de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou ForÃ§a para a prÃ³xima aÃ§Ã£o.' },
-            { nome: 'IntimidaÃ§Ã£o FÃ­sica', custo: '2 PE', desc: 'Gasta 2 PE para subjugar NPCs humanos ou abrir portas emperradas com uma ombrada violenta.' }
+            { nome: 'Percepção Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguçam. Ganha vantagem em testes de Mente para detectar presenças, sons ou cheiros suspeitos por 1 cena.' },
+            { nome: 'Instinto de Sobrevivência', custo: '3 PE', desc: 'Em situações de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou Força para a próxima ação.' },
+            { nome: 'Intimidação Física', custo: '2 PE', desc: 'Gasta 2 PE para subjugar NPCs humanos ou abrir portas emperradas com uma ombrada violenta.' }
           ]
         };
       }
 
       if (!this.state.players[5]) {
         this.state.players[5] = {
-          id: 6, slot: 6, token: 'T6D3', nome: 'John Doe', idade: '899 dias (AutÃ´mato)', altura: '2,20m', raca: 'E.X.O.s', arquetipo: 'PalhaÃ§o', imagem: 'assets/john.png', avatar: 'assets/john_avatar.png',
+          id: 6, slot: 6, token: 'T6D3', nome: 'John Doe', idade: '899 dias (Autômato)', altura: '2,20m', raca: 'E.X.O.s', arquetipo: 'Palhaço', imagem: 'assets/john.png', avatar: 'assets/john_avatar.png',
           hp: 16, hpMax: 16, pe: 13, peMax: 13, st: 0, stMax: 32, stressPoints: 0, stressPointsMax: 6,
-          atributos: { 'ForÃ§a': 'd16', 'Mente': 'd12', 'SaÃºde': 'd8', 'Vigor': 'd4' },
+          atributos: { 'Força': 'd16', 'Mente': 'd12', 'Saúde': 'd8', 'Vigor': 'd4' },
           bonus: [
-            { origem: 'RaÃ§a (E.X.O.s)', desc: 'Autorreparo passivo (recupera 1 PV por turno)' },
-            { origem: 'ArquÃ©tipo (PalhaÃ§o)', desc: '+3 PE MÃ¡ximos' }
+            { origem: 'Raça (E.X.O.s)', desc: 'Autorreparo passivo (recupera 1 PV por turno)' },
+            { origem: 'Arquétipo (Palhaço)', desc: '+3 PE Máximos' }
           ],
-          pericias: ['Atletismo (ForÃ§a)', 'Diplomacia (Mente)', 'IntimidaÃ§Ã£o (ForÃ§a/Mente)', 'PercepÃ§Ã£o (Mente)'],
+          pericias: ['Atletismo (Força)', 'Diplomacia (Mente)', 'Intimidação (Força/Mente)', 'Percepção (Mente)'],
           habilidades: [
-            { nome: 'Quebrar a TensÃ£o', custo: 'Passiva', desc: 'Com uma piada ou comentÃ¡rio sarcÃ¡stico, reduz em 1d4 a Barra de Estresse de todos os aliados apÃ³s um momento de pÃ¢nico.' },
-            { nome: 'Mira TelemÃ©trica', custo: '3 PE', desc: 'Sensores Ã³pticos calculam vento, distÃ¢ncia e trajetÃ³ria. Ganha vantagem em testes de ataque Ã  distÃ¢ncia atÃ© o fim da cena.' },
-            { nome: 'Torque ForÃ§ado', custo: '2 PE', desc: 'Trava engrenagens no solo para aplicar forÃ§a bruta. Ganha +d4 em testes de ForÃ§a para erguer cargas, arrombar portas ou resistir a ser empurrado.' }
+            { nome: 'Quebrar a Tensão', custo: 'Passiva', desc: 'Com uma piada ou comentário sarcástico, reduz em 1d4 a Barra de Estresse de todos os aliados após um momento de pânico.' },
+            { nome: 'Mira Telemétrica', custo: '3 PE', desc: 'Sensores ópticos calculam vento, distância e trajetória. Ganha vantagem em testes de ataque à distância até o fim da cena.' },
+            { nome: 'Torque Forçado', custo: '2 PE', desc: 'Trava engrenagens no solo para aplicar força bruta. Ganha +d4 em testes de Força para erguer cargas, arrombar portas ou resistir a ser empurrado.' }
           ]
         };
       }
 
       if (!this.state.players[6]) {
         this.state.players[6] = {
-          id: 7, slot: 7, token: 'Y4M7', nome: 'Odara De La Benevidez', idade: '18 anos', altura: '1,42m', raca: 'DragÃ£o AnÃ£o', arquetipo: 'GÃ³tica',
+          id: 7, slot: 7, token: 'Y4M7', nome: 'Odara De La Benevidez', idade: '18 anos', altura: '1,42m', raca: 'Dragão Anão', arquetipo: 'Gótica',
           imagem: 'assets/odara.png?v=3', avatar: 'assets/odara_avatar.png?v=3',
           hp: 14, hpMax: 14, pe: 10, peMax: 10, st: 0, stMax: 36, stressPoints: 0, stressPointsMax: 6,
-          atributos: { 'ForÃ§a': 'd16', 'Mente': 'd12', 'SaÃºde': 'd8', 'Vigor': 'd4' },
+          atributos: { 'Força': 'd16', 'Mente': 'd12', 'Saúde': 'd8', 'Vigor': 'd4' },
           bonus: [
-            { origem: 'RaÃ§a (DragÃ£o AnÃ£o)', desc: '+d4 em testes de Mente' },
-            { origem: 'ArquÃ©tipo (GÃ³tica)', desc: '+3 ReduÃ§Ã£o de Dano Mental' }
+            { origem: 'Raça (Dragão Anão)', desc: '+d4 em testes de Mente' },
+            { origem: 'Arquétipo (Gótica)', desc: '+3 Redução de Dano Mental' }
           ],
-          pericias: ['IntimidaÃ§Ã£o', 'Atletismo', 'IntuiÃ§Ã£o', 'AstÃºcia'],
+          pericias: ['Intimidação', 'Atletismo', 'Intuição', 'Astúcia'],
           habilidades: [
-            { nome: 'Sopro Ancestral', custo: '4 PE', desc: 'Expele um cone de energia elemental (Fogo/Solar, Estase ou Ãcido) em um raio de 3B Ã  sua frente. Inimigos na Ã¡rea devem rolar teste de Destreza (CT 15) ou sofrer 3d10 de dano elemental.' },
-            { nome: 'ConexÃ£o Sensorial', custo: '2 PE', desc: 'As seis antenas permitem comunicaÃ§Ã£o telepÃ¡tica limitada com criaturas a atÃ© 10B, transmitindo emoÃ§Ãµes, intenÃ§Ãµes simples ou imagens mentais.' },
-            { nome: 'Familiaridade com o Macabro', custo: 'Passiva', desc: 'A visÃ£o de cadÃ¡veres, ossadas ou sangue seco nÃ£o provoca dano na sua Barra de Estresse.' }
+            { nome: 'Sopro Ancestral', custo: '4 PE', desc: 'Expele um cone de energia elemental (Fogo/Solar, Estase ou Ácido) em um raio de 3B à sua frente. Inimigos na área devem rolar teste de Destreza (CT 15) ou sofrer 3d10 de dano elemental.' },
+            { nome: 'Conexão Sensorial', custo: '2 PE', desc: 'As seis antenas permitem comunicação telepática limitada com criaturas a até 10B, transmitindo emoções, intenções simples ou imagens mentais.' },
+            { nome: 'Familiaridade com o Macabro', custo: 'Passiva', desc: 'A visão de cadáveres, ossadas ou sangue seco não provoca dano na sua Barra de Estresse.' }
           ]
         };
       }
@@ -1415,23 +1415,23 @@ const MesaApp = {
         this.state.players[7] = {
           id: 8, slot: 8, token: 'F9C5', nome: "Canneth 'Blinko' Biloxi", idade: '18 anos', altura: '1,75m', raca: 'Animalesco', arquetipo: 'Teimoso',
           hp: 17, hpMax: 17, pe: 10, peMax: 10, st: 0, stMax: 36, stressPoints: 0, stressPointsMax: 6,
-          atributos: { 'Vigor': 'd12', 'SaÃºde': 'd8', 'ForÃ§a': 'd4', 'Mente': 'd16' },
+          atributos: { 'Vigor': 'd12', 'Saúde': 'd8', 'Força': 'd4', 'Mente': 'd16' },
           bonus: [
-            { origem: 'RaÃ§a (Animalesco)', desc: '+d4 em testes de Esquiva / Sentidos AguÃ§ados' },
-            { origem: 'ArquÃ©tipo (Teimoso)', desc: 'ResistÃªncia a ser coagido ou derrubado' }
+            { origem: 'Raça (Animalesco)', desc: '+d4 em testes de Esquiva / Sentidos Aguçados' },
+            { origem: 'Arquétipo (Teimoso)', desc: 'Resistência a ser coagido ou derrubado' }
           ],
-          pericias: ['IntimidaÃ§Ã£o', 'Engenharia', 'Atletismo', 'HistÃ³ria'],
+          pericias: ['Intimidação', 'Engenharia', 'Atletismo', 'História'],
           habilidades: [
-            { nome: 'Recusa em Cair', custo: '3 PE', desc: 'Ao sofrer dano que o deixaria com 0 PV, gasta 3 PE para permanecer de pÃ© com exatamente 1 PV (uma vez por sessÃ£o).' },
-            { nome: 'PercepÃ§Ã£o Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguÃ§am. Ganha vantagem em testes de Mente para detectar presenÃ§as, sons ou cheiros suspeitos por 1 cena.' },
-            { nome: 'Instinto de SobrevivÃªncia', custo: '3 PE', desc: 'Em situaÃ§Ãµes de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou ForÃ§a para a prÃ³xima aÃ§Ã£o.' }
+            { nome: 'Recusa em Cair', custo: '3 PE', desc: 'Ao sofrer dano que o deixaria com 0 PV, gasta 3 PE para permanecer de pé com exatamente 1 PV (uma vez por sessão).' },
+            { nome: 'Percepção Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguçam. Ganha vantagem em testes de Mente para detectar presenças, sons ou cheiros suspeitos por 1 cena.' },
+            { nome: 'Instinto de Sobrevivência', custo: '3 PE', desc: 'Em situações de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou Força para a próxima ação.' }
           ]
         };
       }
       
       this.renderMesa();
 
-      // Se a ficha de alguÃ©m estiver aberta, atualiza SOMENTE os valores sem re-animar
+      // Se a ficha de alguém estiver aberta, atualiza SOMENTE os valores sem re-animar
       if (this.state.activeViewingPlayer) {
         const updated = this.state.players.find(p => p && p.slot === this.state.activeViewingPlayer.slot);
         if (updated) {
@@ -1452,7 +1452,7 @@ const MesaApp = {
     this.supabase
       .channel('mesa_realtime_channel')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'personagens' }, (payload) => {
-        console.log("AtualizaÃ§Ã£o da mesa recebida:", payload);
+        console.log("Atualização da mesa recebida:", payload);
         this.fetchPlayers();
       })
       .subscribe();
@@ -1502,11 +1502,11 @@ const MesaApp = {
     if (p) {
       this.openFicha(p);
     } else {
-      alert(`Slot ${slotIndex} estÃ¡ vazio.`);
+      alert(`Slot ${slotIndex} está vazio.`);
     }
   },
 
-  // VERIFICA SE O USUÃRIO TEM PERMISSÃƒO DE EDIÃ‡ÃƒO NESTA FICHA
+  // VERIFICA SE O USUÁRIO TEM PERMISSÃO DE EDIÇÃO NESTA FICHA
   canEdit(player) {
     if (!player) return false;
     if (this.state.isMaster) return true;
@@ -1519,7 +1519,7 @@ const MesaApp = {
     return false;
   },
 
-  // ATUALIZAÃ‡ÃƒO CIRÃšRGICA DOS VALORES NO DOM (SEM REPETIR ANIMAÃ‡Ã•ES)
+  // ATUALIZAÇÃO CIRÚRGICA DOS VALORES NO DOM (SEM REPETIR ANIMAÇÕES)
   updateVitalsUI(player) {
     const pvEl = document.getElementById('ficha-pv-val');
     const peEl = document.getElementById('ficha-pe-val');
@@ -1549,7 +1549,7 @@ const MesaApp = {
     }
   },
 
-  // ATUALIZAÃ‡ÃƒO EM TEMPO REAL DOS STATUS
+  // ATUALIZAÇÃO EM TEMPO REAL DOS STATUS
   async updateStat(slot, field, delta) {
     const player = this.state.players[slot - 1];
     if (!player || !this.canEdit(player)) return;
@@ -1587,11 +1587,11 @@ const MesaApp = {
       patchData.stress_points = next;
     }
 
-    // 1. Atualiza cirurgicamente no DOM local (zero replay de animaÃ§Ã£o)
+    // 1. Atualiza cirurgicamente no DOM local (zero replay de animação)
     this.updateVitalsUI(player);
     this.renderMesa();
 
-    // 2. TransmissÃ£o WebSocket InstantÃ¢nea para todas as telas conectadas (<30ms)
+    // 2. Transmissão WebSocket Instantânea para todas as telas conectadas (<30ms)
     if (MesaChat.channel) {
       MesaChat.channel.send({
         type: 'broadcast',
@@ -1623,7 +1623,7 @@ const MesaApp = {
     }
   },
 
-  // RECEBE SINCRONIZAÃ‡ÃƒO DE STATUS EM TEMPO REAL VIA WEBSOCKET
+  // RECEBE SINCRONIZAÇÃO DE STATUS EM TEMPO REAL VIA WEBSOCKET
   handleIncomingVitals(data) {
     if (!data || !data.slot) return;
     const player = this.state.players[data.slot - 1];
@@ -1641,7 +1641,7 @@ const MesaApp = {
     // Atualiza o card correspondente na mesa
     this.renderMesa();
 
-    // Se a ficha deste personagem estiver aberta, atualiza imediatamente os nÃºmeros e barras
+    // Se a ficha deste personagem estiver aberta, atualiza imediatamente os números e barras
     if (this.state.activeViewingPlayer && this.state.activeViewingPlayer.slot === data.slot) {
       this.state.activeViewingPlayer = player;
       this.updateVitalsUI(player);
@@ -1652,7 +1652,7 @@ const MesaApp = {
   openFicha(player, startParticles = true) {
     const fichaModal = document.getElementById('ficha-modal');
 
-    // Se a ficha jÃ¡ estÃ¡ aberta para ESTE mesmo personagem, apenas atualiza valores
+    // Se a ficha já está aberta para ESTE mesmo personagem, apenas atualiza valores
     if (fichaModal.classList.contains('active') && this.state.activeViewingPlayer && this.state.activeViewingPlayer.slot === player.slot) {
       this.state.activeViewingPlayer = player;
       this.updateVitalsUI(player);
@@ -1667,8 +1667,8 @@ const MesaApp = {
     let skills = player.pericias || [];
     let habs = player.habilidades || [];
     let bonusList = player.bonus && player.bonus.length > 0 ? player.bonus : [
-      { origem: `RaÃ§a (${player.raca || 'Vampiro'})`, desc: '+d4 em Mente' },
-      { origem: `ArquÃ©tipo (${player.arquetipo || 'Curioso'})`, desc: '+d4 em Mente' }
+      { origem: `Raça (${player.raca || 'Vampiro'})`, desc: '+d4 em Mente' },
+      { origem: `Arquétipo (${player.arquetipo || 'Curioso'})`, desc: '+d4 em Mente' }
     ];
 
     // Atributos limpos (ignora metadados e namespaces internos como _wuitter)
@@ -1683,7 +1683,7 @@ const MesaApp = {
       `;
     }).join('');
 
-    // BÃ´nus de RaÃ§a / ArquÃ©tipo
+    // Bônus de Raça / Arquétipo
     let bonusHtml = bonusList.map((b, idx) => `
       <div class="bonus-item-badge" style="--bonus-idx: ${idx};">
         <span class="bonus-origem">${b.origem}:</span>
@@ -1691,12 +1691,12 @@ const MesaApp = {
       </div>
     `).join('');
 
-    // PerÃ­cias em UMA ÃšNICA COLUNA VERTICAL
+    // Perícias em UMA ÚNICA COLUNA VERTICAL
     let skillsHtml = skills.map((s, idx) => `
       <li class="skill-open-item" style="--skill-idx: ${idx};">${s}</li>
     `).join('');
     
-    // Habilidades filtradas estritamente (removendo qualquer variante de VisÃ£o no Escuro)
+    // Habilidades filtradas estritamente (removendo qualquer variante de Visão no Escuro)
     const isDarkVision = (name) => {
       if (!name) return false;
       const clean = name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
@@ -1713,7 +1713,7 @@ const MesaApp = {
       </li>
     `).join('');
 
-    // CÃ¡lculo da Barra de Estresse Roxa
+    // Cálculo da Barra de Estresse Roxa
     const stCurrent = player.st || 0;
     const stMax = player.stMax || 44;
     const stPercent = Math.min(Math.round((stCurrent / stMax) * 100), 100);
@@ -1727,7 +1727,7 @@ const MesaApp = {
     }
 
     content.innerHTML = `
-      <!-- COLUNA ESQUERDA: ILUSTRAÃ‡ÃƒO -->
+      <!-- COLUNA ESQUERDA: ILUSTRAÇÃO -->
       <div class="ficha-portrait-col">
         ${player.imagem ? `
           <div class="ficha-char-portrait-box glitch-portrait-box">
@@ -1749,10 +1749,10 @@ const MesaApp = {
         `}
       </div>
 
-      <!-- COLUNA DIREITA: INFORMAÃ‡Ã•ES LIMPAS E DISPERSAS -->
+      <!-- COLUNA DIREITA: INFORMAÇÕES LIMPAS E DISPERSAS -->
       <div class="ficha-info-col">
         
-        <!-- CabeÃ§alho com Nome, Tags e Indicador de Modo (Com SVGs) -->
+        <!-- Cabeçalho com Nome, Tags e Indicador de Modo (Com SVGs) -->
         <div class="ficha-char-header">
           <h1 class="ficha-char-title">${player.nome}</h1>
           <div class="ficha-tags-row">
@@ -1761,12 +1761,12 @@ const MesaApp = {
             <span class="ficha-badge-tag">${player.idade || 'N/A'}</span>
             <span class="ficha-badge-tag">${player.altura || 'N/A'}</span>
             <span class="ficha-permission-tag ${editable ? 'edit' : 'view'}">
-              ${editable ? `${SVG_ICONS.pencil} Modo EdiÃ§Ã£o` : `${SVG_ICONS.eye} Modo Leitura`}
+              ${editable ? `${SVG_ICONS.pencil} Modo Edição` : `${SVG_ICONS.eye} Modo Leitura`}
             </span>
           </div>
         </div>
 
-        <!-- 1. Linha de PV (Verde) e PE (Azul) com Controles se tiver PermissÃ£o -->
+        <!-- 1. Linha de PV (Verde) e PE (Azul) com Controles se tiver Permissão -->
         <div class="ficha-vital-row">
           <div class="vital-stat-block">
             <span class="vital-stat-tag pv-tag">PV</span>
@@ -1817,7 +1817,7 @@ const MesaApp = {
           </div>
         </div>
 
-        <!-- 3. Atributos e BÃ´nus de ArquÃ©tipo/RaÃ§a -->
+        <!-- 3. Atributos e Bônus de Arquétipo/Raça -->
         <div class="ficha-dual-row">
           <div class="ficha-open-section ficha-section-attrs">
             <div class="ink-ribbon-title">ATRIBUTOS</div>
@@ -1827,17 +1827,17 @@ const MesaApp = {
           </div>
 
           <div class="ficha-open-section ficha-section-bonus">
-            <div class="ink-ribbon-title" style="background:#8b1b00;">BÃ”NUS DE ARQUÃ‰TIPO / RAÃ‡A</div>
+            <div class="ink-ribbon-title" style="background:#8b1b00;">BÔNUS DE ARQUÉTIPO / RAÇA</div>
             <div class="bonus-badges-list">
               ${bonusHtml}
             </div>
           </div>
         </div>
 
-        <!-- 4. PerÃ­cias (Coluna Ãšnica) e Habilidades Lado a Lado -->
+        <!-- 4. Perícias (Coluna Única) e Habilidades Lado a Lado -->
         <div class="ficha-skills-habs-row">
           <div class="ficha-open-section ficha-section-skills">
-            <div class="ink-ribbon-title">PERÃCIAS</div>
+            <div class="ink-ribbon-title">PERÍCIAS</div>
             <ul class="skills-single-col-list">
               ${skillsHtml}
             </ul>
@@ -1860,7 +1860,7 @@ const MesaApp = {
 
     fichaModal.classList.add('active');
 
-    // Inicia o motor de glitch procedural na ilustraÃ§Ã£o (mesma frequÃªncia e tipos do BG)
+    // Inicia o motor de glitch procedural na ilustração (mesma frequência e tipos do BG)
     setTimeout(() => {
       PortraitGlitchEngine.start();
     }, 25);
@@ -1954,7 +1954,7 @@ const MesaApp = {
           player = this.state.players.find(p => p && p.token && p.token.toUpperCase() === token);
         }
         const playerName = player ? `${player.nome} (Slot ${player.slot})` : 'Jogador';
-        alert(`[CONECTADO] ${playerName} - Modo de ediÃ§Ã£o ativado.`);
+        alert(`[CONECTADO] ${playerName} - Modo de edição ativado.`);
         this.closeModal('token-modal');
         if (player) {
           this.openFicha(player);
@@ -1963,9 +1963,9 @@ const MesaApp = {
     } else {
       const { fails, lockoutDuration } = MesaSecurity.recordFailedAttempt();
       if (lockoutDuration > 0) {
-        alert(`[BLOQUEIO DE SEGURANÃ‡A] Token invÃ¡lido. VocÃª excedeu o limite de tentativas (${fails}). Aguarde ${lockoutDuration} segundos.`);
+        alert(`[BLOQUEIO DE SEGURANÇA] Token inválido. Você excedeu o limite de tentativas (${fails}). Aguarde ${lockoutDuration} segundos.`);
       } else {
-        alert(`[ERRO] Token invÃ¡lido ou nÃ£o encontrado (${fails}/3 tentativas antes do bloqueio temporÃ¡rio).`);
+        alert(`[ERRO] Token inválido ou não encontrado (${fails}/3 tentativas antes do bloqueio temporário).`);
       }
     }
   },
@@ -2003,7 +2003,7 @@ const MesaApp = {
       return;
     }
 
-    // 3. Se ainda nÃ£o possui token conectado, abre o modal de token
+    // 3. Se ainda não possui token conectado, abre o modal de token
     this.openTokenModal();
   }
 };
@@ -2079,12 +2079,12 @@ const MesaChat = {
       }
     });
 
-    // 1. WebSocket Broadcast ultra-rÃ¡pido (< 50ms)
+    // 1. WebSocket Broadcast ultra-rápido (< 50ms)
     this.channel.on('broadcast', { event: 'chat_msg' }, (payload) => {
       this.receiveMessage(payload.payload);
     });
 
-    // 2. WebSocket Broadcast de ReaÃ§Ãµes de Emoji (BalÃ£o Comic nos Cards)
+    // 2. WebSocket Broadcast de Reações de Emoji (Balão Comic nos Cards)
     this.channel.on('broadcast', { event: 'player_reaction' }, (payload) => {
       const data = payload.payload;
       if (data && data.slot) {
@@ -2100,7 +2100,7 @@ const MesaChat = {
       }
     });
 
-    // 4. WebSocket Broadcast de Vitals em Tempo Real (PV, PE, Estresse instantÃ¢neo < 30ms)
+    // 4. WebSocket Broadcast de Vitals em Tempo Real (PV, PE, Estresse instantâneo < 30ms)
     this.channel.on('broadcast', { event: 'vitals_sync' }, (payload) => {
       const data = payload.payload;
       if (data && data.slot) {
@@ -2108,7 +2108,7 @@ const MesaChat = {
       }
     });
 
-    // 5. WebSocket Broadcast de MudanÃ§a de Ãrea / Mapa em Tempo Real
+    // 5. WebSocket Broadcast de Mudança de Área / Mapa em Tempo Real
     this.channel.on('broadcast', { event: 'area_changed' }, (payload) => {
       const data = payload.payload;
       if (data && data.areaId && window.MesaAreaManager) {
@@ -2166,7 +2166,7 @@ const MesaChat = {
   receiveMessage(msg) {
     if (!msg || !msg.content) return;
     
-    // Evita duplicatas se jÃ¡ renderizado via broadcast ou optimistic UI
+    // Evita duplicatas se já renderizado via broadcast ou optimistic UI
     if (this.messages.some(m => m.id === msg.id || (m.tempId && m.tempId === msg.tempId))) {
       return;
     }
@@ -2260,10 +2260,10 @@ const MesaChat = {
       created_at: new Date().toISOString()
     };
 
-    // 1. Optimistic UI (Aparece instantaneamente para o usuÃ¡rio sem esperar a rede)
+    // 1. Optimistic UI (Aparece instantaneamente para o usuário sem esperar a rede)
     this.receiveMessage(msgPayload);
 
-    // 2. Broadcast ultra-rÃ¡pido via WebSocket para todos os jogadores na sala
+    // 2. Broadcast ultra-rápido via WebSocket para todos os jogadores na sala
     if (this.channel) {
       this.channel.send({
         type: 'broadcast',
@@ -2272,7 +2272,7 @@ const MesaChat = {
       });
     }
 
-    // 3. PersistÃªncia assÃ­ncrona no Supabase
+    // 3. Persistência assíncrona no Supabase
     if (MesaApp.supabase) {
       try {
         await MesaApp.supabase
@@ -2291,7 +2291,7 @@ const MesaChat = {
 };
 
 
-// ---- 5. MOTOR DE REAÃ‡Ã•ES DE EMOJIS EM PIXEL ART & BALÃ•ES DE FALA COMIC ----
+// ---- 5. MOTOR DE REAÇÕES DE EMOJIS EM PIXEL ART & BALÕES DE FALA COMIC ----
 const PIXEL_FACES_SVG = {
   smile: `<svg class="pixel-face-svg" viewBox="0 0 16 16"><rect x="4" y="1" width="8" height="14" fill="#facc15"/><rect x="2" y="2" width="12" height="12" fill="#facc15"/><rect x="1" y="4" width="14" height="8" fill="#facc15"/><rect x="4" y="0" width="8" height="1" fill="#000"/><rect x="4" y="15" width="8" height="1" fill="#000"/><rect x="0" y="4" width="1" height="8" fill="#000"/><rect x="15" y="4" width="1" height="8" fill="#000"/><rect x="2" y="1" width="2" height="1" fill="#000"/><rect x="12" y="1" width="2" height="1" fill="#000"/><rect x="1" y="2" width="1" height="2" fill="#000"/><rect x="14" y="2" width="1" height="2" fill="#000"/><rect x="1" y="12" width="1" height="2" fill="#000"/><rect x="14" y="12" width="1" height="2" fill="#000"/><rect x="2" y="14" width="2" height="1" fill="#000"/><rect x="12" y="14" width="2" height="1" fill="#000"/><rect x="4" y="5" width="2" height="3" fill="#000"/><rect x="10" y="5" width="2" height="3" fill="#000"/><rect x="4" y="10" width="1" height="1" fill="#000"/><rect x="11" y="10" width="1" height="1" fill="#000"/><rect x="5" y="11" width="6" height="1" fill="#000"/></svg>`,
   
@@ -2347,7 +2347,7 @@ const MesaReactions = {
 
   togglePicker() {
     if (!MesaApp.state.myToken && !MesaApp.state.isMaster) {
-      alert("Observadores nÃ£o podem usar reaÃ§Ãµes de emojis. Conecte seu token de personagem para reagir na mesa!");
+      alert("Observadores não podem usar reações de emojis. Conecte seu token de personagem para reagir na mesa!");
       MesaApp.openTokenModal();
       return;
     }
@@ -2373,7 +2373,7 @@ const MesaReactions = {
     this.closePicker();
 
     if (!MesaApp.state.myToken && !MesaApp.state.isMaster) {
-      alert("Observadores nÃ£o podem usar reaÃ§Ãµes de emojis. Conecte seu token de personagem!");
+      alert("Observadores não podem usar reações de emojis. Conecte seu token de personagem!");
       MesaApp.openTokenModal();
       return;
     }
@@ -2391,7 +2391,7 @@ const MesaReactions = {
     }
 
     if (!targetSlot) {
-      alert("Conecte um token de personagem para enviar reaÃ§Ãµes no seu card!");
+      alert("Conecte um token de personagem para enviar reações no seu card!");
       MesaApp.openTokenModal();
       return;
     }
@@ -2414,13 +2414,13 @@ const MesaReactions = {
     const board = document.getElementById('mesa-board-container');
     if (!slotEl || !board) return;
 
-    // Remove qualquer balÃ£o anterior no mesmo slot
+    // Remove qualquer balão anterior no mesmo slot
     const existing = document.getElementById(`comic-bubble-slot-${slot}`);
     if (existing) existing.remove();
 
     const svgContent = PIXEL_FACES_SVG[faceKey] || PIXEL_FACES_SVG.smile;
 
-    // ObtÃ©m dimensÃµes relativas exatas ao container da mesa
+    // Obtém dimensões relativas exatas ao container da mesa
     const slotRect = slotEl.getBoundingClientRect();
     const boardRect = board.getBoundingClientRect();
 
@@ -2441,11 +2441,11 @@ const MesaReactions = {
       let leftPos, topPos;
       if (isRightSide) {
         bubble.classList.add('bubble-pointing-right');
-        leftPos = (slotRect.left - boardRect.left) - 75; // totalmente fora, Ã  esquerda do card
+        leftPos = (slotRect.left - boardRect.left) - 75; // totalmente fora, à esquerda do card
         topPos = (slotRect.top - boardRect.top) + 16;
       } else {
         bubble.classList.add('bubble-pointing-left');
-        leftPos = (slotRect.right - boardRect.left) + 16; // totalmente fora, Ã  direita do card
+        leftPos = (slotRect.right - boardRect.left) + 16; // totalmente fora, à direita do card
         topPos = (slotRect.top - boardRect.top) + 16;
       }
       bubble.style.position = 'absolute';
@@ -2455,7 +2455,7 @@ const MesaReactions = {
 
     board.appendChild(bubble);
 
-    // AnimaÃ§Ã£o de saÃ­da e remoÃ§Ã£o automÃ¡tica apÃ³s ~3.5s
+    // Animação de saída e remoção automática após ~3.5s
     setTimeout(() => {
       if (bubble.parentNode) {
         bubble.classList.add('fade-out');
@@ -2471,9 +2471,9 @@ const MesaReactions = {
 };
 
 
-// ---- 6. MOTOR DE ROLAGEM DE DADOS COM ALEATORIEDADE CRIPTOGRÃFICA (CSPRNG) ----
+// ---- 6. MOTOR DE ROLAGEM DE DADOS COM ALEATORIEDADE CRIPTOGRÁFICA (CSPRNG) ----
 const MesaDice = {
-  selectedDice: [20], // padrÃ£o inicial: 1d20
+  selectedDice: [20], // padrão inicial: 1d20
   modifier: 0,
   isRolling: false,
   isGlobalRolling: false,
@@ -2486,7 +2486,7 @@ const MesaDice = {
     this.renderSelectedList();
   },
 
-  // Gerador Criptograficamente Seguro de NÃºmeros AleatÃ³rios (CSPRNG - sem viÃ©s de mÃ³dulo)
+  // Gerador Criptograficamente Seguro de Números Aleatórios (CSPRNG - sem viés de módulo)
   cryptoRandomInt(min, max) {
     const range = max - min + 1;
     const maxUint32 = 0xFFFFFFFF;
@@ -2504,13 +2504,13 @@ const MesaDice = {
 
   openModal() {
     if (!MesaApp.state.myToken && !MesaApp.state.isMaster) {
-      alert("Observadores nÃ£o podem rolar dados. Conecte seu token de personagem para rolar dados na mesa!");
+      alert("Observadores não podem rolar dados. Conecte seu token de personagem para rolar dados na mesa!");
       MesaApp.openTokenModal();
       return;
     }
 
     if (this.isGlobalRolling) {
-      alert(`[MESA OCUPADA]: ${this.currentRoller || 'Outro jogador'} estÃ¡ rolando dados no palco central neste momento. Aguarde a rolagem terminar!`);
+      alert(`[MESA OCUPADA]: ${this.currentRoller || 'Outro jogador'} está rolando dados no palco central neste momento. Aguarde a rolagem terminar!`);
       return;
     }
 
@@ -2558,7 +2558,7 @@ const MesaDice = {
     if (!container) return;
 
     if (this.selectedDice.length === 0) {
-      container.innerHTML = `<span class="dice-empty-hint">Nenhum dado selecionado (clique nos botÃµes de dados acima)</span>`;
+      container.innerHTML = `<span class="dice-empty-hint">Nenhum dado selecionado (clique nos botões de dados acima)</span>`;
     } else {
       container.innerHTML = this.selectedDice.map((sides, idx) => `
         <span class="selected-die-badge">
@@ -2595,7 +2595,7 @@ const MesaDice = {
     btn.style.opacity = '1';
     btn.style.cursor = 'pointer';
 
-    // Agrupa dados para exibiÃ§Ã£o (ex: 2d12 + 1d4)
+    // Agrupa dados para exibição (ex: 2d12 + 1d4)
     const counts = {};
     this.selectedDice.forEach(s => counts[s] = (counts[s] || 0) + 1);
     const diceStr = Object.keys(counts).map(s => `${counts[s]}d${s}`).join(' + ');
@@ -2606,17 +2606,17 @@ const MesaDice = {
 
   executeRoll() {
     if (!MesaApp.state.myToken && !MesaApp.state.isMaster) {
-      alert("Observadores nÃ£o podem rolar dados.");
+      alert("Observadores não podem rolar dados.");
       return;
     }
 
-    // 1. Trava contra concorrÃªncia global (alguÃ©m jÃ¡ rolando no palco)
+    // 1. Trava contra concorrência global (alguém já rolando no palco)
     if (this.isGlobalRolling) {
-      alert(`[MESA OCUPADA]: ${this.currentRoller || 'Outro jogador'} estÃ¡ rolando dados neste momento. Aguarde o resultado!`);
+      alert(`[MESA OCUPADA]: ${this.currentRoller || 'Outro jogador'} está rolando dados neste momento. Aguarde o resultado!`);
       return;
     }
 
-    // 2. Trava anti-spam (cooldown de seguranÃ§a)
+    // 2. Trava anti-spam (cooldown de segurança)
     const now = Date.now();
     const elapsed = now - this.lastRollTimestamp;
     if (elapsed < this.ROLL_COOLDOWN_MS && !MesaApp.state.isMaster) {
@@ -2649,7 +2649,7 @@ const MesaDice = {
       total: total
     };
 
-    // 4. Executa a animaÃ§Ã£o no quadrado preto central
+    // 4. Executa a animação no quadrado preto central
     this.playRollAnimation(rollPayload);
 
     // 5. Transmite para todos os jogadores na mesa em tempo real via WebSocket
@@ -2691,7 +2691,7 @@ const MesaDice = {
     // Monta a arena de rolagem
     stage.innerHTML = `
       <div class="dice-roller-badge ${data.isMaster ? 'is-master' : ''}">
-        ${data.rollerName} estÃ¡ rolando...
+        ${data.rollerName} está rolando...
       </div>
       <div class="dice-tumbling-arena">
         ${data.results.map((d, i) => `
@@ -2704,7 +2704,7 @@ const MesaDice = {
       <div id="dice-total-box" class="dice-total-banner" style="display:none;"></div>
     `;
 
-    // AnimaÃ§Ã£o de nÃºmeros girando em alta velocidade por 1.2 segundos
+    // Animação de números girando em alta velocidade por 1.2 segundos
     const interval = setInterval(() => {
       data.results.forEach((d, i) => {
         const valEl = document.getElementById(`dice-val-${i}`);
@@ -2714,7 +2714,7 @@ const MesaDice = {
       });
     }, 45);
 
-    // Para a animaÃ§Ã£o e bate o valor real criptogrÃ¡fico
+    // Para a animação e bate o valor real criptográfico
     setTimeout(() => {
       clearInterval(interval);
 
@@ -2742,7 +2742,7 @@ const MesaDice = {
       }
     }, 1200);
 
-    // MantÃ©m na tela e retorna suavemente ao estado de repouso apÃ³s 5.0s, liberando a trava global
+    // Mantém na tela e retorna suavemente ao estado de repouso após 5.0s, liberando a trava global
     this.rollTimeout = setTimeout(() => {
       stage.classList.remove('active');
       stage.innerHTML = '';
@@ -2755,157 +2755,157 @@ const MesaDice = {
 
 
 // ============================================================
-// 7. SISTEMA DE ÃREAS & MAPA DE INVESTIGAÃ‡ÃƒO â€” WUITALUR RPG
-// 7 Ãreas CanÃ´nicas, 10 Pontos de Interesse Estruturados (CabeÃ§alho, Quadro de PerÃ­cias e DescriÃ§Ã£o Contextual)
+// 7. SISTEMA DE ÁREAS & MAPA DE INVESTIGAÇÃO — WUITALUR RPG
+// 7 Áreas Canônicas, 10 Pontos de Interesse Estruturados (Cabeçalho, Quadro de Perícias e Descrição Contextual)
 // ============================================================
 
 const MESA_AREAS = {
   "none": {
     "id": "none",
     "name": "Mesa Livre",
-    "shortName": "Sem Ãrea",
+    "shortName": "Sem Área",
     "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><line x1=\"4.93\" y1=\"4.93\" x2=\"19.07\" y2=\"19.07\"></line></svg>",
     "themeClass": "area-none",
     "district": "",
     "dangerLevel": "Livre",
     "dangerLevelClass": "safe",
-    "ambience": "A mesa encontra-se livre. Nenhuma Ã¡rea selecionada.",
+    "ambience": "A mesa encontra-se livre. Nenhuma área selecionada.",
     "lore": "Layout livre.",
     "rumor": "",
     "pois": []
   },
   "colegio-primordio": {
     "id": "colegio-primordio",
-    "name": "ColÃ©gio Integrado PrimÃ³rdio",
-    "shortName": "ColÃ©gio PrimÃ³rdio",
+    "name": "Colégio Integrado Primórdio",
+    "shortName": "Colégio Primórdio",
     "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 10v6M2 10l10-5 10 5-10 5z\"></path><path d=\"M6 12v5c3 3 9 3 12 0v-5\"></path></svg>",
     "themeClass": "area-colegio-primordio",
-    "district": "Setor Estudantil & CÃ­vico â€¢ Centro de Fragktus",
-    "dangerLevel": "Inspetores RÃ­gidos & VigilÃ¢ncia Escolar",
+    "district": "Setor Estudantil & Cívico • Centro de Fragktus",
+    "dangerLevel": "Inspetores Rígidos & Vigilância Escolar",
     "dangerLevelClass": "warning",
-    "ambience": "A arquitetura impÃµe-se de forma rÃ­gida e asseada. Os corredores longos possuem pisos de mosaico polido que refletem uma luz fluorescente pÃ¡lida, ladeados por filas interminÃ¡veis de cacifos de metal verde-oliva. Os passos ecoam de forma seca e solitÃ¡ria nas paredes frias, transmitindo a sensaÃ§Ã£o constante de vigilÃ¢ncia e de que as conversas nunca sÃ£o verdadeiramente privadas. No pÃ¡tio central e no ginÃ¡sio, a grandiosidade da infraestrutura serve apenas para reforÃ§ar a pequenez e a vulnerabilidade de quem ali estuda.\n\nO ar carrega uma mistura enjoativa de cera de polir, papel velho da biblioteca e desinfetante forte â€” o aroma da limpeza extrema, usado pela direÃ§Ã£o para apagar rapidamente qualquer vestÃ­gio de fraqueza, dor ou escÃ¢ndalo. Durante as aulas, um silÃªncio opressivo domina os pisos, quebrado apenas pelo tiquetaque rÃ­gido dos relÃ³gios de parede e pelo som distante e calculista de sapatos de salto alto a ecoar no rÃ©s-do-chÃ£o.\n\nA pressÃ£o social paira densa nos intervalos. Os alunos, filhos da elite local, agrupam-se com posturas impecÃ¡veis e olhares de julgamento, criando um ecossistema hostil a quem nÃ£o partilha do mesmo estatuto. Ã‰ um espaÃ§o claustrofÃ³bico e profundamente hipÃ³crita, onde o arranjo de flores mortas no corredor contrasta com a ordem imaculada da instituiÃ§Ã£o, provando aos investigadores que o sofrimento ali nÃ£o Ã© tratado, mas sim silenciado de imediato.",
-    "lore": "O colÃ©gio mais tradicional de Fragktus, onde Sara e seus colegas estudavam. Sob o verniz da disciplina impecÃ¡vel, circulam segredos sombrios sobre chantagens entre grÃªmios, favores concedidos a filhos de diretores e o silenciamento sistemÃ¡tico de alunos que faziam perguntas demais.",
-    "rumor": "Â«Sara nÃ£o foi assistir Ã  Ãºltima aula de quÃ­mica. Testemunhas dizem que ela foi vista discutindo aos prantos atrÃ¡s da arquibancada com alguÃ©m de jaleco branco.Â»",
+    "ambience": "A arquitetura impõe-se de forma rígida e asseada. Os corredores longos possuem pisos de mosaico polido que refletem uma luz fluorescente pálida, ladeados por filas intermináveis de cacifos de metal verde-oliva. Os passos ecoam de forma seca e solitária nas paredes frias, transmitindo a sensação constante de vigilância e de que as conversas nunca são verdadeiramente privadas. No pátio central e no ginásio, a grandiosidade da infraestrutura serve apenas para reforçar a pequenez e a vulnerabilidade de quem ali estuda.\n\nO ar carrega uma mistura enjoativa de cera de polir, papel velho da biblioteca e desinfetante forte — o aroma da limpeza extrema, usado pela direção para apagar rapidamente qualquer vestígio de fraqueza, dor ou escândalo. Durante as aulas, um silêncio opressivo domina os pisos, quebrado apenas pelo tiquetaque rígido dos relógios de parede e pelo som distante e calculista de sapatos de salto alto a ecoar no rés-do-chão.\n\nA pressão social paira densa nos intervalos. Os alunos, filhos da elite local, agrupam-se com posturas impecáveis e olhares de julgamento, criando um ecossistema hostil a quem não partilha do mesmo estatuto. É um espaço claustrofóbico e profundamente hipócrita, onde o arranjo de flores mortas no corredor contrasta com a ordem imaculada da instituição, provando aos investigadores que o sofrimento ali não é tratado, mas sim silenciado de imediato.",
+    "lore": "O colégio mais tradicional de Fragktus, onde Sara e seus colegas estudavam. Sob o verniz da disciplina impecável, circulam segredos sombrios sobre chantagens entre grêmios, favores concedidos a filhos de diretores e o silenciamento sistemático de alunos que faziam perguntas demais.",
+    "rumor": "«Sara não foi assistir à última aula de química. Testemunhas dizem que ela foi vista discutindo aos prantos atrás da arquibancada com alguém de jaleco branco.»",
     "pois": [
       {
         "num": 1,
-        "title": "O ArmÃ¡rio de Sara (2Âº Andar, Corredor Norte)",
-        "headerDesc": "O armÃ¡rio metÃ¡lico nÂº 73, situado no corredor entre a biblioteca e a sala do 3Âº ano. O chÃ£o em frente e a chapa verde-oliva acolhem um memorial improvisado: vasos pequenos com cravos secos, crisÃ¢ntemos murchos, copos de plÃ¡stico com cera endurecida de velas e vÃ¡rias mensagens coladas com fita-cola. A porta estÃ¡ encostada apenas no fecho metÃ¡lico, sem cadeado.",
+        "title": "O Armário de Sara (2º Andar, Corredor Norte)",
+        "headerDesc": "O armário metálico nº 73, situado no corredor entre a biblioteca e a sala do 3º ano. O chão em frente e a chapa verde-oliva acolhem um memorial improvisado: vasos pequenos com cravos secos, crisântemos murchos, copos de plástico com cera endurecida de velas e várias mensagens coladas com fita-cola. A porta está encostada apenas no fecho metálico, sem cadeado.",
         "skills": [
           {
-            "skill": "InvestigaÃ§Ã£o",
+            "skill": "Investigação",
             "dt": 6,
-            "info": "Ao inspecionar a estrutura fÃ­sica e afastar o amontoado de flores da base, nota-se que as homenagens foram fixadas em momentos distintos. Entre papÃ©is banais de estudantes, hÃ¡ um envelope denso colado com fita-cola na lateral de acesso mais difÃ­cil, bem rente Ã  dobra da porta."
+            "info": "Ao inspecionar a estrutura física e afastar o amontoado de flores da base, nota-se que as homenagens foram fixadas em momentos distintos. Entre papéis banais de estudantes, há um envelope denso colado com fita-cola na lateral de acesso mais difícil, bem rente à dobra da porta."
           },
           {
-            "skill": "PercepÃ§Ã£o",
+            "skill": "Percepção",
             "dt": 6,
-            "info": "Pelas grelhas de ventilaÃ§Ã£o do metal escapa um odor quÃ­mico de desinfetante hospitalar forte misturado com cera perfumada de flor de laranjeira, destoando completamente do pÃ³ e mofo do corredor."
+            "info": "Pelas grelhas de ventilação do metal escapa um odor químico de desinfetante hospitalar forte misturado com cera perfumada de flor de laranjeira, destoando completamente do pó e mofo do corredor."
           },
           {
             "skill": "Ladinagem / Crime",
             "dt": 8,
-            "info": "O trinco interior do armÃ¡rio nÃ£o ostenta mossas, marcas de ferramentas ou sinais de gazua. Ele foi destrancado com a chave-mestra administrativa da coordenaÃ§Ã£o antes da colocaÃ§Ã£o das flores."
+            "info": "O trinco interior do armário não ostenta mossas, marcas de ferramentas ou sinais de gazua. Ele foi destrancado com a chave-mestra administrativa da coordenação antes da colocação das flores."
           },
           {
-            "skill": "IntuiÃ§Ã£o",
+            "skill": "Intuição",
             "dt": 6,
-            "info": "A disposiÃ§Ã£o das velas e das jarras nÃ£o parece puramente espontÃ¢nea: segue uma ordem excessivamente simÃ©trica e limpa, tÃ­pica de algo inspecionado ou supervisionado pela prÃ³pria coordenaÃ§Ã£o escolar."
+            "info": "A disposição das velas e das jarras não parece puramente espontânea: segue uma ordem excessivamente simétrica e limpa, típica de algo inspecionado ou supervisionado pela própria coordenação escolar."
           }
         ],
-        "context": "A diretora ConstanÃ§a Montenegro acedeu ao armÃ¡rio com a chave-mestra poucas horas apÃ³s os boatos do desaparecimento de Sara. Ela higienizou o interior para remover resquÃ­cios de medicaÃ§Ã£o e autorizou o memorial como cortina de fumo. Uma busca bem-sucedida revela o CartÃ£o Envelopado."
+        "context": "A diretora Constança Montenegro acedeu ao armário com a chave-mestra poucas horas após os boatos do desaparecimento de Sara. Ela higienizou o interior para remover resquícios de medicação e autorizou o memorial como cortina de fumo. Uma busca bem-sucedida revela o Cartão Envelopado."
       },
       {
         "num": 2,
-        "title": "O CartÃ£o Envelopado (Encontrado no ArmÃ¡rio)",
-        "headerDesc": "Um envelope de alta gramagem, feito de papel de linho texturado, sem remetente formal no exterior. No interior, hÃ¡ um cartÃ£o dobrado com a seguinte inscriÃ§Ã£o manual em caligrafia cursiva elegante: 'Que as tuas dores finalmente encontrem repouso sob a sombra do eterno silÃªncio. Foste corajosa ao aceitar o descanso que merecias. â€” C.'",
+        "title": "O Cartão Envelopado (Encontrado no Armário)",
+        "headerDesc": "Um envelope de alta gramagem, feito de papel de linho texturado, sem remetente formal no exterior. No interior, há um cartão dobrado com a seguinte inscrição manual em caligrafia cursiva elegante: 'Que as tuas dores finalmente encontrem repouso sob a sombra do eterno silêncio. Foste corajosa ao aceitar o descanso que merecias. — C.'",
         "skills": [
           {
-            "skill": "InvestigaÃ§Ã£o",
+            "skill": "Investigação",
             "dt": 6,
-            "info": "O papel de linho e o corte do envelope correspondem exatamente aos materiais de expediente solene utilizados em exclusivo pela direÃ§Ã£o do ColÃ©gio PrimÃ³rdio."
+            "info": "O papel de linho e o corte do envelope correspondem exatamente aos materiais de expediente solene utilizados em exclusivo pela direção do Colégio Primórdio."
           },
           {
-            "skill": "PercepÃ§Ã£o",
+            "skill": "Percepção",
             "dt": 6,
-            "info": "A tinta utilizada na escrita Ã© fluida, prÃ³pria de caneta de tinta permanente num tom pÃºrpura escuro, impregnando um perfume suave de essÃªncia floral no papel."
+            "info": "A tinta utilizada na escrita é fluida, própria de caneta de tinta permanente num tom púrpura escuro, impregnando um perfume suave de essência floral no papel."
           },
           {
-            "skill": "IntuiÃ§Ã£o",
+            "skill": "Intuição",
             "dt": 8,
-            "info": "A mensagem encara a ausÃªncia de Sara como um termo definitivo e consumado, denotando que o autor conhecia a sua enfermidade latente ('as tuas dores') e sabia que a jovem partiu de livre vontade."
+            "info": "A mensagem encara a ausência de Sara como um termo definitivo e consumado, denotando que o autor conhecia a sua enfermidade latente ('as tuas dores') e sabia que a jovem partiu de livre vontade."
           }
         ],
-        "context": "O cartÃ£o foi depositado discretamente no memorial por ConstanÃ§a Montenegro. A tinta roxa Ã© o seu cunho pessoal em despachos formais. O bilhete entrega aos jogadores que alguÃ©m com a inicial 'C' na escola sabia do cancro terminal de Sara e apoiou a sua entrega Ã  entidade."
+        "context": "O cartão foi depositado discretamente no memorial por Constança Montenegro. A tinta roxa é o seu cunho pessoal em despachos formais. O bilhete entrega aos jogadores que alguém com a inicial 'C' na escola sabia do cancro terminal de Sara e apoiou a sua entrega à entidade."
       },
       {
         "num": 3,
-        "title": "O BalneÃ¡rio do GinÃ¡sio (1Âº Andar, RÃ©s-do-chÃ£o - Ala Este)",
-        "headerDesc": "Um banco de madeira comprido fixo aos azulejos frios nos fundos do balneÃ¡rio feminino da quadra, prÃ³ximo Ã  saÃ­da de emergÃªncia que conduz Ã s traseiras do recinto escolar.",
+        "title": "O Balneário do Ginásio (1º Andar, Rés-do-chão - Ala Este)",
+        "headerDesc": "Um banco de madeira comprido fixo aos azulejos frios nos fundos do balneário feminino da quadra, próximo à saída de emergência que conduz às traseiras do recinto escolar.",
         "skills": [
           {
-            "skill": "InvestigaÃ§Ã£o",
+            "skill": "Investigação",
             "dt": 6,
-            "info": "Sob o assento do Ãºltimo banco encontram-se resÃ­duos de fita-cola recente. No vÃ£o do ralo desativado logo abaixo, foi descartado um frasco cilÃ­ndrico de remÃ©dio vazio e sem rÃ³tulo comercial, preservando apenas um cÃ³digo impresso da ClÃ­nica MÃ©dica de Mina de Prata."
+            "info": "Sob o assento do último banco encontram-se resíduos de fita-cola recente. No vão do ralo desativado logo abaixo, foi descartado um frasco cilíndrico de remédio vazio e sem rótulo comercial, preservando apenas um código impresso da Clínica Médica de Mina de Prata."
           },
           {
-            "skill": "PercepÃ§Ã£o",
+            "skill": "Percepção",
             "dt": 8,
-            "info": "Na parede de azulejos, atrÃ¡s da fila de armÃ¡rios, alguÃ©m usou a ponta metÃ¡lica de um compasso para riscar na argamassa: 'O gato preto estava no pÃ¡tio outra vez. Ele olhou para mim da Ã¡rvore.'"
+            "info": "Na parede de azulejos, atrás da fila de armários, alguém usou a ponta metálica de um compasso para riscar na argamassa: 'O gato preto estava no pátio outra vez. Ele olhou para mim da árvore.'"
           },
           {
             "skill": "Medicina / Alquimia",
             "dt": 6,
-            "info": "O odor residual no frasco de vidro pertence a analgÃ©sicos opioides pesados, prescritos estritamente para o alÃ­vio de dor crÃ³nica severa em estÃ¡gios avanÃ§ados de tumores terminais."
+            "info": "O odor residual no frasco de vidro pertence a analgésicos opioides pesados, prescritos estritamente para o alívio de dor crónica severa em estágios avançados de tumores terminais."
           }
         ],
-        "context": "Sara lidava com episÃ³dios frequentes de nÃ¡useas e dores intensas. Com medo de que o seu estado de saÃºde fosse exposto perante a comunidade elitista do colÃ©gio, ela escondia-se no balneÃ¡rio vazio para se medicar em segredo."
+        "context": "Sara lidava com episódios frequentes de náuseas e dores intensas. Com medo de que o seu estado de saúde fosse exposto perante a comunidade elitista do colégio, ela escondia-se no balneário vazio para se medicar em segredo."
       },
       {
         "num": 4,
-        "title": "O Gabinete da DireÃ§Ã£o (1Âº Andar, RÃ©s-do-chÃ£o - Ala Oeste)",
-        "headerDesc": "A secretÃ¡ria imponente de carvalho escuro de ConstanÃ§a Montenegro e um armÃ¡rio de arquivos de aÃ§o cinzento encastrado na alvenaria atrÃ¡s da sua poltrona de cabedal, protegido por uma fechadura cilÃ­ndrica de latÃ£o.",
+        "title": "O Gabinete da Direção (1º Andar, Rés-do-chão - Ala Oeste)",
+        "headerDesc": "A secretária imponente de carvalho escuro de Constança Montenegro e um armário de arquivos de aço cinzento encastrado na alvenaria atrás da sua poltrona de cabedal, protegido por uma fechadura cilíndrica de latão.",
         "skills": [
           {
             "skill": "Ladinagem / Crime",
             "dt": 8,
-            "info": "Destrancar o compartimento inferior do arquivo de aÃ§o sem entortar a lingueta de metal nem disparar o alarme mecÃ¢nico instalado no batente da porta."
+            "info": "Destrancar o compartimento inferior do arquivo de aço sem entortar a lingueta de metal nem disparar o alarme mecânico instalado no batente da porta."
           },
           {
-            "skill": "InvestigaÃ§Ã£o",
+            "skill": "Investigação",
             "dt": 6,
-            "info": "No fundo da gaveta hÃ¡ uma pasta suspensa rotulada 'TransferÃªncias & SaÃºde - Casos Especiais', contendo os relatÃ³rios de Trisha Auguil (ano letivo de 2060) e Sara Auguil (2061), acompanhados de cÃ³pias de laudos mÃ©dicos confidenciais."
+            "info": "No fundo da gaveta há uma pasta suspensa rotulada 'Transferências & Saúde - Casos Especiais', contendo os relatórios de Trisha Auguil (ano letivo de 2060) e Sara Auguil (2061), acompanhados de cópias de laudos médicos confidenciais."
           },
           {
-            "skill": "IntuiÃ§Ã£o",
+            "skill": "Intuição",
             "dt": 8,
-            "info": "Agrafado ao laudo de Sara hÃ¡ um bilhete escrito com caneta de tinta permanente roxa: 'DegeneraÃ§Ã£o celular incurÃ¡vel confirmada. Perfil dÃ³cil e sem suporte familiar direto. Proceder com a apresentaÃ§Ã£o Ã  NÃ©voa.'"
+            "info": "Agrafado ao laudo de Sara há um bilhete escrito com caneta de tinta permanente roxa: 'Degeneração celular incurável confirmada. Perfil dócil e sem suporte familiar direto. Proceder com a apresentação à Névoa.'"
           }
         ],
-        "context": "Prova documental direta do papel de ConstanÃ§a. A diretora usa a sua posiÃ§Ã£o de autoridade para mapear jovens desamparados e doentes graves, encaminhando-os para a entidade 'Ele' em troca de manter o seu pacto de influÃªncia e prosperidade em Fragktus."
+        "context": "Prova documental direta do papel de Constança. A diretora usa a sua posição de autoridade para mapear jovens desamparados e doentes graves, encaminhando-os para a entidade 'Ele' em troca de manter o seu pacto de influência e prosperidade em Fragktus."
       },
       {
         "num": 5,
-        "title": "A Sala de MÃºsica (2Âº Andar, Ala Sul)",
-        "headerDesc": "O piano de cauda negro encostado junto Ã s cortinas pesadas de veludo na sala de ensaio com isolamento acÃºstico, cercado por estantes de partituras e violinos guardados em caixas de madeira.",
+        "title": "A Sala de Música (2º Andar, Ala Sul)",
+        "headerDesc": "O piano de cauda negro encostado junto às cortinas pesadas de veludo na sala de ensaio com isolamento acústico, cercado por estantes de partituras e violinos guardados em caixas de madeira.",
         "skills": [
           {
-            "skill": "InvestigaÃ§Ã£o",
+            "skill": "Investigação",
             "dt": 6,
-            "info": "Sob as cordas de aÃ§o da caixa de ressonÃ¢ncia do piano, hÃ¡ uma folha pautada de partitura com uma lista manuscrita de horÃ¡rios de saÃ­da e entrada do carro particular de ConstanÃ§a durante as madrugadas de junho."
+            "info": "Sob as cordas de aço da caixa de ressonância do piano, há uma folha pautada de partitura com uma lista manuscrita de horários de saída e entrada do carro particular de Constança durante as madrugadas de junho."
           },
           {
-            "skill": "HistÃ³ria / Ocultismo",
+            "skill": "História / Ocultismo",
             "dt": 8,
-            "info": "No verso da partitura, hÃ¡ anotaÃ§Ãµes manuais que transcrevem uma cantiga arcaica de Fragktus sobre 'Aquele que habita sob as raÃ­zes e aceita os que nÃ£o possuem futuro'."
+            "info": "No verso da partitura, há anotações manuais que transcrevem uma cantiga arcaica de Fragktus sobre 'Aquele que habita sob as raízes e aceita os que não possuem futuro'."
           },
           {
-            "skill": "PercepÃ§Ã£o",
+            "skill": "Percepção",
             "dt": 6,
-            "info": "O fecho da janela das traseiras estÃ¡ destravado e hÃ¡ marcas de terra seca no parapeito, indicando que o local servia de passagem clandestina para a passarela exterior do ginÃ¡sio."
+            "info": "O fecho da janela das traseiras está destravado e há marcas de terra seca no parapeito, indicando que o local servia de passagem clandestina para a passarela exterior do ginásio."
           }
         ],
-        "context": "A sala de mÃºsica era o esconderijo que Sara usava para tentar compreender o que a entidade havia falado por intermÃ©dio do gato possuÃ­do e para monitorizar as movimentaÃ§Ãµes noturnas da diretora ConstanÃ§a antes de desaparecer de vez."
+        "context": "A sala de música era o esconderijo que Sara usava para tentar compreender o que a entidade havia falado por intermédio do gato possuído e para monitorizar as movimentações noturnas da diretora Constança antes de desaparecer de vez."
       }
     ]
   },
@@ -2915,12 +2915,12 @@ const MESA_AREAS = {
     "shortName": "Mata do Norte",
     "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 2L5 12h4l-3 6h5v4h2v-4h5l-3-6h4L12 2z\"></path></svg>",
     "themeClass": "area-floresta-proibida",
-    "district": "Reserva Florestal Fechada â€¢ Zona Rural",
-    "dangerLevel": "Fauna Alterada, NÃ©voa TÃ³xica & Armadilhas",
+    "district": "Reserva Florestal Fechada • Zona Rural",
+    "dangerLevel": "Fauna Alterada, Névoa Tóxica & Armadilhas",
     "dangerLevelClass": "danger",
-    "ambience": "Ãrvores centenÃ¡rias retorcidas, neblina espessa que engole os farÃ³is, silÃªncio sepulcral quebrado apenas pelo estalar de galhos e arame farpado enferrujado.",
-    "lore": "Ãrea de preservaÃ§Ã£o ambiental isolada pelas autoridades municipais sob alegaÃ§Ã£o de contaminaÃ§Ã£o do solo e desabamentos de antigas minas. Trilhas fechadas ocultam instalaÃ§Ãµes subterrÃ¢neas desativadas da Ã©poca da fundaÃ§Ã£o de Fragktus e clareiras onde eventos anÃ´malos foram registrados.",
-    "rumor": "Â«Guardas florestais privados nÃ£o usam fardas do Estado: usam coletes pretos tÃ¡ticos e atiram sem aviso contra qualquer um que passe da cerca do KM 18.Â»",
+    "ambience": "Árvores centenárias retorcidas, neblina espessa que engole os faróis, silêncio sepulcral quebrado apenas pelo estalar de galhos e arame farpado enferrujado.",
+    "lore": "Área de preservação ambiental isolada pelas autoridades municipais sob alegação de contaminação do solo e desabamentos de antigas minas. Trilhas fechadas ocultam instalações subterrâneas desativadas da época da fundação de Fragktus e clareiras onde eventos anômalos foram registrados.",
+    "rumor": "«Guardas florestais privados não usam fardas do Estado: usam coletes pretos táticos e atiram sem aviso contra qualquer um que passe da cerca do KM 18.»",
     "pois": []
   }
 };
@@ -2958,12 +2958,6 @@ const MesaAreaManager = {
     }
     if (mobileNpcsItem) {
       mobileNpcsItem.style.display = isMaster ? 'flex' : 'none';
-    }
-    if (roteiroBtn) {
-      roteiroBtn.style.display = isMaster ? 'inline-flex' : 'none';
-    }
-    if (mobileRoteiroBtn) {
-      mobileRoteiroBtn.style.display = isMaster ? 'flex' : 'none';
     }
     if (window.MesaQuickMenu) {
       MesaQuickMenu.updateState();
@@ -3017,7 +3011,7 @@ const MesaAreaManager = {
       }
     };
 
-    // 1. ConstrÃ³i o SVG de Estradas Interconectadas
+    // 1. Constrói o SVG de Estradas Interconectadas
     let roadsSvgHtml = `
       <svg class="roadmap-roads-svg" viewBox="0 0 1000 640" preserveAspectRatio="none">
         <defs>
@@ -3053,7 +3047,7 @@ const MesaAreaManager = {
 
     board.innerHTML = roadsSvgHtml;
 
-    // 2. Adiciona os NÃ³s CartogrÃ¡ficos
+    // 2. Adiciona os Nós Cartográficos
     Object.values(MESA_AREAS).forEach(area => {
       const cfg = ROADMAP_CONFIG[area.id] || { xPct: 50, yPct: 50, color: '#f97316', glow: 'rgba(249, 115, 22, 0.6)' };
       const isCurrent = area.id === this.currentAreaId;
@@ -3118,7 +3112,7 @@ const MesaAreaManager = {
 
     let statusMsg = '';
     if (isCurrent) {
-      statusMsg = '<div class="map-status map-status-current">Grupo jÃ¡ se encontra nesta localidade</div>';
+      statusMsg = '<div class="map-status map-status-current">Grupo já se encontra nesta localidade</div>';
     } else if (!isMaster) {
       statusMsg = '<div class="map-status map-status-warn">Apenas o Mestre pode autorizar o deslocamento do grupo</div>';
     }
@@ -3136,13 +3130,13 @@ const MesaAreaManager = {
     if (confirmBtn && isMaster) {
       confirmBtn.disabled = isCurrent;
       confirmBtn.style.opacity = isCurrent ? '0.5' : '1';
-      confirmBtn.textContent = isCurrent ? 'GRUPO JÃ NESTA ÃREA' : `DESLOCAR GRUPO PARA ${(area.shortName || area.name).toUpperCase()}`;
+      confirmBtn.textContent = isCurrent ? 'GRUPO JÁ NESTA ÁREA' : `DESLOCAR GRUPO PARA ${(area.shortName || area.name).toUpperCase()}`;
     }
   },
 
   confirmSelectedArea() {
     if (!MesaApp || !MesaApp.state || !MesaApp.state.isMaster) {
-      alert("Apenas o Mestre tem permissÃ£o para deslocar a Ã¡rea da mesa.");
+      alert("Apenas o Mestre tem permissão para deslocar a área da mesa.");
       return;
     }
 
@@ -3163,10 +3157,10 @@ const MesaAreaManager = {
     this.selectedAreaId = areaId;
     localStorage.setItem('mesa_current_area', areaId);
 
-    // Adiciona classe de transiÃ§Ã£o suave de atmosfera e cor no body
+    // Adiciona classe de transição suave de atmosfera e cor no body
     document.body.classList.add('mesa-area-switching');
 
-    // Remove classes anteriores de Ã¡rea do body e aplica a nova
+    // Remove classes anteriores de área do body e aplica a nova
     Object.values(MESA_AREAS).forEach(a => {
       document.body.classList.remove(a.themeClass);
     });
@@ -3176,7 +3170,7 @@ const MesaAreaManager = {
       document.body.classList.remove('mesa-area-switching');
     }, 1400);
 
-    // Atualiza botÃµes da barra superior e mobile com SVGs
+    // Atualiza botões da barra superior e mobile com SVGs
     const aboutBtnLabel = document.getElementById('nav-about-area-label');
     const mobileAboutBtnLabel = document.getElementById('mobile-about-area-label');
     const aboutBtnIcon = document.getElementById('nav-about-area-icon');
@@ -3209,13 +3203,13 @@ const MesaAreaManager = {
         }
       });
 
-      // NotificaÃ§Ã£o amigÃ¡vel no chat para os jogadores
+      // Notificação amigável no chat para os jogadores
       if (typeof MesaChat.receiveMessage === 'function') {
         MesaChat.receiveMessage({
           id: 'area-alert-' + Date.now(),
           sender_name: 'SISTEMA DA MESA',
           is_master: true,
-          content: `[ÃREA] O Mestre deslocou a investigaÃ§Ã£o para: [ ${area.name} ]`,
+          content: `[ÁREA] O Mestre deslocou a investigação para: [ ${area.name} ]`,
           created_at: new Date().toISOString()
         });
       }
@@ -3241,12 +3235,12 @@ const MesaAreaManager = {
     }
     this.activeAreaTab = tabKey;
 
-    // Atualiza botÃµes de navegaÃ§Ã£o de abas
+    // Atualiza botões de navegação de abas
     document.querySelectorAll('.area-tab-nav-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.tab === tabKey);
     });
 
-    // Atualiza painÃ©is das abas
+    // Atualiza painéis das abas
     document.querySelectorAll('.area-tab-pane').forEach(pane => {
       pane.classList.toggle('active', pane.id === `area-tab-pane-${tabKey}`);
     });
@@ -3277,7 +3271,7 @@ const MesaAreaManager = {
     const pdiCount = pdiList.length;
     const isMasterUser = Boolean(MesaApp && MesaApp.state && MesaApp.state.isMaster);
 
-    // 1. CabeÃ§alho Geral da Ãrea (Identidade, Distrito e NÃ­vel de Perigo)
+    // 1. Cabeçalho Geral da Área (Identidade, Distrito e Nível de Perigo)
     const header = document.getElementById('area-info-header');
     if (header) {
       header.innerHTML = `
@@ -3311,7 +3305,7 @@ const MesaAreaManager = {
       pdisTabBtn.style.display = isMasterUser ? 'inline-flex' : 'none';
     }
 
-    // 3. TAB 1: VISÃƒO PÃšBLICA (Mestre e Jogadores)
+    // 3. TAB 1: VISÃO PÚBLICA (Mestre e Jogadores)
     const publicInfo = document.getElementById('area-public-info');
     if (publicInfo) {
       const atmosferaText = area.resumo_atmosfera || area.ambience || '';
@@ -3325,7 +3319,7 @@ const MesaAreaManager = {
       if (area.conexoes_saida && area.conexoes_saida.length > 0) {
         exitsHtml = `
           <div class="area-exits-block">
-            <strong class="area-exits-title">ROTAS & CONEXÃ•ES DE SAÃDA:</strong>
+            <strong class="area-exits-title">ROTAS & CONEXÕES DE SAÍDA:</strong>
             <div class="area-exits-row">
               ${area.conexoes_saida.map(ex => {
                 return `<button type="button" class="mesa-exit-btn" onclick="MesaAreaManager.openAboutAreaModal('${ex.area_id}')" title="${ex.gancho}">
@@ -3339,13 +3333,13 @@ const MesaAreaManager = {
 
       publicInfo.innerHTML = `
         <div class="area-section-header">
-          <h4 class="area-section-title">ATMOSFERA & CENÃRIO</h4>
+          <h4 class="area-section-title">ATMOSFERA & CENÁRIO</h4>
         </div>
         <div class="area-atmosphere-content">
           ${atmosferaParagraphs}
         </div>
         ${exitsHtml}
-        ${area.lore ? `<div class="area-lore-block"><h4 class="area-section-title" style="margin-top: 20px;">HISTÃ“RIA & CONTEXTO LOCAL</h4><p class="area-atmosphere-p">${area.lore}</p></div>` : ''}
+        ${area.lore ? `<div class="area-lore-block"><h4 class="area-section-title" style="margin-top: 20px;">HISTÓRIA & CONTEXTO LOCAL</h4><p class="area-atmosphere-p">${area.lore}</p></div>` : ''}
         ${area.rumor ? `<div class="area-rumor-box"><strong>RUMOR INVESTIGATIVO:</strong> ${area.rumor}</div>` : ''}
       `;
     }
@@ -3361,7 +3355,7 @@ const MesaAreaManager = {
             ${area.npcs_presentes.map(npcId => {
               const npc = this.getNpcById(npcId);
               const rawName = npc ? npc.nome : npcId;
-              const parts = rawName.split('â€¢');
+              const parts = rawName.split('•');
               const mainName = parts[0].trim();
               const roleTitle = parts[1] ? parts[1].trim() : (npc ? npc.ligacao_misterio : 'Personagem Local');
               return `
@@ -3373,8 +3367,8 @@ const MesaAreaManager = {
                     <strong class="backstage-npc-name">${mainName}</strong>
                     <span class="backstage-npc-role">${roleTitle}</span>
                   </div>
-                  <button type="button" class="backstage-npc-open-btn" title="Abrir DossiÃª">
-                    DossiÃª &rarr;
+                  <button type="button" class="backstage-npc-open-btn" title="Abrir Dossiê">
+                    Dossiê &rarr;
                   </button>
                 </div>
               `;
@@ -3382,7 +3376,7 @@ const MesaAreaManager = {
           </div>
         `;
       } else {
-        npcsListHtml = '<p class="backstage-empty-text">Nenhum NPC registrado nesta Ã¡rea no momento.</p>';
+        npcsListHtml = '<p class="backstage-empty-text">Nenhum NPC registrado nesta área no momento.</p>';
       }
 
       backstageContainer.innerHTML = `
@@ -3391,12 +3385,12 @@ const MesaAreaManager = {
           <div class="backstage-panel-header">
             <div class="backstage-panel-title-wrap">
               <svg class="backstage-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-              <h5>CONDIÃ‡Ã•ES DE ACESSO & INFILTRAÃ‡ÃƒO</h5>
+              <h5>CONDIÇÕES DE ACESSO & INFILTRAÇÃO</h5>
             </div>
             <span class="backstage-confidential-badge">ACESSO DO MESTRE</span>
           </div>
           <div class="backstage-panel-body">
-            <p class="backstage-access-desc">${area.requisitos_acesso || 'Acesso livre e sem restriÃ§Ãµes especiais cadastradas.'}</p>
+            <p class="backstage-access-desc">${area.requisitos_acesso || 'Acesso livre e sem restrições especiais cadastradas.'}</p>
           </div>
         </div>
 
@@ -3405,26 +3399,26 @@ const MesaAreaManager = {
           <div class="backstage-panel-header">
             <div class="backstage-panel-title-wrap">
               <svg class="backstage-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-              <h5>PERSONAGENS PRESENTES NESTA ÃREA</h5>
+              <h5>PERSONAGENS PRESENTES NESTA ÁREA</h5>
             </div>
             <span class="backstage-count-badge">${(area.npcs_presentes || []).length} Mapeados</span>
           </div>
           <div class="backstage-panel-body">
-            <p class="backstage-hint-text">Clique em qualquer personagem abaixo para abrir instantaneamente o seu DossiÃª Confidencial com segredos e gatilhos de revelaÃ§Ã£o:</p>
+            <p class="backstage-hint-text">Clique em qualquer personagem abaixo para abrir instantaneamente o seu Dossiê Confidencial com segredos e gatilhos de revelação:</p>
             ${npcsListHtml}
           </div>
         </div>
       `;
     }
 
-    // 5. TAB 3: INVESTIGAÃ‡ÃƒO / PDIS (Exclusivo do Mestre â€” AcordeÃµes Fechados por Default)
+    // 5. TAB 3: INVESTIGAÇÃO / PDIS (Exclusivo do Mestre — Acordeões Fechados por Default)
     const pdisContainer = document.getElementById('area-pdis-container');
     if (pdisContainer && isMasterUser) {
       if (pdiList.length === 0) {
         pdisContainer.innerHTML = `
           <div class="pdis-empty-box">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#71717a" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <p>Nenhum ponto de interesse registrado nesta Ã¡rea ainda.</p>
+            <p>Nenhum ponto de interesse registrado nesta área ainda.</p>
           </div>
         `;
       } else {
@@ -3449,7 +3443,7 @@ const MesaAreaManager = {
 
           return `
             <div class="pdi-accordion-card" id="pdi-accordion-${num}">
-              <!-- CABEÃ‡ALHO DO ACORDEÃƒO (CLICÃVEL) -->
+              <!-- CABEÇALHO DO ACORDEÃO (CLICÁVEL) -->
               <button type="button" class="pdi-accordion-header" onclick="MesaAreaManager.togglePdi(${num})" aria-label="Expandir ou recolher Ponto de Interesse">
                 <div class="pdi-accordion-header-left">
                   <span class="pdi-num-badge">#${num < 10 ? '0' + num : num}</span>
@@ -3461,22 +3455,22 @@ const MesaAreaManager = {
                 </div>
               </button>
 
-              <!-- CORPO DO ACORDEÃƒO (EXPANSÃVEL) -->
+              <!-- CORPO DO ACORDEÃO (EXPANSÍVEL) -->
               <div class="pdi-accordion-body" id="pdi-body-${num}">
-                <!-- DescriÃ§Ã£o Sensorial Inicial -->
+                <!-- Descrição Sensorial Inicial -->
                 <div class="pdi-public-desc-box">
-                  <span class="pdi-box-mini-tag">DESCRIÃ‡ÃƒO INICIAL / SENSORIAL</span>
+                  <span class="pdi-box-mini-tag">DESCRIÇÃO INICIAL / SENSORIAL</span>
                   <p class="pdi-public-desc-text">${desc}</p>
                 </div>
 
-                <!-- Quadro de Testes de PerÃ­cias -->
+                <!-- Quadro de Testes de Perícias -->
                 <div class="poi-skills-table-wrap">
                   <table class="poi-skills-table">
                     <thead>
                       <tr>
-                        <th class="th-pericia">PerÃ­cia</th>
+                        <th class="th-pericia">Perícia</th>
                         <th class="th-dt">Classe de Teste (CT/DT)</th>
-                        <th class="th-info">InformaÃ§Ã£o Revelada</th>
+                        <th class="th-info">Informação Revelada</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -3491,7 +3485,7 @@ const MesaAreaManager = {
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                   </div>
                   <div class="mesa-master-notes-content">
-                    <span class="mesa-master-notes-label">[NOTAS DO MESTRE â€¢ SEGREDO CONFIDENCIAL]</span>
+                    <span class="mesa-master-notes-label">[NOTAS DO MESTRE • SEGREDO CONFIDENCIAL]</span>
                     <p>${masterNotes}</p>
                   </div>
                 </div>
@@ -3519,7 +3513,7 @@ const MesaAreaManager = {
             </div>
           </div>
 
-          <!-- LISTA DE ACORDEÃ•ES -->
+          <!-- LISTA DE ACORDEÕES -->
           <div class="pdis-accordion-list">
             ${accordionsHtml}
           </div>
@@ -3541,7 +3535,7 @@ const MesaAreaManager = {
 
   openNpcModal(npcId = null) {
     if (!MesaApp || !MesaApp.state || !MesaApp.state.isMaster) {
-      alert("[ACESSO RESTRITO] O DossiÃª de NPCs e seus segredos sÃ£o confidenciais e exclusivos do Mestre. Autentique seu Token de Mestre para consultar.");
+      alert("[ACESSO RESTRITO] O Dossiê de NPCs e seus segredos são confidenciais e exclusivos do Mestre. Autentique seu Token de Mestre para consultar.");
       return;
     }
 
@@ -3560,7 +3554,7 @@ const MesaAreaManager = {
     if (npcsList.length > 1) {
       const tabsBtns = npcsList.map(n => {
         const isSelected = n.id === npc.id;
-        const shortName = n.nome.split('â€¢')[0].trim();
+        const shortName = n.nome.split('•')[0].trim();
         return `<button type="button" class="npc-switch-btn ${isSelected ? 'active' : ''}" onclick="MesaAreaManager.openNpcModal('${n.id}')">${shortName}</button>`;
       }).join('');
       npcTabsHtml = `<div class="npc-switch-row">${tabsBtns}</div>`;
@@ -3583,16 +3577,16 @@ const MesaAreaManager = {
 
       <div class="npc-fields">
         ${fieldRow('Personalidade e postura', npc.personalidade)}
-        ${fieldRow('HistÃ³ria resumida', npc.historia_resumida)}
-        ${fieldRow('InformaÃ§Ã£o livre (conversa casual)', npc.informacao_livre)}
+        ${fieldRow('História resumida', npc.historia_resumida)}
+        ${fieldRow('Informação livre (conversa casual)', npc.informacao_livre)}
 
         <div class="npc-callout npc-callout-secret">
-          <span class="npc-callout-label">Segredo Ãºtil</span>
+          <span class="npc-callout-label">Segredo útil</span>
           <p>${npc.segredo_util || ''}</p>
         </div>
 
         <div class="npc-callout npc-callout-trigger">
-          <span class="npc-callout-label">Gatilho de revelaÃ§Ã£o</span>
+          <span class="npc-callout-label">Gatilho de revelação</span>
           <p>${npc.gatilho_revelacao || ''}</p>
         </div>
       </div>
@@ -3612,7 +3606,7 @@ const MesaAreaManager = {
 
 
 
-// ---- 7.1. MOTOR DO MENU HAMBÃšRGUER DA BARRA SUPERIOR ----
+// ---- 7.1. MOTOR DO MENU HAMBÚRGUER DA BARRA SUPERIOR ----
 const MesaQuickMenu = {
   isOpen: false,
 
@@ -3674,7 +3668,7 @@ const MesaQuickMenu = {
   }
 };
 
-// ---- 8. MOTOR DO MENU FLUTUANTE HAMBÃšRGUER MOBILE ----
+// ---- 8. MOTOR DO MENU FLUTUANTE HAMBÚRGUER MOBILE ----
 const MesaMobileMenu = {
   isOpen: false,
 
@@ -3768,7 +3762,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     MesaQuickMenu.updateState();
   }
 
-  // Fecha Menu HambÃºrguer ao clicar fora
+  // Fecha Menu Hambúrguer ao clicar fora
   document.addEventListener('click', (e) => {
     if (window.MesaQuickMenu && MesaQuickMenu.isOpen) {
       const dropdown = document.getElementById('mesa-quick-menu-dropdown');
@@ -3779,7 +3773,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // Fecha DossiÃª de NPCs ao pressionar Escape
+  // Fecha Dossiê de NPCs ao pressionar Escape
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       if (window.MesaAreaManager) {
@@ -3791,6 +3785,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 });
+
 
 // ============================================================
 // 8. SARA MODAL

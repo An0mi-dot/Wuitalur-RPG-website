@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -46,7 +46,7 @@
       </defs>
     </svg>
 
-    <!-- CAMADA DE SOMBRAS DE ÃRVORES â€” EXCLUSIVA DA MATA DO NORTE -->
+    <!-- CAMADA DE SOMBRAS DE ÁRVORES — EXCLUSIVA DA MATA DO NORTE -->
     <div id="mesa-forest-backdrop" class="mesa-forest-backdrop" aria-hidden="true">
       <svg class="forest-trees-svg" viewBox="0 0 1920 1080" preserveAspectRatio="none">
         <defs>
@@ -64,13 +64,13 @@
             <stop offset="100%" stop-color="#000000" stop-opacity="1" />
           </linearGradient>
         </defs>
-        <!-- NÃ©voa de fundo da mata -->
+        <!-- Névoa de fundo da mata -->
         <rect x="0" y="0" width="1920" height="1080" fill="url(#forest-mist-grad)" />
 
-        <!-- Camada 1: Silhuetas de Ã¡rvores distantes (fundo verde escuro) -->
+        <!-- Camada 1: Silhuetas de árvores distantes (fundo verde escuro) -->
         <path d="M 0 1080 L 0 520 L 40 560 L 70 480 L 110 540 L 150 430 L 190 510 L 240 400 L 290 490 L 340 370 L 390 470 L 450 350 L 510 460 L 580 320 L 640 440 L 710 310 L 770 420 L 830 290 L 890 390 L 960 270 L 1030 400 L 1090 300 L 1150 420 L 1220 310 L 1280 430 L 1350 330 L 1420 460 L 1480 370 L 1540 480 L 1600 390 L 1660 500 L 1720 420 L 1780 520 L 1840 460 L 1890 530 L 1920 480 L 1920 1080 Z" fill="url(#tree-sil-grad)" opacity="0.6" />
 
-        <!-- Camada 2: Ãrvores mÃ©dias e galhos densos laterais -->
+        <!-- Camada 2: Árvores médias e galhos densos laterais -->
         <!-- Lateral Esquerda -->
         <path d="M 0 1080 L 0 280 L 35 340 L 65 220 L 100 310 L 135 180 L 170 290 L 210 150 L 250 270 L 295 130 L 340 260 L 390 190 L 440 310 L 500 240 L 560 380 L 630 490 L 690 620 L 740 760 L 780 920 L 800 1080 Z" fill="url(#tree-front-grad)" opacity="0.75" />
         <!-- Lateral Direita -->
@@ -83,7 +83,7 @@
         <!-- Sombras de copas altas centrais no topo -->
         <path d="M 680 0 L 1240 0 C 1220 50, 1190 75, 1140 70 C 1170 110, 1130 135, 1070 120 C 1090 155, 1040 175, 960 160 C 900 175, 850 155, 870 120 C 810 135, 770 110, 800 70 C 750 75, 720 50, 680 0 Z" fill="#01120d" opacity="0.7" />
 
-        <!-- Base densa de troncos e raÃ­zes no horizonte inferior -->
+        <!-- Base densa de troncos e raízes no horizonte inferior -->
         <path d="M 0 1080 L 1920 1080 L 1920 940 C 1780 920, 1640 950, 1500 930 C 1360 910, 1220 940, 1080 925 C 940 910, 800 945, 660 930 C 520 915, 380 950, 240 935 C 120 920, 40 950, 0 940 Z" fill="#000906" opacity="0.9" />
       </svg>
     </div>
@@ -101,7 +101,7 @@
     <!-- Canvas de Efeito Glitch no Background -->
     <canvas id="glitch-canvas" class="mesa-glitch-canvas"></canvas>
 
-    <!-- Barra Superior de NavegaÃ§Ã£o & AÃ§Ãµes (Limpa e com Menu HambÃºrguer) -->
+    <!-- Barra Superior de Navegação & Ações (Limpa e com Menu Hambúrguer) -->
     <nav class="mesa-floating-nav">
       <div class="nav-left-group">
         <a href="index.html" class="ink-tag nav-back-link">
@@ -112,7 +112,7 @@
           <span class="nav-back-text">Voltar</span>
         </a>
 
-        <!-- BotÃ£o HambÃºrguer para Ferramentas SecundÃ¡rias -->
+        <!-- Botão Hambúrguer para Ferramentas Secundárias -->
         <div class="nav-hamburger-wrapper">
           <button id="nav-hamburger-btn" class="ink-tag nav-hamburger-btn" onclick="MesaQuickMenu.toggle()" title="Menu de Ferramentas">
             <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -124,7 +124,7 @@
             <span id="nav-hamburger-badge" class="chat-unread-pip" style="display:none;"></span>
           </button>
 
-          <!-- Dropdown Elegante das Ferramentas SecundÃ¡rias -->
+          <!-- Dropdown Elegante das Ferramentas Secundárias -->
           <div id="mesa-quick-menu-dropdown" class="mesa-quick-menu-dropdown">
             <div class="quick-menu-header">FERRAMENTAS DA MESA</div>
             
@@ -139,14 +139,27 @@
               <span id="menu-chat-unread-badge" class="chat-unread-pip" style="display:none; margin-left: auto;"></span>
             </button>
 
+            
             <button type="button" class="quick-menu-item" onclick="MesaReactions.togglePicker(); MesaQuickMenu.close();">
               <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
-              <span>ReaÃ§Ãµes RÃ¡pidas</span>
+              <span>Reações Rápidas</span>
             </button>
+
+            <button type="button" class="quick-menu-item" onclick="MesaSara.openModal(); MesaQuickMenu.close();">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
+              <span>Sobre Sara</span>
+            </button>
+
+            <button type="button" id="menu-roteiro-btn" class="quick-menu-item master-item" onclick="MesaRoteiro.openModal(); MesaQuickMenu.close();" style="display: none; color: #a78bfa;">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span>Roteiro da Campanha</span>
+              <span class="quick-menu-badge-master">Mestre</span>
+            </button>
+
 
             <button type="button" id="menu-npcs-btn" class="quick-menu-item master-item" onclick="MesaAreaManager.openNpcModal(); MesaQuickMenu.close();" style="display: none; color: #38bdf8;">
               <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              <span>DossiÃª de NPCs</span>
+              <span>Dossiê de NPCs</span>
               <span class="quick-menu-badge-master">Mestre</span>
             </button>
 
@@ -159,14 +172,14 @@
 
             <button type="button" id="menu-logout-btn" class="quick-menu-item logout-item" onclick="MesaApp.logout()" style="display: none; color: #f87171;">
               <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-              <span>Sair / Trocar SessÃ£o</span>
+              <span>Sair / Trocar Sessão</span>
             </button>
           </div>
         </div>
         <!-- Indicador de autenticacao (nunca exibe o token em si) -->
         <button type="button" id="nav-auth-chip" class="nav-auth-chip auth-none" onclick="if (!MesaApp.state.isMaster && !MesaApp.state.myToken) MesaApp.openTokenModal();" title="Clique para autenticar seu token">
           <span class="nav-auth-dot"></span>
-          <span class="nav-auth-text">NÃ£o autenticado</span>
+          <span class="nav-auth-text">Não autenticado</span>
         </button>      </div>
 
       <!-- Paleta de Emojis Pixel Flutuante -->
@@ -175,28 +188,28 @@
       </div>
 
       <div class="mesa-actions">
-        <!-- BotÃ£o Escolher Ãrea (Exclusivo do Mestre) -->
-        <button id="nav-choose-area-btn" class="ink-tag nav-choose-area" onclick="MesaAreaManager.openMapModal()" style="display: none;" title="Abrir Mapa e Escolher Ãrea">
+        <!-- Botão Escolher Área (Exclusivo do Mestre) -->
+        <button id="nav-choose-area-btn" class="ink-tag nav-choose-area" onclick="MesaAreaManager.openMapModal()" style="display: none;" title="Abrir Mapa e Escolher Área">
           <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
             <line x1="8" y1="2" x2="8" y2="18"></line>
             <line x1="16" y1="6" x2="16" y2="22"></line>
           </svg>
-          <span>Escolher Ãrea</span>
+          <span>Escolher Área</span>
         </button>
 
-        <!-- BotÃ£o Sobre a Ãrea Atual -->
-        <button id="nav-about-area-btn" class="ink-tag" onclick="MesaAreaManager.openAboutAreaModal()" title="InformaÃ§Ãµes e Pistas da Ãrea Atual">
+        <!-- Botão Sobre a Área Atual -->
+        <button id="nav-about-area-btn" class="ink-tag" onclick="MesaAreaManager.openAboutAreaModal()" title="Informações e Pistas da Área Atual">
           <span id="nav-about-area-icon" class="area-btn-icon">
             <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
               <circle cx="12" cy="10" r="3"></circle>
             </svg>
           </span>
-          <span id="nav-about-area-label">Sobre: ColÃ©gio PrimÃ³rdio</span>
+          <span id="nav-about-area-label">Sobre: Colégio Primórdio</span>
         </button>
 
-        <!-- BotÃ£o Minha Ficha -->
+        <!-- Botão Minha Ficha -->
         <button id="nav-ficha-btn" class="ink-tag primary" onclick="MesaApp.toggleView()">Minha Ficha</button>
       </div>
     </nav>
@@ -217,7 +230,7 @@
           <div class="slot-empty-label">Slot 1</div>
         </div>
 
-        <!-- Card Central do Mestre (NÃ£o interagÃ­vel, posicionado entre Slot 1 e Slot 2) -->
+        <!-- Card Central do Mestre (Não interagível, posicionado entre Slot 1 e Slot 2) -->
         <div class="player-slot master-slot" id="master-slot">
           <div class="player-avatar-placeholder master-avatar">
             <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -285,7 +298,7 @@
 
     <!-- Tela da Ficha Completa -->
     <div id="ficha-modal" class="mesa-modal-overlay ficha-overlay">
-      <!-- Brilho Diagonal e RetÃ­cula Comic de Fundo -->
+      <!-- Brilho Diagonal e Retícula Comic de Fundo -->
       <div class="ficha-diagonal-glow"></div>
       <div class="ficha-diagonal-halftone"></div>
 
@@ -302,13 +315,13 @@
     <div id="token-modal" class="mesa-modal-overlay">
       <div class="mesa-modal ink-modal" style="max-width: 420px; text-align: center;">
         <button class="mesa-modal-close" onclick="MesaApp.closeModal('token-modal')">&times;</button>
-        <div class="ink-ribbon-title">AUTENTICAÃ‡ÃƒO SEGURA</div>
+        <div class="ink-ribbon-title">AUTENTICAÇÃO SEGURA</div>
         <div id="token-auth-current" class="token-auth-current" style="display:none;"></div>
-        <p style="color:#bbb; margin: 15px 0 16px; font-size: 0.88rem;">Insira seu <strong>token de acesso</strong> para autenticar sua sessÃ£o e editar sua ficha.</p>
+        <p style="color:#bbb; margin: 15px 0 16px; font-size: 0.88rem;">Insira seu <strong>token de acesso</strong> para autenticar sua sessão e editar sua ficha.</p>
         <input type="text" id="token-input" class="mesa-input ink-input" placeholder="Digite seu token..." maxlength="36" autocomplete="off" style="text-transform: uppercase; text-align: center; font-size: 1.15rem; letter-spacing: 0.15em; font-family: monospace;">
         <div id="token-security-status" style="display:none; font-size:0.8rem; margin: -6px 0 14px; min-height: 18px; line-height: 1.4;"></div>
         <button id="token-submit-btn" class="mesa-btn ink-tag primary" style="width:100%; font-size:1rem; padding:10px;" onclick="MesaApp.submitToken()">AUTENTICAR TOKEN</button>
-        <button id="token-logout-btn" class="mesa-btn ink-tag logout-btn" style="width:100%; margin-top:10px; border-color: rgba(239, 68, 68, 0.4); color: #f87171; display: none;" onclick="MesaApp.logout()">SAIR / TROCAR SESSÃƒO</button>
+        <button id="token-logout-btn" class="mesa-btn ink-tag logout-btn" style="width:100%; margin-top:10px; border-color: rgba(239, 68, 68, 0.4); color: #f87171; display: none;" onclick="MesaApp.logout()">SAIR / TROCAR SESSÃO</button>
       </div>
     </div>
 
@@ -319,7 +332,7 @@
         <div class="ink-ribbon-title">ROLAGEM DE DADOS</div>
         
         <div class="dice-selector-section">
-          <div class="dice-section-label">ADICIONAR DADO Ã€ ROLAGEM:</div>
+          <div class="dice-section-label">ADICIONAR DADO À ROLAGEM:</div>
           <div class="dice-chips-grid">
             <button class="dice-chip-btn" onclick="MesaDice.addDie(4)">+ d4</button>
             <button class="dice-chip-btn" onclick="MesaDice.addDie(6)">+ d6</button>
@@ -340,9 +353,9 @@
           </div>
         </div>
 
-        <!-- Modificador NumÃ©rico Cru -->
+        <!-- Modificador Numérico Cru -->
         <div class="dice-modifier-section">
-          <div class="dice-section-label">MODIFICADOR (NÃšMERO CRU):</div>
+          <div class="dice-section-label">MODIFICADOR (NÚMERO CRU):</div>
           <div class="dice-modifier-control">
             <button class="mod-btn" onclick="MesaDice.adjustModifier(-1)">-1</button>
             <input type="number" id="dice-modifier-input" class="mod-input" value="0" onchange="MesaDice.setModifier(this.value)">
@@ -357,24 +370,24 @@
       </div>
     </div>
 
-    <!-- Modal do Mapa TÃ¡tico de Ãreas -->
+    <!-- Modal do Mapa Tático de Áreas -->
     <div id="area-map-modal" class="mesa-modal-overlay">
       <div class="mesa-modal area-map-modal-dialog">
         <button class="mesa-modal-close" onclick="MesaAreaManager.closeMapModal()">&times;</button>
-        <div class="ink-ribbon-title">MAPA DE INVESTIGAÃ‡ÃƒO â€¢ FRAGKTUS & MINA DE PRATA</div>
+        <div class="ink-ribbon-title">MAPA DE INVESTIGAÇÃO • FRAGKTUS & MINA DE PRATA</div>
         
         <div class="area-map-container">
           <div id="area-roadmap-board" class="area-roadmap-board">
-            <!-- Renderizado dinamicamente via MesaAreaManager: SVG de estradas e 7 nÃ³s cartogrÃ¡ficos com sÃ­mbolos grandes e nomes -->
+            <!-- Renderizado dinamicamente via MesaAreaManager: SVG de estradas e 7 nós cartográficos com símbolos grandes e nomes -->
           </div>
 
           <div class="area-map-footer">
             <div id="area-map-preview-note" class="area-map-preview-note">
-              Selecione uma Ã¡rea no mapa acima para ver seus detalhes.
+              Selecione uma área no mapa acima para ver seus detalhes.
             </div>
             <div class="area-map-actions">
               <button id="area-confirm-travel-btn" class="mesa-btn ink-tag primary" style="display: none;" onclick="MesaAreaManager.confirmSelectedArea()">
-                DESLOCAR GRUPO PARA ESTA ÃREA
+                DESLOCAR GRUPO PARA ESTA ÁREA
               </button>
             </div>
           </div>
@@ -382,7 +395,7 @@
       </div>
     </div>
 
-    <!-- Modal de InformaÃ§Ãµes da Ãrea & Pontos de Interesse (Clean UI com Tabs & AcordeÃµes) -->
+    <!-- Modal de Informações da Área & Pontos de Interesse (Clean UI com Tabs & Acordeões) -->
     <div id="area-info-modal" class="mesa-modal-overlay">
       <div class="mesa-modal area-info-modal-dialog">
         <button class="mesa-modal-close" onclick="MesaApp.closeModal('area-info-modal')">&times;</button>
@@ -390,11 +403,11 @@
           <!-- Renderizado dinamicamente -->
         </div>
 
-        <!-- Barra de Abas / Separadores do Modal da Ãrea -->
+        <!-- Barra de Abas / Separadores do Modal da Área -->
         <div id="area-tabs-nav" class="area-tabs-nav">
           <button type="button" class="area-tab-nav-btn active" id="tab-btn-public" data-tab="public" onclick="MesaAreaManager.switchAreaTab('public')">
             <svg class="tab-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-            <span>VisÃ£o PÃºblica</span>
+            <span>Visão Pública</span>
           </button>
           <button type="button" class="area-tab-nav-btn master-only-tab" id="tab-btn-backstage" data-tab="backstage" onclick="MesaAreaManager.switchAreaTab('backstage')">
             <svg class="tab-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
@@ -403,14 +416,14 @@
           </button>
           <button type="button" class="area-tab-nav-btn master-only-tab" id="tab-btn-pdis" data-tab="pdis" onclick="MesaAreaManager.switchAreaTab('pdis')">
             <svg class="tab-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <span>InvestigaÃ§Ã£o / PDIs</span>
+            <span>Investigação / PDIs</span>
             <span class="tab-badge-counter" id="tab-pdi-count-badge">0</span>
             <span class="tab-badge-master">Mestre</span>
           </button>
         </div>
 
         <div class="area-info-body">
-          <!-- TAB 1: VISÃƒO PÃšBLICA (Mestre e Jogadores) -->
+          <!-- TAB 1: VISÃO PÚBLICA (Mestre e Jogadores) -->
           <div id="area-tab-pane-public" class="area-tab-pane active">
             <div id="area-public-info" class="area-public-info">
               <!-- Renderizado dinamicamente -->
@@ -424,19 +437,19 @@
             </div>
           </div>
 
-          <!-- TAB 3: INVESTIGAÃ‡ÃƒO / PDIS (Exclusivo Mestre) -->
+          <!-- TAB 3: INVESTIGAÇÃO / PDIS (Exclusivo Mestre) -->
           <div id="area-tab-pane-pdis" class="area-tab-pane">
             <div id="area-pdis-container" class="area-pdis-container">
-              <!-- Renderizado dinamicamente com AcordeÃµes -->
+              <!-- Renderizado dinamicamente com Acordeões -->
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- DossiÃª Lateral de NPCs (Offcanvas Slide-In Exclusivo do Mestre) -->
+    <!-- Dossiê Lateral de NPCs (Offcanvas Slide-In Exclusivo do Mestre) -->
     <div id="npc-drawer-backdrop" class="npc-drawer-backdrop" onclick="MesaAreaManager.closeNpcDrawer()"></div>
-    <aside id="npc-dossier-drawer" class="npc-dossier-drawer" aria-label="DossiÃª de NPCs da Campanha">
+    <aside id="npc-dossier-drawer" class="npc-dossier-drawer" aria-label="Dossiê de NPCs da Campanha">
       <div class="npc-dossier-drawer-header">
         <div class="npc-dossier-header-title-box">
           <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -444,9 +457,9 @@
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
           <span class="npc-drawer-badge">MESTRE</span>
-          <h3>DOSSIÃŠ DE NPCS</h3>
+          <h3>DOSSIÊ DE NPCS</h3>
         </div>
-        <button type="button" class="npc-drawer-close-btn" onclick="MesaAreaManager.closeNpcDrawer()" title="Fechar DossiÃª">&times;</button>
+        <button type="button" class="npc-drawer-close-btn" onclick="MesaAreaManager.closeNpcDrawer()" title="Fechar Dossiê">&times;</button>
       </div>
       <div id="npc-dossier-content" class="npc-dossier-drawer-body">
         <!-- Renderizado dinamicamente via MesaAreaManager.openNpcModal() -->
@@ -456,9 +469,9 @@
     <!-- BACKDROP PARA FECHAR O MENU MOBILE AO CLICAR FORA -->
     <div id="mesa-mobile-backdrop" class="mesa-mobile-backdrop" onclick="MesaMobileMenu.close()"></div>
 
-    <!-- BOTÃƒO FLUTUANTE HAMBÃšRGUER MOBILE (CANTO INFERIOR DIREITO) -->
+    <!-- BOTÃO FLUTUANTE HAMBÚRGUER MOBILE (CANTO INFERIOR DIREITO) -->
     <div id="mesa-mobile-fab-container" class="mesa-mobile-fab-container">
-      <button id="mesa-mobile-fab-btn" class="mesa-mobile-fab-btn" onclick="MesaMobileMenu.toggle()" aria-label="Menu de AÃ§Ãµes">
+      <button id="mesa-mobile-fab-btn" class="mesa-mobile-fab-btn" onclick="MesaMobileMenu.toggle()" aria-label="Menu de Ações">
         <div class="fab-hamburger-icon">
           <span class="fab-bar"></span>
           <span class="fab-bar"></span>
@@ -467,7 +480,7 @@
         <span id="mobile-fab-alert-pip" class="mobile-fab-alert-pip" style="display: none;"></span>
       </button>
 
-      <!-- GAVETA DE AÃ‡Ã•ES MOBILE FLUTUANTE -->
+      <!-- GAVETA DE AÇÕES MOBILE FLUTUANTE -->
       <div id="mesa-mobile-menu-drawer" class="mesa-mobile-menu-drawer">
         <div class="mobile-menu-header">
           <span class="mobile-menu-title">[ MENU DA MESA ]</span>
@@ -487,6 +500,7 @@
           </button>
 
           <!-- Reagir -->
+          
           <button class="mobile-menu-item" onclick="MesaReactions.togglePicker(); MesaMobileMenu.close()">
             <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"></circle>
@@ -506,6 +520,7 @@
             <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
             <span>Roteiro da Campanha (Mestre)</span>
           </button>
+
 
           <!-- Chat -->
           <button class="mobile-menu-item" onclick="MesaChat.toggleChat(); MesaMobileMenu.close()">
@@ -529,7 +544,7 @@
             <span>Rolar Dados</span>
           </button>
 
-          <!-- Sobre Ãrea Atual (Mobile) -->
+          <!-- Sobre Área Atual (Mobile) -->
           <button class="mobile-menu-item" onclick="MesaAreaManager.openAboutAreaModal(); MesaMobileMenu.close()">
             <span class="m-item-icon" id="mobile-about-area-icon">
               <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -540,26 +555,26 @@
             <span id="mobile-about-area-label">Sobre: Mina de Prata</span>
           </button>
 
-          <!-- Escolher Ãrea - Mestre (Mobile) -->
+          <!-- Escolher Área - Mestre (Mobile) -->
           <button id="mobile-choose-area-item" class="mobile-menu-item master-item" onclick="MesaAreaManager.openMapModal(); MesaMobileMenu.close()" style="display: none; color: #fbbf24;">
             <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
               <line x1="8" y1="2" x2="8" y2="18"></line>
               <line x1="16" y1="6" x2="16" y2="22"></line>
             </svg>
-            <span>Escolher Ãrea (Mestre)</span>
+            <span>Escolher Área (Mestre)</span>
           </button>
 
-          <!-- DossiÃª de NPCs - Mestre (Mobile) -->
+          <!-- Dossiê de NPCs - Mestre (Mobile) -->
           <button id="mobile-npcs-item" class="mobile-menu-item master-item" onclick="MesaAreaManager.openNpcModal(); MesaMobileMenu.close()" style="display: none; color: #38bdf8;">
             <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <span>DossiÃª de NPCs (Mestre)</span>
+            <span>Dossiê de NPCs (Mestre)</span>
           </button>
 
-          <!-- Token de AutenticaÃ§Ã£o -->
+          <!-- Token de Autenticação -->
           <button class="mobile-menu-item" onclick="MesaApp.openTokenModal(); MesaMobileMenu.close()">
             <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
@@ -568,14 +583,14 @@
 
           </button>
 
-          <!-- Sair / Trocar SessÃ£o (Mobile) -->
+          <!-- Sair / Trocar Sessão (Mobile) -->
           <button id="mobile-logout-item" class="mobile-menu-item logout-item" onclick="MesaApp.logout()" style="display: none; color: #f87171;">
             <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
               <polyline points="16 17 21 12 16 7"></polyline>
               <line x1="21" y1="12" x2="9" y2="12"></line>
             </svg>
-            <span>Sair / Trocar SessÃ£o</span>
+            <span>Sair / Trocar Sessão</span>
           </button>
 
           <!-- Voltar ao Menu Principal -->
@@ -589,6 +604,7 @@
         </div>
       </div>
     </div>
+
 
     <!-- Modal Sobre Sara -->
     <div id="sara-modal" class="mesa-modal-overlay">
@@ -676,6 +692,7 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <script src="js/campaign-data.js?v=3.2.0"></script>
+
 <script src="js/mesa.js?v=3.2.0"></script>
 </body>
 </html>
