@@ -2945,6 +2945,8 @@ const MesaAreaManager = {
     const mobileChooseAreaItem = document.getElementById('mobile-choose-area-item');
     const npcsBtn = document.getElementById('nav-npcs-btn');
     const mobileNpcsItem = document.getElementById('mobile-npcs-item');
+    const roteiroBtn = document.getElementById('menu-roteiro-btn');
+    const mobileRoteiroBtn = document.getElementById('mobile-roteiro-item');
     if (chooseAreaBtn) {
       chooseAreaBtn.style.display = isMaster ? 'inline-flex' : 'none';
     }
@@ -2956,6 +2958,12 @@ const MesaAreaManager = {
     }
     if (mobileNpcsItem) {
       mobileNpcsItem.style.display = isMaster ? 'flex' : 'none';
+    }
+    if (roteiroBtn) {
+      roteiroBtn.style.display = isMaster ? 'inline-flex' : 'none';
+    }
+    if (mobileRoteiroBtn) {
+      mobileRoteiroBtn.style.display = isMaster ? 'flex' : 'none';
     }
     if (window.MesaQuickMenu) {
       MesaQuickMenu.updateState();
@@ -3783,3 +3791,153 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 });
+
+// ============================================================
+// 8. SARA MODAL
+// ============================================================
+const MesaSara = {
+  openModal() {
+    MesaApp.openModal('sara-modal');
+  },
+  closeModal() {
+    MesaApp.closeModal('sara-modal');
+  }
+};
+
+// ============================================================
+// 9. GESTOR DE ROTEIROS DO MESTRE (MARKDOWN)
+// ============================================================
+const MesaRoteiro = {
+  episodes: [],
+  currentId: null,
+
+  init() {
+    const saved = localStorage.getItem('wu_master_scripts');
+    if (saved) {
+      try {
+        this.episodes = JSON.parse(saved);
+      } catch(e) {
+        this.episodes = [];
+      }
+    }
+    
+    if (this.episodes.length === 0) {
+      this.episodes.push({ id: Date.now().toString(), title: 'Episódio 1', content: '' });
+    }
+    this.currentId = this.episodes[0].id;
+  },
+
+  openModal() {
+    if (!MesaApp.state.isMaster) return;
+    this.init();
+    this.renderList();
+    this.loadEpisode(this.currentId);
+    MesaApp.openModal('master-script-modal');
+    this.switchTab('edit');
+  },
+
+  closeModal() {
+    MesaApp.closeModal('master-script-modal');
+  },
+
+  saveData() {
+    localStorage.setItem('wu_master_scripts', JSON.stringify(this.episodes));
+  },
+
+  renderList() {
+    const listEl = document.getElementById('roteiro-list');
+    if (!listEl) return;
+    
+    listEl.innerHTML = '';
+    this.episodes.forEach(ep => {
+      const btn = document.createElement('button');
+      btn.className = 'area-tab-nav-btn ' + (ep.id === this.currentId ? 'active' : '');
+      btn.style.display = 'block';
+      btn.style.width = '100%';
+      btn.style.textAlign = 'left';
+      btn.style.marginBottom = '5px';
+      btn.style.border = '1px solid transparent';
+      if(ep.id === this.currentId) {
+        btn.style.borderColor = '#a78bfa';
+        btn.style.color = '#fff';
+        btn.style.background = 'rgba(167, 139, 250, 0.1)';
+      }
+      btn.textContent = ep.title || 'Sem Título';
+      btn.onclick = () => this.loadEpisode(ep.id);
+      listEl.appendChild(btn);
+    });
+  },
+
+  loadEpisode(id) {
+    this.currentId = id;
+    const ep = this.episodes.find(e => e.id === id);
+    if (!ep) return;
+    
+    const titleInput = document.getElementById('roteiro-ep-input');
+    const textArea = document.getElementById('roteiro-textarea');
+    
+    if (titleInput) titleInput.value = ep.title;
+    if (textArea) textArea.value = ep.content;
+    
+    this.renderList();
+    this.updatePreview();
+  },
+
+  changeEpisode(newTitle) {
+    const ep = this.episodes.find(e => e.id === this.currentId);
+    if (ep) {
+      ep.title = newTitle;
+      this.saveData();
+      this.renderList();
+    }
+  },
+
+  saveCurrent() {
+    const ep = this.episodes.find(e => e.id === this.currentId);
+    const textArea = document.getElementById('roteiro-textarea');
+    if (ep && textArea) {
+      ep.content = textArea.value;
+      this.saveData();
+      this.updatePreview();
+    }
+  },
+
+  createNewEpisode() {
+    const newEp = {
+      id: Date.now().toString(),
+      title: \Episódio \\,
+      content: ''
+    };
+    this.episodes.push(newEp);
+    this.saveData();
+    this.loadEpisode(newEp.id);
+  },
+
+  switchTab(tab) {
+    const editBtn = document.getElementById('roteiro-tab-edit');
+    const previewBtn = document.getElementById('roteiro-tab-preview');
+    const editPane = document.getElementById('roteiro-pane-edit');
+    const previewPane = document.getElementById('roteiro-pane-preview');
+    
+    if (tab === 'edit') {
+      if(editBtn) { editBtn.classList.add('active'); editBtn.style.borderBottomColor = '#a78bfa'; editBtn.style.color = '#a78bfa'; }
+      if(previewBtn) { previewBtn.classList.remove('active'); previewBtn.style.borderBottomColor = 'transparent'; previewBtn.style.color = ''; }
+      if(editPane) editPane.style.display = 'flex';
+      if(previewPane) previewPane.style.display = 'none';
+    } else {
+      if(previewBtn) { previewBtn.classList.add('active'); previewBtn.style.borderBottomColor = '#a78bfa'; previewBtn.style.color = '#a78bfa'; }
+      if(editBtn) { editBtn.classList.remove('active'); editBtn.style.borderBottomColor = 'transparent'; editBtn.style.color = ''; }
+      if(editPane) editPane.style.display = 'none';
+      if(previewPane) previewPane.style.display = 'block';
+      this.updatePreview();
+    }
+  },
+
+  updatePreview() {
+    const previewEl = document.getElementById('roteiro-preview-content');
+    const ep = this.episodes.find(e => e.id === this.currentId);
+    if (previewEl && ep && window.marked) {
+      previewEl.innerHTML = marked.parse(ep.content || '_Sem conteúdo_');
+    }
+  }
+};
