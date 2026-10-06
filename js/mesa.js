@@ -2947,8 +2947,6 @@ const MesaAreaManager = {
     const mobileNpcsItem = document.getElementById('mobile-npcs-item');
     const roteiroBtn = document.getElementById('menu-roteiro-btn');
     const mobileRoteiroBtn = document.getElementById('mobile-roteiro-item');
-    const roteiroBtn = document.getElementById('menu-roteiro-btn');
-    const mobileRoteiroBtn = document.getElementById('mobile-roteiro-item');
     if (chooseAreaBtn) {
       chooseAreaBtn.style.display = isMaster ? 'inline-flex' : 'none';
     }
@@ -2960,12 +2958,6 @@ const MesaAreaManager = {
     }
     if (mobileNpcsItem) {
       mobileNpcsItem.style.display = isMaster ? 'flex' : 'none';
-    }
-    if (roteiroBtn) {
-      roteiroBtn.style.display = isMaster ? 'inline-flex' : 'none';
-    }
-    if (mobileRoteiroBtn) {
-      mobileRoteiroBtn.style.display = isMaster ? 'flex' : 'none';
     }
     if (window.MesaQuickMenu) {
       MesaQuickMenu.updateState();
