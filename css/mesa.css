@@ -7019,3 +7019,44 @@ body.npc-drawer-open .npc-dossier-drawer {
     display: none;
   }
 }
+
+
+/* ==== PERFORMANCE ==== */
+/* O filtro SVG de turbulencia (nanquim-rough) era recalculado a cada frame em elementos
+   animados (cards, tabuleiro, moldura). Mantido apenas em elementos pequenos e estaticos. */
+.player-slot,
+.mesa-black-board,
+.mesa-ink-frame {
+  filter: none;
+}
+/* Desfoque de fundo em 9 cards ao mesmo tempo: troca por fundo solido translucido */
+.player-slot {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: rgba(22, 8, 2, 0.88);
+}
+.player-slot.empty { background: rgba(10, 2, 0, 0.6); }
+.master-slot { background: rgba(15, 15, 15, 0.92); }
+/* Pulsos infinitos de box-shadow/border repintam o card inteiro a cada frame: rodam so uma vez */
+.player-slot { animation-iteration-count: 1 !important; }
+.player-slot::before,
+.player-slot::after,
+.player-slot:hover::before { animation: none; }
+.slot-avatar-img { animation: none; }
+.player-slot { will-change: auto; }
+
+/* MODO LEVE: aparelhos fracos / celular */
+html.perf-lite .mesa-glitch-canvas,
+html.perf-lite #ficha-particles-canvas { display: none !important; }
+html.perf-lite *,
+html.perf-lite *::before,
+html.perf-lite *::after {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  animation-iteration-count: 1 !important;
+}
+html.perf-lite .mesa-modal.ink-modal,
+html.perf-lite .mesa-chat-panel,
+html.perf-lite .mesa-mobile-menu-drawer,
+html.perf-lite .ink-tag,
+html.perf-lite .nav-auth-chip { filter: none; }

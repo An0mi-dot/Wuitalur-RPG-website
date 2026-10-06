@@ -12,6 +12,22 @@ const SVG_ICONS = {
   key: `<svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>`
 };
 
+// ---- MODO LEVE (PERFORMANCE) ----
+// Aparelhos fracos, celulares e quem prefere menos movimento recebem a versão sem efeitos pesados.
+const MESA_LITE = (() => {
+  try {
+    const weakCpu = (navigator.hardwareConcurrency || 8) <= 4;
+    const weakRam = (navigator.deviceMemory || 8) <= 4;
+    const touch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    const small = window.innerWidth < 900;
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const forced = localStorage.getItem('mesa_perf') === 'lite';
+    const full = localStorage.getItem('mesa_perf') === 'full';
+    return !full && (forced || weakCpu || weakRam || touch || small || reduced);
+  } catch (e) { return false; }
+})();
+if (MESA_LITE) document.documentElement.classList.add('perf-lite');
+
 // ---- 1. MOTOR DE GLITCH DO FUNDO DA MESA ----
 const GlitchEngine = {
   canvas: null,
@@ -22,6 +38,7 @@ const GlitchEngine = {
   running: true,
 
   init() {
+    if (MESA_LITE) return;
     this.canvas = document.getElementById('glitch-canvas');
     if (!this.canvas) return;
     this.ctx = this.canvas.getContext('2d');
@@ -108,8 +125,6 @@ const GlitchEngine = {
       const fade = g.life / g.maxLife;
       this.ctx.save();
       this.ctx.globalAlpha = fade * 0.7;
-      this.ctx.shadowBlur = 6;
-      this.ctx.shadowColor = '#ff5500';
 
       if (g.type === 'slice') {
         this.ctx.fillStyle = g.color;
@@ -202,6 +217,7 @@ const FichaParticlesEngine = {
   },
 
   start() {
+    if (MESA_LITE) return;
     this.active = true;
     this.loop();
   },
@@ -252,6 +268,7 @@ const PortraitGlitchEngine = {
   animId: null,
 
   start() {
+    if (MESA_LITE) return;
     this.canvas = document.getElementById('portrait-glitch-canvas');
     if (!this.canvas) return;
     this.ctx = this.canvas.getContext('2d');
@@ -360,8 +377,6 @@ const PortraitGlitchEngine = {
       const fade = g.life / g.maxLife;
       this.ctx.save();
       this.ctx.globalAlpha = fade * 0.75;
-      this.ctx.shadowBlur = 6;
-      this.ctx.shadowColor = '#ff5500';
 
       if (g.type === 'slice') {
         this.ctx.fillStyle = g.color;
@@ -407,6 +422,7 @@ const BoardCenterGlitchEngine = {
   animId: null,
 
   start() {
+    if (MESA_LITE) return;
     this.canvas = document.getElementById('board-center-glitch-canvas');
     if (!this.canvas) return;
     this.ctx = this.canvas.getContext('2d');
@@ -515,8 +531,6 @@ const BoardCenterGlitchEngine = {
       const fade = g.life / g.maxLife;
       this.ctx.save();
       this.ctx.globalAlpha = fade * 0.75;
-      this.ctx.shadowBlur = 6;
-      this.ctx.shadowColor = '#ff5500';
 
       if (g.type === 'slice') {
         this.ctx.fillStyle = g.color;
