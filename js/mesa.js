@@ -3073,6 +3073,41 @@ const MesaAreaManager = {
     }
   },
 
+  activeAreaTab: 'public',
+
+  switchAreaTab(tabKey) {
+    const isMasterUser = Boolean(MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    if (!isMasterUser && tabKey !== 'public') {
+      tabKey = 'public';
+    }
+    this.activeAreaTab = tabKey;
+
+    // Atualiza botões de navegação de abas
+    document.querySelectorAll('.area-tab-nav-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === tabKey);
+    });
+
+    // Atualiza painéis das abas
+    document.querySelectorAll('.area-tab-pane').forEach(pane => {
+      pane.classList.toggle('active', pane.id === `area-tab-pane-${tabKey}`);
+    });
+  },
+
+  togglePdi(num) {
+    const card = document.getElementById(`pdi-accordion-${num}`);
+    if (card) {
+      card.classList.toggle('open');
+    }
+  },
+
+  expandAllPdis() {
+    document.querySelectorAll('.pdi-accordion-card').forEach(card => card.classList.add('open'));
+  },
+
+  collapseAllPdis() {
+    document.querySelectorAll('.pdi-accordion-card').forEach(card => card.classList.remove('open'));
+  },
+
   openAboutAreaModal(areaId = null) {
     const targetId = areaId || this.currentAreaId;
     const area = (window.CAMPAIGN_AREAS && window.CAMPAIGN_AREAS[targetId]) || MESA_AREAS[targetId];
@@ -3083,7 +3118,7 @@ const MesaAreaManager = {
     const pdiCount = pdiList.length;
     const isMasterUser = Boolean(MesaApp && MesaApp.state && MesaApp.state.isMaster);
 
-    // Cabeçalho da Área
+    // 1. Cabeçalho Geral da Área (Identidade, Distrito e Nível de Perigo)
     const header = document.getElementById('area-info-header');
     if (header) {
       header.innerHTML = `
@@ -3101,7 +3136,23 @@ const MesaAreaManager = {
       `;
     }
 
-    // Informações Públicas (Visíveis a todos)
+    // 2. Configura Visibilidade dos Separadores (Tabs)
+    const backstageTabBtn = document.getElementById('tab-btn-backstage');
+    const pdisTabBtn = document.getElementById('tab-btn-pdis');
+    const pdiCounterBadge = document.getElementById('tab-pdi-count-badge');
+
+    if (pdiCounterBadge) {
+      pdiCounterBadge.textContent = pdiCount;
+    }
+
+    if (backstageTabBtn) {
+      backstageTabBtn.style.display = isMasterUser ? 'inline-flex' : 'none';
+    }
+    if (pdisTabBtn) {
+      pdisTabBtn.style.display = isMasterUser ? 'inline-flex' : 'none';
+    }
+
+    // 3. TAB 1: VISÃO PÚBLICA (Mestre e Jogadores)
     const publicInfo = document.getElementById('area-public-info');
     if (publicInfo) {
       const atmosferaText = area.resumo_atmosfera || area.ambience || '';
@@ -3111,35 +3162,6 @@ const MesaAreaManager = {
         .map(p => `<p class="area-atmosphere-p">${p.trim()}</p>`)
         .join('');
 
-      // Requisitos de Acesso (EXCLUSIVO DO MESTRE)
-      const acesso = (isMasterUser && area.requisitos_acesso) ? `
-        <div class="area-access-box">
-          <div class="area-access-badge">[EXCLUSIVO DO MESTRE] REQUISITOS DE ACESSO & CONDIÇÕES</div>
-          <p>${area.requisitos_acesso}</p>
-        </div>
-      ` : '';
-
-      // NPCs presentes com botões clicáveis para abrir o modal de NPC (EXCLUSIVO DO MESTRE)
-      let npcsHtml = '';
-      if (isMasterUser && area.npcs_presentes && area.npcs_presentes.length > 0) {
-        npcsHtml = `
-          <div class="area-master-npcs-block">
-            <strong class="area-master-section-title">[MESTRE] NPCS PRESENTES NESTA ÁREA (CLIQUE PARA ABRIR DOSSIÊ):</strong>
-            <div class="area-npcs-tags-row">
-              ${area.npcs_presentes.map(npcId => {
-                const npc = (window.CAMPAIGN_NPCS && window.CAMPAIGN_NPCS[npcId]);
-                const npcName = npc ? npc.nome.split('•')[0].trim() : npcId;
-                return `<button type="button" class="mesa-npc-tag-btn" onclick="MesaAreaManager.openNpcModal('${npcId}')">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                  ${npcName}
-                </button>`;
-              }).join('')}
-            </div>
-          </div>
-        `;
-      }
-
-      // Conexões de saída
       let exitsHtml = '';
       if (area.conexoes_saida && area.conexoes_saida.length > 0) {
         exitsHtml = `
@@ -3163,116 +3185,193 @@ const MesaAreaManager = {
         <div class="area-atmosphere-content">
           ${atmosferaParagraphs}
         </div>
-        ${acesso}
-        ${npcsHtml}
         ${exitsHtml}
         ${area.lore ? `<div class="area-lore-block"><h4 class="area-section-title" style="margin-top: 20px;">HISTÓRIA & CONTEXTO LOCAL</h4><p class="area-atmosphere-p">${area.lore}</p></div>` : ''}
         ${area.rumor ? `<div class="area-rumor-box"><strong>RUMOR INVESTIGATIVO:</strong> ${area.rumor}</div>` : ''}
       `;
     }
 
-    // Dossiê do Mestre (Pontos de Interesse Estruturados)
-    const masterDossier = document.getElementById('area-master-dossier');
-    const cardsContainer = document.getElementById('area-poi-cards-container');
-    const quickNav = document.getElementById('area-poi-quicknav');
-    const masterDossierTitle = document.getElementById('master-dossier-title');
-
-    if (masterDossierTitle) {
-      masterDossierTitle.textContent = `${pdiCount} ${pdiCount === 1 ? 'PONTO DE INTERESSE DA LOCALIDADE' : 'PONTOS DE INTERESSE DA LOCALIDADE'}`;
-    }
-
-    if (masterDossier) {
-      masterDossier.style.display = isMasterUser ? 'block' : 'none';
-    }
-
-    if (isMasterUser && cardsContainer) {
-      cardsContainer.innerHTML = '';
-      if (quickNav) quickNav.innerHTML = '';
-
-      if (pdiList.length === 0) {
-        cardsContainer.innerHTML = '<div style="color: #94a3b8; font-size: 0.9rem; padding: 20px 0; text-align: center;">Nenhum ponto de interesse registrado nesta área ainda.</div>';
-      }
-
-      pdiList.forEach((poi, idx) => {
-        const num = poi.num || (idx + 1);
-        const title = (poi.cabecalho && poi.cabecalho.nome) || poi.title || `Ponto de Interesse ${num}`;
-        const desc = (poi.cabecalho && poi.cabecalho.descricao_publica) || poi.headerDesc || '';
-        const masterNotes = poi.notas_mestre || poi.context || '';
-
-        // 1. Botão QuickNav
-        if (quickNav) {
-          const navBtn = document.createElement('button');
-          navBtn.className = 'poi-nav-btn';
-          const shortTitle = title.length > 24 ? title.substring(0, 24) + '...' : title;
-          navBtn.textContent = `#${num} ${shortTitle}`;
-          navBtn.title = title;
-          navBtn.onclick = () => {
-            const el = document.getElementById(`poi-card-${num}`);
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          };
-          quickNav.appendChild(navBtn);
-        }
-
-        // 2. Quadro de Testes de Perícias
-        const tests = poi.testes || (poi.skills ? poi.skills.map(s => ({ pericia: s.skill, ct_dt: s.dt, informacao_revelada: s.info })) : []);
-        let rowsHtml = '';
-        tests.forEach((t, tIdx) => {
-          const tintClass = `skill-tint-${tIdx % 4}`;
-          rowsHtml += `
-            <tr class="${tintClass}">
-              <td class="poi-skill-cell">${t.pericia}</td>
-              <td class="poi-dt-cell"><span class="mesa-pdi-dt-badge">DT ${t.ct_dt}</span></td>
-              <td class="poi-info-cell">${t.informacao_revelada}</td>
-            </tr>
-          `;
-        });
-
-        // 3. Card do Ponto de Interesse
-        const card = document.createElement('div');
-        card.className = 'poi-card';
-        card.id = `poi-card-${num}`;
-        card.innerHTML = `
-          <!-- CABEÇALHO DO PDI -->
-          <div class="poi-header-block">
-            <div class="poi-header-badge-row">
-              <span class="poi-index-badge">PONTO DE INTERESSE ${num < 10 ? '0' + num : num}</span>
-            </div>
-            <h4 class="poi-header-title">${title}</h4>
-            <p class="poi-header-desc">${desc}</p>
-          </div>
-
-          <!-- QUADRO DE TESTES -->
-          <div class="poi-skills-table-wrap">
-            <table class="poi-skills-table">
-              <thead>
-                <tr>
-                  <th class="th-pericia">Perícia</th>
-                  <th class="th-dt">Classe de Teste (CT/DT)</th>
-                  <th class="th-info">Informação Revelada</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${rowsHtml}
-              </tbody>
-            </table>
-          </div>
-
-          <!-- NOTAS DO MESTRE (DESTAQUE VISUAL DE LEITURA RÁPIDA) -->
-          <div class="mesa-master-notes-box">
-            <div class="mesa-master-notes-icon" title="Segredo do Mestre">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-            </div>
-            <div class="mesa-master-notes-content">
-              <span class="mesa-master-notes-label">[NOTAS DO MESTRE • SEGREDO CONFIDENCIAL]</span>
-              <p>${masterNotes}</p>
-            </div>
+    // 4. TAB 2: BASTIDORES (Exclusivo do Mestre)
+    const backstageContainer = document.getElementById('area-backstage-info');
+    if (backstageContainer && isMasterUser) {
+      // Bloco de NPCs Presentes
+      let npcsListHtml = '';
+      if (area.npcs_presentes && area.npcs_presentes.length > 0) {
+        npcsListHtml = `
+          <div class="backstage-npcs-grid">
+            ${area.npcs_presentes.map(npcId => {
+              const npc = (window.CAMPAIGN_NPCS && window.CAMPAIGN_NPCS[npcId]);
+              const rawName = npc ? npc.nome : npcId;
+              const parts = rawName.split('•');
+              const mainName = parts[0].trim();
+              const roleTitle = parts[1] ? parts[1].trim() : (npc ? npc.ligacao_misterio : 'Personagem Local');
+              return `
+                <div class="backstage-npc-card" onclick="MesaAreaManager.openNpcModal('${npcId}')">
+                  <div class="backstage-npc-avatar-box">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  </div>
+                  <div class="backstage-npc-details">
+                    <strong class="backstage-npc-name">${mainName}</strong>
+                    <span class="backstage-npc-role">${roleTitle}</span>
+                  </div>
+                  <button type="button" class="backstage-npc-open-btn" title="Abrir Dossiê">
+                    Dossiê &rarr;
+                  </button>
+                </div>
+              `;
+            }).join('')}
           </div>
         `;
+      } else {
+        npcsListHtml = '<p class="backstage-empty-text">Nenhum NPC registrado nesta área no momento.</p>';
+      }
 
-        cardsContainer.appendChild(card);
-      });
+      backstageContainer.innerHTML = `
+        <!-- CARD 1: REQUISITOS DE ACESSO -->
+        <div class="backstage-panel-card">
+          <div class="backstage-panel-header">
+            <div class="backstage-panel-title-wrap">
+              <svg class="backstage-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <h5>CONDIÇÕES DE ACESSO & INFILTRAÇÃO</h5>
+            </div>
+            <span class="backstage-confidential-badge">ACESSO DO MESTRE</span>
+          </div>
+          <div class="backstage-panel-body">
+            <p class="backstage-access-desc">${area.requisitos_acesso || 'Acesso livre e sem restrições especiais cadastradas.'}</p>
+          </div>
+        </div>
+
+        <!-- CARD 2: NPCS PRESENTES -->
+        <div class="backstage-panel-card" style="margin-top: 18px;">
+          <div class="backstage-panel-header">
+            <div class="backstage-panel-title-wrap">
+              <svg class="backstage-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              <h5>PERSONAGENS PRESENTES NESTA ÁREA</h5>
+            </div>
+            <span class="backstage-count-badge">${(area.npcs_presentes || []).length} Mapeados</span>
+          </div>
+          <div class="backstage-panel-body">
+            <p class="backstage-hint-text">Clique em qualquer personagem abaixo para abrir instantaneamente o seu Dossiê Confidencial com segredos e gatilhos de revelação:</p>
+            ${npcsListHtml}
+          </div>
+        </div>
+      `;
     }
 
+    // 5. TAB 3: INVESTIGAÇÃO / PDIS (Exclusivo do Mestre — Acordeões Fechados por Default)
+    const pdisContainer = document.getElementById('area-pdis-container');
+    if (pdisContainer && isMasterUser) {
+      if (pdiList.length === 0) {
+        pdisContainer.innerHTML = `
+          <div class="pdis-empty-box">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#71717a" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <p>Nenhum ponto de interesse registrado nesta área ainda.</p>
+          </div>
+        `;
+      } else {
+        const accordionsHtml = pdiList.map((poi, idx) => {
+          const num = poi.num || (idx + 1);
+          const title = (poi.cabecalho && poi.cabecalho.nome) || poi.title || `Ponto de Interesse ${num}`;
+          const desc = (poi.cabecalho && poi.cabecalho.descricao_publica) || poi.headerDesc || '';
+          const masterNotes = poi.notas_mestre || poi.context || '';
+          const tests = poi.testes || (poi.skills ? poi.skills.map(s => ({ pericia: s.skill, ct_dt: s.dt, informacao_revelada: s.info })) : []);
+
+          let rowsHtml = '';
+          tests.forEach((t, tIdx) => {
+            const tintClass = `skill-tint-${tIdx % 4}`;
+            rowsHtml += `
+              <tr class="${tintClass}">
+                <td class="poi-skill-cell">${t.pericia}</td>
+                <td class="poi-dt-cell"><span class="mesa-pdi-dt-badge">DT ${t.ct_dt}</span></td>
+                <td class="poi-info-cell">${t.informacao_revelada}</td>
+              </tr>
+            `;
+          });
+
+          return `
+            <div class="pdi-accordion-card" id="pdi-accordion-${num}">
+              <!-- CABEÇALHO DO ACORDEÃO (CLICÁVEL) -->
+              <button type="button" class="pdi-accordion-header" onclick="MesaAreaManager.togglePdi(${num})" aria-label="Expandir ou recolher Ponto de Interesse">
+                <div class="pdi-accordion-header-left">
+                  <span class="pdi-num-badge">#${num < 10 ? '0' + num : num}</span>
+                  <strong class="pdi-title-text">${title}</strong>
+                </div>
+                <div class="pdi-accordion-header-right">
+                  <span class="pdi-tests-tag">${tests.length} ${tests.length === 1 ? 'Teste' : 'Testes'}</span>
+                  <svg class="pdi-chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+              </button>
+
+              <!-- CORPO DO ACORDEÃO (EXPANSÍVEL) -->
+              <div class="pdi-accordion-body" id="pdi-body-${num}">
+                <!-- Descrição Sensorial Inicial -->
+                <div class="pdi-public-desc-box">
+                  <span class="pdi-box-mini-tag">DESCRIÇÃO INICIAL / SENSORIAL</span>
+                  <p class="pdi-public-desc-text">${desc}</p>
+                </div>
+
+                <!-- Quadro de Testes de Perícias -->
+                <div class="poi-skills-table-wrap">
+                  <table class="poi-skills-table">
+                    <thead>
+                      <tr>
+                        <th class="th-pericia">Perícia</th>
+                        <th class="th-dt">Classe de Teste (CT/DT)</th>
+                        <th class="th-info">Informação Revelada</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${rowsHtml}
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Notas do Mestre (Segredos da Trama) -->
+                <div class="mesa-master-notes-box">
+                  <div class="mesa-master-notes-icon" title="Segredo do Mestre">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                  </div>
+                  <div class="mesa-master-notes-content">
+                    <span class="mesa-master-notes-label">[NOTAS DO MESTRE • SEGREDO CONFIDENCIAL]</span>
+                    <p>${masterNotes}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        pdisContainer.innerHTML = `
+          <!-- BARRA DE FERRAMENTAS DOS PDIS -->
+          <div class="pdis-toolbar">
+            <div class="pdis-toolbar-title-wrap">
+              <h4 class="pdis-toolbar-title">PONTOS DE INTERESSE DA LOCALIDADE</h4>
+              <span class="pdis-toolbar-subtitle">Clique em qualquer ponto abaixo para inspecionar testes, DTs e segredos.</span>
+            </div>
+            <div class="pdis-toolbar-actions">
+              <button type="button" class="pdi-tool-btn" onclick="MesaAreaManager.expandAllPdis()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 11 12 6 17 11"></polyline><polyline points="7 18 12 13 17 18"></polyline></svg>
+                Expandir Todos
+              </button>
+              <button type="button" class="pdi-tool-btn" onclick="MesaAreaManager.collapseAllPdis()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 13 12 18 17 13"></polyline><polyline points="7 6 12 11 17 6"></polyline></svg>
+                Recolher Todos
+              </button>
+            </div>
+          </div>
+
+          <!-- LISTA DE ACORDEÕES -->
+          <div class="pdis-accordion-list">
+            ${accordionsHtml}
+          </div>
+        `;
+      }
+    }
+
+    // 6. Ativa a aba atual (garante 'public' para jogadores)
+    this.switchAreaTab(this.activeAreaTab || 'public');
+
+    // 7. Exibe o Modal
     const modal = document.getElementById('area-info-modal');
     if (modal) modal.classList.add('active');
   },

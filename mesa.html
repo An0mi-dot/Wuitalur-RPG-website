@@ -377,7 +377,7 @@
       </div>
     </div>
 
-    <!-- Modal de Informações da Área & Pontos de Interesse -->
+    <!-- Modal de Informações da Área & Pontos de Interesse (Clean UI com Tabs & Acordeões) -->
     <div id="area-info-modal" class="mesa-modal-overlay">
       <div class="mesa-modal area-info-modal-dialog">
         <button class="mesa-modal-close" onclick="MesaApp.closeModal('area-info-modal')">&times;</button>
@@ -385,25 +385,44 @@
           <!-- Renderizado dinamicamente -->
         </div>
 
+        <!-- Barra de Abas / Separadores do Modal da Área -->
+        <div id="area-tabs-nav" class="area-tabs-nav">
+          <button type="button" class="area-tab-nav-btn active" id="tab-btn-public" data-tab="public" onclick="MesaAreaManager.switchAreaTab('public')">
+            <svg class="tab-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            <span>Visão Pública</span>
+          </button>
+          <button type="button" class="area-tab-nav-btn master-only-tab" id="tab-btn-backstage" data-tab="backstage" onclick="MesaAreaManager.switchAreaTab('backstage')">
+            <svg class="tab-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span>Bastidores</span>
+            <span class="tab-badge-master">Mestre</span>
+          </button>
+          <button type="button" class="area-tab-nav-btn master-only-tab" id="tab-btn-pdis" data-tab="pdis" onclick="MesaAreaManager.switchAreaTab('pdis')">
+            <svg class="tab-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>Investigação / PDIs</span>
+            <span class="tab-badge-counter" id="tab-pdi-count-badge">0</span>
+            <span class="tab-badge-master">Mestre</span>
+          </button>
+        </div>
+
         <div class="area-info-body">
-          <div id="area-public-info" class="area-public-info">
-            <!-- Atmosfera, Descrição Geral e Rumores -->
+          <!-- TAB 1: VISÃO PÚBLICA (Mestre e Jogadores) -->
+          <div id="area-tab-pane-public" class="area-tab-pane active">
+            <div id="area-public-info" class="area-public-info">
+              <!-- Renderizado dinamicamente -->
+            </div>
           </div>
 
-          <!-- Seção Exclusiva do Mestre: 10 Pontos de Interesse Estruturados -->
-          <div id="area-master-dossier" class="area-master-dossier" style="display: none;">
-            <div class="master-dossier-header">
-              <span class="dossier-badge">[CONFIDENCIAL • ACESSO DO MESTRE]</span>
-              <h3 id="master-dossier-title">PONTOS DE INTERESSE DA LOCALIDADE</h3>
-              <p class="master-dossier-subtitle">Estrutura oficial: Cabeçalho com descrição sensorial inicial, Quadro de Perícias escalonado por DT e Descrição Contextual com os segredos da trama.</p>
+          <!-- TAB 2: BASTIDORES (Exclusivo Mestre) -->
+          <div id="area-tab-pane-backstage" class="area-tab-pane">
+            <div id="area-backstage-info" class="area-backstage-info">
+              <!-- Renderizado dinamicamente -->
             </div>
+          </div>
 
-            <!-- Índice de Navegação Rápida entre os 10 Pontos -->
-            <div id="area-poi-quicknav" class="area-poi-quicknav"></div>
-
-            <!-- Lista dos 10 Cards Estruturados de Ponto de Interesse -->
-            <div id="area-poi-cards-container" class="area-poi-cards-container">
-              <!-- Renderizado dinamicamente via MesaAreaManager conforme o modelo da referência -->
+          <!-- TAB 3: INVESTIGAÇÃO / PDIS (Exclusivo Mestre) -->
+          <div id="area-tab-pane-pdis" class="area-tab-pane">
+            <div id="area-pdis-container" class="area-pdis-container">
+              <!-- Renderizado dinamicamente com Acordeões -->
             </div>
           </div>
         </div>
