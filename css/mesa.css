@@ -5460,3 +5460,42 @@ body.mesa-body.area-refugio-gustavo {
   line-height: 1.65;
   color: #cbd5e1;
 }
+
+
+/* ==========================================================================
+   ESTILOS DE MAPA SINCRONO (READ-ONLY PARA JOGADORES) E BOTAO DE LOGOUT
+   ========================================================================== */
+
+/* Nos Read-Only para Jogadores (Interacao Restrita) */
+.area-map-node.read-only {
+  pointer-events: none !important;
+  cursor: default !important;
+}
+
+.area-map-node.read-only:hover {
+  z-index: 10 !important;
+}
+
+.area-map-node.read-only:hover .area-node-symbol-wrap {
+  transform: none !important;
+}
+
+/* Estilos de Botao de Logout / Trocar Sessao */
+.ink-tag.logout-btn {
+  background: rgba(239, 68, 68, 0.08) !important;
+  border-color: rgba(239, 68, 68, 0.35) !important;
+  color: #f87171 !important;
+  transition: all 0.2s ease;
+}
+
+.ink-tag.logout-btn:hover {
+  background: rgba(239, 68, 68, 0.2) !important;
+  border-color: #ef4444 !important;
+  color: #ffffff !important;
+}
+
+.mobile-menu-item.logout-item:hover {
+  background: rgba(239, 68, 68, 0.15) !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
+  color: #fca5a5 !important;
+}

@@ -195,6 +195,16 @@
           <span id="token-alert-badge" class="token-alert-pip">!</span>
         </div>
         <button id="nav-ficha-btn" class="ink-tag primary desktop-only-btn" onclick="MesaApp.toggleView()">Minha Ficha</button>
+
+        <!-- Botao Discreto de Sair / Trocar Sessao -->
+        <button id="nav-logout-btn" class="ink-tag logout-btn" onclick="MesaApp.logout()" title="Sair / Trocar Sessao" style="display: none; border-color: rgba(239, 68, 68, 0.4); color: #f87171;">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span>Sair</span>
+        </button>
       </div>
     </nav>
 
@@ -304,6 +314,7 @@
         <input type="text" id="token-input" class="mesa-input ink-input" placeholder="Digite seu token..." maxlength="36" autocomplete="off" style="text-transform: uppercase; text-align: center; font-size: 1.15rem; letter-spacing: 0.15em; font-family: monospace;">
         <div id="token-security-status" style="display:none; font-size:0.8rem; margin: -6px 0 14px; min-height: 18px; line-height: 1.4;"></div>
         <button id="token-submit-btn" class="mesa-btn ink-tag primary" style="width:100%; font-size:1rem; padding:10px;" onclick="MesaApp.submitToken()">AUTENTICAR TOKEN</button>
+        <button id="token-logout-btn" class="mesa-btn ink-tag logout-btn" style="width:100%; margin-top:10px; border-color: rgba(239, 68, 68, 0.4); color: #f87171; display: none;" onclick="MesaApp.logout()">SAIR / TROCAR SESSÃO</button>
       </div>
     </div>
 
@@ -355,7 +366,7 @@
     <!-- Modal do Mapa Tático de Áreas -->
     <div id="area-map-modal" class="mesa-modal-overlay">
       <div class="mesa-modal area-map-modal-dialog">
-        <button class="mesa-modal-close" onclick="MesaApp.closeModal('area-map-modal')">&times;</button>
+        <button class="mesa-modal-close" onclick="MesaAreaManager.closeMapModal()">&times;</button>
         <div class="ink-ribbon-title">MAPA DE INVESTIGAÇÃO • FRAGKTUS & MINA DE PRATA</div>
         
         <div class="area-map-container">
@@ -543,6 +554,16 @@
             </svg>
             <span id="mobile-token-label">Autenticar Token</span>
             <span id="mobile-token-alert-pip" class="token-alert-pip" style="margin-left: auto;">!</span>
+          </button>
+
+          <!-- Sair / Trocar Sessão (Mobile) -->
+          <button id="mobile-logout-item" class="mobile-menu-item logout-item" onclick="MesaApp.logout()" style="display: none; color: #f87171;">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            <span>Sair / Trocar Sessão</span>
           </button>
 
           <!-- Voltar ao Menu Principal -->

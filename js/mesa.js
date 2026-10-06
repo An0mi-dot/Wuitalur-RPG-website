@@ -707,27 +707,33 @@ const MesaApp = {
   
   state: {
     players: new Array(8).fill(null),
-    myToken: localStorage.getItem('mesa_token') || null,
+    myToken: localStorage.getItem('wu_user_token') || localStorage.getItem('mesa_token') || null,
     myPlayerSlot: null,
     isMaster: false,
     activeViewingPlayer: null
   },
 
-  init() {
+  async init(initialToken = null) {
     console.log("Inicializando Mesa Virtual...");
 
     GlitchEngine.init();
     FichaParticlesEngine.init();
-    
-    this.checkSavedToken();
+
+    const tokenToValidate = initialToken || localStorage.getItem('wu_user_token') || localStorage.getItem('mesa_token');
 
     if (this.SUPABASE_URL && this.SUPABASE_KEY && window.supabase) {
       this.supabase = window.supabase.createClient(this.SUPABASE_URL, this.SUPABASE_KEY);
-      this.fetchPlayers();
+      await this.fetchPlayers();
       this.subscribeToRealtime();
     } else {
       console.warn("Supabase não disponível. Exibindo dados locais.");
       this.loadMockData();
+    }
+
+    if (tokenToValidate) {
+      await this.checkSavedToken(tokenToValidate);
+    } else {
+      this.updateTokenBtnState();
     }
 
     MesaChat.init();
@@ -737,29 +743,85 @@ const MesaApp = {
     this.updateTokenBtnState();
   },
 
-  async checkSavedToken() {
-    const saved = localStorage.getItem('mesa_token');
+  async checkSavedToken(customToken = null) {
+    const saved = customToken || localStorage.getItem('wu_user_token') || localStorage.getItem('mesa_token');
 
     if (saved) {
-      this.state.myToken = saved.toUpperCase();
-      const hash = await MesaSecurity.sha256(this.state.myToken);
+      const candidateToken = saved.trim().toUpperCase();
+      const hash = await MesaSecurity.sha256(candidateToken);
 
+      // 1. Verifica se é token do Mestre
       if (this.MASTER_HASHES.includes(hash)) {
         this.state.isMaster = true;
+        this.state.myToken = candidateToken;
         this.state.myPlayerSlot = null;
-      } else {
-        this.state.isMaster = false;
-        // Verifica se pertence a algum slot padrão
-        for (const [slotNum, hashes] of Object.entries(this.SLOT_HASHES)) {
-          if (hashes.includes(hash)) {
-            this.state.myPlayerSlot = parseInt(slotNum, 10);
-            break;
-          }
+        localStorage.setItem('wu_user_token', candidateToken);
+        localStorage.setItem('mesa_token', candidateToken);
+        this.updateTokenBtnState();
+        return true;
+      }
+
+      // 2. Verifica se pertence a algum slot padrão nos hashes locais
+      let matchedSlot = null;
+      for (const [slotNum, hashes] of Object.entries(this.SLOT_HASHES)) {
+        if (hashes.includes(hash)) {
+          matchedSlot = parseInt(slotNum, 10);
+          break;
         }
+      }
+
+      // 3. Verifica nos personagens carregados na memória
+      let matchedPlayer = null;
+      if (matchedSlot && this.state.players[matchedSlot - 1]) {
+        matchedPlayer = this.state.players[matchedSlot - 1];
+      }
+      if (!matchedPlayer) {
+        matchedPlayer = this.state.players.find(p => p && p.token && p.token.toUpperCase() === candidateToken);
+        if (matchedPlayer) {
+          matchedSlot = matchedPlayer.slot;
+        }
+      }
+
+      // 4. Se não achou na memória, verifica na base do Supabase
+      if (!matchedPlayer && this.supabase) {
+        try {
+          const { data } = await this.supabase
+            .from('personagens')
+            .select('*')
+            .eq('token', candidateToken)
+            .single();
+
+          if (data) {
+            matchedPlayer = data;
+            matchedSlot = data.slot;
+          }
+        } catch (err) {
+          console.warn("Erro ao validar token salvo:", err);
+        }
+      }
+
+      if (matchedPlayer || matchedSlot) {
+        this.state.isMaster = false;
+        this.state.myToken = candidateToken;
+        this.state.myPlayerSlot = matchedSlot || (matchedPlayer ? matchedPlayer.slot : null);
+        localStorage.setItem('wu_user_token', candidateToken);
+        localStorage.setItem('mesa_token', candidateToken);
+        this.updateTokenBtnState();
+        return true;
+      } else {
+        // Token inválido na base: limpa para não ficar em estado corrompido
+        console.warn("Token salvo não encontrado ou inválido:", candidateToken);
+        localStorage.removeItem('wu_user_token');
+        localStorage.removeItem('mesa_token');
+        this.state.myToken = null;
+        this.state.isMaster = false;
+        this.state.myPlayerSlot = null;
+        this.updateTokenBtnState();
+        return false;
       }
     }
 
-    this.updateTokenBtnState();
+    return false;
   },
 
   updateTokenBtnState() {
@@ -768,6 +830,12 @@ const MesaApp = {
     const alertBadge = document.getElementById('token-alert-badge');
     const chooseAreaBtn = document.getElementById('nav-choose-area-btn');
     const mobileChooseAreaItem = document.getElementById('mobile-choose-area-item');
+    const logoutBtn = document.getElementById('nav-logout-btn');
+    const mobileLogoutItem = document.getElementById('mobile-logout-item');
+
+    const hasSession = Boolean(this.state.isMaster || this.state.myToken);
+    if (logoutBtn) logoutBtn.style.display = hasSession ? 'inline-flex' : 'none';
+    if (mobileLogoutItem) mobileLogoutItem.style.display = hasSession ? 'flex' : 'none';
 
     if (this.state.isMaster) {
       if (tokenLabel) tokenLabel.textContent = 'Mestre Ativo';
@@ -790,6 +858,9 @@ const MesaApp = {
 
     if (window.MesaAreaManager && typeof MesaAreaManager.updateMasterButtons === 'function') {
       MesaAreaManager.updateMasterButtons();
+    }
+    if (window.MesaMobileMenu && typeof MesaMobileMenu.updateState === 'function') {
+      MesaMobileMenu.updateState();
     }
   },
 
@@ -1776,6 +1847,10 @@ const MesaApp = {
       input.value = this.state.myToken || '';
       input.focus();
     }
+    const tokenLogoutBtn = document.getElementById('token-logout-btn');
+    if (tokenLogoutBtn) {
+      tokenLogoutBtn.style.display = (this.state.isMaster || this.state.myToken) ? 'block' : 'none';
+    }
   },
 
   closeModal(id) {
@@ -1817,89 +1892,54 @@ const MesaApp = {
       submitBtn.textContent = 'AUTENTICANDO...';
     }
 
-    // Atraso artificial de segurança (timing attack & brute force throttle)
     await MesaSecurity.timingDelay(600);
 
-    const tokenHash = await MesaSecurity.sha256(token);
+    const isValid = await this.checkSavedToken(token);
 
-    // 1. VERIFICA SE É TOKEN DO MESTRE (ACESSO TOTAL)
-    if (this.MASTER_HASHES.includes(tokenHash)) {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'AUTENTICAR TOKEN';
+    }
+
+    if (isValid) {
       MesaSecurity.recordSuccess();
+      localStorage.setItem('wu_user_token', token);
       localStorage.setItem('mesa_token', token);
-      this.state.myToken = token;
-      this.state.myPlayerSlot = null;
-      this.state.isMaster = true;
-
       this.updateTokenBtnState();
       MesaChat.updateSenderIdentity();
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'AUTENTICAR TOKEN';
-      }
-      alert("[SUCESSO] Token de Mestre autenticado com sucesso.");
-      this.closeModal('token-modal');
-      return;
-    }
 
-    // 2. VERIFICA SE É O TOKEN DE UM DOS JOGADORES (VIA HASH OU SUPABASE)
-    let matchedSlot = null;
-    for (const [slotNum, hashes] of Object.entries(this.SLOT_HASHES)) {
-      if (hashes.includes(tokenHash)) {
-        matchedSlot = parseInt(slotNum, 10);
-        break;
-      }
-    }
-
-    let matchedPlayer = null;
-    if (matchedSlot && this.state.players[matchedSlot - 1]) {
-      matchedPlayer = this.state.players[matchedSlot - 1];
-    }
-
-    if (this.supabase && !matchedPlayer) {
-      try {
-        const { data, error } = await this.supabase
-          .from('personagens')
-          .select('*')
-          .eq('token', token)
-          .single();
-
-        if (data) {
-          matchedPlayer = data;
-          matchedSlot = data.slot;
+      if (this.state.isMaster) {
+        alert("[SUCESSO] Token de Mestre autenticado com sucesso.");
+        this.closeModal('token-modal');
+      } else {
+        let player = null;
+        if (this.state.myPlayerSlot) {
+          player = this.state.players[this.state.myPlayerSlot - 1];
         }
-      } catch(err) {
-        console.warn("Erro ao verificar token:", err);
+        if (!player) {
+          player = this.state.players.find(p => p && p.token && p.token.toUpperCase() === token);
+        }
+        const playerName = player ? `${player.nome} (Slot ${player.slot})` : 'Jogador';
+        alert(`[CONECTADO] ${playerName} - Modo de edição ativado.`);
+        this.closeModal('token-modal');
+        if (player) {
+          this.openFicha(player);
+        }
       }
-    }
-
-    if (matchedPlayer) {
-      MesaSecurity.recordSuccess();
-      localStorage.setItem('mesa_token', token);
-      this.state.myToken = token;
-      this.state.myPlayerSlot = matchedSlot || matchedPlayer.slot;
-      this.state.isMaster = false;
-
-      this.updateTokenBtnState();
-      MesaChat.updateSenderIdentity();
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'AUTENTICAR TOKEN';
-      }
-      alert(`[CONECTADO] ${matchedPlayer.nome} (Slot ${matchedPlayer.slot}) - Modo de edição ativado.`);
-      this.closeModal('token-modal');
-      this.openFicha(matchedPlayer);
     } else {
       const { fails, lockoutDuration } = MesaSecurity.recordFailedAttempt();
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'AUTENTICAR TOKEN';
-      }
       if (lockoutDuration > 0) {
         alert(`[BLOQUEIO DE SEGURANÇA] Token inválido. Você excedeu o limite de tentativas (${fails}). Aguarde ${lockoutDuration} segundos.`);
       } else {
         alert(`[ERRO] Token inválido ou não encontrado (${fails}/3 tentativas antes do bloqueio temporário).`);
       }
     }
+  },
+
+  logout() {
+    localStorage.removeItem('wu_user_token');
+    localStorage.removeItem('mesa_token');
+    window.location.reload();
   },
 
   toggleView() {
@@ -2039,7 +2079,20 @@ const MesaChat = {
       const data = payload.payload;
       if (data && data.areaId && window.MesaAreaManager) {
         MesaAreaManager.applyArea(data.areaId, false);
+        MesaApp.closeModal('area-map-modal');
       }
+    });
+
+    // 6. WebSocket Broadcast de Abertura Síncrona do Mapa pelo Mestre
+    this.channel.on('broadcast', { event: 'sync_open_map' }, () => {
+      if (window.MesaAreaManager) {
+        MesaAreaManager.openMapModal(true);
+      }
+    });
+
+    // 7. WebSocket Broadcast de Fechamento do Mapa pelo Mestre
+    this.channel.on('broadcast', { event: 'sync_close_map' }, () => {
+      MesaApp.closeModal('area-map-modal');
     });
 
     // 6. Postgres Changes para novas mensagens gravadas
@@ -2866,7 +2919,37 @@ const MesaAreaManager = {
     }
   },
 
-  openMapModal() {
+  closeMapModal() {
+    const isMaster = Boolean(MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    MesaApp.closeModal('area-map-modal');
+    if (isMaster && MesaChat && MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'sync_close_map',
+        payload: {
+          timestamp: Date.now()
+        }
+      });
+    }
+  },
+
+  openMapModal(fromBroadcast = false) {
+    const isMaster = Boolean(MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    if (!fromBroadcast && !isMaster) {
+      return;
+    }
+
+    // Se o Mestre abriu o mapa manualmente, transmite abertura para toda a mesa
+    if (!fromBroadcast && isMaster && MesaChat && MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'sync_open_map',
+        payload: {
+          timestamp: Date.now()
+        }
+      });
+    }
+
     const board = document.getElementById('area-roadmap-board') || document.getElementById('area-map-grid');
     if (!board) return;
 
@@ -2890,7 +2973,7 @@ const MesaAreaManager = {
       }
     };
 
-    // 1. Constrói o SVG de Estradas Interconectadas (Estilo Desenho Cartográfico 1:1 com a referência)
+    // 1. Constrói o SVG de Estradas Interconectadas
     let roadsSvgHtml = `
       <svg class="roadmap-roads-svg" viewBox="0 0 1000 640" preserveAspectRatio="none">
         <defs>
@@ -2901,7 +2984,6 @@ const MesaAreaManager = {
         </defs>
     `;
 
-    // Leitos largos de terra de cada estrada
     Object.values(ROADMAP_CONFIG).forEach(cfg => {
       roadsSvgHtml += `
         <path d="${cfg.roadD}" fill="none" stroke="#0e1017" stroke-width="24" stroke-linecap="round" />
@@ -2909,7 +2991,6 @@ const MesaAreaManager = {
       `;
     });
 
-    // Linhas duplas paralelas (estilo croqui desenhado à mão da referência)
     Object.values(ROADMAP_CONFIG).forEach(cfg => {
       roadsSvgHtml += `
         <path d="${cfg.roadD}" fill="none" stroke="rgba(255, 255, 255, 0.42)" stroke-width="2.2" stroke-linecap="round" />
@@ -2918,9 +2999,7 @@ const MesaAreaManager = {
       `;
     });
 
-    // Marco Zero / Encruzilhada Central
     roadsSvgHtml += `
-        <!-- Brilho e Encruzilhada Central -->
         <circle cx="500" cy="320" r="50" fill="url(#crossroads-glow)" />
         <circle cx="500" cy="320" r="28" fill="#0f1015" stroke="rgba(255, 85, 0, 0.6)" stroke-width="2" stroke-dasharray="5, 3" />
         <circle cx="500" cy="320" r="6" fill="#f97316" />
@@ -2930,20 +3009,27 @@ const MesaAreaManager = {
 
     board.innerHTML = roadsSvgHtml;
 
-    // 2. Adiciona os 7 Nós Cartográficos (Apenas Símbolo Grande e Nome)
+    // 2. Adiciona os Nós Cartográficos
     Object.values(MESA_AREAS).forEach(area => {
       const cfg = ROADMAP_CONFIG[area.id] || { xPct: 50, yPct: 50, color: '#f97316', glow: 'rgba(249, 115, 22, 0.6)' };
       const isCurrent = area.id === this.currentAreaId;
       const isSelected = area.id === this.selectedAreaId;
 
       const node = document.createElement('div');
-      node.className = `area-map-node ${isCurrent ? 'is-current' : ''} ${isSelected ? 'selected' : ''}`;
+      node.className = `area-map-node ${isCurrent ? 'is-current' : ''} ${isSelected ? 'selected' : ''} ${!isMaster ? 'read-only' : ''}`;
       node.id = `area-node-${area.id}`;
       node.style.left = `${cfg.xPct}%`;
       node.style.top = `${cfg.yPct}%`;
       node.style.setProperty('--node-color', cfg.color);
       node.style.setProperty('--node-glow', cfg.glow);
-      node.onclick = () => this.selectAreaPreview(area.id);
+
+      if (isMaster) {
+        node.onclick = () => this.selectAreaPreview(area.id);
+      } else {
+        node.onclick = null;
+        node.style.pointerEvents = 'none';
+        node.style.cursor = 'default';
+      }
 
       node.innerHTML = `
         ${isCurrent ? '<span class="node-current-pin">LOCAL ATUAL</span>' : ''}
@@ -2958,7 +3044,6 @@ const MesaAreaManager = {
 
     this.updatePreviewNote();
 
-    const isMaster = MesaApp && MesaApp.state && MesaApp.state.isMaster;
     const confirmBtn = document.getElementById('area-confirm-travel-btn');
     if (confirmBtn) {
       confirmBtn.style.display = isMaster ? 'inline-flex' : 'none';
@@ -2969,6 +3054,9 @@ const MesaAreaManager = {
   },
 
   selectAreaPreview(areaId) {
+    const isMaster = Boolean(MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    if (!isMaster) return;
+
     this.selectedAreaId = areaId;
     document.querySelectorAll('.area-map-node').forEach(n => n.classList.remove('selected'));
     const target = document.getElementById(`area-node-${areaId}`);
@@ -2982,7 +3070,14 @@ const MesaAreaManager = {
     if (!preview || !area) return;
 
     const isCurrent = area.id === this.currentAreaId;
-    const isMaster = MesaApp && MesaApp.state && MesaApp.state.isMaster;
+    const isMaster = Boolean(MesaApp && MesaApp.state && MesaApp.state.isMaster);
+
+    let statusMsg = '';
+    if (isCurrent) {
+      statusMsg = '<div style="color: #4ade80; font-weight: 700; margin-top: 4px; font-size: 0.82rem;">[ Grupo já se encontra nesta localidade ]</div>';
+    } else if (!isMaster) {
+      statusMsg = '<div style="color: #fbbf24; font-size: 0.82rem; margin-top: 4px;">(Apenas o Mestre pode autorizar deslocamento do grupo)</div>';
+    }
 
     preview.innerHTML = `
       <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
@@ -2990,15 +3085,14 @@ const MesaAreaManager = {
         <strong style="color: #ffffff; font-size: 0.96rem;">${area.name}</strong> • <span style="color: #cbd5e1;">${area.district}</span>
       </div>
       <div style="color: #a1a1aa; font-size: 0.84rem; line-height: 1.45;">${area.ambience}</div>
-      ${isCurrent ? '<div style="color: #4ade80; font-weight: 700; margin-top: 4px; font-size: 0.82rem;">[ Grupo já se encontra nesta localidade ]</div>' : ''}
-      ${!isMaster && !isCurrent ? '<div style="color: #fbbf24; font-size: 0.82rem; margin-top: 4px;">(Apenas o Mestre pode autorizar deslocamento do grupo)</div>' : ''}
+      ${statusMsg}
     `;
 
     const confirmBtn = document.getElementById('area-confirm-travel-btn');
     if (confirmBtn && isMaster) {
       confirmBtn.disabled = isCurrent;
       confirmBtn.style.opacity = isCurrent ? '0.5' : '1';
-      confirmBtn.textContent = isCurrent ? 'GRUPO JÁ NESTA ÁREA' : `DESLOCAR GRUPO PARA ${area.shortName.toUpperCase()}`;
+      confirmBtn.textContent = isCurrent ? 'GRUPO JÁ NESTA ÁREA' : `DESLOCAR GRUPO PARA ${(area.shortName || area.name).toUpperCase()}`;
     }
   },
 
@@ -3017,7 +3111,7 @@ const MesaAreaManager = {
     this.closeModals();
   },
 
-  applyArea(areaId, shouldBroadcast = false) {
+    applyArea(areaId, shouldBroadcast = false) {
     const area = MESA_AREAS[areaId];
     if (!area) return;
 
@@ -3555,10 +3649,16 @@ const MesaMobileMenu = {
       const isFichaActive = fichaModal && fichaModal.classList.contains('active');
       groupLabel.textContent = isFichaActive ? 'Ver Grupo na Mesa' : 'Ver Minha Ficha';
     }
+
+    const mobileLogoutItem = document.getElementById('mobile-logout-item');
+    if (mobileLogoutItem) {
+      mobileLogoutItem.style.display = (myToken || isMaster) ? 'flex' : 'none';
+    }
   }
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-  MesaApp.init();
+document.addEventListener('DOMContentLoaded', async () => {
+  const savedToken = localStorage.getItem('wu_user_token') || localStorage.getItem('mesa_token');
+  await MesaApp.init(savedToken);
   MesaMobileMenu.init();
 });
