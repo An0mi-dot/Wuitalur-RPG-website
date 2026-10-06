@@ -3830,6 +3830,20 @@ const MesaRoteiro = {
       } catch(e) {
         this.episodes = [];
       }
+      // Repara textos gravados enquanto o ficheiro estava com encoding corrompido
+      const fixText = (s) => {
+        if (typeof s !== 'string' || !/[\u00C2-\u00C3][\u0080-\u00BF]/.test(s)) return s;
+        try {
+          const bytes = Uint8Array.from([...s].map(c => c.charCodeAt(0) & 0xFF));
+          return new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+        } catch (err) { return s; }
+      };
+      let repaired = false;
+      this.episodes.forEach(ep => {
+        const t = fixText(ep.title), c = fixText(ep.content);
+        if (t !== ep.title || c !== ep.content) { ep.title = t; ep.content = c; repaired = true; }
+      });
+      if (repaired) this.saveData();
     }
     
     if (this.episodes.length === 0) {
