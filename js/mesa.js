@@ -862,6 +862,9 @@ const MesaApp = {
     if (window.MesaMobileMenu && typeof MesaMobileMenu.updateState === 'function') {
       MesaMobileMenu.updateState();
     }
+    if (window.MesaQuickMenu && typeof MesaQuickMenu.updateState === 'function') {
+      MesaQuickMenu.updateState();
+    }
   },
 
   loadMockData() {
@@ -2917,6 +2920,12 @@ const MesaAreaManager = {
     if (mobileNpcsItem) {
       mobileNpcsItem.style.display = isMaster ? 'flex' : 'none';
     }
+    if (window.MesaQuickMenu) {
+      MesaQuickMenu.updateState();
+    }
+    if (window.MesaQuickMenu) {
+      MesaQuickMenu.updateState();
+    }
   },
 
   closeMapModal() {
@@ -3470,51 +3479,59 @@ const MesaAreaManager = {
     if (modal) modal.classList.add('active');
   },
 
+  closeNpcDrawer() {
+    document.body.classList.remove('npc-drawer-open');
+  },
+
   openNpcModal(npcId = null) {
     if (!MesaApp || !MesaApp.state || !MesaApp.state.isMaster) {
       alert("[ACESSO RESTRITO] O Dossiê de NPCs e seus segredos são confidenciais e exclusivos do Mestre. Autentique seu Token de Mestre para consultar.");
       return;
     }
 
-    const targetId = npcId || 'gustavo';
-    const npcs = window.CAMPAIGN_NPCS || {};
-    const npc = npcs[targetId] || Object.values(npcs)[0];
+    const npcsList = Array.isArray(window.CAMPAIGN_NPCS) 
+      ? window.CAMPAIGN_NPCS 
+      : Object.values(window.CAMPAIGN_NPCS || {});
+
+    if (npcsList.length === 0) return;
+
+    const targetId = npcId || npcsList[0].id;
+    const npc = npcsList.find(n => n.id === targetId) || npcsList[0];
     if (!npc) return;
 
-    const modal = document.getElementById('npc-dossier-modal');
     const content = document.getElementById('npc-dossier-content');
-    if (!modal || !content) return;
+    if (!content) return;
 
-    let roleClass = 'aliado';
-    if (npc.ligacao_misterio.toLowerCase().includes('cúmplice') || npc.ligacao_misterio.toLowerCase().includes('mentora')) {
-      roleClass = 'cumplice';
-    } else if (npc.ligacao_misterio.toLowerCase().includes('vítima')) {
-      roleClass = 'vitima';
+    // Seletor rápido de NPCs no topo se houver mais de 1
+    let npcTabsHtml = '';
+    if (npcsList.length > 1) {
+      const tabsBtns = npcsList.map(n => {
+        const isSelected = n.id === targetId;
+        const shortName = n.nome.split('•')[0].trim();
+        return `
+          <button type="button" class="mesa-btn ink-tag ${isSelected ? 'primary' : ''}" style="font-size: 0.78rem; padding: 4px 10px;" onclick="MesaAreaManager.openNpcModal('${n.id}')">
+            ${shortName}
+          </button>
+        `;
+      }).join('');
+      npcTabsHtml = `
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; border-bottom: 1px dashed rgba(255, 255, 255, 0.15); padding-bottom: 10px;">
+          ${tabsBtns}
+        </div>
+      `;
     }
 
-    // Seletor rápido de NPCs no topo
-    let npcTabsHtml = '';
-    Object.values(npcs).forEach(n => {
-      const isSelected = n.id === targetId;
-      const shortName = n.nome.split('•')[0].trim();
-      npcTabsHtml += `
-        <button type="button" class="mesa-btn ink-tag ${isSelected ? 'primary' : ''}" style="font-size: 0.78rem; padding: 4px 10px;" onclick="MesaAreaManager.openNpcModal('${n.id}')">
-          ${shortName}
-        </button>
-      `;
-    });
+    const roleName = npc.papel || (npc.ligacao_misterio ? npc.ligacao_misterio.split('.')[0] : 'Personagem Local');
 
     content.innerHTML = `
-      <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; border-bottom: 1px dashed rgba(255, 255, 255, 0.15); padding-bottom: 10px;">
-        ${npcTabsHtml}
-      </div>
+      ${npcTabsHtml}
 
       <div style="border-bottom: 2px solid #38bdf8; padding-bottom: 12px; margin-bottom: 16px;">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
           <span style="font-size: 0.72rem; font-weight: 800; color: #94a3b8; background: rgba(255, 255, 255, 0.08); padding: 2px 7px; border-radius: 3px;">NPC ID: ${npc.id}</span>
-          <span style="font-size: 0.74rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid #38bdf8;">${npc.ligacao_misterio.split('.')[0]}</span>
+          <span style="font-size: 0.74rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid #38bdf8;">${roleName}</span>
         </div>
-        <h2 style="margin: 0; font-size: 1.25rem; font-weight: 800; color: #ffffff;">${npc.nome}</h2>
+        <h2 style="margin: 0; font-family: 'Playfair Display', Georgia, serif; font-size: 1.25rem; font-weight: 800; color: #ffffff;">${npc.nome}</h2>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 14px;">
@@ -3553,18 +3570,86 @@ const MesaAreaManager = {
       </div>
     `;
 
-    modal.classList.add('active');
+    document.body.classList.add('npc-drawer-open');
   },
 
   closeModals() {
     MesaApp.closeModal('area-map-modal');
     MesaApp.closeModal('area-info-modal');
-    MesaApp.closeModal('npc-dossier-modal');
+    this.closeNpcDrawer();
   }
 };
 
 
 
+
+
+// ---- 7.1. MOTOR DO MENU HAMBÚRGUER DA BARRA SUPERIOR ----
+const MesaQuickMenu = {
+  isOpen: false,
+
+  toggle() {
+    if (this.isOpen) {
+      this.close();
+    } else {
+      this.open();
+    }
+  },
+
+  open() {
+    this.isOpen = true;
+    const dropdown = document.getElementById('mesa-quick-menu-dropdown');
+    const btn = document.getElementById('nav-hamburger-btn');
+    if (dropdown) dropdown.classList.add('active');
+    if (btn) btn.classList.add('active');
+  },
+
+  close() {
+    this.isOpen = false;
+    const dropdown = document.getElementById('mesa-quick-menu-dropdown');
+    const btn = document.getElementById('nav-hamburger-btn');
+    if (dropdown) dropdown.classList.remove('active');
+    if (btn) btn.classList.remove('active');
+  },
+
+  updateState() {
+    const isMaster = Boolean(MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    const myToken = MesaApp && MesaApp.state && MesaApp.state.myToken;
+    const hasSession = Boolean(isMaster || myToken);
+
+    const npcsBtn = document.getElementById('menu-npcs-btn');
+    if (npcsBtn) {
+      npcsBtn.style.display = isMaster ? 'flex' : 'none';
+    }
+
+    const logoutBtn = document.getElementById('menu-logout-btn');
+    if (logoutBtn) {
+      logoutBtn.style.display = hasSession ? 'flex' : 'none';
+    }
+
+    const tokenLabel = document.getElementById('menu-token-label');
+    const tokenAlert = document.getElementById('menu-token-alert-badge');
+    if (tokenLabel) {
+      if (isMaster) {
+        tokenLabel.textContent = 'Token Ativo (Mestre)';
+      } else if (myToken) {
+        tokenLabel.textContent = `Token: ${myToken}`;
+      } else {
+        tokenLabel.textContent = 'Autenticar Token';
+      }
+    }
+    if (tokenAlert) {
+      tokenAlert.style.display = (!myToken && !isMaster) ? 'inline-block' : 'none';
+    }
+
+    const chatBadge = document.getElementById('chat-unread-badge');
+    const isChatUnread = chatBadge && chatBadge.style.display !== 'none';
+    const menuChatBadge = document.getElementById('menu-chat-unread-badge');
+    const navHamburgerBadge = document.getElementById('nav-hamburger-badge');
+    if (menuChatBadge) menuChatBadge.style.display = isChatUnread ? 'inline-block' : 'none';
+    if (navHamburgerBadge) navHamburgerBadge.style.display = isChatUnread ? 'inline-block' : 'none';
+  }
+};
 
 // ---- 8. MOTOR DO MENU FLUTUANTE HAMBÚRGUER MOBILE ----
 const MesaMobileMenu = {
@@ -3661,4 +3746,30 @@ document.addEventListener('DOMContentLoaded', async () => {
   const savedToken = localStorage.getItem('wu_user_token') || localStorage.getItem('mesa_token');
   await MesaApp.init(savedToken);
   MesaMobileMenu.init();
+  if (window.MesaQuickMenu) {
+    MesaQuickMenu.updateState();
+  }
+
+  // Fecha Menu Hambúrguer ao clicar fora
+  document.addEventListener('click', (e) => {
+    if (window.MesaQuickMenu && MesaQuickMenu.isOpen) {
+      const dropdown = document.getElementById('mesa-quick-menu-dropdown');
+      const btn = document.getElementById('nav-hamburger-btn');
+      if (dropdown && btn && !dropdown.contains(e.target) && !btn.contains(e.target)) {
+        MesaQuickMenu.close();
+      }
+    }
+  });
+
+  // Fecha Dossiê de NPCs ao pressionar Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (window.MesaAreaManager) {
+        MesaAreaManager.closeNpcDrawer();
+      }
+      if (window.MesaQuickMenu) {
+        MesaQuickMenu.close();
+      }
+    }
+  });
 });

@@ -8,6 +8,9 @@
   <meta http-equiv="Expires" content="0">
   <title>Mesa Virtual - Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=3.1.0">
   <link rel="stylesheet" href="css/components.css?v=3.1.0">
   <link rel="stylesheet" href="css/mesa.css?v=3.1.0">
@@ -93,68 +96,77 @@
     <!-- Canvas de Efeito Glitch no Background -->
     <canvas id="glitch-canvas" class="mesa-glitch-canvas"></canvas>
 
-    <!-- Barra Superior de Navegação & Ações -->
+    <!-- Barra Superior de Navegação & Ações (Limpa e com Menu Hambúrguer) -->
     <nav class="mesa-floating-nav">
-      <a href="index.html" class="ink-tag">
-        <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="19" y1="12" x2="5" y2="12"></line>
-          <polyline points="12 19 5 12 12 5"></polyline>
-        </svg>
-        Voltar ao Menu
-      </a>
-      <div class="mesa-actions">
-        <!-- Botão exclusivo no mobile para alternar entre Minha Ficha e Grupo -->
-        <button id="mobile-toggle-group-btn" class="ink-tag mobile-only-btn" onclick="MesaApp.toggleMobileGroupView()">
+      <div class="nav-left-group">
+        <a href="index.html" class="ink-tag nav-back-link">
           <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-            <circle cx="9" cy="7" r="4"></circle>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
           </svg>
-          Ver Grupo
-        </button>
+          <span class="nav-back-text">Voltar</span>
+        </a>
 
-        <!-- Botão de Reações com Emojis (SVG Rosto Sorrindo) -->
-        <div style="position: relative;">
-          <button id="nav-reaction-btn" class="ink-tag" onclick="MesaReactions.togglePicker()" title="Reagir com Emoji">
+        <!-- Botão Hambúrguer para Ferramentas Secundárias -->
+        <div class="nav-hamburger-wrapper">
+          <button id="nav-hamburger-btn" class="ink-tag nav-hamburger-btn" onclick="MesaQuickMenu.toggle()" title="Menu de Ferramentas">
             <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
-              <line x1="9" y1="9" x2="9.01" y2="9"></line>
-              <line x1="15" y1="9" x2="15.01" y2="9"></line>
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
             </svg>
-            Reagir
+            <span>Menu</span>
+            <span id="nav-hamburger-badge" class="chat-unread-pip" style="display:none;"></span>
           </button>
 
-          <!-- Paleta de Emojis Pixel Flutuante -->
-          <div id="mesa-reaction-picker" class="reaction-picker-popover">
-            <div id="reaction-picker-grid" class="reaction-picker-grid">
-              <!-- Renderizado dinamicamente via JS com SVGs em Pixel Art -->
-            </div>
+          <!-- Dropdown Elegante das Ferramentas Secundárias -->
+          <div id="mesa-quick-menu-dropdown" class="mesa-quick-menu-dropdown">
+            <div class="quick-menu-header">FERRAMENTAS DA MESA</div>
+            
+            <button type="button" class="quick-menu-item" onclick="MesaDice.openModal(); MesaQuickMenu.close();">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="3" ry="3"></rect><path d="M8 8h.01"></path><path d="M16 8h.01"></path><path d="M12 12h.01"></path><path d="M8 16h.01"></path><path d="M16 16h.01"></path></svg>
+              <span>Rolar Dados</span>
+            </button>
+
+            <button type="button" class="quick-menu-item" onclick="MesaChat.toggleChat(); MesaQuickMenu.close();">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              <span>Chat da Sala</span>
+              <span id="menu-chat-unread-badge" class="chat-unread-pip" style="display:none; margin-left: auto;"></span>
+            </button>
+
+            <button type="button" class="quick-menu-item" onclick="MesaReactions.togglePicker(); MesaQuickMenu.close();">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+              <span>Reações Rápidas</span>
+            </button>
+
+            <button type="button" id="menu-npcs-btn" class="quick-menu-item master-item" onclick="MesaAreaManager.openNpcModal(); MesaQuickMenu.close();" style="display: none; color: #38bdf8;">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span>Dossiê de NPCs</span>
+              <span class="quick-menu-badge-master">Mestre</span>
+            </button>
+
+            <div class="quick-menu-divider"></div>
+
+            <button type="button" class="quick-menu-item" onclick="MesaApp.openTokenModal(); MesaQuickMenu.close();">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
+              <span id="menu-token-label">Autenticar Token</span>
+              <span id="menu-token-alert-badge" class="token-alert-pip" style="margin-left: auto;">!</span>
+            </button>
+
+            <button type="button" id="menu-logout-btn" class="quick-menu-item logout-item" onclick="MesaApp.logout()" style="display: none; color: #f87171;">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              <span>Sair / Trocar Sessão</span>
+            </button>
           </div>
         </div>
+      </div>
 
-        <!-- Botão para alternar Chat -->
-        <button id="nav-chat-btn" class="ink-tag" onclick="MesaChat.toggleChat()">
-          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-          </svg>
-          Chat <span id="chat-unread-badge" class="chat-unread-pip" style="display:none;"></span>
-        </button>
+      <!-- Paleta de Emojis Pixel Flutuante -->
+      <div id="mesa-reaction-picker" class="reaction-picker-popover">
+        <div id="reaction-picker-grid" class="reaction-picker-grid"></div>
+      </div>
 
-        <!-- Botão de Rolar Dados -->
-        <button id="nav-dice-btn" class="ink-tag primary" onclick="MesaDice.openModal()" title="Rolar Dados">
-          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="2" width="20" height="20" rx="3" ry="3"></rect>
-            <path d="M8 8h.01"></path>
-            <path d="M16 8h.01"></path>
-            <path d="M12 12h.01"></path>
-            <path d="M8 16h.01"></path>
-            <path d="M16 16h.01"></path>
-          </svg>
-          Rolar Dado
-        </button>
-
+      <div class="mesa-actions">
         <!-- Botão Escolher Área (Exclusivo do Mestre) -->
         <button id="nav-choose-area-btn" class="ink-tag" onclick="MesaAreaManager.openMapModal()" style="display: none; border-color: #f59e0b; color: #fbbf24;" title="Abrir Mapa e Escolher Área">
           <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -173,38 +185,11 @@
               <circle cx="12" cy="10" r="3"></circle>
             </svg>
           </span>
-          <span id="nav-about-area-label">Sobre: Mina de Prata</span>
+          <span id="nav-about-area-label">Sobre: Colégio Primórdio</span>
         </button>
 
-        <!-- Botão Dossiê de NPCs (Exclusivo do Mestre) -->
-        <button id="nav-npcs-btn" class="ink-tag" onclick="MesaAreaManager.openNpcModal()" style="display: none; border-color: #38bdf8; color: #38bdf8;" title="Consultar Dossiê de NPCs da Campanha">
-          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-          <span>Dossiê de NPCs</span>
-        </button>
-
-        <div class="token-btn-wrapper" style="position: relative; display: inline-flex;">
-          <button id="nav-token-btn" class="ink-tag" onclick="MesaApp.openTokenModal()">
-            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
-            </svg>
-            <span id="nav-token-label">Token</span>
-          </button>
-          <span id="token-alert-badge" class="token-alert-pip">!</span>
-        </div>
-        <button id="nav-ficha-btn" class="ink-tag primary desktop-only-btn" onclick="MesaApp.toggleView()">Minha Ficha</button>
-
-        <!-- Botao Discreto de Sair / Trocar Sessao -->
-        <button id="nav-logout-btn" class="ink-tag logout-btn" onclick="MesaApp.logout()" title="Sair / Trocar Sessao" style="display: none; border-color: rgba(239, 68, 68, 0.4); color: #f87171;">
-          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-            <polyline points="16 17 21 12 16 7"></polyline>
-            <line x1="21" y1="12" x2="9" y2="12"></line>
-          </svg>
-          <span>Sair</span>
-        </button>
+        <!-- Botão Minha Ficha -->
+        <button id="nav-ficha-btn" class="ink-tag primary" onclick="MesaApp.toggleView()">Minha Ficha</button>
       </div>
     </nav>
 
@@ -440,16 +425,24 @@
       </div>
     </div>
 
-    <!-- Modal de Dossiê de NPC (Consulta Exclusiva de Sessão / Mestre) -->
-    <div id="npc-dossier-modal" class="mesa-modal-overlay">
-      <div class="mesa-modal npc-dossier-modal-dialog">
-        <button class="mesa-modal-close" onclick="MesaApp.closeModal('npc-dossier-modal')">&times;</button>
-        <div class="ink-ribbon-title" style="margin-bottom: 14px;">DOSSIÊ CONFIDENCIAL DE NPC • CAMPANHA</div>
-        <div id="npc-dossier-content" class="npc-dossier-content">
-          <!-- Renderizado dinamicamente via MesaAreaManager.openNpcModal() -->
+    <!-- Dossiê Lateral de NPCs (Offcanvas Slide-In Exclusivo do Mestre) -->
+    <div id="npc-drawer-backdrop" class="npc-drawer-backdrop" onclick="MesaAreaManager.closeNpcDrawer()"></div>
+    <aside id="npc-dossier-drawer" class="npc-dossier-drawer" aria-label="Dossiê de NPCs da Campanha">
+      <div class="npc-dossier-drawer-header">
+        <div class="npc-dossier-header-title-box">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span class="npc-drawer-badge">MESTRE</span>
+          <h3>DOSSIÊ DE NPCS</h3>
         </div>
+        <button type="button" class="npc-drawer-close-btn" onclick="MesaAreaManager.closeNpcDrawer()" title="Fechar Dossiê">&times;</button>
       </div>
-    </div>
+      <div id="npc-dossier-content" class="npc-dossier-drawer-body">
+        <!-- Renderizado dinamicamente via MesaAreaManager.openNpcModal() -->
+      </div>
+    </aside>
 
     <!-- BACKDROP PARA FECHAR O MENU MOBILE AO CLICAR FORA -->
     <div id="mesa-mobile-backdrop" class="mesa-mobile-backdrop" onclick="MesaMobileMenu.close()"></div>
