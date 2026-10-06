@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Mesa Virtual - Wuitalur RPG</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css?v=3.2.0">
+  <link rel="stylesheet" href="css/components.css?v=3.2.0">
+  <link rel="stylesheet" href="css/mesa.css?v=3.2.0">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="mesa-body">
+
+    <!-- Filtros SVG Globais de Nanquim e Tinta Falhada -->
+    <svg width="0" height="0" style="position:absolute; width:0; height:0; pointer-events:none;">
+      <defs>
+        <filter id="nanquim-rough" x="-10%" y="-10%" width="120%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <!-- Versao suave: mantem a borda de tinta mas deixa as letras legiveis -->
+        <filter id="nanquim-soft" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.3" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <filter id="nanquim-heavy" x="-10%" y="-10%" width="120%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="4" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="4.5" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <!-- Filtro Procedural Animado de Nanquim e Textura Digital em Loop Lento -->
+        <filter id="procedural-char-distort" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.035 0.05" numOctaves="3" result="turb">
+            <animate attributeName="baseFrequency" values="0.025 0.045; 0.045 0.03; 0.02 0.06; 0.04 0.035; 0.025 0.045" dur="10s" repeatCount="indefinite" />
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="turb" scale="3" xChannelSelector="R" yChannelSelector="G" result="disp">
+            <animate attributeName="scale" values="1.8; 4.2; 1.5; 3.6; 1.8" dur="10s" repeatCount="indefinite" />
+          </feDisplacementMap>
+        </filter>
+      </defs>
+    </svg>
+
+    <!-- CAMADA DE SOMBRAS DE ÁRVORES — EXCLUSIVA DA MATA DO NORTE -->
+    <div id="mesa-forest-backdrop" class="mesa-forest-backdrop" aria-hidden="true">
+      <svg class="forest-trees-svg" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="forest-mist-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#022c22" stop-opacity="0.25" />
+            <stop offset="60%" stop-color="#011812" stop-opacity="0.7" />
+            <stop offset="100%" stop-color="#000906" stop-opacity="0.95" />
+          </linearGradient>
+          <linearGradient id="tree-sil-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#04382c" stop-opacity="0.8" />
+            <stop offset="100%" stop-color="#000a07" stop-opacity="0.98" />
+          </linearGradient>
+          <linearGradient id="tree-front-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#02231b" stop-opacity="0.9" />
+            <stop offset="100%" stop-color="#000000" stop-opacity="1" />
+          </linearGradient>
+        </defs>
+        <!-- Névoa de fundo da mata -->
+        <rect x="0" y="0" width="1920" height="1080" fill="url(#forest-mist-grad)" />
+
+        <!-- Camada 1: Silhuetas de árvores distantes (fundo verde escuro) -->
+        <path d="M 0 1080 L 0 520 L 40 560 L 70 480 L 110 540 L 150 430 L 190 510 L 240 400 L 290 490 L 340 370 L 390 470 L 450 350 L 510 460 L 580 320 L 640 440 L 710 310 L 770 420 L 830 290 L 890 390 L 960 270 L 1030 400 L 1090 300 L 1150 420 L 1220 310 L 1280 430 L 1350 330 L 1420 460 L 1480 370 L 1540 480 L 1600 390 L 1660 500 L 1720 420 L 1780 520 L 1840 460 L 1890 530 L 1920 480 L 1920 1080 Z" fill="url(#tree-sil-grad)" opacity="0.6" />
+
+        <!-- Camada 2: Árvores médias e galhos densos laterais -->
+        <!-- Lateral Esquerda -->
+        <path d="M 0 1080 L 0 280 L 35 340 L 65 220 L 100 310 L 135 180 L 170 290 L 210 150 L 250 270 L 295 130 L 340 260 L 390 190 L 440 310 L 500 240 L 560 380 L 630 490 L 690 620 L 740 760 L 780 920 L 800 1080 Z" fill="url(#tree-front-grad)" opacity="0.75" />
+        <!-- Lateral Direita -->
+        <path d="M 1920 1080 L 1920 260 L 1880 330 L 1850 200 L 1810 300 L 1775 160 L 1740 280 L 1700 140 L 1660 260 L 1615 120 L 1570 250 L 1520 180 L 1470 300 L 1410 230 L 1350 370 L 1280 480 L 1220 610 L 1170 750 L 1130 910 L 1110 1080 Z" fill="url(#tree-front-grad)" opacity="0.75" />
+
+        <!-- Galhos e copas superiores (sombras projetadas do dossel florestal) -->
+        <path d="M 0 0 L 480 0 C 440 60, 390 90, 320 85 C 370 120, 350 160, 270 145 C 310 190, 280 230, 190 200 C 220 250, 160 280, 90 250 C 110 300, 50 330, 0 310 Z" fill="#01140e" opacity="0.85" />
+        <path d="M 1920 0 L 1440 0 C 1480 65, 1530 95, 1600 85 C 1550 125, 1570 165, 1650 150 C 1610 195, 1640 235, 1730 205 C 1700 255, 1760 285, 1830 255 C 1810 305, 1870 335, 1920 315 Z" fill="#01140e" opacity="0.85" />
+
+        <!-- Sombras de copas altas centrais no topo -->
+        <path d="M 680 0 L 1240 0 C 1220 50, 1190 75, 1140 70 C 1170 110, 1130 135, 1070 120 C 1090 155, 1040 175, 960 160 C 900 175, 850 155, 870 120 C 810 135, 770 110, 800 70 C 750 75, 720 50, 680 0 Z" fill="#01120d" opacity="0.7" />
+
+        <!-- Base densa de troncos e raízes no horizonte inferior -->
+        <path d="M 0 1080 L 1920 1080 L 1920 940 C 1780 920, 1640 950, 1500 930 C 1360 910, 1220 940, 1080 925 C 940 910, 800 945, 660 930 C 520 915, 380 950, 240 935 C 120 920, 40 950, 0 940 Z" fill="#000906" opacity="0.9" />
+      </svg>
+    </div>
+
+    <!-- Moldura Perimetral de Tinta Nanquim -->
+    <div class="mesa-ink-frame">
+      <div class="ink-corner tl"></div>
+      <div class="ink-corner tr"></div>
+      <div class="ink-corner bl"></div>
+      <div class="ink-corner br"></div>
+      <div class="ink-edge-marks top"></div>
+      <div class="ink-edge-marks bottom"></div>
+    </div>
+
+    <!-- Canvas de Efeito Glitch no Background -->
+    <canvas id="glitch-canvas" class="mesa-glitch-canvas"></canvas>
+
+    <!-- Barra Superior de Navegação & Ações (Limpa e com Menu Hambúrguer) -->
+    <nav class="mesa-floating-nav">
+      <div class="nav-left-group">
+        <a href="index.html" class="ink-tag nav-back-link">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          <span class="nav-back-text">Voltar</span>
+        </a>
+
+        <!-- Botão Hambúrguer para Ferramentas Secundárias -->
+        <div class="nav-hamburger-wrapper">
+          <button id="nav-hamburger-btn" class="ink-tag nav-hamburger-btn" onclick="MesaQuickMenu.toggle()" title="Menu de Ferramentas">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+            <span>Menu</span>
+            <span id="nav-hamburger-badge" class="chat-unread-pip" style="display:none;"></span>
+          </button>
+
+          <!-- Dropdown Elegante das Ferramentas Secundárias -->
+          <div id="mesa-quick-menu-dropdown" class="mesa-quick-menu-dropdown">
+            <div class="quick-menu-header">FERRAMENTAS DA MESA</div>
+            
+            <button type="button" class="quick-menu-item" onclick="MesaDice.openModal(); MesaQuickMenu.close();">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="3" ry="3"></rect><path d="M8 8h.01"></path><path d="M16 8h.01"></path><path d="M12 12h.01"></path><path d="M8 16h.01"></path><path d="M16 16h.01"></path></svg>
+              <span>Rolar Dados</span>
+            </button>
+
+            <button type="button" class="quick-menu-item" onclick="MesaChat.toggleChat(); MesaQuickMenu.close();">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              <span>Chat da Sala</span>
+              <span id="menu-chat-unread-badge" class="chat-unread-pip" style="display:none; margin-left: auto;"></span>
+            </button>
+
+            <button type="button" class="quick-menu-item" onclick="MesaReactions.togglePicker(); MesaQuickMenu.close();">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+              <span>Reações Rápidas</span>
+            </button>
+
+            <button type="button" id="menu-npcs-btn" class="quick-menu-item master-item" onclick="MesaAreaManager.openNpcModal(); MesaQuickMenu.close();" style="display: none; color: #38bdf8;">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span>Dossiê de NPCs</span>
+              <span class="quick-menu-badge-master">Mestre</span>
+            </button>
+
+            <div class="quick-menu-divider"></div>
+
+            <button type="button" class="quick-menu-item" onclick="MesaApp.openTokenModal(); MesaQuickMenu.close();">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
+              <span id="menu-token-label">Autenticar Token</span>
+              <span id="menu-token-alert-badge" class="token-alert-pip" style="margin-left: auto;">!</span>
+            </button>
+
+            <button type="button" id="menu-logout-btn" class="quick-menu-item logout-item" onclick="MesaApp.logout()" style="display: none; color: #f87171;">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              <span>Sair / Trocar Sessão</span>
+            </button>
+          </div>
+        </div>
+        <!-- Indicador de autenticacao (nunca exibe o token em si) -->
+        <button type="button" id="nav-auth-chip" class="nav-auth-chip auth-none" onclick="if (!MesaApp.state.isMaster && !MesaApp.state.myToken) MesaApp.openTokenModal();" title="Clique para autenticar seu token">
+          <span class="nav-auth-dot"></span>
+          <span class="nav-auth-text">Não autenticado</span>
+        </button>      </div>
+
+      <!-- Paleta de Emojis Pixel Flutuante -->
+      <div id="mesa-reaction-picker" class="reaction-picker-popover">
+        <div id="reaction-picker-grid" class="reaction-picker-grid"></div>
+      </div>
+
+      <div class="mesa-actions">
+        <!-- Botão Escolher Área (Exclusivo do Mestre) -->
+        <button id="nav-choose-area-btn" class="ink-tag nav-choose-area" onclick="MesaAreaManager.openMapModal()" style="display: none;" title="Abrir Mapa e Escolher Área">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+            <line x1="8" y1="2" x2="8" y2="18"></line>
+            <line x1="16" y1="6" x2="16" y2="22"></line>
+          </svg>
+          <span>Escolher Área</span>
+        </button>
+
+        <!-- Botão Sobre a Área Atual -->
+        <button id="nav-about-area-btn" class="ink-tag" onclick="MesaAreaManager.openAboutAreaModal()" title="Informações e Pistas da Área Atual">
+          <span id="nav-about-area-icon" class="area-btn-icon">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+          </span>
+          <span id="nav-about-area-label">Sobre: Colégio Primórdio</span>
+        </button>
+
+        <!-- Botão Minha Ficha -->
+        <button id="nav-ficha-btn" class="ink-tag primary" onclick="MesaApp.toggleView()">Minha Ficha</button>
+      </div>
+    </nav>
+
+    <!-- Layout da Mesa -->
+    <div class="mesa-board-container" id="mesa-board-container">
+        <!-- O Quadrado Preto com borda de nanquim artesanal -->
+        <div class="mesa-black-board">
+          <div class="board-ink-inner-border"></div>
+          <div class="board-crosshair-c"></div>
+          
+          <!-- Palco Central de Rolagem de Dados -->
+          <div id="dice-stage" class="dice-stage"></div>
+        </div>
+
+        <!-- 8 Cards de Jogadores -->
+        <div class="player-slot slot-1 empty" onclick="MesaApp.handleSlotClick(1)">
+          <div class="slot-empty-label">Slot 1</div>
+        </div>
+
+        <!-- Card Central do Mestre (Não interagível, posicionado entre Slot 1 e Slot 2) -->
+        <div class="player-slot master-slot" id="master-slot">
+          <div class="player-avatar-placeholder master-avatar">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+            </svg>
+          </div>
+          <div class="player-name-badge master-name-badge" title="Mestre">MESTRE</div>
+        </div>
+
+        <div class="player-slot slot-2 empty" onclick="MesaApp.handleSlotClick(2)">
+          <div class="slot-empty-label">Slot 2</div>
+        </div>
+        <div class="player-slot slot-3 empty" onclick="MesaApp.handleSlotClick(3)">
+          <div class="slot-empty-label">Slot 3</div>
+        </div>
+        <div class="player-slot slot-4 empty" onclick="MesaApp.handleSlotClick(4)">
+          <div class="slot-empty-label">Slot 4</div>
+        </div>
+        <div class="player-slot slot-5 empty" onclick="MesaApp.handleSlotClick(5)">
+          <div class="slot-empty-label">Slot 5</div>
+        </div>
+        <div class="player-slot slot-6 empty" onclick="MesaApp.handleSlotClick(6)">
+          <div class="slot-empty-label">Slot 6</div>
+        </div>
+        <div class="player-slot slot-7 empty" onclick="MesaApp.handleSlotClick(7)">
+          <div class="slot-empty-label">Slot 7</div>
+        </div>
+        <div class="player-slot slot-8 empty" onclick="MesaApp.handleSlotClick(8)">
+          <div class="slot-empty-label">Slot 8</div>
+        </div>
+    </div>
+
+    <!-- PAINEL DE CHAT EM TEMPO REAL DA MESA -->
+    <div id="mesa-chat-panel" class="mesa-chat-panel">
+      <div class="chat-header">
+        <div class="chat-header-info">
+          <span class="chat-title-ribbon">CHAT DA MESA</span>
+          <span id="chat-sender-identity" class="chat-sender-badge">Identificando...</span>
+        </div>
+        <button class="chat-minimize-btn" onclick="MesaChat.toggleChat()" title="Fechar Chat">&#x2715;</button>
+      </div>
+
+      <div id="chat-messages-container" class="chat-messages-container">
+        <!-- Mensagens renderizadas dinamicamente aqui -->
+        <div class="chat-system-notice">Conectado ao canal em tempo real da mesa.</div>
+      </div>
+
+      <form id="chat-form" class="chat-input-row" onsubmit="MesaChat.handleSubmit(event)">
+        <input 
+          type="text" 
+          id="chat-message-input" 
+          class="chat-input ink-input" 
+          placeholder="Digite sua mensagem..." 
+          autocomplete="off" 
+          maxlength="400"
+        />
+        <button type="submit" class="chat-send-btn ink-tag primary">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </form>
+    </div>
+
+    <!-- Tela da Ficha Completa -->
+    <div id="ficha-modal" class="mesa-modal-overlay ficha-overlay">
+      <!-- Brilho Diagonal e Retícula Comic de Fundo -->
+      <div class="ficha-diagonal-glow"></div>
+      <div class="ficha-diagonal-halftone"></div>
+
+      <!-- Canvas de Bolinhas Comic -->
+      <canvas id="ficha-particles-canvas" class="ficha-particles-canvas"></canvas>
+
+      <div class="ficha-screen-wrapper">
+        <button class="ficha-screen-close" onclick="MesaApp.closeModal('ficha-modal')">&#x2715; FECHAR</button>
+        <div id="ficha-content" class="ficha-content-layout"></div>
+      </div>
+    </div>
+
+    <!-- Modal de Token -->
+    <div id="token-modal" class="mesa-modal-overlay">
+      <div class="mesa-modal ink-modal" style="max-width: 420px; text-align: center;">
+        <button class="mesa-modal-close" onclick="MesaApp.closeModal('token-modal')">&times;</button>
+        <div class="ink-ribbon-title">AUTENTICAÇÃO SEGURA</div>
+        <div id="token-auth-current" class="token-auth-current" style="display:none;"></div>
+        <p style="color:#bbb; margin: 15px 0 16px; font-size: 0.88rem;">Insira seu <strong>token de acesso</strong> para autenticar sua sessão e editar sua ficha.</p>
+        <input type="text" id="token-input" class="mesa-input ink-input" placeholder="Digite seu token..." maxlength="36" autocomplete="off" style="text-transform: uppercase; text-align: center; font-size: 1.15rem; letter-spacing: 0.15em; font-family: monospace;">
+        <div id="token-security-status" style="display:none; font-size:0.8rem; margin: -6px 0 14px; min-height: 18px; line-height: 1.4;"></div>
+        <button id="token-submit-btn" class="mesa-btn ink-tag primary" style="width:100%; font-size:1rem; padding:10px;" onclick="MesaApp.submitToken()">AUTENTICAR TOKEN</button>
+        <button id="token-logout-btn" class="mesa-btn ink-tag logout-btn" style="width:100%; margin-top:10px; border-color: rgba(239, 68, 68, 0.4); color: #f87171; display: none;" onclick="MesaApp.logout()">SAIR / TROCAR SESSÃO</button>
+      </div>
+    </div>
+
+    <!-- Modal de Rolagem de Dados -->
+    <div id="dice-modal" class="mesa-modal-overlay">
+      <div class="mesa-modal ink-modal dice-config-modal">
+        <button class="mesa-modal-close" onclick="MesaApp.closeModal('dice-modal')">&times;</button>
+        <div class="ink-ribbon-title">ROLAGEM DE DADOS</div>
+        
+        <div class="dice-selector-section">
+          <div class="dice-section-label">ADICIONAR DADO À ROLAGEM:</div>
+          <div class="dice-chips-grid">
+            <button class="dice-chip-btn" onclick="MesaDice.addDie(4)">+ d4</button>
+            <button class="dice-chip-btn" onclick="MesaDice.addDie(6)">+ d6</button>
+            <button class="dice-chip-btn" onclick="MesaDice.addDie(8)">+ d8</button>
+            <button class="dice-chip-btn" onclick="MesaDice.addDie(10)">+ d10</button>
+            <button class="dice-chip-btn" onclick="MesaDice.addDie(12)">+ d12</button>
+            <button class="dice-chip-btn" onclick="MesaDice.addDie(16)">+ d16</button>
+            <button class="dice-chip-btn" onclick="MesaDice.addDie(20)">+ d20</button>
+            <button class="dice-chip-btn" onclick="MesaDice.addDie(100)">+ d100</button>
+          </div>
+        </div>
+
+        <!-- Dados Selecionados -->
+        <div class="dice-pool-container">
+          <div class="dice-section-label">DADOS SELECIONADOS:</div>
+          <div id="dice-selected-list" class="dice-selected-list">
+            <!-- Renderizado dinamicamente -->
+          </div>
+        </div>
+
+        <!-- Modificador Numérico Cru -->
+        <div class="dice-modifier-section">
+          <div class="dice-section-label">MODIFICADOR (NÚMERO CRU):</div>
+          <div class="dice-modifier-control">
+            <button class="mod-btn" onclick="MesaDice.adjustModifier(-1)">-1</button>
+            <input type="number" id="dice-modifier-input" class="mod-input" value="0" onchange="MesaDice.setModifier(this.value)">
+            <button class="mod-btn" onclick="MesaDice.adjustModifier(1)">+1</button>
+          </div>
+        </div>
+
+        <div class="dice-modal-actions">
+          <button class="mesa-btn ink-tag" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.3);" onclick="MesaDice.clearPool()">Limpar</button>
+          <button id="dice-roll-execute-btn" class="mesa-btn ink-tag primary roll-action-btn" onclick="MesaDice.executeRoll()">ROLAR DADOS</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal do Mapa Tático de Áreas -->
+    <div id="area-map-modal" class="mesa-modal-overlay">
+      <div class="mesa-modal area-map-modal-dialog">
+        <button class="mesa-modal-close" onclick="MesaAreaManager.closeMapModal()">&times;</button>
+        <div class="ink-ribbon-title">MAPA DE INVESTIGAÇÃO • FRAGKTUS & MINA DE PRATA</div>
+        
+        <div class="area-map-container">
+          <div id="area-roadmap-board" class="area-roadmap-board">
+            <!-- Renderizado dinamicamente via MesaAreaManager: SVG de estradas e 7 nós cartográficos com símbolos grandes e nomes -->
+          </div>
+
+          <div class="area-map-footer">
+            <div id="area-map-preview-note" class="area-map-preview-note">
+              Selecione uma área no mapa acima para ver seus detalhes.
+            </div>
+            <div class="area-map-actions">
+              <button id="area-confirm-travel-btn" class="mesa-btn ink-tag primary" style="display: none;" onclick="MesaAreaManager.confirmSelectedArea()">
+                DESLOCAR GRUPO PARA ESTA ÁREA
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Informações da Área & Pontos de Interesse (Clean UI com Tabs & Acordeões) -->
+    <div id="area-info-modal" class="mesa-modal-overlay">
+      <div class="mesa-modal area-info-modal-dialog">
+        <button class="mesa-modal-close" onclick="MesaApp.closeModal('area-info-modal')">&times;</button>
+        <div id="area-info-header" class="area-info-header">
+          <!-- Renderizado dinamicamente -->
+        </div>
+
+        <!-- Barra de Abas / Separadores do Modal da Área -->
+        <div id="area-tabs-nav" class="area-tabs-nav">
+          <button type="button" class="area-tab-nav-btn active" id="tab-btn-public" data-tab="public" onclick="MesaAreaManager.switchAreaTab('public')">
+            <svg class="tab-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            <span>Visão Pública</span>
+          </button>
+          <button type="button" class="area-tab-nav-btn master-only-tab" id="tab-btn-backstage" data-tab="backstage" onclick="MesaAreaManager.switchAreaTab('backstage')">
+            <svg class="tab-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span>Bastidores</span>
+            <span class="tab-badge-master">Mestre</span>
+          </button>
+          <button type="button" class="area-tab-nav-btn master-only-tab" id="tab-btn-pdis" data-tab="pdis" onclick="MesaAreaManager.switchAreaTab('pdis')">
+            <svg class="tab-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>Investigação / PDIs</span>
+            <span class="tab-badge-counter" id="tab-pdi-count-badge">0</span>
+            <span class="tab-badge-master">Mestre</span>
+          </button>
+        </div>
+
+        <div class="area-info-body">
+          <!-- TAB 1: VISÃO PÚBLICA (Mestre e Jogadores) -->
+          <div id="area-tab-pane-public" class="area-tab-pane active">
+            <div id="area-public-info" class="area-public-info">
+              <!-- Renderizado dinamicamente -->
+            </div>
+          </div>
+
+          <!-- TAB 2: BASTIDORES (Exclusivo Mestre) -->
+          <div id="area-tab-pane-backstage" class="area-tab-pane">
+            <div id="area-backstage-info" class="area-backstage-info">
+              <!-- Renderizado dinamicamente -->
+            </div>
+          </div>
+
+          <!-- TAB 3: INVESTIGAÇÃO / PDIS (Exclusivo Mestre) -->
+          <div id="area-tab-pane-pdis" class="area-tab-pane">
+            <div id="area-pdis-container" class="area-pdis-container">
+              <!-- Renderizado dinamicamente com Acordeões -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dossiê Lateral de NPCs (Offcanvas Slide-In Exclusivo do Mestre) -->
+    <div id="npc-drawer-backdrop" class="npc-drawer-backdrop" onclick="MesaAreaManager.closeNpcDrawer()"></div>
+    <aside id="npc-dossier-drawer" class="npc-dossier-drawer" aria-label="Dossiê de NPCs da Campanha">
+      <div class="npc-dossier-drawer-header">
+        <div class="npc-dossier-header-title-box">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span class="npc-drawer-badge">MESTRE</span>
+          <h3>DOSSIÊ DE NPCS</h3>
+        </div>
+        <button type="button" class="npc-drawer-close-btn" onclick="MesaAreaManager.closeNpcDrawer()" title="Fechar Dossiê">&times;</button>
+      </div>
+      <div id="npc-dossier-content" class="npc-dossier-drawer-body">
+        <!-- Renderizado dinamicamente via MesaAreaManager.openNpcModal() -->
+      </div>
+    </aside>
+
+    <!-- BACKDROP PARA FECHAR O MENU MOBILE AO CLICAR FORA -->
+    <div id="mesa-mobile-backdrop" class="mesa-mobile-backdrop" onclick="MesaMobileMenu.close()"></div>
+
+    <!-- BOTÃO FLUTUANTE HAMBÚRGUER MOBILE (CANTO INFERIOR DIREITO) -->
+    <div id="mesa-mobile-fab-container" class="mesa-mobile-fab-container">
+      <button id="mesa-mobile-fab-btn" class="mesa-mobile-fab-btn" onclick="MesaMobileMenu.toggle()" aria-label="Menu de Ações">
+        <div class="fab-hamburger-icon">
+          <span class="fab-bar"></span>
+          <span class="fab-bar"></span>
+          <span class="fab-bar"></span>
+        </div>
+        <span id="mobile-fab-alert-pip" class="mobile-fab-alert-pip" style="display: none;"></span>
+      </button>
+
+      <!-- GAVETA DE AÇÕES MOBILE FLUTUANTE -->
+      <div id="mesa-mobile-menu-drawer" class="mesa-mobile-menu-drawer">
+        <div class="mobile-menu-header">
+          <span class="mobile-menu-title">[ MENU DA MESA ]</span>
+          <button class="mobile-menu-close-btn" onclick="MesaMobileMenu.close()">&times;</button>
+        </div>
+
+        <div class="mobile-menu-list">
+          <!-- Minha Ficha / Ver Grupo -->
+          <button class="mobile-menu-item primary-highlight" onclick="MesaApp.toggleMobileGroupView(); MesaMobileMenu.close()">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span id="mobile-menu-group-label">Ver Minha Ficha / Grupo</span>
+          </button>
+
+          <!-- Reagir -->
+          <button class="mobile-menu-item" onclick="MesaReactions.togglePicker(); MesaMobileMenu.close()">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+              <line x1="9" y1="9" x2="9.01" y2="9"></line>
+              <line x1="15" y1="9" x2="15.01" y2="9"></line>
+            </svg>
+            <span>Reagir com Emoji</span>
+          </button>
+
+          <!-- Chat -->
+          <button class="mobile-menu-item" onclick="MesaChat.toggleChat(); MesaMobileMenu.close()">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span>Chat da Mesa</span>
+            <span id="mobile-chat-unread-pip" class="chat-unread-pip" style="display:none; margin-left: auto;"></span>
+          </button>
+
+          <!-- Rolar Dados -->
+          <button class="mobile-menu-item" onclick="MesaDice.openModal(); MesaMobileMenu.close()">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="3" ry="3"></rect>
+              <path d="M8 8h.01"></path>
+              <path d="M16 8h.01"></path>
+              <path d="M12 12h.01"></path>
+              <path d="M8 16h.01"></path>
+              <path d="M16 16h.01"></path>
+            </svg>
+            <span>Rolar Dados</span>
+          </button>
+
+          <!-- Sobre Área Atual (Mobile) -->
+          <button class="mobile-menu-item" onclick="MesaAreaManager.openAboutAreaModal(); MesaMobileMenu.close()">
+            <span class="m-item-icon" id="mobile-about-area-icon">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </span>
+            <span id="mobile-about-area-label">Sobre: Mina de Prata</span>
+          </button>
+
+          <!-- Escolher Área - Mestre (Mobile) -->
+          <button id="mobile-choose-area-item" class="mobile-menu-item master-item" onclick="MesaAreaManager.openMapModal(); MesaMobileMenu.close()" style="display: none; color: #fbbf24;">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+              <line x1="8" y1="2" x2="8" y2="18"></line>
+              <line x1="16" y1="6" x2="16" y2="22"></line>
+            </svg>
+            <span>Escolher Área (Mestre)</span>
+          </button>
+
+          <!-- Dossiê de NPCs - Mestre (Mobile) -->
+          <button id="mobile-npcs-item" class="mobile-menu-item master-item" onclick="MesaAreaManager.openNpcModal(); MesaMobileMenu.close()" style="display: none; color: #38bdf8;">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Dossiê de NPCs (Mestre)</span>
+          </button>
+
+          <!-- Token de Autenticação -->
+          <button class="mobile-menu-item" onclick="MesaApp.openTokenModal(); MesaMobileMenu.close()">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+            </svg>
+            <span id="mobile-token-label">Autenticar Token</span>
+            <span id="mobile-token-alert-pip" class="token-alert-pip" style="margin-left: auto;">!</span>
+          </button>
+
+          <!-- Sair / Trocar Sessão (Mobile) -->
+          <button id="mobile-logout-item" class="mobile-menu-item logout-item" onclick="MesaApp.logout()" style="display: none; color: #f87171;">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            <span>Sair / Trocar Sessão</span>
+          </button>
+
+          <!-- Voltar ao Menu Principal -->
+          <a href="index.html" class="mobile-menu-item exit-item">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Voltar ao Menu Principal</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+<script src="js/campaign-data.js?v=3.2.0"></script>
+<script src="js/mesa.js?v=3.2.0"></script>
+<script>
+window.addEventListener('load',()=>setTimeout(()=>{
+  try{
+  const h=location.hash;
+  MesaApp.state.isMaster=true; MesaApp.state.myToken='X'; MesaApp.updateTokenBtnState();
+  if(h==='#public'){MesaAreaManager.openAboutAreaModal();}
+  if(h==='#back'){MesaAreaManager.openAboutAreaModal(); MesaAreaManager.switchAreaTab('backstage');}
+  if(h==='#pdi'){MesaAreaManager.openAboutAreaModal(); MesaAreaManager.switchAreaTab('pdis'); MesaAreaManager.togglePdi(1);}
+  if(h==='#map'){MesaAreaManager.openMapModal();}
+  if(h==='#npc'){MesaAreaManager.openNpcModal('boneco');}
+  if(h==='#menu'){MesaQuickMenu.open();}
+  }catch(e){document.title='ERR '+e.message}
+},1800));
+</script></body>
+</html>

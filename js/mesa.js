@@ -824,6 +824,35 @@ const MesaApp = {
     return false;
   },
 
+  getAuthInfo() {
+    if (this.state.isMaster) {
+      return { kind: 'master', name: 'Mestre', full: 'Autenticado com o token do Mestre', short: 'Token do Mestre' };
+    }
+    if (this.state.myToken) {
+      const slot = this.state.myPlayerSlot;
+      const player = slot ? this.state.players[slot - 1] : null;
+      const name = (player && player.nome) ? player.nome : (slot ? `Slot ${slot}` : 'jogador');
+      return { kind: 'player', name, full: `Autenticado com o token de ${name}`, short: `Token de ${name}` };
+    }
+    return { kind: 'none', name: '', full: 'Não autenticado', short: 'Não autenticado' };
+  },
+
+  updateAuthChip() {
+    const info = this.getAuthInfo();
+    const chip = document.getElementById('nav-auth-chip');
+    if (chip) {
+      chip.className = `nav-auth-chip auth-${info.kind}`;
+      chip.title = info.kind === 'none' ? 'Clique para autenticar seu token' : info.full;
+      const text = chip.querySelector('.nav-auth-text');
+      if (text) text.textContent = info.full;
+    }
+    const modalLine = document.getElementById('token-auth-current');
+    if (modalLine) {
+      modalLine.style.display = info.kind === 'none' ? 'none' : 'block';
+      modalLine.textContent = info.full;
+    }
+  },
+
   updateTokenBtnState() {
     const tokenBtn = document.getElementById('nav-token-btn');
     const tokenLabel = document.getElementById('nav-token-label');
@@ -855,6 +884,8 @@ const MesaApp = {
       if (chooseAreaBtn) chooseAreaBtn.style.display = 'none';
       if (mobileChooseAreaItem) mobileChooseAreaItem.style.display = 'none';
     }
+
+    this.updateAuthChip();
 
     if (window.MesaAreaManager && typeof MesaAreaManager.updateMasterButtons === 'function') {
       MesaAreaManager.updateMasterButtons();
@@ -2995,24 +3026,24 @@ const MesaAreaManager = {
 
     Object.values(ROADMAP_CONFIG).forEach(cfg => {
       roadsSvgHtml += `
-        <path d="${cfg.roadD}" fill="none" stroke="#0e1017" stroke-width="24" stroke-linecap="round" />
-        <path d="${cfg.roadD}" fill="none" stroke="rgba(255, 255, 255, 0.06)" stroke-width="20" stroke-linecap="round" />
+        <path d="${cfg.roadD}" fill="none" stroke="#1c0b04" stroke-width="24" stroke-linecap="round" />
+        <path d="${cfg.roadD}" fill="none" stroke="rgba(255, 140, 70, 0.07)" stroke-width="20" stroke-linecap="round" />
       `;
     });
 
     Object.values(ROADMAP_CONFIG).forEach(cfg => {
       roadsSvgHtml += `
-        <path d="${cfg.roadD}" fill="none" stroke="rgba(255, 255, 255, 0.42)" stroke-width="2.2" stroke-linecap="round" />
-        <path d="${cfg.roadTwinD}" fill="none" stroke="rgba(255, 255, 255, 0.42)" stroke-width="2.2" stroke-linecap="round" />
+        <path d="${cfg.roadD}" fill="none" stroke="rgba(255, 220, 190, 0.4)" stroke-width="2.2" stroke-linecap="round" />
+        <path d="${cfg.roadTwinD}" fill="none" stroke="rgba(255, 220, 190, 0.4)" stroke-width="2.2" stroke-linecap="round" />
         <path d="${cfg.roadD}" fill="none" stroke="rgba(249, 115, 22, 0.5)" stroke-width="1.8" stroke-dasharray="6, 8" stroke-linecap="round" />
       `;
     });
 
     roadsSvgHtml += `
         <circle cx="500" cy="320" r="50" fill="url(#crossroads-glow)" />
-        <circle cx="500" cy="320" r="28" fill="#0f1015" stroke="rgba(255, 85, 0, 0.6)" stroke-width="2" stroke-dasharray="5, 3" />
+        <circle cx="500" cy="320" r="28" fill="#140803" stroke="rgba(255, 85, 0, 0.6)" stroke-width="2" stroke-dasharray="5, 3" />
         <circle cx="500" cy="320" r="6" fill="#f97316" />
-        <text x="500" y="324" text-anchor="middle" fill="#a1a1aa" font-size="8.5" font-weight="700" font-family="sans-serif" letter-spacing="1.5">ENCRUZILHADA</text>
+        <text x="500" y="324" text-anchor="middle" fill="#c9b49f" font-size="8.5" font-weight="700" font-family="sans-serif" letter-spacing="1.5">ENCRUZILHADA</text>
       </svg>
     `;
 
@@ -3083,17 +3114,17 @@ const MesaAreaManager = {
 
     let statusMsg = '';
     if (isCurrent) {
-      statusMsg = '<div style="color: #4ade80; font-weight: 700; margin-top: 4px; font-size: 0.82rem;">[ Grupo já se encontra nesta localidade ]</div>';
+      statusMsg = '<div class="map-status map-status-current">Grupo já se encontra nesta localidade</div>';
     } else if (!isMaster) {
-      statusMsg = '<div style="color: #fbbf24; font-size: 0.82rem; margin-top: 4px;">(Apenas o Mestre pode autorizar deslocamento do grupo)</div>';
+      statusMsg = '<div class="map-status map-status-warn">Apenas o Mestre pode autorizar o deslocamento do grupo</div>';
     }
 
     preview.innerHTML = `
-      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
-        <span style="display: inline-flex; width: 20px; height: 20px; color: var(--area-accent, #f97316);">${area.svgIcon}</span>
-        <strong style="color: #ffffff; font-size: 0.96rem;">${area.name}</strong> • <span style="color: #cbd5e1;">${area.district}</span>
+      <div class="map-note-head">
+        <span class="map-note-icon">${area.svgIcon}</span>
+        <strong class="map-note-name">${area.name}</strong><span class="map-note-district">${area.district}</span>
       </div>
-      <div style="color: #a1a1aa; font-size: 0.84rem; line-height: 1.45;">${area.ambience}</div>
+      <div class="map-note-ambience">${area.ambience}</div>
       ${statusMsg}
     `;
 
@@ -3174,6 +3205,16 @@ const MesaAreaManager = {
         });
       }
     }
+  },
+
+  getAllNpcs() {
+    const source = window.CAMPAIGN_NPCS;
+    if (!source) return [];
+    return Array.isArray(source) ? source : Object.values(source);
+  },
+
+  getNpcById(npcId) {
+    return this.getAllNpcs().find(n => n && n.id === npcId) || null;
   },
 
   activeAreaTab: 'public',
@@ -3303,7 +3344,7 @@ const MesaAreaManager = {
         npcsListHtml = `
           <div class="backstage-npcs-grid">
             ${area.npcs_presentes.map(npcId => {
-              const npc = (window.CAMPAIGN_NPCS && window.CAMPAIGN_NPCS[npcId]);
+              const npc = this.getNpcById(npcId);
               const rawName = npc ? npc.nome : npcId;
               const parts = rawName.split('•');
               const mainName = parts[0].trim();
@@ -3489,10 +3530,7 @@ const MesaAreaManager = {
       return;
     }
 
-    const npcsList = Array.isArray(window.CAMPAIGN_NPCS) 
-      ? window.CAMPAIGN_NPCS 
-      : Object.values(window.CAMPAIGN_NPCS || {});
-
+    const npcsList = this.getAllNpcs();
     if (npcsList.length === 0) return;
 
     const targetId = npcId || npcsList[0].id;
@@ -3502,70 +3540,45 @@ const MesaAreaManager = {
     const content = document.getElementById('npc-dossier-content');
     if (!content) return;
 
-    // Seletor rápido de NPCs no topo se houver mais de 1
+    // Seletor rapido de NPCs no topo se houver mais de 1
     let npcTabsHtml = '';
     if (npcsList.length > 1) {
       const tabsBtns = npcsList.map(n => {
-        const isSelected = n.id === targetId;
+        const isSelected = n.id === npc.id;
         const shortName = n.nome.split('•')[0].trim();
-        return `
-          <button type="button" class="mesa-btn ink-tag ${isSelected ? 'primary' : ''}" style="font-size: 0.78rem; padding: 4px 10px;" onclick="MesaAreaManager.openNpcModal('${n.id}')">
-            ${shortName}
-          </button>
-        `;
+        return `<button type="button" class="npc-switch-btn ${isSelected ? 'active' : ''}" onclick="MesaAreaManager.openNpcModal('${n.id}')">${shortName}</button>`;
       }).join('');
-      npcTabsHtml = `
-        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; border-bottom: 1px dashed rgba(255, 255, 255, 0.15); padding-bottom: 10px;">
-          ${tabsBtns}
-        </div>
-      `;
+      npcTabsHtml = `<div class="npc-switch-row">${tabsBtns}</div>`;
     }
 
     const roleName = npc.papel || (npc.ligacao_misterio ? npc.ligacao_misterio.split('.')[0] : 'Personagem Local');
+    const fieldRow = (label, text) => `
+      <div class="npc-field">
+        <span class="npc-field-label">${label}</span>
+        <p class="npc-field-text">${text || ''}</p>
+      </div>`;
 
     content.innerHTML = `
       ${npcTabsHtml}
 
-      <div style="border-bottom: 2px solid #38bdf8; padding-bottom: 12px; margin-bottom: 16px;">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-          <span style="font-size: 0.72rem; font-weight: 800; color: #94a3b8; background: rgba(255, 255, 255, 0.08); padding: 2px 7px; border-radius: 3px;">NPC ID: ${npc.id}</span>
-          <span style="font-size: 0.74rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid #38bdf8;">${roleName}</span>
-        </div>
-        <h2 style="margin: 0; font-family: 'Playfair Display', Georgia, serif; font-size: 1.25rem; font-weight: 800; color: #ffffff;">${npc.nome}</h2>
+      <div class="npc-sheet-head">
+        <span class="npc-role-tag">${roleName}</span>
+        <h2 class="npc-sheet-name">${npc.nome}</h2>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 14px;">
-        <div>
-          <span style="font-size: 0.72rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; display: block; margin-bottom: 3px;">Personalidade & Postura</span>
-          <p style="margin: 0; font-size: 0.88rem; color: #e2e8f0; line-height: 1.55;">${npc.personalidade}</p>
+      <div class="npc-fields">
+        ${fieldRow('Personalidade e postura', npc.personalidade)}
+        ${fieldRow('História resumida', npc.historia_resumida)}
+        ${fieldRow('Informação livre (conversa casual)', npc.informacao_livre)}
+
+        <div class="npc-callout npc-callout-secret">
+          <span class="npc-callout-label">Segredo útil</span>
+          <p>${npc.segredo_util || ''}</p>
         </div>
 
-        <div>
-          <span style="font-size: 0.72rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; display: block; margin-bottom: 3px;">História Resumida</span>
-          <p style="margin: 0; font-size: 0.88rem; color: #cbd5e1; line-height: 1.55;">${npc.historia_resumida}</p>
-        </div>
-
-        <div>
-          <span style="font-size: 0.72rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; display: block; margin-bottom: 3px;">Informação Livre (Diálogo Casual)</span>
-          <p style="margin: 0; font-size: 0.88rem; color: #e2e8f0; line-height: 1.55;">${npc.informacao_livre}</p>
-        </div>
-
-        <!-- SEGREDO ÚTIL EM DESTAQUE -->
-        <div style="background: rgba(35, 12, 12, 0.75); border: 1.5px solid #ef4444; border-left: 4px solid #ef4444; border-radius: 6px; padding: 14px;">
-          <div style="font-size: 0.75rem; font-weight: 900; color: #fca5a5; text-transform: uppercase; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-6 6l7-7-2-2-7 7v4h4z"></path><path d="M3 15v6h6l11-11-6-6L3 15z"></path></svg>
-            [SEGREDO ÚTIL • PISTA CRUCIAL]
-          </div>
-          <p style="margin: 0; font-size: 0.9rem; color: #fee2e2; line-height: 1.55;">${npc.segredo_util}</p>
-        </div>
-
-        <!-- GATILHO DE REVELAÇÃO EM DESTAQUE -->
-        <div style="background: rgba(30, 24, 10, 0.75); border: 1.5px solid #f59e0b; border-left: 4px solid #f59e0b; border-radius: 6px; padding: 14px;">
-          <div style="font-size: 0.75rem; font-weight: 900; color: #fde68a; text-transform: uppercase; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-            [GATILHO DE REVELAÇÃO • REQUISITO EXATO]
-          </div>
-          <p style="margin: 0; font-size: 0.9rem; color: #fef3c7; line-height: 1.55;">${npc.gatilho_revelacao}</p>
+        <div class="npc-callout npc-callout-trigger">
+          <span class="npc-callout-label">Gatilho de revelação</span>
+          <p>${npc.gatilho_revelacao || ''}</p>
         </div>
       </div>
     `;
@@ -3630,13 +3643,8 @@ const MesaQuickMenu = {
     const tokenLabel = document.getElementById('menu-token-label');
     const tokenAlert = document.getElementById('menu-token-alert-badge');
     if (tokenLabel) {
-      if (isMaster) {
-        tokenLabel.textContent = 'Token Ativo (Mestre)';
-      } else if (myToken) {
-        tokenLabel.textContent = `Token: ${myToken}`;
-      } else {
-        tokenLabel.textContent = 'Autenticar Token';
-      }
+      const authInfo = MesaApp.getAuthInfo();
+      tokenLabel.textContent = authInfo.kind === 'none' ? 'Autenticar Token' : authInfo.short;
     }
     if (tokenAlert) {
       tokenAlert.style.display = (!myToken && !isMaster) ? 'inline-block' : 'none';
@@ -3710,13 +3718,8 @@ const MesaMobileMenu = {
     }
 
     if (tokenLabel) {
-      if (isMaster) {
-        tokenLabel.textContent = 'Token Ativo (Mestre)';
-      } else if (myToken) {
-        tokenLabel.textContent = `Token: ${myToken}`;
-      } else {
-        tokenLabel.textContent = 'Autenticar Token';
-      }
+      const authInfo = MesaApp.getAuthInfo();
+      tokenLabel.textContent = authInfo.kind === 'none' ? 'Autenticar Token' : authInfo.short;
     }
 
     const needsToken = !myToken && !isMaster;

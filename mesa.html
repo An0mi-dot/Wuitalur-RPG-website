@@ -11,9 +11,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/variables.css?v=3.1.0">
-  <link rel="stylesheet" href="css/components.css?v=3.1.0">
-  <link rel="stylesheet" href="css/mesa.css?v=3.1.0">
+  <link rel="stylesheet" href="css/variables.css?v=3.2.0">
+  <link rel="stylesheet" href="css/components.css?v=3.2.0">
+  <link rel="stylesheet" href="css/mesa.css?v=3.2.0">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -24,6 +24,11 @@
         <filter id="nanquim-rough" x="-10%" y="-10%" width="120%" height="120%">
           <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" result="noise" />
           <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <!-- Versao suave: mantem a borda de tinta mas deixa as letras legiveis -->
+        <filter id="nanquim-soft" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.3" xChannelSelector="R" yChannelSelector="G" />
         </filter>
         <filter id="nanquim-heavy" x="-10%" y="-10%" width="120%" height="120%">
           <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="4" result="noise" />
@@ -159,7 +164,11 @@
             </button>
           </div>
         </div>
-      </div>
+        <!-- Indicador de autenticacao (nunca exibe o token em si) -->
+        <button type="button" id="nav-auth-chip" class="nav-auth-chip auth-none" onclick="if (!MesaApp.state.isMaster && !MesaApp.state.myToken) MesaApp.openTokenModal();" title="Clique para autenticar seu token">
+          <span class="nav-auth-dot"></span>
+          <span class="nav-auth-text">Não autenticado</span>
+        </button>      </div>
 
       <!-- Paleta de Emojis Pixel Flutuante -->
       <div id="mesa-reaction-picker" class="reaction-picker-popover">
@@ -168,7 +177,7 @@
 
       <div class="mesa-actions">
         <!-- Botão Escolher Área (Exclusivo do Mestre) -->
-        <button id="nav-choose-area-btn" class="ink-tag" onclick="MesaAreaManager.openMapModal()" style="display: none; border-color: #f59e0b; color: #fbbf24;" title="Abrir Mapa e Escolher Área">
+        <button id="nav-choose-area-btn" class="ink-tag nav-choose-area" onclick="MesaAreaManager.openMapModal()" style="display: none;" title="Abrir Mapa e Escolher Área">
           <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
             <line x1="8" y1="2" x2="8" y2="18"></line>
@@ -295,6 +304,7 @@
       <div class="mesa-modal ink-modal" style="max-width: 420px; text-align: center;">
         <button class="mesa-modal-close" onclick="MesaApp.closeModal('token-modal')">&times;</button>
         <div class="ink-ribbon-title">AUTENTICAÇÃO SEGURA</div>
+        <div id="token-auth-current" class="token-auth-current" style="display:none;"></div>
         <p style="color:#bbb; margin: 15px 0 16px; font-size: 0.88rem;">Insira seu <strong>token de acesso</strong> para autenticar sua sessão e editar sua ficha.</p>
         <input type="text" id="token-input" class="mesa-input ink-input" placeholder="Digite seu token..." maxlength="36" autocomplete="off" style="text-transform: uppercase; text-align: center; font-size: 1.15rem; letter-spacing: 0.15em; font-family: monospace;">
         <div id="token-security-status" style="display:none; font-size:0.8rem; margin: -6px 0 14px; min-height: 18px; line-height: 1.4;"></div>
@@ -571,7 +581,7 @@
       </div>
     </div>
 
-<script src="js/campaign-data.js?v=3.1.0"></script>
-<script src="js/mesa.js?v=3.1.0"></script>
+<script src="js/campaign-data.js?v=3.2.0"></script>
+<script src="js/mesa.js?v=3.2.0"></script>
 </body>
 </html>
