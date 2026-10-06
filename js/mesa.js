@@ -2130,7 +2130,7 @@ const MesaChat = {
     // 5. WebSocket Broadcast de Mudança de Área / Mapa em Tempo Real
     this.channel.on('broadcast', { event: 'area_changed' }, (payload) => {
       const data = payload.payload;
-      if (data && data.areaId && window.MesaAreaManager) {
+      if (data && data.areaId && window.MesaAreaManager && MesaAreaManager.currentAreaId !== data.areaId) {
         MesaAreaManager.applyArea(data.areaId, false);
         MesaApp.closeModal('area-map-modal');
       }
@@ -2163,28 +2163,59 @@ const MesaChat = {
       const { data, error } = await MesaApp.supabase
         .from('mensagens_chat')
         .select('*')
-        .order('created_at', { ascending: true })
+        .order('created_at', { ascending: false })
         .limit(60);
 
       if (data && data.length > 0) {
-        this.messages = data.map(m => ({
-          id: m.id,
-          sender_name: m.sender_name,
-          is_master: m.is_master,
-          content: m.content,
-          created_at: m.created_at,
-          token: m.sender_token
-        }));
+        // Tenta achar a mudanca de area mais recente no historico do chat
+        const latestAreaMsg = data.find(m => m.content && m.content.startsWith('SYS_AREA:'));
+        if (latestAreaMsg && window.MesaAreaManager) {
+          const areaId = latestAreaMsg.content.split('|')[0].split(':')[1];
+          if (areaId) {
+            MesaAreaManager.applyArea(areaId, false);
+          }
+        }
+
+        this.messages = data.reverse().map(m => {
+          let c = m.content;
+          if (c && c.startsWith('SYS_AREA:')) {
+            const parts = c.split('|');
+            c = parts.length > 1 ? parts.slice(1).join('|') : '';
+          }
+          return {
+            id: m.id,
+            sender_name: m.sender_name,
+            is_master: m.is_master,
+            content: c,
+            created_at: m.created_at,
+            token: m.sender_token
+          };
+        }).filter(m => m.content && m.content.trim() !== '');
+        
         this.renderMessages();
       }
     } catch(err) {
-      console.warn("Aviso na tabela mensagens_chat:", err);
+      console.warn("Erro ao buscar historico de mensagens:", err);
     }
   },
 
   receiveMessage(msg) {
     if (!msg || !msg.content) return;
     
+    // Tratamento de mudanca de area real-time via chat (SISTEMA_AREA)
+    if (msg.content.startsWith('SYS_AREA:')) {
+      const parts = msg.content.split('|');
+      const areaId = parts[0].split(':')[1];
+      if (window.MesaAreaManager && areaId && MesaAreaManager.currentAreaId !== areaId) {
+        MesaAreaManager.applyArea(areaId, false);
+      }
+      if (parts.length > 1 && parts[1].trim()) {
+        msg.content = parts.slice(1).join('|');
+      } else {
+        return; // Mensagem silenciosa de sistema, não exibe no chat visual
+      }
+    }
+
     // Evita duplicatas se já renderizado via broadcast ou optimistic UI
     if (this.messages.some(m => m.id === msg.id || (m.tempId && m.tempId === msg.tempId))) {
       return;
@@ -3224,16 +3255,29 @@ const MesaAreaManager = {
 
       // Notificação amigável no chat para os jogadores
       if (typeof MesaChat.receiveMessage === 'function') {
-        MesaChat.receiveMessage({
+        const sysMessage = {
           id: 'area-alert-' + Date.now(),
           sender_name: 'SISTEMA DA MESA',
           is_master: true,
-          content: `[ÁREA] O Mestre deslocou a investigação para: [ ${area.name} ]`,
-          created_at: new Date().toISOString()
-        });
+          content: `SYS_AREA:${area.id}|[ÁREA] O Mestre deslocou a investigação para: [ ${area.name} ]`,
+          created_at: new Date().toISOString(),
+          sender_token: 'system'
+        };
+        MesaChat.receiveMessage(sysMessage);
+
+        // Insere fisicamente no Supabase para que fique no historico!
+        if (MesaApp.supabase) {
+          MesaApp.supabase.from('mensagens_chat').insert({
+            sender_name: sysMessage.sender_name,
+            sender_token: sysMessage.sender_token,
+            is_master: sysMessage.is_master,
+            content: sysMessage.content
+          }).then(() => {}).catch(e => console.error(e));
+        }
       }
     }
   },
+
 
   getAllNpcs() {
     const source = window.CAMPAIGN_NPCS;
