@@ -2117,17 +2117,9 @@ const MesaChat = {
       }
     });
 
-    // 6. WebSocket Broadcast de Abertura Síncrona do Mapa pelo Mestre
-    this.channel.on('broadcast', { event: 'sync_open_map' }, () => {
-      if (window.MesaAreaManager) {
-        MesaAreaManager.openMapModal(true);
-      }
-    });
 
-    // 7. WebSocket Broadcast de Fechamento do Mapa pelo Mestre
-    this.channel.on('broadcast', { event: 'sync_close_map' }, () => {
-      MesaApp.closeModal('area-map-modal');
-    });
+
+
 
     // 6. Postgres Changes para novas mensagens gravadas
     this.channel.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mensagens_chat' }, (payload) => {
@@ -2976,33 +2968,16 @@ const MesaAreaManager = {
   closeMapModal() {
     const isMaster = Boolean(MesaApp && MesaApp.state && MesaApp.state.isMaster);
     MesaApp.closeModal('area-map-modal');
-    if (isMaster && MesaChat && MesaChat.channel) {
-      MesaChat.channel.send({
-        type: 'broadcast',
-        event: 'sync_close_map',
-        payload: {
-          timestamp: Date.now()
-        }
-      });
-    }
+
   },
 
-  openMapModal(fromBroadcast = false) {
+  openMapModal() {
     const isMaster = Boolean(MesaApp && MesaApp.state && MesaApp.state.isMaster);
-    if (!fromBroadcast && !isMaster) {
+    if (!isMaster) {
       return;
     }
 
-    // Se o Mestre abriu o mapa manualmente, transmite abertura para toda a mesa
-    if (!fromBroadcast && isMaster && MesaChat && MesaChat.channel) {
-      MesaChat.channel.send({
-        type: 'broadcast',
-        event: 'sync_open_map',
-        payload: {
-          timestamp: Date.now()
-        }
-      });
-    }
+
 
     const board = document.getElementById('area-roadmap-board') || document.getElementById('area-map-grid');
     if (!board) return;
