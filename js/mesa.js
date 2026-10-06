@@ -758,6 +758,8 @@ const MesaApp = {
         localStorage.setItem('wu_user_token', candidateToken);
         localStorage.setItem('mesa_token', candidateToken);
         this.updateTokenBtnState();
+        if (window.MesaAreaManager && typeof MesaAreaManager.updateMasterButtons === 'function') MesaAreaManager.updateMasterButtons();
+        if (window.MesaQuickMenu && typeof MesaQuickMenu.updateState === 'function') MesaQuickMenu.updateState();
         return true;
       }
 
@@ -817,6 +819,8 @@ const MesaApp = {
         this.state.isMaster = false;
         this.state.myPlayerSlot = null;
         this.updateTokenBtnState();
+        if (window.MesaAreaManager && typeof MesaAreaManager.updateMasterButtons === 'function') MesaAreaManager.updateMasterButtons();
+        if (window.MesaQuickMenu && typeof MesaQuickMenu.updateState === 'function') MesaQuickMenu.updateState();
         return false;
       }
     }
@@ -1940,7 +1944,8 @@ const MesaApp = {
       localStorage.setItem('wu_user_token', token);
       localStorage.setItem('mesa_token', token);
       this.updateTokenBtnState();
-      MesaChat.updateSenderIdentity();
+        this.updateAuthChip();
+        MesaChat.updateSenderIdentity();
 
       if (this.state.isMaster) {
         alert("[SUCESSO] Token de Mestre autenticado com sucesso.");
@@ -3619,12 +3624,13 @@ const MesaQuickMenu = {
   },
 
   open() {
-    this.isOpen = true;
-    const dropdown = document.getElementById('mesa-quick-menu-dropdown');
-    const btn = document.getElementById('nav-hamburger-btn');
-    if (dropdown) dropdown.classList.add('active');
-    if (btn) btn.classList.add('active');
-  },
+      this.isOpen = true;
+      const dropdown = document.getElementById('mesa-quick-menu-dropdown');
+      const btn = document.getElementById('nav-hamburger-btn');
+      if (dropdown) dropdown.classList.add('active');
+      if (btn) btn.classList.add('active');
+      this.updateState();
+    },
 
   close() {
     this.isOpen = false;
