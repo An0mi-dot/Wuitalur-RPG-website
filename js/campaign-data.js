@@ -184,6 +184,119 @@
         "gancho": "A estrada principal que conecta o perímetro rural ao centro cívico e estudantil de Fragktus."
       }
     ]
+  },
+  "casa-auguil": {
+    "id": "casa-auguil",
+    "nome": "Casa Auguil",
+    "shortName": "Casa Auguil",
+    "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"></path><polyline points=\"9 22 9 12 15 12 15 22\"></polyline></svg>",
+    "themeClass": "area-casa-auguil",
+    "district": "Bairro Residencial • Mina de Prata",
+    "dangerLevel": "Isolamento Policial & Atividade Paranormal",
+    "dangerLevelClass": "danger",
+    "resumo_atmosfera": "Uma moradia de dois andares de alto padrão, agora transformada em cena de crime. O exterior está isolado e envolto em dezenas de fitas policiais amarelas e pretas de \"Não Ultrapasse\". Durante o dia, viaturas e peritos da polícia bloqueiam o perímetro, tornando qualquer aproximação impossível. É apenas durante a calada da noite, quando as viaturas se retiram e a casa mergulha numa escuridão absoluta, que a oportunidade de infiltração surge. A casa de fora parece silenciosa, mas lá dentro, a atmosfera é pesada, cheirando a lodo e abandono.",
+    "requisitos_acesso": "Apenas durante a noite, exigindo infiltração pelos fundos ou janelas laterais para evitar os vizinhos e as fitas policiais.",
+    "npcs_presentes": [],
+    "pontos_de_interesse": [
+      {
+        "cabecalho": {
+          "nome": "O Perímetro Externo (Infiltração)",
+          "descricao_publica": "A calçada está deserta e a casa está lacrada pelas fitas da polícia. As portas da frente e das traseiras estão trancadas, e as janelas fechadas. Entrar aqui exige agir nas sombras e passar pela segurança física da casa sem alertar a vizinhança."
+        },
+        "testes": [
+          {
+            "pericia": "Ladinagem / Crime",
+            "ct_dt": 7,
+            "informacao_revelada": "Permite usar gazuas ou ferramentas improvisadas para destrancar a porta das traseiras (onde a polícia tem um ponto cego) de forma totalmente silenciosa."
+          },
+          {
+            "pericia": "Força",
+            "ct_dt": 8,
+            "informacao_revelada": "Quebrar o vidro de uma das janelas laterais. Requer amarrar um casaco ao redor do braço para abafar o som do vidro a estilhaçar e não cortar os pulsos."
+          },
+          {
+            "pericia": "Furtividade / Vigor",
+            "ct_dt": 6,
+            "informacao_revelada": "Necessário caso os jogadores precisem de correr pelo quintal e saltar o muro sem acionar os sensores de luz dos vizinhos."
+          }
+        ],
+        "notas_mestre": "Este PDI reforça que o local é restrito e dá opções de abordagem aos jogadores. Se eles tentarem vir de dia, os NPCs policiais mandam-nos embora. Apenas à noite eles conseguem entrar. É o primeiro desafio físico da sessão."
+      },
+      {
+        "cabecalho": {
+          "nome": "O Térreo e as Escadas (O Caminho do Gato)",
+          "descricao_publica": "O andar de baixo está bizarramente organizado e limpo, exceto por alguns locais onde a polícia recolheu impressões digitais com pó branco. O silêncio é sufocante, mas há algo a quebrar a simetria perfeita da sala de estar e das escadas."
+        },
+        "testes": [
+          {
+            "pericia": "Percepção",
+            "ct_dt": 6,
+            "informacao_revelada": "Com lanternas, é possível ver pequenas manchas escuras no chão. Não são pegadas humanas, mas sim pequenas marcas de patas de um animal, feitas de um lodo escuro e pastoso, que começam na porta das traseiras e sobem pelas escadas."
+          },
+          {
+            "pericia": "Investigação",
+            "ct_dt": 6,
+            "informacao_revelada": "As marcas na escada não estão secas. Estão húmidas e cheiram fortemente a terra podre da floresta, provando que \"algo\" continuou a visitar a casa depois que a polícia foi embora."
+          }
+        ],
+        "notas_mestre": "Isto conecta a história do Elias (o barista que viu o gato) com o interior da casa. O gato (ou a entidade que o possuía) não apenas abordou Sara no beco, ele seguiu-a e tomou conta da casa dela."
+      },
+      {
+        "cabecalho": {
+          "nome": "O Quarto de Sara (A Degradação)",
+          "descricao_publica": "Contrastando com o andar de baixo, o quarto de Sara é o puro caos (o \"Chão do Quarto\"). Roupas, caixas de medicamentos vazias e dezenas de folhas de papel espalhadas. As janelas estão bloqueadas com cobertores para impedir a luz."
+        },
+        "testes": [
+          {
+            "pericia": "Investigação",
+            "ct_dt": 7,
+            "informacao_revelada": "No meio do lixo no chão, encontra-se o \"Papel\" principal: um diário. A caligrafia começa normal, mas a meio, as letras tornam-se tremidas, com desenhos repetitivos de árvores contorcidas e uma figura alta de olhos brilhantes na floresta."
+          },
+          {
+            "pericia": "História / Ocultismo",
+            "ct_dt": 8,
+            "informacao_revelada": "Analisando os desenhos e as últimas páginas do diário. A última frase escrita é repetida dezenas de vezes: \"Ele disse que a Trisha está à minha espera. A dor vai passar na água preta.\""
+          },
+          {
+            "pericia": "Mente",
+            "ct_dt": 6,
+            "informacao_revelada": "Teste de sanidade/resistência para os jogadores. Ler os delírios absolutos de uma rapariga terminal que perdeu a cabeça causa um calafrio profundo. Falhar resulta em perda de Pontos de Esforço (PE)."
+          }
+        ],
+        "notas_mestre": "Este é o clímax narrativo e onde os seus apontamentos do caderno (\"Chão do Quarto\" e \"Papel\") brilham. Aqui os jogadores percebem que Sara não foi raptada; ela foi convencida e manipulada pela entidade a ir para a floresta por vontade própria, acreditando que encontraria a irmã e a cura."
+      },
+      {
+        "cabecalho": {
+          "nome": "A Banheira da Suíte (A Armadilha)",
+          "descricao_publica": "A porta da casa de banho da suíte de Sara está entreaberta. Um cheiro nauseabundo a podridão, enxofre e lodo invade o quarto. Lá dentro, a banheira está cheia até à borda com uma água espessa, preta e parada."
+        },
+        "testes": [
+          {
+            "pericia": "Medicina / Alquimia",
+            "ct_dt": 6,
+            "informacao_revelada": "A água não é de esgoto. É um lodo orgânico e antinatural, como se parte do pântano da Floresta tivesse sido trazido para dentro de casa."
+          },
+          {
+            "pericia": "Percepção",
+            "ct_dt": 8,
+            "informacao_revelada": "Quem olhar de perto para a água negra vai perceber, uma fração de segundo tarde demais, que o reflexo no fundo não é o do próprio jogador, mas sim de um rosto distorcido."
+          }
+        ],
+        "notas_mestre": "O GATILHO DE COMBATE. Assim que um jogador fizer qualquer teste neste PDI (ou tentar esvaziar/tocar na água), o \"Zumbi de Lodo\" emerge violentamente da banheira e agarra o braço de quem estiver mais perto. É o resíduo apodrecido que a entidade deixou para trás. Aqui a investigação pausa e a iniciativa de combate deve ser rolada!"
+      }
+    ],
+    "conexoes_saida": [
+      {
+        "area_id": "colegio-primordio",
+        "nome": "Colégio Integrado Primórdio",
+        "gancho": "O local de estudo de Sara."
+      },
+      {
+        "area_id": "floresta-proibida",
+        "nome": "A Mata do Norte",
+        "gancho": "Para onde Sara se dirigiu por vontade própria."
+      }
+    ]
   }
 };
 
