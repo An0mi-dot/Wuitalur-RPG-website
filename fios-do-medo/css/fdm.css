@@ -552,9 +552,15 @@
 /* Cards de Diretrizes e Regras de Descoberta */
 .pdi-rules-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-lg);
   margin: var(--space-lg) 0 var(--space-2xl);
+}
+
+@media (max-width: 850px) {
+  .pdi-rules-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .pdi-rule-card {
