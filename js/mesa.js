@@ -739,6 +739,7 @@ const MesaApp = {
       this.supabase = window.supabase.createClient(this.SUPABASE_URL, this.SUPABASE_KEY);
       await this.fetchPlayers();
       this.subscribeToRealtime();
+      this.startAreaSyncPolling();
     } else {
       console.warn("Supabase não disponível. Exibindo dados locais.");
       this.loadMockData();
@@ -1476,6 +1477,28 @@ const MesaApp = {
     }
   },
 
+  
+  startAreaSyncPolling() {
+    if (this._areaSyncTimer) clearInterval(this._areaSyncTimer);
+    this._areaSyncTimer = setInterval(async () => {
+      if (!this.supabase || !window.MesaAreaManager) return;
+      try {
+        const { data } = await this.supabase
+          .from('personagens')
+          .select('atributos')
+          .eq('id', 1)
+          .single();
+        if (data && data.atributos) {
+          const attrs = typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos;
+          if (attrs && attrs._sys_area && attrs._sys_area !== MesaAreaManager.currentAreaId) {
+            console.log("[HEARTBEAT 1.5s] Sincronizando mudança de área:", attrs._sys_area);
+            MesaAreaManager.applyArea(attrs._sys_area, false);
+          }
+        }
+      } catch(e) {}
+    }, 1500);
+  },
+
   subscribeToRealtime() {
     if (!this.supabase) return;
 
@@ -1484,6 +1507,14 @@ const MesaApp = {
       .on('postgres_changes', { event: '*', schema: 'public', table: 'personagens' }, (payload) => {
         console.log("Atualização da mesa recebida:", payload);
         this.fetchPlayers();
+      })
+      .on('broadcast', { event: 'area_changed' }, (payload) => {
+        const data = payload.payload;
+        if (data && data.areaId && window.MesaAreaManager && MesaAreaManager.currentAreaId !== data.areaId) {
+          console.log("[BROADCAST REALTIME] Área mudou:", data.areaId);
+          MesaAreaManager.applyArea(data.areaId, false);
+          MesaApp.closeModal('area-map-modal');
+        }
       })
       .subscribe();
   },
@@ -2992,8 +3023,7 @@ const MesaAreaManager = {
   selectedAreaId: 'none',
 
   init() {
-    // Se o Supabase estiver disponivel, a area vem diretamente do banco de dados (fetchPlayers)
-    // Apenas usa localStorage se estiver completamente offline / sem Supabase
+    // Se o Supabase estiver disponível, fetchPlayers já carregou a área correta do banco!
     if (!MesaApp.supabase) {
       const saved = localStorage.getItem('mesa_current_area');
       if (saved && MESA_AREAS[saved]) {
@@ -3001,9 +3031,9 @@ const MesaAreaManager = {
       } else {
         this.currentAreaId = 'none';
       }
+      this.selectedAreaId = this.currentAreaId;
+      this.applyArea(this.currentAreaId, false);
     }
-    this.selectedAreaId = this.currentAreaId;
-    this.applyArea(this.currentAreaId, false);
     this.updateMasterButtons();
   },
 
@@ -3261,32 +3291,53 @@ const MesaAreaManager = {
     }
 
     if (shouldBroadcast) {
-      // 1. WebSocket Broadcast imediato para jogadores conectados na sala
+      // 1. Gravação imediata persistente no banco de dados (ID 1)
+      if (MesaApp.supabase) {
+        (async () => {
+          try {
+            const { data } = await MesaApp.supabase
+              .from('personagens')
+              .select('atributos')
+              .eq('id', 1)
+              .single();
+            const attrs = data && data.atributos 
+              ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos) 
+              : {};
+            attrs._sys_area = area.id;
+            await MesaApp.supabase
+              .from('personagens')
+              .update({ atributos: attrs })
+              .eq('id', 1);
+            console.log("[SYNC MASTER] Área oficial salva no Supabase:", area.id);
+          } catch(err) {
+            console.error("[SYNC MASTER] Erro ao gravar área:", err);
+          }
+        })();
+      }
+
+      // 2. Disparo de WebSocket Broadcast imediato (< 50ms)
+      const broadcastPayload = {
+        areaId: area.id,
+        name: area.name,
+        timestamp: Date.now()
+      };
       if (MesaChat && MesaChat.channel) {
         try {
           MesaChat.channel.send({
             type: 'broadcast',
             event: 'area_changed',
-            payload: {
-              areaId: area.id,
-              name: area.name,
-              timestamp: Date.now()
-            }
+            payload: broadcastPayload
           });
-        } catch(e) { console.warn("Erro no broadcast:", e); }
+        } catch(e) {}
       }
-
-      // 2. Gravacao persistente oficial no Supabase (Personagem ID 1)
-      if (MesaApp.supabase) {
-        MesaApp.supabase.from('personagens').select('atributos').eq('id', 1).single().then(res => {
-          if (res.data) {
-            const attrs = typeof res.data.atributos === 'string' ? JSON.parse(res.data.atributos || '{}') : (res.data.atributos || {});
-            attrs._sys_area = area.id;
-            MesaApp.supabase.from('personagens').update({ atributos: attrs }).eq('id', 1).then(() => {
-              console.log("[SYNC] Sucesso: area salva no Supabase como", area.id);
-            }).catch(e => console.error("[SYNC] Falha ao gravar area:", e));
-          }
-        });
+      if (MesaApp && MesaApp.channel) {
+        try {
+          MesaApp.channel.send({
+            type: 'broadcast',
+            event: 'area_changed',
+            payload: broadcastPayload
+          });
+        } catch(e) {}
       }
     }
   },
