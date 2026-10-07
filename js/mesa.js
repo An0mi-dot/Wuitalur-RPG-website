@@ -3258,7 +3258,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.1.7`;
+      badge.textContent = `v1.1.8`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -3634,8 +3634,14 @@ const MesaAreaManager = {
               <h4 class="pdis-toolbar-title">PONTOS DE INTERESSE DA LOCALIDADE</h4>
               <span class="pdis-toolbar-subtitle">Clique em qualquer ponto abaixo para inspecionar testes, DTs e segredos.</span>
             </div>
-            <div class="pdis-toolbar-actions">
-              <button type="button" class="pdi-tool-btn" onclick="MesaAreaManager.expandAllPdis()">
+                          <div class="pdis-toolbar-actions">
+                ${area.id === 'casa-auguil' ? `
+                <button type="button" class="pdi-tool-btn" style="color: var(--accent-red); border-color: rgba(255,17,51,0.4);" onclick="MesaAreaManager.openInteriorDrawer()">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                  Interior da Casa
+                </button>
+                ` : ''}
+                <button type="button" class="pdi-tool-btn" onclick="MesaAreaManager.expandAllPdis()">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 11 12 6 17 11"></polyline><polyline points="7 18 12 13 17 18"></polyline></svg>
                 Expandir Todos
               </button>
@@ -3662,6 +3668,13 @@ const MesaAreaManager = {
     if (modal) modal.classList.add('active');
   },
 
+    openInteriorDrawer() {
+    document.body.classList.add('interior-drawer-open');
+  },
+  closeInteriorDrawer() {
+    document.body.classList.remove('interior-drawer-open');
+  },
+  
   closeNpcDrawer() {
     document.body.classList.remove('npc-drawer-open');
   },
@@ -3754,6 +3767,7 @@ const MesaAreaManager = {
     MesaApp.closeModal('area-map-modal');
     MesaApp.closeModal('area-info-modal');
     this.closeNpcDrawer();
+    this.closeInteriorDrawer();
   }
 };
 
@@ -4007,12 +4021,12 @@ const MesaRoteiro = {
     this.init();
     this.renderList();
     this.loadEpisode(this.currentId);
-    MesaApp.openModal('master-script-modal');
+    document.body.classList.add('roteiro-drawer-open');
     this.switchTab('edit');
   },
 
   closeModal() {
-    MesaApp.closeModal('master-script-modal');
+    document.body.classList.remove('roteiro-drawer-open');
   },
 
   saveData() {

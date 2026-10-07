@@ -5557,6 +5557,8 @@ body.mesa-body.area-refugio-gustavo {
 .area-info-modal-dialog,
 .area-map-modal-dialog,
 .npc-dossier-drawer,
+  .roteiro-drawer,
+  .interior-drawer,
 .backstage-panel-card,
 .pdi-accordion-card {
   position: relative;
@@ -5573,6 +5575,8 @@ body.mesa-body.area-refugio-gustavo {
 .area-info-modal-dialog::before,
 .area-map-modal-dialog::before,
 .npc-dossier-drawer::before,
+  .roteiro-drawer::before,
+  .interior-drawer::before,
 .backstage-panel-card::before,
 .pdi-accordion-card::before {
   content: '';
@@ -7092,4 +7096,103 @@ html.perf-lite .nav-auth-chip { filter: none; }
   user-select: none !important;
   letter-spacing: 0.12em !important;
   text-transform: uppercase !important;
+}
+
+
+/* --- ROTEIRO DRAWER (LEFT) --- */
+.roteiro-drawer {
+  --frame-bw: 3px;
+  --frame-edge: #a78bfa;
+  --frame-shadow: 14px 0 40px rgba(0, 0, 0, 0.85);
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: min(850px, 95vw);
+  height: 100vh;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--ink-text);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.roteiro-drawer-open .roteiro-drawer {
+  left: 0 !important;
+}
+
+.roteiro-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(3px);
+  z-index: 1040;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+body.roteiro-drawer-open .roteiro-drawer-backdrop {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+body.roteiro-drawer-open .mesa-board-container,
+.mesa-body.roteiro-drawer-open .mesa-board-container {
+  left: calc(850px + (100vw - 850px) / 2) !important;
+  width: min(calc(100vw - 890px), 1050px) !important;
+  transform: translate(-50%, -50%) scale(0.96) !important;
+}
+
+/* --- INTERIOR DRAWER (RIGHT) --- */
+.interior-drawer {
+  --frame-bw: 3px;
+  --frame-edge: var(--ink-hot);
+  --frame-shadow: -14px 0 40px rgba(0, 0, 0, 0.85);
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 450px;
+  max-width: 100vw;
+  height: 100vh;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--ink-text);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.interior-drawer-open .interior-drawer {
+  right: 0 !important;
+}
+
+.interior-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(3px);
+  z-index: 1040;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+body.interior-drawer-open .interior-drawer-backdrop {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+body.interior-drawer-open .mesa-board-container,
+.mesa-body.interior-drawer-open .mesa-board-container {
+  left: calc((100vw - 450px) / 2) !important;
+  width: min(calc(100vw - 490px), 1050px) !important;
+  transform: translate(-50%, -50%) scale(0.96) !important;
+}
+
+@media (max-width: 900px) {
+  .roteiro-drawer { width: 100vw; }
+  .interior-drawer { width: 100vw; }
 }
