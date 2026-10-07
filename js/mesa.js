@@ -3257,7 +3257,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.0.5 • ÁREA: ${(area.shortName || area.name).toUpperCase()}`;
+      badge.textContent = `v1.0.6 • ÁREA: ${(area.shortName || area.name).toUpperCase()}`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -4093,3 +4093,16 @@ const MesaRoteiro = {
     }
   }
 };
+
+// Fix for global visibility of modules
+window.MesaApp = MesaApp;
+window.MesaAreaManager = MesaAreaManager;
+window.MesaChat = MesaChat;
+window.MesaQuickMenu = MesaQuickMenu;
+window.MesaMobileMenu = MesaMobileMenu;
+window.MesaSecurity = MesaSecurity;
+window.MesaSara = MesaSara;
+window.MesaRoteiro = MesaRoteiro;
+window.MesaReactions = MesaReactions;
+window.MesaDice = MesaDice;
+
