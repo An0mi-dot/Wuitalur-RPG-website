@@ -1212,6 +1212,18 @@ const MesaApp = {
       this.state.players = new Array(8).fill(null);
       
       if (data && data.length > 0) {
+        let sysArea = null;
+        data.forEach(raw => {
+          if (raw.atributos) {
+            const attr = typeof raw.atributos === 'string' ? JSON.parse(raw.atributos) : raw.atributos;
+            if (attr && attr._sys_area) sysArea = attr._sys_area;
+          }
+        });
+        if (sysArea && window.MesaAreaManager && MesaAreaManager.currentAreaId !== sysArea) {
+          console.log("[SYNC] Mudanca de area detectada via banco de dados:", sysArea);
+          MesaAreaManager.applyArea(sysArea, false);
+        }
+        
         data.forEach(raw => {
           const p = {
             id: raw.id,
@@ -3265,14 +3277,17 @@ const MesaAreaManager = {
         };
         MesaChat.receiveMessage(sysMessage);
 
-        // Insere fisicamente no Supabase para que fique no historico!
+        // Salva persistentemente a area no banco de dados, usando os atributos ocultos do Personagem 1
         if (MesaApp.supabase) {
-          MesaApp.supabase.from('mensagens_chat').insert({
-            sender_name: sysMessage.sender_name,
-            sender_token: sysMessage.sender_token,
-            is_master: sysMessage.is_master,
-            content: sysMessage.content
-          }).then(() => {}).catch(e => console.error(e));
+          MesaApp.supabase.from('personagens').select('atributos').eq('id', 1).single().then(res => {
+            if (res.data) {
+              const attrs = typeof res.data.atributos === 'string' ? JSON.parse(res.data.atributos || '{}') : (res.data.atributos || {});
+              attrs._sys_area = area.id;
+              MesaApp.supabase.from('personagens').update({ atributos: attrs }).eq('id', 1).then(() => {
+                console.log("[SYNC] Area salva no Supabase com sucesso.");
+              }).catch(e => console.error(e));
+            }
+          });
         }
       }
     }
