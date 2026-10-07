@@ -888,7 +888,9 @@ const MesaApp = {
     if (this.state.isMaster) {
       if (tokenLabel) tokenLabel.textContent = 'Mestre Ativo';
       if (alertBadge) alertBadge.style.display = 'none';
-      if (chooseAreaBtn) chooseAreaBtn.style.display = 'inline-flex';
+      const menuAreaBtn = document.getElementById('menu-area-btn');
+    if (menuAreaBtn) menuAreaBtn.style.display = 'flex';
+    if (chooseAreaBtn) chooseAreaBtn.style.display = 'inline-flex';
       if (mobileChooseAreaItem) mobileChooseAreaItem.style.display = 'flex';
     } else if (this.state.myToken) {
       if (tokenLabel) {
@@ -1490,13 +1492,14 @@ const MesaApp = {
           .single();
         if (data && data.atributos) {
           const attrs = typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos;
-          if (attrs && attrs._sys_area && attrs._sys_area !== MesaAreaManager.currentAreaId) {
-            console.log("[HEARTBEAT 1.5s] Sincronizando mudança de área:", attrs._sys_area);
-            MesaAreaManager.applyArea(attrs._sys_area, false);
+          const targetArea = (attrs && attrs._sys_area) ? attrs._sys_area : 'none';
+          if (targetArea !== MesaAreaManager.currentAreaId) {
+            console.log("[HEARTBEAT UNIVERSAL 1s] Sincronizando com a área do Mestre:", targetArea);
+            MesaAreaManager.applyArea(targetArea, false);
           }
         }
       } catch(e) {}
-    }, 1500);
+    }, 1000);
   },
 
   subscribeToRealtime() {
@@ -3238,11 +3241,7 @@ const MesaAreaManager = {
       return;
     }
 
-    if (this.selectedAreaId === this.currentAreaId) {
-      this.closeModals();
-      return;
-    }
-
+    console.log("[MASTER ACTION] Deslocando grupo oficialmente para:", this.selectedAreaId);
     this.applyArea(this.selectedAreaId, true);
     this.closeModals();
   },
@@ -3254,6 +3253,12 @@ const MesaAreaManager = {
     this.currentAreaId = areaId;
     this.selectedAreaId = areaId;
     localStorage.setItem('mesa_current_area', areaId);
+
+    // Atualiza o selo visual de versão e área em tempo real no canto inferior
+    const badge = document.getElementById('mesa-version-badge');
+    if (badge) {
+      badge.textContent = `v1.0.5 • ÁREA: ${(area.shortName || area.name).toUpperCase()}`;
+    }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
     document.body.classList.add('mesa-area-switching');
