@@ -4072,6 +4072,18 @@ body.mp-drawer-open .mesa-board-container,
    ============================================================ */
 
 /* 1. PALETAS TEMÁTICAS DAS ÁREAS */
+
+body.mesa-body.area-none {
+  --area-ambient-1: #c2410c;
+  --area-ambient-2: #7c2d12;
+  --area-ambient-3: #3a1005;
+  --area-ambient-dark: #120300;
+  --area-accent: #f97316;
+  --area-accent-trans: rgba(249, 115, 22, 0.4);
+  --area-glow: rgba(249, 115, 22, 0.4);
+  --area-badge-bg: rgba(249, 115, 22, 0.15);
+}
+
 body.mesa-body.area-mina-de-prata {
   --area-ambient-1: #c2410c;
   --area-ambient-2: #7c2d12;
@@ -7063,14 +7075,21 @@ html.perf-lite .nav-auth-chip { filter: none; }
 
 /* Versao da Mesa */
 .mesa-version {
-  position: fixed;
-  bottom: 8px;
-  left: 12px;
-  font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.25);
-  font-family: var(--mesa-mono), monospace;
-  z-index: 1000;
-  pointer-events: none;
-  user-select: none;
-  letter-spacing: 0.1em;
+  position: fixed !important;
+  bottom: 12px !important;
+  left: 14px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  font-family: var(--mesa-mono), Consolas, monospace !important;
+  color: #ff5500 !important;
+  background: rgba(10, 5, 2, 0.92) !important;
+  border: 1px solid rgba(255, 85, 0, 0.6) !important;
+  padding: 4px 10px !important;
+  border-radius: 4px !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.85) !important;
+  z-index: 999999 !important;
+  pointer-events: none !important;
+  user-select: none !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
 }

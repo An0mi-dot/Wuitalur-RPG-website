@@ -11,9 +11,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/variables.css?v=3.2.0">
-  <link rel="stylesheet" href="css/components.css?v=3.2.0">
-  <link rel="stylesheet" href="css/mesa.css?v=3.2.0">
+  <link rel="stylesheet" href="css/variables.css?v=1.0.3">
+  <link rel="stylesheet" href="css/components.css?v=1.0.3">
+  <link rel="stylesheet" href="css/mesa.css?v=1.0.3">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -199,7 +199,7 @@
         </button>
 
         <!-- Botão Sobre a Área Atual -->
-        <button id="nav-about-area-btn" class="ink-tag" onclick="MesaAreaManager.openAboutAreaModal()" title="Informações e Pistas da Área Atual">
+        <button id="nav-about-area-btn" class="ink-tag" style="display: none;" onclick="MesaAreaManager.openAboutAreaModal()" title="Informações e Pistas da Área Atual">
           <span id="nav-about-area-icon" class="area-btn-icon">
             <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
@@ -545,7 +545,7 @@
           </button>
 
           <!-- Sobre Área Atual (Mobile) -->
-          <button class="mobile-menu-item" onclick="MesaAreaManager.openAboutAreaModal(); MesaMobileMenu.close()">
+          <button id="mobile-about-area-btn" class="mobile-menu-item" onclick="MesaAreaManager.openAboutAreaModal(); MesaMobileMenu.close()" style="display: none;">
             <span class="m-item-icon" id="mobile-about-area-icon">
               <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
@@ -691,10 +691,10 @@
     <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=3.2.0"></script>
+<script src="js/campaign-data.js?v=1.0.3"></script>
 
-<script src="js/mesa.js?v=3.2.0"></script>
+<script src="js/mesa.js?v=1.0.3"></script>
   <!-- Versao da Mesa -->
-  <div class="mesa-version">v1.0.2</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.0.3</div>
 </body>
 </html>

@@ -1212,15 +1212,15 @@ const MesaApp = {
       this.state.players = new Array(8).fill(null);
       
       if (data && data.length > 0) {
-        let sysArea = null;
+        let sysArea = 'none';
         data.forEach(raw => {
           if (raw.atributos) {
             const attr = typeof raw.atributos === 'string' ? JSON.parse(raw.atributos) : raw.atributos;
             if (attr && attr._sys_area) sysArea = attr._sys_area;
           }
         });
-        if (sysArea && window.MesaAreaManager && MesaAreaManager.currentAreaId !== sysArea) {
-          console.log("[SYNC] Mudanca de area detectada via banco de dados:", sysArea);
+        if (window.MesaAreaManager) {
+          console.log("[SYNC] Area canônica da mesa no banco:", sysArea);
           MesaAreaManager.applyArea(sysArea, false);
         }
         
@@ -2988,13 +2988,19 @@ const MESA_AREAS = {
 };
 
 const MesaAreaManager = {
-  currentAreaId: 'colegio-primordio',
-  selectedAreaId: 'colegio-primordio',
+  currentAreaId: 'none',
+  selectedAreaId: 'none',
 
   init() {
-    const saved = localStorage.getItem('mesa_current_area');
-    if (saved && MESA_AREAS[saved]) {
-      this.currentAreaId = saved;
+    // Se o Supabase estiver disponivel, a area vem diretamente do banco de dados (fetchPlayers)
+    // Apenas usa localStorage se estiver completamente offline / sem Supabase
+    if (!MesaApp.supabase) {
+      const saved = localStorage.getItem('mesa_current_area');
+      if (saved && MESA_AREAS[saved]) {
+        this.currentAreaId = saved;
+      } else {
+        this.currentAreaId = 'none';
+      }
     }
     this.selectedAreaId = this.currentAreaId;
     this.applyArea(this.currentAreaId, false);
@@ -3254,41 +3260,33 @@ const MesaAreaManager = {
       if (mobileAboutBtn) mobileAboutBtn.style.display = 'flex';
     }
 
-    if (shouldBroadcast && MesaChat && MesaChat.channel) {
-      MesaChat.channel.send({
-        type: 'broadcast',
-        event: 'area_changed',
-        payload: {
-          areaId: area.id,
-          name: area.name,
-          timestamp: Date.now()
-        }
-      });
-
-      // Notificação amigável no chat para os jogadores
-      if (typeof MesaChat.receiveMessage === 'function') {
-        const sysMessage = {
-          id: 'area-alert-' + Date.now(),
-          sender_name: 'SISTEMA DA MESA',
-          is_master: true,
-          content: `SYS_AREA:${area.id}|[ÁREA] O Mestre deslocou a investigação para: [ ${area.name} ]`,
-          created_at: new Date().toISOString(),
-          sender_token: 'system'
-        };
-        MesaChat.receiveMessage(sysMessage);
-
-        // Salva persistentemente a area no banco de dados, usando os atributos ocultos do Personagem 1
-        if (MesaApp.supabase) {
-          MesaApp.supabase.from('personagens').select('atributos').eq('id', 1).single().then(res => {
-            if (res.data) {
-              const attrs = typeof res.data.atributos === 'string' ? JSON.parse(res.data.atributos || '{}') : (res.data.atributos || {});
-              attrs._sys_area = area.id;
-              MesaApp.supabase.from('personagens').update({ atributos: attrs }).eq('id', 1).then(() => {
-                console.log("[SYNC] Area salva no Supabase com sucesso.");
-              }).catch(e => console.error(e));
+    if (shouldBroadcast) {
+      // 1. WebSocket Broadcast imediato para jogadores conectados na sala
+      if (MesaChat && MesaChat.channel) {
+        try {
+          MesaChat.channel.send({
+            type: 'broadcast',
+            event: 'area_changed',
+            payload: {
+              areaId: area.id,
+              name: area.name,
+              timestamp: Date.now()
             }
           });
-        }
+        } catch(e) { console.warn("Erro no broadcast:", e); }
+      }
+
+      // 2. Gravacao persistente oficial no Supabase (Personagem ID 1)
+      if (MesaApp.supabase) {
+        MesaApp.supabase.from('personagens').select('atributos').eq('id', 1).single().then(res => {
+          if (res.data) {
+            const attrs = typeof res.data.atributos === 'string' ? JSON.parse(res.data.atributos || '{}') : (res.data.atributos || {});
+            attrs._sys_area = area.id;
+            MesaApp.supabase.from('personagens').update({ atributos: attrs }).eq('id', 1).then(() => {
+              console.log("[SYNC] Sucesso: area salva no Supabase como", area.id);
+            }).catch(e => console.error("[SYNC] Falha ao gravar area:", e));
+          }
+        });
       }
     }
   },
