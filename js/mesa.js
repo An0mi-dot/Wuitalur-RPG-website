@@ -2871,6 +2871,7 @@ const MESA_AREAS = {
     "pois": []
   },
   "colegio-primordio": {
+      "npcs_presentes": ["isaque-valente"],
     "id": "colegio-primordio",
     "name": "Colégio Integrado Primórdio",
     "shortName": "Colégio Primórdio",
@@ -3257,7 +3258,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.0.7`;
+      badge.textContent = `v1.0.8`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -3704,6 +3705,7 @@ const MesaAreaManager = {
 
       <div class="npc-sheet-head">
         <span class="npc-role-tag">${roleName}</span>
+          ${npc.pv !== undefined ? `<span class="npc-pv-tag" style="background:#16a34a; color:#fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;">PV: ${npc.pv}</span>` : ''}
         <h2 class="npc-sheet-name">${npc.nome}</h2>
       </div>
 
@@ -3721,7 +3723,12 @@ const MesaAreaManager = {
           <span class="npc-callout-label">Gatilho de revelação</span>
           <p>${npc.gatilho_revelacao || ''}</p>
         </div>
-      </div>
+          ${npc.notas_mestre ? `
+          <div class="npc-callout" style="border-left-color: #f59e0b; background: rgba(245, 158, 11, 0.05);">
+            <span class="npc-callout-label" style="color: #f59e0b;">Notas do Mestre</span>
+            <p>${npc.notas_mestre.replace(/\n/g, '<br><br>')}</p>
+          </div>` : ''}
+        </div>
     `;
 
     document.body.classList.add('npc-drawer-open');
