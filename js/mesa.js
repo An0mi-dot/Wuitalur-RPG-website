@@ -3258,7 +3258,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.0.8`;
+      badge.textContent = `v1.0.9`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -3700,14 +3700,30 @@ const MesaAreaManager = {
         <p class="npc-field-text">${text || ''}</p>
       </div>`;
 
+    let attrHtml = '';
+    if (npc.atributos) {
+      const keys = Object.keys(npc.atributos);
+      if (keys.length > 0) {
+        const boxes = keys.map(k => {
+          return `<div style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid var(--ink-edge-soft); padding: 8px; border-radius: 6px; text-align: center; min-width: 60px;">
+            <div style="font-size: 0.65rem; color: var(--ink-text-dim); text-transform: uppercase; margin-bottom: 4px;">${k}</div>
+            <div style="font-size: 1.1rem; font-weight: bold; color: var(--ink-text); font-family: var(--font-heading, 'Cinzel', serif);">${npc.atributos[k]}</div>
+          </div>`;
+        }).join('');
+        attrHtml = `<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;">${boxes}</div>`;
+      }
+    }
+
     content.innerHTML = `
       ${npcTabsHtml}
 
-      <div class="npc-sheet-head">
-        <span class="npc-role-tag">${roleName}</span>
-          ${npc.pv !== undefined ? `<span class="npc-pv-tag" style="background:#16a34a; color:#fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;">PV: ${npc.pv}</span>` : ''}
-        <h2 class="npc-sheet-name">${npc.nome}</h2>
+      <div class="npc-sheet-head" style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; margin-bottom: 20px;">
+        <h2 class="npc-sheet-name" style="margin: 0;">${npc.nome}</h2>
+        <span class="npc-role-tag" style="margin: 0;">${roleName}</span>
+        ${npc.pv !== undefined ? `<span class="npc-pv-tag" style="background:#16a34a; color:#fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">PV: ${npc.pv}</span>` : ''}
       </div>
+      
+      ${attrHtml}
 
       <div class="npc-fields">
         ${fieldRow('Personalidade e postura', npc.personalidade)}
