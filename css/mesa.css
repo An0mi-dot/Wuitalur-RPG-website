@@ -334,7 +334,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   position: absolute;
   inset: 0;
   background: #050100;
-  border-radius: 2px 6px 3px 7px;
+  border-radius: 0;
   border: 5px solid var(--area-accent, var(--mesa-orange));
   box-shadow:
     0 0 0 1px #000,
@@ -368,7 +368,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   position: absolute;
   inset: 8px;
   border: 1.5px dashed var(--area-accent-trans, rgba(255, 85, 0, 0.35));
-  border-radius: 2px;
+  border-radius: 0;
   pointer-events: none;
   z-index: 5; /* Borda tracejada fica sobre a imagem */
   transition: border-color 0.8s ease;
@@ -575,7 +575,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   font-weight: 900;
   width: 28px;
   height: 28px;
-  border-radius: 3px;
+  border-radius: 0;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -927,7 +927,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   z-index: 10;
   width: 58px;
   height: 58px;
-  border-radius: 4px;
+  border-radius: 0;
   background: rgba(8, 2, 0, 0.88);
   border: 2px solid rgba(255, 85, 0, 0.6);
   color: #fff;
@@ -985,7 +985,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   width: 100%;
   background: rgba(10, 2, 0, 0.88);
   padding: 6px;
-  border-radius: 2px;
+  border-radius: 0;
   border: 1px solid rgba(255, 85, 0, 0.4);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
 }
@@ -1001,7 +1001,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
 
 .stat-label-tag {
   padding: 1px 6px;
-  border-radius: 2px;
+  border-radius: 0;
   font-size: 0.62rem;
   letter-spacing: 0.04em;
   font-weight: 900;
@@ -1038,7 +1038,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
 .mesa-modal.ink-modal {
   background: #0c0402;
   border: 3px solid var(--mesa-orange);
-  border-radius: 4px;
+  border-radius: 0;
   width: 90%;
   max-width: 420px;
   padding: 32px 28px;
@@ -1073,7 +1073,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   background: #080200;
   border: 2px solid var(--mesa-orange);
   color: #fff;
-  border-radius: 2px;
+  border-radius: 0;
   margin-bottom: 16px;
   font-size: 1rem;
   font-weight: 700;
@@ -1418,7 +1418,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   max-height: 520px;
   background: rgba(12, 2, 0, 0.7);
   border: 2px solid rgba(255, 85, 0, 0.4);
-  border-radius: 4px;
+  border-radius: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1519,7 +1519,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   font-size: 0.75rem;
   font-weight: 800;
   padding: 3px 10px;
-  border-radius: 2px;
+  border-radius: 0;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   display: inline-flex;
@@ -1562,7 +1562,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   font-weight: 900;
   padding: 2px 10px;
   font-size: 0.78rem;
-  border-radius: 2px;
+  border-radius: 0;
 }
 
 .vital-stat-tag.pv-tag {
@@ -1598,7 +1598,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   justify-content: center;
   font-weight: 900;
   font-size: 0.95rem;
-  border-radius: 2px;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.15s ease;
   line-height: 1;
@@ -1641,7 +1641,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   height: 12px;
   background: rgba(0, 0, 0, 0.6);
   border: 1.5px solid var(--mesa-purple);
-  border-radius: 2px;
+  border-radius: 0;
   overflow: hidden;
   position: relative;
 }
@@ -1734,7 +1734,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   font-size: 0.98rem;
   font-weight: 900;
   padding: 3px 10px;
-  border-radius: 2px;
+  border-radius: 0;
   transform: rotate(-2deg);
   clip-path: polygon(4% 0%, 96% 4%, 100% 96%, 0% 100%);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
@@ -1753,7 +1753,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   padding: 3px 10px;
   font-size: 0.82rem;
   color: #ffaa66;
-  border-radius: 2px;
+  border-radius: 0;
   width: fit-content;
   animation: fichaSlideInFromLeft 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: calc(0.36s + var(--bonus-idx, 0) * 0.05s);
@@ -1838,7 +1838,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   color: #ffaa55;
   font-size: 0.72rem;
   padding: 2px 7px;
-  border-radius: 2px;
+  border-radius: 0;
   font-weight: 800;
 }
 
@@ -1860,7 +1860,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   right: 0;
   background: #121215;
   border: 1px solid #3f3f46;
-  border-radius: 4px;
+  border-radius: 0;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.95);
   padding: 4px;
   display: none;
@@ -1887,7 +1887,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   background: #18181b;
   border: 1px solid #27272a;
   padding: 8px 10px;
-  border-radius: 3px;
+  border-radius: 0;
   color: #e4e4e7;
   text-align: left;
   cursor: pointer;
@@ -1974,7 +1974,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   font-size: 1.1rem;
   width: 24px;
   height: 24px;
-  border-radius: 2px;
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2007,7 +2007,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   font-size: 0.65rem;
   font-weight: 800;
   padding: 2px 6px;
-  border-radius: 2px;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.15s;
 }
@@ -2039,7 +2039,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   background: #0d0d10;
   border: 1px solid #3f3f46;
   color: #fff;
-  border-radius: 2px;
+  border-radius: 0;
   padding: 0 6px;
 }
 
@@ -2063,7 +2063,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   background: #0d0d10;
   border: 1px solid #27272a;
   padding: 6px 12px;
-  border-radius: 3px;
+  border-radius: 0;
   margin-bottom: 10px;
 }
 
@@ -2094,7 +2094,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   background: #18181b;
   border: 1px solid #27272a;
   padding: 6px 8px;
-  border-radius: 3px;
+  border-radius: 0;
   font-size: 0.74rem;
   cursor: pointer;
   transition: all 0.15s;
@@ -2128,14 +2128,14 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   background: #27272a;
   color: #a1a1aa;
   padding: 1px 6px;
-  border-radius: 10px;
+  border-radius: 0;
   font-weight: 700;
 }
 
 .adm-gallery-card {
   background: #0d0d10;
   border: 1px solid #27272a;
-  border-radius: 4px;
+  border-radius: 0;
   padding: 6px;
   display: flex;
   flex-direction: column;
@@ -2160,7 +2160,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   width: 100%;
   height: 85px;
   background: #050507;
-  border-radius: 2px;
+  border-radius: 0;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -2197,7 +2197,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   background: #1c1c20;
   border: 1px solid #3f3f46;
   color: #e4e4e7;
-  border-radius: 2px;
+  border-radius: 0;
   cursor: pointer;
   text-align: center;
   transition: all 0.15s;
@@ -2522,7 +2522,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   height: 460px;
   background: #0a0301;
   border: 2px solid var(--mesa-orange);
-  border-radius: 4px;
+  border-radius: 0;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.95), 0 0 20px rgba(255, 85, 0, 0.25);
   filter: url(#nanquim-rough);
   display: flex;
@@ -2610,7 +2610,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
 
 .chat-messages-container::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, var(--mesa-orange) 0%, var(--mesa-ink-red) 100%);
-  border-radius: 2px;
+  border-radius: 0;
   box-shadow: 0 0 6px rgba(255, 85, 0, 0.4);
 }
 
@@ -2659,7 +2659,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   padding: 1px 6px;
-  border-radius: 2px;
+  border-radius: 0;
   background: rgba(255, 85, 0, 0.15);
 }
 
@@ -2680,7 +2680,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   border: 1px solid rgba(255, 85, 0, 0.3);
   color: #f1f1f1;
   padding: 7px 11px;
-  border-radius: 3px;
+  border-radius: 0;
   font-size: 0.84rem;
   line-height: 1.35;
   word-break: break-word;
@@ -2711,7 +2711,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   background: #050100;
   border: 1.5px solid rgba(255, 85, 0, 0.4);
   color: #fff;
-  border-radius: 2px;
+  border-radius: 0;
   font-size: 0.85rem;
   margin: 0;
 }
@@ -2738,7 +2738,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   transform: translateX(-50%) translateY(-10px) scale(0.95);
   background: #0d0402;
   border: 2px solid var(--mesa-orange);
-  border-radius: 4px;
+  border-radius: 0;
   padding: 10px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.95), 0 0 15px rgba(255, 85, 0, 0.3);
   filter: url(#nanquim-rough);
@@ -2764,7 +2764,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
 .reaction-btn {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 85, 0, 0.25);
-  border-radius: 4px;
+  border-radius: 0;
   padding: 6px 0;
   cursor: pointer;
   display: flex;
@@ -2795,7 +2795,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 2px solid var(--mesa-orange);
-  border-radius: 4px;
+  border-radius: 0;
   clip-path: polygon(0% 4%, 98% 0%, 100% 96%, 2% 100%);
   filter: url(#nanquim-rough);
   padding: 6px 10px;
@@ -2922,7 +2922,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   margin-bottom: 16px;
   background: rgba(0, 0, 0, 0.45);
   padding: 12px;
-  border-radius: 4px;
+  border-radius: 0;
   border: 1px solid rgba(255, 85, 0, 0.2);
 }
 
@@ -2939,7 +2939,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   padding: 8px 4px;
   font-weight: 900;
   font-size: 0.88rem;
-  border-radius: 3px;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.15s ease;
   text-align: center;
@@ -2971,7 +2971,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   border: 1.5px solid var(--mesa-orange);
   color: #fff;
   padding: 4px 10px;
-  border-radius: 3px;
+  border-radius: 0;
   font-weight: 900;
   font-size: 0.82rem;
   display: inline-flex;
@@ -3015,7 +3015,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   height: 38px;
   font-size: 1.2rem;
   font-weight: 900;
-  border-radius: 3px;
+  border-radius: 0;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -3037,7 +3037,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   font-size: 1.2rem;
   font-weight: 900;
   text-align: center;
-  border-radius: 3px;
+  border-radius: 0;
 }
 
 .mod-input:focus {
@@ -3088,7 +3088,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   padding: 5px 14px;
-  border-radius: 2px;
+  border-radius: 0;
   transform: rotate(-1deg);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.9);
   margin-bottom: 16px;
@@ -3120,7 +3120,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   height: 76px;
   background: #110400;
   border: 2.5px solid var(--mesa-orange);
-  border-radius: 8px;
+  border-radius: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3223,7 +3223,7 @@ body.mp-drawer-open .mesa-board-container,
   background: #0f0f12;
   border: 1px solid #27272a;
   border-bottom: none;
-  border-radius: 6px 6px 0 0;
+  border-radius: 0;
   box-shadow: 0 -15px 50px rgba(0, 0, 0, 0.98), 0 0 20px rgba(0, 0, 0, 0.8);
   z-index: 1000 !important; /* Sempre acima da mídia transmitida em tela cheia para o Mestre */
   display: flex;
@@ -3270,7 +3270,7 @@ body.mp-drawer-open .mesa-board-container,
   font-size: 0.72rem;
   font-weight: 700;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: 0;
   border: 1px solid #3f3f46;
 }
 
@@ -3281,7 +3281,7 @@ body.mp-drawer-open .mesa-board-container,
   font-size: 0.72rem;
   font-weight: 600;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.15s;
 }
@@ -3315,7 +3315,7 @@ body.mp-drawer-open .mesa-board-container,
   font-size: 0.76rem;
   font-weight: 700;
   padding: 4px 12px;
-  border-radius: 4px;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.15s;
 }
@@ -3408,7 +3408,7 @@ body.mp-drawer-open .mesa-board-container,
 .adm-col-playlist {
   background: #141417;
   border: 1px solid #27272a;
-  border-radius: 4px;
+  border-radius: 0;
   display: flex;
   flex-direction: column;
   padding: 8px;
@@ -3433,7 +3433,7 @@ body.mp-drawer-open .mesa-board-container,
   font-size: 0.68rem;
   font-weight: 700;
   padding: 2px 8px;
-  border-radius: 3px;
+  border-radius: 0;
   cursor: pointer;
 }
 
@@ -3445,7 +3445,7 @@ body.mp-drawer-open .mesa-board-container,
 .adm-dropzone {
   border: 1.5px dashed #3f3f46;
   background: #0d0d10;
-  border-radius: 4px;
+  border-radius: 0;
   padding: 10px 8px;
   text-align: center;
   font-size: 0.68rem;
@@ -3485,7 +3485,7 @@ body.mp-drawer-open .mesa-board-container,
   background: #18181b;
   border: 1px solid #27272a;
   padding: 4px 8px;
-  border-radius: 3px;
+  border-radius: 0;
   font-size: 0.72rem;
   cursor: pointer;
   transition: all 0.15s;
@@ -3541,7 +3541,7 @@ body.mp-drawer-open .mesa-board-container,
   font-size: 0.72rem;
   font-weight: 700;
   padding: 5px 8px;
-  border-radius: 3px;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.15s;
 }
@@ -3562,7 +3562,7 @@ body.mp-drawer-open .mesa-board-container,
 .adm-col-monitor {
   background: #141417;
   border: 1px solid #27272a;
-  border-radius: 4px;
+  border-radius: 0;
   display: flex;
   flex-direction: column;
   padding: 8px;
@@ -3586,7 +3586,7 @@ body.mp-drawer-open .mesa-board-container,
   border: 1px solid #3f3f46;
   color: #fff;
   font-size: 0.68rem;
-  border-radius: 3px;
+  border-radius: 0;
   padding: 1px 4px;
 }
 
@@ -3597,7 +3597,7 @@ body.mp-drawer-open .mesa-board-container,
   height: 140px;
   background: #000000;
   border: 1px solid #27272a;
-  border-radius: 3px;
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3627,7 +3627,7 @@ body.mp-drawer-open .mesa-board-container,
   font-size: 0.65rem;
   font-weight: 900;
   padding: 2px 6px;
-  border-radius: 2px;
+  border-radius: 0;
   letter-spacing: 0.06em;
 }
 
@@ -3638,7 +3638,7 @@ body.mp-drawer-open .mesa-board-container,
   gap: 6px;
   background: #0d0d10;
   padding: 6px 10px;
-  border-radius: 3px;
+  border-radius: 0;
   border: 1px solid #27272a;
 }
 
@@ -3672,7 +3672,7 @@ body.mp-drawer-open .mesa-board-container,
   width: 28px;
   height: 24px;
   font-size: 0.72rem;
-  border-radius: 3px;
+  border-radius: 0;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -3707,7 +3707,7 @@ body.mp-drawer-open .mesa-board-container,
 .adm-loop-station {
   background: #0d0d10;
   border: 1px solid #27272a;
-  border-radius: 3px;
+  border-radius: 0;
   padding: 6px 10px;
   display: flex;
   flex-direction: column;
@@ -3765,7 +3765,7 @@ body.mp-drawer-open .mesa-board-container,
   font-size: 0.65rem;
   font-weight: 700;
   padding: 2px 6px;
-  border-radius: 3px;
+  border-radius: 0;
   cursor: pointer;
 }
 
@@ -3817,7 +3817,7 @@ body.mp-drawer-open .mesa-board-container,
   max-width: 86vw;
   max-height: 82vh;
   border: 4px solid var(--mesa-orange);
-  border-radius: 4px;
+  border-radius: 0;
   box-shadow: 0 0 45px rgba(255, 85, 0, 0.65), 0 25px 80px rgba(0, 0, 0, 0.98);
   overflow: hidden;
   background: #000000;
@@ -3889,7 +3889,7 @@ body.mp-drawer-open .mesa-board-container,
     height: 52px !important;
     background: #0d0402 !important;
     border: 2.5px solid var(--mesa-orange) !important;
-    border-radius: 6px !important;
+    border-radius: 0;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -3922,7 +3922,7 @@ body.mp-drawer-open .mesa-board-container,
     width: 100%;
     height: 2.5px;
     background: #ff5500;
-    border-radius: 1px;
+    border-radius: 0;
     transition: all 0.25s ease;
   }
 
@@ -3960,7 +3960,7 @@ body.mp-drawer-open .mesa-board-container,
     max-width: calc(100vw - 44px);
     background: rgba(13, 4, 1, 0.98);
     border: 2px solid var(--mesa-orange);
-    border-radius: 6px;
+    border-radius: 0;
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.98), 0 0 30px rgba(255, 85, 0, 0.4);
     padding: 12px;
     opacity: 0;
@@ -4019,7 +4019,7 @@ body.mp-drawer-open .mesa-board-container,
     padding: 10px 12px;
     background: rgba(255, 85, 0, 0.07);
     border: 1px solid rgba(255, 85, 0, 0.25);
-    border-radius: 4px;
+    border-radius: 0;
     color: #f4f4f5;
     font-size: 0.84rem;
     font-weight: 600;
@@ -4184,7 +4184,7 @@ body.mesa-body.area-refugio-gustavo {
   height: 560px;
   background: radial-gradient(ellipse at 50% 50%, #151620 0%, #0c0d12 65%, #050508 100%);
   border: 1.5px solid rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
+  border-radius: 0;
   overflow: hidden;
   box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.85), 0 8px 30px rgba(0, 0, 0, 0.7);
   user-select: none;
@@ -4228,7 +4228,7 @@ body.mesa-body.area-refugio-gustavo {
   font-weight: 800;
   letter-spacing: 0.05em;
   padding: 2px 8px;
-  border-radius: 3px;
+  border-radius: 0;
   box-shadow: 0 0 10px rgba(22, 163, 74, 0.7);
   white-space: nowrap;
   pointer-events: none;
@@ -4298,7 +4298,7 @@ body.mesa-body.area-refugio-gustavo {
   text-transform: uppercase;
   background: rgba(8, 8, 12, 0.88);
   padding: 4px 10px;
-  border-radius: 4px;
+  border-radius: 0;
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
   pointer-events: none;
@@ -4351,7 +4351,7 @@ body.mesa-body.area-refugio-gustavo {
   padding: 14px 18px;
   background: rgba(10, 10, 14, 0.85);
   border: 1px solid rgba(255, 85, 0, 0.25);
-  border-radius: 6px;
+  border-radius: 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -4386,7 +4386,7 @@ body.mesa-body.area-refugio-gustavo {
   filter: none !important;
   background: #0d0f15 !important;
   border: 1.5px solid rgba(255, 255, 255, 0.14) !important;
-  border-radius: 8px !important;
+  border-radius: 0;
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.95), 0 0 35px rgba(0, 0, 0, 0.8) !important;
   padding: 26px 28px !important;
 }
@@ -4395,7 +4395,7 @@ body.mesa-body.area-refugio-gustavo {
   filter: none !important;
   background: #0d0f15 !important;
   border: 1.5px solid rgba(255, 255, 255, 0.14) !important;
-  border-radius: 8px !important;
+  border-radius: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
   -webkit-font-smoothing: antialiased !important;
 }
@@ -4404,7 +4404,7 @@ body.mesa-body.area-refugio-gustavo {
   filter: none !important;
   background: #0d0f15 !important;
   border: 1.5px solid rgba(255, 255, 255, 0.14) !important;
-  border-radius: 8px !important;
+  border-radius: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
   -webkit-font-smoothing: antialiased !important;
 }
@@ -4429,7 +4429,7 @@ body.mesa-body.area-refugio-gustavo {
 .area-header-symbol {
   width: 52px;
   height: 52px;
-  border-radius: 8px;
+  border-radius: 0;
   background: rgba(20, 24, 33, 0.9);
   border: 1.5px solid var(--area-accent, #14b8a6);
   display: flex;
@@ -4471,7 +4471,7 @@ body.mesa-body.area-refugio-gustavo {
   font-size: 0.74rem;
   font-weight: 700;
   padding: 5px 12px;
-  border-radius: 4px;
+  border-radius: 0;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.16);
   color: #e2e8f0;
@@ -4495,7 +4495,7 @@ body.mesa-body.area-refugio-gustavo {
 .area-public-info {
   background: #12151e;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 22px 24px;
   margin-bottom: 24px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
@@ -4534,7 +4534,7 @@ body.mesa-body.area-refugio-gustavo {
   background: rgba(45, 26, 5, 0.65);
   border: 1px solid rgba(245, 158, 11, 0.4);
   border-left: 4px solid #f59e0b;
-  border-radius: 6px;
+  border-radius: 0;
   padding: 14px 18px;
   margin-top: 18px;
 }
@@ -4581,7 +4581,7 @@ body.mesa-body.area-refugio-gustavo {
 .mesa-npc-tag-btn {
   background: rgba(56, 189, 248, 0.1);
   border: 1px solid rgba(56, 189, 248, 0.35);
-  border-radius: 4px;
+  border-radius: 0;
   color: #bae6fd;
   font-size: 0.82rem;
   font-weight: 600;
@@ -4627,7 +4627,7 @@ body.mesa-body.area-refugio-gustavo {
 .mesa-exit-btn {
   background: rgba(251, 146, 60, 0.1);
   border: 1px solid rgba(251, 146, 60, 0.35);
-  border-radius: 4px;
+  border-radius: 0;
   color: #fed7aa;
   font-size: 0.82rem;
   font-weight: 600;
@@ -4649,7 +4649,7 @@ body.mesa-body.area-refugio-gustavo {
   padding: 14px 18px;
   background: rgba(234, 179, 8, 0.08);
   border-left: 3px solid #eab308;
-  border-radius: 0 6px 6px 0;
+  border-radius: 0;
   font-size: 0.88rem;
   color: #fef08a;
   line-height: 1.6;
@@ -4667,7 +4667,7 @@ body.mesa-body.area-refugio-gustavo {
   background: #10121a;
   border: 1.5px solid rgba(239, 68, 68, 0.5);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 24px;
   position: relative;
   margin-top: 24px;
@@ -4690,7 +4690,7 @@ body.mesa-body.area-refugio-gustavo {
   border: 1px solid rgba(239, 68, 68, 0.4);
   padding: 3px 10px;
   margin-bottom: 8px;
-  border-radius: 4px;
+  border-radius: 0;
   text-transform: uppercase;
 }
 
@@ -4719,7 +4719,7 @@ body.mesa-body.area-refugio-gustavo {
   padding: 10px 14px;
   background: #090a0f;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 6px;
+  border-radius: 0;
 }
 
 .poi-nav-btn {
@@ -4729,7 +4729,7 @@ body.mesa-body.area-refugio-gustavo {
   font-size: 0.8rem;
   font-weight: 600;
   padding: 6px 12px;
-  border-radius: 4px;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.18s ease;
   font-family: inherit;
@@ -4754,7 +4754,7 @@ body.mesa-body.area-refugio-gustavo {
 .poi-card {
   background: #141722;
   border: 1.5px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  border-radius: 0;
   overflow: hidden;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
   transition: border-color 0.2s ease;
@@ -4787,7 +4787,7 @@ body.mesa-body.area-refugio-gustavo {
   background: rgba(239, 68, 68, 0.12);
   border: 1px solid rgba(239, 68, 68, 0.35);
   padding: 3px 8px;
-  border-radius: 3px;
+  border-radius: 0;
   text-transform: uppercase;
 }
 
@@ -4905,7 +4905,7 @@ body.mesa-body.area-refugio-gustavo {
   border: 1px solid rgba(245, 158, 11, 0.4);
   color: #fbbf24;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: 0;
   font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0.03em;
@@ -4929,7 +4929,7 @@ body.mesa-body.area-refugio-gustavo {
 .mesa-master-notes-icon {
   width: 32px;
   height: 32px;
-  border-radius: 6px;
+  border-radius: 0;
   background: rgba(168, 85, 247, 0.15);
   border: 1px solid rgba(168, 85, 247, 0.4);
   color: #c084fc;
@@ -5004,14 +5004,14 @@ body.mesa-body.area-refugio-gustavo {
 .area-tab-nav-btn:hover {
   color: #f1f5f9;
   background: rgba(255, 255, 255, 0.03);
-  border-radius: 6px 6px 0 0;
+  border-radius: 0;
 }
 
 .area-tab-nav-btn.active {
   color: #ffffff;
   border-bottom-color: var(--mesa-orange, #ff5500);
   background: rgba(255, 85, 0, 0.06);
-  border-radius: 6px 6px 0 0;
+  border-radius: 0;
 }
 
 .area-tab-nav-btn .tab-svg-icon {
@@ -5037,7 +5037,7 @@ body.mesa-body.area-refugio-gustavo {
   background: rgba(239, 68, 68, 0.15);
   border: 1px solid rgba(239, 68, 68, 0.4);
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: 0;
 }
 
 .tab-badge-counter {
@@ -5046,7 +5046,7 @@ body.mesa-body.area-refugio-gustavo {
   color: #e2e8f0;
   background: rgba(255, 255, 255, 0.12);
   padding: 1px 7px;
-  border-radius: 10px;
+  border-radius: 0;
 }
 
 /* Paineis de Conteudo das Abas */
@@ -5074,7 +5074,7 @@ body.mesa-body.area-refugio-gustavo {
 .backstage-panel-card {
   background: #12151f;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  border-radius: 0;
   overflow: hidden;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
 }
@@ -5119,7 +5119,7 @@ body.mesa-body.area-refugio-gustavo {
   background: rgba(239, 68, 68, 0.12);
   border: 1px solid rgba(239, 68, 68, 0.35);
   padding: 3px 8px;
-  border-radius: 4px;
+  border-radius: 0;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
@@ -5131,7 +5131,7 @@ body.mesa-body.area-refugio-gustavo {
   background: rgba(56, 189, 248, 0.12);
   border: 1px solid rgba(56, 189, 248, 0.35);
   padding: 3px 8px;
-  border-radius: 4px;
+  border-radius: 0;
 }
 
 .backstage-panel-body {
@@ -5146,7 +5146,7 @@ body.mesa-body.area-refugio-gustavo {
   background: rgba(251, 146, 60, 0.06);
   border-left: 3px solid #f97316;
   padding: 12px 16px;
-  border-radius: 0 6px 6px 0;
+  border-radius: 0;
 }
 
 .backstage-hint-text {
@@ -5173,7 +5173,7 @@ body.mesa-body.area-refugio-gustavo {
 .backstage-npc-card {
   background: #181d2c;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
+  border-radius: 0;
   padding: 12px 14px;
   display: flex;
   align-items: center;
@@ -5192,7 +5192,7 @@ body.mesa-body.area-refugio-gustavo {
 .backstage-npc-avatar-box {
   width: 38px;
   height: 38px;
-  border-radius: 6px;
+  border-radius: 0;
   background: rgba(56, 189, 248, 0.12);
   border: 1px solid rgba(56, 189, 248, 0.3);
   color: #38bdf8;
@@ -5234,7 +5234,7 @@ body.mesa-body.area-refugio-gustavo {
   font-size: 0.74rem;
   font-weight: 700;
   padding: 5px 10px;
-  border-radius: 4px;
+  border-radius: 0;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.15s ease;
@@ -5259,7 +5259,7 @@ body.mesa-body.area-refugio-gustavo {
   padding: 12px 16px;
   background: #11141e;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 6px;
+  border-radius: 0;
 }
 
 .pdis-toolbar-title {
@@ -5290,7 +5290,7 @@ body.mesa-body.area-refugio-gustavo {
   font-size: 0.76rem;
   font-weight: 600;
   padding: 5px 10px;
-  border-radius: 4px;
+  border-radius: 0;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -5325,7 +5325,7 @@ body.mesa-body.area-refugio-gustavo {
 .pdi-accordion-card {
   background: #131722;
   border: 1.5px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  border-radius: 0;
   overflow: hidden;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -5380,7 +5380,7 @@ body.mesa-body.area-refugio-gustavo {
   background: rgba(239, 68, 68, 0.12);
   border: 1px solid rgba(239, 68, 68, 0.35);
   padding: 3px 8px;
-  border-radius: 4px;
+  border-radius: 0;
   flex-shrink: 0;
 }
 
@@ -5408,7 +5408,7 @@ body.mesa-body.area-refugio-gustavo {
   background: rgba(245, 158, 11, 0.12);
   border: 1px solid rgba(245, 158, 11, 0.3);
   padding: 3px 8px;
-  border-radius: 4px;
+  border-radius: 0;
 }
 
 .pdi-chevron-icon {
@@ -5563,7 +5563,7 @@ body.mesa-body.area-refugio-gustavo {
   isolation: isolate;
   background: transparent !important;
   border: 0 !important;
-  border-radius: 0 !important;
+  border-radius: 0;
   box-shadow: none !important;
   filter: none !important;
   backdrop-filter: none !important;
@@ -6203,7 +6203,7 @@ body.npc-drawer-open .npc-dossier-drawer {
   background: transparent !important;
   border: 0 !important;
   border-bottom: 3px solid transparent !important;
-  border-radius: 0 !important;
+  border-radius: 0;
   color: var(--ink-muted) !important;
   font-family: inherit !important;
   font-size: 0.78rem !important;
@@ -6669,7 +6669,7 @@ body.npc-drawer-open .npc-dossier-drawer {
   background: transparent !important;
   border: 0 !important;
   border-top: 1px solid var(--ink-edge-soft) !important;
-  border-radius: 0 !important;
+  border-radius: 0;
 }
 
 .poi-skills-table {
@@ -7085,7 +7085,7 @@ html.perf-lite .nav-auth-chip { filter: none; }
   background: rgba(10, 5, 2, 0.92) !important;
   border: 1px solid rgba(255, 85, 0, 0.6) !important;
   padding: 4px 10px !important;
-  border-radius: 4px !important;
+  border-radius: 0;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.85) !important;
   z-index: 999999 !important;
   pointer-events: none !important;

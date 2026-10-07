@@ -14,7 +14,7 @@
 .attr-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   padding: var(--space-lg);
   transition: all var(--transition-base);
   position: relative;
@@ -67,7 +67,7 @@
   margin-top: var(--space-md);
   padding: var(--space-sm) var(--space-md);
   background: var(--bg-elevated);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   border: 1px solid var(--border-subtle);
   font-family: var(--font-mono);
   font-size: 0.85rem;
@@ -79,13 +79,13 @@
   display: block;
   margin: var(--space-md) auto;
   max-width: 100%;
-  border-radius: var(--radius-md);
+  border-radius: 0;
   border: 1px solid var(--border-subtle);
 }
 
 /* === CALLOUT BOXES === */
 .callout {
-  border-radius: var(--radius-md);
+  border-radius: 0;
   padding: var(--space-lg);
   margin: var(--space-lg) 0;
   border-left: 4px solid;
@@ -134,7 +134,7 @@
   margin: 0 auto;
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-xl);
+  border-radius: 0;
   overflow: hidden;
   transition: all var(--transition-base);
 }
@@ -165,7 +165,7 @@
   background: rgba(255, 255, 255, 0.02);
   padding: var(--space-md);
   margin-bottom: var(--space-md);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  border-radius: 0;
 }
 .ability-slot:hover { background: rgba(255, 255, 255, 0.04); }
 
@@ -187,7 +187,7 @@
   background: var(--border-accent);
   color: var(--bg-primary);
   padding: 2px 8px;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   font-size: 0.75rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -196,7 +196,7 @@
 /* === PROGRESSION TABLE === */
 .progression-table-wrapper {
   margin: var(--space-md) 0;
-  border-radius: var(--radius-md);
+  border-radius: 0;
   overflow: hidden;
   border: 1px solid var(--border-subtle);
 }
@@ -230,7 +230,7 @@
   padding: 3px 10px;
   font-size: 0.75rem;
   font-weight: 600;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   white-space: nowrap;
   line-height: 1.4;
 }
@@ -254,7 +254,7 @@
   grid-column: 1 / -1;
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   padding: var(--space-lg);
   margin-bottom: var(--space-xl);
 }
@@ -330,7 +330,7 @@
 .calculator {
   background: rgba(0,0,0,0.25);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   padding: var(--space-lg);
   margin-top: var(--space-lg);
 }
@@ -357,7 +357,7 @@
   padding: var(--space-sm) var(--space-md);
   background: rgba(255,255,255,0.05);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   color: var(--text-primary);
   font-size: 1rem;
   font-family: var(--font-body);
@@ -381,14 +381,14 @@
   text-align: center;
   padding: var(--space-sm);
   background: rgba(0,0,0,0.2);
-  border-radius: var(--radius-sm);
+  border-radius: 0;
 }
 
 /* === RACE CARDS === */
 .race-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   overflow: hidden;
   margin-bottom: var(--space-2xl);
 }
@@ -465,7 +465,7 @@
 .race-ability {
   background: rgba(0,0,0,0.15);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   padding: var(--space-lg);
   margin-bottom: var(--space-md);
   transition: border-color var(--transition-fast);
@@ -491,7 +491,7 @@
 .race-subability {
   background: rgba(0,0,0,0.2);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   padding: var(--space-md);
   margin-top: var(--space-md);
 }
@@ -511,7 +511,7 @@
 }
 .race-table {
   background: rgba(0,0,0,0.2);
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   overflow: hidden;
   margin-top: var(--space-sm);
 }
@@ -546,7 +546,7 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   padding: 2px 8px;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   background: rgba(124, 58, 237, 0.2);
   color: #a78bfa;
   margin-left: var(--space-sm);
@@ -592,7 +592,7 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(180,40,40,0.3);
-  border-radius: var(--radius-xl);
+  border-radius: 0;
   position: relative;
   overflow: hidden;
 }
@@ -651,7 +651,7 @@
   width: 100%;
   max-height: 300px;
   object-fit: cover;
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   margin-bottom: var(--space-md);
   position: relative;
 }
@@ -686,7 +686,7 @@
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(255,255,255,0.07);
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   transition: all var(--transition-base);
   position: relative;
   overflow: hidden;
@@ -729,7 +729,7 @@
   flex-shrink: 0;
   width: 56px;
   height: 56px;
-  border-radius: var(--radius-md);
+  border-radius: 0;
   background: rgba(124,58,237,0.1);
   display: flex;
   align-items: center;
@@ -761,7 +761,7 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   padding: 3px 10px;
-  border-radius: 20px;
+  border-radius: 0;
   background: rgba(245,183,0,0.1);
   color: var(--attr-sen);
   border: 1px solid rgba(245,183,0,0.2);
@@ -786,7 +786,7 @@
   background: rgba(77,208,225,0.12);
   color: var(--attr-ea);
   padding: 2px 9px;
-  border-radius: 10px;
+  border-radius: 0;
   font-size: 0.72rem;
   font-weight: 700;
 }
@@ -813,7 +813,7 @@
   padding: 7px 10px;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.05);
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   color: var(--text-secondary);
   font-size: 0.82rem;
   cursor: pointer;
@@ -839,7 +839,7 @@
   padding: 8px;
   background: rgba(124,58,237,0.08);
   border: 1px dashed rgba(124,58,237,0.25);
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   color: var(--accent);
   font-family: var(--font-body);
   font-size: 0.78rem;
@@ -863,7 +863,7 @@
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 20px;
+  border-radius: 0;
   color: var(--text-secondary);
   font-family: var(--font-body);
   font-size: 0.82rem;
@@ -882,7 +882,7 @@
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(255,255,255,0.07);
-  border-radius: var(--radius-xl);
+  border-radius: 0;
   padding: var(--space-2xl);
   text-align: center;
 }
@@ -899,7 +899,7 @@
   padding: var(--space-sm) var(--space-lg);
   background: rgba(245,183,0,0.08);
   border: 1px solid rgba(245,183,0,0.2);
-  border-radius: 20px;
+  border-radius: 0;
   color: var(--attr-sen);
   font-size: 0.78rem;
   font-weight: 700;
@@ -917,7 +917,7 @@
 .construction-slot {
   background: rgba(255,255,255,0.02);
   border: 1px dashed rgba(255,255,255,0.08);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   padding: var(--space-lg) var(--space-md);
   display: flex;
   flex-direction: column;
@@ -950,16 +950,16 @@
 .wiki-sidebar { width: 240px; flex-shrink: 0; position: sticky; top: calc(var(--header-height) + var(--space-lg)); }
 .wiki-main { flex: 1; min-width: 0; }
 .wiki-list { display: flex; flex-direction: column; gap: var(--space-xs); }
-.wiki-list-item { display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-sm) var(--space-md); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); cursor: pointer; transition: all var(--transition-fast); text-decoration: none; color: var(--text-secondary); font-size: 0.85rem; }
+.wiki-list-item { display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-sm) var(--space-md); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 0; cursor: pointer; transition: all var(--transition-fast); text-decoration: none; color: var(--text-secondary); font-size: 0.85rem; }
 .wiki-list-item:hover { border-color: var(--border-medium); color: var(--text-primary); background: var(--bg-hover); text-decoration: none; }
 .wiki-list-item.active { border-color: var(--attr-ea); color: var(--text-primary); background: rgba(77, 208, 225, 0.06); }
 .wiki-list-item .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 .wiki-list-item .name { flex: 1; }
-.wiki-list-item .del-btn { opacity: 0; background: none; border: none; color: #ff4444; cursor: pointer; font-size: 0.8rem; padding: 2px 6px; border-radius: var(--radius-sm); transition: all var(--transition-fast); }
+.wiki-list-item .del-btn { opacity: 0; background: none; border: none; color: #ff4444; cursor: pointer; font-size: 0.8rem; padding: 2px 6px; border-radius: 0; transition: all var(--transition-fast); }
 .wiki-list-item:hover .del-btn { opacity: 0.6; }
 .wiki-list-item .del-btn:hover { opacity: 1; background: rgba(255, 68, 68, 0.15); }
 
-.wiki-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden; }
+.wiki-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 0; overflow: hidden; }
 .wiki-card-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); padding: var(--space-lg) var(--space-xl); border-bottom: 1px solid var(--border-subtle); background: rgba(0,0,0,0.15); }
 .wiki-card-header h2 { font-size: 1.4rem; margin: 0; }
 .wiki-card-body { padding: var(--space-xl); }
@@ -969,9 +969,9 @@
 .wiki-card-body ul { padding-left: var(--space-lg); margin-bottom: var(--space-lg); }
 .wiki-card-body li { margin-bottom: var(--space-xs); }
 
-.wiki-illustration { max-width: 100%; max-height: 400px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); object-fit: contain; display: block; margin: 0 auto var(--space-lg); }
+.wiki-illustration { max-width: 100%; max-height: 400px; border-radius: 0; border: 1px solid var(--border-subtle); object-fit: contain; display: block; margin: 0 auto var(--space-lg); }
 
-.wiki-infobox { background: rgba(0,0,0,0.15); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-lg); }
+.wiki-infobox { background: rgba(0,0,0,0.15); border: 1px solid var(--border-subtle); border-radius: 0; padding: var(--space-md); margin-bottom: var(--space-lg); }
 .wiki-infobox-row { display: flex; padding: var(--space-xs) 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
 .wiki-infobox-row:last-child { border-bottom: none; }
 .wiki-infobox-label { width: 140px; flex-shrink: 0; font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
@@ -981,29 +981,29 @@
 .wiki-empty p { font-size: 0.9rem; color: var(--text-muted); }
 
 /* Wiki search */
-.wiki-search { width: 100%; padding: var(--space-sm) var(--space-md); background: rgba(255,255,255,0.05); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.85rem; font-family: var(--font-body); outline: none; margin-bottom: var(--space-md); transition: border-color 0.2s; }
+.wiki-search { width: 100%; padding: var(--space-sm) var(--space-md); background: rgba(255,255,255,0.05); border: 1px solid var(--border-subtle); border-radius: 0; color: var(--text-primary); font-size: 0.85rem; font-family: var(--font-body); outline: none; margin-bottom: var(--space-md); transition: border-color 0.2s; }
 .wiki-search:focus { border-color: var(--attr-ea); }
 
 /* Wiki form modal */
 .wiki-modal-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.7); display: flex; align-items: flex-start; justify-content: center; padding: var(--space-xl); overflow-y: auto; opacity: 0; visibility: hidden; transition: all var(--transition-base); }
 .wiki-modal-overlay.open { opacity: 1; visibility: visible; }
-.wiki-modal { background: var(--bg-surface); border: 1px solid var(--border-medium); border-radius: var(--radius-xl); width: 100%; max-width: 800px; margin-top: var(--space-xl); box-shadow: var(--shadow-lg); overflow: hidden; }
+.wiki-modal { background: var(--bg-surface); border: 1px solid var(--border-medium); border-radius: 0; width: 100%; max-width: 800px; margin-top: var(--space-xl); box-shadow: var(--shadow-lg); overflow: hidden; }
 .wiki-modal-header { display: flex; align-items: center; justify-content: space-between; padding: var(--space-lg) var(--space-xl); border-bottom: 1px solid var(--border-subtle); }
 .wiki-modal-header h2 { font-size: 1.2rem; margin: 0; }
-.wiki-modal-close { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: none; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-muted); cursor: pointer; font-size: 1rem; transition: all var(--transition-fast); }
+.wiki-modal-close { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: none; border: 1px solid var(--border-subtle); border-radius: 0; color: var(--text-muted); cursor: pointer; font-size: 1rem; transition: all var(--transition-fast); }
 .wiki-modal-close:hover { border-color: #ff4444; color: #ff4444; }
 .wiki-modal-body { padding: var(--space-xl); max-height: 70vh; overflow-y: auto; }
 .wiki-modal-body label { display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: var(--space-xs); }
-.wiki-modal-body input, .wiki-modal-body textarea, .wiki-modal-body select { width: 100%; padding: var(--space-sm) var(--space-md); background: rgba(255,255,255,0.05); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.9rem; font-family: var(--font-body); outline: none; margin-bottom: var(--space-md); transition: border-color 0.2s; }
+.wiki-modal-body input, .wiki-modal-body textarea, .wiki-modal-body select { width: 100%; padding: var(--space-sm) var(--space-md); background: rgba(255,255,255,0.05); border: 1px solid var(--border-subtle); border-radius: 0; color: var(--text-primary); font-size: 0.9rem; font-family: var(--font-body); outline: none; margin-bottom: var(--space-md); transition: border-color 0.2s; }
 .wiki-modal-body input:focus, .wiki-modal-body textarea:focus, .wiki-modal-body select:focus { border-color: var(--attr-ea); }
 .wiki-modal-body textarea { min-height: 80px; resize: vertical; }
 .wiki-modal-body .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); }
 .wiki-modal-footer { display: flex; justify-content: flex-end; gap: var(--space-sm); padding: var(--space-md) var(--space-xl); border-top: 1px solid var(--border-subtle); }
-.wiki-btn-primary { padding: var(--space-sm) var(--space-lg); background: rgba(77, 208, 225, 0.15); border: 1px solid var(--attr-ea); border-radius: var(--radius-sm); color: var(--attr-ea); cursor: pointer; font-size: 0.85rem; font-family: var(--font-body); transition: all var(--transition-fast); }
+.wiki-btn-primary { padding: var(--space-sm) var(--space-lg); background: rgba(77, 208, 225, 0.15); border: 1px solid var(--attr-ea); border-radius: 0; color: var(--attr-ea); cursor: pointer; font-size: 0.85rem; font-family: var(--font-body); transition: all var(--transition-fast); }
 .wiki-btn-primary:hover { background: rgba(77, 208, 225, 0.25); }
-.wiki-btn-secondary { padding: var(--space-sm) var(--space-lg); background: transparent; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-secondary); cursor: pointer; font-size: 0.85rem; font-family: var(--font-body); transition: all var(--transition-fast); }
+.wiki-btn-secondary { padding: var(--space-sm) var(--space-lg); background: transparent; border: 1px solid var(--border-subtle); border-radius: 0; color: var(--text-secondary); cursor: pointer; font-size: 0.85rem; font-family: var(--font-body); transition: all var(--transition-fast); }
 .wiki-btn-secondary:hover { border-color: var(--border-accent); color: var(--text-primary); }
-.wiki-btn-danger { padding: var(--space-sm) var(--space-lg); background: rgba(255, 68, 68, 0.1); border: 1px solid rgba(255, 68, 68, 0.3); border-radius: var(--radius-sm); color: #ff4444; cursor: pointer; font-size: 0.85rem; font-family: var(--font-body); transition: all var(--transition-fast); }
+.wiki-btn-danger { padding: var(--space-sm) var(--space-lg); background: rgba(255, 68, 68, 0.1); border: 1px solid rgba(255, 68, 68, 0.3); border-radius: 0; color: #ff4444; cursor: pointer; font-size: 0.85rem; font-family: var(--font-body); transition: all var(--transition-fast); }
 .wiki-btn-danger:hover { background: rgba(255, 68, 68, 0.2); }
 
 /* === RACE NAV === */
@@ -1020,7 +1020,7 @@
   margin-right: auto;
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   scroll-margin-top: 80px;
 }
 .race-nav-label {
@@ -1043,7 +1043,7 @@
   color: var(--text-secondary);
   background: rgba(255,255,255,0.03);
   border: 1px solid var(--border-subtle);
-  border-radius: 20px;
+  border-radius: 0;
   text-decoration: none;
   transition: all var(--transition-fast);
   white-space: nowrap;
@@ -1090,7 +1090,7 @@
   padding: var(--space-sm) var(--space-md);
   background: transparent;
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   color: var(--text-secondary);
   font-family: var(--font-body);
   font-size: 0.82rem;
@@ -1177,7 +1177,7 @@
   padding: 10px 14px;
   background: rgba(255,255,255,0.04);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   color: var(--text-primary);
   font-size: 0.92rem;
   font-family: var(--font-body);
@@ -1215,7 +1215,7 @@
   padding: var(--space-md);
   background: rgba(124, 58, 237, 0.06);
   border: 1px solid rgba(124, 58, 237, 0.15);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   font-size: 0.88rem;
   line-height: 1.7;
   color: var(--text-secondary);
@@ -1229,7 +1229,7 @@
 }
 .creator-next, .creator-prev, .creator-save, .creator-reset {
   padding: 10px 22px;
-  border-radius: var(--radius-md);
+  border-radius: 0;
   font-size: 0.85rem;
   font-family: var(--font-body);
   font-weight: 600;
@@ -1265,7 +1265,7 @@
 }
 .creator-export {
   padding: 10px 22px;
-  border-radius: var(--radius-md);
+  border-radius: 0;
   font-size: 0.85rem;
   font-family: var(--font-body);
   font-weight: 600;
@@ -1283,7 +1283,7 @@
 .creator-portrait-preview {
   margin-top: var(--space-xs);
   max-width: 140px;
-  border-radius: var(--radius-md);
+  border-radius: 0;
   overflow: hidden;
   border: 1px solid var(--border-subtle);
 }
@@ -1295,7 +1295,7 @@
 .review-portrait {
   max-width: 100px;
   margin-bottom: var(--space-sm);
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   overflow: hidden;
   border: 1px solid var(--border-subtle);
 }
@@ -1307,20 +1307,20 @@
 .creator-section { margin-bottom: var(--space-lg); }
 .creator-section h4 { font-family: var(--font-heading); font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: var(--space-sm); border-bottom: 1px solid var(--border-subtle); padding-bottom: 4px; }
 .ability-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: var(--space-md); }
-.ability-item { font-size: 0.82rem; color: var(--text-secondary); background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 4px 10px; }
+.ability-item { font-size: 0.82rem; color: var(--text-secondary); background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: 0; padding: 4px 10px; }
 .ability-item strong { color: var(--text-primary); }
-.dice-roller { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-md); margin-top: var(--space-md); }
+.dice-roller { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 0; padding: var(--space-md); margin-top: var(--space-md); }
 .dice-roller h4 { font-family: var(--font-heading); font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: var(--space-sm); }
 .dice-btns { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: var(--space-sm); }
-.dice-btn { font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; padding: 6px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); background: var(--bg-elevated); color: var(--text-secondary); cursor: pointer; transition: all var(--transition-fast); }
+.dice-btn { font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; padding: 6px 16px; border-radius: 0; border: 1px solid var(--border-subtle); background: var(--bg-elevated); color: var(--text-secondary); cursor: pointer; transition: all var(--transition-fast); }
 .dice-btn:hover { border-color: var(--attr-ea); color: var(--text-primary); background: var(--bg-hover); }
 .dice-btn:active { transform: scale(0.95); }
-.dice-result { font-family: var(--font-mono); font-size: 1.4rem; font-weight: 700; color: var(--text-primary); text-align: center; padding: var(--space-sm); background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.2); border-radius: var(--radius-sm); min-height: 48px; display: flex; align-items: center; justify-content: center; gap: var(--space-md); }
+.dice-result { font-family: var(--font-mono); font-size: 1.4rem; font-weight: 700; color: var(--text-primary); text-align: center; padding: var(--space-sm); background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.2); border-radius: 0; min-height: 48px; display: flex; align-items: center; justify-content: center; gap: var(--space-md); }
 .dice-result .roll-label { font-size: 0.7rem; font-weight: 400; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; }
 .dice-result .roll-value { font-size: 1.8rem; color: var(--attr-ea); }
 .dice-history { display: flex; flex-wrap: wrap; gap: 4px; margin-top: var(--space-sm); }
-.dice-history-item { font-family: var(--font-mono); font-size: 0.7rem; padding: 2px 6px; background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: 3px; color: var(--text-muted); }
-.attr-adjust button { font-size: 0.75rem; padding: 2px 10px; border-radius: 3px; border: 1px solid var(--border-subtle); background: var(--bg-elevated); color: var(--text-secondary); cursor: pointer; transition: all var(--transition-fast); line-height: 1.4; }
+.dice-history-item { font-family: var(--font-mono); font-size: 0.7rem; padding: 2px 6px; background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: 0; color: var(--text-muted); }
+.attr-adjust button { font-size: 0.75rem; padding: 2px 10px; border-radius: 0; border: 1px solid var(--border-subtle); background: var(--bg-elevated); color: var(--text-secondary); cursor: pointer; transition: all var(--transition-fast); line-height: 1.4; }
 .attr-adjust button:hover { border-color: var(--attr-ea); color: var(--text-primary); background: var(--bg-hover); }
 .attr-adjust button:active { transform: scale(0.92); }
 .creator-stats-grid {
@@ -1342,7 +1342,7 @@
   padding: 10px;
   background: rgba(255,255,255,0.04);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   color: var(--text-primary);
   font-size: 1.1rem;
   font-family: var(--font-mono);
@@ -1359,7 +1359,7 @@
   padding: var(--space-lg);
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   max-width: 700px;
 }
 .creator-calculated h4 {
@@ -1399,7 +1399,7 @@
   font-size: 0.85rem;
   color: var(--text-secondary);
   cursor: pointer;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   transition: background var(--transition-fast);
   border: 1px solid transparent;
 }
@@ -1419,7 +1419,7 @@
 .review-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   padding: var(--space-xl);
   line-height: 1.8;
 }
@@ -1442,7 +1442,7 @@
   font-size: 0.9rem;
   font-weight: 600;
   padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-sm);
+  border-radius: 0;
 }
 .creator-msg.success {
   color: #4ade80;

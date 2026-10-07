@@ -78,10 +78,10 @@
   --space-2xl: 3rem;
   --space-3xl: 4rem;
 
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
 
   --transition-fast: 150ms ease;
   --transition-base: 250ms ease;
@@ -115,7 +115,7 @@ body {
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg-primary); }
-::-webkit-scrollbar-thumb { background: var(--border-medium); border-radius: var(--radius-sm); }
+::-webkit-scrollbar-thumb { background: var(--border-medium); border-radius: 0; }
 ::-webkit-scrollbar-thumb:hover { background: var(--border-accent); }
 ::selection { background: rgba(124, 58, 237, 0.4); color: #fff; }
 
@@ -146,7 +146,7 @@ code, .mono {
   font-size: 0.9em;
   background: var(--bg-elevated);
   padding: 2px 6px;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   border: 1px solid var(--border-subtle);
 }
 
@@ -283,7 +283,7 @@ code, .mono {
   color: var(--text-primary);
   background: var(--bg-elevated);
   padding: 1px 5px 1px 22px;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   border: 1px solid var(--border-subtle);
   white-space: nowrap;
   cursor: default;
@@ -318,7 +318,7 @@ code, .mono {
   min-width: 48px;
   height: 48px;
   padding: 0 10px;
-  border-radius: var(--radius-md);
+  border-radius: 0;
   font-size: 1.2rem;
   font-weight: 900;
   text-shadow: 0 0 10px currentColor;
@@ -484,7 +484,7 @@ code, .mono {
   width: 36px;
   height: 36px;
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   background: transparent;
   color: var(--text-secondary);
   font-size: 1.1rem;
@@ -505,7 +505,7 @@ code, .mono {
   z-index: 60;
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   min-width: 180px;
   box-shadow: var(--shadow-lg);
   opacity: 0;
@@ -535,8 +535,8 @@ code, .mono {
   color: var(--text-primary);
   text-decoration: none;
 }
-.wiki-dropdown-item:first-child { border-radius: var(--radius-md) var(--radius-md) 0 0; }
-.wiki-dropdown-item:last-child { border-radius: 0 0 var(--radius-md) var(--radius-md); }
+.wiki-dropdown-item:first-child { border-radius: 0; }
+.wiki-dropdown-item:last-child { border-radius: 0; }
 .wiki-dropdown-item .icon { font-size: 0.9rem; opacity: 0.7; }
 
 /* === MOBILE SIDEBAR TOGGLE === */
