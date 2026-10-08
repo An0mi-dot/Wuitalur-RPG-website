@@ -3019,6 +3019,20 @@ const MESA_AREAS = {
     "lore": "Área de preservação ambiental isolada pelas autoridades municipais sob alegação de contaminação do solo e desabamentos de antigas minas. Trilhas fechadas ocultam instalações subterrâneas desativadas da época da fundação de Fragktus e clareiras onde eventos anômalos foram registrados.",
     "rumor": "«Guardas florestais privados não usam fardas do Estado: usam coletes pretos táticos e atiram sem aviso contra qualquer um que passe da cerca do KM 18.»",
     "pois": []
+  },
+  "casa-auguil": {
+    "id": "casa-auguil",
+    "name": "Casa Auguil",
+    "shortName": "Casa Auguil",
+    "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"></path><polyline points=\"9 22 9 12 15 12 15 22\"></polyline></svg>",
+    "themeClass": "area-casa-auguil",
+    "district": "Bairro Residencial • Mina de Prata",
+    "dangerLevel": "Isolamento Policial & Atividade Paranormal",
+    "dangerLevelClass": "danger",
+    "ambience": "Uma moradia de dois andares de alto padrão, agora transformada em cena de crime. O exterior está isolado e envolto em dezenas de fitas policiais amarelas e pretas de 'Não Ultrapasse'. A atmosfera é pesada, cheirando a lodo e abandono.",
+    "lore": "Casa da família de Sara e Trisha. O local de onde Trisha desapareceu, e onde Sara sofreu seus últimos dias de delírio antes de fugir para a floresta.",
+    "rumor": "A polícia investigou a casa durante o dia, mas não encontraram nada. Contudo, os vizinhos dizem que, à noite, a casa parece... respirar.",
+    "pois": []
   }
 };
 
@@ -3105,12 +3119,19 @@ const MesaAreaManager = {
         roadTwinD: 'M 280 328 C 380 328, 460 328, 500 328'
       },
       'floresta-proibida': {
-        xPct: 76, yPct: 50,
-        color: '#10b981',
-        glow: 'rgba(16, 185, 129, 0.75)',
-        roadD: 'M 500 320 C 540 320, 620 320, 720 320',
-        roadTwinD: 'M 500 328 C 540 328, 620 328, 720 328'
-      }
+          xPct: 76, yPct: 50,
+          color: '#10b981',
+          glow: 'rgba(16, 185, 129, 0.75)',
+          roadD: 'M 500 320 C 540 320, 620 320, 720 320',
+          roadTwinD: 'M 500 328 C 540 328, 620 328, 720 328'
+        },
+        'casa-auguil': {
+          xPct: 50, yPct: 20,
+          color: '#8b5cf6',
+          glow: 'rgba(139, 92, 246, 0.75)',
+          roadD: 'M 500 160 C 500 200, 500 260, 500 320',
+          roadTwinD: 'M 508 160 C 508 200, 508 260, 508 320'
+        }
     };
 
     // 1. Constrói o SVG de Estradas Interconectadas
@@ -3258,7 +3279,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.1.8`;
+      badge.textContent = `v1.1.9`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
