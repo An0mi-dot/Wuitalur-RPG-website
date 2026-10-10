@@ -165,29 +165,57 @@
     ]
   },
   "floresta-proibida": {
-    "id": "floresta-proibida",
-    "nome": "A Mata do Norte",
-    "shortName": "Mata do Norte",
-    "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 2L5 12h4l-3 6h5v4h2v-4h5l-3-6h4L12 2z\"></path></svg>",
-    "themeClass": "area-floresta-proibida",
-    "district": "Reserva Florestal Fechada • Zona Rural",
-    "dangerLevel": "Fauna Alterada, Névoa Tóxica & Armadilhas",
-    "dangerLevelClass": "danger",
-    "titulo_narrativo": "Interior da Casa",
-    "texto_narrativo": "\"A fechadura cede com um estalo abafado e vocês entram, deixando a noite fria e as fitas amarelas da polícia para trás. O ar dentro da Casa Auguil é pesado, denso e tem o gosto amargo de um lugar que foi trancado às pressas e abandonado. Quando vocês acendem as lanternas, os feixes de luz cortam a escuridão absoluta do térreo e revelam algo profundamente perturbador: a normalidade. A sala de estar está impecavelmente arrumada. Os móveis estão alinhados, as almofadas estão em seus lugares e o silêncio é tão espesso que vocês conseguem ouvir a respiração uns dos outros.\nMas essa ilusão de paz quebra assim que a luz da lanterna varre o pé da escada.\nHá um cheiro que não pertence a esta casa do bairro de Mina de Prata. É o odor úmido de terra podre, folhas molhadas e lodo. Marcando os degraus imaculados de madeira, pequenas pegadas escuras e pastosas sobem em direção ao segundo andar, como se a própria floresta tivesse entrado pela porta dos fundos e subido para os quartos.\nCada passo na escada faz a madeira ranger, ecoando no vazio da casa. Quanto mais vocês sobem, mais o ar fica frio e o cheiro de pântano se torna asfixiante, misturando-se com um forte odor de desinfetante e doença. Vocês chegam ao corredor superior. A porta do quarto de Sara está no final, levemente entreaberta.\nAo empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um abismo de desespero e o contraste absoluto com o térreo. As janelas estão sufocadas por cobertores grossos pregados na parede, bloqueando qualquer fresta de luz. O chão está invisível sob um mar de roupas amassadas, caixas de remédios vazias e dezenas de folhas de papel espalhadas freneticamente, repletas de rascunhos. E, vindo da porta semiaberta do banheiro da suíte, o som sutil de algo gotejando de forma viscosa e o cheiro de enxofre avisam que o horror daquela casa não é apenas uma lembrança do passado. Algo ainda os espera na escuridão.\"",
-    "resumo_atmosfera": "Árvores centenárias retorcidas, neblina espessa que engole os faróis, silêncio sepulcral quebrado pelo estalar de galhos e arame farpado enferrujado sob o chão de terra úmida coberto por seiva escura aromática.",
-    "requisitos_acesso": "Área isolada pelas autoridades municipais com cancelas militarizadas no KM 18 guardadas por vigilantes particulares armados. Entrada clandestina viável pela tubulação de drenagem do Ferro-Velho (Atletismo DT 6) ou ravinas das serras.",
-    "npcs_presentes": [],
-    "pontos_de_interesse": [],
-    "conexoes_saida": [
-      {
-        "area_id": "colegio-primordio",
-        "nome": "Colégio Integrado Primórdio",
-        "gancho": "A estrada principal que conecta o perímetro rural ao centro cívico e estudantil de Fragktus."
-      }
-    ]
-  },
-  "casa-auguil": {
+      "id": "floresta-proibida",
+      "nome": "A Mata do Norte",
+      "shortName": "Mata do Norte",
+      "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 2L5 12h4l-3 6h5v4h2v-4h5l-3-6h4L12 2z\"></path></svg>",
+      "themeClass": "area-floresta-proibida",
+      "district": "Reserva Florestal Fechada • Zona Rural",
+      "dangerLevel": "Ameaça Desconhecida",
+      "dangerLevelClass": "danger",
+      "resumo_atmosfera": "A floresta que cerca Mina de Prata é densa, úmida e sufocante. A luz do sol mal penetra a copa das árvores e o chão é um tapete espesso de folhas mortas que abafa os passos. Não há animais cantando; o silêncio é pesado e hostil. No centro de uma clareira específica, o ar torna-se subitamente gélido e cheira a enxofre e lodo.",
+      "requisitos_acesso": "Acesso desobstruído até o perímetro interno, mas desorientador e perigoso à noite.",
+      "npcs_presentes": [],
+      "pontos_de_interesse": [
+        {
+          "cabecalho": {
+            "nome": "A \"Porta\" e os Pertences",
+            "descricao_publica": "No meio do nada, ergue-se uma anomalia. Não é uma porta de casa comum, mas sim duas árvores antigas e retorcidas que cresceram entrelaçadas, formando um arco grotesco. O espaço dentro desse arco parece distorcido, como uma miragem, e a terra logo abaixo está encharcada de um lodo negro e espesso que não seca. Aos pés dessa estrutura bizarra, uma mochila escolar está jogada na lama."
+          },
+          "testes": [
+            {
+              "pericia": "Ocultismo / Cosmos",
+              "ct_dt": 8,
+              "informacao_revelada": "O jogador sente uma pressão quase física ao chegar perto do arco. A 'porta' está trancada ou inativa no momento, mas pulsa com uma energia residual de corrupção. Alguma coisa muito antiga e faminta está do outro lado, esperando."
+            },
+            {
+              "pericia": "Investigação",
+              "ct_dt": 6,
+              "informacao_revelada": "Mexendo na mochila abandonada. Eles encontram cadernos molhados do Colégio Integrado Primórdio (com o nome de Sara Auguil) e um frasco vazio de analgésicos fortíssimos, sem rótulo, mas com o timbre quase apagado da Clínica Médica Renovare."
+            },
+            {
+              "pericia": "Força ou Ladinagem",
+              "ct_dt": 99,
+              "informacao_revelada": "(Falha Automática): Se tentarem 'abrir' ou forçar a passagem pelo arco agora, nada acontece. É apenas um espaço vazio entre duas árvores. A chave não é física."
+            }
+          ],
+          "notas_mestre": "Este é o mistério central que inicia a campanha. Eles não têm como resolver a Porta agora. A mochila é o gatilho que os obriga a voltar para a cidade e iniciar a investigação urbana para descobrir quem é Sara, o que é a clínica e, por fim, como essa 'porta' foi aberta."
+        }
+      ],
+      "conexoes_saida": [
+        {
+          "area_id": "colegio-primordio",
+          "nome": "Colégio Integrado Primórdio",
+          "gancho": "O colégio de onde pertence a mochila encontrada na lama."
+        },
+        {
+          "area_id": "clinica-renovare",
+          "nome": "Clínica Médica Renovare",
+          "gancho": "A origem dos frascos de remédios sem rótulo encontrados."
+        }
+      ]
+    },
+    "casa-auguil": {
     "id": "casa-auguil",
     "nome": "Casa Auguil",
     "shortName": "Casa Auguil",
@@ -196,7 +224,9 @@
     "district": "Bairro Residencial • Mina de Prata",
     "dangerLevel": "Isolamento Policial & Atividade Paranormal",
     "dangerLevelClass": "danger",
-    "resumo_atmosfera": "Uma moradia de dois andares de alto padrão, agora transformada em cena de crime. O exterior está isolado e envolto em dezenas de fitas policiais amarelas e pretas de 'Não Ultrapasse'. Durante o dia, viaturas e peritos da polícia bloqueiam o perímetro, tornando qualquer aproximação impossível (a polícia abafou o caso a mando da Diretora Constança). É apenas durante a calada da noite, quando as viaturas se retiram e a casa mergulha numa escuridão absoluta, que a oportunidade de infiltração surge. A casa de fora parece silenciosa, mas lá dentro, a atmosfera é pesada, cheirando a lodo e abandono.",
+    "titulo_narrativo": "Interior da Casa",
+      "texto_narrativo": "\"A fechadura cede com um estalo abafado e vocês entram, deixando a noite fria e as fitas amarelas da polícia para trás. O ar dentro da Casa Auguil é pesado, denso e tem o gosto amargo de um lugar que foi trancado às pressas e abandonado. Quando vocês acendem as lanternas, os feixes de luz cortam a escuridão absoluta do térreo e revelam algo profundamente perturbador: a normalidade. A sala de estar está impecavelmente arrumada. Os móveis estão alinhados, as almofadas estão em seus lugares e o silêncio é tão espesso que vocês conseguem ouvir a respiração uns dos outros.\n\nMas essa ilusão de paz quebra assim que a luz da lanterna varre o pé da escada.\n\nHá um cheiro que não pertence a esta casa do bairro de Mina de Prata. É o odor úmido de terra podre, folhas molhadas e lodo. Marcando os degraus imaculados de madeira, pequenas pegadas escuras e pastosas sobem em direção ao segundo andar, como se a própria floresta tivesse entrado pela porta dos fundos e subido para os quartos.\n\nCada passo na escada faz a madeira ranger, ecoando no vazio da casa. Quanto mais vocês sobem, mais o ar fica frio e o cheiro de pântano se torna asfixiante, misturando-se com um forte odor de desinfetante e doença. Vocês chegam ao corredor superior. A porta do quarto de Sara está no final, levemente entreaberta.\n\nAo empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um abismo de desespero e o contraste absoluto com o térreo. As janelas estão sufocadas por cobertores grossos pregados na parede, bloqueando qualquer fresta de luz. O chão está invisível sob um mar de roupas amassadas, caixas de remédios vazias e dezenas de folhas de papel espalhadas freneticamente, repletas de rascunhos. E, vindo da porta semiaberta do banheiro da suíte, o som sutil de algo gotejando de forma viscosa e o cheiro de enxofre avisam que o horror daquela casa não é apenas uma lembrança do passado. Algo ainda os espera na escuridão.\"",
+      "resumo_atmosfera": "Uma moradia de dois andares de alto padrão, agora transformada em cena de crime. O exterior está isolado e envolto em dezenas de fitas policiais amarelas e pretas de 'Não Ultrapasse'. Durante o dia, viaturas e peritos da polícia bloqueiam o perímetro, tornando qualquer aproximação impossível (a polícia abafou o caso a mando da Diretora Constança). É apenas durante a calada da noite, quando as viaturas se retiram e a casa mergulha numa escuridão absoluta, que a oportunidade de infiltração surge. A casa de fora parece silenciosa, mas lá dentro, a atmosfera é pesada, cheirando a lodo e abandono.",
     "requisitos_acesso": "Apenas durante a noite, exigindo infiltração pelos fundos ou janelas laterais para evitar os vizinhos e as fitas policiais.",
     "npcs_presentes": [],
     "pontos_de_interesse": [

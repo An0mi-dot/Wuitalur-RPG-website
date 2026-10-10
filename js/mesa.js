@@ -3013,11 +3013,11 @@ const MESA_AREAS = {
     "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 2L5 12h4l-3 6h5v4h2v-4h5l-3-6h4L12 2z\"></path></svg>",
     "themeClass": "area-floresta-proibida",
     "district": "Reserva Florestal Fechada • Zona Rural",
-    "dangerLevel": "Fauna Alterada, Névoa Tóxica & Armadilhas",
+    "dangerLevel": "Ameaça Desconhecida",
     "dangerLevelClass": "danger",
-    "ambience": "Árvores centenárias retorcidas, neblina espessa que engole os faróis, silêncio sepulcral quebrado apenas pelo estalar de galhos e arame farpado enferrujado.",
-    "lore": "Área de preservação ambiental isolada pelas autoridades municipais sob alegação de contaminação do solo e desabamentos de antigas minas. Trilhas fechadas ocultam instalações subterrâneas desativadas da época da fundação de Fragktus e clareiras onde eventos anômalos foram registrados.",
-    "rumor": "«Guardas florestais privados não usam fardas do Estado: usam coletes pretos táticos e atiram sem aviso contra qualquer um que passe da cerca do KM 18.»",
+    "ambience": "A floresta que cerca Mina de Prata é densa, úmida e sufocante. A luz do sol mal penetra a copa das árvores e o chão é um tapete espesso de folhas mortas que abafa os passos. Não há animais cantando; o silêncio é pesado e hostil.",
+    "lore": "No centro de uma clareira específica, o ar torna-se subitamente gélido e cheira a enxofre e lodo.",
+    "rumor": "Dizem que o bosque abriga forças antigas e anomalias inexplicáveis.",
     "pois": []
   },
   "casa-auguil": {
@@ -3323,7 +3323,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.2.5`;
+      badge.textContent = `v1.2.6`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
