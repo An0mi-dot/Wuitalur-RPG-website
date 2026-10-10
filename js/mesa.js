@@ -3323,7 +3323,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.2.6`;
+      badge.textContent = `v1.2.7`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -3482,7 +3482,7 @@ const MesaAreaManager = {
         </div>
         <div class="area-header-meta">
           <span class="area-meta-tag ${area.dangerLevelClass || 'warning'}">${area.dangerLevel}</span>
-          <span class="area-meta-tag">${pdiCount} ${pdiCount === 1 ? 'Ponto de Interesse' : 'Pontos de Interesse'}</span>
+          ${isMasterUser ? `<span class="area-meta-tag">${pdiCount} ${pdiCount === 1 ? 'Ponto de Interesse' : 'Pontos de Interesse'}</span>` : ''}
         </div>
       `;
     }
