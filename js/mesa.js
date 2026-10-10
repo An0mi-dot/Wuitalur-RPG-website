@@ -1064,11 +1064,7 @@ const MesaApp = {
       id: 5,
       slot: 5,
       token: 'J8W4',
-      nome: 'Willian Kars',
-      idade: '17 anos',
-      altura: '1,86m',
-      raca: 'Animalesco',
-      arquetipo: 'Valentão',
+      nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão', imagem: 'assets/william.png', avatar: 'assets/william.png',
       hp: 15, hpMax: 15,
       pe: 10, peMax: 10,
       st: 0, stMax: 28,
@@ -1391,7 +1387,7 @@ const MesaApp = {
 
       if (!this.state.players[4]) {
         this.state.players[4] = {
-          id: 5, slot: 5, token: 'J8W4', nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão',
+          id: 5, slot: 5, token: 'J8W4', nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão', imagem: 'assets/william.png', avatar: 'assets/william.png',
           hp: 15, hpMax: 15, pe: 10, peMax: 10, st: 0, stMax: 28, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Saúde': 'd4', 'Vigor': 'd16', 'Força': 'd12', 'Mente': 'd8' },
           bonus: [
@@ -3332,7 +3328,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.4.1`;
+      badge.textContent = `v1.4.2`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
