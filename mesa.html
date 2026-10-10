@@ -11,9 +11,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/variables.css?v=1.1.9">
-  <link rel="stylesheet" href="css/components.css?v=1.1.9">
-  <link rel="stylesheet" href="css/mesa.css?v=1.1.9">
+  <link rel="stylesheet" href="css/variables.css?v=1.2.0">
+  <link rel="stylesheet" href="css/components.css?v=1.2.0">
+  <link rel="stylesheet" href="css/mesa.css?v=1.2.0">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -467,11 +467,35 @@
         <button type="button" class="npc-drawer-close-btn" onclick="MesaAreaManager.closeInteriorDrawer()" title="Fechar">&times;</button>
       </div>
       <div id="interior-drawer-content" class="npc-dossier-drawer-body">
-        <p>A fechadura cede com um estalo abafado e vocês entram, deixando a noite fria e as fitas amarelas da polícia para trás. O ar dentro da Casa Auguil é pesado, denso e tem o gosto amargo de um lugar que foi trancado às pressas e abandonado. Quando vocês acendem as lanternas, os feixes de luz cortam a escuridão absoluta do térreo e revelam algo profundamente perturbador: a normalidade. A sala de estar está impecavelmente arrumada. Os móveis estão alinhados, as almofadas estão em seus lugares e o silêncio é tão espesso que vocês conseguem ouvir a respiração uns dos outros.</p>
-        <p>Mas essa ilusão de paz quebra assim que a luz da lanterna varre o pé da escada.</p>
-        <p>Há um cheiro que não pertence a esta casa do bairro de Mina de Prata. É o odor úmido de terra podre, folhas molhadas e lodo. Marcando os degraus imaculados de madeira, pequenas pegadas escuras e pastosas sobem em direção ao segundo andar, como se a própria floresta tivesse entrado pela porta dos fundos e subido para os quartos.</p>
-        <p>Cada passo na escada faz a madeira ranger, ecoando no vazio da casa. Quanto mais vocês sobem, mais o ar fica frio e o cheiro de pântano se torna asfixiante, misturando-se com um forte odor de desinfetante e doença. Vocês chegam ao corredor superior. A porta do quarto de Sara está no final, levemente entreaberta.</p>
-        <p>Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um abismo de desespero e o contraste absoluto com o térreo. As janelas estão sufocadas por cobertores grossos pregados na parede, bloqueando qualquer fresta de luz. O chão está invisível sob um mar de roupas amassadas, caixas de remédios vazias e dezenas de folhas de papel espalhadas freneticamente, repletas de rascunhos. E, vindo da porta semiaberta do banheiro da suíte, o som sutil de algo gotejando de forma viscosa e o cheiro de enxofre avisam que o horror daquela casa não é apenas uma lembrança do passado. Algo ainda os espera na escuridão.</p>
+        <div style="font-family: var(--font-body, 'Merriweather', serif); font-size: 0.95rem; line-height: 1.6; color: var(--ink-text-dim);">
+        <p><em>"A fechadura cede com um estalo abafado e vocês entram, deixando a noite fria e as fitas amarelas da polícia para trás. O ar dentro da Casa Auguil é pesado, denso e tem o gosto amargo de um lugar que foi trancado às pressas e abandonado. Quando vocês acendem as lanternas, os feixes de luz cortam a escuridão absoluta do térreo e revelam algo profundamente perturbador: a normalidade. A sala de estar está impecavelmente arrumada. Os móveis estão alinhados, as almofadas estão em seus lugares e o silêncio é tão espesso que vocês conseguem ouvir a respiração uns dos outros.</em></p>
+        <p><em>Mas essa ilusão de paz quebra assim que a luz da lanterna varre o pé da escada.</em></p>
+        <p><em>Há um cheiro que não pertence a esta casa do bairro de Mina de Prata. É o odor úmido de terra podre, folhas molhadas e lodo. Marcando os degraus imaculados de madeira, pequenas pegadas escuras e pastosas sobem em direção ao segundo andar, como se a própria floresta tivesse entrado pela porta dos fundos e subido para os quartos.</em></p>
+        <p><em>Cada passo na escada faz a madeira ranger, ecoando no vazio da casa. Quanto mais vocês sobem, mais o ar fica frio e o cheiro de pântano se torna asfixiante, misturando-se com um forte odor de desinfetante e doença. Vocês chegam ao corredor superior. A porta do quarto de Sara está no final, levemente entreaberta.</em></p>
+        <p><em>Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um abismo de desespero e o contraste absoluto com o térreo. As janelas estão sufocadas por cobertores grossos pregados na parede, bloqueando qualquer fresta de luz. O chão está invisível sob um mar de roupas amassadas, caixas de remédios vazias e dezenas de folhas de papel espalhadas freneticamente, repletas de rascunhos. E, vindo da porta semiaberta do banheiro da suíte, o som sutil de algo gotejando de forma viscosa e o cheiro de enxofre avisam que o horror daquela casa não é apenas uma lembrança do passado. Algo ainda os espera na escuridão."</em></p>
+        
+        <div style="margin-top: 24px; display: flex; gap: 10px; flex-direction: column;">
+          <button type="button" class="mesa-btn-primary" onclick="MesaChat.sendMessage(document.getElementById('narrative-text-raw').innerText); MesaAreaManager.closeInteriorDrawer(); if(!MesaChat.isOpen) MesaChat.toggleChat();" style="width: 100%; justify-content: center;">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path></svg>
+            Enviar para o Chat da Mesa
+          </button>
+          <button type="button" class="mesa-btn-secondary" onclick="navigator.clipboard.writeText(document.getElementById('narrative-text-raw').innerText); alert('Texto copiado para a área de transferência!');" style="width: 100%; justify-content: center;">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            Copiar Texto
+          </button>
+        </div>
+        <div id="narrative-text-raw" style="display: none;">
+A fechadura cede com um estalo abafado e vocês entram, deixando a noite fria e as fitas amarelas da polícia para trás. O ar dentro da Casa Auguil é pesado, denso e tem o gosto amargo de um lugar que foi trancado às pressas e abandonado. Quando vocês acendem as lanternas, os feixes de luz cortam a escuridão absoluta do térreo e revelam algo profundamente perturbador: a normalidade. A sala de estar está impecavelmente arrumada. Os móveis estão alinhados, as almofadas estão em seus lugares e o silêncio é tão espesso que vocês conseguem ouvir a respiração uns dos outros.
+
+Mas essa ilusão de paz quebra assim que a luz da lanterna varre o pé da escada.
+
+Há um cheiro que não pertence a esta casa do bairro de Mina de Prata. É o odor úmido de terra podre, folhas molhadas e lodo. Marcando os degraus imaculados de madeira, pequenas pegadas escuras e pastosas sobem em direção ao segundo andar, como se a própria floresta tivesse entrado pela porta dos fundos e subido para os quartos.
+
+Cada passo na escada faz a madeira ranger, ecoando no vazio da casa. Quanto mais vocês sobem, mais o ar fica frio e o cheiro de pântano se torna asfixiante, misturando-se com um forte odor de desinfetante e doença. Vocês chegam ao corredor superior. A porta do quarto de Sara está no final, levemente entreaberta.
+
+Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um abismo de desespero e o contraste absoluto com o térreo. As janelas estão sufocadas por cobertores grossos pregados na parede, bloqueando qualquer fresta de luz. O chão está invisível sob um mar de roupas amassadas, caixas de remédios vazias e dezenas de folhas de papel espalhadas freneticamente, repletas de rascunhos. E, vindo da porta semiaberta do banheiro da suíte, o som sutil de algo gotejando de forma viscosa e o cheiro de enxofre avisam que o horror daquela casa não é apenas uma lembrança do passado. Algo ainda os espera na escuridão.
+        </div>
+      </div>
       </div>
     </aside>
 
@@ -722,10 +746,10 @@
     <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=1.1.9"></script>
+<script src="js/campaign-data.js?v=1.2.0"></script>
 
-<script src="js/mesa.js?v=1.1.9"></script>
+<script src="js/mesa.js?v=1.2.0"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v1.1.9</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.2.0</div>
 </body>
 </html>

@@ -194,95 +194,100 @@
     "district": "Bairro Residencial • Mina de Prata",
     "dangerLevel": "Isolamento Policial & Atividade Paranormal",
     "dangerLevelClass": "danger",
-    "resumo_atmosfera": "Uma moradia de dois andares de alto padrão, agora transformada em cena de crime. O exterior está isolado e envolto em dezenas de fitas policiais amarelas e pretas de \"Não Ultrapasse\". Durante o dia, viaturas e peritos da polícia bloqueiam o perímetro, tornando qualquer aproximação impossível. É apenas durante a calada da noite, quando as viaturas se retiram e a casa mergulha numa escuridão absoluta, que a oportunidade de infiltração surge. A casa de fora parece silenciosa, mas lá dentro, a atmosfera é pesada, cheirando a lodo e abandono.",
+    "resumo_atmosfera": "Uma moradia de dois andares de alto padrão, agora transformada em cena de crime. O exterior está isolado e envolto em dezenas de fitas policiais amarelas e pretas de 'Não Ultrapasse'. Durante o dia, viaturas e peritos da polícia bloqueiam o perímetro, tornando qualquer aproximação impossível (a polícia abafou o caso a mando da Diretora Constança). É apenas durante a calada da noite, quando as viaturas se retiram e a casa mergulha numa escuridão absoluta, que a oportunidade de infiltração surge. A casa de fora parece silenciosa, mas lá dentro, a atmosfera é pesada, cheirando a lodo e abandono.",
     "requisitos_acesso": "Apenas durante a noite, exigindo infiltração pelos fundos ou janelas laterais para evitar os vizinhos e as fitas policiais.",
     "npcs_presentes": [],
     "pontos_de_interesse": [
       {
         "cabecalho": {
-          "nome": "O Perímetro Externo (Infiltração)",
-          "descricao_publica": "A calçada está deserta e a casa está lacrada pelas fitas da polícia. As portas da frente e das traseiras estão trancadas, e as janelas fechadas. Entrar aqui exige agir nas sombras e passar pela segurança física da casa sem alertar a vizinhança."
+          "nome": "A Janela da Cozinha (Infiltração)",
+          "descricao_publica": "Uma janela de correr nos fundos da casa, parcialmente oculta pela sombra de um grande arbusto. As fitas da polícia não cobrem esta parede, mas o vidro está trancado por dentro e reflete a escuridão absoluta do interior."
         },
         "testes": [
           {
             "pericia": "Ladinagem / Crime",
             "ct_dt": 7,
-            "informacao_revelada": "Permite usar gazuas ou ferramentas improvisadas para destrancar a porta das traseiras (onde a polícia tem um ponto cego) de forma totalmente silenciosa."
+            "informacao_revelada": "Permite inserir uma lâmina fina na fresta e forçar a tranca para cima, deslizando o vidro sem fazer qualquer barulho."
           },
           {
             "pericia": "Força",
             "ct_dt": 8,
-            "informacao_revelada": "Quebrar o vidro de uma das janelas laterais. Requer amarrar um casaco ao redor do braço para abafar o som do vidro a estilhaçar e não cortar os pulsos."
+            "informacao_revelada": "Quebrar o vidro direto perto da tranca. Requer que o jogador role um casaco no braço para abafar o estilhaço e não se cortar severamente no processo."
           },
           {
             "pericia": "Furtividade / Vigor",
             "ct_dt": 6,
-            "informacao_revelada": "Necessário caso os jogadores precisem de correr pelo quintal e saltar o muro sem acionar os sensores de luz dos vizinhos."
+            "informacao_revelada": "Necessário se tentarem pular o muro dos fundos em direção a esta janela sem acionar os sensores de luz da casa vizinha."
           }
         ],
-        "notas_mestre": "Este PDI reforça que o local é restrito e dá opções de abordagem aos jogadores. Se eles tentarem vir de dia, os NPCs policiais mandam-nos embora. Apenas à noite eles conseguem entrar. É o primeiro desafio físico da sessão."
+        "notas_mestre": "Este é o ponto de entrada. Se eles tentarem entrar pela porta da frente, estão expostos à rua e à patrulha. A janela da cozinha força os jogadores a entrarem pelos fundos da casa de forma furtiva."
       },
       {
         "cabecalho": {
-          "nome": "O Térreo e as Escadas (O Caminho do Gato)",
-          "descricao_publica": "O andar de baixo está bizarramente organizado e limpo, exceto por alguns locais onde a polícia recolheu impressões digitais com pó branco. O silêncio é sufocante, mas há algo a quebrar a simetria perfeita da sala de estar e das escadas."
+          "nome": "O Tapete Branco da Escada",
+          "descricao_publica": "Um tapete felpudo e imaculadamente branco, posicionado exatamente no primeiro degrau do lance de escadas que leva ao andar de cima. No meio da sala perfeitamente limpa, o tapete destoa, pois tem sujeira incrustada."
         },
         "testes": [
           {
             "pericia": "Percepção",
             "ct_dt": 6,
-            "informacao_revelada": "Com lanternas, é possível ver pequenas manchas escuras no chão. Não são pegadas humanas, mas sim pequenas marcas de patas de um animal, feitas de um lodo escuro e pastoso, que começam na porta das traseiras e sobem pelas escadas."
+            "informacao_revelada": "Iluminando o tapete, nota-se que a sujeira não é pó de sapato. São marcas nítidas de patas de um animal pequeno. Elas sujaram o tapete e continuam subindo pela madeira da escada."
           },
           {
             "pericia": "Investigação",
             "ct_dt": 6,
-            "informacao_revelada": "As marcas na escada não estão secas. Estão húmidas e cheiram fortemente a terra podre da floresta, provando que \"algo\" continuou a visitar a casa depois que a polícia foi embora."
+            "informacao_revelada": "Ao tocar na mancha do tapete, o jogador percebe que o lodo não está seco. Ele é úmido, viscoso e tem cheiro de pântano podre, provando que 'algo' visitou a casa muito depois que a polícia foi embora."
           }
         ],
-        "notas_mestre": "Isto conecta a história do Elias (o barista que viu o gato) com o interior da casa. O gato (ou a entidade que o possuía) não apenas abordou Sara no beco, ele seguiu-a e tomou conta da casa dela."
+        "notas_mestre": "Isto conecta o relato do Elias (o barista que viu o gato preto) à casa. A entidade seguiu Sara e entrou aqui. O fato de as pegadas levarem direto para o andar de cima atrai os jogadores para o quarto."
       },
       {
         "cabecalho": {
-          "nome": "O Quarto de Sara (A Degradação)",
-          "descricao_publica": "Contrastando com o andar de baixo, o quarto de Sara é o puro caos (o \"Chão do Quarto\"). Roupas, caixas de medicamentos vazias e dezenas de folhas de papel espalhadas. As janelas estão bloqueadas com cobertores para impedir a luz."
+          "nome": "A Escrivaninha de Carvalho (Quarto de Sara)",
+          "descricao_publica": "Uma escrivaninha de madeira maciça no canto do quarto. A sua superfície está coberta por dezenas de folhas amassadas e embalagens de remédios. Na cadeira logo abaixo, há uma grande pilha de casacos e cachecóis. Do meio desses casacos, um fraco brilho dourado pulsa lentamente."
         },
         "testes": [
           {
             "pericia": "Investigação",
             "ct_dt": 7,
-            "informacao_revelada": "No meio do lixo no chão, encontra-se o \"Papel\" principal: um diário. A caligrafia começa normal, mas a meio, as letras tornam-se tremidas, com desenhos repetitivos de árvores contorcidas e uma figura alta de olhos brilhantes na floresta."
+            "informacao_revelada": "Remexendo as folhas na mesa, os jogadores encontram o diário de Sara (onde as últimas páginas mostram letras trêmulas e desenhos repetitivos de árvores e uma figura alta). Sob os casacos na cadeira, encontram um pote de vidro contendo um líquido dourado e denso de onde brotam faíscas (apenas 1 frasco)."
+          },
+          {
+            "pericia": "Cosmos / Química",
+            "ct_dt": 7,
+            "informacao_revelada": "Analisando o líquido dourado e a sua reação com o ar dentro do vidro, o jogador identifica que se trata de uma Poção Solar de Cura. Se ingerida ou aplicada na pele, ela queima e purifica infecções, removendo imediatamente a letal condição Amalgamado da Podridão."
           },
           {
             "pericia": "História / Ocultismo",
             "ct_dt": 8,
-            "informacao_revelada": "Analisando os desenhos e as últimas páginas do diário. A última frase escrita é repetida dezenas de vezes: \"Ele disse que a Trisha está à minha espera. A dor vai passar na água preta.\""
+            "informacao_revelada": "Analisando os delírios no diário, a última frase escrita repetida várias vezes é decifrada: 'Ele disse que a Trisha está à minha espera. A dor vai passar na água preta.'"
           },
           {
             "pericia": "Mente",
             "ct_dt": 6,
-            "informacao_revelada": "Teste de sanidade/resistência para os jogadores. Ler os delírios absolutos de uma rapariga terminal que perdeu a cabeça causa um calafrio profundo. Falhar resulta em perda de Pontos de Esforço (PE)."
+            "informacao_revelada": "Teste de sanidade para os investigadores. Ler as anotações esquizofrênicas de uma garota doente que estava sendo corrompida pela entidade causa um calafrio profundo. Falhar resulta em perda de Pontos de Esforço (PE)."
           }
         ],
-        "notas_mestre": "Este é o clímax narrativo e onde os seus apontamentos do caderno (\"Chão do Quarto\" e \"Papel\") brilham. Aqui os jogadores percebem que Sara não foi raptada; ela foi convencida e manipulada pela entidade a ir para a floresta por vontade própria, acreditando que encontraria a irmã e a cura."
+        "notas_mestre": "Este objeto agrupa as revelações vitais do quarto. O diário prova que ela foi manipulada a ir para a floresta por conta própria, e a escrivaninha entrega a única cura para o combate que está prestes a acontecer na banheira a poucos metros dali."
       },
       {
         "cabecalho": {
-          "nome": "A Banheira da Suíte (A Armadilha)",
-          "descricao_publica": "A porta da casa de banho da suíte de Sara está entreaberta. Um cheiro nauseabundo a podridão, enxofre e lodo invade o quarto. Lá dentro, a banheira está cheia até à borda com uma água espessa, preta e parada."
+          "nome": "A Banheira de Porcelana",
+          "descricao_publica": "A porta da casa de banho está entreaberta. Uma banheira de porcelana branca, estilo vitoriano, domina o cômodo. Um cheiro nauseabundo a podridão e enxofre emana dela, pois está cheia até a borda com uma água espessa, preta e parada, como lodo."
         },
         "testes": [
           {
             "pericia": "Medicina / Alquimia",
             "ct_dt": 6,
-            "informacao_revelada": "A água não é de esgoto. É um lodo orgânico e antinatural, como se parte do pântano da Floresta tivesse sido trazido para dentro de casa."
+            "informacao_revelada": "A água não é de esgoto humano. É um lodo orgânico e antinatural, como se o núcleo podre da Floresta tivesse sido bombeado para dentro de casa."
           },
           {
             "pericia": "Percepção",
             "ct_dt": 8,
-            "informacao_revelada": "Quem olhar de perto para a água negra vai perceber, uma fração de segundo tarde demais, que o reflexo no fundo não é o do próprio jogador, mas sim de um rosto distorcido."
+            "informacao_revelada": "Quem se debruçar sobre a água negra vai perceber, uma fração de segundo tarde demais, que o reflexo pálido no fundo não é o do próprio jogador."
           }
         ],
-        "notas_mestre": "O GATILHO DE COMBATE. Assim que um jogador fizer qualquer teste neste PDI (ou tentar esvaziar/tocar na água), o \"Zumbi de Lodo\" emerge violentamente da banheira e agarra o braço de quem estiver mais perto. É o resíduo apodrecido que a entidade deixou para trás. Aqui a investigação pausa e a iniciativa de combate deve ser rolada!"
+        "notas_mestre": "GATILHO DE COMBATE. Assim que um jogador fizer qualquer teste neste PDI (ou tentar esvaziar/tocar na água), o Zumbi de Lodo (o cadáver corrompido de Kali) emerge violentamente e ataca. Quando o monstro for derrotado, a água preta escoará, revelando o laço de cabelo rosa de Kali entupindo o ralo, provando que Sara cometeu o sacrifício na própria banheira antes de sumir."
       }
     ],
     "conexoes_saida": [
@@ -299,7 +304,6 @@
     ]
   }
 };
-
   // ============================================================
   // EXPORTAÇÃO GLOBAL E MÓDULO
   // ============================================================
