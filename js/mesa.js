@@ -3330,7 +3330,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.3.5`;
+      badge.textContent = `v1.3.6`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -3917,6 +3917,10 @@ const MesaQuickMenu = {
     if (roteiroBtn) {
       roteiroBtn.style.display = isMaster ? 'flex' : 'none';
     }
+    const aberturaBtn = document.getElementById('menu-abertura-btn');
+    if (aberturaBtn) {
+      aberturaBtn.style.display = isMaster ? 'flex' : 'none';
+    }
     const mediaBtn = document.getElementById('menu-media-btn');
     if (mediaBtn) {
       mediaBtn.style.display = isMaster ? 'flex' : 'none';
@@ -4007,6 +4011,10 @@ const MesaMobileMenu = {
     const mobileRoteiroBtn = document.getElementById('mobile-roteiro-item');
     if (mobileRoteiroBtn) {
       mobileRoteiroBtn.style.display = isMaster ? 'flex' : 'none';
+    }
+    const mobileAberturaBtn = document.getElementById('mobile-abertura-item');
+    if (mobileAberturaBtn) {
+      mobileAberturaBtn.style.display = isMaster ? 'flex' : 'none';
     }
     const mobileMediaBtn = document.getElementById('mobile-media-item');
     if (mobileMediaBtn) {
@@ -4866,3 +4874,51 @@ const MesaMediaPlayer = {
 
 
 window.MesaMediaPlayer = MesaMediaPlayer;
+
+
+// --- MESA ABERTURA ---
+const MesaAbertura = {
+  play() {
+    if (!MesaApp.state.isMaster) return;
+    
+    // Broadcast to all players
+    if (MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'play_abertura',
+        payload: {}
+      });
+    }
+    
+    // Play for Master as well
+    this.triggerAbertura();
+  },
+
+  triggerAbertura() {
+    const overlay = document.getElementById('abertura-overlay');
+    const video = document.getElementById('abertura-video');
+    
+    if (overlay && video) {
+      // Force reload to ensure it plays from beginning
+      video.currentTime = 0;
+      overlay.classList.add('active');
+      
+      // Attempt to play
+      video.play().catch(e => {
+        console.warn("Abertura video play blocked by browser. Muting...", e);
+        video.muted = true;
+        video.play();
+      });
+
+      // When ended, fade out
+      video.onended = () => {
+        overlay.classList.remove('active');
+        setTimeout(() => {
+          video.pause();
+          video.currentTime = 0;
+        }, 1500); // wait for fade transition
+      };
+    }
+  }
+};
+window.MesaAbertura = MesaAbertura;
