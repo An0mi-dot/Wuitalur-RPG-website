@@ -3323,7 +3323,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.2.8`;
+      badge.textContent = `v1.2.9`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -4035,6 +4035,7 @@ const MesaMobileMenu = {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
+  if (window.MesaMediaPlayer) MesaMediaPlayer.init();
   const savedToken = localStorage.getItem('wu_user_token') || localStorage.getItem('mesa_token');
   await MesaApp.init(savedToken);
   MesaMobileMenu.init();
@@ -4233,7 +4234,7 @@ const MesaRoteiro = {
 
 // Fix for global visibility of modules
 window.MesaApp = MesaApp;
-  window.MesaMediaPlayer = MesaMediaPlayer;
+
 window.MesaAreaManager = MesaAreaManager;
 window.MesaChat = MesaChat;
 window.MesaQuickMenu = MesaQuickMenu;
@@ -4830,3 +4831,6 @@ const MesaMediaPlayer = {
   }
 };
 
+
+
+window.MesaMediaPlayer = MesaMediaPlayer;
