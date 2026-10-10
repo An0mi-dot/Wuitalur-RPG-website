@@ -3047,8 +3047,23 @@ const MESA_AREAS = {
     "lore": "Café onde Sara trabalhava como barista. Era um ambiente agitado, mas que perdeu sua luz nos últimos dias.",
     "rumor": "Dizem que a gerente desapareceu e o outro funcionário, Elias, não fala com ninguém.",
     "pois": []
+  },
+  "clinica-renovare": {
+    "id": "clinica-renovare",
+    "name": "Clínica Renovare",
+    "shortName": "Clínica",
+    "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 12h-4l-3 9L9 3l-3 9H2\"></path></svg>",
+    "themeClass": "area-clinica-renovare",
+    "district": "Centro Médico • Setor Sul",
+    "dangerLevel": "Risco Biológico & Segurança",
+    "dangerLevelClass": "danger",
+    "ambience": "A Clínica Renovare revela-se muito mais do que um simples pronto-socorro de bairro. O interior é uma instalação de ponta, com iluminação fria, piso impecável e um design circular opressivo. O núcleo do edifício é um grande bloco central fechado, rodeado por um longo corredor quadrado. A clínica está ativa, com luzes acesas e enfermeiros circulando.",
+    "lore": "Centro hospitalar altamente equipado sob direção da misteriosa Dra. Melissa Vane.",
+    "rumor": "A administração oculta pacientes no Bloco Central à noite, com prontuários que nunca chegam aos servidores públicos.",
+    "pois": []
   }
 };
+
 
 
 const MesaAreaManager = {
@@ -3148,12 +3163,19 @@ const MesaAreaManager = {
           roadTwinD: 'M 508 160 C 508 200, 508 260, 508 320'
         },
         'cafe-da-nevoa': {
-          xPct: 24, yPct: 80,
-          color: '#f59e0b',
-          glow: 'rgba(245, 158, 11, 0.75)',
-          roadD: 'M 280 512 C 380 512, 450 400, 500 320',
-          roadTwinD: 'M 280 520 C 380 520, 450 408, 508 320'
-        }
+            xPct: 24, yPct: 80,
+            color: '#f59e0b',
+            glow: 'rgba(245, 158, 11, 0.75)',
+            roadD: 'M 280 512 C 380 512, 450 400, 500 320',
+            roadTwinD: 'M 280 520 C 380 520, 450 408, 508 320'
+          },
+          'clinica-renovare': {
+            xPct: 76, yPct: 80,
+            color: '#3b82f6',
+            glow: 'rgba(59, 130, 246, 0.75)',
+            roadD: 'M 720 512 C 620 512, 550 400, 500 320',
+            roadTwinD: 'M 720 520 C 620 520, 550 408, 508 320'
+          }
     };
 
     // 1. Constrói o SVG de Estradas Interconectadas
@@ -3301,7 +3323,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.2.2`;
+      badge.textContent = `v1.2.3`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body

@@ -401,6 +401,127 @@
       }
     ]
 
+  },
+  "clinica-renovare": {
+    "id": "clinica-renovare",
+    "nome": "Clínica Renovare",
+    "shortName": "Clínica",
+    "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 12h-4l-3 9L9 3l-3 9H2\"></path></svg>",
+    "themeClass": "area-clinica-renovare",
+    "district": "Centro Médico • Setor Sul",
+    "dangerLevel": "Risco Biológico & Segurança",
+    "dangerLevelClass": "danger",
+    "titulo_narrativo": "Entrada na Clínica",
+    "texto_narrativo": "\"Quando vocês passam pelas portas da Clínica Renovare, o cheiro de desinfetante forte queima as narinas. O lugar é iluminado por uma luz branca e fria que não deixa espaço para sombras. À vossa frente, pintado no chão de forma simétrica, há um grande círculo com um 'X' azul apontando para um balcão de triagem angular e moderno.\n\nO layout é intimidador: um enorme bloco central de vidro e metal domina o meio do edifício, abrigando mesas de computadores, prateleiras de suprimentos e equipamentos estranhos que mais parecem de um centro de pesquisa do que de um hospital comum. Ao redor desse bloco, um longo corredor dá acesso a dezenas de quartos individuais, onde o bip constante de monitores cardíacos ecoa no silêncio. Enfermeiros de branco circulam de forma metódica, com os olhos fixos em pranchetas eletrônicas. Para descobrir o que a Dra. Melissa Vane estava a injetar na Sara, vocês terão de se esgueirar por estes corredores limpos ou encontrar uma forma de aceder aos terminais do bloco central sem disparar o alarme.\"",
+    "resumo_atmosfera": "A Clínica Renovare revela-se muito mais do que um simples pronto-socorro de bairro. O interior é uma instalação de ponta, com iluminação fria, piso impecável e um design circular opressivo. O núcleo do edifício é um grande bloco central fechado (com administração, farmácia e laboratórios), rodeado por um longo corredor quadrado que dá acesso a dezenas de quartos de pacientes. A clínica está ativa, com luzes acesas, enfermeiros circulando pelos corredores externos e o zumbido constante de equipamentos de suporte à vida. A Dra. Melissa Vane tem total controle sobre esta ala, e foi aqui que os horrores médicos com Sara aconteceram.",
+    "requisitos_acesso": "Acesso público restrito após a meia-noite, exigindo furtividade, credenciais roubadas ou manipulação para circular nas áreas fechadas do bloco central.",
+    "npcs_presentes": ["melissa-vane"],
+    "pontos_de_interesse": [
+      {
+        "cabecalho": {
+          "nome": "O Terminal de Triagem (Balcão Angular)",
+          "descricao_publica": "Logo na entrada, atrás da marcação azul no chão, fica um balcão angular escuro com vários monitores. Uma enfermeira de plantão atende os poucos pacientes noturnos, mas afasta-se ocasionalmente para verificar os corredores."
+        },
+        "testes": [
+          {
+            "pericia": "Diplomacia / Enganação",
+            "ct_dt": 6,
+            "informacao_revelada": "Falar com a enfermeira e inventar uma desculpa sólida para aceder a informações. Ela revelará, hesitando, que Sara Auguil não ficava nos quartos normais, mas sim na 'Ala de Isolamento Biológico' no corredor leste."
+          },
+          {
+            "pericia": "Furtividade / Ladinagem",
+            "ct_dt": 7,
+            "informacao_revelada": "Esperar a enfermeira virar as costas para roubar um crachá de acesso magnético esquecido em cima do teclado, permitindo abrir as portas do Bloco Central."
+          },
+          {
+            "pericia": "Tecnologia",
+            "ct_dt": 6,
+            "informacao_revelada": "Hackear rapidamente o terminal destrancado para descobrir a senha dos computadores da administração interna."
+          }
+        ],
+        "notas_mestre": "Este é o ponto de interação inicial. O objetivo aqui é conseguir a localização do quarto de Sara ou o acesso físico/digital para o laboratório no meio do mapa."
+      },
+      {
+        "cabecalho": {
+          "nome": "A Mesa Central de Administração (Bloco Central)",
+          "descricao_publica": "Dentro do bloco fechado no centro do mapa, há uma sala com quatro mesas azuis dispostas em formato de cruz. É a central de administração da Dra. Melissa Vane. A sala está temporariamente vazia, mas tem paredes de vidro, o que significa que quem estiver lá dentro pode ser visto por patrulhas no corredor."
+        },
+        "testes": [
+          {
+            "pericia": "Tecnologia",
+            "ct_dt": 7,
+            "informacao_revelada": "Acessar os arquivos restritos no computador principal. Os jogadores encontram o prontuário de Sara: ela tinha falência múltipla de órgãos, mas a Dra. Melissa continuava a administrar 'amostras orgânicas não catalogadas'."
+          },
+          {
+            "pericia": "Furtividade",
+            "ct_dt": 8,
+            "informacao_revelada": "O jogador que estiver nos computadores precisa passar neste teste caso um enfermeiro passe no corredor externo, tendo de se abaixar rapidamente sob a mesa azul para não ser detetado através do vidro."
+          },
+          {
+            "pericia": "Mente",
+            "ct_dt": 6,
+            "informacao_revelada": "Teste de sanidade ao ler os e-mails da médica, onde ela descreve com fascínio científico como o lodo negro estava a substituir os tecidos mortos de Sara, mantendo-a viva como um parasita."
+          }
+        ],
+        "notas_mestre": "É aqui que a conspiração médica é revelada. A Dra. Melissa não estava a tentar curar Sara, estava a usá-la como incubadora para a entidade da floresta."
+      },
+      {
+        "cabecalho": {
+          "nome": "Os Tanques de Contenção Azuis (Laboratório Central)",
+          "descricao_publica": "Em uma sala adjacente dentro do bloco central, existem dois grandes tanques ou cilindros circulares azuis conectados a tubulações pesadas. O painel de controle deles pisca com luzes de aviso."
+        },
+        "testes": [
+          {
+            "pericia": "Medicina / Química",
+            "ct_dt": 6,
+            "informacao_revelada": "Analisando os medidores, o jogador percebe que os tanques não contêm oxigênio ou fluidos hospitalares comuns. Eles estão a manter uma substância espessa e orgânica em temperatura controlada."
+          },
+          {
+            "pericia": "Percepção",
+            "ct_dt": 7,
+            "informacao_revelada": "Olhando pelo visor de vidro de um dos tanques, o jogador vê o líquido escuro e pastoso lá dentro. É o mesmo lodo negro encontrado na Casa Auguil e no beco do Café."
+          },
+          {
+            "pericia": "Ladinagem / Investigação",
+            "ct_dt": 7,
+            "informacao_revelada": "Abrir um compartimento refrigerado ao lado dos tanques permite recolher uma seringa carregada com esse lodo (que pode ser usada como prova física irrefutável contra a clínica)."
+          }
+        ],
+        "notas_mestre": "Este PDI liga a clínica diretamente aos eventos sobrenaturais. Eles estão literalmente a cultivar ou a armazenar a essência da Podridão em ambiente hospitalar."
+      },
+      {
+        "cabecalho": {
+          "nome": "O Leito com Alerta Biológico (Corredor Direito)",
+          "descricao_publica": "No corredor da ala direita, há alguns quartos com um grande triângulo vermelho de Risco Biológico colado no chão da entrada. A cama do quarto mais ao norte está desarrumada e vazia, os lençóis manchados, e as luzes dos monitores vitais estão desligadas."
+        },
+        "testes": [
+          {
+            "pericia": "Investigação",
+            "ct_dt": 6,
+            "informacao_revelada": "Examinar os lençóis revela que as manchas escuras não são de sangue, mas sim resíduos do lodo. Debaixo do travesseiro, encontra-se um desenho infantil e perturbador feito por Sara, mostrando Kali (a garota que Sara sacrificou na banheira)."
+          },
+          {
+            "pericia": "Sobrevivência / Intuição",
+            "ct_dt": 7,
+            "informacao_revelada": "O jogador nota que os dutos de ventilação logo acima da cama foram forçados de dentro para fora. Sara (ou o que quer que ela se tenha tornado) não teve alta médica; ela escapou da clínica no meio da noite."
+          }
+        ],
+        "notas_mestre": "Este foi o último quarto de Sara antes de ela fugir para cometer o sacrifício na sua própria casa. Encontrar os vestígios aqui confirma a linha do tempo e empurra os jogadores para o clímax inevitável: encontrá-la na Floresta."
+      }
+    ],
+    "conexoes_saida": [
+      {
+        "area_id": "cafe-da-nevoa",
+        "nome": "Café da Névoa",
+        "gancho": "O diagnóstico de Sara foi enviado para o Café."
+      },
+      {
+        "area_id": "casa-auguil",
+        "nome": "Casa Auguil",
+        "gancho": "O último rastro lógico de Sara após sua fuga."
+      }
+    ]
+
   }
 };
   // ============================================================
