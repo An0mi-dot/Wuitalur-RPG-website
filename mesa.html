@@ -11,9 +11,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/variables.css?v=1.4.7">
-  <link rel="stylesheet" href="css/components.css?v=1.4.7">
-  <link rel="stylesheet" href="css/mesa.css?v=1.4.7">
+  <link rel="stylesheet" href="css/variables.css?v=1.4.8">
+  <link rel="stylesheet" href="css/components.css?v=1.4.8">
+  <link rel="stylesheet" href="css/mesa.css?v=1.4.8">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -148,6 +148,11 @@
             <button type="button" class="quick-menu-item" onclick="MesaSara.openModal(); MesaQuickMenu.close();">
               <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
               <span>Sobre Sara</span>
+            </button>
+
+            <button type="button" class="quick-menu-item" onclick="MesaColetaveis.openModal(); MesaQuickMenu.close();" style="color: #f59e0b;">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+              <span>Coletáveis</span>
             </button>
 
             
@@ -579,6 +584,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
             <span>Sobre Sara</span>
           </button>
 
+          <button class="mobile-menu-item" onclick="MesaColetaveis.openModal(); MesaMobileMenu.close()" style="color: #f59e0b;">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            <span>Coletáveis</span>
+          </button>
+
                               <button id="mobile-abertura-item" class="mobile-menu-item master-item" onclick="MesaAbertura.play(); MesaMobileMenu.close()" style="display: none; color: #10b981;">
             <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
             <span>Tocar Abertura (Mestre)</span>
@@ -676,6 +686,79 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       </div>
     </div>
 
+
+    
+    <!-- Modal do Catálogo de Coletáveis -->
+    <div id="coletaveis-modal" class="mesa-modal-overlay">
+      <div class="mesa-modal coletaveis-modal-dialog">
+        <button class="mesa-modal-close" onclick="MesaColetaveis.closeModal()">&times;</button>
+        
+        <div class="coletaveis-header-box">
+          <div class="ink-ribbon-title">COLETÁVEIS & ITENS ENCONTRADOS</div>
+          <div class="coletaveis-subtitle">Artefatos, registros e pertences resgatados pelo grupo durante a investigação.</div>
+        </div>
+
+        <div class="coletaveis-toolbar">
+          <div class="coletaveis-search-wrapper">
+            <svg class="coletaveis-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input 
+              type="text" 
+              id="coletaveis-search-input" 
+              class="coletaveis-search-input" 
+              placeholder="Pesquisar coletáveis por nome, área ou descrição..." 
+              oninput="MesaColetaveis.onSearch(this.value)"
+            />
+          </div>
+          <button id="coletaveis-master-add-btn" type="button" class="coletaveis-add-btn" onclick="MesaColetaveis.openAddModal()" style="display: none;">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Novo Coletável
+          </button>
+        </div>
+
+        <div id="coletaveis-scroll-container" class="coletaveis-scroll-container">
+          <!-- Renderizado dinamicamente via MesaColetaveis -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Auxiliar do Mestre para Adicionar Coletável -->
+    <div id="coletavel-form-modal" class="mesa-modal-overlay" style="z-index: 1200;">
+      <div class="mesa-modal" style="max-width: 500px; border-radius: 0; background: rgba(14, 14, 18, 0.98); border: 1px solid rgba(255, 85, 0, 0.35);">
+        <button class="mesa-modal-close" onclick="MesaColetaveis.closeAddModal()">&times;</button>
+        <div class="ink-ribbon-title" style="margin-bottom: 16px;">CADASTRAR NOVO COLETÁVEL</div>
+        
+        <form onsubmit="MesaColetaveis.handleCreate(event)" style="display: flex; flex-direction: column; gap: 14px;">
+          <div>
+            <label style="display: block; font-size: 0.75rem; color: #a3a3a3; margin-bottom: 4px; font-weight: 700; text-transform: uppercase;">Nome do Item</label>
+            <input type="text" id="coletavel-form-nome" required class="coletaveis-search-input" style="padding-left: 12px;" placeholder="Ex: Mochila de Sara, Frasco Vazio..." />
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>
+              <label style="display: block; font-size: 0.75rem; color: #a3a3a3; margin-bottom: 4px; font-weight: 700; text-transform: uppercase;">Categoria / Tipo</label>
+              <input type="text" id="coletavel-form-tipo" class="coletaveis-search-input" style="padding-left: 12px;" placeholder="Documento, Objeto, Pista..." />
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.75rem; color: #a3a3a3; margin-bottom: 4px; font-weight: 700; text-transform: uppercase;">Área de Origem</label>
+              <input type="text" id="coletavel-form-area" class="coletaveis-search-input" style="padding-left: 12px;" placeholder="Ex: A Mata do Norte" />
+            </div>
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 0.75rem; color: #a3a3a3; margin-bottom: 4px; font-weight: 700; text-transform: uppercase;">Descrição Detalhada</label>
+            <textarea id="coletavel-form-desc" rows="4" class="coletaveis-search-input" style="padding-left: 12px; resize: vertical;" placeholder="O que os investigadores descobrem ao examinar este item..."></textarea>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
+            <button type="button" class="mesa-btn ink-tag" onclick="MesaColetaveis.closeAddModal()">Cancelar</button>
+            <button type="submit" class="mesa-btn ink-tag primary">Salvar e Registrar</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <!-- Modal Sobre Sara -->
     <div id="sara-modal" class="mesa-modal-overlay">
@@ -858,11 +941,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=1.4.7"></script>
+<script src="js/campaign-data.js?v=1.4.8"></script>
 
-<script src="js/mesa.js?v=1.4.7"></script>
+<script src="js/mesa.js?v=1.4.8"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v1.4.7</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.4.8</div>
 
   <!-- ABERTURA OVERLAY -->
   <div id="abertura-overlay" class="abertura-overlay">

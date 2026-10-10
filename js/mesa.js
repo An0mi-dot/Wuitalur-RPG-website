@@ -751,6 +751,7 @@ const MesaApp = {
       this.updateTokenBtnState();
     }
 
+    MesaColetaveis.init();
     MesaChat.init();
     MesaReactions.init();
     MesaDice.init();
@@ -1036,8 +1037,8 @@ const MesaApp = {
       raca: 'Animalesco',
       arquetipo: 'Rebelde',
       classe: 'Adivinha',
-      imagem: 'assets/pera.png?v=1.4.7',
-      avatar: 'assets/pera_avatar.png?v=1.4.7',
+      imagem: 'assets/pera.png?v=1.4.8',
+      avatar: 'assets/pera_avatar.png?v=1.4.8',
       hp: 12, hpMax: 12,
       pe: 10, peMax: 10,
       st: 0, stMax: 24,
@@ -1066,7 +1067,7 @@ const MesaApp = {
       id: 5,
       slot: 5,
       token: 'J8W4',
-      nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão', imagem: 'assets/william.png?v=1.4.7', avatar: 'assets/william_avatar.png?v=1.4.7',
+      nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão', imagem: 'assets/william.png?v=1.4.8', avatar: 'assets/william_avatar.png?v=1.4.8',
       hp: 15, hpMax: 15,
       pe: 10, peMax: 10,
       st: 0, stMax: 28,
@@ -1371,7 +1372,7 @@ const MesaApp = {
 
       if (!this.state.players[3]) {
         this.state.players[3] = {
-          id: 4, slot: 4, token: 'H2Q9', nome: 'Pera Hylidae da Silva', idade: '18 anos', altura: '1,58m', raca: 'Animalesco', arquetipo: 'Rebelde', classe: 'Adivinha', imagem: 'assets/pera.png?v=1.4.7', avatar: 'assets/pera_avatar.png?v=1.4.7',
+          id: 4, slot: 4, token: 'H2Q9', nome: 'Pera Hylidae da Silva', idade: '18 anos', altura: '1,58m', raca: 'Animalesco', arquetipo: 'Rebelde', classe: 'Adivinha', imagem: 'assets/pera.png?v=1.4.8', avatar: 'assets/pera_avatar.png?v=1.4.8',
           hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 24, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Mente': 'd4', 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd16' },
           bonus: [
@@ -1389,7 +1390,7 @@ const MesaApp = {
 
       if (!this.state.players[4]) {
         this.state.players[4] = {
-          id: 5, slot: 5, token: 'J8W4', nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão', imagem: 'assets/william.png?v=1.4.7', avatar: 'assets/william_avatar.png?v=1.4.7',
+          id: 5, slot: 5, token: 'J8W4', nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão', imagem: 'assets/william.png?v=1.4.8', avatar: 'assets/william_avatar.png?v=1.4.8',
           hp: 15, hpMax: 15, pe: 10, peMax: 10, st: 0, stMax: 28, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Saúde': 'd4', 'Vigor': 'd16', 'Força': 'd12', 'Mente': 'd8' },
           bonus: [
@@ -1509,7 +1510,16 @@ const MesaApp = {
         console.log("Atualização da mesa recebida:", payload);
         this.fetchPlayers();
       })
-      .on('broadcast', { event: 'area_changed' }, (payload) => {
+      .on('broadcast', { event: 'coletaveis_sync' }, (payload) => {
+          const data = payload.payload;
+          if (data && Array.isArray(data.items) && window.MesaColetaveis) {
+            MesaColetaveis.items = data.items;
+            localStorage.setItem('wu_coletaveis_v1', JSON.stringify(data.items));
+            MesaColetaveis.render();
+            MesaColetaveis.renderFicha();
+          }
+        })
+        .on('broadcast', { event: 'area_changed' }, (payload) => {
         const data = payload.payload;
         if (data && data.areaId && window.MesaAreaManager && MesaAreaManager.currentAreaId !== data.areaId) {
           console.log("[BROADCAST REALTIME] Área mudou:", data.areaId);
@@ -1896,7 +1906,7 @@ const MesaApp = {
           </div>
         </div>
 
-        <!-- 4. Perícias (Coluna Única) e Habilidades Lado a Lado -->
+                <!-- 4. Perícias (Coluna Única) e Habilidades Lado a Lado -->
         <div class="ficha-skills-habs-row">
           <div class="ficha-open-section ficha-section-skills">
             <div class="ink-ribbon-title">PERÍCIAS</div>
@@ -1913,7 +1923,24 @@ const MesaApp = {
           </div>
         </div>
 
-      </div>
+        <!-- 5. Campo de Coletáveis na Ficha com Barra de Pesquisa -->
+        <div class="ficha-section-coletaveis">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <div class="ink-ribbon-title">COLETÁVEIS</div>
+            <button type="button" class="mesa-btn ink-tag" style="font-size:0.72rem; padding:4px 10px;" onclick="MesaColetaveis.openModal()">
+              Abrir Arquivo Completo
+            </button>
+          </div>
+          <div class="ficha-coletaveis-toolbar">
+            <input 
+              type="text" 
+              class="ficha-coletaveis-search" 
+              placeholder="Pesquisar coletáveis por nome ou descrição..." 
+              oninput="MesaColetaveis.filterFicha(this.value)" 
+            />
+          </div>
+          <div id="ficha-coletaveis-container" class="ficha-coletaveis-container"></div>
+        </div></div>
     `;
 
     if (startParticles) {
@@ -1921,6 +1948,9 @@ const MesaApp = {
     }
 
     fichaModal.classList.add('active');
+    if (window.MesaColetaveis) {
+      MesaColetaveis.renderFicha();
+    }
 
     // Inicia o motor de glitch procedural na ilustração (mesma frequência e tipos do BG)
     setTimeout(() => {
@@ -3328,7 +3358,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.4.7`;
+      badge.textContent = `v1.4.8`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -4088,6 +4118,260 @@ document.addEventListener('DOMContentLoaded', async () => {
 // ============================================================
 // 8. SARA MODAL
 // ============================================================
+
+// ============================================================
+// SISTEMA DE COLETÁVEIS & ITENS ENCONTRADOS
+// ============================================================
+const MesaColetaveis = {
+  items: [],
+  searchQuery: '',
+  fichaSearchQuery: '',
+
+  init() {
+    const saved = localStorage.getItem('wu_coletaveis_v1');
+    if (saved) {
+      try {
+        this.items = JSON.parse(saved);
+      } catch (e) {
+        this.items = [];
+      }
+    } else {
+      this.items = [];
+    }
+  },
+
+  openModal() {
+    this.init();
+    this.searchQuery = '';
+    const input = document.getElementById('coletaveis-search-input');
+    if (input) input.value = '';
+    
+    const addBtn = document.getElementById('coletaveis-master-add-btn');
+    if (addBtn) {
+      addBtn.style.display = (MesaApp && MesaApp.state && MesaApp.state.isMaster) ? 'inline-flex' : 'none';
+    }
+
+    this.render();
+    MesaApp.openModal('coletaveis-modal');
+  },
+
+  closeModal() {
+    MesaApp.closeModal('coletaveis-modal');
+  },
+
+  openAddModal() {
+    if (!MesaApp.state.isMaster) return;
+    const nomeEl = document.getElementById('coletavel-form-nome');
+    if (nomeEl) nomeEl.value = '';
+    const tipoEl = document.getElementById('coletavel-form-tipo');
+    if (tipoEl) tipoEl.value = '';
+    const areaEl = document.getElementById('coletavel-form-area');
+    if (areaEl) areaEl.value = '';
+    const descEl = document.getElementById('coletavel-form-desc');
+    if (descEl) descEl.value = '';
+    MesaApp.openModal('coletavel-form-modal');
+  },
+
+  closeAddModal() {
+    MesaApp.closeModal('coletavel-form-modal');
+  },
+
+  handleCreate(e) {
+    e.preventDefault();
+    if (!MesaApp.state.isMaster) return;
+
+    const nome = (document.getElementById('coletavel-form-nome').value || '').trim();
+    const tipo = (document.getElementById('coletavel-form-tipo').value || '').trim() || 'Objeto / Pista';
+    const area = (document.getElementById('coletavel-form-area').value || '').trim() || 'Área Desconhecida';
+    const desc = (document.getElementById('coletavel-form-desc').value || '').trim() || 'Sem descrição detalhada.';
+
+    if (!nome) return;
+
+    const newItem = {
+      id: 'col_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+      nome,
+      tipo,
+      area,
+      desc,
+      dataCriacao: new Date().toLocaleDateString('pt-BR')
+    };
+
+    this.items.unshift(newItem);
+    this.saveAndSync();
+    this.closeAddModal();
+    this.render();
+    this.renderFicha();
+
+    if (MesaChat && MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'chat_message',
+        payload: {
+          id: 'msg_' + Date.now(),
+          text: `📦 [NOVO COLETÁVEL REGISTRADO]: ${nome} (${tipo}) foi catalogado!`,
+          sender: 'Mestre',
+          role: 'mestre',
+          timestamp: Date.now()
+        }
+      });
+    }
+  },
+
+  deleteItem(id) {
+    if (!MesaApp.state.isMaster) return;
+    if (!confirm('Deseja realmente remover este coletável?')) return;
+
+    this.items = this.items.filter(it => it.id !== id);
+    this.saveAndSync();
+    this.render();
+    this.renderFicha();
+  },
+
+  saveAndSync() {
+    localStorage.setItem('wu_coletaveis_v1', JSON.stringify(this.items));
+    if (MesaChat && MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'coletaveis_sync',
+        payload: { items: this.items }
+      });
+    }
+  },
+
+  onSearch(val) {
+    this.searchQuery = (val || '').trim().toLowerCase();
+    this.render();
+  },
+
+  filterFicha(val) {
+    this.fichaSearchQuery = (val || '').trim().toLowerCase();
+    this.renderFicha();
+  },
+
+  renderFicha() {
+    const container = document.getElementById('ficha-coletaveis-container');
+    if (!container) return;
+    this.init();
+
+    if (!this.items || this.items.length === 0) {
+      container.innerHTML = `
+        <div class="coletaveis-empty-state" style="padding: 24px 14px;">
+          <div class="coletaveis-empty-title" style="font-size: 0.95rem;">[ NENHUM COLETÁVEL ENCONTRADO ]</div>
+          <div class="coletaveis-empty-desc" style="font-size: 0.8rem;">Nenhum item ou pista foi coletado pelo grupo até o momento.</div>
+        </div>
+      `;
+      return;
+    }
+
+    const filtered = this.items.filter(it => {
+      if (!this.fichaSearchQuery) return true;
+      const q = this.fichaSearchQuery;
+      return (
+        (it.nome && it.nome.toLowerCase().includes(q)) ||
+        (it.tipo && it.tipo.toLowerCase().includes(q)) ||
+        (it.area && it.area.toLowerCase().includes(q)) ||
+        (it.desc && it.desc.toLowerCase().includes(q))
+      );
+    });
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div class="coletaveis-empty-state" style="padding: 20px 14px;">
+          <div class="coletaveis-empty-title" style="font-size: 0.88rem;">[ NENHUM RESULTADO ]</div>
+          <div class="coletaveis-empty-desc" style="font-size: 0.78rem;">Nenhum item corresponde à pesquisa "${this.fichaSearchQuery}".</div>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = `
+      <div class="coletaveis-cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px;">
+        ${filtered.map(it => `
+          <div class="coletavel-card" style="padding: 10px 12px;">
+            <div class="coletavel-card-header">
+              <h4 class="coletavel-card-title" style="font-size: 0.9rem;">${it.nome}</h4>
+              <span class="coletavel-card-badge">${it.tipo || 'Pista'}</span>
+            </div>
+            <div class="coletavel-card-area" style="font-size: 0.72rem;">
+              <span>${it.area || 'Área Desconhecida'}</span>
+            </div>
+            <p class="coletavel-card-desc" style="font-size: 0.78rem;">${it.desc}</p>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  },
+
+  render() {
+    const container = document.getElementById('coletaveis-scroll-container');
+    if (!container) return;
+
+    const isMaster = MesaApp && MesaApp.state && MesaApp.state.isMaster;
+
+    if (!this.items || this.items.length === 0) {
+      container.innerHTML = `
+        <div class="coletaveis-empty-state">
+          <svg class="coletaveis-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+          <div class="coletaveis-empty-title">[ NENHUM COLETÁVEL ENCONTRADO ]</div>
+          <div class="coletaveis-empty-desc">Nenhum item ou registro foi coletado pelo grupo até o momento. Conforme os investigadores explorarem áreas e resolverem enigmas, os itens e pistas coletados serão catalogados aqui.</div>
+        </div>
+      `;
+      return;
+    }
+
+    const filtered = this.items.filter(it => {
+      if (!this.searchQuery) return true;
+      const q = this.searchQuery;
+      return (
+        (it.nome && it.nome.toLowerCase().includes(q)) ||
+        (it.tipo && it.tipo.toLowerCase().includes(q)) ||
+        (it.area && it.area.toLowerCase().includes(q)) ||
+        (it.desc && it.desc.toLowerCase().includes(q))
+      );
+    });
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div class="coletaveis-empty-state">
+          <div class="coletaveis-empty-title">[ NENHUM RESULTADO ]</div>
+          <div class="coletaveis-empty-desc">Nenhum item corresponde ao termo pesquisado "${this.searchQuery}".</div>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = `
+      <div class="coletaveis-cards-grid">
+        ${filtered.map(it => `
+          <div class="coletavel-card">
+            <div class="coletavel-card-header">
+              <h3 class="coletavel-card-title">${it.nome}</h3>
+              <span class="coletavel-card-badge">${it.tipo || 'Pista'}</span>
+            </div>
+            <div class="coletavel-card-area">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <span>${it.area || 'Área Desconhecida'}</span>
+            </div>
+            <p class="coletavel-card-desc">${it.desc}</p>
+            ${isMaster ? `
+              <div class="coletavel-card-footer">
+                <button type="button" class="coletavel-delete-btn" onclick="MesaColetaveis.deleteItem('${it.id}')" title="Excluir Coletável">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                  Excluir
+                </button>
+              </div>
+            ` : ''}
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+};
+
 const MesaSara = {
   openModal() {
     MesaApp.openModal('sara-modal');
@@ -4257,7 +4541,8 @@ window.MesaChat = MesaChat;
 window.MesaQuickMenu = MesaQuickMenu;
 window.MesaMobileMenu = MesaMobileMenu;
 window.MesaSecurity = MesaSecurity;
-window.MesaSara = MesaSara;
+window.MesaColetaveis = MesaColetaveis;
+  window.MesaSara = MesaSara;
 window.MesaRoteiro = MesaRoteiro;
 window.MesaReactions = MesaReactions;
 window.MesaDice = MesaDice;
