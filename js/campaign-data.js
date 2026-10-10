@@ -165,177 +165,59 @@
     ]
   },
   "floresta-proibida": {
-      "id": "floresta-proibida",
-      "nome": "A Mata do Norte",
-      "shortName": "Mata do Norte",
-      "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 2L5 12h4l-3 6h5v4h2v-4h5l-3-6h4L12 2z\"></path></svg>",
-      "themeClass": "area-floresta-proibida",
-      "district": "Reserva Florestal Fechada • Zona Rural",
-      "dangerLevel": "Ameaça Desconhecida",
-      "dangerLevelClass": "danger",
-      "resumo_atmosfera": "A floresta que cerca Mina de Prata é densa, úmida e sufocante. A luz do sol mal penetra a copa das árvores e o chão é um tapete espesso de folhas mortas que abafa os passos. Não há animais cantando; o silêncio é pesado e hostil. No centro de uma clareira específica, o ar torna-se subitamente gélido e cheira a enxofre e lodo.",
-      "requisitos_acesso": "Acesso desobstruído até o perímetro interno, mas desorientador e perigoso à noite.",
-      "npcs_presentes": [],
-      "pontos_de_interesse": [
-        {
-          "cabecalho": {
-            "nome": "A \"Porta\" e os Pertences",
-            "descricao_publica": "No meio do nada, ergue-se uma anomalia. Não é uma porta de casa comum, mas sim duas árvores antigas e retorcidas que cresceram entrelaçadas, formando um arco grotesco. O espaço dentro desse arco parece distorcido, como uma miragem, e a terra logo abaixo está encharcada de um lodo negro e espesso que não seca. Aos pés dessa estrutura bizarra, uma mochila escolar está jogada na lama."
-          },
-          "testes": [
-            {
-              "pericia": "Ocultismo / Cosmos",
-              "ct_dt": 8,
-              "informacao_revelada": "O jogador sente uma pressão quase física ao chegar perto do arco. A 'porta' está trancada ou inativa no momento, mas pulsa com uma energia residual de corrupção. Alguma coisa muito antiga e faminta está do outro lado, esperando."
-            },
-            {
-              "pericia": "Investigação",
-              "ct_dt": 6,
-              "informacao_revelada": "Mexendo na mochila abandonada. Eles encontram cadernos molhados do Colégio Integrado Primórdio (com o nome de Sara Auguil) e um frasco vazio de analgésicos fortíssimos, sem rótulo, mas com o timbre quase apagado da Clínica Médica Renovare."
-            },
-            {
-              "pericia": "Força ou Ladinagem",
-              "ct_dt": 99,
-              "informacao_revelada": "(Falha Automática): Se tentarem 'abrir' ou forçar a passagem pelo arco agora, nada acontece. É apenas um espaço vazio entre duas árvores. A chave não é física."
-            }
-          ],
-          "notas_mestre": "Este é o mistério central que inicia a campanha. Eles não têm como resolver a Porta agora. A mochila é o gatilho que os obriga a voltar para a cidade e iniciar a investigação urbana para descobrir quem é Sara, o que é a clínica e, por fim, como essa 'porta' foi aberta."
-        }
-      ],
-      "conexoes_saida": [
-        {
-          "area_id": "colegio-primordio",
-          "nome": "Colégio Integrado Primórdio",
-          "gancho": "O colégio de onde pertence a mochila encontrada na lama."
-        },
-        {
-          "area_id": "clinica-renovare",
-          "nome": "Clínica Médica Renovare",
-          "gancho": "A origem dos frascos de remédios sem rótulo encontrados."
-        }
-      ]
-    },
-    "casa-auguil": {
-    "id": "casa-auguil",
-    "nome": "Casa Auguil",
-    "shortName": "Casa Auguil",
-    "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"></path><polyline points=\"9 22 9 12 15 12 15 22\"></polyline></svg>",
-    "themeClass": "area-casa-auguil",
-    "district": "Bairro Residencial • Mina de Prata",
-    "dangerLevel": "Isolamento Policial & Atividade Paranormal",
-    "dangerLevelClass": "danger",
-    "titulo_narrativo": "Interior da Casa",
-      "texto_narrativo": "\"A fechadura cede com um estalo abafado e vocês entram, deixando a noite fria e as fitas amarelas da polícia para trás. O ar dentro da Casa Auguil é pesado, denso e tem o gosto amargo de um lugar que foi trancado às pressas e abandonado. Quando vocês acendem as lanternas, os feixes de luz cortam a escuridão absoluta do térreo e revelam algo profundamente perturbador: a normalidade. A sala de estar está impecavelmente arrumada. Os móveis estão alinhados, as almofadas estão em seus lugares e o silêncio é tão espesso que vocês conseguem ouvir a respiração uns dos outros.\n\nMas essa ilusão de paz quebra assim que a luz da lanterna varre o pé da escada.\n\nHá um cheiro que não pertence a esta casa do bairro de Mina de Prata. É o odor úmido de terra podre, folhas molhadas e lodo. Marcando os degraus imaculados de madeira, pequenas pegadas escuras e pastosas sobem em direção ao segundo andar, como se a própria floresta tivesse entrado pela porta dos fundos e subido para os quartos.\n\nCada passo na escada faz a madeira ranger, ecoando no vazio da casa. Quanto mais vocês sobem, mais o ar fica frio e o cheiro de pântano se torna asfixiante, misturando-se com um forte odor de desinfetante e doença. Vocês chegam ao corredor superior. A porta do quarto de Sara está no final, levemente entreaberta.\n\nAo empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um abismo de desespero e o contraste absoluto com o térreo. As janelas estão sufocadas por cobertores grossos pregados na parede, bloqueando qualquer fresta de luz. O chão está invisível sob um mar de roupas amassadas, caixas de remédios vazias e dezenas de folhas de papel espalhadas freneticamente, repletas de rascunhos. E, vindo da porta semiaberta do banheiro da suíte, o som sutil de algo gotejando de forma viscosa e o cheiro de enxofre avisam que o horror daquela casa não é apenas uma lembrança do passado. Algo ainda os espera na escuridão.\"",
-      "resumo_atmosfera": "Uma moradia de dois andares de alto padrão, agora transformada em cena de crime. O exterior está isolado e envolto em dezenas de fitas policiais amarelas e pretas de 'Não Ultrapasse'. Durante o dia, viaturas e peritos da polícia bloqueiam o perímetro, tornando qualquer aproximação impossível (a polícia abafou o caso a mando da Diretora Constança). É apenas durante a calada da noite, quando as viaturas se retiram e a casa mergulha numa escuridão absoluta, que a oportunidade de infiltração surge. A casa de fora parece silenciosa, mas lá dentro, a atmosfera é pesada, cheirando a lodo e abandono.",
-    "requisitos_acesso": "Apenas durante a noite, exigindo infiltração pelos fundos ou janelas laterais para evitar os vizinhos e as fitas policiais.",
-    "npcs_presentes": [],
-    "pontos_de_interesse": [
-      {
-        "cabecalho": {
-          "nome": "A Janela da Cozinha (Infiltração)",
-          "descricao_publica": "Uma janela de correr nos fundos da casa, parcialmente oculta pela sombra de um grande arbusto. As fitas da polícia não cobrem esta parede, mas o vidro está trancado por dentro e reflete a escuridão absoluta do interior."
-        },
-        "testes": [
-          {
-            "pericia": "Ladinagem / Crime",
-            "ct_dt": 7,
-            "informacao_revelada": "Permite inserir uma lâmina fina na fresta e forçar a tranca para cima, deslizando o vidro sem fazer qualquer barulho."
-          },
-          {
-            "pericia": "Força",
-            "ct_dt": 8,
-            "informacao_revelada": "Quebrar o vidro direto perto da tranca. Requer que o jogador role um casaco no braço para abafar o estilhaço e não se cortar severamente no processo."
-          },
-          {
-            "pericia": "Furtividade / Vigor",
-            "ct_dt": 6,
-            "informacao_revelada": "Necessário se tentarem pular o muro dos fundos em direção a esta janela sem acionar os sensores de luz da casa vizinha."
-          }
-        ],
-        "notas_mestre": "Este é o ponto de entrada. Se eles tentarem entrar pela porta da frente, estão expostos à rua e à patrulha. A janela da cozinha força os jogadores a entrarem pelos fundos da casa de forma furtiva."
-      },
-      {
-        "cabecalho": {
-          "nome": "O Tapete Branco da Escada",
-          "descricao_publica": "Um tapete felpudo e imaculadamente branco, posicionado exatamente no primeiro degrau do lance de escadas que leva ao andar de cima. No meio da sala perfeitamente limpa, o tapete destoa, pois tem sujeira incrustada."
-        },
-        "testes": [
-          {
-            "pericia": "Percepção",
-            "ct_dt": 6,
-            "informacao_revelada": "Iluminando o tapete, nota-se que a sujeira não é pó de sapato. São marcas nítidas de patas de um animal pequeno. Elas sujaram o tapete e continuam subindo pela madeira da escada."
-          },
-          {
-            "pericia": "Investigação",
-            "ct_dt": 6,
-            "informacao_revelada": "Ao tocar na mancha do tapete, o jogador percebe que o lodo não está seco. Ele é úmido, viscoso e tem cheiro de pântano podre, provando que 'algo' visitou a casa muito depois que a polícia foi embora."
-          }
-        ],
-        "notas_mestre": "Isto conecta o relato do Elias (o barista que viu o gato preto) à casa. A entidade seguiu Sara e entrou aqui. O fato de as pegadas levarem direto para o andar de cima atrai os jogadores para o quarto."
-      },
-      {
-        "cabecalho": {
-          "nome": "A Escrivaninha de Carvalho (Quarto de Sara)",
-          "descricao_publica": "Uma escrivaninha de madeira maciça no canto do quarto. A sua superfície está coberta por dezenas de folhas amassadas e embalagens de remédios. Na cadeira logo abaixo, há uma grande pilha de casacos e cachecóis. Do meio desses casacos, um fraco brilho dourado pulsa lentamente."
-        },
-        "testes": [
-          {
-            "pericia": "Investigação",
-            "ct_dt": 7,
-            "informacao_revelada": "Remexendo as folhas na mesa, os jogadores encontram o diário de Sara (onde as últimas páginas mostram letras trêmulas e desenhos repetitivos de árvores e uma figura alta). Sob os casacos na cadeira, encontram um pote de vidro contendo um líquido dourado e denso de onde brotam faíscas (apenas 1 frasco)."
-          },
-          {
-            "pericia": "Cosmos / Química",
-            "ct_dt": 7,
-            "informacao_revelada": "Analisando o líquido dourado e a sua reação com o ar dentro do vidro, o jogador identifica que se trata de uma Poção Solar de Cura. Se ingerida ou aplicada na pele, ela queima e purifica infecções, removendo imediatamente a letal condição Amalgamado da Podridão."
-          },
-          {
-            "pericia": "História / Ocultismo",
-            "ct_dt": 8,
-            "informacao_revelada": "Analisando os delírios no diário, a última frase escrita repetida várias vezes é decifrada: 'Ele disse que a Trisha está à minha espera. A dor vai passar na água preta.'"
-          },
-          {
-            "pericia": "Mente",
-            "ct_dt": 6,
-            "informacao_revelada": "Teste de sanidade para os investigadores. Ler as anotações esquizofrênicas de uma garota doente que estava sendo corrompida pela entidade causa um calafrio profundo. Falhar resulta em perda de Pontos de Esforço (PE)."
-          }
-        ],
-        "notas_mestre": "Este objeto agrupa as revelações vitais do quarto. O diário prova que ela foi manipulada a ir para a floresta por conta própria, e a escrivaninha entrega a única cura para o combate que está prestes a acontecer na banheira a poucos metros dali."
-      },
-      {
-        "cabecalho": {
-          "nome": "A Banheira de Porcelana",
-          "descricao_publica": "A porta da casa de banho está entreaberta. Uma banheira de porcelana branca, estilo vitoriano, domina o cômodo. Um cheiro nauseabundo a podridão e enxofre emana dela, pois está cheia até a borda com uma água espessa, preta e parada, como lodo."
-        },
-        "testes": [
-          {
-            "pericia": "Medicina / Alquimia",
-            "ct_dt": 6,
-            "informacao_revelada": "A água não é de esgoto humano. É um lodo orgânico e antinatural, como se o núcleo podre da Floresta tivesse sido bombeado para dentro de casa."
-          },
-          {
-            "pericia": "Percepção",
-            "ct_dt": 8,
-            "informacao_revelada": "Quem se debruçar sobre a água negra vai perceber, uma fração de segundo tarde demais, que o reflexo pálido no fundo não é o do próprio jogador."
-          }
-        ],
-        "notas_mestre": "GATILHO DE COMBATE. Assim que um jogador fizer qualquer teste neste PDI (ou tentar esvaziar/tocar na água), o Zumbi de Lodo (o cadáver corrompido de Kali) emerge violentamente e ataca. Quando o monstro for derrotado, a água preta escoará, revelando o laço de cabelo rosa de Kali entupindo o ralo, provando que Sara cometeu o sacrifício na própria banheira antes de sumir."
-      }
-    ],
-    "conexoes_saida": [
-      {
-        "area_id": "colegio-primordio",
-        "nome": "Colégio Integrado Primórdio",
-        "gancho": "O local de estudo de Sara."
-      },
-      {
-        "area_id": "floresta-proibida",
+        "id": "floresta-proibida",
         "nome": "A Mata do Norte",
-        "gancho": "Para onde Sara se dirigiu por vontade própria."
-      }
-    ]
-  },
-  "cafe-da-nevoa": {
+        "shortName": "Mata do Norte",
+        "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 2L5 12h4l-3 6h5v4h2v-4h5l-3-6h4L12 2z\"></path></svg>",
+        "themeClass": "area-floresta-proibida",
+        "district": "Reserva Florestal Fechada   Zona Rural",
+        "dangerLevel": "Ameaça Desconhecida",
+        "dangerLevelClass": "danger",
+        "titulo_narrativo": "Chegada à Clareira do Bunker",
+        "texto_narrativo": "\"Após caminharem pela mata fechada, as árvores abrem espaço para uma clareira perfeitamente circular. No extremo oposto, incrustada em um monte de terra, há uma pesada porta dupla de metal. Ela é de um branco cirúrgico e antinatural para o meio da floresta, mas está quase totalmente enredada por vinhas prateadas e grossas, que sobem do solo escuro e se agarram ao metal como veias pulsantes. Não há fechadura visível. O ar perto das portas é gélido e cheira a lodo. Apoiada no chão de terra, bem ao lado da porta selada, repousa uma mochila escolar abandonada.\"",
+        "resumo_atmosfera": "A floresta que cerca Mina de Prata é densa e sufocante, mas subitamente se abre em uma clareira circular e silenciosa. O chão é um tapete espesso de folhas mortas. Em vez de ruínas ou anomalias naturais, há uma estrutura artificial brutalista quase totalmente engolida pela terra: um bunker. A anomalia não é a estrutura em si, mas a forma como a natureza ao redor parece evitá-la, com exceção de uma vegetação parasita e metálica que a sela.",
+        "requisitos_acesso": "Acesso desobstruído até o perímetro interno, mas desorientador e perigoso à noite.",
+        "npcs_presentes": [],
+        "pontos_de_interesse": [
+          {
+            "cabecalho": {
+              "nome": "O Bunker Selado e a Mochila Escolar",
+              "descricao_publica": "A porta dupla branca cravada no monte de terra. As vinhas prateadas que a cobrem têm um brilho opaco e parecem mais duras que aço. No chão, a mochila comum cria um contraste bizarro com o cenário de ficção científica/horror."
+            },
+            "testes": [
+              {
+                "pericia": "Investigação",
+                "ct_dt": 6,
+                "informacao_revelada": "Vasculhando a mochila abandonada. Eles encontram cadernos molhados do Colégio Integrado Primórdio (com o nome de Sara Auguil) e um frasco vazio de analgésicos fortíssimos, sem rótulo, mas com o timbre quase apagado da Clínica Médica Renovare."
+              },
+              {
+                "pericia": "Ocultismo / Cosmos",
+                "ct_dt": 8,
+                "informacao_revelada": "O jogador que tocar nas vinhas prateadas percebe que elas não são plantas normais; elas reagem ao calor do corpo, enrijecendo-se. O bunker está trancado não por mecanismos físicos, mas selado por uma barreira anômala que exige um catalisador para abrir."
+              },
+              {
+                "pericia": "Força / Tecnologia",
+                "ct_dt": 99,
+                "informacao_revelada": "(Falha Automática) Tentar empurrar, hackear (se houvesse painel) ou quebrar as portas com pé de cabra é inútil. O metal branco não amassa e as vinhas prateadas são indestrutíveis no momento. É um beco sem saída intransponível."
+              }
+            ],
+            "notas_mestre": "O mistério inicial foi adaptado. O bunker fechado serve como a \"Porta\". Os jogadores percebem que não podem entrar agora. A mochila é o gancho imediato que os obriga a voltar para a cidade (Colégio e Clínica) para descobrir quem esteve aqui e, no fim do episódio, perceberão que Sara usou um sacrifício de sangue para fazer essas vinhas prateadas cederem."
+          }
+        ],
+        "conexoes_saida": [
+          {
+            "area_id": "colegio-primordio",
+            "nome": "Colégio Integrado Primórdio",
+            "gancho": "O colégio de onde pertence a mochila encontrada na lama."
+          },
+          {
+            "area_id": "clinica-renovare",
+            "nome": "Clínica Médica Renovare",
+            "gancho": "A origem dos frascos de remédios sem rótulo encontrados."
+          }
+        ]
+      },
+      "cafe-da-nevoa": {
     "id": "cafe-da-nevoa",
     "nome": "Café da Névoa",
     "shortName": "Café",
