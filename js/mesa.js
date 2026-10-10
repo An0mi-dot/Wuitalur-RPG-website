@@ -2173,6 +2173,13 @@ const MesaChat = {
       }
     });
 
+    // 6. WebSocket Broadcast de Sincronizacao de Midia (MesaMediaPlayer)
+    this.channel.on('broadcast', { event: 'media_sync' }, (payload) => {
+      if (window.MesaMediaPlayer && (!MesaApp.state || !MesaApp.state.isMaster)) {
+        MesaMediaPlayer.handleIncomingSync(payload.payload);
+      }
+    });
+
     // 5. WebSocket Broadcast de Mudança de Área / Mapa em Tempo Real
     this.channel.on('broadcast', { event: 'area_changed' }, (payload) => {
       const data = payload.payload;
@@ -3323,7 +3330,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.3.0`;
+      badge.textContent = `v1.3.1`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
