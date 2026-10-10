@@ -3330,7 +3330,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.3.4`;
+      badge.textContent = `v1.3.5`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -4458,48 +4458,21 @@ const MesaMediaPlayer = {
     this.selectVideo(this.videoPlaylist.length - 1);
   },
 
-  async addVideos(files) {
-    for (const file of Array.from(files)) {
-      if (file.size > 200 * 1024 * 1024) {
-        alert("O arquivo " + file.name + " e muito grande! O limite e de 200MB.");
-        continue;
-      }
-
-      const loadingItem = { name: "Enviando " + file.name + " para a nuvem...", url: "", isLoading: true };
-      this.videoPlaylist.push(loadingItem);
-      const loadingIndex = this.videoPlaylist.length - 1;
+  addVideos(files) {
+    alert("ATENCAO: Arquivos de video/audio adicionados localmente do seu PC tocaram APENAS NO SEU MONITOR para fins de preview.\n\nPara transmitir para a mesa, o video precisa estar hospedado na nuvem! (Copie um link do Catbox, Discord, etc. e cole no campo acima).");
+    Array.from(files).forEach(file => {
+      const localBlob = URL.createObjectURL(file);
+      const playlistItem = {
+        name: file.name,
+        url: localBlob,
+        file: file
+      };
+      this.videoPlaylist.push(playlistItem);
       this.renderVideoPlaylist();
-
-      try {
-        const formData = new FormData();
-        formData.append('reqtype', 'fileupload');
-        formData.append('fileToUpload', file);
-
-        const response = await fetch('https://catbox.moe/user/api.php', {
-          method: 'POST',
-          body: formData
-        });
-
-        if (!response.ok) throw new Error("Erro no servidor externo");
-        
-        const catboxUrl = await response.text();
-        
-        this.videoPlaylist[loadingIndex] = {
-          name: file.name,
-          url: catboxUrl.trim(),
-          file: file
-        };
-      } catch (e) {
-        console.error(e);
-        this.videoPlaylist.splice(loadingIndex, 1);
-        alert("Falha ao enviar " + file.name + ". Verifique sua conexao.");
-      }
-      
-      this.renderVideoPlaylist();
-      if (this.currentVideoIndex === -1 && this.videoPlaylist.length > 0) {
+      if (this.currentVideoIndex === -1) {
         this.selectVideo(this.videoPlaylist.length - 1);
       }
-    }
+    });
   },
 
   renderVideoPlaylist() {
