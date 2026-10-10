@@ -11,9 +11,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/variables.css?v=1.4.8">
-  <link rel="stylesheet" href="css/components.css?v=1.4.8">
-  <link rel="stylesheet" href="css/mesa.css?v=1.4.8">
+  <link rel="stylesheet" href="css/variables.css?v=1.4.9">
+  <link rel="stylesheet" href="css/components.css?v=1.4.9">
+  <link rel="stylesheet" href="css/mesa.css?v=1.4.9">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -712,6 +712,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
               oninput="MesaColetaveis.onSearch(this.value)"
             />
           </div>
+          <button id="coletaveis-master-restore-btn" type="button" class="mesa-btn ink-tag" onclick="MesaColetaveis.restoreDefaults()" style="display: none; font-size: 0.72rem; padding: 6px 10px;" title="Restaurar os 12 itens canônicos da campanha">Restaurar Padrão</button>
           <button id="coletaveis-master-add-btn" type="button" class="coletaveis-add-btn" onclick="MesaColetaveis.openAddModal()" style="display: none;">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             Novo Coletável
@@ -941,11 +942,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=1.4.8"></script>
+<script src="js/campaign-data.js?v=1.4.9"></script>
 
-<script src="js/mesa.js?v=1.4.8"></script>
+<script src="js/mesa.js?v=1.4.9"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v1.4.8</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.4.9</div>
 
   <!-- ABERTURA OVERLAY -->
   <div id="abertura-overlay" class="abertura-overlay">

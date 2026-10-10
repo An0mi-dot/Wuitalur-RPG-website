@@ -7600,3 +7600,26 @@ body.interior-drawer-open .mesa-board-container,
   border-color: #ff5500;
   outline: none;
 }
+
+
+.coletavel-weight-badge {
+  font-size: 0.68rem;
+  padding: 2px 7px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #d4d4d4;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 0 !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.coletavel-card-resumo {
+  font-family: var(--font-body, 'Merriweather', serif);
+  font-size: 0.82rem;
+  color: #e5e5e5;
+  font-style: italic;
+  line-height: 1.42;
+  margin: 4px 0 2px 0;
+}
