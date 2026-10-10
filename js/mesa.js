@@ -1514,7 +1514,7 @@ const MesaApp = {
           const data = payload.payload;
           if (data && Array.isArray(data.items) && window.MesaColetaveis) {
             MesaColetaveis.items = data.items;
-            localStorage.setItem('wu_coletaveis_v1_revised', JSON.stringify(data.items));
+            localStorage.setItem('wu_coletaveis_v2', JSON.stringify(data.items));
             MesaColetaveis.render();
             MesaColetaveis.renderFicha();
           }
@@ -3358,7 +3358,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.5.2`;
+      badge.textContent = `v1.5.3`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -4129,27 +4129,30 @@ const MesaColetaveis = {
 
   init() {
     const canonical = window.CAMPAIGN_COLETAVEIS || window.MESA_COLETAVEIS || [];
-    const saved = localStorage.getItem('wu_coletaveis_v1_revised_revised');
+    const saved = localStorage.getItem('wu_coletaveis_v2') || localStorage.getItem('wu_coletaveis_v1_revised_revised') || localStorage.getItem('wu_coletaveis_v1_revised');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          this.items = parsed.map(it => ({
-            ...it,
-            desbloqueado: it.desbloqueado === true ? true : false
-          }));
+          this.items = canonical.map(can => {
+            const existing = parsed.find(it => it.id === can.id);
+            return {
+              ...can,
+              desbloqueado: existing ? (existing.desbloqueado === true) : false
+            };
+          });
+          const extras = parsed.filter(it => !canonical.some(can => can.id === it.id));
+          this.items = [...this.items, ...extras];
         } else {
           this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
-          localStorage.setItem('wu_coletaveis_v1_revised_revised', JSON.stringify(this.items));
         }
       } catch (e) {
         this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
       }
     } else {
-      // Carrega diretamente a nova versão canônica revisada
       this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
-      localStorage.setItem('wu_coletaveis_v1_revised_revised', JSON.stringify(this.items));
     }
+    localStorage.setItem('wu_coletaveis_v2', JSON.stringify(this.items));
   },
 
   openModal() {
@@ -4281,7 +4284,7 @@ const MesaColetaveis = {
   },
 
   saveAndSync() {
-    localStorage.setItem('wu_coletaveis_v1_revised', JSON.stringify(this.items));
+    localStorage.setItem('wu_coletaveis_v2', JSON.stringify(this.items));
     if (MesaChat && MesaChat.channel) {
       MesaChat.channel.send({
         type: 'broadcast',
@@ -4344,7 +4347,7 @@ const MesaColetaveis = {
     }
 
     container.innerHTML = `
-      <div class="coletaveis-cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px;">
+      <div class="coletaveis-cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px;">
         ${filtered.map(it => {
           if (!isMaster && !it.desbloqueado) {
             return `
@@ -4363,7 +4366,7 @@ const MesaColetaveis = {
             <div class="coletavel-card ${isMaster ? (it.desbloqueado ? 'master-unlocked' : 'master-locked') : ''}" style="padding: 10px 12px;">
               <div class="coletavel-card-header">
                 <h4 class="coletavel-card-title" style="font-size: 0.92rem;">${it.nome}</h4>
-                <div style="display:flex; gap:6px; align-items:center;">
+                <div class="coletavel-card-badges">
                   ${isMaster ? `<span class="coletavel-status-badge ${it.desbloqueado ? 'unlocked' : 'locked'}">${it.desbloqueado ? 'Liberado' : 'Bloqueado'}</span>` : ''}
                   <span class="coletavel-card-badge">${it.tipo || 'Pista'}</span>
                   <span class="coletavel-weight-badge">Peso ${it.peso !== undefined ? it.peso : 0}</span>
@@ -4473,7 +4476,7 @@ const MesaColetaveis = {
             <div class="coletavel-card ${isMaster ? (it.desbloqueado ? 'master-unlocked' : 'master-locked') : ''}">
               <div class="coletavel-card-header">
                 <h3 class="coletavel-card-title">${it.nome}</h3>
-                <div style="display:flex; gap:6px; align-items:center;">
+                <div class="coletavel-card-badges">
                   ${isMaster ? `<span class="coletavel-status-badge ${it.desbloqueado ? 'unlocked' : 'locked'}">${it.desbloqueado ? 'Liberado' : 'Bloqueado'}</span>` : ''}
                   <span class="coletavel-card-badge">${it.tipo || 'Pista'}</span>
                   <span class="coletavel-weight-badge">Peso ${it.peso !== undefined ? it.peso : 0}</span>

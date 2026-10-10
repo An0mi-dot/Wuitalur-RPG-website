@@ -549,7 +549,7 @@
       area: "Café da Névoa",
       desbloqueado: false,
       resumo: "Um pequeno frasco de cristal arrolhado com cortiça. O líquido límpido no interior emite um brilho suave e um leve calor.",
-      detalhe: "Remove a condição \"Amalgamado da Podridão\" de um alvo instantaneamente."
+      detalhe: "Com o fogo dourado solar, cura 1d8 de vida em quem for usado."
     },
     {
       id: "col_diario_sara",

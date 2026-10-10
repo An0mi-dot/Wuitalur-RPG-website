@@ -7489,11 +7489,16 @@ body.interior-drawer-open .mesa-board-container,
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-left: 3px solid #ff5500;
   border-radius: 0 !important;
-  padding: 14px 16px;
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
   gap: 8px;
   transition: all 0.2s ease;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .coletavel-card:hover {
@@ -7506,20 +7511,36 @@ body.interior-drawer-open .mesa-board-container,
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 10px;
+  gap: 8px;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
 .coletavel-card-title {
   font-family: var(--font-heading, 'Cinzel', serif);
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 800;
   color: #f5f5f5;
   margin: 0;
+  flex: 1 1 auto;
+  min-width: 110px;
+  line-height: 1.25;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.coletavel-card-badges {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 100%;
 }
 
 .coletavel-card-badge {
-  font-size: 0.68rem;
-  padding: 2px 8px;
+  font-size: 0.65rem;
+  padding: 2px 7px;
   background: rgba(255, 85, 0, 0.15);
   color: #ff8833;
   border: 1px solid rgba(255, 85, 0, 0.3);
@@ -7528,22 +7549,32 @@ body.interior-drawer-open .mesa-board-container,
   font-weight: 700;
   letter-spacing: 0.04em;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .coletavel-card-area {
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   color: #a3a3a3;
   display: flex;
   align-items: center;
   gap: 6px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .coletavel-card-desc {
   font-family: var(--font-body, 'Merriweather', serif);
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   color: #d4d4d4;
   line-height: 1.45;
   margin: 4px 0 0 0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.coletavel-card-desc strong {
+  color: #ffaa55;
+  margin-right: 4px;
 }
 
 .coletavel-card-footer {
