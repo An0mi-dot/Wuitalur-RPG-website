@@ -1037,8 +1037,8 @@ const MesaApp = {
       raca: 'Animalesco',
       arquetipo: 'Rebelde',
       classe: 'Adivinha',
-      imagem: 'assets/pera.png?v=1.4.9',
-      avatar: 'assets/pera_avatar.png?v=1.4.9',
+      imagem: 'assets/pera.png?v=1.5.0',
+      avatar: 'assets/pera_avatar.png?v=1.5.0',
       hp: 12, hpMax: 12,
       pe: 10, peMax: 10,
       st: 0, stMax: 24,
@@ -1067,7 +1067,7 @@ const MesaApp = {
       id: 5,
       slot: 5,
       token: 'J8W4',
-      nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão', imagem: 'assets/william.png?v=1.4.9', avatar: 'assets/william_avatar.png?v=1.4.9',
+      nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão', imagem: 'assets/william.png?v=1.5.0', avatar: 'assets/william_avatar.png?v=1.5.0',
       hp: 15, hpMax: 15,
       pe: 10, peMax: 10,
       st: 0, stMax: 28,
@@ -1372,7 +1372,7 @@ const MesaApp = {
 
       if (!this.state.players[3]) {
         this.state.players[3] = {
-          id: 4, slot: 4, token: 'H2Q9', nome: 'Pera Hylidae da Silva', idade: '18 anos', altura: '1,58m', raca: 'Animalesco', arquetipo: 'Rebelde', classe: 'Adivinha', imagem: 'assets/pera.png?v=1.4.9', avatar: 'assets/pera_avatar.png?v=1.4.9',
+          id: 4, slot: 4, token: 'H2Q9', nome: 'Pera Hylidae da Silva', idade: '18 anos', altura: '1,58m', raca: 'Animalesco', arquetipo: 'Rebelde', classe: 'Adivinha', imagem: 'assets/pera.png?v=1.5.0', avatar: 'assets/pera_avatar.png?v=1.5.0',
           hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 24, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Mente': 'd4', 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd16' },
           bonus: [
@@ -1390,7 +1390,7 @@ const MesaApp = {
 
       if (!this.state.players[4]) {
         this.state.players[4] = {
-          id: 5, slot: 5, token: 'J8W4', nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão', imagem: 'assets/william.png?v=1.4.9', avatar: 'assets/william_avatar.png?v=1.4.9',
+          id: 5, slot: 5, token: 'J8W4', nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão', imagem: 'assets/william.png?v=1.5.0', avatar: 'assets/william_avatar.png?v=1.5.0',
           hp: 15, hpMax: 15, pe: 10, peMax: 10, st: 0, stMax: 28, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Saúde': 'd4', 'Vigor': 'd16', 'Força': 'd12', 'Mente': 'd8' },
           bonus: [
@@ -3358,7 +3358,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.4.9`;
+      badge.textContent = `v1.5.0`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -4134,16 +4134,19 @@ const MesaColetaveis = {
       try {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          this.items = parsed;
+          this.items = parsed.map(it => ({
+            ...it,
+            desbloqueado: it.desbloqueado === true ? true : false
+          }));
         } else {
-          this.items = canonical.length > 0 ? [...canonical] : [];
+          this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
           localStorage.setItem('wu_coletaveis_v1', JSON.stringify(this.items));
         }
       } catch (e) {
-        this.items = canonical.length > 0 ? [...canonical] : [];
+        this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
       }
     } else {
-      this.items = canonical.length > 0 ? [...canonical] : [];
+      this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
       localStorage.setItem('wu_coletaveis_v1', JSON.stringify(this.items));
     }
   },
@@ -4156,10 +4159,9 @@ const MesaColetaveis = {
     
     const addBtn = document.getElementById('coletaveis-master-add-btn');
     const restoreBtn = document.getElementById('coletaveis-master-restore-btn');
-    if (restoreBtn) restoreBtn.style.display = (MesaApp && MesaApp.state && MesaApp.state.isMaster) ? 'inline-flex' : 'none';
-    if (addBtn) {
-      addBtn.style.display = (MesaApp && MesaApp.state && MesaApp.state.isMaster) ? 'inline-flex' : 'none';
-    }
+    const isMaster = (MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    if (addBtn) addBtn.style.display = isMaster ? 'inline-flex' : 'none';
+    if (restoreBtn) restoreBtn.style.display = isMaster ? 'inline-flex' : 'none';
 
     this.render();
     MesaApp.openModal('coletaveis-modal');
@@ -4205,6 +4207,7 @@ const MesaColetaveis = {
       area,
       resumo: '',
       detalhe,
+      desbloqueado: false, // Inicia bloqueado por padrão
       dataCriacao: new Date().toLocaleDateString('pt-BR')
     };
 
@@ -4220,7 +4223,34 @@ const MesaColetaveis = {
         event: 'chat_message',
         payload: {
           id: 'msg_' + Date.now(),
-          text: `📦 [NOVO COLETÁVEL REGISTRADO]: ${nome} (${tipo}) foi catalogado pelo grupo!`,
+          text: `📦 [NOVO COLETÁVEL REGISTRADO]: ${nome} (${tipo}) foi catalogado pelo Mestre (Bloqueado).`,
+          sender: 'Mestre',
+          role: 'mestre',
+          timestamp: Date.now()
+        }
+      });
+    }
+  },
+
+  toggleLock(id) {
+    if (!MesaApp.state.isMaster) return;
+    const item = this.items.find(it => it.id === id);
+    if (!item) return;
+
+    item.desbloqueado = !item.desbloqueado;
+    this.saveAndSync();
+    this.render();
+    this.renderFicha();
+
+    if (MesaChat && MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'chat_message',
+        payload: {
+          id: 'msg_' + Date.now(),
+          text: item.desbloqueado
+            ? `🔓 [COLETÁVEL LIBERADO]: O Mestre liberou o item "${item.nome}" para o grupo!`
+            : `🔒 [COLETÁVEL TRANCADO]: O item "${item.nome}" foi trancado pelo Mestre.`,
           sender: 'Mestre',
           role: 'mestre',
           timestamp: Date.now()
@@ -4241,9 +4271,9 @@ const MesaColetaveis = {
 
   restoreDefaults() {
     if (!MesaApp.state.isMaster) return;
-    if (!confirm('Deseja restaurar todos os 12 coletáveis canônicos da campanha?')) return;
+    if (!confirm('Deseja restaurar todos os 12 coletáveis canônicos da campanha (todos virão bloqueados)?')) return;
     const canonical = window.CAMPAIGN_COLETAVEIS || window.MESA_COLETAVEIS || [];
-    this.items = [...canonical];
+    this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
     this.saveAndSync();
     this.render();
     this.renderFicha();
@@ -4275,6 +4305,8 @@ const MesaColetaveis = {
     if (!container) return;
     this.init();
 
+    const isMaster = MesaApp && MesaApp.state && MesaApp.state.isMaster;
+
     if (!this.items || this.items.length === 0) {
       container.innerHTML = `
         <div class="coletaveis-empty-state" style="padding: 24px 14px;">
@@ -4288,6 +4320,9 @@ const MesaColetaveis = {
     const filtered = this.items.filter(it => {
       if (!this.fichaSearchQuery) return true;
       const q = this.fichaSearchQuery;
+      if (!isMaster && !it.desbloqueado) {
+        return false; // Jogadores não filtram pelo conteúdo de itens trancados
+      }
       return (
         (it.nome && it.nome.toLowerCase().includes(q)) ||
         (it.tipo && it.tipo.toLowerCase().includes(q)) ||
@@ -4309,30 +4344,63 @@ const MesaColetaveis = {
 
     container.innerHTML = `
       <div class="coletaveis-cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px;">
-        ${filtered.map(it => `
-          <div class="coletavel-card" style="padding: 10px 12px;">
-            <div class="coletavel-card-header">
-              <h4 class="coletavel-card-title" style="font-size: 0.92rem;">${it.nome}</h4>
-              <div style="display:flex; gap:6px; align-items:center;">
-                <span class="coletavel-card-badge">${it.tipo || 'Pista'}</span>
-                <span class="coletavel-weight-badge">Peso ${it.peso !== undefined ? it.peso : 0}</span>
+        ${filtered.map(it => {
+          if (!isMaster && !it.desbloqueado) {
+            return `
+              <div class="coletavel-card coletavel-card-locked" title="Item Bloqueado">
+                <div class="coletavel-locked-inner">
+                  <svg class="coletavel-locked-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="4" y="11" width="16" height="11"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                </div>
               </div>
+            `;
+          }
+
+          return `
+            <div class="coletavel-card ${isMaster ? (it.desbloqueado ? 'master-unlocked' : 'master-locked') : ''}" style="padding: 10px 12px;">
+              <div class="coletavel-card-header">
+                <h4 class="coletavel-card-title" style="font-size: 0.92rem;">${it.nome}</h4>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  ${isMaster ? `<span class="coletavel-status-badge ${it.desbloqueado ? 'unlocked' : 'locked'}">${it.desbloqueado ? 'Liberado' : 'Bloqueado'}</span>` : ''}
+                  <span class="coletavel-card-badge">${it.tipo || 'Pista'}</span>
+                  <span class="coletavel-weight-badge">Peso ${it.peso !== undefined ? it.peso : 0}</span>
+                </div>
+              </div>
+              ${it.area ? `
+                <div class="coletavel-card-area" style="font-size: 0.72rem;">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                  <span>${it.area}</span>
+                </div>
+              ` : ''}
+              ${it.resumo ? `<div class="coletavel-card-resumo">${it.resumo}</div>` : ''}
+              ${(it.detalhe || it.desc) ? `
+                <p class="coletavel-card-desc" style="font-size: 0.78rem; margin-top: 4px;">
+                  <strong>${(it.tipo && (it.tipo.includes('Chave') || it.tipo.includes('Uso') || it.tipo.includes('Infiltração'))) ? 'Efeito' : 'Detalhe'}:</strong>
+                  ${it.detalhe || it.desc}
+                </p>
+              ` : ''}
+              ${isMaster ? `
+                <div class="coletavel-card-footer" style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-top:8px;">
+                  <button type="button" class="coletavel-lock-btn ${it.desbloqueado ? 'lock-action' : 'unlock-action'}" onclick="MesaColetaveis.toggleLock('${it.id}')">
+                    ${it.desbloqueado ? `
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                      Trancar Item
+                    ` : `
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="11"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>
+                      Liberar Item
+                    `}
+                  </button>
+                  <button type="button" class="coletavel-delete-btn" onclick="MesaColetaveis.deleteItem('${it.id}')" title="Excluir Coletável">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    Excluir
+                  </button>
+                </div>
+              ` : ''}
             </div>
-            ${it.area ? `
-              <div class="coletavel-card-area" style="font-size: 0.72rem;">
-                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                <span>${it.area}</span>
-              </div>
-            ` : ''}
-            ${it.resumo ? `<div class="coletavel-card-resumo">${it.resumo}</div>` : ''}
-            ${(it.detalhe || it.desc) ? `
-              <p class="coletavel-card-desc" style="font-size: 0.78rem; margin-top: 4px;">
-                <strong>${(it.tipo && (it.tipo.includes('Chave') || it.tipo.includes('Uso') || it.tipo.includes('Infiltração'))) ? 'Efeito' : 'Detalhe'}:</strong>
-                ${it.detalhe || it.desc}
-              </p>
-            ` : ''}
-          </div>
-        `).join('')}
+          `;
+        }).join('')}
       </div>
     `;
   },
@@ -4361,6 +4429,9 @@ const MesaColetaveis = {
     const filtered = this.items.filter(it => {
       if (!this.searchQuery) return true;
       const q = this.searchQuery;
+      if (!isMaster && !it.desbloqueado) {
+        return false; // Jogadores não filtram pelo conteúdo de itens trancados
+      }
       return (
         (it.nome && it.nome.toLowerCase().includes(q)) ||
         (it.tipo && it.tipo.toLowerCase().includes(q)) ||
@@ -4383,38 +4454,63 @@ const MesaColetaveis = {
 
     container.innerHTML = `
       <div class="coletaveis-cards-grid">
-        ${filtered.map(it => `
-          <div class="coletavel-card">
-            <div class="coletavel-card-header">
-              <h3 class="coletavel-card-title">${it.nome}</h3>
-              <div style="display:flex; gap:6px; align-items:center;">
-                <span class="coletavel-card-badge">${it.tipo || 'Pista'}</span>
-                <span class="coletavel-weight-badge">Peso ${it.peso !== undefined ? it.peso : 0}</span>
+        ${filtered.map(it => {
+          if (!isMaster && !it.desbloqueado) {
+            return `
+              <div class="coletavel-card coletavel-card-locked" title="Item Bloqueado">
+                <div class="coletavel-locked-inner">
+                  <svg class="coletavel-locked-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="4" y="11" width="16" height="11"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                </div>
               </div>
+            `;
+          }
+
+          return `
+            <div class="coletavel-card ${isMaster ? (it.desbloqueado ? 'master-unlocked' : 'master-locked') : ''}">
+              <div class="coletavel-card-header">
+                <h3 class="coletavel-card-title">${it.nome}</h3>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  ${isMaster ? `<span class="coletavel-status-badge ${it.desbloqueado ? 'unlocked' : 'locked'}">${it.desbloqueado ? 'Liberado' : 'Bloqueado'}</span>` : ''}
+                  <span class="coletavel-card-badge">${it.tipo || 'Pista'}</span>
+                  <span class="coletavel-weight-badge">Peso ${it.peso !== undefined ? it.peso : 0}</span>
+                </div>
+              </div>
+              ${it.area ? `
+                <div class="coletavel-card-area">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                  <span>${it.area}</span>
+                </div>
+              ` : ''}
+              ${it.resumo ? `<div class="coletavel-card-resumo">${it.resumo}</div>` : ''}
+              ${(it.detalhe || it.desc) ? `
+                <p class="coletavel-card-desc">
+                  <strong>${(it.tipo && (it.tipo.includes('Chave') || it.tipo.includes('Uso') || it.tipo.includes('Infiltração'))) ? 'Efeito' : 'Detalhe'}:</strong>
+                  ${it.detalhe || it.desc}
+                </p>
+              ` : ''}
+              ${isMaster ? `
+                <div class="coletavel-card-footer" style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-top:10px;">
+                  <button type="button" class="coletavel-lock-btn ${it.desbloqueado ? 'lock-action' : 'unlock-action'}" onclick="MesaColetaveis.toggleLock('${it.id}')">
+                    ${it.desbloqueado ? `
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                      Trancar Item
+                    ` : `
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="11"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>
+                      Liberar Item
+                    `}
+                  </button>
+                  <button type="button" class="coletavel-delete-btn" onclick="MesaColetaveis.deleteItem('${it.id}')" title="Excluir Coletável">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    Excluir
+                  </button>
+                </div>
+              ` : ''}
             </div>
-            ${it.area ? `
-              <div class="coletavel-card-area">
-                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                <span>${it.area}</span>
-              </div>
-            ` : ''}
-            ${it.resumo ? `<div class="coletavel-card-resumo">${it.resumo}</div>` : ''}
-            ${(it.detalhe || it.desc) ? `
-              <p class="coletavel-card-desc">
-                <strong>${(it.tipo && (it.tipo.includes('Chave') || it.tipo.includes('Uso') || it.tipo.includes('Infiltração'))) ? 'Efeito' : 'Detalhe'}:</strong>
-                ${it.detalhe || it.desc}
-              </p>
-            ` : ''}
-            ${isMaster ? `
-              <div class="coletavel-card-footer">
-                <button type="button" class="coletavel-delete-btn" onclick="MesaColetaveis.deleteItem('${it.id}')" title="Excluir Coletável">
-                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                  Excluir
-                </button>
-              </div>
-            ` : ''}
-          </div>
-        `).join('')}
+          `;
+        }).join('')}
       </div>
     `;
   }

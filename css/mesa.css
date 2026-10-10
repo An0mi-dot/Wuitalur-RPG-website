@@ -7623,3 +7623,113 @@ body.interior-drawer-open .mesa-board-container,
   line-height: 1.42;
   margin: 4px 0 2px 0;
 }
+
+
+/* Estados de Bloqueio e Liberação de Coletáveis */
+.coletavel-card.coletavel-card-locked {
+  background: rgba(26, 26, 32, 0.75) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-left: 3px solid #52525b !important;
+  border-radius: 0 !important;
+  min-height: 130px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 24px 16px !important;
+  box-shadow: none !important;
+  cursor: default;
+}
+
+.coletavel-card.coletavel-card-locked:hover {
+  background: rgba(32, 32, 38, 0.85) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+}
+
+.coletavel-locked-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.coletavel-locked-icon {
+  width: 38px;
+  height: 38px;
+  color: #71717a;
+  opacity: 0.65;
+  transition: all 0.2s ease;
+}
+
+.coletavel-card.coletavel-card-locked:hover .coletavel-locked-icon {
+  opacity: 0.9;
+  color: #a1a1aa;
+  transform: scale(1.05);
+}
+
+.coletavel-card.master-locked {
+  border-left: 3px solid #71717a;
+  background: rgba(16, 16, 20, 0.95);
+}
+
+.coletavel-card.master-unlocked {
+  border-left: 3px solid #10b981;
+}
+
+.coletavel-status-badge {
+  font-size: 0.65rem;
+  padding: 2px 7px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 0 !important;
+}
+
+.coletavel-status-badge.locked {
+  background: rgba(113, 113, 122, 0.2);
+  color: #a1a1aa;
+  border: 1px solid rgba(113, 113, 122, 0.4);
+}
+
+.coletavel-status-badge.unlocked {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.coletavel-lock-btn {
+  background: transparent;
+  border-radius: 0 !important;
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 5px 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.coletavel-lock-btn.unlock-action {
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.coletavel-lock-btn.unlock-action:hover {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: #34d399;
+}
+
+.coletavel-lock-btn.lock-action {
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  background: rgba(248, 113, 113, 0.06);
+}
+
+.coletavel-lock-btn.lock-action:hover {
+  background: rgba(248, 113, 113, 0.18);
+  border-color: #f87171;
+}

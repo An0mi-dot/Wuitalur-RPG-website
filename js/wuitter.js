@@ -120,7 +120,7 @@ const DEFAULT_ACCOUNTS = [
     handle: '@pera',
     bio: 'Navegadora e cartógrafa das correntes de éter. Conheço cada beco e cada rota de fuga.',
     avatarLetter: 'P',
-    avatarImage: 'assets/pera_avatar.png?v=1.4.9',
+    avatarImage: 'assets/pera_avatar.png?v=1.5.0',
     avatarColor: '#f59e0b',
     badge: 'none',
     isMaster: false
@@ -138,7 +138,7 @@ const DEFAULT_ACCOUNTS = [
       handle: '@willian',
       bio: 'Armeiro e entusiasta de engenhocas mecǽnicas. Nunca confie em um mecanismo que nǜo faa barulho.',
       avatarLetter: 'W',
-      avatarImage: 'assets/william_avatar.png?v=1.4.9',
+      avatarImage: 'assets/william_avatar.png?v=1.5.0',
     avatarColor: '#06b6d4',
     badge: 'none',
     isMaster: false
