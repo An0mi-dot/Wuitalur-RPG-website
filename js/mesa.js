@@ -3358,7 +3358,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.5.1`;
+      badge.textContent = `v1.5.2`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -4699,7 +4699,7 @@ window.MesaDice = MesaDice;
 const MesaMediaPlayer = {
   isMasterUnlocked: false,
   isDrawerOpen: false,
-  activeTab: 'library',
+  activeTab: 'video',
   isTransmitting: false,
   isBlackout: false,
   transitionSpeed: '0.8s',
@@ -4899,7 +4899,7 @@ const MesaMediaPlayer = {
   },
 
   addVideos(files) {
-    alert("ATENCAO: Arquivos de video/audio adicionados localmente do seu PC tocaram APENAS NO SEU MONITOR para fins de preview.\n\nPara transmitir para a mesa, o video precisa estar hospedado na nuvem! (Copie um link do Catbox, Discord, etc. e cole no campo acima).");
+    alert("ATENCAO: Arquivos de video adicionados pelo botao 'Arquivo Local' tocam apenas localmente no seu navegador para preview.\n\nPara transmitir a todos na mesa sem usar Supabase, coloque o arquivo na pasta 'assets/videos/' do site (GitHub) e insira o caminho relativo (ex: assets/videos/exemplo.mp4) ou link web no campo de Link!");
     Array.from(files).forEach(file => {
       const localBlob = URL.createObjectURL(file);
       const playlistItem = {
