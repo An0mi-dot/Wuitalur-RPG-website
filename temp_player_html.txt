@@ -1,0 +1,191 @@
+<!-- BACKUP: PLAYER DE MIDIA DA MESA VIRTUAL (MesaMediaPlayer) -->
+<!-- Estrutura HTML, Estilos CSS e Logica JavaScript completa para restauracao futura -->
+
+<!-- 1. ESTRUTURA HTML -->
+<div id="master-media-drawer" class="master-media-drawer">
+  <!-- Top Title Bar -->
+  <div class="adm-topbar">
+    <div class="adm-topbar-left">
+      <span class="adm-app-title">ADMINISTRADOR DE RPG</span>
+      <span class="adm-sub-badge">Player de Midia</span>
+      <button class="adm-btn-subtle" onclick="MesaMediaPlayer.toggleDrawer()">Fechar</button>
+    </div>
+    <div class="adm-topbar-right">
+      <span id="adm-status-tag" class="adm-status-tag inactive">● Inativo</span>
+      <button id="adm-btn-transmit" class="adm-top-btn primary" onclick="MesaMediaPlayer.toggleTransmit()">Transmitir</button>
+      <button id="adm-btn-blackout" class="adm-top-btn blackout" onclick="MesaMediaPlayer.toggleBlackout()">Blackout</button>
+      <button class="adm-icon-close" onclick="MesaMediaPlayer.toggleDrawer()" title="Fechar">&times;</button>
+    </div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="adm-tab-bar">
+    <button id="adm-tab-video" class="adm-tab-btn active" onclick="MesaMediaPlayer.switchTab('video')">[VIDEOS] Player de Videos (Loop A-B & Fade)</button>
+    <button id="adm-tab-slideshow" class="adm-tab-btn" onclick="MesaMediaPlayer.switchTab('slideshow')">[SLIDESHOW] Compartilhador de Imagens</button>
+  </div>
+
+  <!-- TAB 1: PLAYER DE VIDEOS -->
+  <div id="adm-view-video" class="adm-tab-content active">
+    <div class="adm-two-columns">
+      <!-- Coluna 1: Playlist de Videos -->
+      <div class="adm-col-playlist">
+        <div class="adm-col-header">
+          <span>PLAYLIST DE VIDEOS</span>
+          <button class="adm-col-action-btn" onclick="document.getElementById('adm-video-input').click()" title="Adicionar arquivo do computador">+ Arquivo Local</button>
+          <input type="file" id="adm-video-input" accept="video/*,audio/*" multiple style="display:none;" onchange="MesaMediaPlayer.handleVideoAdd(event)">
+        </div>
+
+        <div class="adm-url-bar" style="display:flex; gap:4px; margin: 6px 0;">
+          <input type="text" id="adm-video-url-input" placeholder="Cole o link do video (.mp4, Discord, web)..." style="flex:1; height:24px; font-size:0.7rem; background:#0d0d10; border:1px solid #3f3f46; color:#fff; border-radius:3px; padding:0 6px;">
+          <button class="adm-col-action-btn" onclick="MesaMediaPlayer.addVideoFromInput()">+ Link</button>
+        </div>
+        
+        <div id="adm-video-dropzone" class="adm-dropzone">
+          <span>Arraste videos aqui ou use o campo de link acima</span>
+        </div>
+
+        <div id="adm-video-playlist-list" class="adm-items-list">
+          <div class="adm-empty-note">Nenhum video na playlist.</div>
+        </div>
+
+        <div class="adm-playlist-bottom-nav">
+          <button class="adm-btn-nav" onclick="MesaMediaPlayer.prevVideo()">Anterior</button>
+          <button class="adm-btn-nav" onclick="MesaMediaPlayer.nextVideo()">Proximo (Fade)</button>
+        </div>
+      </div>
+
+      <!-- Coluna 2: Monitor do Mestre & Controles -->
+      <div class="adm-col-monitor">
+        <div class="adm-col-header">
+          <span>MONITOR DO MESTRE</span>
+          <div class="adm-header-right">
+            <span class="adm-lbl">Transicao:</span>
+            <select id="adm-video-transition" class="adm-select" onchange="MesaMediaPlayer.setTransition(this.value)">
+              <option value="0.4s">0.4s</option>
+              <option value="0.8s" selected>0.8s</option>
+              <option value="1.2s">1.2s</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Preview do Video do Mestre -->
+        <div class="adm-monitor-viewport">
+          <video id="adm-preview-video" class="adm-monitor-element" playsinline></video>
+          <div id="adm-live-badge-video" class="adm-live-badge" style="display:none;">AO VIVO</div>
+        </div>
+
+        <!-- Controles de Playback -->
+        <div class="adm-controls-panel">
+          <div class="adm-slider-track">
+            <input type="range" id="adm-video-timeline" class="adm-timeline" min="0" max="100" value="0" step="0.1" oninput="MesaMediaPlayer.handleSeekInput()" onchange="MesaMediaPlayer.handleSeekChange()">
+          </div>
+          <div class="adm-playback-bar">
+            <div class="adm-play-btns">
+              <button id="adm-btn-play" class="adm-ctrl-icon-btn" onclick="MesaMediaPlayer.togglePlay()" title="Play/Pause">&#9654;</button>
+              <button class="adm-ctrl-icon-btn" onclick="MesaMediaPlayer.rewindToStart()" title="Voltar ao inicio">&#9198;</button>
+              <span id="adm-video-time" class="adm-time-display">00:00 / 00:00</span>
+            </div>
+            <div class="adm-vol-box">
+              <span class="adm-lbl">VOL</span>
+              <input type="range" id="adm-video-volume" class="adm-vol-slider" min="0" max="1" step="0.05" value="1" oninput="MesaMediaPlayer.handleVolumeChange(this.value)">
+            </div>
+          </div>
+        </div>
+
+        <!-- Estacao de Loop A-B -->
+        <div class="adm-loop-station">
+          <div class="adm-loop-header">
+            <span>ESTACAO DE LOOP A-B</span>
+            <label class="adm-checkbox-lbl">
+              <input type="checkbox" id="adm-loop-active" onchange="MesaMediaPlayer.toggleLoopCheckbox(this.checked)">
+              Ativar Loop
+            </label>
+          </div>
+          <div class="adm-loop-body">
+            <div class="adm-loop-point-block">
+              <span class="adm-point-name">PONTO A</span>
+              <span id="adm-point-a-val" class="adm-point-time">00:00.0</span>
+              <button class="adm-btn-point" onclick="MesaMediaPlayer.markPointA()">Marcar</button>
+            </div>
+            <div class="adm-loop-point-block">
+              <span class="adm-point-name">PONTO B</span>
+              <span id="adm-point-b-val" class="adm-point-time">00:00.0</span>
+              <button class="adm-btn-point" onclick="MesaMediaPlayer.markPointB()">Marcar</button>
+            </div>
+            <div class="adm-loop-actions">
+              <button class="adm-btn-point" onclick="MesaMediaPlayer.jumpToPointA()">Ir para A</button>
+              <button class="adm-btn-point danger" onclick="MesaMediaPlayer.clearLoopPoints()">Limpar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: COMPARTILHADOR DE IMAGENS (SLIDESHOW) -->
+  <div id="adm-view-slideshow" class="adm-tab-content">
+    <div class="adm-two-columns">
+      <!-- Coluna 1: Galeria de Slides -->
+      <div class="adm-col-playlist">
+        <div class="adm-col-header">
+          <span>GALERIA DE SLIDES</span>
+          <button class="adm-col-action-btn" onclick="document.getElementById('adm-image-input').click()" title="Adicionar arquivo do computador">+ Arquivo Local</button>
+          <input type="file" id="adm-image-input" accept="image/*" multiple style="display:none;" onchange="MesaMediaPlayer.handleImageAdd(event)">
+        </div>
+
+        <div class="adm-url-bar" style="display:flex; gap:4px; margin: 6px 0;">
+          <input type="text" id="adm-image-url-input" placeholder="Cole o link da imagem (png, jpg, web)..." style="flex:1; height:24px; font-size:0.7rem; background:#0d0d10; border:1px solid #3f3f46; color:#fff; border-radius:3px; padding:0 6px;">
+          <button class="adm-col-action-btn" onclick="MesaMediaPlayer.addImageFromInput()">+ Link</button>
+        </div>
+
+        <div id="adm-image-dropzone" class="adm-dropzone">
+          <span>Arraste imagens aqui ou use o campo de link acima</span>
+        </div>
+
+        <div id="adm-image-playlist-list" class="adm-items-list">
+          <div class="adm-empty-note">Nenhuma imagem na galeria.</div>
+        </div>
+
+        <div class="adm-playlist-bottom-nav">
+          <button class="adm-btn-nav" onclick="MesaMediaPlayer.prevImage()">Anterior</button>
+          <span id="adm-slide-counter" class="adm-counter-text">0/0</span>
+          <button class="adm-btn-nav" onclick="MesaMediaPlayer.nextImage()">Proxima (Fade)</button>
+        </div>
+      </div>
+
+      <!-- Coluna 2: Transmissao de Imagem -->
+      <div class="adm-col-monitor">
+        <div class="adm-col-header">
+          <span>TRANSMISSAO DE IMAGEM</span>
+          <div class="adm-header-right">
+            <span class="adm-lbl">Transicao:</span>
+            <select id="adm-image-transition" class="adm-select" onchange="MesaMediaPlayer.setTransition(this.value)">
+              <option value="0.3s">0.3s</option>
+              <option value="0.6s" selected>0.6s</option>
+              <option value="1.0s">1.0s</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Preview da Imagem -->
+        <div class="adm-monitor-viewport">
+          <img id="adm-preview-image" class="adm-monitor-element" style="display:none;" alt="Preview de Imagem">
+          <div id="adm-preview-image-empty" class="adm-empty-monitor-text">Nenhuma imagem selecionada</div>
+          <div id="adm-live-badge-image" class="adm-live-badge" style="display:none;">AO VIVO</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PALCO DE TRANSMISSAO EM TELA CHEIA (FUNDO PRETO TRANSPARENTE COM BORDA LARANJA NO CENTRO) -->
+<div id="master-media-theater-overlay" class="master-media-theater-overlay">
+  <div class="theater-media-frame">
+    <video id="theater-video-player" class="theater-media-element" playsinline style="display:none;"></video>
+    <img id="theater-image-player" class="theater-media-element" style="display:none;" alt="">
+    <audio id="theater-audio-player" style="display:none;"></audio>
+    <div id="theater-status-note" style="display:none; color: var(--mesa-orange); font-size: 0.8rem; font-family: monospace; padding: 20px; text-align: center;">Aguardando transmissao do Mestre...</div>
+  </div>
+</div>
+
+<!-- 2. JAVASCRIPT: LOGICA DO MesaMediaPlayer -->
