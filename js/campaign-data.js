@@ -445,121 +445,133 @@
       id: "col_mochila_abandonada",
       nome: "Mochila Escolar Abandonada",
       peso: 1,
-      tipo: "Pista Composta",
+      tipo: "Recipiente",
+      campo_tipo: "Conteúdo",
       area: "A Mata do Norte",
       desbloqueado: false,
-      resumo: "Uma mochila de lona escura, suja de terra da floresta e exalando um leve cheiro de enxofre e lodo.",
-      detalhe: "O interior cheira a mofo e umidade. Contém um pequeno frasco de remédios vazio escondido no bolso menor. No compartimento principal, há um caderno do Colégio Integrado Primórdio com o nome 'Sara Auguil', mas, ao abri-lo, nota-se que todas as suas páginas foram violentamente arrancadas, restando apenas a capa dura."
+      resumo: "Uma mochila de lona escura, suja de terra úmida e exalando um leve cheiro de enxofre.",
+      detalhe: "Contém um pequeno frasco de remédios vazio no bolso menor. No compartimento principal, há um caderno do Colégio Integrado Primórdio com o nome \"Sara Auguil\"; todas as páginas internas foram arrancadas na base do arame, restando apenas a capa dura."
     },
     {
       id: "col_frasco_analgesicos",
       nome: "Frasco de Analgésicos Vazio",
       peso: 0,
-      tipo: "Pista de Ligação",
+      tipo: "Objeto",
+      campo_tipo: "Detalhe",
       area: "A Mata do Norte / Clínica Renovare",
       desbloqueado: false,
-      resumo: "Um pequeno frasco de vidro âmbar, arranhado e violado, indicando uso de medicação pesada não oficial.",
-      detalhe: "O frasco não possui tampa e o interior tem um resíduo de pó branco grudado. A etiqueta de papel foi raspada com algo afiado, mas um teste de Investigação (ou Medicina) revela que sobrou um timbre em alto-relevo no próprio vidro com as palavras: 'Clínica Médica Renovare'."
+      resumo: "Um pequeno frasco de vidro âmbar arranhado.",
+      detalhe: "O frasco não possui tampa e o interior contém um resíduo de pó branco grudado. A etiqueta de papel foi raspada com algum objeto pontiagudo, mas há um timbre em alto-relevo no próprio vidro onde se lê: \"Clínica Médica Renovare\"."
     },
     {
       id: "col_foto_armario",
       nome: "Foto do Armário",
       peso: 0,
-      tipo: "Item de Contexto",
+      tipo: "Imagem",
+      campo_tipo: "Detalhe",
       area: "Colégio Integrado Primórdio",
       desbloqueado: false,
-      resumo: "Uma fotografia com bordas gastas. Uma lembrança de tempos mais felizes que foi vandalizada por ódio ou desespero.",
-      detalhe: "A foto está dobrada no meio e tem marcas de fita adesiva nos cantos. Mostra Sara sorrindo e abraçada com Isaque Valente em um parque, mas o rosto de Sara na imagem tem pequenos e violentos furos de caneta, como se alguém tivesse apunhalado a própria foto."
+      resumo: "Uma fotografia dobrada ao meio, com as bordas gastas e marcas de fita adesiva amarelada nos cantos.",
+      detalhe: "A imagem mostra Sara sorrindo em um parque, abraçada com um garoto humano de cabelo castanho, vestindo uma roupa esportiva e de olhos pretos. O rosto de Sara na fotografia possui dezenas de pequenos furos, como se a ponta de uma caneta tivesse sido pressionada com força repetidas vezes contra o papel."
     },
     {
       id: "col_envelope_roxo",
       nome: "Envelope Roxo",
       peso: 0,
-      tipo: "Prova Documental",
+      tipo: "Documento",
+      campo_tipo: "Conteúdo",
       area: "Colégio Integrado Primórdio",
       desbloqueado: false,
-      resumo: "Um envelope pardo grosso. A prova física de que o colégio sabia do perigo e escolheu comprar o silêncio da família.",
-      detalhe: "O papel do envelope é de alta gramatura e foi selado com cera. A carta impressa no papel timbrado do colégio oferece 'auxílio financeiro integral' para cobrir 'despesas médicas inoportunas', desde que a polícia não fosse acionada. É assinada à mão, com tinta roxa, pela Diretora Constança."
+      resumo: "Um envelope pardo de alta gramatura, rompido na lateral e com restos de cera de selo escurecida.",
+      detalhe: "Uma carta impressa em papel timbrado do colégio oferecendo \"auxílio financeiro integral\" para cobrir \"despesas médicas inoportunas\", sob a condição expressa no texto de que a polícia não fosse acionada. Assinada à mão com tinta roxa por \"Diretora Constança\"."
     },
     {
       id: "col_chaves_casa_auguil",
       nome: "Chaves da Casa Auguil",
       peso: 1,
-      tipo: "Item Chave",
+      tipo: "Equipamento",
+      campo_tipo: "Efeito",
       area: "Café da Névoa / Casa Auguil",
       desbloqueado: false,
-      resumo: "As chaves são pesadas e o chaveiro é acompanhado por um pingente de casinha de madeira com a palavra 'Lar' quase apagada.",
-      detalhe: "Um chaveiro prateado contendo três chaves: uma grande e rústica (que abre a porta da frente da casa), uma menor padrão e uma pequena chave de cadeado. Permite destrancar a residência sem a necessidade de testes de arrombamento."
+      resumo: "Um chaveiro de metal pesado acompanhado por um pingente de casinha de madeira com a palavra \"Lar\".",
+      detalhe: "Contém uma chave grande rústica, uma menor padrão e uma chave de cadeado. Abre as fechaduras correspondentes da residência Auguil."
     },
     {
       id: "col_laudos_clinicos",
       nome: "Laudos Clínicos",
       peso: 0,
-      tipo: "Prova Médica",
+      tipo: "Documento",
+      campo_tipo: "Conteúdo",
       area: "Clínica Médica Renovare",
       desbloqueado: false,
-      resumo: "Um envelope plastificado rasgado no topo, contendo a sentença de morte clínica que quebrou a mente de Sara.",
-      detalhe: "Contém três folhas de exames. Há tabelas marcadas a vermelho com níveis de toxidade no sangue que ultrapassam o letal. O diagnóstico final, assinado por 'Melissa Vane', declara falência múltipla de órgãos iminente e uma estimativa de 'duas semanas de sobrevida'."
+      resumo: "Um envelope plastificado, rasgado na parte superior, contendo formulários médicos impressos.",
+      detalhe: "Três folhas de exames. Há tabelas marcadas em vermelho para níveis de toxicidade no sangue. O laudo final possui a frase \"falência múltipla de órgãos\" e uma anotação manuscrita de \"estimativa de duas semanas de sobrevida\". Assinado por \"Dra. Melissa Vane\"."
     },
     {
       id: "col_cracha_acesso",
       nome: "Crachá de Acesso Magnético",
       peso: 0,
-      tipo: "Item de Infiltração",
+      tipo: "Acesso",
+      campo_tipo: "Efeito",
       area: "Clínica Médica Renovare",
       desbloqueado: false,
-      resumo: "Um crachá comum de hospital, preso a um cordão azul com o logotipo da Renovare ligeiramente manchado de café.",
-      detalhe: "Um cartão de PVC branco arranhado, com a foto 3x4 de um técnico de enfermagem aleatório. Libera as portas eletrônicas do Bloco Central e do Arquivo da Clínica Renovare sem testes de Furtividade."
+      resumo: "Um cartão de PVC branco arranhado, com a foto 3x4 de um técnico de enfermagem e o logotipo da clínica.",
+      detalhe: "Libera as travas eletrônicas das portas do Bloco Central e do Arquivo da Clínica Renovare."
     },
     {
       id: "col_seringa_lodo",
       nome: "Seringa de Lodo",
       peso: 1,
-      tipo: "Prova Sobrenatural",
+      tipo: "Amostra",
+      campo_tipo: "Detalhe",
       area: "Clínica Médica Renovare (Bloco Central)",
       desbloqueado: false,
-      resumo: "Prova física e perturbadora de que a Dra. Melissa estava inoculando o próprio mal da floresta nas veias de Sara.",
-      detalhe: "A seringa é de vidro reforçado com marcações até 20ml. O líquido dentro não reage à gravidade como água normal; ele escorre devagar, quase tentando se agarrar ao vidro. A agulha de calibre grosso ainda tem uma gota preta cristalizada na ponta."
+      resumo: "Uma seringa hospitalar de vidro grosso contendo um líquido negro e denso.",
+      detalhe: "A seringa possui marcações de mililitros. O líquido no interior escorre de maneira anormalmente lenta quando inclinada, aderindo de forma espessa às paredes do vidro. A agulha de calibre grosso ainda possui uma gota negra cristalizada na ponta."
     },
     {
       id: "col_desenho_sara",
       nome: "Desenho de Sara",
       peso: 0,
-      tipo: "Pista de Horror",
+      tipo: "Documento",
+      campo_tipo: "Detalhe",
       area: "Casa Auguil (Quarto de Sara)",
       desbloqueado: false,
-      resumo: "Feito no verso de um receituário médico amassado, é o registro de uma mente em colapso abraçando a insanidade.",
-      detalhe: "O traço a lápis é caótico, quase furando o papel. Mostra uma figura disforme e rabiscada de preto abraçando fortemente uma garotinha. A garotinha é a única coisa colorida, com um laço pintado de rosa forte na cabeça (prenunciando o sacrifício de Kali)."
+      resumo: "Um desenho feito à mão no verso de um receituário médico de papel fino e amassado.",
+      detalhe: "O traço a lápis é forte e irregular, afundando o papel em algumas áreas. A ilustração central mostra uma figura escura e sem forma definida abraçando uma garotinha. A garotinha tem um único detalhe colorido: um laço pintado de rosa forte na cabeça."
     },
     {
       id: "col_pocao_solar",
       nome: "Poção Solar de Cura",
       peso: 1,
-      tipo: "Uso Único",
+      tipo: "Consumível - 1 Dose",
+      campo_tipo: "Efeito",
       area: "Café da Névoa",
       desbloqueado: false,
-      resumo: "Um pequeno frasco de cristal que emite um calor suave na palma da mão, parecendo engarrafar a própria luz.",
-      detalhe: "O frasco é do tamanho de um polegar, arrolhado com cortiça e selado com cera. O líquido perfeitamente límpido dentro dele brilha levemente quando agitado. Remove a condição 'Amalgamado da Podridão' de um alvo de forma instantânea."
+      resumo: "Um pequeno frasco de cristal arrolhado com cortiça. O líquido límpido no interior emite um brilho suave e um leve calor.",
+      detalhe: "Remove a condição \"Amalgamado da Podridão\" de um alvo instantaneamente."
     },
     {
       id: "col_diario_sara",
       nome: "Diário de Sara",
       peso: 1,
-      tipo: "Lore / Revelação Final",
+      tipo: "Documento",
+      campo_tipo: "Conteúdo",
       area: "Casa Auguil",
       desbloqueado: false,
-      resumo: "Um diário manchado de terra e lodo. As últimas palavras de alguém que decidiu deixar de ser vítima para se tornar o algoz.",
-      detalhe: "Um caderno espiral de capa preta. As dezenas de páginas iniciais foram arrancadas. Nas únicas páginas restantes no final, a caligrafia desesperada e borrada por lágrimas decreta: 'Ele me chamou. Eu só preciso abrir a porta. E a porta precisa de carne para girar a chave.'"
+      resumo: "Um caderno espiral de capa preta, manchado de terra umedecida e lodo nas bordas.",
+      detalhe: "As dezenas de páginas iniciais foram arrancadas. Na única página restante no fim do caderno, há um texto escrito com caligrafia borrada: \"Ele me chamou. Eu só preciso abrir a porta. E a porta precisa de carne para girar a chave.\""
     },
     {
-      id: "col_laco_rosa_kali",
-      nome: "Laço Rosa de Kali",
+      id: "col_laco_rosa",
+      nome: "Laço Rosa",
       peso: 0,
-      tipo: "Pista Chocante",
+      tipo: "Objeto",
+      campo_tipo: "Detalhe",
       area: "Casa Auguil (Ralo da Banheira)",
       desbloqueado: false,
-      resumo: "A macabra prova final recuperada do ralo da banheira. O cadáver de lodo que eles enfrentaram era a pequena Kali.",
-      detalhe: "Um laço de cetim simples preso a um elástico de cabelo. O cetim original rosa claro está completamente escurecido, coberto por crostas grossas de sangue seco e lodo, exalando um cheiro insuportável de morte e água estagnada."
+      resumo: "Um pequeno laço de cetim preso a um elástico de cabelo, exalando um forte cheiro de água estagnada.",
+      detalhe: "O cetim rosa claro original está enrijecido e manchado de um tom escarlate muito escuro, coberto por resíduos lamacentos."
     }
   ];
 

@@ -1037,8 +1037,8 @@ const MesaApp = {
       raca: 'Animalesco',
       arquetipo: 'Rebelde',
       classe: 'Adivinha',
-      imagem: 'assets/pera.png?v=1.5.0',
-      avatar: 'assets/pera_avatar.png?v=1.5.0',
+      imagem: 'assets/pera.png?v=1.5.1',
+      avatar: 'assets/pera_avatar.png?v=1.5.1',
       hp: 12, hpMax: 12,
       pe: 10, peMax: 10,
       st: 0, stMax: 24,
@@ -1067,7 +1067,7 @@ const MesaApp = {
       id: 5,
       slot: 5,
       token: 'J8W4',
-      nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão', imagem: 'assets/william.png?v=1.5.0', avatar: 'assets/william_avatar.png?v=1.5.0',
+      nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão', imagem: 'assets/william.png?v=1.5.1', avatar: 'assets/william_avatar.png?v=1.5.1',
       hp: 15, hpMax: 15,
       pe: 10, peMax: 10,
       st: 0, stMax: 28,
@@ -1372,7 +1372,7 @@ const MesaApp = {
 
       if (!this.state.players[3]) {
         this.state.players[3] = {
-          id: 4, slot: 4, token: 'H2Q9', nome: 'Pera Hylidae da Silva', idade: '18 anos', altura: '1,58m', raca: 'Animalesco', arquetipo: 'Rebelde', classe: 'Adivinha', imagem: 'assets/pera.png?v=1.5.0', avatar: 'assets/pera_avatar.png?v=1.5.0',
+          id: 4, slot: 4, token: 'H2Q9', nome: 'Pera Hylidae da Silva', idade: '18 anos', altura: '1,58m', raca: 'Animalesco', arquetipo: 'Rebelde', classe: 'Adivinha', imagem: 'assets/pera.png?v=1.5.1', avatar: 'assets/pera_avatar.png?v=1.5.1',
           hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 24, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Mente': 'd4', 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd16' },
           bonus: [
@@ -1390,7 +1390,7 @@ const MesaApp = {
 
       if (!this.state.players[4]) {
         this.state.players[4] = {
-          id: 5, slot: 5, token: 'J8W4', nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão', imagem: 'assets/william.png?v=1.5.0', avatar: 'assets/william_avatar.png?v=1.5.0',
+          id: 5, slot: 5, token: 'J8W4', nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão', imagem: 'assets/william.png?v=1.5.1', avatar: 'assets/william_avatar.png?v=1.5.1',
           hp: 15, hpMax: 15, pe: 10, peMax: 10, st: 0, stMax: 28, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Saúde': 'd4', 'Vigor': 'd16', 'Força': 'd12', 'Mente': 'd8' },
           bonus: [
@@ -1514,7 +1514,7 @@ const MesaApp = {
           const data = payload.payload;
           if (data && Array.isArray(data.items) && window.MesaColetaveis) {
             MesaColetaveis.items = data.items;
-            localStorage.setItem('wu_coletaveis_v1', JSON.stringify(data.items));
+            localStorage.setItem('wu_coletaveis_v1_revised', JSON.stringify(data.items));
             MesaColetaveis.render();
             MesaColetaveis.renderFicha();
           }
@@ -3358,7 +3358,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.5.0`;
+      badge.textContent = `v1.5.1`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -4129,7 +4129,7 @@ const MesaColetaveis = {
 
   init() {
     const canonical = window.CAMPAIGN_COLETAVEIS || window.MESA_COLETAVEIS || [];
-    const saved = localStorage.getItem('wu_coletaveis_v1');
+    const saved = localStorage.getItem('wu_coletaveis_v1_revised_revised');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -4140,14 +4140,15 @@ const MesaColetaveis = {
           }));
         } else {
           this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
-          localStorage.setItem('wu_coletaveis_v1', JSON.stringify(this.items));
+          localStorage.setItem('wu_coletaveis_v1_revised_revised', JSON.stringify(this.items));
         }
       } catch (e) {
         this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
       }
     } else {
+      // Carrega diretamente a nova versão canônica revisada
       this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
-      localStorage.setItem('wu_coletaveis_v1', JSON.stringify(this.items));
+      localStorage.setItem('wu_coletaveis_v1_revised_revised', JSON.stringify(this.items));
     }
   },
 
@@ -4280,7 +4281,7 @@ const MesaColetaveis = {
   },
 
   saveAndSync() {
-    localStorage.setItem('wu_coletaveis_v1', JSON.stringify(this.items));
+    localStorage.setItem('wu_coletaveis_v1_revised', JSON.stringify(this.items));
     if (MesaChat && MesaChat.channel) {
       MesaChat.channel.send({
         type: 'broadcast',
@@ -4377,7 +4378,7 @@ const MesaColetaveis = {
               ${it.resumo ? `<div class="coletavel-card-resumo">${it.resumo}</div>` : ''}
               ${(it.detalhe || it.desc) ? `
                 <p class="coletavel-card-desc" style="font-size: 0.78rem; margin-top: 4px;">
-                  <strong>${(it.tipo && (it.tipo.includes('Chave') || it.tipo.includes('Uso') || it.tipo.includes('Infiltração'))) ? 'Efeito' : 'Detalhe'}:</strong>
+                  <strong>${it.campo_tipo || (it.efeito ? 'Efeito' : 'Detalhe')}:</strong>
                   ${it.detalhe || it.desc}
                 </p>
               ` : ''}
@@ -4487,7 +4488,7 @@ const MesaColetaveis = {
               ${it.resumo ? `<div class="coletavel-card-resumo">${it.resumo}</div>` : ''}
               ${(it.detalhe || it.desc) ? `
                 <p class="coletavel-card-desc">
-                  <strong>${(it.tipo && (it.tipo.includes('Chave') || it.tipo.includes('Uso') || it.tipo.includes('Infiltração'))) ? 'Efeito' : 'Detalhe'}:</strong>
+                  <strong>${it.campo_tipo || (it.efeito ? 'Efeito' : 'Detalhe')}:</strong>
                   ${it.detalhe || it.desc}
                 </p>
               ` : ''}
