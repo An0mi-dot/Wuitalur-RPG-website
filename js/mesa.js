@@ -3330,7 +3330,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.3.1`;
+      badge.textContent = `v1.3.2`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -4445,11 +4445,11 @@ const MesaMediaPlayer = {
     // Format Google Drive links automatically
     const gDriveMatch1 = url.match(/drive\.google\.com\/.*?id=([a-zA-Z0-9_-]+)/);
     if (gDriveMatch1) {
-      url = `https://drive.usercontent.google.com/download?id=${gDriveMatch1[1]}&export=download`;
+      url = `https://drive.usercontent.google.com/download?id=${gDriveMatch1[1]}`;
       name = 'Google Drive Video';
     } else if (url.includes('drive.google.com/file/d/')) {
       const id = url.split('file/d/')[1].split('/')[0];
-      url = `https://drive.usercontent.google.com/download?id=${id}&export=download`;
+      url = `https://drive.usercontent.google.com/download?id=${id}`;
       name = 'Google Drive Video';
     }
     this.videoPlaylist.push({ name: name, url: url });
@@ -4627,11 +4627,11 @@ const MesaMediaPlayer = {
     // Format Google Drive links automatically
     const gDriveMatch1 = url.match(/drive\.google\.com\/.*?id=([a-zA-Z0-9_-]+)/);
     if (gDriveMatch1) {
-      url = `https://drive.usercontent.google.com/download?id=${gDriveMatch1[1]}&export=download`;
+      url = `https://drive.usercontent.google.com/download?id=${gDriveMatch1[1]}`;
       name = 'Google Drive Imagem';
     } else if (url.includes('drive.google.com/file/d/')) {
       const id = url.split('file/d/')[1].split('/')[0];
-      url = `https://drive.usercontent.google.com/download?id=${id}&export=download`;
+      url = `https://drive.usercontent.google.com/download?id=${id}`;
       name = 'Google Drive Imagem';
     }
     this.imagePlaylist.push({ name: name, url: url });
