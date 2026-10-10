@@ -138,7 +138,7 @@ const DEFAULT_ACCOUNTS = [
       handle: '@willian',
       bio: 'Armeiro e entusiasta de engenhocas mecǽnicas. Nunca confie em um mecanismo que nǜo faa barulho.',
       avatarLetter: 'W',
-      avatarImage: 'assets/william.png?v=1.4.3',
+      avatarImage: 'assets/william_avatar.png?v=1.4.4',
     avatarColor: '#06b6d4',
     badge: 'none',
     isMaster: false
