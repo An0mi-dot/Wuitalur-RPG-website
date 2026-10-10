@@ -3157,8 +3157,8 @@ const MesaAreaManager = {
         },
                 'casa-auguil': {
           xPct: 50, yPct: 20,
-          color: '#8b5cf6',
-          glow: 'rgba(139, 92, 246, 0.75)',
+          color: '#e5e7eb',
+          glow: 'rgba(229, 231, 235, 0.75)',
           roadD: 'M 500 160 C 500 200, 500 260, 500 320',
           roadTwinD: 'M 508 160 C 508 200, 508 260, 508 320'
         },
@@ -3323,7 +3323,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.2.3`;
+      badge.textContent = `v1.2.4`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body

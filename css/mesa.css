@@ -4073,6 +4073,21 @@ body.mp-drawer-open .mesa-board-container,
 
 /* 1. PALETAS TEMÁTICAS DAS ÁREAS */
 
+body.mesa-body.area-casa-auguil .mesa-bg {
+  filter: grayscale(100%);
+}
+
+body.mesa-body.area-casa-auguil {
+  --area-ambient-1: #3b3b3b;
+  --area-ambient-2: #242424;
+  --area-ambient-3: #121212;
+  --area-ambient-dark: #000000;
+  --area-accent: #9ca3af;
+  --area-accent-trans: rgba(156, 163, 175, 0.4);
+  --area-glow: rgba(156, 163, 175, 0.45);
+  --area-badge-bg: rgba(156, 163, 175, 0.15);
+}
+
 body.mesa-body.area-none {
   --area-ambient-1: #c2410c;
   --area-ambient-2: #7c2d12;
