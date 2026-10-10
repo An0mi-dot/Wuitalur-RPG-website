@@ -7307,3 +7307,30 @@ body.interior-drawer-open .mesa-board-container,
   height: 100vh;
   object-fit: cover;
 }
+
+
+.abertura-skip-btn {
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 9001;
+  transition: all 0.2s;
+  display: none; /* Controlled by JS isMaster */
+}
+
+.abertura-skip-btn:hover {
+  background: rgba(239, 68, 68, 0.8);
+  border-color: #ef4444;
+  transform: scale(1.1);
+}

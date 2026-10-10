@@ -3330,7 +3330,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.3.6`;
+      badge.textContent = `v1.3.7`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -3920,6 +3920,10 @@ const MesaQuickMenu = {
     const aberturaBtn = document.getElementById('menu-abertura-btn');
     if (aberturaBtn) {
       aberturaBtn.style.display = isMaster ? 'flex' : 'none';
+    }
+    const skipBtn = document.getElementById('abertura-skip-btn');
+    if (skipBtn) {
+      skipBtn.style.display = isMaster ? 'flex' : 'none';
     }
     const mediaBtn = document.getElementById('menu-media-btn');
     if (mediaBtn) {
@@ -4892,6 +4896,30 @@ const MesaAbertura = {
     
     // Play for Master as well
     this.triggerAbertura();
+  },
+
+  stop() {
+    if (!MesaApp.state.isMaster) return;
+    if (MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'stop_abertura',
+        payload: {}
+      });
+    }
+    this.triggerStop();
+  },
+
+  triggerStop() {
+    const overlay = document.getElementById('abertura-overlay');
+    const video = document.getElementById('abertura-video');
+    if (overlay && video) {
+      overlay.classList.remove('active');
+      setTimeout(() => {
+        video.pause();
+        video.currentTime = 0;
+      }, 1500);
+    }
   },
 
   triggerAbertura() {
