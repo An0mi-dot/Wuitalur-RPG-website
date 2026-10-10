@@ -3033,8 +3033,23 @@ const MESA_AREAS = {
     "lore": "Casa da família de Sara e Trisha. O local de onde Trisha desapareceu, e onde Sara sofreu seus últimos dias de delírio antes de fugir para a floresta.",
     "rumor": "A polícia investigou a casa durante o dia, mas não encontraram nada. Contudo, os vizinhos dizem que, à noite, a casa parece... respirar.",
     "pois": []
+  },
+  "cafe-da-nevoa": {
+    "id": "cafe-da-nevoa",
+    "name": "Café da Névoa",
+    "shortName": "Café",
+    "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 8h1a4 4 0 0 1 0 8h-1\"></path><path d=\"M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z\"></path><line x1=\"6\" y1=\"1\" x2=\"6\" y2=\"4\"></line><line x1=\"10\" y1=\"1\" x2=\"10\" y2=\"4\"></line><line x1=\"14\" y1=\"1\" x2=\"14\" y2=\"4\"></line></svg>",
+    "themeClass": "area-cafe-da-nevoa",
+    "district": "Rua Comercial • Centro",
+    "dangerLevel": "Abandono Recente & Luto",
+    "dangerLevelClass": "warning",
+    "ambience": "O sol está a pôr-se e a rua comercial está a esvaziar. O letreiro de néon do Café da Névoa, que costumava ser um ponto de encontro acolhedor, está apagado. As cadeiras da esplanada já foram recolhidas e empilhadas de forma descuidada. O cheiro a café torrado mistura-se com o odor forte a lixívia e água suja do chão recém-lavado.",
+    "lore": "Café onde Sara trabalhava como barista. Era um ambiente agitado, mas que perdeu sua luz nos últimos dias.",
+    "rumor": "Dizem que a gerente desapareceu e o outro funcionário, Elias, não fala com ninguém.",
+    "pois": []
   }
 };
+
 
 const MesaAreaManager = {
   currentAreaId: 'none',
@@ -3286,7 +3301,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.2.1`;
+      badge.textContent = `v1.2.2`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
