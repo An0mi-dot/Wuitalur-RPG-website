@@ -1795,13 +1795,15 @@ const MesaApp = {
       <div class="ficha-portrait-col">
         ${player.imagem ? `
           <div class="ficha-char-portrait-box glitch-portrait-box">
+              ${editable ? `<button type="button" class="ficha-edit-image-btn" onclick="MesaApp.promptEditImage(${player.slot})" title="Mudar Imagem" style="position:absolute; top:8px; right:8px; z-index:10; background:rgba(0,0,0,0.7); color:#fff; border:1px solid #333; padding:4px 8px; cursor:pointer; font-size:12px; border-radius:4px;">✏️ Alterar</button>` : ''}
             <canvas id="portrait-glitch-canvas" class="portrait-glitch-canvas"></canvas>
             <img src="${player.imagem}" alt="${player.nome}" class="ficha-char-portrait-img glitch-img-base" />
             <img src="${player.imagem}" alt="" class="ficha-char-portrait-img glitch-img-layer glitch-layer-1" aria-hidden="true" />
             <img src="${player.imagem}" alt="" class="ficha-char-portrait-img glitch-img-layer glitch-layer-2" aria-hidden="true" />
           </div>
         ` : `
-          <div class="cube-placeholder-box">
+          <div class="cube-placeholder-box" style="position:relative;">
+              ${editable ? `<button type="button" class="ficha-edit-image-btn" onclick="MesaApp.promptEditImage(${player.slot})" title="Mudar Imagem" style="position:absolute; top:8px; right:8px; z-index:10; background:rgba(0,0,0,0.7); color:#fff; border:1px solid #333; padding:4px 8px; cursor:pointer; font-size:12px; border-radius:4px;">✏️ Adicionar Imagem</button>` : ''}
             <svg viewBox="0 0 100 100" class="cube-svg">
               <polygon points="50,12 88,34 50,56 12,34" fill="rgba(255,85,0,0.12)" stroke="#ff5500" stroke-width="2.2" />
               <polygon points="12,34 50,56 50,92 12,70" fill="rgba(255,85,0,0.06)" stroke="#ff5500" stroke-width="2.2" />
@@ -3330,7 +3332,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.3.8`;
+      badge.textContent = `v1.3.9`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
