@@ -3358,7 +3358,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.5.3`;
+      badge.textContent = `v1.5.4`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -4129,20 +4129,22 @@ const MesaColetaveis = {
 
   init() {
     const canonical = window.CAMPAIGN_COLETAVEIS || window.MESA_COLETAVEIS || [];
-    const saved = localStorage.getItem('wu_coletaveis_v2') || localStorage.getItem('wu_coletaveis_v1_revised_revised') || localStorage.getItem('wu_coletaveis_v1_revised');
+    const saved = localStorage.getItem('wu_coletaveis_v2');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          this.items = canonical.map(can => {
-            const existing = parsed.find(it => it.id === can.id);
-            return {
-              ...can,
-              desbloqueado: existing ? (existing.desbloqueado === true) : false
-            };
+          // Usa os itens salvos preservando totalmente as edições feitas pelo Mestre
+          this.items = parsed.map(it => ({
+            ...it,
+            desbloqueado: it.desbloqueado === true
+          }));
+          // Adiciona itens canônicos ausentes caso ainda não existam no array
+          canonical.forEach(can => {
+            if (!this.items.some(it => it.id === can.id)) {
+              this.items.push({ ...can, desbloqueado: false });
+            }
           });
-          const extras = parsed.filter(it => !canonical.some(can => can.id === it.id));
-          this.items = [...this.items, ...extras];
         } else {
           this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
         }
@@ -4150,9 +4152,23 @@ const MesaColetaveis = {
         this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
       }
     } else {
-      this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
+      const legacy = localStorage.getItem('wu_coletaveis_v1_revised_revised') || localStorage.getItem('wu_coletaveis_v1_revised');
+      if (legacy) {
+        try {
+          const parsed = JSON.parse(legacy);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            this.items = parsed.map(it => ({ ...it, desbloqueado: it.desbloqueado === true }));
+          } else {
+            this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
+          }
+        } catch (e) {
+          this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
+        }
+      } else {
+        this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
+      }
+      localStorage.setItem('wu_coletaveis_v2', JSON.stringify(this.items));
     }
-    localStorage.setItem('wu_coletaveis_v2', JSON.stringify(this.items));
   },
 
   openModal() {
@@ -4177,63 +4193,154 @@ const MesaColetaveis = {
 
   openAddModal() {
     if (!MesaApp.state.isMaster) return;
+    const idEl = document.getElementById('coletavel-form-id');
+    const titleEl = document.getElementById('coletavel-form-title');
+    const submitEl = document.getElementById('coletavel-form-submit-btn');
     const nomeEl = document.getElementById('coletavel-form-nome');
-    if (nomeEl) nomeEl.value = '';
+    const pesoEl = document.getElementById('coletavel-form-peso');
     const tipoEl = document.getElementById('coletavel-form-tipo');
-    if (tipoEl) tipoEl.value = '';
     const areaEl = document.getElementById('coletavel-form-area');
+    const campoTipoEl = document.getElementById('coletavel-form-campo-tipo');
+    const statusEl = document.getElementById('coletavel-form-status');
+    const resumoEl = document.getElementById('coletavel-form-resumo');
+    const detalheEl = document.getElementById('coletavel-form-detalhe');
+
+    if (idEl) idEl.value = '';
+    if (titleEl) titleEl.textContent = 'CADASTRAR NOVO COLETÁVEL';
+    if (submitEl) submitEl.textContent = 'Cadastrar Item';
+    if (nomeEl) nomeEl.value = '';
+    if (pesoEl) pesoEl.value = 0;
+    if (tipoEl) tipoEl.value = '';
     if (areaEl) areaEl.value = '';
-    const descEl = document.getElementById('coletavel-form-desc');
-    if (descEl) descEl.value = '';
+    if (campoTipoEl) campoTipoEl.value = 'Detalhe';
+    if (statusEl) statusEl.value = 'locked';
+    if (resumoEl) resumoEl.value = '';
+    if (detalheEl) detalheEl.value = '';
+
     MesaApp.openModal('coletavel-form-modal');
   },
 
-  closeAddModal() {
+  openEditModal(id) {
+    if (!MesaApp.state.isMaster) return;
+    const item = this.items.find(it => it.id === id);
+    if (!item) return;
+
+    const idEl = document.getElementById('coletavel-form-id');
+    const titleEl = document.getElementById('coletavel-form-title');
+    const submitEl = document.getElementById('coletavel-form-submit-btn');
+    const nomeEl = document.getElementById('coletavel-form-nome');
+    const pesoEl = document.getElementById('coletavel-form-peso');
+    const tipoEl = document.getElementById('coletavel-form-tipo');
+    const areaEl = document.getElementById('coletavel-form-area');
+    const campoTipoEl = document.getElementById('coletavel-form-campo-tipo');
+    const statusEl = document.getElementById('coletavel-form-status');
+    const resumoEl = document.getElementById('coletavel-form-resumo');
+    const detalheEl = document.getElementById('coletavel-form-detalhe');
+
+    if (idEl) idEl.value = item.id;
+    if (titleEl) titleEl.textContent = 'EDITAR COLETÁVEL';
+    if (submitEl) submitEl.textContent = 'Salvar Alterações';
+    if (nomeEl) nomeEl.value = item.nome || '';
+    if (pesoEl) pesoEl.value = item.peso !== undefined ? item.peso : 0;
+    if (tipoEl) tipoEl.value = item.tipo || '';
+    if (areaEl) areaEl.value = item.area || '';
+    if (campoTipoEl) campoTipoEl.value = item.campo_tipo || 'Detalhe';
+    if (statusEl) statusEl.value = item.desbloqueado ? 'unlocked' : 'locked';
+    if (resumoEl) resumoEl.value = item.resumo || '';
+    if (detalheEl) detalheEl.value = item.detalhe || item.desc || '';
+
+    MesaApp.openModal('coletavel-form-modal');
+  },
+
+  closeFormModal() {
     MesaApp.closeModal('coletavel-form-modal');
   },
 
-  handleCreate(e) {
-    e.preventDefault();
+  closeAddModal() {
+    this.closeFormModal();
+  },
+
+  handleSave(e) {
+    if (e && e.preventDefault) e.preventDefault();
     if (!MesaApp.state.isMaster) return;
 
-    const nome = (document.getElementById('coletavel-form-nome').value || '').trim();
-    const tipo = (document.getElementById('coletavel-form-tipo').value || '').trim() || 'Objeto / Pista';
-    const area = (document.getElementById('coletavel-form-area').value || '').trim() || 'Área Desconhecida';
-    const detalhe = (document.getElementById('coletavel-form-desc').value || '').trim() || 'Sem detalhes adicionais.';
+    const id = (document.getElementById('coletavel-form-id')?.value || '').trim();
+    const nome = (document.getElementById('coletavel-form-nome')?.value || '').trim();
+    const peso = parseInt(document.getElementById('coletavel-form-peso')?.value, 10) || 0;
+    const tipo = (document.getElementById('coletavel-form-tipo')?.value || '').trim() || 'Objeto / Pista';
+    const area = (document.getElementById('coletavel-form-area')?.value || '').trim() || 'Área Desconhecida';
+    const campo_tipo = (document.getElementById('coletavel-form-campo-tipo')?.value || '').trim() || 'Detalhe';
+    const statusVal = document.getElementById('coletavel-form-status')?.value;
+    const desbloqueado = (statusVal === 'unlocked');
+    const resumo = (document.getElementById('coletavel-form-resumo')?.value || '').trim();
+    const detalhe = (document.getElementById('coletavel-form-detalhe')?.value || '').trim() || 'Sem detalhes adicionais.';
 
     if (!nome) return;
 
-    const newItem = {
-      id: 'col_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
-      nome,
-      peso: 1,
-      tipo,
-      area,
-      resumo: '',
-      detalhe,
-      desbloqueado: false, // Inicia bloqueado por padrão
-      dataCriacao: new Date().toLocaleDateString('pt-BR')
-    };
+    if (id) {
+      const item = this.items.find(it => it.id === id);
+      if (item) {
+        item.nome = nome;
+        item.peso = peso;
+        item.tipo = tipo;
+        item.area = area;
+        item.campo_tipo = campo_tipo;
+        item.desbloqueado = desbloqueado;
+        item.resumo = resumo;
+        item.detalhe = detalhe;
+        item.desc = detalhe;
+      }
+      if (MesaChat && MesaChat.channel) {
+        MesaChat.channel.send({
+          type: 'broadcast',
+          event: 'chat_message',
+          payload: {
+            id: 'msg_' + Date.now(),
+            text: `📝 [COLETÁVEL ATUALIZADO]: O Mestre editou as informações de "${nome}".`,
+            sender: 'Mestre',
+            role: 'mestre',
+            timestamp: Date.now()
+          }
+        });
+      }
+    } else {
+      const newItem = {
+        id: 'col_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+        nome,
+        peso,
+        tipo,
+        area,
+        campo_tipo,
+        resumo,
+        detalhe,
+        desc: detalhe,
+        desbloqueado,
+        dataCriacao: new Date().toLocaleDateString('pt-BR')
+      };
+      this.items.unshift(newItem);
+      if (MesaChat && MesaChat.channel) {
+        MesaChat.channel.send({
+          type: 'broadcast',
+          event: 'chat_message',
+          payload: {
+            id: 'msg_' + Date.now(),
+            text: `📦 [NOVO COLETÁVEL REGISTRADO]: ${nome} (${tipo}) foi catalogado pelo Mestre (${desbloqueado ? 'Liberado' : 'Bloqueado'}).`,
+            sender: 'Mestre',
+            role: 'mestre',
+            timestamp: Date.now()
+          }
+        });
+      }
+    }
 
-    this.items.unshift(newItem);
     this.saveAndSync();
-    this.closeAddModal();
+    this.closeFormModal();
     this.render();
     this.renderFicha();
+  },
 
-    if (MesaChat && MesaChat.channel) {
-      MesaChat.channel.send({
-        type: 'broadcast',
-        event: 'chat_message',
-        payload: {
-          id: 'msg_' + Date.now(),
-          text: `📦 [NOVO COLETÁVEL REGISTRADO]: ${nome} (${tipo}) foi catalogado pelo Mestre (Bloqueado).`,
-          sender: 'Mestre',
-          role: 'mestre',
-          timestamp: Date.now()
-        }
-      });
-    }
+  handleCreate(e) {
+    this.handleSave(e);
   },
 
   toggleLock(id) {
@@ -4396,10 +4503,16 @@ const MesaColetaveis = {
                       Liberar Item
                     `}
                   </button>
-                  <button type="button" class="coletavel-delete-btn" onclick="MesaColetaveis.deleteItem('${it.id}')" title="Excluir Coletável">
-                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                    Excluir
-                  </button>
+                  <div style="display:flex; gap:6px; align-items:center;">
+                    <button type="button" class="coletavel-edit-btn" onclick="MesaColetaveis.openEditModal('${it.id}')" title="Editar Coletável">
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                      Editar
+                    </button>
+                    <button type="button" class="coletavel-delete-btn" onclick="MesaColetaveis.deleteItem('${it.id}')" title="Excluir Coletável">
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                      Excluir
+                    </button>
+                  </div>
                 </div>
               ` : ''}
             </div>
@@ -4506,10 +4619,16 @@ const MesaColetaveis = {
                       Liberar Item
                     `}
                   </button>
-                  <button type="button" class="coletavel-delete-btn" onclick="MesaColetaveis.deleteItem('${it.id}')" title="Excluir Coletável">
-                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                    Excluir
-                  </button>
+                  <div style="display:flex; gap:6px; align-items:center;">
+                    <button type="button" class="coletavel-edit-btn" onclick="MesaColetaveis.openEditModal('${it.id}')" title="Editar Coletável">
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                      Editar
+                    </button>
+                    <button type="button" class="coletavel-delete-btn" onclick="MesaColetaveis.deleteItem('${it.id}')" title="Excluir Coletável">
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                      Excluir
+                    </button>
+                  </div>
                 </div>
               ` : ''}
             </div>

@@ -11,9 +11,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/variables.css?v=1.5.3">
-  <link rel="stylesheet" href="css/components.css?v=1.5.3">
-  <link rel="stylesheet" href="css/mesa.css?v=1.5.3">
+  <link rel="stylesheet" href="css/variables.css?v=1.5.4">
+  <link rel="stylesheet" href="css/components.css?v=1.5.4">
+  <link rel="stylesheet" href="css/mesa.css?v=1.5.4">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -725,37 +725,68 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       </div>
     </div>
 
-    <!-- Modal Auxiliar do Mestre para Adicionar Coletável -->
+    <!-- Modal Auxiliar do Mestre para Adicionar / Editar Coletável -->
     <div id="coletavel-form-modal" class="mesa-modal-overlay" style="z-index: 1200;">
-      <div class="mesa-modal" style="max-width: 500px; border-radius: 0; background: rgba(14, 14, 18, 0.98); border: 1px solid rgba(255, 85, 0, 0.35);">
-        <button class="mesa-modal-close" onclick="MesaColetaveis.closeAddModal()">&times;</button>
-        <div class="ink-ribbon-title" style="margin-bottom: 16px;">CADASTRAR NOVO COLETÁVEL</div>
+      <div class="mesa-modal" style="max-width: 540px; border-radius: 0; background: rgba(14, 14, 18, 0.98); border: 1px solid rgba(255, 85, 0, 0.35);">
+        <button class="mesa-modal-close" onclick="MesaColetaveis.closeFormModal()">&times;</button>
+        <div id="coletavel-form-title" class="ink-ribbon-title" style="margin-bottom: 16px;">CADASTRAR NOVO COLETÁVEL</div>
         
-        <form onsubmit="MesaColetaveis.handleCreate(event)" style="display: flex; flex-direction: column; gap: 14px;">
-          <div>
-            <label style="display: block; font-size: 0.75rem; color: #a3a3a3; margin-bottom: 4px; font-weight: 700; text-transform: uppercase;">Nome do Item</label>
-            <input type="text" id="coletavel-form-nome" required class="coletaveis-search-input" style="padding-left: 12px;" placeholder="Ex: Mochila de Sara, Frasco Vazio..." />
+        <form onsubmit="MesaColetaveis.handleSave(event)" style="display: flex; flex-direction: column; gap: 12px;">
+          <input type="hidden" id="coletavel-form-id" value="" />
+
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+            <div>
+              <label style="display: block; font-size: 0.75rem; color: #a3a3a3; margin-bottom: 4px; font-weight: 700; text-transform: uppercase;">Nome do Item</label>
+              <input type="text" id="coletavel-form-nome" required class="coletaveis-search-input" style="padding-left: 12px;" placeholder="Ex: Mochila Escolar, Poção Solar..." />
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.75rem; color: #a3a3a3; margin-bottom: 4px; font-weight: 700; text-transform: uppercase;">Peso</label>
+              <input type="number" id="coletavel-form-peso" min="0" max="100" value="0" class="coletaveis-search-input" style="padding-left: 12px;" />
+            </div>
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             <div>
               <label style="display: block; font-size: 0.75rem; color: #a3a3a3; margin-bottom: 4px; font-weight: 700; text-transform: uppercase;">Categoria / Tipo</label>
-              <input type="text" id="coletavel-form-tipo" class="coletaveis-search-input" style="padding-left: 12px;" placeholder="Documento, Objeto, Pista..." />
+              <input type="text" id="coletavel-form-tipo" class="coletaveis-search-input" style="padding-left: 12px;" placeholder="Documento, Objeto, Consumível..." />
             </div>
             <div>
               <label style="display: block; font-size: 0.75rem; color: #a3a3a3; margin-bottom: 4px; font-weight: 700; text-transform: uppercase;">Área de Origem</label>
-              <input type="text" id="coletavel-form-area" class="coletaveis-search-input" style="padding-left: 12px;" placeholder="Ex: A Mata do Norte" />
+              <input type="text" id="coletavel-form-area" class="coletaveis-search-input" style="padding-left: 12px;" placeholder="Ex: Café da Névoa, Casa Auguil..." />
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px;">
+            <div>
+              <label style="display: block; font-size: 0.75rem; color: #a3a3a3; margin-bottom: 4px; font-weight: 700; text-transform: uppercase;">Prefixo do Detalhe</label>
+              <select id="coletavel-form-campo-tipo" class="coletaveis-search-input" style="padding-left: 8px; background: #0d0d10; color: #fff;">
+                <option value="Efeito">Efeito</option>
+                <option value="Detalhe">Detalhe</option>
+                <option value="Conteúdo">Conteúdo</option>
+              </select>
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.75rem; color: #a3a3a3; margin-bottom: 4px; font-weight: 700; text-transform: uppercase;">Status de Liberação</label>
+              <select id="coletavel-form-status" class="coletaveis-search-input" style="padding-left: 8px; background: #0d0d10; color: #fff;">
+                <option value="locked">Bloqueado (Apenas Mestre)</option>
+                <option value="unlocked">Liberado (Visível aos Jogadores)</option>
+              </select>
             </div>
           </div>
 
           <div>
-            <label style="display: block; font-size: 0.75rem; color: #a3a3a3; margin-bottom: 4px; font-weight: 700; text-transform: uppercase;">Descrição Detalhada</label>
-            <textarea id="coletavel-form-desc" rows="4" class="coletaveis-search-input" style="padding-left: 12px; resize: vertical;" placeholder="O que os investigadores descobrem ao examinar este item..."></textarea>
+            <label style="display: block; font-size: 0.75rem; color: #a3a3a3; margin-bottom: 4px; font-weight: 700; text-transform: uppercase;">Descrição Curta / Resumo Físico</label>
+            <textarea id="coletavel-form-resumo" rows="2" class="coletaveis-search-input" style="padding-left: 12px; resize: vertical;" placeholder="Descrição sensorial do objeto (visível a todos quando liberado)..."></textarea>
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 0.75rem; color: #a3a3a3; margin-bottom: 4px; font-weight: 700; text-transform: uppercase;">Efeito / Conteúdo / Detalhe</label>
+            <textarea id="coletavel-form-detalhe" rows="3" class="coletaveis-search-input" style="padding-left: 12px; resize: vertical;" placeholder="O que o item faz ou revela ao ser investigado..."></textarea>
           </div>
 
           <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
-            <button type="button" class="mesa-btn ink-tag" onclick="MesaColetaveis.closeAddModal()">Cancelar</button>
-            <button type="submit" class="mesa-btn ink-tag primary">Salvar e Registrar</button>
+            <button type="button" class="mesa-btn ink-tag" onclick="MesaColetaveis.closeFormModal()">Cancelar</button>
+            <button type="submit" id="coletavel-form-submit-btn" class="mesa-btn ink-tag primary">Salvar Coletável</button>
           </div>
         </form>
       </div>
@@ -1040,11 +1071,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=1.5.3"></script>
+<script src="js/campaign-data.js?v=1.5.4"></script>
 
-<script src="js/mesa.js?v=1.5.3"></script>
+<script src="js/mesa.js?v=1.5.4"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v1.5.3</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.5.4</div>
 
   <!-- ABERTURA OVERLAY -->
   <div id="abertura-overlay" class="abertura-overlay">

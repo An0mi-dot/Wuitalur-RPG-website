@@ -7603,6 +7603,27 @@ body.interior-drawer-open .mesa-board-container,
   opacity: 1;
 }
 
+.coletavel-edit-btn {
+  background: transparent;
+  border: none;
+  color: #ffaa55;
+  cursor: pointer;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  opacity: 0.85;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.coletavel-edit-btn:hover {
+  opacity: 1;
+  color: #ffcc77;
+  text-shadow: 0 0 8px rgba(255, 170, 85, 0.4);
+}
+
 /* Na Ficha do Personagem */
 .ficha-section-coletaveis {
   grid-column: 1 / -1;
