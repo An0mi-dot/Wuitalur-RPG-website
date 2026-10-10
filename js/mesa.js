@@ -3330,7 +3330,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.3.3`;
+      badge.textContent = `v1.3.4`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
