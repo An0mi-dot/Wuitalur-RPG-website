@@ -173,6 +173,8 @@
     "district": "Reserva Florestal Fechada • Zona Rural",
     "dangerLevel": "Fauna Alterada, Névoa Tóxica & Armadilhas",
     "dangerLevelClass": "danger",
+    "titulo_narrativo": "Interior da Casa",
+    "texto_narrativo": "\"A fechadura cede com um estalo abafado e vocês entram, deixando a noite fria e as fitas amarelas da polícia para trás. O ar dentro da Casa Auguil é pesado, denso e tem o gosto amargo de um lugar que foi trancado às pressas e abandonado. Quando vocês acendem as lanternas, os feixes de luz cortam a escuridão absoluta do térreo e revelam algo profundamente perturbador: a normalidade. A sala de estar está impecavelmente arrumada. Os móveis estão alinhados, as almofadas estão em seus lugares e o silêncio é tão espesso que vocês conseguem ouvir a respiração uns dos outros.\nMas essa ilusão de paz quebra assim que a luz da lanterna varre o pé da escada.\nHá um cheiro que não pertence a esta casa do bairro de Mina de Prata. É o odor úmido de terra podre, folhas molhadas e lodo. Marcando os degraus imaculados de madeira, pequenas pegadas escuras e pastosas sobem em direção ao segundo andar, como se a própria floresta tivesse entrado pela porta dos fundos e subido para os quartos.\nCada passo na escada faz a madeira ranger, ecoando no vazio da casa. Quanto mais vocês sobem, mais o ar fica frio e o cheiro de pântano se torna asfixiante, misturando-se com um forte odor de desinfetante e doença. Vocês chegam ao corredor superior. A porta do quarto de Sara está no final, levemente entreaberta.\nAo empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um abismo de desespero e o contraste absoluto com o térreo. As janelas estão sufocadas por cobertores grossos pregados na parede, bloqueando qualquer fresta de luz. O chão está invisível sob um mar de roupas amassadas, caixas de remédios vazias e dezenas de folhas de papel espalhadas freneticamente, repletas de rascunhos. E, vindo da porta semiaberta do banheiro da suíte, o som sutil de algo gotejando de forma viscosa e o cheiro de enxofre avisam que o horror daquela casa não é apenas uma lembrança do passado. Algo ainda os espera na escuridão.\"",
     "resumo_atmosfera": "Árvores centenárias retorcidas, neblina espessa que engole os faróis, silêncio sepulcral quebrado pelo estalar de galhos e arame farpado enferrujado sob o chão de terra úmida coberto por seiva escura aromática.",
     "requisitos_acesso": "Área isolada pelas autoridades municipais com cancelas militarizadas no KM 18 guardadas por vigilantes particulares armados. Entrada clandestina viável pela tubulação de drenagem do Ferro-Velho (Atletismo DT 6) ou ravinas das serras.",
     "npcs_presentes": [],
@@ -302,6 +304,103 @@
         "gancho": "Para onde Sara se dirigiu por vontade própria."
       }
     ]
+  },
+  "cafe-da-nevoa": {
+    "id": "cafe-da-nevoa",
+    "nome": "Café da Névoa",
+    "shortName": "Café",
+    "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 8h1a4 4 0 0 1 0 8h-1\"></path><path d=\"M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z\"></path><line x1=\"6\" y1=\"1\" x2=\"6\" y2=\"4\"></line><line x1=\"10\" y1=\"1\" x2=\"10\" y2=\"4\"></line><line x1=\"14\" y1=\"1\" x2=\"14\" y2=\"4\"></line></svg>",
+    "themeClass": "area-cafe-da-nevoa",
+    "district": "Rua Comercial • Centro",
+    "dangerLevel": "Abandono Recente & Luto",
+    "dangerLevelClass": "warning",
+    "titulo_narrativo": "Chegada ao Café",
+    "texto_narrativo": "\"Você dobram a esquina e avistam a fachada do Café da Névoa. O letreiro está apagado e as luzes lá dentro já foram cortadas. O som da grade metálica a descer ecoa pela calçada quase deserta. Junto à porta de vidro, um homem de avental sujo — Elias — está com as mãos a tremer enquanto tenta acertar com a chave na fechadura. O rosto dele está encovado, iluminado apenas pela luz pálida do poste de rua. Colado no vidro da porta, mesmo ao lado da cabeça dele, há um papel manuscrito que diz: 'Encerrado por Luto'. Elias olha freneticamente por cima do ombro, para as sombras do beco ao lado do café, como se esperasse que algo saísse de lá a qualquer momento. Vocês chegaram no exato segundo antes de ele fugir para casa.\"",
+    "resumo_atmosfera": "O sol está a pôr-se e a rua comercial está a esvaziar. O letreiro de néon do Café da Névoa, que costumava ser um ponto de encontro acolhedor, está apagado. As cadeiras da esplanada já foram recolhidas e empilhadas de forma descuidada. O cheiro a café torrado mistura-se com o odor forte a lixívia e água suja do chão recém-lavado. Há um ar de abandono precoce no local, como se o negócio tivesse morrido junto com a sua dona.",
+    "requisitos_acesso": "A porta está trancada por Elias, e o beco é acessível pela lateral livremente.",
+    "npcs_presentes": ["elias-ribeiro"],
+    "pontos_de_interesse": [
+      {
+        "cabecalho": {
+          "nome": "A Porta de Vidro",
+          "descricao_publica": "A porta de entrada do café, onde Elias está encurralado entre a grade semi-descida e o grupo de investigadores. Ele segura o molho de chaves do estabelecimento com tanta força que os nós dos dedos estão brancos."
+        },
+        "testes": [
+          {
+            "pericia": "Intuição / Empatia",
+            "ct_dt": 6,
+            "informacao_revelada": "Lendo a linguagem corporal de Elias, o jogador percebe que ele não está a tremer de tristeza pela morte da patroa. Ele está a tremer de um pavor absoluto e irracional. Ele olha repetidamente para o beco."
+          },
+          {
+            "pericia": "Diplomacia (DT 7) ou Intimidação (DT 8)",
+            "ct_dt": 7,
+            "informacao_revelada": "Se passarem, ele desmorona e conta a verdade: que viu Sara a falar com o gato preto no beco, que o animal respondeu com uma voz humana, e que Sara foi para casa (Casa Auguil) como se aquilo fosse perfeitamente normal."
+          },
+          {
+            "pericia": "Percepção",
+            "ct_dt": 6,
+            "informacao_revelada": "Durante a conversa, o jogador nota que há um porta-chaves pesado no bolso do avental de Elias que não pertence às chaves do café. É o molho de chaves da Casa Auguil que Sara deixou para trás."
+          }
+        ],
+        "notas_mestre": "Este é o PDI social da área. O objetivo aqui é arrancar a confissão do Elias e obter as chaves da casa de Sara. Se os jogadores falharem nos testes de diálogo, Elias pode entrar em pânico, atirar as chaves para o chão e fugir a correr pela rua fora."
+      },
+      {
+        "cabecalho": {
+          "nome": "Os Caixotes do Lixo no Beco",
+          "descricao_publica": "O beco estreito ao lado do café, para onde Elias não parava de olhar. É escuro, cheira a restos de comida e humidade. Há dois grandes contentores de lixo de plástico encostados a uma parede de tijolo. Foi aqui que a entidade fez o primeiro contacto."
+        },
+        "testes": [
+          {
+            "pericia": "Investigação",
+            "ct_dt": 6,
+            "informacao_revelada": "Atrás dos caixotes do lixo, os jogadores encontram várias pontas de cigarros manchadas de batom (provando que Sara passava horas ali escondida) e o cadáver seco de um grande gato preto."
+          },
+          {
+            "pericia": "Medicina / Alquimia",
+            "ct_dt": 7,
+            "informacao_revelada": "Examinando o gato morto. Ele não tem ferimentos externos visíveis nem foi envenenado por raticida. O interior da boca e os olhos do animal estão preenchidos por um resíduo de lodo negro e seco. Ele foi consumido de dentro para fora no momento em que a entidade abandonou este corpo e seguiu Sara para casa."
+          },
+          {
+            "pericia": "Ocultismo / Cosmos",
+            "ct_dt": 8,
+            "informacao_revelada": "O jogador sente que o ar neste beco é uns graus mais frio do que na rua. A entidade deixou uma 'cicatriz' no ambiente ao manifestar-se fisicamente no nosso mundo através do animal."
+          }
+        ],
+        "notas_mestre": "Explorar o beco serve para validar a história maluca do Elias. Quando os jogadores encontram o gato morto com lodo negro, eles percebem que o barista não estava a alucinar e que o perigo sobrenatural é real. Isso aumenta a tensão para a invasão da Casa Auguil."
+      },
+      {
+        "cabecalho": {
+          "nome": "O Envelope no Balcão do Caixa",
+          "descricao_publica": "Se os jogadores espreitarem pelo vidro da porta (ou se pedirem a Elias para abrir a porta por um segundo), podem ver o balcão do caixa lá dentro. Perto da máquina registadora, há um envelope grosso rasgado."
+        },
+        "testes": [
+          {
+            "pericia": "Percepção",
+            "ct_dt": 6,
+            "informacao_revelada": "O envelope tem o logótipo da 'Clínica Médica Renovare'."
+          },
+          {
+            "pericia": "Ladinagem / Crime",
+            "ct_dt": 7,
+            "informacao_revelada": "Caso o Elias tenha fugido a correr sem lhes abrir a porta, um jogador pode tentar forçar a fechadura da porta de vidro para entrar rapidamente e pegar o envelope."
+          },
+          {
+            "pericia": "Investigação (ao abrir o envelope)",
+            "ct_dt": 6,
+            "informacao_revelada": "Dentro do envelope estão os resultados dos exames de sangue e os laudos médicos finais de Sara, que a clínica enviou diretamente para o local de trabalho dela (já que ela se recusava a abrir a porta de casa aos médicos). Os papéis confirmam que ela tinha apenas poucas semanas de vida restantes e que a dor era incapacitante."
+          }
+        ],
+        "notas_mestre": "Esta pista reforça o motivo do desespero de Sara. O diagnóstico terminal enviado para o café foi o 'empurrão' final que quebrou o seu espírito no dia do desaparecimento, deixando-a vulnerável para ser abordada pelo gato no beco logo de seguida."
+      }
+    ],
+    "conexoes_saida": [
+      {
+        "area_id": "casa-auguil",
+        "nome": "Casa Auguil",
+        "gancho": "A casa para onde Sara foi depois de falar com o gato negro."
+      }
+    ]
+
   }
 };
   // ============================================================

@@ -3125,12 +3125,19 @@ const MesaAreaManager = {
           roadD: 'M 500 320 C 540 320, 620 320, 720 320',
           roadTwinD: 'M 500 328 C 540 328, 620 328, 720 328'
         },
-        'casa-auguil': {
+                'casa-auguil': {
           xPct: 50, yPct: 20,
           color: '#8b5cf6',
           glow: 'rgba(139, 92, 246, 0.75)',
           roadD: 'M 500 160 C 500 200, 500 260, 500 320',
           roadTwinD: 'M 508 160 C 508 200, 508 260, 508 320'
+        },
+        'cafe-da-nevoa': {
+          xPct: 24, yPct: 80,
+          color: '#f59e0b',
+          glow: 'rgba(245, 158, 11, 0.75)',
+          roadD: 'M 280 512 C 380 512, 450 400, 500 320',
+          roadTwinD: 'M 280 520 C 380 520, 450 408, 508 320'
         }
     };
 
@@ -3279,7 +3286,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.2.0`;
+      badge.textContent = `v1.2.1`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -3656,10 +3663,10 @@ const MesaAreaManager = {
               <span class="pdis-toolbar-subtitle">Clique em qualquer ponto abaixo para inspecionar testes, DTs e segredos.</span>
             </div>
                           <div class="pdis-toolbar-actions">
-                ${area.id === 'casa-auguil' ? `
-                <button type="button" class="pdi-tool-btn" style="color: var(--accent-red); border-color: rgba(255,17,51,0.4);" onclick="MesaAreaManager.openInteriorDrawer()">
+                ${area.texto_narrativo ? `
+                <button type="button" class="pdi-tool-btn" style="color: var(--accent-red); border-color: rgba(255,17,51,0.4);" onclick="MesaAreaManager.openInteriorDrawer('${area.id}')">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                  Interior da Casa
+                  ${area.titulo_narrativo || 'Texto Narrativo'}
                 </button>
                 ` : ''}
                 <button type="button" class="pdi-tool-btn" onclick="MesaAreaManager.expandAllPdis()">
@@ -3689,7 +3696,34 @@ const MesaAreaManager = {
     if (modal) modal.classList.add('active');
   },
 
-    openInteriorDrawer() {
+      openInteriorDrawer(areaId) {
+    const area = (window.CAMPAIGN_AREAS && window.CAMPAIGN_AREAS[areaId]) || MESA_AREAS[areaId];
+    if (area && area.texto_narrativo) {
+        const titleEl = document.getElementById('interior-drawer-title');
+        if(titleEl) titleEl.textContent = area.titulo_narrativo || 'Texto Narrativo';
+        
+        const paras = area.texto_narrativo.split('\n').filter(p => p.trim());
+        const formatted = paras.map(p => `<p><em>${p.trim()}</em></p>`).join('');
+        
+        const contentHtml = `
+          <div style="font-family: var(--font-body, 'Merriweather', serif); font-size: 0.95rem; line-height: 1.6; color: var(--ink-text-dim);">
+            ${formatted}
+            
+            <div style="margin-top: 24px; display: flex; gap: 10px; flex-direction: column;">
+              <button type="button" class="mesa-btn-primary" onclick="MesaChat.sendMessage(document.getElementById('narrative-text-raw').innerText); MesaAreaManager.closeInteriorDrawer(); if(!MesaChat.isOpen) MesaChat.toggleChat();" style="width: 100%; justify-content: center;">
+                <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path></svg>
+                Enviar para o Chat da Mesa
+              </button>
+              <button type="button" class="mesa-btn-secondary" onclick="navigator.clipboard.writeText(document.getElementById('narrative-text-raw').innerText); alert('Texto copiado para a área de transferência!');" style="width: 100%; justify-content: center;">
+                <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                Copiar Texto
+              </button>
+            </div>
+            <div id="narrative-text-raw" style="display: none;">${area.texto_narrativo.replace(/"/g, '&quot;')}</div>
+          </div>
+        `;
+        document.getElementById('interior-drawer-content').innerHTML = contentHtml;
+    }
     document.body.classList.add('interior-drawer-open');
   },
   closeInteriorDrawer() {
