@@ -1795,7 +1795,7 @@ const MesaApp = {
       <div class="ficha-portrait-col">
         ${player.imagem ? `
           <div class="ficha-char-portrait-box glitch-portrait-box">
-              ${editable ? `<button type="button" class="ficha-edit-image-btn" onclick="MesaApp.promptEditImage(${player.slot})" title="Mudar Imagem" style="position:absolute; top:8px; right:8px; z-index:10; background:rgba(0,0,0,0.7); color:#fff; border:1px solid #333; padding:4px 8px; cursor:pointer; font-size:12px; border-radius:4px;">✏️ Alterar</button>` : ''}
+              ${editable ? `<button type="button" class="ficha-edit-image-btn" onclick="MesaApp.triggerImageUpload(${player.slot})" title="Mudar Imagem" style="position:absolute; top:8px; right:8px; z-index:10; background:rgba(0,0,0,0.7); color:#fff; border:1px solid #333; padding:4px 8px; cursor:pointer; font-size:12px; border-radius:4px;">+ Alterar</button>` : ''}
             <canvas id="portrait-glitch-canvas" class="portrait-glitch-canvas"></canvas>
             <img src="${player.imagem}" alt="${player.nome}" class="ficha-char-portrait-img glitch-img-base" />
             <img src="${player.imagem}" alt="" class="ficha-char-portrait-img glitch-img-layer glitch-layer-1" aria-hidden="true" />
@@ -1803,7 +1803,7 @@ const MesaApp = {
           </div>
         ` : `
           <div class="cube-placeholder-box" style="position:relative;">
-              ${editable ? `<button type="button" class="ficha-edit-image-btn" onclick="MesaApp.promptEditImage(${player.slot})" title="Mudar Imagem" style="position:absolute; top:8px; right:8px; z-index:10; background:rgba(0,0,0,0.7); color:#fff; border:1px solid #333; padding:4px 8px; cursor:pointer; font-size:12px; border-radius:4px;">✏️ Adicionar Imagem</button>` : ''}
+              ${editable ? `<button type="button" class="ficha-edit-image-btn" onclick="MesaApp.triggerImageUpload(${player.slot})" title="Mudar Imagem" style="position:absolute; top:8px; right:8px; z-index:10; background:rgba(0,0,0,0.7); color:#fff; border:1px solid #333; padding:4px 8px; cursor:pointer; font-size:12px; border-radius:4px;">+ Adicionar Imagem</button>` : ''}
             <svg viewBox="0 0 100 100" class="cube-svg">
               <polygon points="50,12 88,34 50,56 12,34" fill="rgba(255,85,0,0.12)" stroke="#ff5500" stroke-width="2.2" />
               <polygon points="12,34 50,56 50,92 12,70" fill="rgba(255,85,0,0.06)" stroke="#ff5500" stroke-width="2.2" />
@@ -3332,7 +3332,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.4.0`;
+      badge.textContent = `v1.4.1`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -4952,3 +4952,45 @@ const MesaAbertura = {
   }
 };
 window.MesaAbertura = MesaAbertura;
+
+
+// Injetado por fora
+MesaApp.triggerImageUpload = function(slot) {
+    if (!this.state.isMaster) return;
+    const p = this.state.players.find(x => x && x.slot === slot);
+    if (!p) return;
+    
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64 = event.target.result;
+        p.imagem = base64;
+        if (!p.atributos) p.atributos = {};
+        p.atributos.imagem = base64;
+        
+        if (this.supabase && p.id) {
+          this.supabase.from('personagens').update({ atributos: p.atributos }).eq('slot', slot).then(() => {
+            if (this.broadcastPlayerUpdate) this.broadcastPlayerUpdate(p);
+            this.openFicha(p);
+          });
+        } else {
+          const localPlayers = JSON.parse(localStorage.getItem('mesa_players') || '[]');
+          const idx = localPlayers.findIndex(x => x && x.slot === slot);
+          if (idx !== -1) {
+             localPlayers[idx] = p;
+             localStorage.setItem('mesa_players', JSON.stringify(localPlayers));
+          }
+          if (this.broadcastPlayerUpdate) this.broadcastPlayerUpdate(p);
+          this.openFicha(p);
+        }
+      };
+      reader.readAsDataURL(file);
+    };
+    input.click();
+};
