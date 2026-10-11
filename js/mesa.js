@@ -1461,6 +1461,44 @@ const MesaApp = {
         };
       }
       
+      // Sincroniza estados do sistema gravados no slot 1 (área, coletáveis, notebook e abertura)
+      if (data && data[0] && data[0].atributos) {
+        try {
+          const p1Attrs = typeof data[0].atributos === 'string' ? JSON.parse(data[0].atributos) : data[0].atributos;
+          if (p1Attrs) {
+            if (Array.isArray(p1Attrs._sys_coletaveis) && p1Attrs._sys_coletaveis.length > 0 && window.MesaColetaveis) {
+              const remoteStr = JSON.stringify(p1Attrs._sys_coletaveis);
+              if (remoteStr !== JSON.stringify(MesaColetaveis.items)) {
+                MesaColetaveis.items = p1Attrs._sys_coletaveis;
+                localStorage.setItem('wu_coletaveis_v2', remoteStr);
+                if (typeof MesaColetaveis.render === 'function') MesaColetaveis.render();
+              }
+            }
+            if (p1Attrs._sys_notebook && window.MesaNotebookSara) {
+              const nb = p1Attrs._sys_notebook;
+              if (nb.active && !MesaNotebookSara.isActive) {
+                if (nb.camImages) MesaNotebookSara.camImages = nb.camImages;
+                MesaNotebookSara.activeCam = nb.activeCam || 1;
+                MesaNotebookSara.triggerStart(nb.sessionStartTime);
+                if (nb.stage === 'cctv') MesaNotebookSara.showCctvStage(nb.activeCam || 1);
+              } else if (!nb.active && MesaNotebookSara.isActive) {
+                MesaNotebookSara.triggerStop();
+              }
+            }
+            if (p1Attrs._sys_abertura && window.MesaAbertura) {
+              const ab = p1Attrs._sys_abertura;
+              const ov = document.getElementById('abertura-overlay');
+              const isActive = ov && ov.classList.contains('active');
+              if (ab.active && !isActive && (Date.now() - (ab.timestamp || 0) < 35000)) {
+                MesaAbertura.triggerAbertura();
+              } else if (!ab.active && isActive) {
+                MesaAbertura.triggerStop();
+              }
+            }
+          }
+        } catch(eSync) {}
+      }
+
       this.renderMesa();
 
       // Se a ficha de alguém estiver aberta, atualiza SOMENTE os valores sem re-animar
@@ -1482,7 +1520,7 @@ const MesaApp = {
   startAreaSyncPolling() {
     if (this._areaSyncTimer) clearInterval(this._areaSyncTimer);
     this._areaSyncTimer = setInterval(async () => {
-      if (!this.supabase || !window.MesaAreaManager) return;
+      if (!this.supabase) return;
       try {
         const { data } = await this.supabase
           .from('personagens')
@@ -1491,10 +1529,75 @@ const MesaApp = {
           .single();
         if (data && data.atributos) {
           const attrs = typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos;
+
+          // 1. Sincronização de Área
           const targetArea = (attrs && attrs._sys_area) ? attrs._sys_area : 'none';
-          if (targetArea !== MesaAreaManager.currentAreaId) {
-            console.log("[HEARTBEAT UNIVERSAL 1s] Sincronizando com a área do Mestre:", targetArea);
+          if (window.MesaAreaManager && targetArea !== MesaAreaManager.currentAreaId) {
+            console.log("[HEARTBEAT 1s] Sincronizando com a área do Mestre:", targetArea);
             MesaAreaManager.applyArea(targetArea, false);
+          }
+
+          // 2. Sincronização de Coletáveis (liberações/edições do Mestre)
+          if (attrs && Array.isArray(attrs._sys_coletaveis) && window.MesaColetaveis) {
+            const remoteStr = JSON.stringify(attrs._sys_coletaveis);
+            const localStr = JSON.stringify(MesaColetaveis.items);
+            if (remoteStr !== localStr) {
+              MesaColetaveis.items = attrs._sys_coletaveis;
+              localStorage.setItem('wu_coletaveis_v2', remoteStr);
+              MesaColetaveis.render();
+            }
+          }
+
+          // 3. Sincronização do Notebook da Sara (Transmissão em tempo real)
+          if (attrs && attrs._sys_notebook && window.MesaNotebookSara) {
+            const nb = attrs._sys_notebook;
+            if (nb.active) {
+              if (!MesaNotebookSara.isActive) {
+                if (nb.camImages) MesaNotebookSara.camImages = nb.camImages;
+                MesaNotebookSara.activeCam = nb.activeCam || 1;
+                MesaNotebookSara.triggerStart(nb.sessionStartTime);
+              }
+              if (nb.stage && nb.stage !== MesaNotebookSara.stage) {
+                if (nb.stage === 'cctv') {
+                  const lockStage = document.getElementById('notebook-lock-stage');
+                  const cctvStage = document.getElementById('notebook-cctv-stage');
+                  if (lockStage) lockStage.style.display = 'none';
+                  if (cctvStage) cctvStage.style.display = 'flex';
+                  MesaNotebookSara.stage = 'cctv';
+                  MesaNotebookSara.switchCamera(nb.activeCam || 1, false);
+                } else if (nb.stage === 'lock') {
+                  MesaNotebookSara.showLockScreen();
+                }
+              }
+              if (nb.activeCam && MesaNotebookSara.stage === 'cctv' && MesaNotebookSara.activeCam !== nb.activeCam) {
+                MesaNotebookSara.switchCamera(nb.activeCam, false);
+              }
+              if (nb.signalLost !== undefined && nb.signalLost !== MesaNotebookSara.signalLost) {
+                if (nb.signalLost) {
+                  MesaNotebookSara.signalLost = true;
+                  const lostEl = document.getElementById('cctv-signal-lost');
+                  if (lostEl) lostEl.style.display = 'flex';
+                } else {
+                  MesaNotebookSara.restoreSignal();
+                }
+              }
+            } else if (!nb.active && MesaNotebookSara.isActive) {
+              MesaNotebookSara.triggerStop();
+            }
+          }
+
+          // 4. Sincronização de Abertura
+          if (attrs && attrs._sys_abertura && window.MesaAbertura) {
+            const ab = attrs._sys_abertura;
+            const ov = document.getElementById('abertura-overlay');
+            const isActive = ov && ov.classList.contains('active');
+            if (ab.active && !isActive) {
+              if (Date.now() - (ab.timestamp || 0) < 40000) {
+                MesaAbertura.triggerAbertura();
+              }
+            } else if (!ab.active && isActive) {
+              MesaAbertura.triggerStop();
+            }
           }
         }
       } catch(e) {}
@@ -1504,30 +1607,124 @@ const MesaApp = {
   subscribeToRealtime() {
     if (!this.supabase) return;
 
-    this.supabase
-      .channel('mesa_realtime_channel')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'personagens' }, (payload) => {
-        console.log("Atualização da mesa recebida:", payload);
-        this.fetchPlayers();
-      })
-      .on('broadcast', { event: 'coletaveis_sync' }, (payload) => {
-          const data = payload.payload;
-          if (data && Array.isArray(data.items) && window.MesaColetaveis) {
-            MesaColetaveis.items = data.items;
-            localStorage.setItem('wu_coletaveis_v2', JSON.stringify(data.items));
-            MesaColetaveis.render();
-            MesaColetaveis.renderFicha();
-          }
-        })
-        .on('broadcast', { event: 'area_changed' }, (payload) => {
-        const data = payload.payload;
-        if (data && data.areaId && window.MesaAreaManager && MesaAreaManager.currentAreaId !== data.areaId) {
-          console.log("[BROADCAST REALTIME] Área mudou:", data.areaId);
-          MesaAreaManager.applyArea(data.areaId, false);
-          MesaApp.closeModal('area-map-modal');
+    if (this.channel) {
+      try { this.supabase.removeChannel(this.channel); } catch(e) {}
+    }
+
+    const channel = this.supabase.channel('mesa_main_channel', {
+      config: {
+        broadcast: { ack: false }
+      }
+    });
+
+    this.channel = channel;
+    if (window.MesaChat) MesaChat.channel = channel;
+
+    // 1. Postgres changes para sincronizar dados dos personagens e estados
+    channel.on('postgres_changes', { event: '*', schema: 'public', table: 'personagens' }, (payload) => {
+      console.log("Atualização da mesa recebida via Postgres CDC:", payload);
+      this.fetchPlayers();
+    });
+
+    // 2. Sincronização de Coletáveis
+    channel.on('broadcast', { event: 'coletaveis_sync' }, (payload) => {
+      const data = payload.payload;
+      if (data && Array.isArray(data.items) && window.MesaColetaveis) {
+        MesaColetaveis.items = data.items;
+        localStorage.setItem('wu_coletaveis_v2', JSON.stringify(data.items));
+        MesaColetaveis.render();
+      }
+    });
+
+    // 3. Sincronização de Área
+    channel.on('broadcast', { event: 'area_changed' }, (payload) => {
+      const data = payload.payload;
+      if (data && data.areaId && window.MesaAreaManager && MesaAreaManager.currentAreaId !== data.areaId) {
+        MesaAreaManager.applyArea(data.areaId, false);
+        MesaApp.closeModal('area-map-modal');
+      }
+    });
+
+    // 4. Abertura da Mesa
+    channel.on('broadcast', { event: 'play_abertura' }, () => {
+      if (window.MesaAbertura) MesaAbertura.triggerAbertura();
+    });
+    channel.on('broadcast', { event: 'stop_abertura' }, () => {
+      if (window.MesaAbertura) MesaAbertura.triggerStop();
+    });
+
+    // 5. Notebook da Sara (Dispositivos da Campanha)
+    channel.on('broadcast', { event: 'notebook_start' }, (payload) => {
+      if (window.MesaNotebookSara) {
+        if (payload.payload && payload.payload.camImages) {
+          MesaNotebookSara.camImages = payload.payload.camImages;
         }
-      })
-      .subscribe();
+        if (payload.payload && payload.payload.activeCam) {
+          MesaNotebookSara.activeCam = payload.payload.activeCam;
+        }
+        MesaNotebookSara.triggerStart(payload.payload && payload.payload.sessionStartTime);
+      }
+    });
+
+    channel.on('broadcast', { event: 'notebook_stop' }, () => {
+      if (window.MesaNotebookSara) {
+        MesaNotebookSara.triggerStop();
+      }
+    });
+
+    channel.on('broadcast', { event: 'notebook_sync' }, (payload) => {
+      if (window.MesaNotebookSara && payload.payload) {
+        MesaNotebookSara.handleIncomingSync(payload.payload);
+      }
+    });
+
+    // 6. Mensagens de Chat e Reações
+    channel.on('broadcast', { event: 'chat_msg' }, (payload) => {
+      if (window.MesaChat) MesaChat.receiveMessage(payload.payload);
+    });
+
+    channel.on('broadcast', { event: 'chat_message' }, (payload) => {
+      if (window.MesaChat && payload.payload) {
+        MesaChat.receiveMessage({
+          id: payload.payload.id || 'msg_' + Date.now(),
+          sender_name: payload.payload.sender || 'Sistema',
+          is_master: payload.payload.role === 'mestre',
+          content: payload.payload.text,
+          created_at: new Date().toISOString()
+        });
+      }
+    });
+
+    channel.on('broadcast', { event: 'player_reaction' }, (payload) => {
+      const data = payload.payload;
+      if (data && data.slot && window.MesaReactions) {
+        MesaReactions.showBubble(data.slot, data.faceKey || data.emoji);
+      }
+    });
+
+    channel.on('broadcast', { event: 'dice_roll' }, (payload) => {
+      const data = payload.payload;
+      if (data && window.MesaDice) {
+        MesaDice.playRollAnimation(data);
+      }
+    });
+
+    channel.on('broadcast', { event: 'vitals_sync' }, (payload) => {
+      const data = payload.payload;
+      if (data && data.slot) {
+        MesaApp.handleIncomingVitals(data);
+      }
+    });
+
+    channel.on('broadcast', { event: 'media_sync' }, (payload) => {
+      if (window.MesaMediaPlayer && (!MesaApp.state || !MesaApp.state.isMaster)) {
+        MesaMediaPlayer.handleIncomingSync(payload.payload);
+      }
+    });
+
+    channel.subscribe((status, err) => {
+      console.log("[MESA REALTIME UNIFICADO] Status da conexão:", status, err || '');
+    });
   },
 
   renderMesa() {
@@ -2144,106 +2341,7 @@ const MesaChat = {
 
   subscribeToChat() {
     if (!MesaApp.supabase) return;
-
-    this.channel = MesaApp.supabase.channel('mesa_chat_room', {
-      config: {
-        broadcast: { ack: false }
-      }
-    });
-
-    // 1. WebSocket Broadcast ultra-rápido (< 50ms)
-    this.channel.on('broadcast', { event: 'chat_msg' }, (payload) => {
-      this.receiveMessage(payload.payload);
-    });
-
-    // 2. WebSocket Broadcast de Reações de Emoji (Balão Comic nos Cards)
-    this.channel.on('broadcast', { event: 'player_reaction' }, (payload) => {
-      const data = payload.payload;
-      if (data && data.slot) {
-        MesaReactions.showBubble(data.slot, data.faceKey || data.emoji);
-      }
-    });
-
-    // 3. WebSocket Broadcast de Rolagem de Dados no Palco Central
-    this.channel.on('broadcast', { event: 'dice_roll' }, (payload) => {
-      const data = payload.payload;
-      if (data) {
-        MesaDice.playRollAnimation(data);
-      }
-    });
-
-    // 4. WebSocket Broadcast de Vitals em Tempo Real (PV, PE, Estresse instantâneo < 30ms)
-    this.channel.on('broadcast', { event: 'vitals_sync' }, (payload) => {
-      const data = payload.payload;
-      if (data && data.slot) {
-        MesaApp.handleIncomingVitals(data);
-      }
-    });
-
-    // 6. WebSocket Broadcast de Sincronizacao de Midia (MesaMediaPlayer)
-    this.channel.on('broadcast', { event: 'media_sync' }, (payload) => {
-      if (window.MesaMediaPlayer && (!MesaApp.state || !MesaApp.state.isMaster)) {
-        MesaMediaPlayer.handleIncomingSync(payload.payload);
-      }
-    });
-
-    // 5. WebSocket Broadcast de Mudança de Área / Mapa em Tempo Real
-    this.channel.on('broadcast', { event: 'area_changed' }, (payload) => {
-      const data = payload.payload;
-      if (data && data.areaId && window.MesaAreaManager && MesaAreaManager.currentAreaId !== data.areaId) {
-        MesaAreaManager.applyArea(data.areaId, false);
-        MesaApp.closeModal('area-map-modal');
-      }
-    });
-
-    // 7. WebSocket Broadcast de Abertura da Mesa
-    this.channel.on('broadcast', { event: 'play_abertura' }, () => {
-      if (window.MesaAbertura) MesaAbertura.triggerAbertura();
-    });
-    this.channel.on('broadcast', { event: 'stop_abertura' }, () => {
-      if (window.MesaAbertura) MesaAbertura.triggerStop();
-    });
-
-    // 8. WebSocket Broadcast do Notebook da Sara (Dispositivos da Campanha)
-    this.channel.on('broadcast', { event: 'notebook_start' }, (payload) => {
-      if (window.MesaNotebookSara) {
-        if (payload.payload && payload.payload.camImages) {
-          MesaNotebookSara.camImages = payload.payload.camImages;
-        }
-        MesaNotebookSara.triggerStart(payload.payload && payload.payload.sessionStartTime);
-      }
-    });
-
-    this.channel.on('broadcast', { event: 'notebook_stop' }, () => {
-      if (window.MesaNotebookSara) {
-        MesaNotebookSara.triggerStop();
-      }
-    });
-
-    this.channel.on('broadcast', { event: 'notebook_sync' }, (payload) => {
-      if (window.MesaNotebookSara && payload.payload) {
-        MesaNotebookSara.handleIncomingSync(payload.payload);
-      }
-    });
-
-
-
-
-
-    // 6. Postgres Changes para novas mensagens gravadas
-    this.channel.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mensagens_chat' }, (payload) => {
-      const msg = payload.new;
-      this.receiveMessage({
-        id: msg.id,
-        sender_name: msg.sender_name,
-        is_master: msg.is_master,
-        content: msg.content,
-        created_at: msg.created_at,
-        token: msg.sender_token
-      });
-    });
-
-    this.channel.subscribe();
+    this.channel = MesaApp.channel;
   },
 
   async fetchMessages() {
@@ -4080,6 +4178,10 @@ const MesaMobileMenu = {
     if (mobileMediaBtn) {
       mobileMediaBtn.style.display = isMaster ? 'flex' : 'none';
     }
+    const mobileDispBtn = document.getElementById('mobile-dispositivos-item');
+    if (mobileDispBtn) {
+      mobileDispBtn.style.display = isMaster ? 'flex' : 'none';
+    }
 
     if (tokenLabel) {
       const authInfo = MesaApp.getAuthInfo();
@@ -4157,6 +4259,20 @@ const MesaColetaveis = {
 
   init() {
     const canonical = window.CAMPAIGN_COLETAVEIS || window.MESA_COLETAVEIS || [];
+
+    // Prioridade 1: Sincronização oficial remota do Supabase
+    if (MesaApp && MesaApp.state && MesaApp.state.players && MesaApp.state.players[0] && MesaApp.state.players[0].atributos) {
+      try {
+        const raw = MesaApp.state.players[0].atributos;
+        const attrs = typeof raw === 'string' ? JSON.parse(raw) : raw;
+        if (attrs && Array.isArray(attrs._sys_coletaveis) && attrs._sys_coletaveis.length > 0) {
+          this.items = attrs._sys_coletaveis;
+          localStorage.setItem('wu_coletaveis_v2', JSON.stringify(this.items));
+          return;
+        }
+      } catch(e) {}
+    }
+
     const saved = localStorage.getItem('wu_coletaveis_v2');
     if (saved) {
       try {
@@ -4420,12 +4536,38 @@ const MesaColetaveis = {
 
   saveAndSync() {
     localStorage.setItem('wu_coletaveis_v2', JSON.stringify(this.items));
-    if (MesaChat && MesaChat.channel) {
-      MesaChat.channel.send({
-        type: 'broadcast',
-        event: 'coletaveis_sync',
-        payload: { items: this.items }
-      });
+    const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'coletaveis_sync',
+          payload: { items: this.items }
+        });
+      } catch(e) {}
+    }
+
+    // Persistência universal no banco de dados para garantir sincronização para todos
+    if (MesaApp && MesaApp.supabase && MesaApp.state && MesaApp.state.isMaster) {
+      (async () => {
+        try {
+          const { data } = await MesaApp.supabase
+            .from('personagens')
+            .select('atributos')
+            .eq('id', 1)
+            .single();
+          const attrs = data && data.atributos 
+            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos) 
+            : {};
+          attrs._sys_coletaveis = this.items;
+          await MesaApp.supabase
+            .from('personagens')
+            .update({ atributos: attrs })
+            .eq('id', 1);
+        } catch(err) {
+          console.error("Erro ao persistir coletáveis no Supabase:", err);
+        }
+      })();
     }
   },
 
@@ -5461,30 +5603,78 @@ window.MesaMediaPlayer = MesaMediaPlayer;
 // --- MESA ABERTURA ---
 const MesaAbertura = {
   play() {
-    if (!MesaApp.state.isMaster) return;
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
     
-    // Broadcast to all players
-    if (MesaChat.channel) {
-      MesaChat.channel.send({
-        type: 'broadcast',
-        event: 'play_abertura',
-        payload: {}
-      });
+    // 1. Broadcast para todos os jogadores
+    const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'play_abertura',
+          payload: {}
+        });
+      } catch(e) {}
+    }
+
+    // 2. Persistência no banco Supabase
+    if (MesaApp.supabase) {
+      (async () => {
+        try {
+          const { data } = await MesaApp.supabase
+            .from('personagens')
+            .select('atributos')
+            .eq('id', 1)
+            .single();
+          const attrs = data && data.atributos 
+            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos) 
+            : {};
+          attrs._sys_abertura = { active: true, timestamp: Date.now() };
+          await MesaApp.supabase
+            .from('personagens')
+            .update({ atributos: attrs })
+            .eq('id', 1);
+        } catch(e) {}
+      })();
     }
     
-    // Play for Master as well
+    // Toca para o Mestre
     this.triggerAbertura();
   },
 
   stop() {
-    if (!MesaApp.state.isMaster) return;
-    if (MesaChat.channel) {
-      MesaChat.channel.send({
-        type: 'broadcast',
-        event: 'stop_abertura',
-        payload: {}
-      });
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'stop_abertura',
+          payload: {}
+        });
+      } catch(e) {}
     }
+
+    if (MesaApp.supabase) {
+      (async () => {
+        try {
+          const { data } = await MesaApp.supabase
+            .from('personagens')
+            .select('atributos')
+            .eq('id', 1)
+            .single();
+          const attrs = data && data.atributos 
+            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos) 
+            : {};
+          attrs._sys_abertura = { active: false, timestamp: Date.now() };
+          await MesaApp.supabase
+            .from('personagens')
+            .update({ atributos: attrs })
+            .eq('id', 1);
+        } catch(e) {}
+      })();
+    }
+
     this.triggerStop();
   },
 
@@ -5505,24 +5695,24 @@ const MesaAbertura = {
     const video = document.getElementById('abertura-video');
     
     if (overlay && video) {
-      // Force reload to ensure it plays from beginning
       video.currentTime = 0;
       overlay.classList.add('active');
       
-      // Attempt to play
-      video.play().catch(e => {
-        console.warn("Abertura video play blocked by browser. Muting...", e);
-        video.muted = true;
-        video.play();
-      });
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(e => {
+          console.warn("Autoplay bloqueado pelo navegador. Tentando com mudo...", e);
+          video.muted = true;
+          video.play().catch(err2 => console.error("Abertura video bloqueado:", err2));
+        });
+      }
 
-      // When ended, fade out
       video.onended = () => {
         overlay.classList.remove('active');
         setTimeout(() => {
           video.pause();
           video.currentTime = 0;
-        }, 1500); // wait for fade transition
+        }, 1500);
       };
     }
   }
@@ -5576,6 +5766,39 @@ const MesaNotebookSara = {
   staticAnimId: null,
   clockInterval: null,
 
+  getChannel() {
+    return (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel) || null;
+  },
+
+  async saveNotebookStateToSupabase() {
+    if (!window.MesaApp || !MesaApp.supabase || !MesaApp.state || !MesaApp.state.isMaster) return;
+    try {
+      const { data } = await MesaApp.supabase
+        .from('personagens')
+        .select('atributos')
+        .eq('id', 1)
+        .single();
+      const attrs = data && data.atributos 
+        ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos) 
+        : {};
+      attrs._sys_notebook = {
+        active: !!this.isActive,
+        stage: this.stage || 'boot',
+        activeCam: this.activeCam || 1,
+        signalLost: !!this.signalLost,
+        sessionStartTime: this.sessionStartTime || Date.now(),
+        camImages: this.camImages || {},
+        updatedAt: Date.now()
+      };
+      await MesaApp.supabase
+        .from('personagens')
+        .update({ atributos: attrs })
+        .eq('id', 1);
+    } catch(e) {
+      console.warn("Erro ao persistir notebook no Supabase:", e);
+    }
+  },
+
   play() {
     if (!MesaApp.state || !MesaApp.state.isMaster) return;
     this.isActive = true;
@@ -5584,31 +5807,40 @@ const MesaNotebookSara = {
     this.isGlitching = false;
     this.sessionStartTime = Date.now();
 
-    // Broadcast to players
-    if (MesaChat && MesaChat.channel) {
-      MesaChat.channel.send({
-        type: 'broadcast',
-        event: 'notebook_start',
-        payload: {
-          activeCam: this.activeCam,
-          camImages: this.camImages,
-          sessionStartTime: this.sessionStartTime
-        }
-      });
+    // Broadcast para todos os jogadores
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'notebook_start',
+          payload: {
+            activeCam: this.activeCam,
+            camImages: this.camImages,
+            sessionStartTime: this.sessionStartTime
+          }
+        });
+      } catch(e) {}
     }
 
+    this.saveNotebookStateToSupabase();
     this.triggerStart(this.sessionStartTime);
   },
 
   stop() {
     if (!MesaApp.state || !MesaApp.state.isMaster) return;
-    if (MesaChat && MesaChat.channel) {
-      MesaChat.channel.send({
-        type: 'broadcast',
-        event: 'notebook_stop',
-        payload: {}
-      });
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'notebook_stop',
+          payload: {}
+        });
+      } catch(e) {}
     }
+    this.isActive = false;
+    this.saveNotebookStateToSupabase();
     this.triggerStop();
   },
 
@@ -5621,6 +5853,9 @@ const MesaNotebookSara = {
     this.signalLost = false;
     this.isGlitching = false;
     this.sessionStartTime = sessionStartTime || this.sessionStartTime || Date.now();
+
+    const isMaster = !!(MesaApp.state && MesaApp.state.isMaster);
+    overlay.classList.toggle('viewer-only', !isMaster);
 
     // Atualiza status no drawer do Mestre
     const badge = document.getElementById('notebook-status-badge');
@@ -5656,6 +5891,7 @@ const MesaNotebookSara = {
     const overlay = document.getElementById('notebook-sara-overlay');
     if (overlay) {
       overlay.classList.remove('active');
+      overlay.classList.remove('viewer-only');
     }
 
     this.stopStaticNoise();
@@ -5740,6 +5976,7 @@ const MesaNotebookSara = {
     if (lockStage) lockStage.style.display = 'flex';
     if (cctvStage) cctvStage.style.display = 'none';
 
+    const isMaster = !!(MesaApp.state && MesaApp.state.isMaster);
     const wrapper = document.getElementById('windows-input-wrapper');
     const input = document.getElementById('notebook-password-input');
     const err = document.getElementById('notebook-password-error');
@@ -5749,19 +5986,27 @@ const MesaNotebookSara = {
 
     if (input) {
       input.value = '';
-      if (!input.dataset.boundInput) {
-        input.dataset.boundInput = '1';
-        input.addEventListener('input', () => {
-          if (wrapper) wrapper.classList.remove('has-error', 'shake-error');
-          if (err) err.style.display = 'none';
-        });
+      if (!isMaster) {
+        input.readOnly = true;
+        input.tabIndex = -1;
+      } else {
+        input.readOnly = false;
+        input.removeAttribute('tabindex');
+        if (!input.dataset.boundInput) {
+          input.dataset.boundInput = '1';
+          input.addEventListener('input', () => {
+            if (wrapper) wrapper.classList.remove('has-error', 'shake-error');
+            if (err) err.style.display = 'none';
+          });
+        }
+        setTimeout(() => input.focus(), 100);
       }
-      setTimeout(() => input.focus(), 100);
     }
   },
 
   submitPassword(e) {
     if (e && e.preventDefault) e.preventDefault();
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
     const wrapper = document.getElementById('windows-input-wrapper');
     const err = document.getElementById('notebook-password-error');
     const input = document.getElementById('notebook-password-input');
@@ -5779,43 +6024,59 @@ const MesaNotebookSara = {
     }
   },
 
-  openCameras() {
+  showCctvStage(camNum = 1) {
     this.stage = 'cctv';
+    const bootStage = document.getElementById('notebook-boot-stage');
     const lockStage = document.getElementById('notebook-lock-stage');
     const cctvStage = document.getElementById('notebook-cctv-stage');
+    if (bootStage) bootStage.style.display = 'none';
     if (lockStage) lockStage.style.display = 'none';
     if (cctvStage) cctvStage.style.display = 'flex';
+    this.switchCamera(camNum, false);
+  },
 
-    this.switchCamera(this.activeCam || 1, false);
+  openCameras() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    this.showCctvStage(this.activeCam || 1);
 
-    if (MesaChat && MesaChat.channel) {
-      MesaChat.channel.send({
-        type: 'broadcast',
-        event: 'notebook_sync',
-        payload: {
-          stage: 'cctv',
-          activeCam: this.activeCam,
-          signalLost: this.signalLost
-        }
-      });
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'notebook_sync',
+          payload: {
+            stage: 'cctv',
+            activeCam: this.activeCam,
+            signalLost: this.signalLost
+          }
+        });
+      } catch(e) {}
     }
+    this.saveNotebookStateToSupabase();
   },
 
   returnToLock() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
     this.showLockScreen();
-    if (MesaChat && MesaChat.channel) {
-      MesaChat.channel.send({
-        type: 'broadcast',
-        event: 'notebook_sync',
-        payload: {
-          stage: 'lock'
-        }
-      });
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'notebook_sync',
+          payload: {
+            stage: 'lock'
+          }
+        });
+      } catch(e) {}
     }
+    this.saveNotebookStateToSupabase();
   },
 
   switchCamera(camNum, shouldSync = true) {
-    if (this.signalLost) return;
+    if (shouldSync && (!MesaApp.state || !MesaApp.state.isMaster)) return;
+    if (this.signalLost && shouldSync) return;
     this.activeCam = camNum;
 
     // Atualiza tabs do CFTV
@@ -5849,20 +6110,27 @@ const MesaNotebookSara = {
 
     this.renderCameraFeed();
 
-    if (shouldSync && MesaChat && MesaChat.channel) {
-      MesaChat.channel.send({
-        type: 'broadcast',
-        event: 'notebook_sync',
-        payload: {
-          stage: 'cctv',
-          activeCam: this.activeCam,
-          signalLost: this.signalLost
-        }
-      });
+    if (shouldSync) {
+      const chan = this.getChannel();
+      if (chan) {
+        try {
+          chan.send({
+            type: 'broadcast',
+            event: 'notebook_sync',
+            payload: {
+              stage: 'cctv',
+              activeCam: this.activeCam,
+              signalLost: this.signalLost
+            }
+          });
+        } catch(e) {}
+      }
+      this.saveNotebookStateToSupabase();
     }
   },
 
   setCamera(camNum) {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
     if (!this.isActive) this.play();
     setTimeout(() => {
       this.openCameras();
@@ -5939,33 +6207,42 @@ const MesaNotebookSara = {
   },
 
   setCustomCamImage(camNum, url) {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
     this.camImages[camNum] = url || '';
     if (this.activeCam === camNum) {
       this.renderCameraFeed();
     }
-    if (MesaChat && MesaChat.channel) {
-      MesaChat.channel.send({
-        type: 'broadcast',
-        event: 'notebook_sync',
-        payload: {
-          camImages: this.camImages
-        }
-      });
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'notebook_sync',
+          payload: {
+            camImages: this.camImages
+          }
+        });
+      } catch(e) {}
     }
+    this.saveNotebookStateToSupabase();
   },
 
   triggerGlitch() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
     this.isGlitching = true;
     this.startStaticNoise();
 
-    if (MesaChat && MesaChat.channel) {
-      MesaChat.channel.send({
-        type: 'broadcast',
-        event: 'notebook_sync',
-        payload: {
-          glitch: true
-        }
-      });
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'notebook_sync',
+          payload: {
+            glitch: true
+          }
+        });
+      } catch(e) {}
     }
 
     clearTimeout(this.glitchTimeout);
@@ -5991,19 +6268,24 @@ const MesaNotebookSara = {
         if (btn) btn.classList.add('disabled');
       });
 
-      if (MesaChat && MesaChat.channel) {
-        MesaChat.channel.send({
-          type: 'broadcast',
-          event: 'notebook_sync',
-          payload: {
-            signalLost: true
-          }
-        });
+      const ch = this.getChannel();
+      if (ch) {
+        try {
+          ch.send({
+            type: 'broadcast',
+            event: 'notebook_sync',
+            payload: {
+              signalLost: true
+            }
+          });
+        } catch(e) {}
       }
+      this.saveNotebookStateToSupabase();
     }, 2500);
   },
 
   restoreSignal() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
     this.signalLost = false;
     this.isGlitching = false;
     this.stopStaticNoise();
@@ -6018,16 +6300,20 @@ const MesaNotebookSara = {
 
     this.switchCamera(this.activeCam, false);
 
-    if (MesaChat && MesaChat.channel) {
-      MesaChat.channel.send({
-        type: 'broadcast',
-        event: 'notebook_sync',
-        payload: {
-          signalLost: false,
-          activeCam: this.activeCam
-        }
-      });
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'notebook_sync',
+          payload: {
+            signalLost: false,
+            activeCam: this.activeCam
+          }
+        });
+      } catch(e) {}
     }
+    this.saveNotebookStateToSupabase();
   },
 
   startStaticNoise() {
@@ -6068,6 +6354,7 @@ const MesaNotebookSara = {
   },
 
   handleIncomingSync(data) {
+    if (!data) return;
     if (data.camImages) {
       this.camImages = data.camImages;
       this.renderCameraFeed();
@@ -6075,11 +6362,7 @@ const MesaNotebookSara = {
     if (data.stage === 'lock') {
       this.showLockScreen();
     } else if (data.stage === 'cctv') {
-      const lockStage = document.getElementById('notebook-lock-stage');
-      const cctvStage = document.getElementById('notebook-cctv-stage');
-      if (lockStage) lockStage.style.display = 'none';
-      if (cctvStage) cctvStage.style.display = 'flex';
-      if (data.activeCam) this.switchCamera(data.activeCam, false);
+      this.showCctvStage(data.activeCam || this.activeCam || 1);
     }
 
     if (data.activeCam && this.stage === 'cctv') {

@@ -8123,6 +8123,30 @@ body.dispositivos-drawer-open .dispositivos-drawer {
   pointer-events: all;
 }
 
+/* Modo Espectador (Apenas o Mestre pode interagir com os Dispositivos) */
+.notebook-sara-overlay.viewer-only .notebook-close-btn {
+  display: none !important;
+}
+
+.notebook-sara-overlay.viewer-only .windows-input-wrapper,
+.notebook-sara-overlay.viewer-only .windows-password-input,
+.notebook-sara-overlay.viewer-only .windows-submit-arrow,
+.notebook-sara-overlay.viewer-only .windows-quick-access-btn,
+.notebook-sara-overlay.viewer-only .cctv-btn-nav-lock,
+.notebook-sara-overlay.viewer-only .cctv-tab-btn {
+  pointer-events: none !important;
+  cursor: default !important;
+  user-select: none !important;
+}
+
+.notebook-sara-overlay.viewer-only .windows-quick-access-btn:hover,
+.notebook-sara-overlay.viewer-only .cctv-btn-nav-lock:hover,
+.notebook-sara-overlay.viewer-only .cctv-tab-btn:hover {
+  background: inherit !important;
+  border-color: inherit !important;
+  transform: none !important;
+}
+
 /* Botão Fechar do Mestre */
 .notebook-close-btn {
   position: absolute;
