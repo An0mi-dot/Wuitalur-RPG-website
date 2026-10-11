@@ -1922,25 +1922,7 @@ const MesaApp = {
             </ul>
           </div>
         </div>
-
-        <!-- 5. Campo de Coletáveis na Ficha com Barra de Pesquisa -->
-        <div class="ficha-section-coletaveis">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-            <div class="ink-ribbon-title">COLETÁVEIS</div>
-            <button type="button" class="mesa-btn ink-tag" style="font-size:0.72rem; padding:4px 10px;" onclick="MesaColetaveis.openModal()">
-              Abrir Arquivo Completo
-            </button>
-          </div>
-          <div class="ficha-coletaveis-toolbar">
-            <input 
-              type="text" 
-              class="ficha-coletaveis-search" 
-              placeholder="Pesquisar coletáveis por nome ou descrição..." 
-              oninput="MesaColetaveis.filterFicha(this.value)" 
-            />
-          </div>
-          <div id="ficha-coletaveis-container" class="ficha-coletaveis-container"></div>
-        </div></div>
+      </div>
     `;
 
     if (startParticles) {
@@ -1948,9 +1930,6 @@ const MesaApp = {
     }
 
     fichaModal.classList.add('active');
-    if (window.MesaColetaveis) {
-      MesaColetaveis.renderFicha();
-    }
 
     // Inicia o motor de glitch procedural na ilustração (mesma frequência e tipos do BG)
     setTimeout(() => {

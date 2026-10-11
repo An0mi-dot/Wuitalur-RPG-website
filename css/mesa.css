@@ -7624,34 +7624,6 @@ body.interior-drawer-open .mesa-board-container,
   text-shadow: 0 0 8px rgba(255, 170, 85, 0.4);
 }
 
-/* Na Ficha do Personagem */
-.ficha-section-coletaveis {
-  grid-column: 1 / -1;
-  margin-top: 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 14px;
-}
-
-.ficha-coletaveis-toolbar {
-  display: flex;
-  gap: 10px;
-  margin: 10px 0 14px 0;
-}
-
-.ficha-coletaveis-search {
-  flex: 1;
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 0 !important;
-  padding: 6px 12px;
-  color: #fff;
-  font-size: 0.8rem;
-}
-
-.ficha-coletaveis-search:focus {
-  border-color: #ff5500;
-  outline: none;
-}
 
 
 .coletavel-weight-badge {
