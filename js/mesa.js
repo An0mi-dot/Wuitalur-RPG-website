@@ -2217,6 +2217,36 @@ const MesaChat = {
       }
     });
 
+    // 7. WebSocket Broadcast de Abertura da Mesa
+    this.channel.on('broadcast', { event: 'play_abertura' }, () => {
+      if (window.MesaAbertura) MesaAbertura.triggerAbertura();
+    });
+    this.channel.on('broadcast', { event: 'stop_abertura' }, () => {
+      if (window.MesaAbertura) MesaAbertura.triggerStop();
+    });
+
+    // 8. WebSocket Broadcast do Notebook da Sara (Dispositivos da Campanha)
+    this.channel.on('broadcast', { event: 'notebook_start' }, (payload) => {
+      if (window.MesaNotebookSara) {
+        if (payload.payload && payload.payload.camImages) {
+          MesaNotebookSara.camImages = payload.payload.camImages;
+        }
+        MesaNotebookSara.triggerStart();
+      }
+    });
+
+    this.channel.on('broadcast', { event: 'notebook_stop' }, () => {
+      if (window.MesaNotebookSara) {
+        MesaNotebookSara.triggerStop();
+      }
+    });
+
+    this.channel.on('broadcast', { event: 'notebook_sync' }, (payload) => {
+      if (window.MesaNotebookSara && payload.payload) {
+        MesaNotebookSara.handleIncomingSync(payload.payload);
+      }
+    });
+
 
 
 
@@ -3358,7 +3388,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.5.4`;
+      badge.textContent = `v1.5.5`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -3956,6 +3986,25 @@ const MesaQuickMenu = {
     const mediaBtn = document.getElementById('menu-media-btn');
     if (mediaBtn) {
       mediaBtn.style.display = isMaster ? 'flex' : 'none';
+    }
+
+    const navDispositivosBtn = document.getElementById('nav-dispositivos-btn');
+    if (navDispositivosBtn) {
+      navDispositivosBtn.style.display = isMaster ? 'inline-flex' : 'none';
+    }
+
+    const menuDispositivosBtn = document.getElementById('menu-dispositivos-btn');
+    if (menuDispositivosBtn) {
+      menuDispositivosBtn.style.display = isMaster ? 'flex' : 'none';
+    }
+
+    const notebookCloseBtn = document.getElementById('notebook-close-btn');
+    if (notebookCloseBtn) {
+      notebookCloseBtn.style.display = isMaster ? 'flex' : 'none';
+    }
+
+    if (!isMaster && window.MesaDispositivos && MesaDispositivos.isOpen) {
+      MesaDispositivos.closeDrawer();
     }
 
     const logoutBtn = document.getElementById('menu-logout-btn');
@@ -5501,3 +5550,563 @@ const MesaAbertura = {
 };
 window.MesaAbertura = MesaAbertura;
 
+
+
+// ==========================================================================
+// MESA DISPOSITIVOS DA CAMPANHA (HUB DO MESTRE)
+// ==========================================================================
+const MesaDispositivos = {
+  isOpen: false,
+
+  toggleDrawer() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    this.isOpen = !this.isOpen;
+    if (this.isOpen) {
+      document.body.classList.add('dispositivos-drawer-open');
+    } else {
+      document.body.classList.remove('dispositivos-drawer-open');
+    }
+  },
+
+  closeDrawer() {
+    this.isOpen = false;
+    document.body.classList.remove('dispositivos-drawer-open');
+  }
+};
+window.MesaDispositivos = MesaDispositivos;
+
+
+// ==========================================================================
+// MESA NOTEBOOK DA SARA (SISTEMA OPERACIONAL & CFTV)
+// ==========================================================================
+const MesaNotebookSara = {
+  isActive: false,
+  stage: 'boot', // 'boot' | 'lock' | 'cctv'
+  activeCam: 1,
+  signalLost: false,
+  isGlitching: false,
+  camImages: {
+    1: '',
+    2: '',
+    3: ''
+  },
+  bootTimeout: null,
+  glitchTimeout: null,
+  staticAnimId: null,
+  clockInterval: null,
+
+  play() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    this.isActive = true;
+    this.stage = 'boot';
+    this.signalLost = false;
+    this.isGlitching = false;
+
+    // Broadcast to players
+    if (MesaChat && MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'notebook_start',
+        payload: {
+          activeCam: this.activeCam,
+          camImages: this.camImages
+        }
+      });
+    }
+
+    this.triggerStart();
+  },
+
+  stop() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    if (MesaChat && MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'notebook_stop',
+        payload: {}
+      });
+    }
+    this.triggerStop();
+  },
+
+  triggerStart() {
+    const overlay = document.getElementById('notebook-sara-overlay');
+    if (!overlay) return;
+
+    this.isActive = true;
+    this.stage = 'boot';
+    this.signalLost = false;
+    this.isGlitching = false;
+
+    // Atualiza status no drawer do Mestre
+    const badge = document.getElementById('notebook-status-badge');
+    const btnPlay = document.getElementById('btn-transmit-notebook');
+    const btnStop = document.getElementById('btn-stop-notebook');
+    if (badge) {
+      badge.textContent = 'Transmitindo';
+      badge.className = 'dispositivo-status-badge transmitting';
+    }
+    if (btnPlay) btnPlay.style.display = 'none';
+    if (btnStop) btnStop.style.display = 'flex';
+
+    // Mostra estágio de boot
+    const bootStage = document.getElementById('notebook-boot-stage');
+    const lockStage = document.getElementById('notebook-lock-stage');
+    const cctvStage = document.getElementById('notebook-cctv-stage');
+    if (bootStage) bootStage.style.display = 'flex';
+    if (lockStage) lockStage.style.display = 'none';
+    if (cctvStage) cctvStage.style.display = 'none';
+
+    overlay.classList.add('active');
+
+    this.startClock();
+
+    // Transiciona do boot para o lock screen após ~2.4s
+    clearTimeout(this.bootTimeout);
+    this.bootTimeout = setTimeout(() => {
+      this.showLockScreen();
+    }, 2400);
+  },
+
+  triggerStop() {
+    const overlay = document.getElementById('notebook-sara-overlay');
+    if (overlay) {
+      overlay.classList.remove('active');
+    }
+
+    this.stopStaticNoise();
+    clearTimeout(this.bootTimeout);
+    clearTimeout(this.glitchTimeout);
+    clearInterval(this.clockInterval);
+
+    // Atualiza status no drawer do Mestre
+    const badge = document.getElementById('notebook-status-badge');
+    const btnPlay = document.getElementById('btn-transmit-notebook');
+    const btnStop = document.getElementById('btn-stop-notebook');
+    if (badge) {
+      badge.textContent = 'Pronto';
+      badge.className = 'dispositivo-status-badge ready';
+    }
+    if (btnPlay) btnPlay.style.display = 'flex';
+    if (btnStop) btnStop.style.display = 'none';
+
+    setTimeout(() => {
+      this.isActive = false;
+      this.stage = 'boot';
+      this.signalLost = false;
+      this.isGlitching = false;
+      const bootStage = document.getElementById('notebook-boot-stage');
+      const lockStage = document.getElementById('notebook-lock-stage');
+      const cctvStage = document.getElementById('notebook-cctv-stage');
+      if (bootStage) bootStage.style.display = 'flex';
+      if (lockStage) lockStage.style.display = 'none';
+      if (cctvStage) cctvStage.style.display = 'none';
+      const staticCanvas = document.getElementById('cctv-static-canvas');
+      if (staticCanvas) staticCanvas.style.display = 'none';
+      const signalLostEl = document.getElementById('cctv-signal-lost');
+      if (signalLostEl) signalLostEl.style.display = 'none';
+    }, 1200);
+  },
+
+  startClock() {
+    clearInterval(this.clockInterval);
+    const update = () => {
+      const now = new Date();
+      const hrs = String(now.getHours()).padStart(2, '0');
+      const mins = String(now.getMinutes()).padStart(2, '0');
+      const secs = String(now.getSeconds()).padStart(2, '0');
+
+      const timeEl = document.getElementById('windows-lock-time');
+      if (timeEl) timeEl.textContent = `${hrs}:${mins}`;
+
+      const cctvTime = document.getElementById('cctv-timestamp');
+      if (cctvTime) {
+        const yr = now.getFullYear();
+        const mo = String(now.getMonth() + 1).padStart(2, '0');
+        const dy = String(now.getDate()).padStart(2, '0');
+        cctvTime.textContent = `${yr}-${mo}-${dy} ${hrs}:${mins}:${secs}`;
+      }
+
+      const hudTime = document.getElementById('cctv-hud-time');
+      if (hudTime) {
+        const ms = String(Math.floor(now.getMilliseconds() / 10)).padStart(2, '0');
+        hudTime.textContent = `${hrs}:${mins}:${secs}.${ms}`;
+      }
+    };
+    update();
+    this.clockInterval = setInterval(update, 50);
+  },
+
+  showLockScreen() {
+    this.stage = 'lock';
+    const bootStage = document.getElementById('notebook-boot-stage');
+    const lockStage = document.getElementById('notebook-lock-stage');
+    const cctvStage = document.getElementById('notebook-cctv-stage');
+    if (bootStage) bootStage.style.display = 'none';
+    if (lockStage) lockStage.style.display = 'flex';
+    if (cctvStage) cctvStage.style.display = 'none';
+
+    const input = document.getElementById('notebook-password-input');
+    const err = document.getElementById('notebook-password-error');
+    if (input) {
+      input.value = '';
+      setTimeout(() => input.focus(), 100);
+    }
+    if (err) err.style.display = 'none';
+  },
+
+  submitPassword(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const wrapper = document.getElementById('windows-input-wrapper');
+    const err = document.getElementById('notebook-password-error');
+    const input = document.getElementById('notebook-password-input');
+
+    if (wrapper) {
+      wrapper.classList.remove('shake-error');
+      void wrapper.offsetWidth; // trigger reflow
+      wrapper.classList.add('shake-error');
+      setTimeout(() => wrapper.classList.remove('shake-error'), 450);
+    }
+    if (err) err.style.display = 'block';
+    if (input) {
+      input.value = '';
+      input.focus();
+    }
+  },
+
+  openCameras() {
+    this.stage = 'cctv';
+    const lockStage = document.getElementById('notebook-lock-stage');
+    const cctvStage = document.getElementById('notebook-cctv-stage');
+    if (lockStage) lockStage.style.display = 'none';
+    if (cctvStage) cctvStage.style.display = 'flex';
+
+    this.switchCamera(this.activeCam || 1, false);
+
+    if (MesaChat && MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'notebook_sync',
+        payload: {
+          stage: 'cctv',
+          activeCam: this.activeCam,
+          signalLost: this.signalLost
+        }
+      });
+    }
+  },
+
+  returnToLock() {
+    this.showLockScreen();
+    if (MesaChat && MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'notebook_sync',
+        payload: {
+          stage: 'lock'
+        }
+      });
+    }
+  },
+
+  switchCamera(camNum, shouldSync = true) {
+    if (this.signalLost) return;
+    this.activeCam = camNum;
+
+    // Atualiza tabs do CFTV
+    [1, 2, 3].forEach(n => {
+      const tab = document.getElementById(`cctv-tab-${n}`);
+      if (tab) {
+        if (n === camNum) tab.classList.add('active');
+        else tab.classList.remove('active');
+      }
+      const ctrlBtn = document.getElementById(`disp-ctrl-cam-${n}`);
+      if (ctrlBtn) {
+        if (n === camNum) ctrlBtn.classList.add('active');
+        else ctrlBtn.classList.remove('active');
+      }
+    });
+
+    const camNames = {
+      1: 'CAM 01 - SALA DE ESTAR',
+      2: 'CAM 02 - ESCADARIA',
+      3: 'CAM 03 - CORREDOR DO 2º ANDAR'
+    };
+
+    const camTag = document.getElementById('cctv-cam-tag');
+    if (camTag) camTag.textContent = camNames[camNum] || `CAM 0${camNum}`;
+
+    const hudChan = document.getElementById('cctv-hud-channel');
+    if (hudChan) {
+      const shortNames = { 1: 'CH-01 [SALA]', 2: 'CH-02 [ESCADA]', 3: 'CH-03 [CORREDOR]' };
+      hudChan.textContent = `${shortNames[camNum]} • 15.0 FPS NV`;
+    }
+
+    this.renderCameraFeed();
+
+    if (shouldSync && MesaChat && MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'notebook_sync',
+        payload: {
+          stage: 'cctv',
+          activeCam: this.activeCam,
+          signalLost: this.signalLost
+        }
+      });
+    }
+  },
+
+  setCamera(camNum) {
+    if (!this.isActive) this.play();
+    setTimeout(() => {
+      this.openCameras();
+      this.switchCamera(camNum);
+    }, 400);
+  },
+
+  renderCameraFeed() {
+    const imgEl = document.getElementById('cctv-feed-img');
+    const procEl = document.getElementById('cctv-feed-procedural');
+    const svgEl = document.getElementById('cctv-procedural-svg');
+
+    const customUrl = this.camImages[this.activeCam];
+    if (customUrl && customUrl.trim() !== '') {
+      if (imgEl) {
+        imgEl.src = customUrl.trim();
+        imgEl.style.display = 'block';
+        imgEl.onerror = () => {
+          imgEl.style.display = 'none';
+          if (procEl) procEl.style.display = 'block';
+        };
+      }
+      if (procEl) procEl.style.display = 'none';
+    } else {
+      if (imgEl) imgEl.style.display = 'none';
+      if (procEl) procEl.style.display = 'block';
+      if (svgEl) svgEl.innerHTML = this.getProceduralSceneSVG(this.activeCam);
+    }
+  },
+
+  getProceduralSceneSVG(camNum) {
+    if (camNum === 1) {
+      return `
+        <rect width="800" height="450" fill="#040507" />
+        <polygon points="0,320 800,320 800,450 0,450" fill="#0a0c10" />
+        <line x1="0" y1="320" x2="800" y2="320" stroke="#1f242d" stroke-width="2" />
+        <rect x="520" y="60" width="160" height="200" fill="#0e131b" stroke="#252f3e" stroke-width="2" />
+        <line x1="520" y1="90" x2="680" y2="90" stroke="#171e28" stroke-width="1.5" />
+        <line x1="520" y1="120" x2="680" y2="120" stroke="#171e28" stroke-width="1.5" />
+        <line x1="520" y1="150" x2="680" y2="150" stroke="#171e28" stroke-width="1.5" />
+        <line x1="520" y1="180" x2="680" y2="180" stroke="#171e28" stroke-width="1.5" />
+        <line x1="520" y1="210" x2="680" y2="210" stroke="#171e28" stroke-width="1.5" />
+        <line x1="520" y1="240" x2="680" y2="240" stroke="#171e28" stroke-width="1.5" />
+        <rect x="120" y="260" width="280" height="80" rx="4" fill="#0e1117" stroke="#1c212a" stroke-width="2" />
+        <rect x="100" y="280" width="35" height="60" rx="3" fill="#0b0e13" stroke="#1a1e26" stroke-width="1.5" />
+        <rect x="385" y="280" width="35" height="60" rx="3" fill="#0b0e13" stroke="#1a1e26" stroke-width="1.5" />
+        <rect x="145" y="240" width="110" height="40" rx="2" fill="#12161f" />
+        <rect x="265" y="240" width="110" height="40" rx="2" fill="#12161f" />
+        <rect x="180" y="360" width="160" height="45" fill="#0c0e13" stroke="#222834" stroke-width="1.5" />
+        <rect x="250" y="345" width="14" height="18" fill="#1e293b" />
+        <text x="30" y="420" fill="#64748b" font-family="monospace" font-size="14" letter-spacing="2">CAM 01 // RESIDÊNCIA AUGUIL - SALA DE ESTAR [TÉRREO]</text>
+      `;
+    } else if (camNum === 2) {
+      return `
+        <rect width="800" height="450" fill="#030406" />
+        <polygon points="120,450 680,450 640,400 160,400" fill="#0c0f14" stroke="#1c212b" stroke-width="1.5" />
+        <polygon points="160,400 640,400 600,350 200,350" fill="#0a0c10" stroke="#1c212b" stroke-width="1.5" />
+        <polygon points="200,350 600,350 560,300 240,300" fill="#080a0e" stroke="#1a1e26" stroke-width="1.5" />
+        <polygon points="240,300 560,300 520,250 280,250" fill="#07080c" stroke="#171b23" stroke-width="1.5" />
+        <polygon points="280,250 520,250 480,200 320,200" fill="#050609" stroke="#14171e" stroke-width="1.5" />
+        <polygon points="320,200 480,200 450,150 350,150" fill="#040507" stroke="#11141a" stroke-width="1.5" />
+        <polygon points="350,150 450,150 420,100 380,100" fill="#020304" />
+        <line x1="120" y1="410" x2="380" y2="70" stroke="#252e3d" stroke-width="6" />
+        <line x1="180" y1="430" x2="180" y2="350" stroke="#18202b" stroke-width="3" />
+        <line x1="240" y1="380" x2="240" y2="300" stroke="#18202b" stroke-width="3" />
+        <line x1="300" y1="330" x2="300" y2="250" stroke="#18202b" stroke-width="3" />
+        <line x1="360" y1="280" x2="360" y2="200" stroke="#18202b" stroke-width="3" />
+        <text x="30" y="420" fill="#64748b" font-family="monospace" font-size="14" letter-spacing="2">CAM 02 // RESIDÊNCIA AUGUIL - ESCADARIA PRINCIPAL</text>
+      `;
+    } else {
+      return `
+        <rect width="800" height="450" fill="#030405" />
+        <polygon points="0,450 800,450 460,225 340,225" fill="#0b0d12" stroke="#191e27" stroke-width="1" />
+        <polygon points="0,0 800,0 460,225 340,225" fill="#06070a" stroke="#161a22" stroke-width="1" />
+        <polygon points="0,0 0,450 340,225" fill="#080a0e" stroke="#141820" stroke-width="1" />
+        <polygon points="800,0 800,450 460,225" fill="#080a0e" stroke="#141820" stroke-width="1" />
+        <rect x="340" y="210" width="120" height="60" fill="#000000" />
+        <polygon points="80,120 180,165 180,360 80,410" fill="#050608" stroke="#1e2531" stroke-width="2" />
+        <polygon points="220,180 280,205 280,300 220,325" fill="#020305" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,3" />
+        <polygon points="720,120 620,165 620,360 720,410" fill="#050608" stroke="#1e2531" stroke-width="2" />
+        <circle cx="400" cy="110" r="12" fill="#1e293b" />
+        <line x1="400" y1="0" x2="400" y2="100" stroke="#0f172a" stroke-width="2" />
+        <text x="30" y="420" fill="#64748b" font-family="monospace" font-size="14" letter-spacing="2">CAM 03 // RESIDÊNCIA AUGUIL - CORREDOR DO 2º ANDAR [ÁREA DOS QUARTOS]</text>
+      `;
+    }
+  },
+
+  setCustomCamImage(camNum, url) {
+    this.camImages[camNum] = url || '';
+    if (this.activeCam === camNum) {
+      this.renderCameraFeed();
+    }
+    if (MesaChat && MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'notebook_sync',
+        payload: {
+          camImages: this.camImages
+        }
+      });
+    }
+  },
+
+  triggerGlitch() {
+    this.isGlitching = true;
+    this.startStaticNoise();
+
+    if (MesaChat && MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'notebook_sync',
+        payload: {
+          glitch: true
+        }
+      });
+    }
+
+    clearTimeout(this.glitchTimeout);
+    this.glitchTimeout = setTimeout(() => {
+      this.stopStaticNoise();
+      this.signalLost = true;
+      this.isGlitching = false;
+
+      const lostEl = document.getElementById('cctv-signal-lost');
+      if (lostEl) lostEl.style.display = 'flex';
+
+      [1, 2, 3].forEach(n => {
+        const btn = document.getElementById(`cctv-tab-${n}`);
+        if (btn) btn.classList.add('disabled');
+      });
+
+      if (MesaChat && MesaChat.channel) {
+        MesaChat.channel.send({
+          type: 'broadcast',
+          event: 'notebook_sync',
+          payload: {
+            signalLost: true
+          }
+        });
+      }
+    }, 2500);
+  },
+
+  restoreSignal() {
+    this.signalLost = false;
+    this.isGlitching = false;
+    this.stopStaticNoise();
+
+    const lostEl = document.getElementById('cctv-signal-lost');
+    if (lostEl) lostEl.style.display = 'none';
+
+    [1, 2, 3].forEach(n => {
+      const btn = document.getElementById(`cctv-tab-${n}`);
+      if (btn) btn.classList.remove('disabled');
+    });
+
+    this.switchCamera(this.activeCam, false);
+
+    if (MesaChat && MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'notebook_sync',
+        payload: {
+          signalLost: false,
+          activeCam: this.activeCam
+        }
+      });
+    }
+  },
+
+  startStaticNoise() {
+    const canvas = document.getElementById('cctv-static-canvas');
+    if (!canvas) return;
+    canvas.style.display = 'block';
+    const ctx = canvas.getContext('2d');
+    canvas.width = 320;
+    canvas.height = 180;
+
+    const render = () => {
+      const imgData = ctx.createImageData(canvas.width, canvas.height);
+      const buffer = new Uint32Array(imgData.data.buffer);
+      for (let i = 0; i < buffer.length; i++) {
+        const shade = Math.random() < 0.5 ? (Math.random() * 255) | 0 : 0;
+        buffer[i] = (255 << 24) | (shade << 16) | (shade << 8) | shade;
+      }
+      ctx.putImageData(imgData, 0, 0);
+
+      // Linhas aleatórias de interferência de sinal
+      for (let j = 0; j < 3; j++) {
+        ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.4})`;
+        ctx.fillRect(0, Math.random() * canvas.height, canvas.width, Math.random() * 6);
+      }
+
+      this.staticAnimId = requestAnimationFrame(render);
+    };
+    render();
+  },
+
+  stopStaticNoise() {
+    if (this.staticAnimId) {
+      cancelAnimationFrame(this.staticAnimId);
+      this.staticAnimId = null;
+    }
+    const canvas = document.getElementById('cctv-static-canvas');
+    if (canvas) canvas.style.display = 'none';
+  },
+
+  handleIncomingSync(data) {
+    if (data.camImages) {
+      this.camImages = data.camImages;
+      this.renderCameraFeed();
+    }
+    if (data.stage === 'lock') {
+      this.showLockScreen();
+    } else if (data.stage === 'cctv') {
+      const lockStage = document.getElementById('notebook-lock-stage');
+      const cctvStage = document.getElementById('notebook-cctv-stage');
+      if (lockStage) lockStage.style.display = 'none';
+      if (cctvStage) cctvStage.style.display = 'flex';
+      if (data.activeCam) this.switchCamera(data.activeCam, false);
+    }
+
+    if (data.activeCam && this.stage === 'cctv') {
+      this.switchCamera(data.activeCam, false);
+    }
+
+    if (data.glitch) {
+      this.isGlitching = true;
+      this.startStaticNoise();
+      setTimeout(() => {
+        this.stopStaticNoise();
+      }, 2500);
+    }
+
+    if (data.signalLost !== undefined) {
+      this.signalLost = data.signalLost;
+      const lostEl = document.getElementById('cctv-signal-lost');
+      if (lostEl) lostEl.style.display = this.signalLost ? 'flex' : 'none';
+      [1, 2, 3].forEach(n => {
+        const btn = document.getElementById(`cctv-tab-${n}`);
+        if (btn) {
+          if (this.signalLost) btn.classList.add('disabled');
+          else btn.classList.remove('disabled');
+        }
+      });
+      if (!this.signalLost) {
+        this.renderCameraFeed();
+      }
+    }
+  }
+};
+window.MesaNotebookSara = MesaNotebookSara;

@@ -7785,3 +7785,1001 @@ body.interior-drawer-open .mesa-board-container,
   background: rgba(248, 113, 113, 0.18);
   border-color: #f87171;
 }
+
+
+/* ==========================================================================
+   DISPOSITIVOS DA CAMPANHA (HUB DO MESTRE) & NOTEBOOK DA SARA
+   ========================================================================== */
+
+/* Drawer Lateral de Dispositivos */
+.dispositivos-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1040;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+body.dispositivos-drawer-open .dispositivos-drawer-backdrop {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.dispositivos-drawer {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 440px;
+  max-width: 100vw;
+  height: 100vh;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: rgba(13, 14, 18, 0.98);
+  border-left: 2px solid #38bdf8;
+  box-shadow: -14px 0 40px rgba(0, 0, 0, 0.85);
+  color: #f5f5f5;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  transition: right 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-sizing: border-box;
+}
+
+body.dispositivos-drawer-open .dispositivos-drawer {
+  right: 0 !important;
+}
+
+.dispositivos-drawer-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px 14px;
+  background: transparent;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+}
+
+.dispositivos-header-title-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dispositivos-header-title-box .ink-icon {
+  width: 20px;
+  height: 20px;
+  color: #38bdf8;
+}
+
+.dispositivos-header-title-box h3 {
+  margin: 0;
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.dispositivos-drawer-badge {
+  padding: 2px 7px;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  background: rgba(56, 189, 248, 0.12);
+  color: #7dd3fc;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dispositivos-drawer-close-btn {
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #a3a3a3;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dispositivos-drawer-close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.dispositivos-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dispositivos-drawer-desc {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #a1a1aa;
+  margin: 0 0 10px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dispositivo-card {
+  background: rgba(20, 22, 28, 0.95);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-left: 3px solid #38bdf8;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.2s;
+}
+
+.dispositivo-card:hover {
+  border-color: rgba(56, 189, 248, 0.5);
+  background: rgba(24, 27, 36, 0.98);
+}
+
+.dispositivo-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dispositivo-icon-box {
+  width: 42px;
+  height: 42px;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dispositivo-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.dispositivo-title {
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.04em;
+}
+
+.dispositivo-subtitle {
+  font-size: 0.72rem;
+  color: #7dd3fc;
+  opacity: 0.85;
+}
+
+.dispositivo-status-badge {
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 0;
+  white-space: nowrap;
+}
+
+.dispositivo-status-badge.ready {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.dispositivo-status-badge.transmitting {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  animation: pulseBadge 1.5s infinite;
+}
+
+@keyframes pulseBadge {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+.dispositivo-card-desc {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #d4d4d8;
+  margin: 0;
+}
+
+.dispositivo-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.dispositivo-btn-primary {
+  width: 100%;
+  padding: 9px 12px;
+  background: #0284c7;
+  border: 1px solid #38bdf8;
+  color: #fff;
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.dispositivo-btn-primary:hover {
+  background: #0369a1;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
+}
+
+.dispositivo-btn-stop {
+  width: 100%;
+  padding: 8px 12px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.dispositivo-btn-stop:hover {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: #ef4444;
+  color: #fff;
+}
+
+.dispositivo-subcontrols {
+  background: rgba(10, 11, 14, 0.6);
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dispositivo-subheading {
+  font-size: 0.66rem;
+  font-weight: 800;
+  color: #7dd3fc;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.dispositivo-cams-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+}
+
+.disp-cam-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #d4d4d8;
+  font-size: 0.68rem;
+  padding: 6px 4px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.disp-cam-btn:hover,
+.disp-cam-btn.active {
+  background: rgba(56, 189, 248, 0.18);
+  border-color: #38bdf8;
+  color: #fff;
+}
+
+.disp-glitch-btn {
+  flex: 1;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 6px 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.disp-glitch-btn:hover {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: #ef4444;
+  color: #fff;
+}
+
+.disp-glitch-btn.restore {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #6ee7b7;
+}
+
+.disp-glitch-btn.restore:hover {
+  background: rgba(16, 185, 129, 0.25);
+  border-color: #10b981;
+  color: #fff;
+}
+
+
+/* ==========================================================================
+   NOTEBOOK DA SARA: OVERLAY DE TELA CHEIA
+   ========================================================================== */
+
+.notebook-sara-overlay {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 9200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.2s ease-in-out;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  user-select: none;
+}
+
+.notebook-sara-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Botão Fechar do Mestre */
+.notebook-close-btn {
+  position: absolute;
+  top: 22px;
+  right: 28px;
+  z-index: 9350;
+  width: 44px;
+  height: 44px;
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  backdrop-filter: blur(6px);
+}
+
+.notebook-close-btn:hover {
+  background: rgba(239, 68, 68, 0.7);
+  border-color: #ef4444;
+  transform: scale(1.08);
+}
+
+.notebook-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* --- 1. BOOT STAGE (WINDOWS SPINNER) --- */
+.notebook-boot-stage {
+  background: #000;
+  align-items: center;
+  justify-content: center;
+}
+
+.windows-boot-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+}
+
+.windows-boot-device {
+  opacity: 0.85;
+  color: #fff;
+}
+
+/* Windows 10/11 Orbit Spinner */
+.windows-spinner {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto;
+}
+
+.win-dot {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: rotate(225deg);
+  animation: winOrbit 5.5s infinite;
+}
+
+.win-dot:after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+}
+
+.win-dot:nth-child(2) { animation-delay: 240ms; }
+.win-dot:nth-child(3) { animation-delay: 480ms; }
+.win-dot:nth-child(4) { animation-delay: 720ms; }
+.win-dot:nth-child(5) { animation-delay: 960ms; }
+
+@keyframes winOrbit {
+  0% { transform: rotate(225deg); opacity: 1; animation-timing-function: ease-out; }
+  7% { transform: rotate(345deg); animation-timing-function: linear; }
+  30% { transform: rotate(455deg); animation-timing-function: ease-in-out; }
+  39% { transform: rotate(690deg); animation-timing-function: linear; }
+  70% { transform: rotate(815deg); opacity: 1; animation-timing-function: ease-out; }
+  75% { transform: rotate(945deg); animation-timing-function: ease-out; }
+  76% { transform: rotate(945deg); opacity: 0; }
+  100% { transform: rotate(945deg); opacity: 0; }
+}
+
+.windows-boot-text {
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+
+/* --- 2. LOCK STAGE (WINDOWS OS LOCK SCREEN) --- */
+.notebook-lock-stage {
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.windows-lock-wallpaper {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 32%, #141c28 0%, #0a0e14 55%, #020305 100%);
+  background-size: cover;
+  background-position: center;
+}
+
+.windows-lock-vignette {
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 160px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+}
+
+.windows-lock-clock-box {
+  position: absolute;
+  top: 7vh;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+}
+
+.windows-lock-time {
+  font-size: clamp(3.5rem, 8vw, 6.5rem);
+  font-weight: 300;
+  color: #ffffff;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.7);
+}
+
+.windows-lock-date {
+  font-size: clamp(0.95rem, 2vw, 1.35rem);
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 400;
+  margin-top: 8px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+.windows-login-box {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 10vh;
+}
+
+.windows-user-avatar {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.75);
+  background: #0f172a;
+}
+
+.windows-user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.windows-user-name {
+  font-size: 1.85rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+  letter-spacing: -0.01em;
+}
+
+.windows-password-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 290px;
+}
+
+.windows-input-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.2s;
+}
+
+.windows-input-wrapper:focus-within {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.2);
+}
+
+.windows-input-wrapper.shake-error {
+  animation: shakeError 0.45s ease-in-out;
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.15);
+}
+
+@keyframes shakeError {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+
+.windows-password-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 10px 14px;
+  color: #fff;
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+}
+
+.windows-password-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: normal;
+}
+
+.windows-submit-arrow {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 0 12px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.windows-submit-arrow:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.windows-password-error {
+  color: #f87171;
+  font-size: 0.82rem;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Atalho Canto Inferior Direito */
+.windows-quick-access-wrapper {
+  position: absolute;
+  bottom: 28px;
+  right: 36px;
+  z-index: 20;
+}
+
+.windows-quick-access-btn {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f1f5f9;
+  padding: 10px 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.86rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.windows-quick-access-btn:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: #38bdf8;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.3);
+}
+
+.windows-quick-access-btn .quick-access-icon {
+  color: #38bdf8;
+  display: flex;
+}
+
+
+/* --- 3. CCTV STAGE (SISTEMA DE CÂMERAS DE SEGURANÇA) --- */
+.notebook-cctv-stage {
+  background: #08080c;
+  display: flex;
+  flex-direction: column;
+}
+
+.cctv-topbar {
+  flex-shrink: 0;
+  height: 48px;
+  background: #0f1015;
+  border-bottom: 2px solid #27272a;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: monospace;
+}
+
+.cctv-topbar-left,
+.cctv-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cctv-rec-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #ef4444;
+  font-weight: 800;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+}
+
+.cctv-rec-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 8px #ef4444;
+  animation: recBlink 1s infinite;
+}
+
+@keyframes recBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.15; }
+}
+
+.cctv-system-title {
+  color: #a1a1aa;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+}
+
+.cctv-cam-tag {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 2px 8px;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.cctv-timestamp {
+  color: #e4e4e7;
+  font-size: 0.86rem;
+  letter-spacing: 0.08em;
+}
+
+.cctv-btn-nav-lock {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #e4e4e7;
+  padding: 4px 10px;
+  font-size: 0.76rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s;
+  font-family: monospace;
+}
+
+.cctv-btn-nav-lock:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+/* Barra de Navegação das Câmeras */
+.cctv-nav-bar {
+  flex-shrink: 0;
+  background: #14151c;
+  border-bottom: 1px solid #27272a;
+  padding: 8px 24px;
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+}
+
+.cctv-tab-btn {
+  background: #1c1d26;
+  border: 1px solid #3f3f46;
+  color: #a1a1aa;
+  padding: 8px 16px;
+  font-family: monospace;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.cctv-tab-btn:hover {
+  background: #272733;
+  color: #fff;
+  border-color: #71717a;
+}
+
+.cctv-tab-btn.active {
+  background: #0284c7;
+  border-color: #38bdf8;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+}
+
+.cctv-tab-btn.disabled,
+.cctv-tab-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.cctv-cam-num {
+  font-weight: 800;
+  opacity: 0.8;
+}
+
+/* Viewport Central da Câmera */
+.cctv-viewport {
+  flex: 1;
+  position: relative;
+  background: #000;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cctv-feed-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Imagem com Filtro Preto e Branco / Visão Noturna */
+.cctv-feed-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) contrast(150%) brightness(88%);
+}
+
+.cctv-procedural-scene {
+  width: 100%;
+  height: 100%;
+  background: #050608;
+}
+
+.cctv-procedural-svg {
+  width: 100%;
+  height: 100%;
+  filter: grayscale(100%) contrast(140%) brightness(85%);
+}
+
+/* Scanlines e Granulação CRT */
+.cctv-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%),
+              linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+  background-size: 100% 4px, 6px 100%;
+  opacity: 0.85;
+  z-index: 5;
+}
+
+.cctv-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 140px rgba(0, 0, 0, 0.92);
+  z-index: 6;
+}
+
+/* HUD Overlay */
+.cctv-hud-overlay {
+  position: absolute;
+  inset: 24px;
+  pointer-events: none;
+  z-index: 10;
+  font-family: monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cctv-hud-tl,
+.cctv-hud-tr,
+.cctv-hud-bl,
+.cctv-hud-br {
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.9);
+}
+
+.cctv-hud-tr {
+  text-align: right;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.cctv-hud-br {
+  text-align: right;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.cctv-hud-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  border: 1px dashed rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+}
+
+.cctv-hud-crosshair:before,
+.cctv-hud-crosshair:after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.cctv-hud-crosshair:before {
+  top: 50%;
+  left: -8px;
+  right: -8px;
+  height: 1px;
+}
+
+.cctv-hud-crosshair:after {
+  left: 50%;
+  top: -8px;
+  bottom: -8px;
+  width: 1px;
+}
+
+/* Canvas de Estática Intensa */
+.cctv-static-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* Tela Preta de Sinal Perdido */
+.cctv-signal-lost {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: #fff;
+  font-family: monospace;
+  text-align: center;
+  padding: 30px;
+}
+
+.signal-lost-glitch-icon {
+  animation: pulseGlitchIcon 1.2s infinite;
+}
+
+@keyframes pulseGlitchIcon {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.95); }
+}
+
+.signal-lost-title {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  color: #ef4444;
+  letter-spacing: 0.15em;
+  text-shadow: 0 0 18px rgba(239, 68, 68, 0.6);
+}
+
+.signal-lost-code {
+  font-size: 1rem;
+  color: #a1a1aa;
+  letter-spacing: 0.1em;
+}
+
+.signal-lost-detail {
+  font-size: 0.78rem;
+  color: #71717a;
+  max-width: 520px;
+  line-height: 1.5;
+}

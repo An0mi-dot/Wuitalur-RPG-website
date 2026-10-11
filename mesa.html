@@ -11,9 +11,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/variables.css?v=1.5.4">
-  <link rel="stylesheet" href="css/components.css?v=1.5.4">
-  <link rel="stylesheet" href="css/mesa.css?v=1.5.4">
+  <link rel="stylesheet" href="css/variables.css?v=1.5.5">
+  <link rel="stylesheet" href="css/components.css?v=1.5.5">
+  <link rel="stylesheet" href="css/mesa.css?v=1.5.5">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -161,6 +161,15 @@
               <span>Mudar Área / Mapa</span>
               <span class="quick-menu-badge-master">Mestre</span>
             </button>
+            <button type="button" id="menu-dispositivos-btn" class="quick-menu-item master-item" onclick="MesaDispositivos.toggleDrawer(); MesaQuickMenu.close();" style="display: none; color: #38bdf8;">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+              <span>Dispositivos da Campanha</span>
+              <span class="quick-menu-badge-master">Mestre</span>
+            </button>
                                     <button type="button" id="menu-abertura-btn" class="quick-menu-item master-item" onclick="MesaAbertura.play(); MesaQuickMenu.close();" style="display: none; color: #10b981;">
               <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
               <span>Tocar Abertura</span>
@@ -209,6 +218,16 @@
       </div>
 
       <div class="mesa-actions">
+        <!-- Botão Dispositivos da Campanha (Exclusivo do Mestre) -->
+        <button id="nav-dispositivos-btn" class="ink-tag nav-dispositivos master-item" onclick="MesaDispositivos.toggleDrawer()" style="display: none; color: #38bdf8;" title="Dispositivos e Arquivos da Campanha">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+          <span>Dispositivos</span>
+        </button>
+
         <!-- Botão Escolher Área (Exclusivo do Mestre) -->
         <button id="nav-choose-area-btn" class="ink-tag nav-choose-area" onclick="MesaAreaManager.openMapModal()" style="display: none;" title="Abrir Mapa e Escolher Área">
           <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1071,11 +1090,257 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=1.5.4"></script>
+<script src="js/campaign-data.js?v=1.5.5"></script>
 
-<script src="js/mesa.js?v=1.5.4"></script>
+<script src="js/mesa.js?v=1.5.5"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v1.5.4</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.5.5</div>
+
+  <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
+  <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
+  <aside id="dispositivos-drawer" class="dispositivos-drawer" aria-label="Dispositivos da Campanha">
+    <div class="dispositivos-drawer-header">
+      <div class="dispositivos-header-title-box">
+        <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line>
+          <line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+        <h3>Dispositivos</h3>
+        <span class="dispositivos-drawer-badge">Hub Mestre</span>
+      </div>
+      <button type="button" class="dispositivos-drawer-close-btn" onclick="MesaDispositivos.closeDrawer()" title="Fechar Gaveta">&times;</button>
+    </div>
+
+    <div class="dispositivos-drawer-body">
+      <p class="dispositivos-drawer-desc">
+        Hub central de sub-aplicativos e interfaces interativas da campanha. Ao iniciar a transmissão, o dispositivo assume a tela cheia de todos os jogadores sincronizado em tempo real.
+      </p>
+
+      <div class="dispositivos-list">
+        <!-- Card Dispositivo: Notebook da Sara -->
+        <div class="dispositivo-card" id="dispositivo-card-notebook-sara">
+          <div class="dispositivo-card-header">
+            <div class="dispositivo-icon-box">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#38bdf8" stroke-width="1.8">
+                <rect x="3" y="4" width="18" height="12" rx="1.5"></rect>
+                <line x1="2" y1="20" x2="22" y2="20"></line>
+                <line x1="9" y1="16" x2="15" y2="16"></line>
+              </svg>
+            </div>
+            <div class="dispositivo-meta">
+              <div class="dispositivo-title">Notebook da Sara</div>
+              <div class="dispositivo-subtitle">Sistema Operacional • Residência Auguil</div>
+            </div>
+            <span id="notebook-status-badge" class="dispositivo-status-badge ready">Pronto</span>
+          </div>
+
+          <p class="dispositivo-card-desc">
+            Laptop pessoal bloqueado por senha de Sara Auguil. Simula a tela de bloqueio do Windows com atalho de emergência para as câmeras de vigilância interna (CFTV).
+          </p>
+
+          <div class="dispositivo-actions">
+            <button type="button" id="btn-transmit-notebook" class="dispositivo-btn-primary" onclick="MesaNotebookSara.play()">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Transmitir para Todos (Tela Cheia)</span>
+            </button>
+            <button type="button" id="btn-stop-notebook" class="dispositivo-btn-stop" onclick="MesaNotebookSara.stop()" style="display: none;">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12"></rect></svg>
+              <span>Encerrar Transmissão</span>
+            </button>
+          </div>
+
+          <!-- Controles de Mestre do CFTV -->
+          <div class="dispositivo-subcontrols">
+            <div class="dispositivo-subheading">CONTROLE DAS CÂMERAS (CFTV)</div>
+            <div class="dispositivo-cams-row">
+              <button type="button" id="disp-ctrl-cam-1" class="disp-cam-btn active" onclick="MesaNotebookSara.setCamera(1)">Cam 1: Sala</button>
+              <button type="button" id="disp-ctrl-cam-2" class="disp-cam-btn" onclick="MesaNotebookSara.setCamera(2)">Cam 2: Escada</button>
+              <button type="button" id="disp-ctrl-cam-3" class="disp-cam-btn" onclick="MesaNotebookSara.setCamera(3)">Cam 3: Corredor</button>
+            </div>
+
+            <div class="dispositivo-glitch-row" style="margin-top: 8px; display: flex; gap: 6px;">
+              <button type="button" class="disp-glitch-btn" onclick="MesaNotebookSara.triggerGlitch()" title="Aciona chiado intenso e derruba sinal para todos">
+                ⚡ Provocar Chiado & Queda
+              </button>
+              <button type="button" class="disp-glitch-btn restore" onclick="MesaNotebookSara.restoreSignal()" title="Restaura sinal do monitor">
+                ↺ Restaurar Sinal
+              </button>
+            </div>
+
+            <div class="disp-config-section" style="margin-top: 10px;">
+              <div style="font-size: 0.68rem; color: #a3a3a3; font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">Imagens das Câmeras (URLs / Web):</div>
+              <input type="text" id="disp-cam-url-1" placeholder="URL Cam 1 (Sala de Estar)..." class="coletaveis-search-input" style="font-size: 0.72rem; padding: 4px 8px; height: 26px; margin-bottom: 4px;" onchange="MesaNotebookSara.setCustomCamImage(1, this.value)">
+              <input type="text" id="disp-cam-url-2" placeholder="URL Cam 2 (Escadaria)..." class="coletaveis-search-input" style="font-size: 0.72rem; padding: 4px 8px; height: 26px; margin-bottom: 4px;" onchange="MesaNotebookSara.setCustomCamImage(2, this.value)">
+              <input type="text" id="disp-cam-url-3" placeholder="URL Cam 3 (Corredor 2º Andar)..." class="coletaveis-search-input" style="font-size: 0.72rem; padding: 4px 8px; height: 26px;" onchange="MesaNotebookSara.setCustomCamImage(3, this.value)">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- OVERLAY DE TELA CHEIA: NOTEBOOK DA SARA -->
+  <div id="notebook-sara-overlay" class="notebook-sara-overlay">
+    <!-- Botão de Fechar Exclusivo do Mestre -->
+    <button id="notebook-close-btn" class="notebook-close-btn" onclick="MesaNotebookSara.stop()" title="Encerrar Transmissão (Fade Out)">&times;</button>
+
+    <!-- 1. TELA DE CARREGAMENTO / BOOT (WINDOWS SPINNER) -->
+    <div id="notebook-boot-stage" class="notebook-stage notebook-boot-stage">
+      <div class="windows-boot-content">
+        <div class="windows-boot-device">
+          <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="#fff" stroke-width="1.5">
+            <rect x="3" y="4" width="18" height="12" rx="1.5"></rect>
+            <line x1="2" y1="20" x2="22" y2="20"></line>
+            <line x1="9" y1="16" x2="15" y2="16"></line>
+          </svg>
+        </div>
+        <!-- Windows Spinning Dots -->
+        <div class="windows-spinner">
+          <div class="win-dot"></div>
+          <div class="win-dot"></div>
+          <div class="win-dot"></div>
+          <div class="win-dot"></div>
+          <div class="win-dot"></div>
+        </div>
+        <div class="windows-boot-text">Carregando perfil do usuário...</div>
+      </div>
+    </div>
+
+    <!-- 2. TELA DE BLOQUEIO DO WINDOWS -->
+    <div id="notebook-lock-stage" class="notebook-stage notebook-lock-stage" style="display: none;">
+      <div class="windows-lock-wallpaper"></div>
+      <div class="windows-lock-vignette"></div>
+
+      <!-- Relógio e Data do Windows -->
+      <div class="windows-lock-clock-box">
+        <div id="windows-lock-time" class="windows-lock-time">23:42</div>
+        <div id="windows-lock-date" class="windows-lock-date">Sexta-feira, 14 de Outubro</div>
+      </div>
+
+      <!-- Login Central: Sara Auguil -->
+      <div class="windows-login-box">
+        <div class="windows-user-avatar">
+          <img src="assets/sara_avatar.jpg" alt="Sara Auguil" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%23888\'><circle cx=\'12\' cy=\'8\' r=\'5\'/><path d=\'M3 21v-2a7 7 0 0 1 14 0v2\'/></svg>'">
+        </div>
+        <div class="windows-user-name">Sara Auguil</div>
+
+        <form id="notebook-password-form" class="windows-password-form" onsubmit="MesaNotebookSara.submitPassword(event)">
+          <div class="windows-input-wrapper" id="windows-input-wrapper">
+            <input type="password" id="notebook-password-input" class="windows-password-input" placeholder="PIN ou Senha" autocomplete="off" spellcheck="false">
+            <button type="submit" class="windows-submit-arrow" title="Entrar">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+          </div>
+          <div id="notebook-password-error" class="windows-password-error" style="display: none;">
+            Senha Incorreta.
+          </div>
+        </form>
+      </div>
+
+      <!-- Canto Inferior Direito: Atalho de Câmeras de Segurança -->
+      <div class="windows-quick-access-wrapper">
+        <button type="button" class="windows-quick-access-btn" onclick="MesaNotebookSara.openCameras()" title="Acesso Rápido ao Sistema de Monitoramento">
+          <div class="quick-access-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M23 7l-7 5 7 5V7z"></path>
+              <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+            </svg>
+          </div>
+          <span class="quick-access-text">Acesso Rápido: Câmeras de Segurança</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 3. SISTEMA DE CÂMERAS DE SEGURANÇA (CFTV) -->
+    <div id="notebook-cctv-stage" class="notebook-stage notebook-cctv-stage" style="display: none;">
+      <!-- Topbar CFTV -->
+      <div class="cctv-topbar">
+        <div class="cctv-topbar-left">
+          <span class="cctv-rec-badge"><span class="cctv-rec-dot"></span>REC</span>
+          <span class="cctv-system-title">SISTEMA CFTV RESIDENCIAL • CASA AUGUIL</span>
+          <span id="cctv-cam-tag" class="cctv-cam-tag">CAM 01 - SALA DE ESTAR</span>
+        </div>
+        <div class="cctv-topbar-right">
+          <span id="cctv-timestamp" class="cctv-timestamp">2026-10-14 23:42:19</span>
+          <button type="button" class="cctv-btn-nav-lock" onclick="MesaNotebookSara.returnToLock()" title="Voltar para a tela de bloqueio">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span>Bloquear</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Menu de Navegação das Câmeras -->
+      <div class="cctv-nav-bar">
+        <button type="button" id="cctv-tab-1" class="cctv-tab-btn active" onclick="MesaNotebookSara.switchCamera(1)">
+          <span class="cctv-cam-num">[ 01 ]</span>
+          <span>Câmera 1 - Sala de Estar</span>
+        </button>
+        <button type="button" id="cctv-tab-2" class="cctv-tab-btn" onclick="MesaNotebookSara.switchCamera(2)">
+          <span class="cctv-cam-num">[ 02 ]</span>
+          <span>Câmera 2 - Escadaria</span>
+        </button>
+        <button type="button" id="cctv-tab-3" class="cctv-tab-btn" onclick="MesaNotebookSara.switchCamera(3)">
+          <span class="cctv-cam-num">[ 03 ]</span>
+          <span>Câmera 3 - Corredor do 2º Andar</span>
+        </button>
+      </div>
+
+      <!-- Monitor Central das Câmeras -->
+      <div class="cctv-viewport" id="cctv-viewport">
+        <!-- Feed Visual da Câmera -->
+        <div class="cctv-feed-frame" id="cctv-feed-frame">
+          <img id="cctv-feed-img" class="cctv-feed-img" src="" alt="Transmissão CFTV" style="display: none;" />
+
+          <!-- Silhueta Procedural Noturna de Backup para Cada Sala -->
+          <div id="cctv-feed-procedural" class="cctv-procedural-scene">
+            <svg id="cctv-procedural-svg" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" class="cctv-procedural-svg">
+              <!-- Conteúdo renderizado dinamicamente via MesaNotebookSara -->
+            </svg>
+          </div>
+
+          <!-- Camada de Scanlines e Granulação de TV CRT -->
+          <div class="cctv-scanlines"></div>
+          <div class="cctv-vignette"></div>
+
+          <!-- Overlays de HUD da Câmera -->
+          <div class="cctv-hud-overlay">
+            <div class="cctv-hud-tl">
+              <div id="cctv-hud-channel">CH-01 [SALA DE ESTAR]</div>
+              <div>15.0 FPS • VISÃO NOTURNA P&B</div>
+            </div>
+            <div class="cctv-hud-tr">
+              <span class="cctv-hud-lux">0.02 LUX</span>
+              <span class="cctv-hud-signal">SINAL ESTÁVEL</span>
+            </div>
+            <div class="cctv-hud-crosshair"></div>
+            <div class="cctv-hud-bl">
+              <div id="cctv-hud-time">23:42:19.04</div>
+            </div>
+            <div class="cctv-hud-br">
+              <div>SENSOR ATIVO • CASA AUGUIL</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas de Estática Intensa / Chiado de TV -->
+        <canvas id="cctv-static-canvas" class="cctv-static-canvas" style="display: none;"></canvas>
+
+        <!-- Tela Preta de Sinal Perdido -->
+        <div id="cctv-signal-lost" class="cctv-signal-lost" style="display: none;">
+          <div class="signal-lost-glitch-icon">
+            <svg viewBox="0 0 24 24" width="68" height="68" fill="none" stroke="#ef4444" stroke-width="1.8">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+            </svg>
+          </div>
+          <div class="signal-lost-title">SINAL PERDIDO</div>
+          <div class="signal-lost-code">CONEXÃO COM O RECEPTOR INTERROMPIDA</div>
+          <div class="signal-lost-detail">SEM ENTRADA DE VÍDEO • VERIFIQUE O ALIMENTADOR DA CÂMERA</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ABERTURA OVERLAY -->
   <div id="abertura-overlay" class="abertura-overlay">
