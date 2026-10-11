@@ -11,9 +11,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/variables.css?v=1.5.5">
-  <link rel="stylesheet" href="css/components.css?v=1.5.5">
-  <link rel="stylesheet" href="css/mesa.css?v=1.5.5">
+  <link rel="stylesheet" href="css/variables.css?v=1.5.6">
+  <link rel="stylesheet" href="css/components.css?v=1.5.6">
+  <link rel="stylesheet" href="css/mesa.css?v=1.5.6">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1090,11 +1090,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=1.5.5"></script>
+<script src="js/campaign-data.js?v=1.5.6"></script>
 
-<script src="js/mesa.js?v=1.5.5"></script>
+<script src="js/mesa.js?v=1.5.6"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v1.5.5</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.5.6</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -1214,8 +1214,8 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
       <!-- Relógio e Data do Windows -->
       <div class="windows-lock-clock-box">
-        <div id="windows-lock-time" class="windows-lock-time">23:42</div>
-        <div id="windows-lock-date" class="windows-lock-date">Sexta-feira, 14 de Outubro</div>
+        <div id="windows-lock-time" class="windows-lock-time">22:30</div>
+        <div id="windows-lock-date" class="windows-lock-date">terça-feira, 4 de agosto de 2061</div>
       </div>
 
       <!-- Login Central: Sara Auguil -->
@@ -1233,21 +1233,21 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
             </button>
           </div>
           <div id="notebook-password-error" class="windows-password-error" style="display: none;">
-            Senha Incorreta.
+            Senha incorreta
           </div>
         </form>
       </div>
 
       <!-- Canto Inferior Direito: Atalho de Câmeras de Segurança -->
       <div class="windows-quick-access-wrapper">
-        <button type="button" class="windows-quick-access-btn" onclick="MesaNotebookSara.openCameras()" title="Acesso Rápido ao Sistema de Monitoramento">
+        <button type="button" class="windows-quick-access-btn" onclick="MesaNotebookSara.openCameras()" title="Câmeras">
           <div class="quick-access-icon">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M23 7l-7 5 7 5V7z"></path>
               <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
             </svg>
           </div>
-          <span class="quick-access-text">Acesso Rápido: Câmeras de Segurança</span>
+          <span class="quick-access-text">Câmeras</span>
         </button>
       </div>
     </div>
@@ -1262,7 +1262,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
           <span id="cctv-cam-tag" class="cctv-cam-tag">CAM 01 - SALA DE ESTAR</span>
         </div>
         <div class="cctv-topbar-right">
-          <span id="cctv-timestamp" class="cctv-timestamp">2026-10-14 23:42:19</span>
+          <span id="cctv-timestamp" class="cctv-timestamp">04/08/2061 22:30:00</span>
           <button type="button" class="cctv-btn-nav-lock" onclick="MesaNotebookSara.returnToLock()" title="Voltar para a tela de bloqueio">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
             <span>Bloquear</span>
@@ -1288,15 +1288,28 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
       <!-- Monitor Central das Câmeras -->
       <div class="cctv-viewport" id="cctv-viewport">
-        <!-- Feed Visual da Câmera -->
+        <!-- Feed Visual da Câmera (Completamente Preto com Aviso) -->
         <div class="cctv-feed-frame" id="cctv-feed-frame">
           <img id="cctv-feed-img" class="cctv-feed-img" src="" alt="Transmissão CFTV" style="display: none;" />
 
-          <!-- Silhueta Procedural Noturna de Backup para Cada Sala -->
-          <div id="cctv-feed-procedural" class="cctv-procedural-scene">
-            <svg id="cctv-procedural-svg" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" class="cctv-procedural-svg">
-              <!-- Conteúdo renderizado dinamicamente via MesaNotebookSara -->
-            </svg>
+          <!-- Silhueta Procedural (Desativada / Tela Preta) -->
+          <div id="cctv-feed-procedural" class="cctv-procedural-scene" style="display: none;">
+            <svg id="cctv-procedural-svg" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" class="cctv-procedural-svg"></svg>
+          </div>
+
+          <!-- Aviso Central: ALGO ESTÁ DISTORCENDO AS IMAGENS -->
+          <div id="cctv-distortion-warning" class="cctv-distortion-warning">
+            <div class="distortion-warning-box">
+              <div class="distortion-warning-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="square">
+                  <polygon points="12 2 2 22 22 22 12 2"></polygon>
+                  <line x1="12" y1="9" x2="12" y2="14"></line>
+                  <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                </svg>
+              </div>
+              <div class="distortion-warning-text">ALGO ESTÁ DISTORCENDO AS IMAGENS</div>
+              <div class="distortion-warning-sub">BLOQUEIO TÉCNICO DE CAPTAÇÃO ÓPTICA • LUZ NULA</div>
+            </div>
           </div>
 
           <!-- Camada de Scanlines e Granulação de TV CRT -->
@@ -1310,12 +1323,12 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
               <div>15.0 FPS • VISÃO NOTURNA P&B</div>
             </div>
             <div class="cctv-hud-tr">
-              <span class="cctv-hud-lux">0.02 LUX</span>
-              <span class="cctv-hud-signal">SINAL ESTÁVEL</span>
+              <span class="cctv-hud-lux">0.00 LUX</span>
+              <span class="cctv-hud-signal" style="color: #ef4444;">DISTORÇÃO DETECTADA</span>
             </div>
             <div class="cctv-hud-crosshair"></div>
             <div class="cctv-hud-bl">
-              <div id="cctv-hud-time">23:42:19.04</div>
+              <div id="cctv-hud-time">22:30:00.00</div>
             </div>
             <div class="cctv-hud-br">
               <div>SENSOR ATIVO • CASA AUGUIL</div>
@@ -1326,17 +1339,29 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         <!-- Canvas de Estática Intensa / Chiado de TV -->
         <canvas id="cctv-static-canvas" class="cctv-static-canvas" style="display: none;"></canvas>
 
-        <!-- Tela Preta de Sinal Perdido -->
+        <!-- Tela Preta de Sinal Perdido (CFTV Rústico / Técnico) -->
         <div id="cctv-signal-lost" class="cctv-signal-lost" style="display: none;">
-          <div class="signal-lost-glitch-icon">
-            <svg viewBox="0 0 24 24" width="68" height="68" fill="none" stroke="#ef4444" stroke-width="1.8">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
-            </svg>
+          <div class="signal-lost-box">
+            <div class="signal-lost-icon-wrapper">
+              <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="square">
+                <rect x="3" y="3" width="18" height="18"></rect>
+                <line x1="8" y1="8" x2="16" y2="16"></line>
+                <line x1="16" y1="8" x2="8" y2="16"></line>
+              </svg>
+            </div>
+            <div class="signal-lost-header">
+              <div class="signal-lost-title">SINAL PERDIDO</div>
+              <div class="signal-lost-sub">PERDA TOTAL DE SINAL DE VÍDEO [NO VIDEO INPUT]</div>
+            </div>
+            <div class="signal-lost-divider"></div>
+            <div class="signal-lost-tech-info">
+              <div class="tech-row"><span>SISTEMA:</span><span>CFTV RESIDENCIAL • CASA AUGUIL</span></div>
+              <div class="tech-row"><span>CANAL:</span><span id="signal-lost-cam-name">CAM 01 - SALA DE ESTAR</span></div>
+              <div class="tech-row"><span>STATUS:</span><span class="tech-status-error">DESCONECTADO / SEM PORTADORA</span></div>
+              <div class="tech-row"><span>CÓDIGO:</span><span>ERR_0x004F_SYNC_FAILURE</span></div>
+            </div>
+            <div class="signal-lost-footer">VERIFIQUE A FIAÇÃO COAXIAL OU O ALIMENTADOR DA CÂMERA</div>
           </div>
-          <div class="signal-lost-title">SINAL PERDIDO</div>
-          <div class="signal-lost-code">CONEXÃO COM O RECEPTOR INTERROMPIDA</div>
-          <div class="signal-lost-detail">SEM ENTRADA DE VÍDEO • VERIFIQUE O ALIMENTADOR DA CÂMERA</div>
         </div>
       </div>
     </div>

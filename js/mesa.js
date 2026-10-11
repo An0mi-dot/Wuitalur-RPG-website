@@ -2231,7 +2231,7 @@ const MesaChat = {
         if (payload.payload && payload.payload.camImages) {
           MesaNotebookSara.camImages = payload.payload.camImages;
         }
-        MesaNotebookSara.triggerStart();
+        MesaNotebookSara.triggerStart(payload.payload && payload.payload.sessionStartTime);
       }
     });
 
@@ -3388,7 +3388,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.5.5`;
+      badge.textContent = `v1.5.6`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -5577,6 +5577,7 @@ window.MesaDispositivos = MesaDispositivos;
 
 
 // ==========================================================================
+// ==========================================================================
 // MESA NOTEBOOK DA SARA (SISTEMA OPERACIONAL & CFTV)
 // ==========================================================================
 const MesaNotebookSara = {
@@ -5585,6 +5586,7 @@ const MesaNotebookSara = {
   activeCam: 1,
   signalLost: false,
   isGlitching: false,
+  sessionStartTime: null,
   camImages: {
     1: '',
     2: '',
@@ -5601,6 +5603,7 @@ const MesaNotebookSara = {
     this.stage = 'boot';
     this.signalLost = false;
     this.isGlitching = false;
+    this.sessionStartTime = Date.now();
 
     // Broadcast to players
     if (MesaChat && MesaChat.channel) {
@@ -5609,12 +5612,13 @@ const MesaNotebookSara = {
         event: 'notebook_start',
         payload: {
           activeCam: this.activeCam,
-          camImages: this.camImages
+          camImages: this.camImages,
+          sessionStartTime: this.sessionStartTime
         }
       });
     }
 
-    this.triggerStart();
+    this.triggerStart(this.sessionStartTime);
   },
 
   stop() {
@@ -5629,7 +5633,7 @@ const MesaNotebookSara = {
     this.triggerStop();
   },
 
-  triggerStart() {
+  triggerStart(sessionStartTime) {
     const overlay = document.getElementById('notebook-sara-overlay');
     if (!overlay) return;
 
@@ -5637,6 +5641,7 @@ const MesaNotebookSara = {
     this.stage = 'boot';
     this.signalLost = false;
     this.isGlitching = false;
+    this.sessionStartTime = sessionStartTime || this.sessionStartTime || Date.now();
 
     // Atualiza status no drawer do Mestre
     const badge = document.getElementById('notebook-status-badge');
@@ -5678,6 +5683,7 @@ const MesaNotebookSara = {
     clearTimeout(this.bootTimeout);
     clearTimeout(this.glitchTimeout);
     clearInterval(this.clockInterval);
+    this.sessionStartTime = null;
 
     // Atualiza status no drawer do Mestre
     const badge = document.getElementById('notebook-status-badge');
@@ -5710,26 +5716,35 @@ const MesaNotebookSara = {
 
   startClock() {
     clearInterval(this.clockInterval);
+    if (!this.sessionStartTime) {
+      this.sessionStartTime = Date.now();
+    }
     const update = () => {
-      const now = new Date();
-      const hrs = String(now.getHours()).padStart(2, '0');
-      const mins = String(now.getMinutes()).padStart(2, '0');
-      const secs = String(now.getSeconds()).padStart(2, '0');
+      const elapsedMs = Date.now() - this.sessionStartTime;
+      const elapsedSec = Math.floor(elapsedMs / 1000);
+
+      // Inicia a partir das 22:30:00 da noite
+      const baseSec = (22 * 60 + 30) * 60; // 81000 segundos
+      const currentSecTotal = baseSec + elapsedSec;
+
+      const hrs = String(Math.floor(currentSecTotal / 3600) % 24).padStart(2, '0');
+      const mins = String(Math.floor((currentSecTotal % 3600) / 60)).padStart(2, '0');
+      const secs = String(currentSecTotal % 60).padStart(2, '0');
+      const ms = String(Math.floor((elapsedMs % 1000) / 10)).padStart(2, '0');
 
       const timeEl = document.getElementById('windows-lock-time');
       if (timeEl) timeEl.textContent = `${hrs}:${mins}`;
 
+      const dateEl = document.getElementById('windows-lock-date');
+      if (dateEl) dateEl.textContent = 'terça-feira, 4 de agosto de 2061';
+
       const cctvTime = document.getElementById('cctv-timestamp');
       if (cctvTime) {
-        const yr = now.getFullYear();
-        const mo = String(now.getMonth() + 1).padStart(2, '0');
-        const dy = String(now.getDate()).padStart(2, '0');
-        cctvTime.textContent = `${yr}-${mo}-${dy} ${hrs}:${mins}:${secs}`;
+        cctvTime.textContent = `04/08/2061 ${hrs}:${mins}:${secs}`;
       }
 
       const hudTime = document.getElementById('cctv-hud-time');
       if (hudTime) {
-        const ms = String(Math.floor(now.getMilliseconds() / 10)).padStart(2, '0');
         hudTime.textContent = `${hrs}:${mins}:${secs}.${ms}`;
       }
     };
@@ -5746,13 +5761,24 @@ const MesaNotebookSara = {
     if (lockStage) lockStage.style.display = 'flex';
     if (cctvStage) cctvStage.style.display = 'none';
 
+    const wrapper = document.getElementById('windows-input-wrapper');
     const input = document.getElementById('notebook-password-input');
     const err = document.getElementById('notebook-password-error');
+
+    if (wrapper) wrapper.classList.remove('has-error', 'shake-error');
+    if (err) err.style.display = 'none';
+
     if (input) {
       input.value = '';
+      if (!input.dataset.boundInput) {
+        input.dataset.boundInput = '1';
+        input.addEventListener('input', () => {
+          if (wrapper) wrapper.classList.remove('has-error', 'shake-error');
+          if (err) err.style.display = 'none';
+        });
+      }
       setTimeout(() => input.focus(), 100);
     }
-    if (err) err.style.display = 'none';
   },
 
   submitPassword(e) {
@@ -5762,12 +5788,12 @@ const MesaNotebookSara = {
     const input = document.getElementById('notebook-password-input');
 
     if (wrapper) {
-      wrapper.classList.remove('shake-error');
-      void wrapper.offsetWidth; // trigger reflow
-      wrapper.classList.add('shake-error');
-      setTimeout(() => wrapper.classList.remove('shake-error'), 450);
+      wrapper.classList.add('has-error');
     }
-    if (err) err.style.display = 'block';
+    if (err) {
+      err.textContent = 'Senha incorreta';
+      err.style.display = 'block';
+    }
     if (input) {
       input.value = '';
       input.focus();
@@ -5869,23 +5895,13 @@ const MesaNotebookSara = {
     const imgEl = document.getElementById('cctv-feed-img');
     const procEl = document.getElementById('cctv-feed-procedural');
     const svgEl = document.getElementById('cctv-procedural-svg');
+    const distEl = document.getElementById('cctv-distortion-warning');
 
-    const customUrl = this.camImages[this.activeCam];
-    if (customUrl && customUrl.trim() !== '') {
-      if (imgEl) {
-        imgEl.src = customUrl.trim();
-        imgEl.style.display = 'block';
-        imgEl.onerror = () => {
-          imgEl.style.display = 'none';
-          if (procEl) procEl.style.display = 'block';
-        };
-      }
-      if (procEl) procEl.style.display = 'none';
-    } else {
-      if (imgEl) imgEl.style.display = 'none';
-      if (procEl) procEl.style.display = 'block';
-      if (svgEl) svgEl.innerHTML = this.getProceduralSceneSVG(this.activeCam);
-    }
+    // Todas as câmeras exibem tela preta e aviso centralizado
+    if (imgEl) imgEl.style.display = 'none';
+    if (procEl) procEl.style.display = 'none';
+    if (svgEl) svgEl.innerHTML = '';
+    if (distEl) distEl.style.display = 'flex';
   },
 
   getProceduralSceneSVG(camNum) {
@@ -5982,7 +5998,16 @@ const MesaNotebookSara = {
       this.isGlitching = false;
 
       const lostEl = document.getElementById('cctv-signal-lost');
-      if (lostEl) lostEl.style.display = 'flex';
+      if (lostEl) {
+        lostEl.style.display = 'flex';
+        const camNames = {
+          1: 'CAM 01 - SALA DE ESTAR',
+          2: 'CAM 02 - ESCADARIA',
+          3: 'CAM 03 - CORREDOR DO 2º ANDAR'
+        };
+        const lostCamTag = document.getElementById('signal-lost-cam-name');
+        if (lostCamTag) lostCamTag.textContent = camNames[this.activeCam] || `CAM 0${this.activeCam}`;
+      }
 
       [1, 2, 3].forEach(n => {
         const btn = document.getElementById(`cctv-tab-${n}`);
@@ -6095,7 +6120,18 @@ const MesaNotebookSara = {
     if (data.signalLost !== undefined) {
       this.signalLost = data.signalLost;
       const lostEl = document.getElementById('cctv-signal-lost');
-      if (lostEl) lostEl.style.display = this.signalLost ? 'flex' : 'none';
+      if (lostEl) {
+        lostEl.style.display = this.signalLost ? 'flex' : 'none';
+        if (this.signalLost) {
+          const camNames = {
+            1: 'CAM 01 - SALA DE ESTAR',
+            2: 'CAM 02 - ESCADARIA',
+            3: 'CAM 03 - CORREDOR DO 2º ANDAR'
+          };
+          const lostCamTag = document.getElementById('signal-lost-cam-name');
+          if (lostCamTag) lostCamTag.textContent = camNames[this.activeCam] || `CAM 0${this.activeCam}`;
+        }
+      }
       [1, 2, 3].forEach(n => {
         const btn = document.getElementById(`cctv-tab-${n}`);
         if (btn) {

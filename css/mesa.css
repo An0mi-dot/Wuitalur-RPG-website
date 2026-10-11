@@ -8365,16 +8365,11 @@ body.dispositivos-drawer-open .dispositivos-drawer {
   box-shadow: 0 0 16px rgba(255, 255, 255, 0.2);
 }
 
+.windows-input-wrapper.has-error,
 .windows-input-wrapper.shake-error {
-  animation: shakeError 0.45s ease-in-out;
   border-color: #ef4444;
-  background: rgba(239, 68, 68, 0.15);
-}
-
-@keyframes shakeError {
-  0%, 100% { transform: translateX(0); }
-  20%, 60% { transform: translateX(-10px); }
-  40%, 80% { transform: translateX(10px); }
+  background: rgba(239, 68, 68, 0.2);
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.35);
 }
 
 .windows-password-input {
@@ -8617,6 +8612,7 @@ body.dispositivos-drawer-open .dispositivos-drawer {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background: #000000;
 }
 
 /* Imagem com Filtro Preto e Branco / Visão Noturna */
@@ -8630,13 +8626,60 @@ body.dispositivos-drawer-open .dispositivos-drawer {
 .cctv-procedural-scene {
   width: 100%;
   height: 100%;
-  background: #050608;
+  background: #000000;
 }
 
 .cctv-procedural-svg {
   width: 100%;
   height: 100%;
   filter: grayscale(100%) contrast(140%) brightness(85%);
+}
+
+/* Aviso Central de Distorção das Câmeras */
+.cctv-distortion-warning {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 12;
+  pointer-events: none;
+  padding: 20px;
+}
+
+.distortion-warning-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: rgba(8, 8, 8, 0.92);
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  padding: 16px 28px;
+  text-align: center;
+  max-width: 90%;
+}
+
+.distortion-warning-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.distortion-warning-text {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(1rem, 2.6vw, 1.35rem);
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: #f4f4f5;
+  text-transform: uppercase;
+}
+
+.distortion-warning-sub {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: #71717a;
+  text-transform: uppercase;
 }
 
 /* Scanlines e Granulação CRT */
@@ -8737,49 +8780,89 @@ body.dispositivos-drawer-open .dispositivos-drawer {
   pointer-events: none;
 }
 
-/* Tela Preta de Sinal Perdido */
+/* Tela Preta de Sinal Perdido (CFTV Rústico e Técnico) */
 .cctv-signal-lost {
   position: absolute;
   inset: 0;
-  background: #000;
+  background: #000000;
   z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 24px;
+}
+
+.signal-lost-box {
+  width: 100%;
+  max-width: 540px;
+  border: 2px solid #dc2626;
+  background: #080808;
+  padding: 24px 28px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 14px;
-  color: #fff;
-  font-family: monospace;
   text-align: center;
-  padding: 30px;
 }
 
-.signal-lost-glitch-icon {
-  animation: pulseGlitchIcon 1.2s infinite;
+.signal-lost-icon-wrapper {
+  margin-bottom: 12px;
 }
 
-@keyframes pulseGlitchIcon {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.95); }
+.signal-lost-header {
+  margin-bottom: 14px;
 }
 
 .signal-lost-title {
-  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
   font-weight: 800;
-  color: #ef4444;
+  color: #dc2626;
   letter-spacing: 0.15em;
-  text-shadow: 0 0 18px rgba(239, 68, 68, 0.6);
+  margin-bottom: 4px;
 }
 
-.signal-lost-code {
-  font-size: 1rem;
+.signal-lost-sub {
+  font-size: 0.82rem;
+  color: #ef4444;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.signal-lost-divider {
+  width: 100%;
+  height: 1px;
+  background: #27272a;
+  margin-bottom: 16px;
+}
+
+.signal-lost-tech-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.8rem;
+  text-align: left;
+  background: #111111;
+  padding: 12px 14px;
+  border: 1px solid #27272a;
+  margin-bottom: 14px;
+}
+
+.tech-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
   color: #a1a1aa;
-  letter-spacing: 0.1em;
 }
 
-.signal-lost-detail {
-  font-size: 0.78rem;
+.tech-status-error {
+  color: #ef4444;
+  font-weight: bold;
+}
+
+.signal-lost-footer {
+  font-size: 0.72rem;
   color: #71717a;
-  max-width: 520px;
-  line-height: 1.5;
+  letter-spacing: 0.05em;
 }
