@@ -11,9 +11,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/variables.css?v=1.5.8">
-  <link rel="stylesheet" href="css/components.css?v=1.5.8">
-  <link rel="stylesheet" href="css/mesa.css?v=1.5.8">
+  <link rel="stylesheet" href="css/variables.css?v=1.5.7">
+  <link rel="stylesheet" href="css/components.css?v=1.5.7">
+  <link rel="stylesheet" href="css/mesa.css?v=1.5.7">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1090,11 +1090,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=1.5.8"></script>
+<script src="js/campaign-data.js?v=1.5.7"></script>
 
-<script src="js/mesa.js?v=1.5.8"></script>
+<script src="js/mesa.js?v=1.5.7"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v1.5.8</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.5.7</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -1159,10 +1159,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
               <button type="button" id="disp-ctrl-cam-3" class="disp-cam-btn" onclick="MesaNotebookSara.setCamera(3)">Cam 3: Corredor</button>
             </div>
 
-            <div class="dispositivo-glitch-row" style="margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap;">
-              <button type="button" id="disp-btn-anomaly" class="disp-glitch-btn anomaly" onclick="MesaNotebookSara.toggleAnomalyDistortion()" title="Aciona distorção com aviso de Ajustando as imagens">
-                ⚠ Ajustar Imagens (Distorção)
-              </button>
+            <div class="dispositivo-glitch-row" style="margin-top: 8px; display: flex; gap: 6px;">
               <button type="button" class="disp-glitch-btn" onclick="MesaNotebookSara.triggerGlitch()" title="Aciona chiado intenso e derruba sinal para todos">
                 ⚡ Provocar Chiado & Queda
               </button>
@@ -1266,11 +1263,6 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         </div>
         <div class="cctv-topbar-right">
           <span id="cctv-timestamp" class="cctv-timestamp">04/08/2061 22:30:00</span>
-          <!-- Botão Exclusivo do Mestre: Distorção / Ajustando as Imagens -->
-          <button type="button" id="cctv-master-distort-btn" class="cctv-btn-master-distort master-only" onclick="MesaNotebookSara.toggleAnomalyDistortion()" title="Acionar anomalia e distorção das imagens (Exclusivo do Mestre)" style="display: none;">
-            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-            <span id="cctv-master-distort-label">Distorcer Câmeras</span>
-          </button>
           <button type="button" class="cctv-btn-nav-lock" onclick="MesaNotebookSara.returnToLock()" title="Voltar para a tela de bloqueio">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
             <span>Bloquear</span>
@@ -1305,21 +1297,6 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
             <svg id="cctv-procedural-svg" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" class="cctv-procedural-svg"></svg>
           </div>
 
-          <!-- Aviso Central: ALGO ESTÁ DISTORCENDO AS IMAGENS -->
-          <div id="cctv-distortion-warning" class="cctv-distortion-warning">
-            <div class="distortion-warning-box">
-              <div class="distortion-warning-icon">
-                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="square">
-                  <polygon points="12 2 2 22 22 22 12 2"></polygon>
-                  <line x1="12" y1="9" x2="12" y2="14"></line>
-                  <line x1="12" y1="18" x2="12.01" y2="18"></line>
-                </svg>
-              </div>
-              <div class="distortion-warning-text">ALGO ESTÁ DISTORCENDO AS IMAGENS</div>
-              <div class="distortion-warning-sub">BLOQUEIO TÉCNICO DE CAPTAÇÃO ÓPTICA • LUZ NULA</div>
-            </div>
-          </div>
-
           <!-- Camada de Scanlines e Granulação de TV CRT -->
           <div class="cctv-scanlines"></div>
           <div class="cctv-vignette"></div>
@@ -1331,8 +1308,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
               <div>15.0 FPS • VISÃO NOTURNA P&B</div>
             </div>
             <div class="cctv-hud-tr">
-              <span class="cctv-hud-lux">0.00 LUX</span>
-              <span class="cctv-hud-signal" style="color: #ef4444;">DISTORÇÃO DETECTADA</span>
+              <span class="cctv-compromised-notice">Imagem comprometida</span>
             </div>
             <div class="cctv-hud-crosshair"></div>
             <div class="cctv-hud-bl">
@@ -1369,29 +1345,6 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
               <div class="tech-row"><span>CÓDIGO:</span><span>ERR_0x004F_SYNC_FAILURE</span></div>
             </div>
             <div class="signal-lost-footer">VERIFIQUE A FIAÇÃO COAXIAL OU O ALIMENTADOR DA CÂMERA</div>
-          </div>
-        </div>
-
-        <!-- Aviso de Sobreposição Máxima: AJUSTANDO AS IMAGENS -->
-        <div id="cctv-adjusting-warning" class="cctv-adjusting-warning" style="display: none;">
-          <div class="adjusting-warning-container">
-            <div class="adjusting-warning-box">
-              <div class="adjusting-warning-icon">
-                <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#ef4444" stroke-width="2.5">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="12" y1="8" x2="12" y2="12"></line>
-                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                </svg>
-              </div>
-              <div class="adjusting-warning-title">AJUSTANDO AS IMAGENS</div>
-              <div class="adjusting-warning-code" id="adjusting-warning-code">ANOMALIA DETECTADA • RECALIBRANDO SENSORES [0x7F2C]</div>
-              <div class="adjusting-progress-track">
-                <div class="adjusting-progress-bar"></div>
-              </div>
-              <div class="adjusting-warning-footer" id="adjusting-warning-footer">
-                DESVIO DE COORDENADAS: #8491 • FLUXO INVERTIDO
-              </div>
-            </div>
           </div>
         </div>
       </div>

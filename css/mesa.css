@@ -8125,25 +8125,6 @@ body.dispositivos-drawer-open .dispositivos-drawer {
   color: #fff;
 }
 
-.disp-glitch-btn.anomaly {
-  background: rgba(234, 88, 12, 0.15);
-  border-color: rgba(234, 88, 12, 0.45);
-  color: #fdba74;
-}
-
-.disp-glitch-btn.anomaly:hover {
-  background: rgba(234, 88, 12, 0.35);
-  border-color: #f97316;
-  color: #fff;
-}
-
-.disp-glitch-btn.anomaly.active {
-  background: #ea580c;
-  border-color: #f97316;
-  color: #fff;
-  box-shadow: 0 0 10px rgba(234, 88, 12, 0.6);
-}
-
 
 /* ==========================================================================
    NOTEBOOK DA SARA: OVERLAY DE TELA CHEIA
@@ -8561,42 +8542,6 @@ body.dispositivos-drawer-open .dispositivos-drawer {
   color: #fff;
 }
 
-.cctv-btn-master-distort {
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.45);
-  color: #fca5a5;
-  padding: 4px 10px;
-  font-size: 0.74rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s;
-  font-family: monospace;
-  text-transform: uppercase;
-}
-
-.cctv-btn-master-distort:hover {
-  background: rgba(239, 68, 68, 0.35);
-  border-color: #ef4444;
-  color: #fff;
-  box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
-}
-
-.cctv-btn-master-distort.active {
-  background: #dc2626;
-  border-color: #ef4444;
-  color: #fff;
-  box-shadow: 0 0 14px rgba(239, 68, 68, 0.7);
-  animation: pulseDistortBtn 1s infinite alternate;
-}
-
-@keyframes pulseDistortBtn {
-  from { opacity: 0.85; }
-  to { opacity: 1; transform: scale(1.02); }
-}
-
 /* Barra de Navegação das Câmeras */
 .cctv-nav-bar {
   flex-shrink: 0;
@@ -8690,51 +8635,17 @@ body.dispositivos-drawer-open .dispositivos-drawer {
   filter: grayscale(100%) contrast(140%) brightness(85%);
 }
 
-/* Aviso Central de Distorção das Câmeras */
-.cctv-distortion-warning {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 12;
-  pointer-events: none;
-  padding: 20px;
-}
-
-.distortion-warning-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  background: rgba(8, 8, 8, 0.92);
-  border: 1px solid rgba(239, 68, 68, 0.45);
-  padding: 16px 28px;
-  text-align: center;
-  max-width: 90%;
-}
-
-.distortion-warning-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.distortion-warning-text {
+/* Aviso Discreto no Canto Superior Direito */
+.cctv-compromised-notice {
+  display: inline-block;
+  color: #ef4444;
   font-family: 'Courier New', Courier, monospace;
-  font-size: clamp(1rem, 2.6vw, 1.35rem);
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  color: #f4f4f5;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-}
-
-.distortion-warning-sub {
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  color: #71717a;
-  text-transform: uppercase;
+  opacity: 0.9;
+  text-shadow: 0 0 6px rgba(239, 68, 68, 0.4), 0 0 2px rgba(0, 0, 0, 0.9);
 }
 
 /* Scanlines e Granulação CRT */
@@ -8920,140 +8831,4 @@ body.dispositivos-drawer-open .dispositivos-drawer {
   font-size: 0.72rem;
   color: #71717a;
   letter-spacing: 0.05em;
-}
-
-/* ==========================================================================
-   DISTORÇÃO ANÔMALA E AVISO "AJUSTANDO AS IMAGENS"
-   ========================================================================== */
-
-/* Efeito de Distorção, Vibração e Inversão da Câmera */
-.cctv-viewport.anomaly-distortion-active {
-  animation: cctvAnomalyJitter 0.16s infinite linear;
-}
-
-.cctv-viewport.anomaly-distortion-active .cctv-feed-frame {
-  animation: cctvAnomalyInvert 0.35s infinite steps(2);
-}
-
-.cctv-viewport.anomaly-distortion-active .cctv-hud-overlay {
-  animation: cctvHudScramble 0.22s infinite steps(2);
-}
-
-@keyframes cctvAnomalyJitter {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(-4px, 3px) skewX(3deg); }
-  50% { transform: translate(4px, -3px) skewY(-2deg); }
-  75% { transform: translate(-3px, -2px) skewX(-3deg); }
-  100% { transform: translate(0, 0); }
-}
-
-@keyframes cctvAnomalyInvert {
-  0% {
-    filter: invert(100%) contrast(250%) brightness(130%);
-    transform: scaleY(-1);
-  }
-  33% {
-    filter: invert(0%) contrast(300%) hue-rotate(180deg) brightness(85%);
-    transform: scaleX(-1);
-  }
-  66% {
-    filter: invert(100%) contrast(200%) hue-rotate(90deg);
-    transform: scaleY(-1) scaleX(-1);
-  }
-  100% {
-    filter: invert(0%) contrast(220%);
-    transform: scale(1);
-  }
-}
-
-@keyframes cctvHudScramble {
-  0% { filter: invert(0%); color: #fff; }
-  50% { filter: invert(100%); color: #ef4444; }
-  100% { filter: invert(0%); color: #fff; }
-}
-
-/* Painel de Sobreposição Máxima: AJUSTANDO AS IMAGENS */
-.cctv-adjusting-warning {
-  position: absolute;
-  inset: 0;
-  z-index: 60;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(4px);
-  pointer-events: none;
-  padding: 24px;
-}
-
-.adjusting-warning-container {
-  width: 100%;
-  max-width: 540px;
-}
-
-.adjusting-warning-box {
-  background: #09090b;
-  border: 2px solid #ef4444;
-  box-shadow: 0 0 35px rgba(239, 68, 68, 0.5), inset 0 0 20px rgba(239, 68, 68, 0.25);
-  padding: 24px 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 12px;
-  font-family: 'Courier New', Courier, monospace;
-}
-
-.adjusting-warning-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: spinWarningIcon 2s linear infinite;
-}
-
-@keyframes spinWarningIcon {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.adjusting-warning-title {
-  font-size: clamp(1.6rem, 3.8vw, 2.3rem);
-  font-weight: 900;
-  color: #ef4444;
-  letter-spacing: 0.16em;
-  text-shadow: 0 0 14px rgba(239, 68, 68, 0.7);
-}
-
-.adjusting-warning-code {
-  font-size: 0.8rem;
-  color: #d4d4d8;
-  letter-spacing: 0.08em;
-}
-
-.adjusting-progress-track {
-  width: 100%;
-  height: 6px;
-  background: #18181b;
-  border: 1px solid #3f3f46;
-  overflow: hidden;
-  margin: 4px 0;
-}
-
-.adjusting-progress-bar {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, #dc2626, #f97316, #dc2626);
-  background-size: 200% 100%;
-  animation: progressMoving 1s linear infinite;
-}
-
-@keyframes progressMoving {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-.adjusting-warning-footer {
-  font-size: 0.74rem;
-  color: #71717a;
-  letter-spacing: 0.08em;
 }

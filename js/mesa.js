@@ -3388,7 +3388,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.5.8`;
+      badge.textContent = `v1.5.7`;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -4001,11 +4001,6 @@ const MesaQuickMenu = {
     const notebookCloseBtn = document.getElementById('notebook-close-btn');
     if (notebookCloseBtn) {
       notebookCloseBtn.style.display = isMaster ? 'flex' : 'none';
-    }
-
-    const cctvDistortBtn = document.getElementById('cctv-master-distort-btn');
-    if (cctvDistortBtn) {
-      cctvDistortBtn.style.display = isMaster ? 'inline-flex' : 'none';
     }
 
     if (!isMaster && window.MesaDispositivos && MesaDispositivos.isOpen) {
@@ -5591,8 +5586,6 @@ const MesaNotebookSara = {
   activeCam: 1,
   signalLost: false,
   isGlitching: false,
-  anomalyActive: false,
-  anomalyInterval: null,
   sessionStartTime: null,
   camImages: {
     1: '',
@@ -5620,8 +5613,7 @@ const MesaNotebookSara = {
         payload: {
           activeCam: this.activeCam,
           camImages: this.camImages,
-          sessionStartTime: this.sessionStartTime,
-          anomalyDistortion: this.anomalyActive
+          sessionStartTime: this.sessionStartTime
         }
       });
     }
@@ -5672,11 +5664,6 @@ const MesaNotebookSara = {
 
     overlay.classList.add('active');
 
-    const distortBtn = document.getElementById('cctv-master-distort-btn');
-    if (distortBtn) {
-      distortBtn.style.display = (MesaApp.state && MesaApp.state.isMaster) ? 'inline-flex' : 'none';
-    }
-
     this.startClock();
 
     // Transiciona do boot para o lock screen após ~2.4s
@@ -5692,7 +5679,6 @@ const MesaNotebookSara = {
       overlay.classList.remove('active');
     }
 
-    this.setAnomalyDistortion(false);
     this.stopStaticNoise();
     clearTimeout(this.bootTimeout);
     clearTimeout(this.glitchTimeout);
@@ -5823,11 +5809,6 @@ const MesaNotebookSara = {
 
     this.switchCamera(this.activeCam || 1, false);
 
-    const distortBtn = document.getElementById('cctv-master-distort-btn');
-    if (distortBtn) {
-      distortBtn.style.display = (MesaApp.state && MesaApp.state.isMaster) ? 'inline-flex' : 'none';
-    }
-
     if (MesaChat && MesaChat.channel) {
       MesaChat.channel.send({
         type: 'broadcast',
@@ -5914,13 +5895,11 @@ const MesaNotebookSara = {
     const imgEl = document.getElementById('cctv-feed-img');
     const procEl = document.getElementById('cctv-feed-procedural');
     const svgEl = document.getElementById('cctv-procedural-svg');
-    const distEl = document.getElementById('cctv-distortion-warning');
 
-    // Todas as câmeras exibem tela preta e aviso centralizado
+    // Todas as câmeras exibem tela preta
     if (imgEl) imgEl.style.display = 'none';
     if (procEl) procEl.style.display = 'none';
     if (svgEl) svgEl.innerHTML = '';
-    if (distEl) distEl.style.display = 'flex';
   },
 
   getProceduralSceneSVG(camNum) {
@@ -6072,160 +6051,6 @@ const MesaNotebookSara = {
     }
   },
 
-  toggleAnomalyDistortion() {
-    if (!MesaApp.state || !MesaApp.state.isMaster) return;
-    const newState = !this.anomalyActive;
-    this.setAnomalyDistortion(newState);
-
-    if (MesaChat && MesaChat.channel) {
-      MesaChat.channel.send({
-        type: 'broadcast',
-        event: 'notebook_sync',
-        payload: {
-          anomalyDistortion: newState
-        }
-      });
-    }
-  },
-
-  setAnomalyDistortion(active) {
-    this.anomalyActive = !!active;
-
-    const viewport = document.getElementById('cctv-viewport');
-    const adjustingWarning = document.getElementById('cctv-adjusting-warning');
-    const distortBtn = document.getElementById('cctv-master-distort-btn');
-    const distortLabel = document.getElementById('cctv-master-distort-label');
-    const drawerBtn = document.getElementById('disp-btn-anomaly');
-
-    if (this.anomalyActive) {
-      if (viewport) viewport.classList.add('anomaly-distortion-active');
-      if (adjustingWarning) adjustingWarning.style.display = 'flex';
-      if (distortBtn) {
-        distortBtn.classList.add('active');
-        if (distortLabel) distortLabel.textContent = 'Normalizar Câmeras';
-      }
-      if (drawerBtn) drawerBtn.classList.add('active');
-      this.startNumberScrambler();
-    } else {
-      if (viewport) viewport.classList.remove('anomaly-distortion-active');
-      if (adjustingWarning) adjustingWarning.style.display = 'none';
-      if (distortBtn) {
-        distortBtn.classList.remove('active');
-        if (distortLabel) distortLabel.textContent = 'Distorcer Câmeras';
-      }
-      if (drawerBtn) drawerBtn.classList.remove('active');
-      this.stopNumberScrambler();
-    }
-  },
-
-  startNumberScrambler() {
-    clearInterval(this.anomalyInterval);
-    const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-
-    this.anomalyInterval = setInterval(() => {
-      // 1. Relógio superior CFTV
-      const timeEl = document.getElementById('cctv-timestamp');
-      if (timeEl) {
-        const d = String(randInt(1, 99)).padStart(2, '0');
-        const m = String(randInt(1, 99)).padStart(2, '0');
-        const y = randInt(1900, 3999);
-        const h = String(randInt(0, 99)).padStart(2, '0');
-        const min = String(randInt(0, 99)).padStart(2, '0');
-        const s = String(randInt(0, 99)).padStart(2, '0');
-        timeEl.textContent = `${d}/${m}/${y} ${h}:${min}:${s}`;
-      }
-
-      // 2. HUD Time (inferior esquerdo)
-      const hudTimeEl = document.getElementById('cctv-hud-time');
-      if (hudTimeEl) {
-        const h = String(randInt(0, 99)).padStart(2, '0');
-        const min = String(randInt(0, 99)).padStart(2, '0');
-        const s = String(randInt(0, 99)).padStart(2, '0');
-        const ms = String(randInt(0, 99)).padStart(2, '0');
-        hudTimeEl.textContent = `${h}:${min}:${s}.${ms}`;
-      }
-
-      // 3. Sensor LUX
-      const luxEl = document.querySelector('.cctv-hud-lux');
-      if (luxEl) {
-        luxEl.textContent = `${(Math.random() * 999).toFixed(2)} LUX`;
-      }
-
-      // 4. Canal e FPS (HUD superior esquerdo)
-      const hudChan = document.getElementById('cctv-hud-channel');
-      if (hudChan) {
-        const tags = ['ERR', 'NULL', 'VOID', 'SALA', 'ANOMALIA', 'INV', 'DESVIO'];
-        const tag = tags[randInt(0, tags.length - 1)];
-        hudChan.textContent = `CH-${randInt(10, 99)} [${tag}] • ${(Math.random() * 999).toFixed(1)} FPS`;
-      }
-
-      // 5. Tag da câmera na topbar
-      const camTag = document.getElementById('cctv-cam-tag');
-      if (camTag) {
-        camTag.textContent = `CAM ${randInt(10, 99)} - [DESVIO ${randInt(100, 999)}]`;
-      }
-
-      // 6. Números das abas das câmeras
-      [1, 2, 3].forEach(n => {
-        const tab = document.getElementById(`cctv-tab-${n}`);
-        if (tab) {
-          const numSpan = tab.querySelector('.cctv-cam-num');
-          if (numSpan) numSpan.textContent = `[ ${String(randInt(10, 99))} ]`;
-        }
-      });
-
-      // 7. Sensor HUD inferior direito
-      const hudSensor = document.querySelector('.cctv-hud-br div');
-      if (hudSensor) {
-        hudSensor.textContent = `SENSOR #${randInt(1000, 9999)} • DISTORÇÃO ${randInt(10, 99)}%`;
-      }
-
-      // 8. Informações no painel de aviso "Ajustando as Imagens"
-      const warnCode = document.getElementById('adjusting-warning-code');
-      if (warnCode) {
-        warnCode.textContent = `ANOMALIA DETECTADA • RECALIBRANDO [0x${randInt(4096, 65535).toString(16).toUpperCase()}] • #${randInt(1000, 9999)}`;
-      }
-      const warnFooter = document.getElementById('adjusting-warning-footer');
-      if (warnFooter) {
-        warnFooter.textContent = `DESVIO DE COORDENADAS: #${randInt(1000, 9999)} • FLUXO INVERTIDO ${randInt(10, 99)}%`;
-      }
-    }, 60);
-  },
-
-  stopNumberScrambler() {
-    clearInterval(this.anomalyInterval);
-    this.anomalyInterval = null;
-
-    // Restaura números normais das tabs
-    [1, 2, 3].forEach(n => {
-      const tab = document.getElementById(`cctv-tab-${n}`);
-      if (tab) {
-        const numSpan = tab.querySelector('.cctv-cam-num');
-        if (numSpan) numSpan.textContent = `[ 0${n} ]`;
-      }
-    });
-
-    const camNames = {
-      1: 'CAM 01 - SALA DE ESTAR',
-      2: 'CAM 02 - ESCADARIA',
-      3: 'CAM 03 - CORREDOR DO 2º ANDAR'
-    };
-    const camTag = document.getElementById('cctv-cam-tag');
-    if (camTag) camTag.textContent = camNames[this.activeCam] || `CAM 0${this.activeCam}`;
-
-    const hudChan = document.getElementById('cctv-hud-channel');
-    if (hudChan) {
-      const shortNames = { 1: 'CH-01 [SALA]', 2: 'CH-02 [ESCADA]', 3: 'CH-03 [CORREDOR]' };
-      hudChan.textContent = `${shortNames[this.activeCam] || `CH-0${this.activeCam}`} • 15.0 FPS NV`;
-    }
-
-    const luxEl = document.querySelector('.cctv-hud-lux');
-    if (luxEl) luxEl.textContent = '0.00 LUX';
-
-    const hudSensor = document.querySelector('.cctv-hud-br div');
-    if (hudSensor) hudSensor.textContent = 'SENSOR ATIVO • CASA AUGUIL';
-  },
-
   startStaticNoise() {
     const canvas = document.getElementById('cctv-static-canvas');
     if (!canvas) return;
@@ -6315,10 +6140,6 @@ const MesaNotebookSara = {
       if (!this.signalLost) {
         this.renderCameraFeed();
       }
-    }
-
-    if (data.anomalyDistortion !== undefined) {
-      this.setAnomalyDistortion(data.anomalyDistortion);
     }
   }
 };
