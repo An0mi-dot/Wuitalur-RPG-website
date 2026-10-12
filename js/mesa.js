@@ -6909,7 +6909,7 @@ const MesaCombate = {
       const animDelay = (idx * 0.05).toFixed(2);
 
       return `
-        <div class="combat-player-card" id="combat-player-card-${slotNum}" style="animation-delay: ${animDelay}s" onclick="MesaCombate.openPlayerFicha(${slotNum})" title="Clique para abrir a ficha de ${p.nome}">
+        <div class="combat-player-card combat-card-entrance" id="combat-player-card-${slotNum}" style="animation-delay: ${animDelay}s" onclick="MesaCombate.openPlayerFicha(${slotNum})" title="Clique para abrir a ficha de ${p.nome}">
           <div class="combat-slash-overlay" id="combat-slash-${slotNum}"></div>
           <div class="combat-card-header">
             <span class="combat-card-name">${p.nome}</span>
@@ -6943,6 +6943,15 @@ const MesaCombate = {
         </div>
       `;
     }).join('');
+
+    // Remove a classe de animação inicial assim que terminar para nunca mais reexecutar ao trocar turnos
+    setTimeout(() => {
+      const cards = dock.querySelectorAll('.combat-card-entrance');
+      cards.forEach(c => {
+        c.classList.remove('combat-card-entrance');
+        c.style.animationDelay = '';
+      });
+    }, 800);
 
     // Re-aplica indicadores visuais de turno
     this.updateTurnUI();
@@ -7405,9 +7414,11 @@ const MesaCombate = {
     const navControls = document.getElementById('combat-turn-nav-controls');
     const opponentTitle = document.getElementById('combat-opponent-title');
 
-    // Remove destaques anteriores dos cards
+    // Remove destaques anteriores dos cards e limpa classes de entrada para evitar reexecução
     document.querySelectorAll('.combat-player-card').forEach(card => {
       card.classList.remove('is-current-turn');
+      card.classList.remove('combat-card-entrance');
+      card.style.animationDelay = '';
     });
     if (opponentTitle) opponentTitle.classList.remove('is-current-turn-boss');
 
@@ -7436,7 +7447,11 @@ const MesaCombate = {
     // 2. Se for a vez de um jogador, destaca o card dele com brilho laranja
     if (currentItem.type === 'player' && currentItem.slot) {
       const card = document.getElementById(`combat-player-card-${currentItem.slot}`);
-      if (card) card.classList.add('is-current-turn');
+      if (card) {
+        card.classList.remove('combat-card-entrance');
+        card.style.animationDelay = '';
+        card.classList.add('is-current-turn');
+      }
     } else if (currentItem.type === 'boss') {
       if (opponentTitle) opponentTitle.classList.add('is-current-turn-boss');
     }

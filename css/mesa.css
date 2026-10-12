@@ -9246,6 +9246,9 @@ body.combat-active .combat-black-ramp {
   color: #ffffff;
   border-radius: 0;
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.combat-player-card.combat-card-entrance {
   animation: combatCardSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
