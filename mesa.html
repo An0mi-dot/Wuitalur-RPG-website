@@ -11,9 +11,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/variables.css?v=1.7.4">
-  <link rel="stylesheet" href="css/components.css?v=1.7.4">
-  <link rel="stylesheet" href="css/mesa.css?v=1.7.4">
+  <link rel="stylesheet" href="css/variables.css?v=1.7.5">
+  <link rel="stylesheet" href="css/components.css?v=1.7.5">
+  <link rel="stylesheet" href="css/mesa.css?v=1.7.5">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1110,11 +1110,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=1.7.4"></script>
+<script src="js/campaign-data.js?v=1.7.5"></script>
 
-<script src="js/mesa.js?v=1.7.4"></script>
+<script src="js/mesa.js?v=1.7.5"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v1.7.4</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.7.5</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -1406,28 +1406,58 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
     <!-- Controles Exclusivos do Mestre Durante o Combate -->
     <div id="combat-master-controls" class="combat-master-controls master-item" style="display: none;">
-      <div class="combat-ctrls-row">
-        <button type="button" class="combat-ctrl-btn" onclick="MesaCombate.openSelectModal()" title="Escolher com quem eles vão combater">
-          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4"></path><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><path d="M7 23l-4-4 4-4"></path><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
-          <span>Trocar Oponente</span>
-        </button>
-        <button type="button" class="combat-ctrl-btn end-btn" onclick="MesaCombate.stopCombat(true)" title="Encerrar combate e voltar para a mesa">
-          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-          <span>Encerrar Combate</span>
-        </button>
+      <!-- Desktop: Visualização Completa -->
+      <div class="combat-master-desktop-view">
+        <div class="combat-ctrls-row">
+          <button type="button" class="combat-ctrl-btn" onclick="MesaCombate.openSelectModal()" title="Escolher com quem eles vão combater">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4"></path><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><path d="M7 23l-4-4 4-4"></path><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+            <span>Trocar Oponente</span>
+          </button>
+          <button type="button" class="combat-ctrl-btn end-btn" onclick="MesaCombate.stopCombat(true)" title="Encerrar combate e voltar para a mesa">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            <span>Encerrar Combate</span>
+          </button>
+        </div>
+        <div class="combat-ctrls-row">
+          <button type="button" class="combat-ctrl-btn" id="combat-turn-cycle-btn" onclick="MesaCombate.openTurnModal()" title="Iniciar ou gerenciar a ordem de turnos">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+            <span id="combat-turn-btn-label">Começar ciclo de turnos</span>
+          </button>
+          <div id="combat-turn-nav-controls" class="combat-turn-nav-controls" style="display: none;">
+            <button type="button" class="combat-ctrl-btn turn-nav-btn" onclick="MesaCombate.prevTurn()" title="Turno anterior">
+              ◀
+            </button>
+            <button type="button" class="combat-ctrl-btn turn-nav-btn turn-next-btn" onclick="MesaCombate.nextTurn()" title="Avançar para o próximo turno">
+              <span>Próximo ▶</span>
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="combat-ctrls-row">
-        <button type="button" class="combat-ctrl-btn" id="combat-turn-cycle-btn" onclick="MesaCombate.openTurnModal()" title="Iniciar ou gerenciar a ordem de turnos">
-          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
-          <span id="combat-turn-btn-label">Começar ciclo de turnos</span>
+
+      <!-- Mobile: Botão Próximo + Menu Compacto de Opções do Mestre -->
+      <div class="combat-master-mobile-view">
+        <button type="button" class="combat-ctrl-btn combat-mobile-next-btn" id="combat-mobile-next-btn" onclick="MesaCombate.nextTurn()" style="display: none;" title="Avançar para o próximo turno">
+          <span>Próximo ▶</span>
         </button>
-        <div id="combat-turn-nav-controls" class="combat-turn-nav-controls" style="display: none;">
-          <button type="button" class="combat-ctrl-btn turn-nav-btn" onclick="MesaCombate.prevTurn()" title="Turno anterior">
-            ◀
+        <div class="combat-master-menu-wrapper">
+          <button type="button" class="combat-ctrl-btn combat-master-trigger-btn" onclick="MesaCombate.toggleMobileMasterMenu(event)" title="Opções do Mestre">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <span>Mestre</span>
           </button>
-          <button type="button" class="combat-ctrl-btn turn-nav-btn turn-next-btn" onclick="MesaCombate.nextTurn()" title="Avançar para o próximo turno">
-            <span>Próximo ▶</span>
-          </button>
+          <div id="combat-master-mobile-dropdown" class="combat-master-mobile-dropdown" style="display: none;">
+            <button type="button" class="combat-mobile-drop-item" onclick="MesaCombate.prevTurn(); MesaCombate.closeMobileMasterMenu();" id="combat-mobile-prev-item" style="display: none;">
+              ◀ Turno Anterior
+            </button>
+            <button type="button" class="combat-mobile-drop-item" onclick="MesaCombate.openTurnModal(); MesaCombate.closeMobileMasterMenu();">
+              ⚡ <span id="combat-mobile-turn-label">Ciclo de Turnos</span>
+            </button>
+            <button type="button" class="combat-mobile-drop-item" onclick="MesaCombate.openSelectModal(); MesaCombate.closeMobileMasterMenu();">
+              🔄 Trocar Oponente
+            </button>
+            <button type="button" class="combat-mobile-drop-item danger" onclick="MesaCombate.stopCombat(true); MesaCombate.closeMobileMasterMenu();">
+              ✕ Encerrar Combate
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI & Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.7.4';
+const MESA_VERSION = 'v1.7.5';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -6578,6 +6578,24 @@ const MesaCombate = {
     if (this.isActive) {
       this.startRampWave();
     }
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.combat-master-menu-wrapper')) {
+        this.closeMobileMasterMenu();
+      }
+    });
+  },
+
+  toggleMobileMasterMenu(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    const drop = document.getElementById('combat-master-mobile-dropdown');
+    if (!drop) return;
+    const isShown = drop.style.display !== 'none';
+    drop.style.display = isShown ? 'none' : 'flex';
+  },
+
+  closeMobileMasterMenu() {
+    const drop = document.getElementById('combat-master-mobile-dropdown');
+    if (drop) drop.style.display = 'none';
   },
 
   getChannel() {
@@ -6915,7 +6933,13 @@ const MesaCombate = {
     dock.style.setProperty('--combat-cols', cols);
     if (window.innerWidth <= 768) {
       dock.style.removeProperty('grid-template-columns');
+      if (count <= 2) {
+        dock.classList.add('is-centered-cards');
+      } else {
+        dock.classList.remove('is-centered-cards');
+      }
     } else {
+      dock.classList.remove('is-centered-cards');
       dock.style.gridTemplateColumns = `repeat(${cols}, 184px)`;
     }
 
@@ -7633,10 +7657,26 @@ const MesaCombate = {
 
     if (masterCtrl) masterCtrl.style.display = (this.isActive && isMaster) ? 'flex' : 'none';
 
+    const turnActive = !!(this.turnCycle && this.turnCycle.active && this.turnCycle.order && this.turnCycle.order.length > 0);
+
     const navControls = document.getElementById('combat-turn-nav-controls');
     if (navControls) {
-      const turnActive = !!(this.turnCycle && this.turnCycle.active && this.turnCycle.order && this.turnCycle.order.length > 0);
       navControls.style.display = (this.isActive && isMaster && turnActive) ? 'flex' : 'none';
+    }
+
+    const mobileNextBtn = document.getElementById('combat-mobile-next-btn');
+    if (mobileNextBtn) {
+      mobileNextBtn.style.display = (this.isActive && isMaster && turnActive) ? 'inline-flex' : 'none';
+    }
+
+    const mobilePrevItem = document.getElementById('combat-mobile-prev-item');
+    if (mobilePrevItem) {
+      mobilePrevItem.style.display = turnActive ? 'block' : 'none';
+    }
+
+    const mobileTurnLabel = document.getElementById('combat-mobile-turn-label');
+    if (mobileTurnLabel) {
+      mobileTurnLabel.textContent = turnActive ? 'Ordem de Turnos' : 'Começar ciclo de turnos';
     }
   },
 
@@ -7661,7 +7701,14 @@ const MesaCombate = {
         if (dockEl) {
           if (window.innerWidth <= 768) {
             dockEl.style.removeProperty('grid-template-columns');
+            const numPlayers = (dockEl.children && dockEl.children.length) || 0;
+            if (numPlayers <= 2) {
+              dockEl.classList.add('is-centered-cards');
+            } else {
+              dockEl.classList.remove('is-centered-cards');
+            }
           } else {
+            dockEl.classList.remove('is-centered-cards');
             const currentCols = dockEl.style.getPropertyValue('--combat-cols') || 4;
             dockEl.style.gridTemplateColumns = `repeat(${currentCols}, 184px)`;
           }
@@ -7679,7 +7726,7 @@ const MesaCombate = {
     const rampEl = this._rampCanvas.parentElement;
     const rect = rampEl ? rampEl.getBoundingClientRect() : null;
     const w = (rect && rect.width > 0) ? Math.round(rect.width) : window.innerWidth;
-    const fallbackH = Math.round(window.innerHeight * (window.innerWidth <= 768 ? 0.48 : 0.58));
+    const fallbackH = Math.round(window.innerHeight * (window.innerWidth <= 768 ? 0.44 : 0.58));
     const h = (rect && rect.height > 0) ? Math.round(rect.height) : fallbackH;
 
     if (this._rampCanvas.width !== w || this._rampCanvas.height !== h) {
@@ -7736,30 +7783,43 @@ const MesaCombate = {
     const h = canvas.height;
     if (w <= 0 || h <= 0) return;
 
+    const isMobile = w <= 768;
     // Tamanho do bloco pixelado para estética retro (4px desktop, 3px mobile)
-    const pixelSize = w < 768 ? 3 : 4;
-
-    // 1. Determina as dimensões e posição do Domo Simétrico Centralizado
-    const padX = Math.max(32, Math.min(65, Math.round(w * 0.035)));
-    const padTop = 22; // Margem justa e compacta acima dos cards
-
-    let targetLeft = Math.max(16, Math.round(w * 0.5 - 420));
-    let targetRight = Math.min(w - 16, Math.round(w * 0.5 + 420));
-    let targetTop = Math.max(16, Math.round(h * 0.45));
+    const pixelSize = isMobile ? 3 : 4;
 
     const dockContainer = document.querySelector('.combat-dock-container');
-    if (dockContainer) {
-      const containerRect = dockContainer.getBoundingClientRect();
-      const canvasRect = canvas.getBoundingClientRect();
-      if (containerRect.width > 0 && containerRect.height > 0) {
+    const containerRect = dockContainer ? dockContainer.getBoundingClientRect() : null;
+    const canvasRect = canvas.getBoundingClientRect();
+    const dockTopInCanvas = (containerRect && canvasRect) ? (containerRect.top - canvasRect.top) : (h * 0.45);
+
+    let targetLeft, targetRight, targetTop, cornerR;
+
+    if (isMobile) {
+      // No Mobile: A rampa preta é uma base sólida contínua de borda a borda com onda pixelada estilizada no topo
+      targetLeft = -6;
+      targetRight = w + 6;
+      targetTop = Math.max(10, Math.round(dockTopInCanvas - 16));
+      cornerR = 0;
+    } else {
+      // No Desktop: Domo simétrico centralizado com ombros arredondados
+      const padX = Math.max(32, Math.min(65, Math.round(w * 0.035)));
+      const padTop = 22;
+
+      targetLeft = Math.max(16, Math.round(w * 0.5 - 420));
+      targetRight = Math.min(w - 16, Math.round(w * 0.5 + 420));
+      targetTop = Math.max(16, Math.round(h * 0.45));
+
+      if (containerRect && containerRect.width > 0 && containerRect.height > 0) {
         const dockLeftInCanvas = containerRect.left - canvasRect.left;
         const dockRightInCanvas = containerRect.right - canvasRect.left;
-        const dockTopInCanvas = containerRect.top - canvasRect.top;
-
         targetLeft = Math.max(16, Math.round(dockLeftInCanvas - padX));
         targetRight = Math.min(w - 16, Math.round(dockRightInCanvas + padX));
         targetTop = Math.max(16, Math.round(dockTopInCanvas - padTop));
       }
+
+      const maxR = Math.min((targetRight - targetLeft) * 0.25, (h - targetTop) * 0.45);
+      const maxSafeR = Math.max(10, Math.floor((targetRight - targetLeft) * 0.35));
+      cornerR = Math.max(28, Math.min(65, Math.min(Math.round(maxR), maxSafeR)));
     }
 
     // Interpolação suave (lerp) para adaptação suave sem sobressaltos visuais
@@ -7768,19 +7828,14 @@ const MesaCombate = {
       this._currentDomeRight = targetRight;
       this._currentDomeTop = targetTop;
     } else {
-      this._currentDomeLeft += (targetLeft - this._currentDomeLeft) * 0.12;
-      this._currentDomeRight += (targetRight - this._currentDomeRight) * 0.12;
-      this._currentDomeTop += (targetTop - this._currentDomeTop) * 0.12;
+      this._currentDomeLeft += (targetLeft - this._currentDomeLeft) * 0.15;
+      this._currentDomeRight += (targetRight - this._currentDomeRight) * 0.15;
+      this._currentDomeTop += (targetTop - this._currentDomeTop) * 0.15;
     }
 
     const x_left = Math.round(this._currentDomeLeft);
     const x_right = Math.round(this._currentDomeRight);
     const y_top = Math.round(this._currentDomeTop);
-
-    // Raio simétrico das curvaturas dos ombros (esquerdo e direito)
-    const maxR = Math.min((x_right - x_left) * 0.25, (h - y_top) * 0.45);
-    const maxSafeR = Math.max(10, Math.floor((x_right - x_left) * 0.35));
-    const cornerR = Math.max(16, Math.min(65, Math.min(Math.round(maxR), maxSafeR)));
 
     const cx_left = x_left + cornerR;
     const cx_right = x_right - cornerR;
@@ -7788,14 +7843,14 @@ const MesaCombate = {
 
     // Segmentos do Domo Simétrico:
     // L1: Parede vertical esquerda (sobe da base)
-    // L2: Ombro arredondado esquerdo (curva do topo esquerdo)
-    // L3: Parede horizontal superior (corre para a direita sobre os cards)
-    // L4: Ombro arredondado direito (curva do topo direito)
+    // L2: Ombro arredondado esquerdo (curva do topo esquerdo, apenas no desktop)
+    // L3: Parede horizontal superior (corre para a direita sobre os cards com ondas pixeladas)
+    // L4: Ombro arredondado direito (curva do topo direito, apenas no desktop)
     // L5: Parede vertical direita (desce até a base)
     const L1 = Math.max(0, h - cy);
-    const L2 = cornerR * (Math.PI * 0.5);
+    const L2 = cornerR > 0 ? (cornerR * (Math.PI * 0.5)) : 0;
     const L3 = Math.max(0, cx_right - cx_left);
-    const L4 = cornerR * (Math.PI * 0.5);
+    const L4 = cornerR > 0 ? (cornerR * (Math.PI * 0.5)) : 0;
     const L5 = Math.max(0, h - cy);
     const totalLength = L1 + L2 + L3 + L4 + L5;
     if (totalLength <= 0) return;
@@ -7815,7 +7870,7 @@ const MesaCombate = {
         y_base = h - s;
         nx = -1;
         ny = 0;
-      } else if (s <= L1 + L2) {
+      } else if (cornerR > 0 && s <= L1 + L2) {
         // 2. Ombro esquerdo arredondado
         const s_arc = s - L1;
         const theta = Math.PI + (s_arc / L2) * (Math.PI * 0.5);
@@ -7830,7 +7885,7 @@ const MesaCombate = {
         y_base = y_top;
         nx = 0;
         ny = -1;
-      } else if (s <= L1 + L2 + L3 + L4) {
+      } else if (cornerR > 0 && s <= L1 + L2 + L3 + L4) {
         // 4. Ombro direito arredondado
         const s_arc = s - (L1 + L2 + L3);
         const theta = Math.PI * 1.5 + (s_arc / L4) * (Math.PI * 0.5);
