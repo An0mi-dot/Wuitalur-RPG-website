@@ -9199,6 +9199,7 @@ body.combat-active .combat-black-ramp {
   transform: translateY(0);
 }
 
+.combat-ramp-canvas,
 .combat-ramp-svg {
   position: absolute;
   inset: 0;
@@ -9206,6 +9207,9 @@ body.combat-active .combat-black-ramp {
   height: 100%;
   pointer-events: none;
   display: block;
+  z-index: 2;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
 /* Container do Dock de Personagens e Indicador de Rodada */

@@ -6551,6 +6551,11 @@ const MesaCombate = {
   turnCycle: null,
   playerHpCache: {},
   _audioCtx: null,
+  _rampCanvas: null,
+  _rampCtx: null,
+  _rampWaveRaf: null,
+  _rampWaveStartTime: 0,
+  _rampResizeBound: null,
 
   presets: [
     {
@@ -6564,6 +6569,10 @@ const MesaCombate = {
   init() {
     this.renderPresets();
     this.updateNavLabels();
+    this.initRampWave();
+    if (this.isActive) {
+      this.startRampWave();
+    }
   },
 
   getChannel() {
@@ -6718,6 +6727,9 @@ const MesaCombate = {
     // Ativa classe no body para transição dos cards da mesa para a rampa
     document.body.classList.add('combat-active');
 
+    // Inicia animação de ondas em pixel art na linha diagonal da rampa
+    this.startRampWave();
+
     // Atualiza título do oponente
     const titleEl = document.getElementById('combat-opponent-title');
     if (titleEl) {
@@ -6813,6 +6825,9 @@ const MesaCombate = {
     this.updateTurnUI();
 
     document.body.classList.remove('combat-active');
+
+    // Para a animação de ondas na rampa para economizar recursos
+    this.stopRampWave();
 
     const video = document.getElementById('combat-bg-video');
     if (video) {
@@ -7611,6 +7626,161 @@ const MesaCombate = {
       const turnActive = !!(this.turnCycle && this.turnCycle.active && this.turnCycle.order && this.turnCycle.order.length > 0);
       navControls.style.display = (this.isActive && isMaster && turnActive) ? 'flex' : 'none';
     }
+  },
+
+  /* ============================================================
+     SISTEMA DE ONDA DE PIXEL ART NA RAMPA DE COMBATE
+     ============================================================ */
+  initRampWave() {
+    const canvas = document.getElementById('combat-ramp-canvas');
+    if (!canvas) return;
+    this._rampCanvas = canvas;
+    this._rampCtx = canvas.getContext('2d');
+    if (this._rampCtx) {
+      this._rampCtx.imageSmoothingEnabled = false;
+    }
+
+    this._updateRampCanvasSize();
+
+    if (!this._rampResizeBound) {
+      this._rampResizeBound = () => {
+        this._updateRampCanvasSize();
+        if (this.isActive) {
+          this.drawRampWave();
+        }
+      };
+      window.addEventListener('resize', this._rampResizeBound);
+    }
+  },
+
+  _updateRampCanvasSize() {
+    if (!this._rampCanvas) return;
+    const rampEl = this._rampCanvas.parentElement;
+    const rect = rampEl ? rampEl.getBoundingClientRect() : null;
+    const w = (rect && rect.width > 0) ? Math.round(rect.width) : window.innerWidth;
+    const h = (rect && rect.height > 0) ? Math.round(rect.height) : Math.round(window.innerHeight * 0.54);
+
+    if (this._rampCanvas.width !== w || this._rampCanvas.height !== h) {
+      this._rampCanvas.width = w;
+      this._rampCanvas.height = h;
+      if (this._rampCtx) {
+        this._rampCtx.imageSmoothingEnabled = false;
+      }
+    }
+  },
+
+  startRampWave() {
+    this.initRampWave();
+    if (this._rampWaveRaf) {
+      cancelAnimationFrame(this._rampWaveRaf);
+      this._rampWaveRaf = null;
+    }
+    this._rampWaveStartTime = performance.now();
+
+    const loop = () => {
+      if (!this.isActive) {
+        this._rampWaveRaf = null;
+        return;
+      }
+      this.drawRampWave();
+      this._rampWaveRaf = requestAnimationFrame(loop);
+    };
+    this._rampWaveRaf = requestAnimationFrame(loop);
+  },
+
+  stopRampWave() {
+    if (this._rampWaveRaf) {
+      cancelAnimationFrame(this._rampWaveRaf);
+      this._rampWaveRaf = null;
+    }
+    if (this._rampCtx && this._rampCanvas) {
+      this._rampCtx.clearRect(0, 0, this._rampCanvas.width, this._rampCanvas.height);
+    }
+  },
+
+  drawRampWave() {
+    const canvas = this._rampCanvas;
+    if (!canvas) return;
+    const ctx = this._rampCtx;
+    if (!ctx) return;
+
+    const w = canvas.width;
+    const h = canvas.height;
+    if (w <= 0 || h <= 0) return;
+
+    // Tamanho do bloco pixelado para estética 8-bit / 16-bit autêntica (4px desktop, 3px mobile)
+    const pixelSize = w < 768 ? 3 : 4;
+    const numCols = Math.ceil(w / pixelSize);
+
+    const t = (performance.now() - this._rampWaveStartTime) * 0.001;
+
+    // 1. Calcula os pontos discretos da linha diagonal ondulada
+    const points = new Int32Array(numCols + 1);
+
+    for (let i = 0; i <= numCols; i++) {
+      const x = i * pixelSize;
+      const xNorm = Math.min(1, Math.max(0, x / w));
+
+      // Linha de base diagonal: de (0, h) até (w, 0)
+      const yBase = h * (1 - xNorm);
+
+      // Envelope que ancora suavemente nos cantos extremos e mantém 100% de amplitude no restante
+      const envelope = Math.min(1, Math.sin(xNorm * Math.PI) * 1.4);
+
+      // Superposição de harmônicos senoidais para visual retro fluído e orgânico
+      const w1 = Math.sin(x * 0.010 - t * 2.5) * 9.5;
+      const w2 = Math.sin(x * 0.024 + t * 3.6) * 4.2;
+      const w3 = Math.cos(x * 0.005 - t * 1.3) * 2.6;
+      const totalWave = (w1 + w2 + w3) * envelope;
+
+      const rawY = yBase + totalWave;
+      points[i] = Math.round(rawY / pixelSize) * pixelSize;
+    }
+
+    // 2. Limpa o quadro anterior
+    ctx.clearRect(0, 0, w, h);
+
+    // 3. Preenchimento Preto Sólido (#000000) abaixo do contorno da onda
+    ctx.save();
+    ctx.fillStyle = '#000000';
+    for (let i = 0; i < numCols; i++) {
+      const x = i * pixelSize;
+      const y = points[i];
+      const colW = Math.min(pixelSize, w - x);
+      const fillHeight = Math.max(0, h - y + pixelSize);
+      if (fillHeight > 0) {
+        ctx.fillRect(x, y, colW, fillHeight);
+      }
+    }
+    ctx.restore();
+
+    // 4. Desenho do Contorno da Onda em Pixel Art Laranja (#ff5500) com Glow Retro
+    ctx.save();
+    ctx.fillStyle = '#ff5500';
+    ctx.shadowColor = 'rgba(255, 85, 0, 0.65)';
+    ctx.shadowBlur = 8;
+
+    const lineThickness = pixelSize;
+
+    for (let i = 0; i < numCols; i++) {
+      const x = i * pixelSize;
+      const y = points[i];
+      const colW = Math.min(pixelSize, w - x);
+
+      // Bloco do patamar horizontal
+      ctx.fillRect(x, y, colW, lineThickness);
+
+      // Conector vertical com a coluna adjacente para garantir linha contínua sem quebras diagonais
+      if (i > 0) {
+        const prevY = points[i - 1];
+        if (prevY !== y) {
+          const minY = Math.min(prevY, y);
+          const maxY = Math.max(prevY, y);
+          ctx.fillRect(x, minY, lineThickness, (maxY - minY) + lineThickness);
+        }
+      }
+    }
+    ctx.restore();
   }
 };
 window.MesaCombate = MesaCombate;
