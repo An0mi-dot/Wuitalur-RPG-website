@@ -4310,9 +4310,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // Fecha Dossiê de NPCs ao pressionar Escape
+  // Fecha Ficha, Dossiê de NPCs e menus ao pressionar Escape
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
+      const fichaModal = document.getElementById('ficha-modal');
+      if (fichaModal && fichaModal.classList.contains('active')) {
+        MesaApp.closeModal('ficha-modal');
+        return;
+      }
       if (window.MesaAreaManager) {
         MesaAreaManager.closeNpcDrawer();
       }
@@ -6799,6 +6804,7 @@ const MesaCombate = {
     }
 
     dock.innerHTML = activePlayers.map((p, idx) => {
+      const slotNum = (p.slot !== undefined && p.slot !== null) ? p.slot : (idx + 1);
       const hpMax = p.hpMax || p.hp || 1;
       const hpVal = Math.max(0, p.hp || 0);
       const hpPct = Math.min(100, Math.max(0, Math.round((hpVal / hpMax) * 100)));
@@ -6817,10 +6823,10 @@ const MesaCombate = {
       const animDelay = (idx * 0.08).toFixed(2);
 
       return `
-        <div class="combat-player-card" style="animation-delay: ${animDelay}s" onclick="MesaCombate.openPlayerFicha(${p.slot})" title="Clique para abrir a ficha de ${p.nome}">
+        <div class="combat-player-card" style="animation-delay: ${animDelay}s" onclick="MesaCombate.openPlayerFicha(${slotNum})" title="Clique para abrir a ficha de ${p.nome}">
           <div class="combat-card-header">
             <span class="combat-card-name">${p.nome}</span>
-            <span class="combat-card-slot-badge">S${p.slot}</span>
+            <span class="combat-card-slot-badge">S${slotNum}</span>
           </div>
           <div class="combat-card-body">
             <div class="combat-card-avatar-box">
@@ -6830,19 +6836,19 @@ const MesaCombate = {
               <div class="undertale-stat-row">
                 <span class="undertale-stat-label">PV</span>
                 <div class="undertale-hp-track">
-                  <div class="undertale-hp-bar" id="combat-hp-bar-${p.slot}" style="width: ${hpPct}%"></div>
+                  <div class="undertale-hp-bar" id="combat-hp-bar-${slotNum}" style="width: ${hpPct}%"></div>
                 </div>
-                <span class="undertale-stat-val" id="combat-hp-val-${p.slot}">${hpVal}/${hpMax}</span>
+                <span class="undertale-stat-val" id="combat-hp-val-${slotNum}">${hpVal}/${hpMax}</span>
               </div>
               <div class="undertale-stat-row">
                 <span class="undertale-stat-label">PE</span>
-                <span class="undertale-stat-val" id="combat-pe-val-${p.slot}">${p.pe || 0}/${p.peMax || p.pe || 0}</span>
+                <span class="undertale-stat-val" id="combat-pe-val-${slotNum}">${p.pe || 0}/${p.peMax || p.pe || 0}</span>
               </div>
               <div class="undertale-stat-row">
                 <span class="undertale-stat-label">EST</span>
-                <span class="undertale-stat-val" id="combat-est-val-${p.slot}">${p.st || 0}/${p.stMax || 44}</span>
+                <span class="undertale-stat-val" id="combat-est-val-${slotNum}">${p.st || 0}/${p.stMax || 44}</span>
               </div>
-              <div class="undertale-stress-row" id="combat-stress-pips-${p.slot}">
+              <div class="undertale-stress-row" id="combat-stress-pips-${slotNum}">
                 ${pipsHtml}
               </div>
             </div>
@@ -6854,11 +6860,12 @@ const MesaCombate = {
 
   updatePlayerVitals(player) {
     if (!player || !player.slot) return;
-    const hpBar = document.getElementById(`combat-hp-bar-${player.slot}`);
-    const hpVal = document.getElementById(`combat-hp-val-${player.slot}`);
-    const peVal = document.getElementById(`combat-pe-val-${player.slot}`);
-    const estVal = document.getElementById(`combat-est-val-${player.slot}`);
-    const pipsBox = document.getElementById(`combat-stress-pips-${player.slot}`);
+    const slot = player.slot;
+    const hpBar = document.getElementById(`combat-hp-bar-${slot}`);
+    const hpVal = document.getElementById(`combat-hp-val-${slot}`);
+    const peVal = document.getElementById(`combat-pe-val-${slot}`);
+    const estVal = document.getElementById(`combat-est-val-${slot}`);
+    const pipsBox = document.getElementById(`combat-stress-pips-${slot}`);
 
     const hpMax = player.hpMax || player.hp || 1;
     const hpCurrent = Math.max(0, player.hp || 0);
@@ -6892,10 +6899,20 @@ const MesaCombate = {
   },
 
   openPlayerFicha(slot) {
-    if (!window.MesaApp || !MesaApp.state || !MesaApp.state.players) return;
-    const player = MesaApp.state.players.find(p => p && p.slot === slot);
+    if (!window.MesaApp) return;
+    const num = Number(slot);
+    const players = (MesaApp.state && MesaApp.state.players) || [];
+    const player = players.find(p => p && Number(p.slot) === num)
+                || players.find(p => p && p.slot == slot)
+                || (num > 0 && num <= players.length ? players[num - 1] : null)
+                || players.find(p => p && p.id == slot);
+
     if (player && typeof MesaApp.openFicha === 'function') {
       MesaApp.openFicha(player);
+      return;
+    }
+    if (typeof MesaApp.handleSlotClick === 'function' && !isNaN(num)) {
+      MesaApp.handleSlotClick(num);
     }
   }
 };

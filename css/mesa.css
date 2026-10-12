@@ -1091,10 +1091,17 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
    ============================================================ */
 
 .ficha-overlay {
-  background: rgba(8, 2, 0, 0.74);
+  background: rgba(8, 2, 0, 0.88);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   overflow: hidden;
+  z-index: 99999 !important;
+}
+
+.ficha-overlay.active {
+  z-index: 99999 !important;
+  opacity: 1 !important;
+  pointer-events: all !important;
 }
 
 /* 1. Brilho Laranja Diagonal */
@@ -9151,27 +9158,32 @@ body.combat-active .combat-black-ramp {
   background: #000000;
 }
 .combat-players-dock::-webkit-scrollbar-thumb {
-  background: #ffffff;
+  background: var(--mesa-orange, #ff5500);
 }
 
-/* Cards dos Personagens em Estilo Undertale */
+/* Cards dos Personagens em Estilo Undertale (Preto e Laranja) */
 .combat-player-card {
   position: relative;
-  width: 180px;
+  width: 184px;
   background: #000000;
-  border: 2px solid #ffffff;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.95);
+  border: 2px solid var(--mesa-orange, #ff5500);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.95), 0 0 10px rgba(255, 85, 0, 0.25);
   padding: 8px 10px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  cursor: pointer;
+  cursor: pointer !important;
+  pointer-events: auto !important;
   user-select: none;
   font-family: 'Press Start 2P', 'VT323', monospace;
   color: #ffffff;
   border-radius: 0;
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
   animation: combatCardSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.combat-player-card * {
+  pointer-events: none;
 }
 
 @keyframes combatCardSlideUp {
@@ -9181,15 +9193,15 @@ body.combat-active .combat-black-ramp {
 
 .combat-player-card:hover {
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 0 16px var(--mesa-orange, #ff5500), 0 8px 25px rgba(0, 0, 0, 0.95);
-  border-color: var(--mesa-orange, #ff5500);
+  box-shadow: 0 0 20px var(--mesa-orange, #ff5500), 0 8px 30px rgba(0, 0, 0, 0.95);
+  border-color: #ffaa33;
 }
 
 .combat-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 85, 0, 0.45);
+  border-bottom: 1.5px solid var(--mesa-orange, #ff5500);
   padding-bottom: 4px;
 }
 
@@ -9218,14 +9230,15 @@ body.combat-active .combat-black-ramp {
   gap: 8px;
 }
 
-/* Box do Rosto do Jogador (Preto e Branco / Alto Contraste) */
+/* Box do Rosto do Jogador (Preto e Laranja / Alto Contraste) */
 .combat-card-avatar-box {
   width: 50px;
   height: 50px;
   min-width: 50px;
   min-height: 50px;
   background: #000000;
-  border: 1.5px solid #ffffff;
+  border: 1.5px solid var(--mesa-orange, #ff5500);
+  box-shadow: 0 0 8px rgba(255, 85, 0, 0.35);
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -9237,19 +9250,25 @@ body.combat-active .combat-black-ramp {
   height: 100%;
   object-fit: cover;
   object-position: center 15%; /* Enquadramento focado no rosto */
-  filter: grayscale(100%) contrast(150%) brightness(1.1); /* Efeito Preto e Branco Undertale */
+  filter: grayscale(100%) contrast(160%) sepia(100%) hue-rotate(345deg) saturate(650%) brightness(0.95);
   image-rendering: -webkit-optimize-contrast;
   display: block;
+  transition: filter 0.25s ease, transform 0.25s ease;
+}
+
+.combat-player-card:hover .combat-card-avatar-img {
+  filter: none; /* Revela a ilustração original com cores normais ao passar o mouse */
+  transform: scale(1.08);
 }
 
 .combat-card-avatar-fallback {
   font-size: 1.1rem;
   font-weight: 900;
-  color: #ffffff;
+  color: var(--mesa-orange, #ff5500);
   font-family: 'Press Start 2P', monospace;
 }
 
-/* Status Vitais do Card Undertale */
+/* Status Vitais do Card Undertale (Preto e Laranja) */
 .combat-card-stats {
   display: flex;
   flex-direction: column;
@@ -9269,14 +9288,14 @@ body.combat-active .combat-black-ramp {
 
 .undertale-stat-label {
   font-weight: 700;
-  color: #ffffff;
+  color: var(--mesa-orange, #ff5500);
 }
 
 .undertale-hp-track {
   flex: 1;
   height: 9px;
   background: #000000;
-  border: 1px solid #ffffff;
+  border: 1px solid var(--mesa-orange, #ff5500);
   margin: 0 4px;
   overflow: hidden;
   position: relative;
@@ -9284,7 +9303,8 @@ body.combat-active .combat-black-ramp {
 
 .undertale-hp-bar {
   height: 100%;
-  background: #ffaa00;
+  background: var(--mesa-orange, #ff5500);
+  box-shadow: 0 0 6px rgba(255, 85, 0, 0.6);
   transition: width 0.3s ease;
 }
 
@@ -9305,12 +9325,13 @@ body.combat-active .combat-black-ramp {
 .undertale-stress-pip {
   width: 6px;
   height: 6px;
-  border: 1px solid #ffffff;
+  border: 1px solid var(--mesa-orange, #ff5500);
   background: transparent;
 }
 
 .undertale-stress-pip.filled {
   background: var(--mesa-orange, #ff5500);
+  box-shadow: 0 0 5px rgba(255, 85, 0, 0.8);
 }
 
 /* Modal do Gerenciador de Combate (Mestre) */
