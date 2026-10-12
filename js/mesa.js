@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI & Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.7.2';
+const MESA_VERSION = 'v1.7.3';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -6559,6 +6559,7 @@ const MesaCombate = {
   _rampWaveStartTime: 0,
   _rampResizeBound: null,
   _currentDomeLeft: null,
+  _currentDomeRight: null,
   _currentDomeTop: null,
 
   presets: [
@@ -7681,6 +7682,7 @@ const MesaCombate = {
     }
     this._rampWaveStartTime = performance.now();
     this._currentDomeLeft = null;
+    this._currentDomeRight = null;
     this._currentDomeTop = null;
 
     const loop = () => {
@@ -7700,6 +7702,7 @@ const MesaCombate = {
       this._rampWaveRaf = null;
     }
     this._currentDomeLeft = null;
+    this._currentDomeRight = null;
     this._currentDomeTop = null;
     if (this._rampCtx && this._rampCanvas) {
       this._rampCtx.clearRect(0, 0, this._rampCanvas.width, this._rampCanvas.height);
@@ -7719,11 +7722,12 @@ const MesaCombate = {
     // Tamanho do bloco pixelado para estética retro (4px desktop, 3px mobile)
     const pixelSize = w < 768 ? 3 : 4;
 
-    // 1. Determina as dimensões e posição base do Domo protetor ao redor dos cards
-    const padLeft = Math.max(40, Math.min(70, Math.round(w * 0.04)));
-    const padTop = 22; // Margem baixa e justa para o domo abraçar os cards sem subir demais
+    // 1. Determina as dimensões e posição do Domo Simétrico Centralizado
+    const padX = Math.max(32, Math.min(65, Math.round(w * 0.035)));
+    const padTop = 22; // Margem justa e compacta acima dos cards
 
-    let targetLeft = Math.max(16, Math.round(w - Math.min(w * 0.70, 840)));
+    let targetLeft = Math.max(16, Math.round(w * 0.5 - 420));
+    let targetRight = Math.min(w - 16, Math.round(w * 0.5 + 420));
     let targetTop = Math.max(16, Math.round(h * 0.45));
 
     const dockContainer = document.querySelector('.combat-dock-container');
@@ -7732,9 +7736,11 @@ const MesaCombate = {
       const canvasRect = canvas.getBoundingClientRect();
       if (containerRect.width > 0 && containerRect.height > 0) {
         const dockLeftInCanvas = containerRect.left - canvasRect.left;
+        const dockRightInCanvas = containerRect.right - canvasRect.left;
         const dockTopInCanvas = containerRect.top - canvasRect.top;
 
-        targetLeft = Math.max(16, Math.round(dockLeftInCanvas - padLeft));
+        targetLeft = Math.max(16, Math.round(dockLeftInCanvas - padX));
+        targetRight = Math.min(w - 16, Math.round(dockRightInCanvas + padX));
         targetTop = Math.max(16, Math.round(dockTopInCanvas - padTop));
       }
     }
@@ -7742,65 +7748,93 @@ const MesaCombate = {
     // Interpolação suave (lerp) para adaptação suave sem sobressaltos visuais
     if (this._currentDomeLeft === undefined || this._currentDomeLeft === null) {
       this._currentDomeLeft = targetLeft;
+      this._currentDomeRight = targetRight;
       this._currentDomeTop = targetTop;
     } else {
       this._currentDomeLeft += (targetLeft - this._currentDomeLeft) * 0.12;
+      this._currentDomeRight += (targetRight - this._currentDomeRight) * 0.12;
       this._currentDomeTop += (targetTop - this._currentDomeTop) * 0.12;
     }
 
     const x_left = Math.round(this._currentDomeLeft);
+    const x_right = Math.round(this._currentDomeRight);
     const y_top = Math.round(this._currentDomeTop);
 
-    // Raio da curvatura do ombro do domo (compacto e elegante)
-    const maxR = Math.min((w - x_left) * 0.35, (h - y_top) * 0.45);
-    const cornerR = Math.max(32, Math.min(75, Math.round(maxR)));
-    const cx = x_left + cornerR;
+    // Raio simétrico das curvaturas dos ombros (esquerdo e direito)
+    const maxR = Math.min((x_right - x_left) * 0.25, (h - y_top) * 0.45);
+    const cornerR = Math.max(28, Math.min(65, Math.round(maxR)));
+
+    const cx_left = x_left + cornerR;
+    const cx_right = x_right - cornerR;
     const cy = y_top + cornerR;
 
+    // Segmentos do Domo Simétrico:
+    // L1: Parede vertical esquerda (sobe da base)
+    // L2: Ombro arredondado esquerdo (curva do topo esquerdo)
+    // L3: Parede horizontal superior (corre para a direita sobre os cards)
+    // L4: Ombro arredondado direito (curva do topo direito)
+    // L5: Parede vertical direita (desce até a base)
     const L1 = Math.max(0, h - cy);
     const L2 = cornerR * (Math.PI * 0.5);
-    const L3 = Math.max(0, w - cx);
-    const totalLength = L1 + L2 + L3;
+    const L3 = Math.max(0, cx_right - cx_left);
+    const L4 = cornerR * (Math.PI * 0.5);
+    const L5 = Math.max(0, h - cy);
+    const totalLength = L1 + L2 + L3 + L4 + L5;
     if (totalLength <= 0) return;
 
-    const numSteps = Math.max(10, Math.round(totalLength / pixelSize));
+    const numSteps = Math.max(12, Math.round(totalLength / pixelSize));
     const t = (performance.now() - this._rampWaveStartTime) * 0.001;
 
-    // 2. Calcula os pontos discretos ao longo do contorno do domo com ondas
+    // 2. Calcula os pontos discretos ao longo do contorno simétrico do domo
     const points = [];
     for (let i = 0; i <= numSteps; i++) {
       const s = (i / numSteps) * totalLength;
       let x_base, y_base, nx, ny;
 
       if (s <= L1) {
-        // Parede vertical esquerda (sobe da borda inferior)
+        // 1. Parede vertical esquerda (sobe da base)
         x_base = x_left;
         y_base = h - s;
         nx = -1;
         ny = 0;
       } else if (s <= L1 + L2) {
-        // Ombro arredondado do domo (conecta suavemente vertical para horizontal)
+        // 2. Ombro esquerdo arredondado
         const s_arc = s - L1;
         const theta = Math.PI + (s_arc / L2) * (Math.PI * 0.5);
-        x_base = cx + cornerR * Math.cos(theta);
+        x_base = cx_left + cornerR * Math.cos(theta);
+        y_base = cy + cornerR * Math.sin(theta);
+        nx = Math.cos(theta);
+        ny = Math.sin(theta);
+      } else if (s <= L1 + L2 + L3) {
+        // 3. Parede horizontal superior (teto do domo sobre os cards)
+        const s_top = s - (L1 + L2);
+        x_base = cx_left + s_top;
+        y_base = y_top;
+        nx = 0;
+        ny = -1;
+      } else if (s <= L1 + L2 + L3 + L4) {
+        // 4. Ombro direito arredondado
+        const s_arc = s - (L1 + L2 + L3);
+        const theta = Math.PI * 1.5 + (s_arc / L4) * (Math.PI * 0.5);
+        x_base = cx_right + cornerR * Math.cos(theta);
         y_base = cy + cornerR * Math.sin(theta);
         nx = Math.cos(theta);
         ny = Math.sin(theta);
       } else {
-        // Parede horizontal superior (corre para a borda direita)
-        const s_top = s - (L1 + L2);
-        x_base = cx + s_top;
-        y_base = y_top;
-        nx = 0;
-        ny = -1;
+        // 5. Parede vertical direita (desce para a base)
+        const s_down = s - (L1 + L2 + L3 + L4);
+        x_base = x_right;
+        y_base = cy + s_down;
+        nx = 1;
+        ny = 0;
       }
 
-      // Envelope que ancora perfeitamente nas bordas da tela (s = 0 na base e s = totalLength na direita)
+      // Envelope que ancora perfeitamente nas duas extremidades da base inferior (s = 0 e s = totalLength)
       const sNorm = s / totalLength;
-      const envelope = Math.min(1, Math.sin(sNorm * Math.PI) * 1.5);
+      const envelope = Math.min(1, Math.sin(sNorm * Math.PI) * 1.6);
 
       // Superposição de ondas senoidais estilo pixel art
-      const w1 = Math.sin(s * 0.012 - t * 2.4) * 8.5;
+      const w1 = Math.sin(s * 0.012 - t * 2.4) * 8.0;
       const w2 = Math.sin(s * 0.026 + t * 3.6) * 4.0;
       const w3 = Math.cos(s * 0.006 - t * 1.3) * 2.5;
       const displacement = (w1 + w2 + w3) * envelope;
@@ -7808,7 +7842,7 @@ const MesaCombate = {
       const rawX = x_base + nx * displacement;
       const rawY = y_base + ny * displacement;
 
-      // Quantização na grade de pixels
+      // Quantização estrita na grade de pixels
       const qx = Math.round(rawX / pixelSize) * pixelSize;
       const qy = Math.round(rawY / pixelSize) * pixelSize;
 
@@ -7818,7 +7852,7 @@ const MesaCombate = {
     // 3. Limpa o canvas
     ctx.clearRect(0, 0, w, h);
 
-    // 4. Preenchimento Preto Sólido (#000000) dentro do Domo
+    // 4. Preenchimento Preto Sólido (#000000) dentro do Domo Simétrico
     ctx.save();
     ctx.fillStyle = '#000000';
     ctx.beginPath();
@@ -7826,8 +7860,8 @@ const MesaCombate = {
     for (let i = 0; i <= numSteps; i++) {
       ctx.lineTo(points[i].x, points[i].y);
     }
-    ctx.lineTo(w, points[numSteps].y);
-    ctx.lineTo(w, h);
+    // Fecha a base do domo simétrico na linha inferior da tela
+    ctx.lineTo(points[numSteps].x, h);
     ctx.lineTo(points[0].x, h);
     ctx.closePath();
     ctx.fill();
