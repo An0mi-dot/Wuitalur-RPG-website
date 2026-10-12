@@ -1037,6 +1037,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
 .mesa-modal-overlay.active {
   opacity: 1;
   pointer-events: all;
+  z-index: 2500 !important;
 }
 
 /* Modal de Token Estilo Nanquim */
