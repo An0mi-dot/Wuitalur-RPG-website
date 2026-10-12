@@ -7038,8 +7038,6 @@ const MesaCombate = {
       slashBox.classList.add('active');
     }
 
-    this.playHitSound();
-
     setTimeout(() => {
       card.classList.remove('damaged');
       if (slashBox) {
@@ -7050,27 +7048,7 @@ const MesaCombate = {
   },
 
   playHitSound() {
-    try {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (!AudioCtx) return;
-      if (!this._audioCtx) this._audioCtx = new AudioCtx();
-      const ctx = this._audioCtx;
-      if (ctx.state === 'suspended') ctx.resume();
-
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(140, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(30, ctx.currentTime + 0.18);
-
-      gain.gain.setValueAtTime(0.22, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
-
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.22);
-    } catch(e) {}
+    // Som desativado a pedido do mestre
   },
 
   updateNavLabels() {
