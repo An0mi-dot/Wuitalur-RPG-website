@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI & Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.7.3';
+const MESA_VERSION = 'v1.7.4';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -6913,7 +6913,11 @@ const MesaCombate = {
     else if (count <= 6) cols = 3;
     else cols = 4;
     dock.style.setProperty('--combat-cols', cols);
-    dock.style.gridTemplateColumns = `repeat(${cols}, 184px)`;
+    if (window.innerWidth <= 768) {
+      dock.style.removeProperty('grid-template-columns');
+    } else {
+      dock.style.gridTemplateColumns = `repeat(${cols}, 184px)`;
+    }
 
     dock.innerHTML = activePlayers.map((p, idx) => {
       const slotNum = (p.slot !== undefined && p.slot !== null) ? p.slot : (idx + 1);
@@ -7614,6 +7618,9 @@ const MesaCombate = {
       if (card) {
         card.classList.remove('combat-card-entrance');
         card.classList.add('is-current-turn');
+        try {
+          card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        } catch(e) {}
       }
     } else if (currentItem.type === 'boss') {
       if (opponentTitle) opponentTitle.classList.add('is-current-turn-boss');
@@ -7650,6 +7657,15 @@ const MesaCombate = {
     if (!this._rampResizeBound) {
       this._rampResizeBound = () => {
         this._updateRampCanvasSize();
+        const dockEl = document.getElementById('combat-players-dock');
+        if (dockEl) {
+          if (window.innerWidth <= 768) {
+            dockEl.style.removeProperty('grid-template-columns');
+          } else {
+            const currentCols = dockEl.style.getPropertyValue('--combat-cols') || 4;
+            dockEl.style.gridTemplateColumns = `repeat(${currentCols}, 184px)`;
+          }
+        }
         if (this.isActive) {
           this.drawRampWave();
         }
@@ -7663,7 +7679,8 @@ const MesaCombate = {
     const rampEl = this._rampCanvas.parentElement;
     const rect = rampEl ? rampEl.getBoundingClientRect() : null;
     const w = (rect && rect.width > 0) ? Math.round(rect.width) : window.innerWidth;
-    const h = (rect && rect.height > 0) ? Math.round(rect.height) : Math.round(window.innerHeight * 0.50);
+    const fallbackH = Math.round(window.innerHeight * (window.innerWidth <= 768 ? 0.48 : 0.58));
+    const h = (rect && rect.height > 0) ? Math.round(rect.height) : fallbackH;
 
     if (this._rampCanvas.width !== w || this._rampCanvas.height !== h) {
       this._rampCanvas.width = w;
@@ -7762,7 +7779,8 @@ const MesaCombate = {
 
     // Raio simétrico das curvaturas dos ombros (esquerdo e direito)
     const maxR = Math.min((x_right - x_left) * 0.25, (h - y_top) * 0.45);
-    const cornerR = Math.max(28, Math.min(65, Math.round(maxR)));
+    const maxSafeR = Math.max(10, Math.floor((x_right - x_left) * 0.35));
+    const cornerR = Math.max(16, Math.min(65, Math.min(Math.round(maxR), maxSafeR)));
 
     const cx_left = x_left + cornerR;
     const cx_right = x_right - cornerR;
