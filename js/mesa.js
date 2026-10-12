@@ -6560,15 +6560,20 @@ const MesaCombate = {
   },
 
   handleNavClick() {
-    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    if (window.MesaApp && MesaApp.state && !MesaApp.state.isMaster) {
+      alert("Apenas o Mestre pode gerenciar o modo de combate.");
+      return;
+    }
     this.openSelectModal();
   },
 
   openSelectModal() {
-    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    if (window.MesaApp && MesaApp.state && !MesaApp.state.isMaster) return;
     this.renderPresets();
     const modal = document.getElementById('combat-select-modal');
-    if (modal) modal.classList.add('active');
+    if (modal) {
+      modal.classList.add('active');
+    }
 
     const submitBtn = document.getElementById('combat-modal-submit-btn');
     if (submitBtn) {
@@ -6583,7 +6588,9 @@ const MesaCombate = {
 
   closeSelectModal() {
     const modal = document.getElementById('combat-select-modal');
-    if (modal) modal.classList.remove('active');
+    if (modal) {
+      modal.classList.remove('active');
+    }
   },
 
   renderPresets() {
@@ -6591,11 +6598,19 @@ const MesaCombate = {
     if (!grid) return;
 
     grid.innerHTML = this.presets.map(p => `
-      <div class="combat-preset-card ${p.id === this.selectedPresetId ? 'selected' : ''}" onclick="MesaCombate.selectPreset('${p.id}')">
+      <div class="combat-preset-card ${p.id === this.selectedPresetId ? 'selected' : ''}" 
+           onclick="MesaCombate.selectPreset('${p.id}')"
+           ondblclick="MesaCombate.selectAndStart('${p.id}')"
+           title="Clique para selecionar ou duplo clique para iniciar combate imediatamente">
         <div class="combat-preset-name">${p.name}</div>
         <div class="combat-preset-desc">${p.desc}</div>
       </div>
     `).join('');
+  },
+
+  selectAndStart(id) {
+    this.selectPreset(id);
+    this.confirmSelection();
   },
 
   selectPreset(id) {
@@ -6820,7 +6835,7 @@ const MesaCombate = {
       const animDelay = (idx * 0.08).toFixed(2);
 
       return `
-        <div class="combat-player-card" style="animation-delay: ${animDelay}s" onclick="MesaApp.openFicha(MesaApp.state.players[${p.slot - 1}])" title="Clique para abrir a ficha de ${p.nome}">
+        <div class="combat-player-card" style="animation-delay: ${animDelay}s" onclick="MesaCombate.openPlayerFicha(${p.slot})" title="Clique para abrir a ficha de ${p.nome}">
           <div class="combat-card-header">
             <span class="combat-card-name">${p.nome}</span>
             <span class="combat-card-slot-badge">S${p.slot}</span>
@@ -6892,6 +6907,14 @@ const MesaCombate = {
     if (navLabel) navLabel.textContent = text;
     if (menuLabel) menuLabel.textContent = text;
     if (mobileLabel) mobileLabel.textContent = `${text} (Mestre)`;
+  },
+
+  openPlayerFicha(slot) {
+    if (!window.MesaApp || !MesaApp.state || !MesaApp.state.players) return;
+    const player = MesaApp.state.players.find(p => p && p.slot === slot);
+    if (player && typeof MesaApp.openFicha === 'function') {
+      MesaApp.openFicha(player);
+    }
   }
 };
 window.MesaCombate = MesaCombate;

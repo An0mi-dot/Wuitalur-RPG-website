@@ -9322,7 +9322,10 @@ body.combat-active .combat-black-ramp {
 
 /* Modal do Gerenciador de Combate (Mestre) */
 .combat-modal-dialog {
-  width: min(92vw, 580px);
+  width: min(94vw, 580px) !important;
+  max-width: 580px !important;
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 35px rgba(239, 68, 68, 0.45), 0 25px 70px rgba(0, 0, 0, 0.95) !important;
 }
 
 .combat-modal-desc {

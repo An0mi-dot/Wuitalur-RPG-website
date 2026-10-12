@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.5.7">
   <link rel="stylesheet" href="css/components.css?v=1.5.7">
-  <link rel="stylesheet" href="css/mesa.css?v=1.5.7b">
+  <link rel="stylesheet" href="css/mesa.css?v=1.5.7c">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -171,7 +171,7 @@
               <span class="quick-menu-badge-master">Mestre</span>
             </button>
             <button type="button" id="menu-combate-btn" class="quick-menu-item master-item" onclick="MesaCombate.handleNavClick(); MesaQuickMenu.close();" style="display: none; color: #ef4444;">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
               <span id="menu-combate-label">Iniciar Combate</span>
               <span class="quick-menu-badge-master">Mestre</span>
             </button>
@@ -235,9 +235,6 @@
 
         <!-- Botão Iniciar Combate (Exclusivo do Mestre) -->
         <button id="nav-combate-btn" class="ink-tag nav-combate master-item" onclick="MesaCombate.handleNavClick()" style="display: none; color: #ef4444;" title="Iniciar / Gerenciar Modo de Combate">
-          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-          </svg>
           <span id="nav-combate-label">Iniciar Combate</span>
         </button>
 
@@ -627,7 +624,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
           </button>
 
           <button id="mobile-combate-item" class="mobile-menu-item master-item" onclick="MesaCombate.handleNavClick(); MesaMobileMenu.close()" style="display: none; color: #ef4444;">
-            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
             <span id="mobile-combate-label">Iniciar Combate (Mestre)</span>
           </button>
 
@@ -1115,7 +1112,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.5.7"></script>
 
-<script src="js/mesa.js?v=1.5.7"></script>
+<script src="js/mesa.js?v=1.5.7c"></script>
   <!-- Versao da Mesa -->
   <div id="mesa-version-badge" class="mesa-version">v1.5.7</div>
 
@@ -1410,7 +1407,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
     <!-- Controles Exclusivos do Mestre Durante o Combate -->
     <div id="combat-master-controls" class="combat-master-controls master-item" style="display: none;">
       <button type="button" class="combat-ctrl-btn" onclick="MesaCombate.openSelectModal()" title="Escolher com quem eles vão combater">
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4"></path><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><path d="M7 23l-4-4 4-4"></path><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
         <span>Trocar Oponente</span>
       </button>
       <button type="button" class="combat-ctrl-btn end-btn" onclick="MesaCombate.stopCombat(true)" title="Encerrar combate e voltar para a mesa">
@@ -1435,11 +1432,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
   </div>
 
   <!-- MODAL: GERENCIADOR DE COMBATE DO MESTRE -->
-  <div id="combat-select-modal" class="mesa-modal ink-modal" onclick="if(event.target===this) MesaCombate.closeSelectModal()">
-    <div class="mesa-modal-dialog combat-modal-dialog">
+  <div id="combat-select-modal" class="mesa-modal-overlay" onclick="if(event.target===this) MesaCombate.closeSelectModal()">
+    <div class="mesa-modal ink-modal combat-modal-dialog">
       <div class="mesa-modal-header">
         <div class="mesa-modal-title">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#ef4444" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#ef4444" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
           <span>GERENCIADOR DE COMBATE</span>
         </div>
         <button type="button" class="mesa-modal-close" onclick="MesaCombate.closeSelectModal()">&times;</button>
