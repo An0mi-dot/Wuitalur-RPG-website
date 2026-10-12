@@ -7603,10 +7603,8 @@ const MesaCombate = {
   updateMasterControls() {
     const isMaster = !!(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
     const masterCtrl = document.getElementById('combat-master-controls');
-    const guestCtrl = document.getElementById('combat-guest-controls');
 
     if (masterCtrl) masterCtrl.style.display = (this.isActive && isMaster) ? 'flex' : 'none';
-    if (guestCtrl) guestCtrl.style.display = (this.isActive && !isMaster) ? 'flex' : 'none';
 
     const navControls = document.getElementById('combat-turn-nav-controls');
     if (navControls) {
