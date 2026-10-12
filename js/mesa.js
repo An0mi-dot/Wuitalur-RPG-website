@@ -6763,7 +6763,7 @@ const MesaCombate = {
     if (!video) return;
 
     if (fallbackLabel) {
-      fallbackLabel.textContent = this.opponentName ? `COMBATE: ${this.opponentName}` : 'ÁREA DE COMBATE';
+      fallbackLabel.textContent = this.opponentName || 'ÁREA DE COMBATE';
     }
 
     if (url && url.trim()) {
