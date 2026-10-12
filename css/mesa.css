@@ -9527,10 +9527,63 @@ body.combat-active .combat-black-ramp {
    MODAL DO CICLO DE TURNOS (MESTRE)
    ============================================================ */
 .combat-turn-modal-dialog {
-  width: min(94vw, 540px) !important;
-  max-width: 540px !important;
+  width: min(96vw, 620px) !important;
+  max-width: 620px !important;
   border-color: var(--mesa-orange, #ff5500) !important;
   box-shadow: 0 0 35px rgba(255, 85, 0, 0.45), 0 25px 70px rgba(0, 0, 0, 0.95) !important;
+}
+
+.combat-turn-presets-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 14px 0;
+}
+
+.combat-turn-preset-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.5rem;
+  background: rgba(255, 85, 0, 0.12);
+  border: 1px solid var(--mesa-orange, #ff5500);
+  color: var(--mesa-orange, #ff5500);
+  padding: 7px 11px;
+  cursor: pointer;
+  transition: all 0.18s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  user-select: none;
+}
+
+.combat-turn-preset-btn:hover {
+  background: var(--mesa-orange, #ff5500);
+  color: #000000;
+  box-shadow: 0 0 12px rgba(255, 85, 0, 0.6);
+}
+
+.combat-turn-preset-btn.highlight {
+  background: rgba(255, 85, 0, 0.22);
+  border-color: #ffaa00;
+  color: #ffcc00;
+}
+
+.combat-turn-preset-btn.highlight:hover {
+  background: #ffaa00;
+  color: #000000;
+  box-shadow: 0 0 15px rgba(255, 170, 0, 0.7);
+}
+
+.combat-turn-preset-btn.secondary {
+  border-color: #555;
+  color: #888;
+  background: transparent;
+}
+
+.combat-turn-preset-btn.secondary:hover {
+  border-color: #aaa;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
 }
 
 .combat-turn-order-list {
@@ -9581,7 +9634,7 @@ body.combat-active .combat-black-ramp {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 210px;
+  max-width: 200px;
 }
 
 .combat-turn-item-name.boss-name {
@@ -9591,7 +9644,7 @@ body.combat-active .combat-black-ramp {
 .combat-turn-item-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
 }
 
 .combat-turn-action-btn {
@@ -9642,6 +9695,34 @@ body.combat-active .combat-black-ramp {
   cursor: not-allowed;
   border-color: #555;
   color: #555;
+}
+
+.combat-turn-arrow-btn.turn-dup-btn {
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.5);
+  font-weight: 900;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.combat-turn-arrow-btn.turn-dup-btn:hover:not(:disabled) {
+  background: #38bdf8;
+  color: #000000;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+}
+
+.combat-turn-arrow-btn.turn-del-btn {
+  color: #f87171;
+  border-color: rgba(248, 113, 113, 0.5);
+  font-weight: 900;
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
+.combat-turn-arrow-btn.turn-del-btn:hover:not(:disabled) {
+  background: #ef4444;
+  color: #ffffff;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
 }
 
 .combat-turn-stop-btn {

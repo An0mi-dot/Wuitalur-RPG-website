@@ -6767,11 +6767,10 @@ const MesaCombate = {
 
     // Se houver um oponente no ciclo de turnos, atualiza o nome dele na iniciativa
     if (this.turnCycle && this.turnCycle.order) {
-      const bossItem = this.turnCycle.order.find(i => i.type === 'boss');
-      if (bossItem) {
-        bossItem.name = this.opponentName;
-        this.updateTurnUI();
-      }
+      this.turnCycle.order.forEach(i => {
+        if (i.type === 'boss') i.name = this.opponentName;
+      });
+      this.updateTurnUI();
     }
 
     this.loadVideo(this.videoUrl);
@@ -7165,6 +7164,12 @@ const MesaCombate = {
             <button type="button" class="combat-turn-arrow-btn" onclick="MesaCombate.moveTurnItem(${idx}, 1)" ${idx === this.turnCycle.order.length - 1 ? 'disabled' : ''} title="Descer na iniciativa">
               ▼
             </button>
+            <button type="button" class="combat-turn-arrow-btn turn-dup-btn" onclick="MesaCombate.duplicateTurnItem(${idx})" title="Duplicar este turno (adicionar mais uma ação para este personagem)">
+              +
+            </button>
+            <button type="button" class="combat-turn-arrow-btn turn-del-btn" onclick="MesaCombate.removeTurnItem(${idx})" ${this.turnCycle.order.length <= 1 ? 'disabled' : ''} title="Remover este turno">
+              ✕
+            </button>
           </div>
         </div>
       `;
@@ -7176,14 +7181,120 @@ const MesaCombate = {
     const targetIdx = index + dir;
     if (targetIdx < 0 || targetIdx >= this.turnCycle.order.length) return;
 
-    const currentItem = this.turnCycle.order[this.turnCycle.currentIndex];
-
     const temp = this.turnCycle.order[index];
     this.turnCycle.order[index] = this.turnCycle.order[targetIdx];
     this.turnCycle.order[targetIdx] = temp;
 
-    this.turnCycle.currentIndex = this.turnCycle.order.indexOf(currentItem);
+    if (this.turnCycle.currentIndex === index) {
+      this.turnCycle.currentIndex = targetIdx;
+    } else if (this.turnCycle.currentIndex === targetIdx) {
+      this.turnCycle.currentIndex = index;
+    }
 
+    this.renderTurnOrderList();
+  },
+
+  duplicateTurnItem(index) {
+    if (!this.turnCycle || !this.turnCycle.order) return;
+    const item = this.turnCycle.order[index];
+    if (!item) return;
+
+    const clone = {
+      id: `${item.type}_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
+      slot: item.slot,
+      name: item.name,
+      type: item.type
+    };
+
+    this.turnCycle.order.splice(index + 1, 0, clone);
+    if (this.turnCycle.currentIndex > index) {
+      this.turnCycle.currentIndex++;
+    }
+    this.renderTurnOrderList();
+  },
+
+  removeTurnItem(index) {
+    if (!this.turnCycle || !this.turnCycle.order) return;
+    if (this.turnCycle.order.length <= 1) {
+      alert("A ordem de iniciativa deve ter pelo menos um turno.");
+      return;
+    }
+
+    this.turnCycle.order.splice(index, 1);
+    if (this.turnCycle.currentIndex >= this.turnCycle.order.length) {
+      this.turnCycle.currentIndex = 0;
+    } else if (this.turnCycle.currentIndex > index) {
+      this.turnCycle.currentIndex--;
+    }
+    this.renderTurnOrderList();
+  },
+
+  addBossTurn() {
+    if (!this.turnCycle) this.initDefaultTurnOrder();
+    this.turnCycle.order.push({
+      id: `boss_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
+      slot: null,
+      name: this.opponentName || '???',
+      type: 'boss'
+    });
+    this.renderTurnOrderList();
+  },
+
+  resetTurnOrderDefault() {
+    this.initDefaultTurnOrder();
+    this.renderTurnOrderList();
+  },
+
+  presetInterleavedBoss(everyN = 2) {
+    if (!this.turnCycle) this.initDefaultTurnOrder();
+    const players = (MesaApp && MesaApp.state && MesaApp.state.players) || [];
+    const activePlayers = players.filter(p => p && p.nome);
+    const bossName = this.opponentName || '???';
+
+    if (activePlayers.length === 0) {
+      this.turnCycle.order = [{
+        id: `boss_${Date.now()}`,
+        slot: null,
+        name: bossName,
+        type: 'boss'
+      }];
+      this.turnCycle.currentIndex = 0;
+      this.renderTurnOrderList();
+      return;
+    }
+
+    const newOrder = [];
+    for (let i = 0; i < activePlayers.length; i++) {
+      const p = activePlayers[i];
+      newOrder.push({
+        id: `slot_${p.slot}_${i}`,
+        slot: p.slot,
+        name: p.nome,
+        type: 'player'
+      });
+      // A cada everyN jogadores, insere o turno do oponente
+      if ((i + 1) % everyN === 0) {
+        newOrder.push({
+          id: `boss_${Date.now()}_${i}`,
+          slot: null,
+          name: bossName,
+          type: 'boss'
+        });
+      }
+    }
+
+    // Se o número total de jogadores não for múltiplo de everyN, coloca um turno do oponente no final
+    if (activePlayers.length % everyN !== 0) {
+      newOrder.push({
+        id: `boss_${Date.now()}_end`,
+        slot: null,
+        name: bossName,
+        type: 'boss'
+      });
+    }
+
+    this.turnCycle.order = newOrder;
+    this.turnCycle.currentIndex = 0;
     this.renderTurnOrderList();
   },
 

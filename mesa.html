@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.5.7">
   <link rel="stylesheet" href="css/components.css?v=1.5.7">
-  <link rel="stylesheet" href="css/mesa.css?v=1.6.2">
+  <link rel="stylesheet" href="css/mesa.css?v=1.6.3">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1112,9 +1112,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.5.7"></script>
 
-<script src="js/mesa.js?v=1.6.2"></script>
+<script src="js/mesa.js?v=1.6.3"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v1.6.2</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.6.3</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -1514,6 +1514,18 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         <p class="combat-modal-desc">
           Defina a ordem da iniciativa dos turnos. Use os botões ▲ e ▼ para ordenar quem começa e quem termina. Clique em "Tornar Vez" para definir quem está agindo no momento.
         </p>
+
+        <div class="combat-turn-presets-row">
+          <button type="button" class="combat-turn-preset-btn highlight" onclick="MesaCombate.presetInterleavedBoss(2)" title="Insere o turno do oponente a cada 2 jogadores automaticamente">
+            ⚡ Intercalar Inimigo (a cada 2 jogadores)
+          </button>
+          <button type="button" class="combat-turn-preset-btn" onclick="MesaCombate.addBossTurn()" title="Adiciona mais um turno para o oponente">
+            + Turno do Inimigo
+          </button>
+          <button type="button" class="combat-turn-preset-btn secondary" onclick="MesaCombate.resetTurnOrderDefault()" title="Reiniciar para a ordem padrão com 1 turno por participante">
+            ↺ Ordem Padrão
+          </button>
+        </div>
 
         <div class="combat-turn-list-container">
           <div class="combat-section-subtitle">ORDEM DE INICIATIVA</div>
