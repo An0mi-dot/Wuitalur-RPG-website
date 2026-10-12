@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.5.7">
   <link rel="stylesheet" href="css/components.css?v=1.5.7">
-  <link rel="stylesheet" href="css/mesa.css?v=1.5.7f">
+  <link rel="stylesheet" href="css/mesa.css?v=1.5.8">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1112,7 +1112,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.5.7"></script>
 
-<script src="js/mesa.js?v=1.5.7f"></script>
+<script src="js/mesa.js?v=1.5.8"></script>
   <!-- Versao da Mesa -->
   <div id="mesa-version-badge" class="mesa-version">v1.5.7</div>
 
@@ -1400,11 +1400,24 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
     <div class="combat-header">
       <div class="combat-title-box">
         <span class="combat-title-name" id="combat-opponent-title">???</span>
+        <div class="combat-current-turn-sub" id="combat-current-turn-sub" style="display: none;"></div>
       </div>
     </div>
 
     <!-- Controles Exclusivos do Mestre Durante o Combate -->
     <div id="combat-master-controls" class="combat-master-controls master-item" style="display: none;">
+      <button type="button" class="combat-ctrl-btn" id="combat-turn-cycle-btn" onclick="MesaCombate.openTurnModal()" title="Iniciar ou gerenciar a ordem de turnos">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+        <span id="combat-turn-btn-label">Começar ciclo de turnos</span>
+      </button>
+      <div id="combat-turn-nav-controls" class="combat-turn-nav-controls" style="display: none;">
+        <button type="button" class="combat-ctrl-btn turn-nav-btn" onclick="MesaCombate.prevTurn()" title="Turno anterior">
+          ◀
+        </button>
+        <button type="button" class="combat-ctrl-btn turn-nav-btn turn-next-btn" onclick="MesaCombate.nextTurn()" title="Avançar para o próximo turno">
+          <span>Próximo Turno ▶</span>
+        </button>
+      </div>
       <button type="button" class="combat-ctrl-btn" onclick="MesaCombate.openSelectModal()" title="Escolher com quem eles vão combater">
         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4"></path><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><path d="M7 23l-4-4 4-4"></path><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
         <span>Trocar Oponente</span>
@@ -1469,6 +1482,39 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         <button type="button" class="coletavel-form-cancel" onclick="MesaCombate.closeSelectModal()">Cancelar</button>
         <button type="button" class="coletavel-form-submit" id="combat-modal-submit-btn" onclick="MesaCombate.confirmSelection()">
           Iniciar Combate
+        </button>
+      </div>
+  <!-- MODAL: GERENCIADOR DE CICLO DE TURNOS (MESTRE) -->
+  <div id="combat-turn-modal" class="mesa-modal-overlay" onclick="if(event.target===this) MesaCombate.closeTurnModal()">
+    <div class="mesa-modal ink-modal combat-turn-modal-dialog">
+      <div class="mesa-modal-header">
+        <div class="mesa-modal-title">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#ff5500" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+          <span>CICLO DE TURNOS DE COMBATE</span>
+        </div>
+        <button class="mesa-modal-close" onclick="MesaCombate.closeTurnModal()">&times;</button>
+      </div>
+
+      <div class="mesa-modal-body">
+        <p class="combat-modal-desc">
+          Defina a ordem da iniciativa dos turnos. Use os botões ▲ e ▼ para ordenar quem começa e quem termina. Clique em "Tornar Vez" para definir quem está agindo no momento.
+        </p>
+
+        <div class="combat-turn-list-container">
+          <div class="combat-section-subtitle">ORDEM DE INICIATIVA</div>
+          <div id="combat-turn-order-list" class="combat-turn-order-list">
+            <!-- Renderizado dinamicamente via MesaCombate.renderTurnOrderList() -->
+          </div>
+        </div>
+      </div>
+
+      <div class="mesa-modal-footer combat-turn-modal-footer">
+        <button type="button" class="coletavel-form-cancel" onclick="MesaCombate.closeTurnModal()">Fechar</button>
+        <button type="button" class="combat-turn-stop-btn" id="combat-turn-stop-btn" onclick="MesaCombate.stopTurnCycle(true)" style="display:none;">
+          Encerrar Ciclo
+        </button>
+        <button type="button" class="coletavel-form-submit" id="combat-turn-start-btn" onclick="MesaCombate.confirmTurnCycle()">
+          Iniciar Turnos
         </button>
       </div>
     </div>

@@ -9015,15 +9015,36 @@ body.combat-active .player-slot {
 
 .combat-title-box {
   display: inline-flex;
-  align-items: baseline;
-  gap: 12px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
   padding: 8px 26px;
-  background: rgba(14, 5, 2, 0.9);
+  background: rgba(14, 5, 2, 0.92);
   border: 2px solid var(--mesa-orange, #ff5500);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.95), 0 0 16px rgba(255, 85, 0, 0.25);
   transform: translateY(-50px);
   opacity: 0;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+}
+
+.combat-current-turn-sub {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.55rem, 1vw, 0.72rem);
+  color: var(--mesa-orange, #ff5500);
+  background: rgba(0, 0, 0, 0.88);
+  border: 1px solid rgba(255, 85, 0, 0.6);
+  padding: 3px 12px;
+  margin-top: 2px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 0 8px rgba(255, 85, 0, 0.35);
+  animation: turnSubFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes turnSubFadeIn {
+  0%   { opacity: 0; transform: translateY(-4px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 body.combat-active .combat-title-box {
@@ -9135,14 +9156,13 @@ body.combat-active .combat-black-ramp {
   position: absolute;
   bottom: 20px;
   right: 28px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  align-items: flex-end;
-  gap: 14px;
-  max-width: 80vw;
-  max-height: 46vh;
+  display: grid;
+  grid-template-columns: repeat(var(--combat-cols, 4), 184px);
+  gap: 12px 14px;
+  max-width: 820px;
+  max-height: 48vh;
+  justify-content: end;
+  align-content: end;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 8px 12px;
@@ -9332,6 +9352,262 @@ body.combat-active .combat-black-ramp {
 .undertale-stress-pip.filled {
   background: var(--mesa-orange, #ff5500);
   box-shadow: 0 0 5px rgba(255, 85, 0, 0.8);
+}
+
+/* ============================================================
+   SETA LARANJA DO TURNO ATIVO & DESTAQUE DO CARD
+   ============================================================ */
+.combat-turn-arrow-box {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 30;
+}
+
+.combat-turn-arrow {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.15rem;
+  color: var(--mesa-orange, #ff5500);
+  line-height: 1;
+  animation: turnArrowBob 0.6s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 8px var(--mesa-orange, #ff5500)) drop-shadow(0 0 16px rgba(255, 85, 0, 0.8));
+}
+
+@keyframes turnArrowBob {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-7px); }
+}
+
+.combat-player-card.is-current-turn {
+  border-color: #ffaa00 !important;
+  box-shadow: 0 0 22px var(--mesa-orange, #ff5500), 0 0 10px #ffaa00, 0 8px 30px rgba(0, 0, 0, 0.95) !important;
+}
+
+.combat-title-name.is-current-turn-boss {
+  color: #ffaa00 !important;
+  text-shadow: 0 0 20px var(--mesa-orange, #ff5500) !important;
+}
+
+/* Controles de Navegação de Turno no Topo */
+.combat-turn-nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.combat-ctrl-btn.turn-nav-btn {
+  padding: 6px 10px;
+  background: #000000;
+  border-color: var(--mesa-orange, #ff5500);
+  color: #ffffff;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.62rem;
+}
+
+.combat-ctrl-btn.turn-nav-btn:hover {
+  background: var(--mesa-orange, #ff5500);
+  color: #000000;
+}
+
+.combat-ctrl-btn.turn-next-btn {
+  color: var(--mesa-orange, #ff5500);
+  font-weight: 700;
+}
+
+/* ============================================================
+   EFEITO DE DANO BRUTAL (TREMOR ÁSPERO, FLASH VERMELHO & CORTES PIXEL ART)
+   ============================================================ */
+.combat-player-card.damaged {
+  animation: combatDamageShakeRough 0.55s steps(2, jump-none), combatDamageRedFlash 0.55s ease both !important;
+}
+
+@keyframes combatDamageShakeRough {
+  0%   { transform: translate(0, 0); }
+  12%  { transform: translate(-12px, 8px); }
+  25%  { transform: translate(12px, -10px); }
+  37%  { transform: translate(-10px, -6px); }
+  50%  { transform: translate(10px, 8px); }
+  62%  { transform: translate(-8px, 6px); }
+  75%  { transform: translate(6px, -4px); }
+  87%  { transform: translate(-4px, 2px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes combatDamageRedFlash {
+  0%   { background-color: #ff0022; border-color: #ff2200; box-shadow: 0 0 35px #ff0022, 0 0 15px #ff5500; }
+  25%  { background-color: #400000; border-color: #ff0000; }
+  50%  { background-color: #ff0022; border-color: #ff3300; box-shadow: 0 0 40px #ff0022; }
+  75%  { background-color: #200000; border-color: var(--mesa-orange, #ff5500); }
+  100% { background-color: #000000; border-color: var(--mesa-orange, #ff5500); }
+}
+
+.combat-slash-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 20;
+  display: none;
+}
+
+.combat-slash-overlay.active {
+  display: block;
+}
+
+.combat-pixel-slash-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 8px #ff0033);
+  animation: pixelSlashImpact 0.55s cubic-bezier(0.1, 0.9, 0.2, 1) both;
+}
+
+@keyframes pixelSlashImpact {
+  0%   { opacity: 0; transform: scale(1.5) rotate(-6deg); }
+  18%  { opacity: 1; transform: scale(1) rotate(0deg); }
+  40%  { opacity: 1; transform: scale(1.04); }
+  75%  { opacity: 0.85; }
+  100% { opacity: 0; transform: scale(0.92); }
+}
+
+/* ============================================================
+   MODAL DO CICLO DE TURNOS (MESTRE)
+   ============================================================ */
+.combat-turn-modal-dialog {
+  width: min(94vw, 540px) !important;
+  max-width: 540px !important;
+  border-color: var(--mesa-orange, #ff5500) !important;
+  box-shadow: 0 0 35px rgba(255, 85, 0, 0.45), 0 25px 70px rgba(0, 0, 0, 0.95) !important;
+}
+
+.combat-turn-order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+  max-height: 48vh;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.combat-turn-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.75);
+  border: 1.5px solid rgba(255, 85, 0, 0.4);
+  transition: border-color 0.18s, background 0.18s;
+}
+
+.combat-turn-item.is-turn-current {
+  border-color: var(--mesa-orange, #ff5500);
+  background: rgba(255, 85, 0, 0.16);
+  box-shadow: 0 0 14px rgba(255, 85, 0, 0.35);
+}
+
+.combat-turn-item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.combat-turn-item-num {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.65rem;
+  color: var(--mesa-orange, #ff5500);
+  font-weight: 900;
+  min-width: 28px;
+}
+
+.combat-turn-item-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.64rem;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 210px;
+}
+
+.combat-turn-item-name.boss-name {
+  color: #ffaa33;
+}
+
+.combat-turn-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.combat-turn-action-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.52rem;
+  background: transparent;
+  border: 1px solid rgba(255, 85, 0, 0.5);
+  color: #ffffff;
+  padding: 5px 8px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.combat-turn-action-btn:hover {
+  border-color: var(--mesa-orange, #ff5500);
+  color: var(--mesa-orange, #ff5500);
+}
+
+.combat-turn-action-btn.active {
+  background: var(--mesa-orange, #ff5500);
+  border-color: var(--mesa-orange, #ff5500);
+  color: #000000;
+  font-weight: 900;
+}
+
+.combat-turn-arrow-btn {
+  font-family: monospace;
+  font-size: 0.8rem;
+  background: #000000;
+  border: 1px solid rgba(255, 85, 0, 0.6);
+  color: var(--mesa-orange, #ff5500);
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.combat-turn-arrow-btn:hover:not(:disabled) {
+  background: var(--mesa-orange, #ff5500);
+  color: #000000;
+}
+
+.combat-turn-arrow-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  border-color: #555;
+  color: #555;
+}
+
+.combat-turn-stop-btn {
+  background: #400000;
+  border: 1px solid #ff3333;
+  color: #ff9999;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.65rem;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.combat-turn-stop-btn:hover {
+  background: #ff2200;
+  color: #ffffff;
 }
 
 /* Modal do Gerenciador de Combate (Mestre) */

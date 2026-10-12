@@ -1525,6 +1525,11 @@ const MesaApp = {
               } else if (cb.active && MesaCombate.isActive && cb.opponentName !== MesaCombate.opponentName) {
                 MesaCombate.setOpponent(cb, false);
               }
+              if (cb.turnCycle) {
+                MesaCombate.syncTurnCycle(cb.turnCycle);
+              } else if (MesaCombate.turnCycle && MesaCombate.turnCycle.active && !cb.active) {
+                MesaCombate.stopTurnCycle(false);
+              }
             }
           }
         } catch(eSync) {}
@@ -1641,6 +1646,11 @@ const MesaApp = {
             } else if (cb.active && MesaCombate.isActive && cb.opponentName !== MesaCombate.opponentName) {
               MesaCombate.setOpponent(cb, false);
             }
+            if (cb.turnCycle) {
+              MesaCombate.syncTurnCycle(cb.turnCycle);
+            } else if (MesaCombate.turnCycle && MesaCombate.turnCycle.active && !cb.active) {
+              MesaCombate.stopTurnCycle(false);
+            }
           }
         }
       } catch(e) {}
@@ -1737,6 +1747,16 @@ const MesaApp = {
         MesaCombate.stopCombat(false);
       }
     });
+    channel.on('broadcast', { event: 'combat_turn_sync' }, (payload) => {
+      if (window.MesaCombate && payload.payload) {
+        MesaCombate.syncTurnCycle(payload.payload);
+      }
+    });
+    channel.on('broadcast', { event: 'combat_turn_stop' }, () => {
+      if (window.MesaCombate) {
+        MesaCombate.stopTurnCycle(false);
+      }
+    });
 
     // 6. Mensagens de Chat e Reações
     channel.on('broadcast', { event: 'chat_msg' }, (payload) => {
@@ -1825,7 +1845,14 @@ const MesaApp = {
       }
     }
     if (window.MesaCombate && MesaCombate.isActive) {
-      MesaCombate.renderPlayers();
+      const dock = document.getElementById('combat-players-dock');
+      const activeCount = (this.state.players || []).filter(p => p && p.nome).length;
+      const currentCards = dock ? dock.querySelectorAll('.combat-player-card').length : 0;
+      if (!dock || currentCards !== activeCount || currentCards === 0) {
+        MesaCombate.renderPlayers();
+      } else {
+        MesaCombate.updateAllPlayerVitals();
+      }
     }
   },
 
@@ -4318,6 +4345,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         MesaApp.closeModal('ficha-modal');
         return;
       }
+      if (window.MesaCombate) {
+        const turnModal = document.getElementById('combat-turn-modal');
+        if (turnModal && turnModal.classList.contains('active')) {
+          MesaCombate.closeTurnModal();
+          return;
+        }
+        const selectModal = document.getElementById('combat-select-modal');
+        if (selectModal && selectModal.classList.contains('active')) {
+          MesaCombate.closeSelectModal();
+          return;
+        }
+      }
       if (window.MesaAreaManager) {
         MesaAreaManager.closeNpcDrawer();
       }
@@ -6500,6 +6539,9 @@ const MesaCombate = {
   opponentName: '???',
   videoUrl: 'assets/videos/cine1.mp4',
   selectedPresetId: 'unknown',
+  turnCycle: null,
+  playerHpCache: {},
+  _audioCtx: null,
 
   presets: [
     {
@@ -6535,6 +6577,7 @@ const MesaCombate = {
         opponentId: this.opponentId || 'unknown',
         opponentName: this.opponentName || '???',
         videoUrl: this.videoUrl || 'assets/videos/cine1.mp4',
+        turnCycle: this.turnCycle || null,
         updatedAt: Date.now()
       };
       await MesaApp.supabase
@@ -6638,6 +6681,14 @@ const MesaCombate = {
     this.opponentName = data.opponentName || '???';
     this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/cine1.mp4');
 
+    // Reseta cache de PV dos personagens
+    this.playerHpCache = {};
+
+    // Sincroniza turnos caso já venham no payload
+    if (data.turnCycle) {
+      this.turnCycle = data.turnCycle;
+    }
+
     // Flash dramático de encontro (estilo Undertale)
     const flash = document.getElementById('combat-encounter-flash');
     if (flash) {
@@ -6670,6 +6721,7 @@ const MesaCombate = {
     if (masterCtrl) masterCtrl.style.display = isMaster ? 'flex' : 'none';
 
     this.updateNavLabels();
+    this.updateTurnUI();
 
     if (shouldBroadcast) {
       const chan = this.getChannel();
@@ -6681,7 +6733,8 @@ const MesaCombate = {
             payload: {
               opponentId: this.opponentId,
               opponentName: this.opponentName,
-              videoUrl: this.videoUrl
+              videoUrl: this.videoUrl,
+              turnCycle: this.turnCycle
             }
           });
         } catch(e) {}
@@ -6703,6 +6756,15 @@ const MesaCombate = {
       titleEl.classList.remove('slam');
       void titleEl.offsetWidth;
       titleEl.classList.add('slam');
+    }
+
+    // Se houver um oponente no ciclo de turnos, atualiza o nome dele na iniciativa
+    if (this.turnCycle && this.turnCycle.order) {
+      const bossItem = this.turnCycle.order.find(i => i.type === 'boss');
+      if (bossItem) {
+        bossItem.name = this.opponentName;
+        this.updateTurnUI();
+      }
     }
 
     this.loadVideo(this.videoUrl);
@@ -6730,6 +6792,11 @@ const MesaCombate = {
     if (shouldBroadcast && (!MesaApp.state || !MesaApp.state.isMaster)) return;
 
     this.isActive = false;
+    if (this.turnCycle) {
+      this.turnCycle.active = false;
+    }
+    this.updateTurnUI();
+
     document.body.classList.remove('combat-active');
 
     const video = document.getElementById('combat-bg-video');
@@ -6803,6 +6870,15 @@ const MesaCombate = {
       return;
     }
 
+    // Colunas dinâmicas para evitar cards órfãos e espaços vazios exagerados (ex: 8 cards -> 4 colunas em 2 linhas)
+    const count = activePlayers.length;
+    let cols = 4;
+    if (count <= 4) cols = count;
+    else if (count <= 6) cols = 3;
+    else cols = 4;
+    dock.style.setProperty('--combat-cols', cols);
+    dock.style.gridTemplateColumns = `repeat(${cols}, 184px)`;
+
     dock.innerHTML = activePlayers.map((p, idx) => {
       const slotNum = (p.slot !== undefined && p.slot !== null) ? p.slot : (idx + 1);
       const hpMax = p.hpMax || p.hp || 1;
@@ -6813,6 +6889,9 @@ const MesaCombate = {
         ? `<img src="${avatarSrc}" alt="${p.nome}" class="combat-card-avatar-img" />`
         : `<span class="combat-card-avatar-fallback">${p.nome.charAt(0)}</span>`;
 
+      // Inicializa o cache de PV para controle de dano brutal
+      this.playerHpCache[slotNum] = hpVal;
+
       const stressPts = p.stressPoints || 0;
       const maxStress = p.stressPointsMax || 6;
       let pipsHtml = '';
@@ -6820,10 +6899,14 @@ const MesaCombate = {
         pipsHtml += `<span class="undertale-stress-pip ${s < stressPts ? 'filled' : ''}"></span>`;
       }
 
-      const animDelay = (idx * 0.08).toFixed(2);
+      const animDelay = (idx * 0.05).toFixed(2);
 
       return `
-        <div class="combat-player-card" style="animation-delay: ${animDelay}s" onclick="MesaCombate.openPlayerFicha(${slotNum})" title="Clique para abrir a ficha de ${p.nome}">
+        <div class="combat-player-card" id="combat-player-card-${slotNum}" style="animation-delay: ${animDelay}s" onclick="MesaCombate.openPlayerFicha(${slotNum})" title="Clique para abrir a ficha de ${p.nome}">
+          <div class="combat-turn-arrow-box" id="combat-turn-arrow-${slotNum}" style="display: none;">
+            <div class="combat-turn-arrow">▼</div>
+          </div>
+          <div class="combat-slash-overlay" id="combat-slash-${slotNum}"></div>
           <div class="combat-card-header">
             <span class="combat-card-name">${p.nome}</span>
             <span class="combat-card-slot-badge">S${slotNum}</span>
@@ -6856,6 +6939,9 @@ const MesaCombate = {
         </div>
       `;
     }).join('');
+
+    // Re-aplica indicadores visuais de turno
+    this.updateTurnUI();
   },
 
   updatePlayerVitals(player) {
@@ -6871,6 +6957,13 @@ const MesaCombate = {
     const hpCurrent = Math.max(0, player.hp || 0);
     const hpPct = Math.min(100, Math.max(0, Math.round((hpCurrent / hpMax) * 100)));
 
+    // Se o PV abaixou, ativa o efeito de dano bruto (tremor, flash vermelho e marcas de corte pixel art)
+    const prevHp = this.playerHpCache[slot];
+    if (prevHp !== undefined && hpCurrent < prevHp) {
+      this.triggerDamageFx(slot);
+    }
+    this.playerHpCache[slot] = hpCurrent;
+
     if (hpBar) hpBar.style.width = `${hpPct}%`;
     if (hpVal) hpVal.textContent = `${hpCurrent}/${hpMax}`;
     if (peVal) peVal.textContent = `${player.pe || 0}/${player.peMax || player.pe || 0}`;
@@ -6885,6 +6978,76 @@ const MesaCombate = {
       }
       pipsBox.innerHTML = pipsHtml;
     }
+  },
+
+  updateAllPlayerVitals() {
+    const players = (MesaApp && MesaApp.state && MesaApp.state.players) || [];
+    players.forEach(p => {
+      if (p && p.slot) {
+        this.updatePlayerVitals(p);
+      }
+    });
+  },
+
+  triggerDamageFx(slot) {
+    const card = document.getElementById(`combat-player-card-${slot}`);
+    const slashBox = document.getElementById(`combat-slash-${slot}`);
+    if (!card) return;
+
+    // Reinicia animação de tremor bruto e piscar vermelho
+    card.classList.remove('damaged');
+    void card.offsetWidth;
+    card.classList.add('damaged');
+
+    if (slashBox) {
+      slashBox.innerHTML = `
+        <svg class="combat-pixel-slash-svg" viewBox="0 0 100 70" preserveAspectRatio="none">
+          <!-- Pixel slash corte 1 (branco brilhante estilo Undertale) -->
+          <path d="M 88 4 L 80 4 L 80 10 L 72 10 L 72 16 L 64 16 L 64 24 L 54 24 L 54 32 L 44 32 L 44 40 L 32 40 L 32 48 L 22 48 L 22 56 L 10 56 L 10 66 L 18 66 L 28 56 L 38 56 L 48 48 L 58 48 L 68 40 L 76 40 L 84 30 L 92 30 L 96 16 L 96 4 Z" fill="#ffffff" />
+          <!-- Pixel slash contorno sangue vermelho -->
+          <path d="M 92 2 L 84 2 L 84 8 L 76 8 L 76 14 L 68 14 L 68 22 L 58 22 L 58 30 L 48 30 L 48 38 L 36 38 L 36 46 L 26 46 L 26 54 L 14 54 L 14 62 L 6 62 L 6 68 L 14 68 L 24 60 L 34 60 L 44 52 L 54 52 L 64 44 L 72 44 L 80 34 L 88 34 L 94 20 L 98 20 L 98 8 Z" fill="#ff0022" opacity="0.85" />
+          <!-- Pixel slash corte 2 cruzado -->
+          <path d="M 12 10 L 20 10 L 30 20 L 40 20 L 50 30 L 60 30 L 70 42 L 80 42 L 88 56 L 80 56 L 70 46 L 58 46 L 48 34 L 38 34 L 26 22 L 16 22 L 12 10 Z" fill="#ffffff" />
+        </svg>
+      `;
+      slashBox.classList.remove('active');
+      void slashBox.offsetWidth;
+      slashBox.classList.add('active');
+    }
+
+    this.playHitSound();
+
+    setTimeout(() => {
+      card.classList.remove('damaged');
+      if (slashBox) {
+        slashBox.classList.remove('active');
+        slashBox.innerHTML = '';
+      }
+    }, 600);
+  },
+
+  playHitSound() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      if (!this._audioCtx) this._audioCtx = new AudioCtx();
+      const ctx = this._audioCtx;
+      if (ctx.state === 'suspended') ctx.resume();
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(140, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(30, ctx.currentTime + 0.18);
+
+      gain.gain.setValueAtTime(0.22, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.22);
+    } catch(e) {}
   },
 
   updateNavLabels() {
@@ -6913,6 +7076,255 @@ const MesaCombate = {
     }
     if (typeof MesaApp.handleSlotClick === 'function' && !isNaN(num)) {
       MesaApp.handleSlotClick(num);
+    }
+  },
+
+  // ============================================================
+  // GERENCIAMENTO DO CICLO DE TURNOS
+  // ============================================================
+  openTurnModal() {
+    if (window.MesaApp && MesaApp.state && !MesaApp.state.isMaster) {
+      alert("Apenas o Mestre pode gerenciar o ciclo de turnos.");
+      return;
+    }
+
+    if (!this.turnCycle || !this.turnCycle.order || this.turnCycle.order.length === 0) {
+      this.initDefaultTurnOrder();
+    }
+
+    this.renderTurnOrderList();
+    const modal = document.getElementById('combat-turn-modal');
+    if (modal) modal.classList.add('active');
+
+    const stopBtn = document.getElementById('combat-turn-stop-btn');
+    const startBtn = document.getElementById('combat-turn-start-btn');
+    if (stopBtn) stopBtn.style.display = (this.turnCycle && this.turnCycle.active) ? 'inline-block' : 'none';
+    if (startBtn) startBtn.textContent = (this.turnCycle && this.turnCycle.active) ? 'Salvar Ordem' : 'Começar Ciclo de Turnos';
+  },
+
+  closeTurnModal() {
+    const modal = document.getElementById('combat-turn-modal');
+    if (modal) modal.classList.remove('active');
+  },
+
+  initDefaultTurnOrder() {
+    const players = (MesaApp && MesaApp.state && MesaApp.state.players) || [];
+    const activePlayers = players.filter(p => p && p.nome);
+
+    const order = activePlayers.map(p => ({
+      id: `slot_${p.slot}`,
+      slot: p.slot,
+      name: p.nome,
+      type: 'player'
+    }));
+
+    // Adiciona o oponente da batalha na iniciativa
+    order.push({
+      id: 'boss',
+      slot: null,
+      name: this.opponentName || '???',
+      type: 'boss'
+    });
+
+    this.turnCycle = {
+      active: false,
+      order: order,
+      currentIndex: 0
+    };
+  },
+
+  renderTurnOrderList() {
+    const listEl = document.getElementById('combat-turn-order-list');
+    if (!listEl) return;
+    if (!this.turnCycle || !this.turnCycle.order) return;
+
+    listEl.innerHTML = this.turnCycle.order.map((item, idx) => {
+      const isCurrent = idx === (this.turnCycle.currentIndex || 0);
+      const isBoss = item.type === 'boss';
+      const label = isBoss ? `${item.name} [OPONENTE]` : `${item.name} (S${item.slot})`;
+      const numLabel = `${idx + 1}º`;
+
+      return `
+        <div class="combat-turn-item ${isCurrent ? 'is-turn-current' : ''}">
+          <div class="combat-turn-item-left">
+            <span class="combat-turn-item-num">${numLabel}</span>
+            <span class="combat-turn-item-name ${isBoss ? 'boss-name' : ''}">${label}</span>
+          </div>
+          <div class="combat-turn-item-actions">
+            <button type="button" class="combat-turn-action-btn ${isCurrent ? 'active' : ''}" onclick="MesaCombate.setTurnCurrentIndex(${idx})" title="Definir como turno atual">
+              ${isCurrent ? '● VEZ ATUAL' : 'Tornar Vez'}
+            </button>
+            <button type="button" class="combat-turn-arrow-btn" onclick="MesaCombate.moveTurnItem(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} title="Subir na iniciativa">
+              ▲
+            </button>
+            <button type="button" class="combat-turn-arrow-btn" onclick="MesaCombate.moveTurnItem(${idx}, 1)" ${idx === this.turnCycle.order.length - 1 ? 'disabled' : ''} title="Descer na iniciativa">
+              ▼
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
+  moveTurnItem(index, dir) {
+    if (!this.turnCycle || !this.turnCycle.order) return;
+    const targetIdx = index + dir;
+    if (targetIdx < 0 || targetIdx >= this.turnCycle.order.length) return;
+
+    const currentItem = this.turnCycle.order[this.turnCycle.currentIndex];
+
+    const temp = this.turnCycle.order[index];
+    this.turnCycle.order[index] = this.turnCycle.order[targetIdx];
+    this.turnCycle.order[targetIdx] = temp;
+
+    this.turnCycle.currentIndex = this.turnCycle.order.indexOf(currentItem);
+
+    this.renderTurnOrderList();
+  },
+
+  setTurnCurrentIndex(index) {
+    if (!this.turnCycle) return;
+    this.turnCycle.currentIndex = index;
+    this.renderTurnOrderList();
+  },
+
+  confirmTurnCycle() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    if (!this.turnCycle) this.initDefaultTurnOrder();
+
+    this.turnCycle.active = true;
+    this.closeTurnModal();
+    this.updateTurnUI();
+
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'combat_turn_sync',
+          payload: this.turnCycle
+        });
+      } catch(e) {}
+    }
+    this.saveCombatStateToSupabase();
+  },
+
+  stopTurnCycle(shouldBroadcast = true) {
+    if (shouldBroadcast && (!MesaApp.state || !MesaApp.state.isMaster)) return;
+
+    if (this.turnCycle) {
+      this.turnCycle.active = false;
+    }
+    this.closeTurnModal();
+    this.updateTurnUI();
+
+    if (shouldBroadcast) {
+      const chan = this.getChannel();
+      if (chan) {
+        try {
+          chan.send({
+            type: 'broadcast',
+            event: 'combat_turn_stop',
+            payload: {}
+          });
+        } catch(e) {}
+      }
+      this.saveCombatStateToSupabase();
+    }
+  },
+
+  nextTurn() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    if (!this.turnCycle || !this.turnCycle.order || this.turnCycle.order.length === 0) return;
+
+    this.turnCycle.currentIndex = (this.turnCycle.currentIndex + 1) % this.turnCycle.order.length;
+    this.updateTurnUI();
+
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'combat_turn_sync',
+          payload: this.turnCycle
+        });
+      } catch(e) {}
+    }
+    this.saveCombatStateToSupabase();
+  },
+
+  prevTurn() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    if (!this.turnCycle || !this.turnCycle.order || this.turnCycle.order.length === 0) return;
+
+    this.turnCycle.currentIndex = (this.turnCycle.currentIndex - 1 + this.turnCycle.order.length) % this.turnCycle.order.length;
+    this.updateTurnUI();
+
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'combat_turn_sync',
+          payload: this.turnCycle
+        });
+      } catch(e) {}
+    }
+    this.saveCombatStateToSupabase();
+  },
+
+  syncTurnCycle(cycleData) {
+    if (!cycleData) return;
+    this.turnCycle = cycleData;
+    this.updateTurnUI();
+  },
+
+  updateTurnUI() {
+    const isMaster = !!(MesaApp.state && MesaApp.state.isMaster);
+    const subLabel = document.getElementById('combat-current-turn-sub');
+    const turnBtnLabel = document.getElementById('combat-turn-btn-label');
+    const navControls = document.getElementById('combat-turn-nav-controls');
+    const opponentTitle = document.getElementById('combat-opponent-title');
+
+    // Remove todas as setas e destaques anteriores dos cards
+    document.querySelectorAll('.combat-player-card').forEach(card => {
+      card.classList.remove('is-current-turn');
+    });
+    document.querySelectorAll('.combat-turn-arrow-box').forEach(box => {
+      box.style.display = 'none';
+    });
+    if (opponentTitle) opponentTitle.classList.remove('is-current-turn-boss');
+
+    if (!this.turnCycle || !this.turnCycle.active || !this.turnCycle.order || this.turnCycle.order.length === 0) {
+      if (subLabel) {
+        subLabel.style.display = 'none';
+        subLabel.textContent = '';
+      }
+      if (turnBtnLabel) turnBtnLabel.textContent = 'Começar ciclo de turnos';
+      if (navControls) navControls.style.display = 'none';
+      return;
+    }
+
+    if (turnBtnLabel) turnBtnLabel.textContent = 'Ordem de Turnos';
+    if (navControls) navControls.style.display = isMaster ? 'flex' : 'none';
+
+    const currentItem = this.turnCycle.order[this.turnCycle.currentIndex];
+    if (!currentItem) return;
+
+    // 1. Atualiza "Turno de [Nome]" logo abaixo do nome do inimigo no topo
+    if (subLabel) {
+      subLabel.textContent = `Turno de ${currentItem.name}`;
+      subLabel.style.display = 'block';
+    }
+
+    // 2. Se for a vez de um jogador, coloca a seta laranja em cima do card dele apontando pra ele
+    if (currentItem.type === 'player' && currentItem.slot) {
+      const card = document.getElementById(`combat-player-card-${currentItem.slot}`);
+      const arrowBox = document.getElementById(`combat-turn-arrow-${currentItem.slot}`);
+      if (card) card.classList.add('is-current-turn');
+      if (arrowBox) arrowBox.style.display = 'block';
+    } else if (currentItem.type === 'boss') {
+      if (opponentTitle) opponentTitle.classList.add('is-current-turn-boss');
     }
   }
 };
