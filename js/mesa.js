@@ -5,6 +5,8 @@
    - State, 4-Char Tokens, Mobile UI & Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
+const MESA_VERSION = 'v1.7.2';
+
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
   eye: `<svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`,
@@ -3570,7 +3572,7 @@ const MesaAreaManager = {
     // Atualiza o selo visual de versão e área em tempo real no canto inferior
     const badge = document.getElementById('mesa-version-badge');
     if (badge) {
-      badge.textContent = `v1.5.7`;
+      badge.textContent = MESA_VERSION;
     }
 
     // Adiciona classe de transição suave de atmosfera e cor no body
@@ -7660,7 +7662,7 @@ const MesaCombate = {
     const rampEl = this._rampCanvas.parentElement;
     const rect = rampEl ? rampEl.getBoundingClientRect() : null;
     const w = (rect && rect.width > 0) ? Math.round(rect.width) : window.innerWidth;
-    const h = (rect && rect.height > 0) ? Math.round(rect.height) : Math.round(window.innerHeight * 0.68);
+    const h = (rect && rect.height > 0) ? Math.round(rect.height) : Math.round(window.innerHeight * 0.50);
 
     if (this._rampCanvas.width !== w || this._rampCanvas.height !== h) {
       this._rampCanvas.width = w;
@@ -7718,8 +7720,11 @@ const MesaCombate = {
     const pixelSize = w < 768 ? 3 : 4;
 
     // 1. Determina as dimensões e posição base do Domo protetor ao redor dos cards
-    let targetLeft = Math.max(16, Math.round(w - Math.min(w * 0.88, 920)));
-    let targetTop = Math.max(20, Math.round(h * 0.16));
+    const padLeft = Math.max(40, Math.min(70, Math.round(w * 0.04)));
+    const padTop = 22; // Margem baixa e justa para o domo abraçar os cards sem subir demais
+
+    let targetLeft = Math.max(16, Math.round(w - Math.min(w * 0.70, 840)));
+    let targetTop = Math.max(16, Math.round(h * 0.45));
 
     const dockContainer = document.querySelector('.combat-dock-container');
     if (dockContainer) {
@@ -7729,15 +7734,8 @@ const MesaCombate = {
         const dockLeftInCanvas = containerRect.left - canvasRect.left;
         const dockTopInCanvas = containerRect.top - canvasRect.top;
 
-        // Margem confortável ao redor do dock de personagens
-        const padLeft = Math.max(65, Math.min(120, Math.round(w * 0.06)));
-        const padTop = Math.max(45, Math.min(80, Math.round(h * 0.08)));
-
-        const neededLeft = Math.max(16, Math.round(dockLeftInCanvas - padLeft));
-        const neededTop = Math.max(20, Math.round(dockTopInCanvas - padTop));
-
-        targetLeft = Math.min(targetLeft, neededLeft);
-        targetTop = Math.min(targetTop, neededTop);
+        targetLeft = Math.max(16, Math.round(dockLeftInCanvas - padLeft));
+        targetTop = Math.max(16, Math.round(dockTopInCanvas - padTop));
       }
     }
 
@@ -7753,9 +7751,9 @@ const MesaCombate = {
     const x_left = Math.round(this._currentDomeLeft);
     const y_top = Math.round(this._currentDomeTop);
 
-    // Raio da curvatura do ombro do domo
-    const maxR = Math.min((w - x_left) * 0.35, (h - y_top) * 0.35);
-    const cornerR = Math.max(48, Math.min(130, Math.round(maxR)));
+    // Raio da curvatura do ombro do domo (compacto e elegante)
+    const maxR = Math.min((w - x_left) * 0.35, (h - y_top) * 0.45);
+    const cornerR = Math.max(32, Math.min(75, Math.round(maxR)));
     const cx = x_left + cornerR;
     const cy = y_top + cornerR;
 
