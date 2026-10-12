@@ -11,9 +11,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/variables.css?v=1.7.5">
-  <link rel="stylesheet" href="css/components.css?v=1.7.5">
-  <link rel="stylesheet" href="css/mesa.css?v=1.7.5">
+  <link rel="stylesheet" href="css/variables.css?v=1.7.6">
+  <link rel="stylesheet" href="css/components.css?v=1.7.6">
+  <link rel="stylesheet" href="css/mesa.css?v=1.7.6">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -596,6 +596,17 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
             <span id="mobile-menu-group-label">Ver Minha Ficha / Grupo</span>
           </button>
 
+          <!-- Ver Todos os Personagens / Fichas -->
+          <button class="mobile-menu-item" onclick="MesaCombatPlayersModal.open(); MesaMobileMenu.close()" style="color: var(--mesa-orange, #ff5500);">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <span>Personagens da Mesa</span>
+          </button>
+
           <!-- Reagir -->
           
           <button class="mobile-menu-item" onclick="MesaReactions.togglePicker(); MesaMobileMenu.close()">
@@ -1110,11 +1121,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=1.7.5"></script>
+<script src="js/campaign-data.js?v=1.7.6"></script>
 
-<script src="js/mesa.js?v=1.7.5"></script>
+<script src="js/mesa.js?v=1.7.6"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v1.7.5</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.7.6</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -1396,12 +1407,16 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <div class="combat-scanlines"></div>
     </div>
 
-    <!-- Topo Central: TÍTULO DO COMBATE -->
+    <!-- Topo Central: TÍTULO DO COMBATE & BOTÃO DE MENU -->
     <div class="combat-header">
       <div class="combat-title-box">
         <span class="combat-title-name" id="combat-opponent-title">???</span>
         <div class="combat-current-turn-sub" id="combat-current-turn-sub" style="display: none;"></div>
       </div>
+      <button type="button" id="combat-top-menu-btn" class="combat-top-menu-btn" onclick="MesaCombatMenu.toggle()" title="Menu de Ferramentas e Personagens">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        <span>Menu</span>
+      </button>
     </div>
 
     <!-- Controles Exclusivos do Mestre Durante o Combate -->
@@ -1578,6 +1593,175 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         </button>
         <button type="button" class="coletavel-form-submit" id="combat-turn-start-btn" onclick="MesaCombate.confirmTurnCycle()">
           Iniciar Turnos
+        </button>
+      </div>
+    </div>
+  <!-- ========================================================================== -->
+  <!-- DRAWER: MENU DE FERRAMENTAS E PERSONAGENS EM COMBATE -->
+  <!-- ========================================================================== -->
+  <div id="combat-menu-backdrop" class="combat-menu-backdrop" onclick="MesaCombatMenu.close()"></div>
+  <aside id="combat-menu-drawer" class="combat-menu-drawer" aria-label="Menu de Combate">
+    <div class="combat-menu-header">
+      <div class="combat-menu-title">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--mesa-orange, #ff5500)" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="22" y1="12" x2="18" y2="12"></line>
+          <line x1="6" y1="12" x2="2" y2="12"></line>
+          <line x1="12" y1="6" x2="12" y2="2"></line>
+          <line x1="12" y1="22" x2="12" y2="18"></line>
+        </svg>
+        <span>OPÇÕES DE COMBATE</span>
+      </div>
+      <button type="button" class="combat-menu-close-btn" onclick="MesaCombatMenu.close()">&times;</button>
+    </div>
+
+    <div class="combat-menu-body">
+      <!-- Destaque: Personagens da Mesa -->
+      <button type="button" class="combat-menu-item primary-highlight" onclick="MesaCombatPlayersModal.open()">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        <div class="combat-menu-item-text">
+          <span class="combat-menu-item-label">Personagens</span>
+          <span class="combat-menu-item-sub">Ver todos os participantes e abrir fichas</span>
+        </div>
+        <span class="combat-menu-item-arrow">▶</span>
+      </button>
+
+      <div class="combat-menu-divider">FERRAMENTAS DA MESA</div>
+
+      <!-- Chat da Mesa -->
+      <button type="button" class="combat-menu-item" onclick="MesaChat.toggleChat(); MesaCombatMenu.close();">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span>Chat da Mesa</span>
+      </button>
+
+      <!-- Rolar Dados -->
+      <button type="button" class="combat-menu-item" onclick="MesaDice.openModal(); MesaCombatMenu.close();">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="2" width="20" height="20" rx="3" ry="3"></rect>
+          <path d="M8 8h.01"></path><path d="M16 8h.01"></path><path d="M12 12h.01"></path><path d="M8 16h.01"></path><path d="M16 16h.01"></path>
+        </svg>
+        <span>Rolar Dados</span>
+      </button>
+
+      <!-- Sara (IA / Guia) -->
+      <button type="button" class="combat-menu-item" onclick="MesaSara.openModal(); MesaCombatMenu.close();">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+          <line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line>
+        </svg>
+        <span>Sara (IA / Guia)</span>
+      </button>
+
+      <!-- Coletáveis & Pistas -->
+      <button type="button" class="combat-menu-item" onclick="MesaColetaveis.openModal(); MesaCombatMenu.close();" style="color: #f59e0b;">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+          <line x1="12" y1="22.08" x2="12" y2="12"></line>
+        </svg>
+        <span>Coletáveis & Pistas</span>
+      </button>
+
+      <!-- Reações Rápidas -->
+      <button type="button" class="combat-menu-item" onclick="MesaReactions.togglePicker(); MesaCombatMenu.close();">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+          <line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line>
+        </svg>
+        <span>Reações Rápidas</span>
+      </button>
+
+      <!-- Seção Exclusiva do Mestre -->
+      <div class="combat-menu-divider combat-menu-master-item" style="color: #a78bfa;">GERENCIAMENTO DO MESTRE</div>
+
+      <button type="button" class="combat-menu-item combat-menu-master-item" onclick="MesaCombate.openTurnModal(); MesaCombatMenu.close();" style="color: #ffaa33;">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23 4 23 10 17 10"></polyline>
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+        </svg>
+        <span id="combat-drawer-turn-label">Ciclo de Turnos</span>
+      </button>
+
+      <button type="button" class="combat-menu-item combat-menu-master-item" onclick="MesaCombate.openSelectModal(); MesaCombatMenu.close();" style="color: var(--mesa-orange, #ff5500);">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 1l4 4-4 4"></path><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><path d="M7 23l-4-4 4-4"></path><path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+        </svg>
+        <span>Trocar Oponente</span>
+      </button>
+
+      <button type="button" class="combat-menu-item combat-menu-master-item" onclick="MesaRoteiro.openModal(); MesaCombatMenu.close();" style="color: #a78bfa;">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line>
+        </svg>
+        <span>Roteiro da Campanha</span>
+      </button>
+
+      <button type="button" class="combat-menu-item combat-menu-master-item" onclick="MesaMediaPlayer.toggleDrawer(); MesaCombatMenu.close();" style="color: #f43f5e;">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+        <span>Player de Mídia</span>
+      </button>
+
+      <button type="button" class="combat-menu-item combat-menu-master-item" onclick="MesaDispositivos.toggleDrawer(); MesaCombatMenu.close();" style="color: #38bdf8;">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+        <span>Dispositivos / CFTV</span>
+      </button>
+
+      <button type="button" class="combat-menu-item combat-menu-master-item danger" onclick="MesaCombate.stopCombat(true); MesaCombatMenu.close();">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+        <span>Encerrar Combate</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ========================================================================== -->
+  <!-- MODAL: VISUALIZADOR DE PERSONAGENS EM COMBATE -->
+  <!-- ========================================================================== -->
+  <div id="combat-players-modal" class="mesa-modal-overlay" onclick="if(event.target===this) MesaCombatPlayersModal.close()">
+    <div class="mesa-modal ink-modal combat-players-modal-dialog">
+      <div class="mesa-modal-header">
+        <div class="mesa-modal-title">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--mesa-orange, #ff5500)" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <span>PERSONAGENS DA MESA</span>
+        </div>
+        <button type="button" class="mesa-modal-close" onclick="MesaCombatPlayersModal.close()">&times;</button>
+      </div>
+
+      <div class="mesa-modal-body">
+        <p class="combat-modal-desc">
+          Selecione qualquer personagem para visualizar os detalhes completos ou editar a ficha. Clique em "Voltar ao Combate" para retornar.
+        </p>
+
+        <div id="combat-modal-players-grid" class="combat-modal-players-grid">
+          <!-- Renderizado dinamicamente via MesaCombatPlayersModal.render() -->
+        </div>
+      </div>
+
+      <div class="mesa-modal-footer">
+        <button type="button" class="coletavel-form-submit" onclick="MesaCombatPlayersModal.close()">
+          Voltar ao Combate
         </button>
       </div>
     </div>

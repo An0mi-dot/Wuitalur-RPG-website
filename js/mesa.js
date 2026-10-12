@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI & Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.7.5';
+const MESA_VERSION = 'v1.7.6';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -6578,6 +6578,9 @@ const MesaCombate = {
     if (this.isActive) {
       this.startRampWave();
     }
+    if (window.MesaCombatMenu && typeof MesaCombatMenu.init === 'function') {
+      MesaCombatMenu.init();
+    }
     document.addEventListener('click', (e) => {
       if (!e.target.closest('.combat-master-menu-wrapper')) {
         this.closeMobileMasterMenu();
@@ -6848,6 +6851,13 @@ const MesaCombate = {
     this.updateTurnUI();
 
     document.body.classList.remove('combat-active');
+
+    if (window.MesaCombatMenu && typeof MesaCombatMenu.close === 'function') {
+      MesaCombatMenu.close();
+    }
+    if (window.MesaCombatPlayersModal && typeof MesaCombatPlayersModal.close === 'function') {
+      MesaCombatPlayersModal.close();
+    }
 
     // Para a animação de ondas na rampa para economizar recursos
     this.stopRampWave();
@@ -7678,6 +7688,11 @@ const MesaCombate = {
     if (mobileTurnLabel) {
       mobileTurnLabel.textContent = turnActive ? 'Ordem de Turnos' : 'Começar ciclo de turnos';
     }
+
+    const drawerTurnLabel = document.getElementById('combat-drawer-turn-label');
+    if (drawerTurnLabel) {
+      drawerTurnLabel.textContent = turnActive ? 'Ordem de Turnos' : 'Começar ciclo de turnos';
+    }
   },
 
   /* ============================================================
@@ -7968,4 +7983,164 @@ const MesaCombate = {
   }
 };
 window.MesaCombate = MesaCombate;
+
+// ==========================================================================
+// MENU LATERAL / DRAWER DE COMBATE (MOBILE & DESKTOP)
+// ==========================================================================
+const MesaCombatMenu = {
+  isOpen: false,
+
+  init() {
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (this.isOpen) this.close();
+        if (window.MesaCombatPlayersModal && MesaCombatPlayersModal.isOpen) {
+          MesaCombatPlayersModal.close();
+        }
+      }
+    });
+  },
+
+  toggle() {
+    this.isOpen ? this.close() : this.open();
+  },
+
+  open() {
+    this.isOpen = true;
+    const drawer = document.getElementById('combat-menu-drawer');
+    const backdrop = document.getElementById('combat-menu-backdrop');
+    if (drawer) drawer.classList.add('active');
+    if (backdrop) backdrop.classList.add('active');
+
+    // Sincroniza visibilidade dos itens restritos ao Mestre
+    const isMaster = !!(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    document.querySelectorAll('.combat-menu-master-item').forEach(el => {
+      el.style.display = isMaster ? 'flex' : 'none';
+    });
+  },
+
+  close() {
+    this.isOpen = false;
+    const drawer = document.getElementById('combat-menu-drawer');
+    const backdrop = document.getElementById('combat-menu-backdrop');
+    if (drawer) drawer.classList.remove('active');
+    if (backdrop) backdrop.classList.remove('active');
+  }
+};
+window.MesaCombatMenu = MesaCombatMenu;
+
+// ==========================================================================
+// MODAL DE VISUALIZAÇÃO E EDIÇÃO DE PERSONAGENS EM COMBATE
+// ==========================================================================
+const MesaCombatPlayersModal = {
+  isOpen: false,
+
+  open() {
+    if (window.MesaCombatMenu) {
+      MesaCombatMenu.close();
+    }
+    this.render();
+    const modal = document.getElementById('combat-players-modal');
+    if (modal) {
+      modal.classList.add('active');
+      this.isOpen = true;
+    }
+  },
+
+  close() {
+    const modal = document.getElementById('combat-players-modal');
+    if (modal) {
+      modal.classList.remove('active');
+      this.isOpen = false;
+    }
+  },
+
+  render() {
+    const grid = document.getElementById('combat-modal-players-grid');
+    if (!grid) return;
+
+    const players = (window.MesaApp && MesaApp.state && MesaApp.state.players) || [];
+    const activePlayers = players.filter(p => p && (p.nome || p.hp !== undefined || p.slot !== undefined));
+
+    if (activePlayers.length === 0) {
+      grid.innerHTML = `
+        <div style="font-family:'Press Start 2P',monospace; font-size:0.6rem; color:#888; text-align:center; padding:30px 10px; grid-column: 1 / -1;">
+          NENHUM PERSONAGEM ENCONTRADO NA MESA
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = activePlayers.map((p, idx) => {
+      const slotNum = (p.slot !== undefined && p.slot !== null) ? p.slot : (idx + 1);
+      const hpMax = Math.max(1, p.hpMax || p.hp || 1);
+      const hpVal = Math.max(0, p.hp !== undefined ? p.hp : hpMax);
+      const hpPct = Math.min(100, Math.max(0, Math.round((hpVal / hpMax) * 100)));
+      const avatarSrc = p.avatar || p.imagem || '';
+      const avatarHtml = avatarSrc
+        ? `<img src="${avatarSrc}" alt="${p.nome || 'Personagem'}" class="combat-pmodal-avatar-img" />`
+        : `<span class="combat-pmodal-avatar-fallback">${p.nome ? p.nome.charAt(0).toUpperCase() : '?'}</span>`;
+
+      const stressPts = p.stressPoints || 0;
+      const maxStress = p.stressPointsMax || 6;
+      let pipsHtml = '';
+      for (let s = 0; s < maxStress; s++) {
+        pipsHtml += `<span class="undertale-stress-pip ${s < stressPts ? 'filled' : ''}"></span>`;
+      }
+
+      const peVal = p.pe !== undefined ? p.pe : 0;
+      const peMax = p.peMax !== undefined ? p.peMax : peVal;
+      const estVal = p.st !== undefined ? p.st : 0;
+      const estMax = p.stMax !== undefined ? p.stMax : 44;
+
+      return `
+        <div class="combat-pmodal-card" onclick="MesaCombatPlayersModal.selectPlayer(${slotNum})" title="Clique para abrir e editar a ficha de ${p.nome || 'Personagem'}">
+          <div class="combat-pmodal-card-header">
+            <span class="combat-pmodal-card-name" title="${p.nome || 'Sem Nome'}">${p.nome || 'Sem Nome'}</span>
+            <span class="combat-pmodal-card-slot">SLOT ${slotNum}</span>
+          </div>
+          <div class="combat-pmodal-card-body">
+            <div class="combat-pmodal-avatar-box">
+              ${avatarHtml}
+            </div>
+            <div class="combat-pmodal-stats">
+              <div class="undertale-stat-row">
+                <span class="undertale-stat-label">PV</span>
+                <div class="undertale-hp-track">
+                  <div class="undertale-hp-bar" style="width: ${hpPct}%;"></div>
+                </div>
+                <span class="undertale-stat-val">${hpVal}/${hpMax}</span>
+              </div>
+              <div class="undertale-stat-row">
+                <span class="undertale-stat-label">PE</span>
+                <span class="undertale-stat-val">${peVal}/${peMax}</span>
+              </div>
+              <div class="undertale-stat-row">
+                <span class="undertale-stat-label">EST</span>
+                <span class="undertale-stat-val">${estVal}/${estMax}</span>
+              </div>
+              <div class="undertale-stress-row">
+                ${pipsHtml}
+              </div>
+            </div>
+          </div>
+          <div class="combat-pmodal-card-footer">
+            <span class="combat-pmodal-action-tag">Abrir / Editar Ficha ▶</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
+  selectPlayer(slot) {
+    this.close();
+    if (window.MesaCombate && typeof MesaCombate.openPlayerFicha === 'function') {
+      MesaCombate.openPlayerFicha(slot);
+    } else if (window.MesaApp && typeof MesaApp.handleSlotClick === 'function') {
+      MesaApp.handleSlotClick(Number(slot));
+    }
+  }
+};
+window.MesaCombatPlayersModal = MesaCombatPlayersModal;
+
 
