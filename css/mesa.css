@@ -9208,11 +9208,63 @@ body.combat-active .combat-black-ramp {
   display: block;
 }
 
-/* Dock de Personagens dentro da Rampa Preta */
-.combat-players-dock {
+/* Container do Dock de Personagens e Indicador de Rodada */
+.combat-dock-container {
   position: absolute;
   bottom: 20px;
   right: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: 820px;
+  max-height: 52vh;
+  z-index: 15;
+  pointer-events: none;
+}
+
+/* Indicador da Rodada Atual em cima dos Cards */
+.combat-round-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.95);
+  border: 1.5px solid var(--mesa-orange, #ff5500);
+  box-shadow: 0 0 16px rgba(255, 85, 0, 0.4), 0 4px 15px rgba(0, 0, 0, 0.95);
+  padding: 6px 14px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.55rem, 0.82vw, 0.68rem);
+  color: var(--mesa-orange, #ff5500);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-right: 12px;
+  user-select: none;
+  pointer-events: all;
+  animation: combatRoundBadgeFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.combat-round-badge.round-bump {
+  animation: combatRoundBump 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.combat-round-badge-icon {
+  font-size: 0.72rem;
+  color: #ffaa00;
+}
+
+@keyframes combatRoundBadgeFadeIn {
+  0%   { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes combatRoundBump {
+  0%   { transform: scale(0.85); box-shadow: 0 0 35px var(--mesa-orange, #ff5500); }
+  50%  { transform: scale(1.12); box-shadow: 0 0 45px #ffaa00; border-color: #ffaa00; color: #ffaa00; }
+  100% { transform: scale(1); box-shadow: 0 0 16px rgba(255, 85, 0, 0.4); border-color: var(--mesa-orange, #ff5500); color: var(--mesa-orange, #ff5500); }
+}
+
+/* Dock de Personagens dentro do Container */
+.combat-players-dock {
   display: grid;
   grid-template-columns: repeat(var(--combat-cols, 4), 184px);
   gap: 12px 14px;
@@ -9224,7 +9276,6 @@ body.combat-active .combat-black-ramp {
   overflow-x: hidden;
   padding: 8px 12px;
   pointer-events: all;
-  z-index: 15;
 }
 
 /* Scrollbar estilizada para o dock */
@@ -9564,6 +9615,33 @@ body.combat-active .combat-black-ramp {
   box-shadow: 0 0 35px rgba(255, 85, 0, 0.45), 0 25px 70px rgba(0, 0, 0, 0.95) !important;
 }
 
+.combat-turn-round-config-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 85, 0, 0.08);
+  border: 1px dashed rgba(255, 85, 0, 0.45);
+  padding: 8px 12px;
+  margin: 10px 0 12px 0;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.58rem;
+  color: var(--mesa-orange, #ff5500);
+}
+
+.combat-turn-round-stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.combat-turn-round-num {
+  font-size: 0.85rem;
+  color: #ffaa00;
+  min-width: 28px;
+  text-align: center;
+  font-family: 'Press Start 2P', monospace;
+}
+
 .combat-turn-presets-row {
   display: flex;
   flex-wrap: wrap;
@@ -9888,11 +9966,23 @@ body.combat-active .combat-black-ramp {
     height: 60%;
   }
 
-  .combat-players-dock {
+  .combat-dock-container {
     bottom: 12px;
     right: 12px;
     max-width: 95vw;
-    max-height: 52vh;
+    max-height: 56vh;
+    gap: 6px;
+  }
+
+  .combat-round-badge {
+    margin-right: 8px;
+    font-size: 0.52rem;
+    padding: 4px 10px;
+  }
+
+  .combat-players-dock {
+    max-width: 95vw;
+    max-height: 50vh;
     gap: 8px;
     padding: 6px 8px;
   }

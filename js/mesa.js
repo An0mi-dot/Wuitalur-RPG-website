@@ -7123,6 +7123,31 @@ const MesaCombate = {
     const startBtn = document.getElementById('combat-turn-start-btn');
     if (stopBtn) stopBtn.style.display = (this.turnCycle && this.turnCycle.active) ? 'inline-block' : 'none';
     if (startBtn) startBtn.textContent = (this.turnCycle && this.turnCycle.active) ? 'Salvar Ordem' : 'Começar Ciclo de Turnos';
+
+    const roundValEl = document.getElementById('combat-modal-round-val');
+    if (roundValEl) roundValEl.textContent = (this.turnCycle && this.turnCycle.currentRound) || 1;
+  },
+
+  adjustRound(delta) {
+    if (!this.turnCycle) this.initDefaultTurnOrder();
+    let r = (parseInt(this.turnCycle.currentRound, 10) || 1) + delta;
+    if (r < 1) r = 1;
+    this.turnCycle.currentRound = r;
+    this.turnCycle.updatedAt = Date.now();
+    const roundValEl = document.getElementById('combat-modal-round-val');
+    if (roundValEl) roundValEl.textContent = r;
+    this.updateTurnUI();
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'combat_turn_sync',
+          payload: this.turnCycle
+        });
+      } catch(e) {}
+    }
+    this.saveCombatStateDebounced();
   },
 
   closeTurnModal() {
@@ -7152,7 +7177,9 @@ const MesaCombate = {
     this.turnCycle = {
       active: false,
       order: order,
-      currentIndex: 0
+      currentIndex: 0,
+      currentRound: 1,
+      updatedAt: Date.now()
     };
   },
 
@@ -7261,7 +7288,10 @@ const MesaCombate = {
 
   resetTurnOrderDefault() {
     this.initDefaultTurnOrder();
+    const roundValEl = document.getElementById('combat-modal-round-val');
+    if (roundValEl) roundValEl.textContent = 1;
     this.renderTurnOrderList();
+    this.updateTurnUI();
   },
 
   presetInterleavedBoss(everyN = 2) {
@@ -7278,7 +7308,12 @@ const MesaCombate = {
         type: 'boss'
       }];
       this.turnCycle.currentIndex = 0;
+      this.turnCycle.currentRound = 1;
+      this.turnCycle.updatedAt = Date.now();
+      const roundValEl = document.getElementById('combat-modal-round-val');
+      if (roundValEl) roundValEl.textContent = 1;
       this.renderTurnOrderList();
+      this.updateTurnUI();
       return;
     }
 
@@ -7314,7 +7349,12 @@ const MesaCombate = {
 
     this.turnCycle.order = newOrder;
     this.turnCycle.currentIndex = 0;
+    this.turnCycle.currentRound = 1;
+    this.turnCycle.updatedAt = Date.now();
+    const roundValEl = document.getElementById('combat-modal-round-val');
+    if (roundValEl) roundValEl.textContent = 1;
     this.renderTurnOrderList();
+    this.updateTurnUI();
   },
 
   setTurnCurrentIndex(index) {
@@ -7341,6 +7381,9 @@ const MesaCombate = {
     if (!this.turnCycle) this.initDefaultTurnOrder();
 
     this.turnCycle.active = true;
+    if (!this.turnCycle.currentRound) {
+      this.turnCycle.currentRound = 1;
+    }
     this.turnCycle.updatedAt = Date.now();
     this.closeTurnModal();
     this.updateTurnUI();
@@ -7364,6 +7407,7 @@ const MesaCombate = {
 
     if (this.turnCycle) {
       this.turnCycle.active = false;
+      this.turnCycle.currentRound = 1;
       this.turnCycle.updatedAt = Date.now();
     }
     this.closeTurnModal();
@@ -7394,7 +7438,14 @@ const MesaCombate = {
     if (isNaN(curr) || curr < 0 || curr >= len) {
       curr = 0;
     }
-    this.turnCycle.currentIndex = (curr + 1) % len;
+    const nextIdx = (curr + 1) % len;
+
+    // Se o ciclo concluiu e reiniciou (voltou ao 1º turno da ordem), avança para a próxima rodada
+    if (curr === len - 1 && nextIdx === 0) {
+      this.turnCycle.currentRound = (parseInt(this.turnCycle.currentRound, 10) || 1) + 1;
+    }
+
+    this.turnCycle.currentIndex = nextIdx;
     this.turnCycle.updatedAt = Date.now();
     this.updateTurnUI();
 
@@ -7420,7 +7471,14 @@ const MesaCombate = {
     if (isNaN(curr) || curr < 0 || curr >= len) {
       curr = 0;
     }
-    this.turnCycle.currentIndex = (curr - 1 + len) % len;
+    const prevIdx = (curr - 1 + len) % len;
+
+    // Se estava no início do ciclo e voltou para o final, decrementa a rodada
+    if (curr === 0 && prevIdx === len - 1 && (parseInt(this.turnCycle.currentRound, 10) || 1) > 1) {
+      this.turnCycle.currentRound = (parseInt(this.turnCycle.currentRound, 10) || 1) - 1;
+    }
+
+    this.turnCycle.currentIndex = prevIdx;
     this.turnCycle.updatedAt = Date.now();
     this.updateTurnUI();
 
@@ -7462,6 +7520,8 @@ const MesaCombate = {
     const turnBtnLabel = document.getElementById('combat-turn-btn-label');
     const navControls = document.getElementById('combat-turn-nav-controls');
     const opponentTitle = document.getElementById('combat-opponent-title');
+    const roundBadge = document.getElementById('combat-round-badge');
+    const roundText = document.getElementById('combat-round-badge-text');
 
     // Remove destaques anteriores dos cards e limpa classes de entrada
     document.querySelectorAll('.combat-player-card').forEach(card => {
@@ -7477,11 +7537,32 @@ const MesaCombate = {
       }
       if (turnBtnLabel) turnBtnLabel.textContent = 'Começar ciclo de turnos';
       if (navControls) navControls.style.display = 'none';
+      if (roundBadge) roundBadge.style.display = 'none';
       return;
     }
 
     if (turnBtnLabel) turnBtnLabel.textContent = 'Ordem de Turnos';
     if (navControls) navControls.style.display = (this.isActive && isMaster) ? 'flex' : 'none';
+
+    // 0. Atualiza o indicador da Rodada Atual em cima dos cards dos jogadores
+    const roundNum = parseInt(this.turnCycle.currentRound, 10) || 1;
+    if (roundBadge) {
+      roundBadge.style.display = 'inline-flex';
+      if (roundText) {
+        const oldText = roundText.textContent.trim();
+        const newText = `Rodada ${roundNum}`;
+        roundText.textContent = newText;
+        if (oldText !== newText) {
+          roundBadge.classList.remove('round-bump');
+          void roundBadge.offsetWidth;
+          roundBadge.classList.add('round-bump');
+        }
+      }
+    }
+
+    // Sincroniza o número da rodada no modal se estiver aberto
+    const modalRoundEl = document.getElementById('combat-modal-round-val');
+    if (modalRoundEl) modalRoundEl.textContent = roundNum;
 
     // Normaliza o índice atual de forma segura
     const len = this.turnCycle.order.length;

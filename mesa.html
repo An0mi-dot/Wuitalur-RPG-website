@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.5.7">
   <link rel="stylesheet" href="css/components.css?v=1.5.7">
-  <link rel="stylesheet" href="css/mesa.css?v=1.6.5">
+  <link rel="stylesheet" href="css/mesa.css?v=1.6.6">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1112,9 +1112,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.5.7"></script>
 
-<script src="js/mesa.js?v=1.6.5"></script>
+<script src="js/mesa.js?v=1.6.6"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v1.6.5</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.6.6</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -1448,9 +1448,18 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         <line x1="0" y1="100" x2="100" y2="0" stroke="#ff5500" stroke-width="0.4" />
       </svg>
 
-      <!-- Dock dos Cards dos Personagens (Estilo Undertale: Preto e Branco, Só o Rosto) -->
-      <div class="combat-players-dock" id="combat-players-dock">
-        <!-- Renderizado dinamicamente via MesaCombate.renderPlayers() -->
+      <!-- Container do Dock com Indicador de Rodada -->
+      <div class="combat-dock-container">
+        <!-- Indicador da Rodada Atual em cima dos cards -->
+        <div id="combat-round-badge" class="combat-round-badge" style="display: none;">
+          <span class="combat-round-badge-icon">⚔</span>
+          <span id="combat-round-badge-text">Rodada 1</span>
+        </div>
+
+        <!-- Dock dos Cards dos Personagens -->
+        <div class="combat-players-dock" id="combat-players-dock">
+          <!-- Renderizado dinamicamente via MesaCombate.renderPlayers() -->
+        </div>
       </div>
     </div>
   </div>
@@ -1514,6 +1523,15 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         <p class="combat-modal-desc">
           Defina a ordem da iniciativa dos turnos. Use os botões ▲ e ▼ para ordenar quem começa e quem termina. Clique em "Tornar Vez" para definir quem está agindo no momento.
         </p>
+
+        <div class="combat-turn-round-config-row">
+          <span class="combat-turn-round-label">RODADA ATUAL:</span>
+          <div class="combat-turn-round-stepper">
+            <button type="button" class="combat-turn-arrow-btn" onclick="MesaCombate.adjustRound(-1)" title="Diminuir rodada">-</button>
+            <span id="combat-modal-round-val" class="combat-turn-round-num">1</span>
+            <button type="button" class="combat-turn-arrow-btn" onclick="MesaCombate.adjustRound(1)" title="Aumentar rodada">+</button>
+          </div>
+        </div>
 
         <div class="combat-turn-presets-row">
           <button type="button" class="combat-turn-preset-btn highlight" onclick="MesaCombate.presetInterleavedBoss(2)" title="Insere o turno do oponente a cada 2 jogadores automaticamente">
