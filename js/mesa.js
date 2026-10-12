@@ -6556,6 +6556,8 @@ const MesaCombate = {
   _rampWaveRaf: null,
   _rampWaveStartTime: 0,
   _rampResizeBound: null,
+  _currentDomeLeft: null,
+  _currentDomeTop: null,
 
   presets: [
     {
@@ -7658,7 +7660,7 @@ const MesaCombate = {
     const rampEl = this._rampCanvas.parentElement;
     const rect = rampEl ? rampEl.getBoundingClientRect() : null;
     const w = (rect && rect.width > 0) ? Math.round(rect.width) : window.innerWidth;
-    const h = (rect && rect.height > 0) ? Math.round(rect.height) : Math.round(window.innerHeight * 0.54);
+    const h = (rect && rect.height > 0) ? Math.round(rect.height) : Math.round(window.innerHeight * 0.68);
 
     if (this._rampCanvas.width !== w || this._rampCanvas.height !== h) {
       this._rampCanvas.width = w;
@@ -7676,6 +7678,8 @@ const MesaCombate = {
       this._rampWaveRaf = null;
     }
     this._rampWaveStartTime = performance.now();
+    this._currentDomeLeft = null;
+    this._currentDomeTop = null;
 
     const loop = () => {
       if (!this.isActive) {
@@ -7693,6 +7697,8 @@ const MesaCombate = {
       cancelAnimationFrame(this._rampWaveRaf);
       this._rampWaveRaf = null;
     }
+    this._currentDomeLeft = null;
+    this._currentDomeTop = null;
     if (this._rampCtx && this._rampCanvas) {
       this._rampCtx.clearRect(0, 0, this._rampCanvas.width, this._rampCanvas.height);
     }
@@ -7708,75 +7714,148 @@ const MesaCombate = {
     const h = canvas.height;
     if (w <= 0 || h <= 0) return;
 
-    // Tamanho do bloco pixelado para estética 8-bit / 16-bit autêntica (4px desktop, 3px mobile)
+    // Tamanho do bloco pixelado para estética retro (4px desktop, 3px mobile)
     const pixelSize = w < 768 ? 3 : 4;
-    const numCols = Math.ceil(w / pixelSize);
 
-    const t = (performance.now() - this._rampWaveStartTime) * 0.001;
+    // 1. Determina as dimensões e posição base do Domo protetor ao redor dos cards
+    let targetLeft = Math.max(16, Math.round(w - Math.min(w * 0.88, 920)));
+    let targetTop = Math.max(20, Math.round(h * 0.16));
 
-    // 1. Calcula os pontos discretos da linha diagonal ondulada
-    const points = new Int32Array(numCols + 1);
+    const dockContainer = document.querySelector('.combat-dock-container');
+    if (dockContainer) {
+      const containerRect = dockContainer.getBoundingClientRect();
+      const canvasRect = canvas.getBoundingClientRect();
+      if (containerRect.width > 0 && containerRect.height > 0) {
+        const dockLeftInCanvas = containerRect.left - canvasRect.left;
+        const dockTopInCanvas = containerRect.top - canvasRect.top;
 
-    for (let i = 0; i <= numCols; i++) {
-      const x = i * pixelSize;
-      const xNorm = Math.min(1, Math.max(0, x / w));
+        // Margem confortável ao redor do dock de personagens
+        const padLeft = Math.max(65, Math.min(120, Math.round(w * 0.06)));
+        const padTop = Math.max(45, Math.min(80, Math.round(h * 0.08)));
 
-      // Linha de base diagonal: de (0, h) até (w, 0)
-      const yBase = h * (1 - xNorm);
+        const neededLeft = Math.max(16, Math.round(dockLeftInCanvas - padLeft));
+        const neededTop = Math.max(20, Math.round(dockTopInCanvas - padTop));
 
-      // Envelope que ancora suavemente nos cantos extremos e mantém 100% de amplitude no restante
-      const envelope = Math.min(1, Math.sin(xNorm * Math.PI) * 1.4);
-
-      // Superposição de harmônicos senoidais para visual retro fluído e orgânico
-      const w1 = Math.sin(x * 0.010 - t * 2.5) * 9.5;
-      const w2 = Math.sin(x * 0.024 + t * 3.6) * 4.2;
-      const w3 = Math.cos(x * 0.005 - t * 1.3) * 2.6;
-      const totalWave = (w1 + w2 + w3) * envelope;
-
-      const rawY = yBase + totalWave;
-      points[i] = Math.round(rawY / pixelSize) * pixelSize;
-    }
-
-    // 2. Limpa o quadro anterior
-    ctx.clearRect(0, 0, w, h);
-
-    // 3. Preenchimento Preto Sólido (#000000) abaixo do contorno da onda
-    ctx.save();
-    ctx.fillStyle = '#000000';
-    for (let i = 0; i < numCols; i++) {
-      const x = i * pixelSize;
-      const y = points[i];
-      const colW = Math.min(pixelSize, w - x);
-      const fillHeight = Math.max(0, h - y + pixelSize);
-      if (fillHeight > 0) {
-        ctx.fillRect(x, y, colW, fillHeight);
+        targetLeft = Math.min(targetLeft, neededLeft);
+        targetTop = Math.min(targetTop, neededTop);
       }
     }
+
+    // Interpolação suave (lerp) para adaptação suave sem sobressaltos visuais
+    if (this._currentDomeLeft === undefined || this._currentDomeLeft === null) {
+      this._currentDomeLeft = targetLeft;
+      this._currentDomeTop = targetTop;
+    } else {
+      this._currentDomeLeft += (targetLeft - this._currentDomeLeft) * 0.12;
+      this._currentDomeTop += (targetTop - this._currentDomeTop) * 0.12;
+    }
+
+    const x_left = Math.round(this._currentDomeLeft);
+    const y_top = Math.round(this._currentDomeTop);
+
+    // Raio da curvatura do ombro do domo
+    const maxR = Math.min((w - x_left) * 0.35, (h - y_top) * 0.35);
+    const cornerR = Math.max(48, Math.min(130, Math.round(maxR)));
+    const cx = x_left + cornerR;
+    const cy = y_top + cornerR;
+
+    const L1 = Math.max(0, h - cy);
+    const L2 = cornerR * (Math.PI * 0.5);
+    const L3 = Math.max(0, w - cx);
+    const totalLength = L1 + L2 + L3;
+    if (totalLength <= 0) return;
+
+    const numSteps = Math.max(10, Math.round(totalLength / pixelSize));
+    const t = (performance.now() - this._rampWaveStartTime) * 0.001;
+
+    // 2. Calcula os pontos discretos ao longo do contorno do domo com ondas
+    const points = [];
+    for (let i = 0; i <= numSteps; i++) {
+      const s = (i / numSteps) * totalLength;
+      let x_base, y_base, nx, ny;
+
+      if (s <= L1) {
+        // Parede vertical esquerda (sobe da borda inferior)
+        x_base = x_left;
+        y_base = h - s;
+        nx = -1;
+        ny = 0;
+      } else if (s <= L1 + L2) {
+        // Ombro arredondado do domo (conecta suavemente vertical para horizontal)
+        const s_arc = s - L1;
+        const theta = Math.PI + (s_arc / L2) * (Math.PI * 0.5);
+        x_base = cx + cornerR * Math.cos(theta);
+        y_base = cy + cornerR * Math.sin(theta);
+        nx = Math.cos(theta);
+        ny = Math.sin(theta);
+      } else {
+        // Parede horizontal superior (corre para a borda direita)
+        const s_top = s - (L1 + L2);
+        x_base = cx + s_top;
+        y_base = y_top;
+        nx = 0;
+        ny = -1;
+      }
+
+      // Envelope que ancora perfeitamente nas bordas da tela (s = 0 na base e s = totalLength na direita)
+      const sNorm = s / totalLength;
+      const envelope = Math.min(1, Math.sin(sNorm * Math.PI) * 1.5);
+
+      // Superposição de ondas senoidais estilo pixel art
+      const w1 = Math.sin(s * 0.012 - t * 2.4) * 8.5;
+      const w2 = Math.sin(s * 0.026 + t * 3.6) * 4.0;
+      const w3 = Math.cos(s * 0.006 - t * 1.3) * 2.5;
+      const displacement = (w1 + w2 + w3) * envelope;
+
+      const rawX = x_base + nx * displacement;
+      const rawY = y_base + ny * displacement;
+
+      // Quantização na grade de pixels
+      const qx = Math.round(rawX / pixelSize) * pixelSize;
+      const qy = Math.round(rawY / pixelSize) * pixelSize;
+
+      points.push({ x: qx, y: qy });
+    }
+
+    // 3. Limpa o canvas
+    ctx.clearRect(0, 0, w, h);
+
+    // 4. Preenchimento Preto Sólido (#000000) dentro do Domo
+    ctx.save();
+    ctx.fillStyle = '#000000';
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, h);
+    for (let i = 0; i <= numSteps; i++) {
+      ctx.lineTo(points[i].x, points[i].y);
+    }
+    ctx.lineTo(w, points[numSteps].y);
+    ctx.lineTo(w, h);
+    ctx.lineTo(points[0].x, h);
+    ctx.closePath();
+    ctx.fill();
     ctx.restore();
 
-    // 4. Desenho do Contorno da Onda em Pixel Art Laranja (#ff5500) com Glow Retro
+    // 5. Desenho do Contorno do Domo em Pixel Art Laranja (#ff5500) com Glow Neon
     ctx.save();
     ctx.fillStyle = '#ff5500';
-    ctx.shadowColor = 'rgba(255, 85, 0, 0.65)';
+    ctx.shadowColor = 'rgba(255, 85, 0, 0.7)';
     ctx.shadowBlur = 8;
 
-    const lineThickness = pixelSize;
+    for (let i = 0; i <= numSteps; i++) {
+      const curr = points[i];
+      ctx.fillRect(curr.x, curr.y, pixelSize, pixelSize);
 
-    for (let i = 0; i < numCols; i++) {
-      const x = i * pixelSize;
-      const y = points[i];
-      const colW = Math.min(pixelSize, w - x);
-
-      // Bloco do patamar horizontal
-      ctx.fillRect(x, y, colW, lineThickness);
-
-      // Conector vertical com a coluna adjacente para garantir linha contínua sem quebras diagonais
       if (i > 0) {
-        const prevY = points[i - 1];
-        if (prevY !== y) {
-          const minY = Math.min(prevY, y);
-          const maxY = Math.max(prevY, y);
-          ctx.fillRect(x, minY, lineThickness, (maxY - minY) + lineThickness);
+        const prev = points[i - 1];
+        if (prev.x !== curr.x || prev.y !== curr.y) {
+          const dx = curr.x - prev.x;
+          const dy = curr.y - prev.y;
+          const steps = Math.max(Math.abs(dx / pixelSize), Math.abs(dy / pixelSize));
+          for (let k = 1; k < steps; k++) {
+            const kx = Math.round((prev.x + (dx * k) / steps) / pixelSize) * pixelSize;
+            const ky = Math.round((prev.y + (dy * k) / steps) / pixelSize) * pixelSize;
+            ctx.fillRect(kx, ky, pixelSize, pixelSize);
+          }
         }
       }
     }
