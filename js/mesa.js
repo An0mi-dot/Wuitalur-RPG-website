@@ -6911,9 +6911,6 @@ const MesaCombate = {
 
       return `
         <div class="combat-player-card" id="combat-player-card-${slotNum}" style="animation-delay: ${animDelay}s" onclick="MesaCombate.openPlayerFicha(${slotNum})" title="Clique para abrir a ficha de ${p.nome}">
-          <div class="combat-turn-arrow-box" id="combat-turn-arrow-${slotNum}" style="display: none;">
-            <div class="combat-turn-arrow">▼</div>
-          </div>
           <div class="combat-slash-overlay" id="combat-slash-${slotNum}"></div>
           <div class="combat-card-header">
             <span class="combat-card-name">${p.nome}</span>
@@ -7297,12 +7294,9 @@ const MesaCombate = {
     const navControls = document.getElementById('combat-turn-nav-controls');
     const opponentTitle = document.getElementById('combat-opponent-title');
 
-    // Remove todas as setas e destaques anteriores dos cards
+    // Remove destaques anteriores dos cards
     document.querySelectorAll('.combat-player-card').forEach(card => {
       card.classList.remove('is-current-turn');
-    });
-    document.querySelectorAll('.combat-turn-arrow-box').forEach(box => {
-      box.style.display = 'none';
     });
     if (opponentTitle) opponentTitle.classList.remove('is-current-turn-boss');
 
@@ -7328,12 +7322,10 @@ const MesaCombate = {
       subLabel.style.display = 'block';
     }
 
-    // 2. Se for a vez de um jogador, coloca a seta laranja em cima do card dele apontando pra ele
+    // 2. Se for a vez de um jogador, destaca o card dele com brilho laranja
     if (currentItem.type === 'player' && currentItem.slot) {
       const card = document.getElementById(`combat-player-card-${currentItem.slot}`);
-      const arrowBox = document.getElementById(`combat-turn-arrow-${currentItem.slot}`);
       if (card) card.classList.add('is-current-turn');
-      if (arrowBox) arrowBox.style.display = 'block';
     } else if (currentItem.type === 'boss') {
       if (opponentTitle) opponentTitle.classList.add('is-current-turn-boss');
     }

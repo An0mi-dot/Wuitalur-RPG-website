@@ -9021,7 +9021,7 @@ body.combat-active .player-slot {
 /* Topo: Título do Combate */
 .combat-header {
   position: absolute;
-  top: 24px;
+  top: 16px;
   left: 0;
   width: 100%;
   display: flex;
@@ -9037,10 +9037,11 @@ body.combat-active .player-slot {
   align-items: center;
   justify-content: center;
   gap: 4px;
-  padding: 8px 26px;
-  background: rgba(14, 5, 2, 0.92);
+  padding: 8px 22px;
+  background: rgba(14, 5, 2, 0.94);
   border: 2px solid var(--mesa-orange, #ff5500);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.95), 0 0 16px rgba(255, 85, 0, 0.25);
+  max-width: min(90vw, 440px);
   transform: translateY(-50px);
   opacity: 0;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
@@ -9048,16 +9049,20 @@ body.combat-active .player-slot {
 
 .combat-current-turn-sub {
   font-family: 'Press Start 2P', monospace;
-  font-size: clamp(0.55rem, 1vw, 0.72rem);
+  font-size: clamp(0.5rem, 0.85vw, 0.62rem);
   color: var(--mesa-orange, #ff5500);
   background: rgba(0, 0, 0, 0.88);
   border: 1px solid rgba(255, 85, 0, 0.6);
-  padding: 3px 12px;
+  padding: 3px 10px;
   margin-top: 2px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   box-shadow: 0 0 8px rgba(255, 85, 0, 0.35);
   animation: turnSubFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 @keyframes turnSubFadeIn {
@@ -9102,28 +9107,36 @@ body.combat-active .combat-title-box {
 /* Controles Exclusivos do Mestre Durante o Combate */
 .combat-master-controls {
   position: absolute;
-  top: 22px;
-  right: 26px;
+  top: 16px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  z-index: 30;
+}
+
+.combat-ctrls-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  z-index: 30;
+  gap: 6px;
 }
 
 .combat-ctrl-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: #000000;
+  gap: 5px;
+  background: rgba(0, 0, 0, 0.92);
   border: 1.5px solid #ffffff;
   color: #ffffff;
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.56rem;
-  padding: 8px 14px;
+  font-size: 0.52rem;
+  padding: 6px 11px;
   cursor: pointer;
   transition: all 0.18s ease;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.85);
   user-select: none;
+  white-space: nowrap;
 }
 
 .combat-ctrl-btn:hover {
@@ -9373,39 +9386,42 @@ body.combat-active .combat-black-ramp {
 }
 
 /* ============================================================
-   SETA LARANJA DO TURNO ATIVO & DESTAQUE DO CARD
+   BRILHO VIBRANTE DO TURNO ATIVO (SEM SETA)
    ============================================================ */
 .combat-turn-arrow-box {
-  position: absolute;
-  top: -24px;
-  left: 50%;
-  transform: translateX(-50%);
-  pointer-events: none;
-  z-index: 30;
-}
-
-.combat-turn-arrow {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 1.15rem;
-  color: var(--mesa-orange, #ff5500);
-  line-height: 1;
-  animation: turnArrowBob 0.6s ease-in-out infinite alternate;
-  filter: drop-shadow(0 0 8px var(--mesa-orange, #ff5500)) drop-shadow(0 0 16px rgba(255, 85, 0, 0.8));
-}
-
-@keyframes turnArrowBob {
-  0%   { transform: translateY(0); }
-  100% { transform: translateY(-7px); }
+  display: none !important;
 }
 
 .combat-player-card.is-current-turn {
   border-color: #ffaa00 !important;
-  box-shadow: 0 0 22px var(--mesa-orange, #ff5500), 0 0 10px #ffaa00, 0 8px 30px rgba(0, 0, 0, 0.95) !important;
+  box-shadow: 0 0 25px var(--mesa-orange, #ff5500), 0 0 12px #ffaa00, inset 0 0 14px rgba(255, 85, 0, 0.25) !important;
+  animation: turnCardPulse 1.8s ease-in-out infinite alternate !important;
+}
+
+@keyframes turnCardPulse {
+  0% {
+    box-shadow: 0 0 16px rgba(255, 85, 0, 0.65), 0 0 8px #ffaa00, inset 0 0 8px rgba(255, 85, 0, 0.15);
+    border-color: #ff8800 !important;
+  }
+  100% {
+    box-shadow: 0 0 30px rgba(255, 110, 0, 0.95), 0 0 16px #ffcc00, inset 0 0 18px rgba(255, 100, 0, 0.35);
+    border-color: #ffbb33 !important;
+  }
 }
 
 .combat-title-name.is-current-turn-boss {
   color: #ffaa00 !important;
-  text-shadow: 0 0 20px var(--mesa-orange, #ff5500) !important;
+  text-shadow: 0 0 20px var(--mesa-orange, #ff5500), 0 0 35px rgba(255, 100, 0, 0.8) !important;
+  animation: turnBossPulse 1.8s ease-in-out infinite alternate !important;
+}
+
+@keyframes turnBossPulse {
+  0% {
+    text-shadow: 0 0 16px var(--mesa-orange, #ff5500), 0 0 24px rgba(255, 100, 0, 0.6);
+  }
+  100% {
+    text-shadow: 0 0 28px #ffaa00, 0 0 42px rgba(255, 120, 0, 0.95);
+  }
 }
 
 /* Controles de Navegação de Turno no Topo */
@@ -9726,6 +9742,16 @@ body.combat-active .combat-black-ramp {
   color: var(--mesa-orange, #ff5500);
   background: rgba(255, 85, 0, 0.12);
   padding: 2px 4px;
+}
+
+@media (max-width: 1080px) {
+  .combat-master-controls {
+    top: auto;
+    bottom: 14px;
+    left: 14px;
+    right: auto;
+    align-items: flex-start;
+  }
 }
 
 /* Responsividade Mobile */
