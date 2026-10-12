@@ -236,11 +236,15 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   left: 24px;
   right: 24px;
   display: flex;
-  z-index: 1100;
   justify-content: space-between;
   align-items: center;
-  z-index: 50;
+  z-index: 1200 !important;
+  pointer-events: none;
   animation: mesaNavEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+
+.mesa-floating-nav * {
+  pointer-events: auto;
 }
 
 @keyframes mesaNavEntrance {
@@ -2262,7 +2266,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
     box-shadow: none !important;
     justify-content: flex-start !important;
     pointer-events: auto !important;
-    z-index: 50 !important;
+    z-index: 1200 !important;
   }
 
   /* Oculta os botões de ação do topo no mobile (agora unificados no FAB Hambúrguer) */
@@ -8881,6 +8885,19 @@ body.dispositivos-drawer-open .dispositivos-drawer {
 body.combat-active .mesa-combat-overlay {
   opacity: 1;
   pointer-events: all;
+}
+
+body.combat-active .mesa-floating-nav {
+  z-index: 1200 !important;
+  pointer-events: none !important;
+}
+
+body.combat-active .mesa-floating-nav .nav-left-group {
+  pointer-events: auto !important;
+}
+
+body.combat-active .mesa-floating-nav .mesa-actions {
+  display: none !important;
 }
 
 /* Transição de Saída do Tabuleiro Normal para a Direita-Embaixo */

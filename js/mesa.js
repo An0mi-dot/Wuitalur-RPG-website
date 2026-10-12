@@ -734,6 +734,11 @@ const MesaApp = {
     FichaParticlesEngine.init();
 
     const tokenToValidate = initialToken || localStorage.getItem('wu_user_token') || localStorage.getItem('mesa_token');
+    if (tokenToValidate) {
+      await this.checkSavedToken(tokenToValidate);
+    } else {
+      this.updateTokenBtnState();
+    }
 
     if (this.SUPABASE_URL && this.SUPABASE_KEY && window.supabase) {
       this.supabase = window.supabase.createClient(this.SUPABASE_URL, this.SUPABASE_KEY);
@@ -745,18 +750,15 @@ const MesaApp = {
       this.loadMockData();
     }
 
-    if (tokenToValidate) {
-      await this.checkSavedToken(tokenToValidate);
-    } else {
-      this.updateTokenBtnState();
-    }
-
     MesaColetaveis.init();
     MesaChat.init();
     MesaReactions.init();
     MesaDice.init();
     MesaAreaManager.init();
     this.updateTokenBtnState();
+    if (window.MesaCombate && typeof MesaCombate.updateMasterControls === 'function') {
+      MesaCombate.updateMasterControls();
+    }
   },
 
   async checkSavedToken(customToken = null) {
@@ -776,6 +778,7 @@ const MesaApp = {
         this.updateTokenBtnState();
         if (window.MesaAreaManager && typeof MesaAreaManager.updateMasterButtons === 'function') MesaAreaManager.updateMasterButtons();
         if (window.MesaQuickMenu && typeof MesaQuickMenu.updateState === 'function') MesaQuickMenu.updateState();
+        if (window.MesaCombate && typeof MesaCombate.updateMasterControls === 'function') MesaCombate.updateMasterControls();
         return true;
       }
 
@@ -938,6 +941,9 @@ const MesaApp = {
     }
     if (window.MesaQuickMenu && typeof MesaQuickMenu.updateState === 'function') {
       MesaQuickMenu.updateState();
+    }
+    if (window.MesaCombate && typeof MesaCombate.updateMasterControls === 'function') {
+      MesaCombate.updateMasterControls();
     }
   },
 
@@ -2310,6 +2316,9 @@ const MesaApp = {
       if (this.state.isMaster) {
         alert("[SUCESSO] Token de Mestre autenticado com sucesso.");
         this.closeModal('token-modal');
+        if (window.MesaCombate && typeof MesaCombate.updateMasterControls === 'function') {
+          MesaCombate.updateMasterControls();
+        }
       } else {
         let player = null;
         if (this.state.myPlayerSlot) {
@@ -6715,10 +6724,8 @@ const MesaCombate = {
     // Renderiza os cards dos personagens com estética Undertale
     this.renderPlayers();
 
-    // Controles do Mestre durante o combate
-    const isMaster = !!(MesaApp.state && MesaApp.state.isMaster);
-    const masterCtrl = document.getElementById('combat-master-controls');
-    if (masterCtrl) masterCtrl.style.display = isMaster ? 'flex' : 'none';
+    // Controles do Mestre e de Convidado durante o combate
+    this.updateMasterControls();
 
     this.updateNavLabels();
     this.updateTurnUI();
@@ -6807,6 +6814,7 @@ const MesaCombate = {
     }
 
     this.updateNavLabels();
+    this.updateMasterControls();
 
     if (shouldBroadcast) {
       const chan = this.getChannel();
@@ -7195,6 +7203,7 @@ const MesaCombate = {
     this.turnCycle.active = true;
     this.closeTurnModal();
     this.updateTurnUI();
+    this.updateMasterControls();
 
     const chan = this.getChannel();
     if (chan) {
@@ -7217,6 +7226,7 @@ const MesaCombate = {
     }
     this.closeTurnModal();
     this.updateTurnUI();
+    this.updateMasterControls();
 
     if (shouldBroadcast) {
       const chan = this.getChannel();
@@ -7277,6 +7287,7 @@ const MesaCombate = {
     if (!cycleData) return;
     this.turnCycle = cycleData;
     this.updateTurnUI();
+    this.updateMasterControls();
   },
 
   updateTurnUI() {
@@ -7306,7 +7317,7 @@ const MesaCombate = {
     }
 
     if (turnBtnLabel) turnBtnLabel.textContent = 'Ordem de Turnos';
-    if (navControls) navControls.style.display = isMaster ? 'flex' : 'none';
+    if (navControls) navControls.style.display = (this.isActive && isMaster) ? 'flex' : 'none';
 
     const currentItem = this.turnCycle.order[this.turnCycle.currentIndex];
     if (!currentItem) return;
@@ -7325,6 +7336,21 @@ const MesaCombate = {
       if (arrowBox) arrowBox.style.display = 'block';
     } else if (currentItem.type === 'boss') {
       if (opponentTitle) opponentTitle.classList.add('is-current-turn-boss');
+    }
+  },
+
+  updateMasterControls() {
+    const isMaster = !!(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    const masterCtrl = document.getElementById('combat-master-controls');
+    const guestCtrl = document.getElementById('combat-guest-controls');
+
+    if (masterCtrl) masterCtrl.style.display = (this.isActive && isMaster) ? 'flex' : 'none';
+    if (guestCtrl) guestCtrl.style.display = (this.isActive && !isMaster) ? 'flex' : 'none';
+
+    const navControls = document.getElementById('combat-turn-nav-controls');
+    if (navControls) {
+      const turnActive = !!(this.turnCycle && this.turnCycle.active && this.turnCycle.order && this.turnCycle.order.length > 0);
+      navControls.style.display = (this.isActive && isMaster && turnActive) ? 'flex' : 'none';
     }
   }
 };
