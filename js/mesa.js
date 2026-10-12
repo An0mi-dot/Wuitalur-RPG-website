@@ -890,9 +890,16 @@ const MesaApp = {
       if (tokenLabel) tokenLabel.textContent = 'Mestre Ativo';
       if (alertBadge) alertBadge.style.display = 'none';
       const menuAreaBtn = document.getElementById('menu-area-btn');
-    if (menuAreaBtn) menuAreaBtn.style.display = 'flex';
-    if (chooseAreaBtn) chooseAreaBtn.style.display = 'inline-flex';
+      if (menuAreaBtn) menuAreaBtn.style.display = 'flex';
+      if (chooseAreaBtn) chooseAreaBtn.style.display = 'inline-flex';
       if (mobileChooseAreaItem) mobileChooseAreaItem.style.display = 'flex';
+
+      const navCombateBtn = document.getElementById('nav-combate-btn');
+      if (navCombateBtn) navCombateBtn.style.display = 'inline-flex';
+      const menuCombateBtn = document.getElementById('menu-combate-btn');
+      if (menuCombateBtn) menuCombateBtn.style.display = 'flex';
+      const mobileCombateBtn = document.getElementById('mobile-combate-item');
+      if (mobileCombateBtn) mobileCombateBtn.style.display = 'flex';
     } else if (this.state.myToken) {
       if (tokenLabel) {
         tokenLabel.textContent = this.state.myPlayerSlot ? `Slot ${this.state.myPlayerSlot} Conectado` : 'Token Ativo';
@@ -900,11 +907,25 @@ const MesaApp = {
       if (alertBadge) alertBadge.style.display = 'none';
       if (chooseAreaBtn) chooseAreaBtn.style.display = 'none';
       if (mobileChooseAreaItem) mobileChooseAreaItem.style.display = 'none';
+
+      const navCombateBtn = document.getElementById('nav-combate-btn');
+      if (navCombateBtn) navCombateBtn.style.display = 'none';
+      const menuCombateBtn = document.getElementById('menu-combate-btn');
+      if (menuCombateBtn) menuCombateBtn.style.display = 'none';
+      const mobileCombateBtn = document.getElementById('mobile-combate-item');
+      if (mobileCombateBtn) mobileCombateBtn.style.display = 'none';
     } else {
       if (tokenLabel) tokenLabel.textContent = 'Token';
       if (alertBadge) alertBadge.style.display = 'flex';
       if (chooseAreaBtn) chooseAreaBtn.style.display = 'none';
       if (mobileChooseAreaItem) mobileChooseAreaItem.style.display = 'none';
+
+      const navCombateBtn = document.getElementById('nav-combate-btn');
+      if (navCombateBtn) navCombateBtn.style.display = 'none';
+      const menuCombateBtn = document.getElementById('menu-combate-btn');
+      if (menuCombateBtn) menuCombateBtn.style.display = 'none';
+      const mobileCombateBtn = document.getElementById('mobile-combate-item');
+      if (mobileCombateBtn) mobileCombateBtn.style.display = 'none';
     }
 
     this.updateAuthChip();
@@ -1495,6 +1516,16 @@ const MesaApp = {
                 MesaAbertura.triggerStop();
               }
             }
+            if (p1Attrs._sys_combate && window.MesaCombate) {
+              const cb = p1Attrs._sys_combate;
+              if (cb.active && !MesaCombate.isActive) {
+                MesaCombate.startCombat(cb, false);
+              } else if (!cb.active && MesaCombate.isActive) {
+                MesaCombate.stopCombat(false);
+              } else if (cb.active && MesaCombate.isActive && cb.opponentName !== MesaCombate.opponentName) {
+                MesaCombate.setOpponent(cb, false);
+              }
+            }
           }
         } catch(eSync) {}
       }
@@ -1599,6 +1630,18 @@ const MesaApp = {
               MesaAbertura.triggerStop();
             }
           }
+
+          // 5. Sincronização de Combate
+          if (attrs && attrs._sys_combate && window.MesaCombate) {
+            const cb = attrs._sys_combate;
+            if (cb.active && !MesaCombate.isActive) {
+              MesaCombate.startCombat(cb, false);
+            } else if (!cb.active && MesaCombate.isActive) {
+              MesaCombate.stopCombat(false);
+            } else if (cb.active && MesaCombate.isActive && cb.opponentName !== MesaCombate.opponentName) {
+              MesaCombate.setOpponent(cb, false);
+            }
+          }
         }
       } catch(e) {}
     }, 1000);
@@ -1675,6 +1718,23 @@ const MesaApp = {
     channel.on('broadcast', { event: 'notebook_sync' }, (payload) => {
       if (window.MesaNotebookSara && payload.payload) {
         MesaNotebookSara.handleIncomingSync(payload.payload);
+      }
+    });
+
+    // 5.1 Modo de Combate da Campanha
+    channel.on('broadcast', { event: 'combat_start' }, (payload) => {
+      if (window.MesaCombate && payload.payload) {
+        MesaCombate.startCombat(payload.payload, false);
+      }
+    });
+    channel.on('broadcast', { event: 'combat_update' }, (payload) => {
+      if (window.MesaCombate && payload.payload) {
+        MesaCombate.setOpponent(payload.payload, false);
+      }
+    });
+    channel.on('broadcast', { event: 'combat_stop' }, () => {
+      if (window.MesaCombate) {
+        MesaCombate.stopCombat(false);
       }
     });
 
@@ -1763,6 +1823,9 @@ const MesaApp = {
         slotEl.classList.add('empty');
         slotEl.innerHTML = `<div class="slot-empty-label">Slot ${i + 1}</div>`;
       }
+    }
+    if (window.MesaCombate && MesaCombate.isActive) {
+      MesaCombate.renderPlayers();
     }
   },
 
@@ -1859,6 +1922,9 @@ const MesaApp = {
     // 1. Atualiza cirurgicamente no DOM local (zero replay de animação)
     this.updateVitalsUI(player);
     this.renderMesa();
+    if (window.MesaCombate && MesaCombate.isActive) {
+      MesaCombate.updatePlayerVitals(player);
+    }
 
     // 2. Transmissão WebSocket Instantânea para todas as telas conectadas (<30ms)
     if (MesaChat.channel) {
@@ -1909,6 +1975,9 @@ const MesaApp = {
 
     // Atualiza o card correspondente na mesa
     this.renderMesa();
+    if (window.MesaCombate && MesaCombate.isActive) {
+      MesaCombate.updatePlayerVitals(player);
+    }
 
     // Se a ficha deste personagem estiver aberta, atualiza imediatamente os números e barras
     if (this.state.activeViewingPlayer && this.state.activeViewingPlayer.slot === data.slot) {
@@ -4075,6 +4144,11 @@ const MesaQuickMenu = {
       menuDispositivosBtn.style.display = isMaster ? 'flex' : 'none';
     }
 
+    const menuCombateBtn = document.getElementById('menu-combate-btn');
+    if (menuCombateBtn) {
+      menuCombateBtn.style.display = isMaster ? 'flex' : 'none';
+    }
+
     const notebookCloseBtn = document.getElementById('notebook-close-btn');
     if (notebookCloseBtn) {
       notebookCloseBtn.style.display = isMaster ? 'flex' : 'none';
@@ -4182,6 +4256,10 @@ const MesaMobileMenu = {
     if (mobileDispBtn) {
       mobileDispBtn.style.display = isMaster ? 'flex' : 'none';
     }
+    const mobileCombateBtn = document.getElementById('mobile-combate-item');
+    if (mobileCombateBtn) {
+      mobileCombateBtn.style.display = isMaster ? 'flex' : 'none';
+    }
 
     if (tokenLabel) {
       const authInfo = MesaApp.getAuthInfo();
@@ -4213,6 +4291,7 @@ const MesaMobileMenu = {
 
 document.addEventListener('DOMContentLoaded', async () => {
   if (window.MesaMediaPlayer) MesaMediaPlayer.init();
+  if (window.MesaCombate) MesaCombate.init();
   const savedToken = localStorage.getItem('wu_user_token') || localStorage.getItem('mesa_token');
   await MesaApp.init(savedToken);
   MesaMobileMenu.init();
@@ -6406,3 +6485,414 @@ const MesaNotebookSara = {
   }
 };
 window.MesaNotebookSara = MesaNotebookSara;
+
+// ==========================================================================
+// MESA MODO DE COMBATE (CINEMATOGRÁFICO, VÍDEO & RAMPA PRETA UNDERTALE)
+// ==========================================================================
+const MesaCombate = {
+  isActive: false,
+  opponentId: 'unknown',
+  opponentName: '? ? ?',
+  videoUrl: '',
+  selectedPresetId: 'unknown',
+
+  presets: [
+    {
+      id: 'unknown',
+      name: '? ? ?',
+      video: 'assets/videos/combate_desconhecido.mp4',
+      desc: 'Ameaça oculta ou entidade não identificada'
+    },
+    {
+      id: 'espectro',
+      name: 'ESPECTRO SOMBRIO',
+      video: 'assets/videos/espectro.mp4',
+      desc: 'Manifestação fantasmagórica na residência Auguil'
+    },
+    {
+      id: 'sara',
+      name: 'SARA AUGUIL',
+      video: 'assets/videos/sara.mp4',
+      desc: 'A presença misteriosa no centro do enigma'
+    },
+    {
+      id: 'vazio',
+      name: 'CRIATURA DO VAZIO',
+      video: 'assets/videos/vazio.mp4',
+      desc: 'Abominação aberrante das profundezas'
+    }
+  ],
+
+  init() {
+    this.renderPresets();
+    this.updateNavLabels();
+  },
+
+  getChannel() {
+    return (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel) || null;
+  },
+
+  async saveCombatStateToSupabase() {
+    if (!window.MesaApp || !MesaApp.supabase || !MesaApp.state || !MesaApp.state.isMaster) return;
+    try {
+      const { data } = await MesaApp.supabase
+        .from('personagens')
+        .select('atributos')
+        .eq('id', 1)
+        .single();
+      const attrs = data && data.atributos 
+        ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos) 
+        : {};
+      attrs._sys_combate = {
+        active: !!this.isActive,
+        opponentId: this.opponentId || 'unknown',
+        opponentName: this.opponentName || '? ? ?',
+        videoUrl: this.videoUrl || '',
+        updatedAt: Date.now()
+      };
+      await MesaApp.supabase
+        .from('personagens')
+        .update({ atributos: attrs })
+        .eq('id', 1);
+    } catch(e) {
+      console.warn("Erro ao persistir estado de combate no Supabase:", e);
+    }
+  },
+
+  handleNavClick() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    this.openSelectModal();
+  },
+
+  openSelectModal() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    this.renderPresets();
+    const modal = document.getElementById('combat-select-modal');
+    if (modal) modal.classList.add('active');
+
+    const submitBtn = document.getElementById('combat-modal-submit-btn');
+    if (submitBtn) {
+      submitBtn.textContent = this.isActive ? 'Atualizar Oponente' : 'Iniciar Combate';
+    }
+
+    const nameInput = document.getElementById('combat-custom-name');
+    const videoInput = document.getElementById('combat-custom-video');
+    if (nameInput) nameInput.value = this.opponentName || '? ? ?';
+    if (videoInput) videoInput.value = this.videoUrl || '';
+  },
+
+  closeSelectModal() {
+    const modal = document.getElementById('combat-select-modal');
+    if (modal) modal.classList.remove('active');
+  },
+
+  renderPresets() {
+    const grid = document.getElementById('combat-presets-grid');
+    if (!grid) return;
+
+    grid.innerHTML = this.presets.map(p => `
+      <div class="combat-preset-card ${p.id === this.selectedPresetId ? 'selected' : ''}" onclick="MesaCombate.selectPreset('${p.id}')">
+        <div class="combat-preset-name">${p.name}</div>
+        <div class="combat-preset-desc">${p.desc}</div>
+      </div>
+    `).join('');
+  },
+
+  selectPreset(id) {
+    this.selectedPresetId = id;
+    this.renderPresets();
+
+    const preset = this.presets.find(p => p.id === id);
+    if (preset) {
+      const nameInput = document.getElementById('combat-custom-name');
+      const videoInput = document.getElementById('combat-custom-video');
+      if (nameInput) nameInput.value = preset.name;
+      if (videoInput) videoInput.value = preset.video;
+    }
+  },
+
+  confirmSelection() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+
+    const nameInput = document.getElementById('combat-custom-name');
+    const videoInput = document.getElementById('combat-custom-video');
+    const name = (nameInput && nameInput.value.trim()) || '? ? ?';
+    const video = (videoInput && videoInput.value.trim()) || '';
+
+    this.closeSelectModal();
+
+    if (!this.isActive) {
+      this.startCombat({ opponentId: this.selectedPresetId, opponentName: name, videoUrl: video }, true);
+    } else {
+      this.setOpponent({ opponentId: this.selectedPresetId, opponentName: name, videoUrl: video }, true);
+    }
+  },
+
+  startCombat(data = {}, shouldBroadcast = true) {
+    if (shouldBroadcast && (!MesaApp.state || !MesaApp.state.isMaster)) return;
+
+    this.isActive = true;
+    this.opponentId = data.opponentId || 'unknown';
+    this.opponentName = data.opponentName || '? ? ?';
+    this.videoUrl = data.videoUrl || '';
+
+    // Flash dramático de encontro (estilo Undertale)
+    const flash = document.getElementById('combat-encounter-flash');
+    if (flash) {
+      flash.classList.remove('trigger');
+      void flash.offsetWidth;
+      flash.classList.add('trigger');
+    }
+
+    // Ativa classe no body para transição dos cards da mesa para a rampa
+    document.body.classList.add('combat-active');
+
+    // Atualiza título do oponente
+    const titleEl = document.getElementById('combat-opponent-title');
+    if (titleEl) {
+      titleEl.textContent = this.opponentName;
+      titleEl.classList.remove('slam');
+      void titleEl.offsetWidth;
+      titleEl.classList.add('slam');
+    }
+
+    // Carrega o vídeo ou ativa o fallback atmosférico
+    this.loadVideo(this.videoUrl);
+
+    // Renderiza os cards dos personagens com estética Undertale
+    this.renderPlayers();
+
+    // Controles do Mestre durante o combate
+    const isMaster = !!(MesaApp.state && MesaApp.state.isMaster);
+    const masterCtrl = document.getElementById('combat-master-controls');
+    if (masterCtrl) masterCtrl.style.display = isMaster ? 'flex' : 'none';
+
+    this.updateNavLabels();
+
+    if (shouldBroadcast) {
+      const chan = this.getChannel();
+      if (chan) {
+        try {
+          chan.send({
+            type: 'broadcast',
+            event: 'combat_start',
+            payload: {
+              opponentId: this.opponentId,
+              opponentName: this.opponentName,
+              videoUrl: this.videoUrl
+            }
+          });
+        } catch(e) {}
+      }
+      this.saveCombatStateToSupabase();
+    }
+  },
+
+  setOpponent(data = {}, shouldBroadcast = true) {
+    if (shouldBroadcast && (!MesaApp.state || !MesaApp.state.isMaster)) return;
+
+    this.opponentId = data.opponentId || this.opponentId;
+    this.opponentName = data.opponentName || this.opponentName;
+    this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : this.videoUrl;
+
+    const titleEl = document.getElementById('combat-opponent-title');
+    if (titleEl) {
+      titleEl.textContent = this.opponentName;
+      titleEl.classList.remove('slam');
+      void titleEl.offsetWidth;
+      titleEl.classList.add('slam');
+    }
+
+    this.loadVideo(this.videoUrl);
+
+    if (shouldBroadcast) {
+      const chan = this.getChannel();
+      if (chan) {
+        try {
+          chan.send({
+            type: 'broadcast',
+            event: 'combat_update',
+            payload: {
+              opponentId: this.opponentId,
+              opponentName: this.opponentName,
+              videoUrl: this.videoUrl
+            }
+          });
+        } catch(e) {}
+      }
+      this.saveCombatStateToSupabase();
+    }
+  },
+
+  stopCombat(shouldBroadcast = true) {
+    if (shouldBroadcast && (!MesaApp.state || !MesaApp.state.isMaster)) return;
+
+    this.isActive = false;
+    document.body.classList.remove('combat-active');
+
+    const video = document.getElementById('combat-bg-video');
+    if (video) {
+      try { video.pause(); } catch(e) {}
+      video.classList.remove('playing');
+      video.removeAttribute('src');
+    }
+
+    this.updateNavLabels();
+
+    if (shouldBroadcast) {
+      const chan = this.getChannel();
+      if (chan) {
+        try {
+          chan.send({
+            type: 'broadcast',
+            event: 'combat_stop',
+            payload: {}
+          });
+        } catch(e) {}
+      }
+      this.saveCombatStateToSupabase();
+    }
+  },
+
+  loadVideo(url) {
+    const video = document.getElementById('combat-bg-video');
+    const fallback = document.getElementById('combat-video-fallback');
+    const fallbackLabel = document.getElementById('combat-fallback-label');
+    if (!video) return;
+
+    if (fallbackLabel) {
+      fallbackLabel.textContent = this.opponentName ? `COMBATE: ${this.opponentName}` : 'ÁREA DE COMBATE';
+    }
+
+    if (url && url.trim()) {
+      video.src = url.trim();
+      video.load();
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          video.classList.add('playing');
+          if (fallback) fallback.style.display = 'none';
+        }).catch(() => {
+          video.classList.remove('playing');
+          if (fallback) fallback.style.display = 'flex';
+        });
+      }
+      video.onerror = () => {
+        video.classList.remove('playing');
+        if (fallback) fallback.style.display = 'flex';
+      };
+    } else {
+      video.classList.remove('playing');
+      video.removeAttribute('src');
+      video.load();
+      if (fallback) fallback.style.display = 'flex';
+    }
+  },
+
+  renderPlayers() {
+    const dock = document.getElementById('combat-players-dock');
+    if (!dock) return;
+
+    const players = (MesaApp && MesaApp.state && MesaApp.state.players) || [];
+    const activePlayers = players.filter(p => p && p.nome);
+
+    if (activePlayers.length === 0) {
+      dock.innerHTML = `<div style="font-family:'Press Start 2P',monospace; font-size:0.6rem; color:#888;">SEM JOGADORES NA MESA</div>`;
+      return;
+    }
+
+    dock.innerHTML = activePlayers.map((p, idx) => {
+      const hpMax = p.hpMax || p.hp || 1;
+      const hpVal = Math.max(0, p.hp || 0);
+      const hpPct = Math.min(100, Math.max(0, Math.round((hpVal / hpMax) * 100)));
+      const avatarSrc = p.avatar || p.imagem || '';
+      const avatarHtml = avatarSrc
+        ? `<img src="${avatarSrc}" alt="${p.nome}" class="combat-card-avatar-img" />`
+        : `<span class="combat-card-avatar-fallback">${p.nome.charAt(0)}</span>`;
+
+      const stressPts = p.stressPoints || 0;
+      const maxStress = p.stressPointsMax || 6;
+      let pipsHtml = '';
+      for (let s = 0; s < maxStress; s++) {
+        pipsHtml += `<span class="undertale-stress-pip ${s < stressPts ? 'filled' : ''}"></span>`;
+      }
+
+      const animDelay = (idx * 0.08).toFixed(2);
+
+      return `
+        <div class="combat-player-card" style="animation-delay: ${animDelay}s" onclick="MesaApp.openFicha(MesaApp.state.players[${p.slot - 1}])" title="Clique para abrir a ficha de ${p.nome}">
+          <div class="combat-card-header">
+            <span class="combat-card-name">${p.nome}</span>
+            <span class="combat-card-slot-badge">S${p.slot}</span>
+          </div>
+          <div class="combat-card-body">
+            <div class="combat-card-avatar-box">
+              ${avatarHtml}
+            </div>
+            <div class="combat-card-stats">
+              <div class="undertale-stat-row">
+                <span class="undertale-stat-label">PV</span>
+                <div class="undertale-hp-track">
+                  <div class="undertale-hp-bar" id="combat-hp-bar-${p.slot}" style="width: ${hpPct}%"></div>
+                </div>
+                <span class="undertale-stat-val" id="combat-hp-val-${p.slot}">${hpVal}/${hpMax}</span>
+              </div>
+              <div class="undertale-stat-row">
+                <span class="undertale-stat-label">PE</span>
+                <span class="undertale-stat-val" id="combat-pe-val-${p.slot}">${p.pe || 0}/${p.peMax || p.pe || 0}</span>
+              </div>
+              <div class="undertale-stat-row">
+                <span class="undertale-stat-label">EST</span>
+                <span class="undertale-stat-val" id="combat-est-val-${p.slot}">${p.st || 0}/${p.stMax || 44}</span>
+              </div>
+              <div class="undertale-stress-row" id="combat-stress-pips-${p.slot}">
+                ${pipsHtml}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
+  updatePlayerVitals(player) {
+    if (!player || !player.slot) return;
+    const hpBar = document.getElementById(`combat-hp-bar-${player.slot}`);
+    const hpVal = document.getElementById(`combat-hp-val-${player.slot}`);
+    const peVal = document.getElementById(`combat-pe-val-${player.slot}`);
+    const estVal = document.getElementById(`combat-est-val-${player.slot}`);
+    const pipsBox = document.getElementById(`combat-stress-pips-${player.slot}`);
+
+    const hpMax = player.hpMax || player.hp || 1;
+    const hpCurrent = Math.max(0, player.hp || 0);
+    const hpPct = Math.min(100, Math.max(0, Math.round((hpCurrent / hpMax) * 100)));
+
+    if (hpBar) hpBar.style.width = `${hpPct}%`;
+    if (hpVal) hpVal.textContent = `${hpCurrent}/${hpMax}`;
+    if (peVal) peVal.textContent = `${player.pe || 0}/${player.peMax || player.pe || 0}`;
+    if (estVal) estVal.textContent = `${player.st || 0}/${player.stMax || 44}`;
+
+    if (pipsBox) {
+      const stressPts = player.stressPoints || 0;
+      const maxStress = player.stressPointsMax || 6;
+      let pipsHtml = '';
+      for (let s = 0; s < maxStress; s++) {
+        pipsHtml += `<span class="undertale-stress-pip ${s < stressPts ? 'filled' : ''}"></span>`;
+      }
+      pipsBox.innerHTML = pipsHtml;
+    }
+  },
+
+  updateNavLabels() {
+    const navLabel = document.getElementById('nav-combate-label');
+    const menuLabel = document.getElementById('menu-combate-label');
+    const mobileLabel = document.getElementById('mobile-combate-label');
+
+    const text = this.isActive ? 'Combate Ativo' : 'Iniciar Combate';
+    if (navLabel) navLabel.textContent = text;
+    if (menuLabel) menuLabel.textContent = text;
+    if (mobileLabel) mobileLabel.textContent = `${text} (Mestre)`;
+  }
+};
+window.MesaCombate = MesaCombate;
+

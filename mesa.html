@@ -10,7 +10,7 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.5.7">
   <link rel="stylesheet" href="css/components.css?v=1.5.7">
   <link rel="stylesheet" href="css/mesa.css?v=1.5.7b">
@@ -170,6 +170,11 @@
               <span>Dispositivos da Campanha</span>
               <span class="quick-menu-badge-master">Mestre</span>
             </button>
+            <button type="button" id="menu-combate-btn" class="quick-menu-item master-item" onclick="MesaCombate.handleNavClick(); MesaQuickMenu.close();" style="display: none; color: #ef4444;">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <span id="menu-combate-label">Iniciar Combate</span>
+              <span class="quick-menu-badge-master">Mestre</span>
+            </button>
                                     <button type="button" id="menu-abertura-btn" class="quick-menu-item master-item" onclick="MesaAbertura.play(); MesaQuickMenu.close();" style="display: none; color: #10b981;">
               <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
               <span>Tocar Abertura</span>
@@ -226,6 +231,14 @@
             <line x1="12" y1="17" x2="12" y2="21"></line>
           </svg>
           <span>Dispositivos</span>
+        </button>
+
+        <!-- Botão Iniciar Combate (Exclusivo do Mestre) -->
+        <button id="nav-combate-btn" class="ink-tag nav-combate master-item" onclick="MesaCombate.handleNavClick()" style="display: none; color: #ef4444;" title="Iniciar / Gerenciar Modo de Combate">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          <span id="nav-combate-label">Iniciar Combate</span>
         </button>
 
         <!-- Botão Escolher Área (Exclusivo do Mestre) -->
@@ -611,6 +624,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
                               <button id="mobile-dispositivos-item" class="mobile-menu-item master-item" onclick="MesaDispositivos.toggleDrawer(); MesaMobileMenu.close()" style="display: none; color: #38bdf8;">
             <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="1.5"></rect><line x1="2" y1="20" x2="22" y2="20"></line><line x1="9" y1="16" x2="15" y2="16"></line></svg>
             <span>Dispositivos (Mestre)</span>
+          </button>
+
+          <button id="mobile-combate-item" class="mobile-menu-item master-item" onclick="MesaCombate.handleNavClick(); MesaMobileMenu.close()" style="display: none; color: #ef4444;">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            <span id="mobile-combate-label">Iniciar Combate (Mestre)</span>
           </button>
 
           <button id="mobile-abertura-item" class="mobile-menu-item master-item" onclick="MesaAbertura.play(); MesaMobileMenu.close()" style="display: none; color: #10b981;">
@@ -1360,6 +1378,104 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
   <div id="abertura-overlay" class="abertura-overlay">
     <video id="abertura-video" src="assets/videos/abertura.mp4" playsinline preload="auto"></video>
     <button id="abertura-skip-btn" class="abertura-skip-btn" onclick="MesaAbertura.stop()" title="Parar Abertura">&times;</button>
+  </div>
+
+  <!-- FLASH DE ENCONTRO DE COMBATE (ESTILO UNDERTALE) -->
+  <div id="combat-encounter-flash" class="combat-flash-fx"></div>
+
+  <!-- ========================================================================== -->
+  <!-- MESA COMBATE OVERLAY (MODO DE COMBATE CINEMATOGRÁFICO & RAMPA PRETA UNDERTALE) -->
+  <!-- ========================================================================== -->
+  <div id="mesa-combat-overlay" class="mesa-combat-overlay">
+    <!-- Camada de Vídeo / Fundo do Oponente -->
+    <div class="combat-bg-container">
+      <video id="combat-bg-video" class="combat-bg-video" autoplay loop muted playsinline></video>
+      <div id="combat-video-fallback" class="combat-video-fallback">
+        <div class="combat-fallback-grid"></div>
+        <div class="combat-fallback-pulse"></div>
+        <div class="combat-fallback-label" id="combat-fallback-label">[ VÍDEO DO OPONENTE ]</div>
+      </div>
+      <div class="combat-vignette"></div>
+      <div class="combat-scanlines"></div>
+    </div>
+
+    <!-- Topo Central: TÍTULO DO COMBATE -->
+    <div class="combat-header">
+      <div class="combat-title-box">
+        <span class="combat-title-prefix">COMBATE CONTRA:</span>
+        <span class="combat-title-name" id="combat-opponent-title">? ? ?</span>
+      </div>
+    </div>
+
+    <!-- Controles Exclusivos do Mestre Durante o Combate -->
+    <div id="combat-master-controls" class="combat-master-controls master-item" style="display: none;">
+      <button type="button" class="combat-ctrl-btn" onclick="MesaCombate.openSelectModal()" title="Escolher com quem eles vão combater">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        <span>Trocar Oponente</span>
+      </button>
+      <button type="button" class="combat-ctrl-btn end-btn" onclick="MesaCombate.stopCombat(true)" title="Encerrar combate e voltar para a mesa">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <span>Encerrar Combate</span>
+      </button>
+    </div>
+
+    <!-- Rampa Preta Diagonal Inferior Direita -->
+    <div class="combat-black-ramp">
+      <!-- SVG com Geometria Exata e Borda Branca Nítida -->
+      <svg class="combat-ramp-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <polygon points="0,100 100,0 100,100" fill="#000000" />
+        <line x1="0" y1="100" x2="100" y2="0" stroke="#ffffff" stroke-width="0.35" />
+      </svg>
+
+      <!-- Dock dos Cards dos Personagens (Estilo Undertale: Preto e Branco, Só o Rosto) -->
+      <div class="combat-players-dock" id="combat-players-dock">
+        <!-- Renderizado dinamicamente via MesaCombate.renderPlayers() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: GERENCIADOR DE COMBATE DO MESTRE -->
+  <div id="combat-select-modal" class="mesa-modal ink-modal" onclick="if(event.target===this) MesaCombate.closeSelectModal()">
+    <div class="mesa-modal-dialog combat-modal-dialog">
+      <div class="mesa-modal-header">
+        <div class="mesa-modal-title">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#ef4444" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          <span>GERENCIADOR DE COMBATE</span>
+        </div>
+        <button type="button" class="mesa-modal-close" onclick="MesaCombate.closeSelectModal()">&times;</button>
+      </div>
+
+      <div class="mesa-modal-body">
+        <p class="combat-modal-desc">
+          Selecione quem será o oponente da batalha. A tela de combate mudará instantaneamente para todos os jogadores com o nome e o vídeo correspondente.
+        </p>
+
+        <div class="combat-section-subtitle">OPONENTES DA CAMPANHA</div>
+        <div class="combat-presets-grid" id="combat-presets-grid">
+          <!-- Renderizado dinamicamente via MesaCombate.renderPresets() -->
+        </div>
+
+        <div class="combat-custom-section">
+          <div class="combat-section-subtitle">PERSONALIZAR / EDITAR</div>
+          <div class="combat-form-row">
+            <label for="combat-custom-name">Nome do Oponente:</label>
+            <input type="text" id="combat-custom-name" placeholder="Ex: ? ? ?, Espectro Ancestral, Sara..." class="coletaveis-search-input">
+          </div>
+          <div class="combat-form-row">
+            <label for="combat-custom-video">Arquivo ou URL do Vídeo:</label>
+            <input type="text" id="combat-custom-video" placeholder="Ex: assets/videos/combate_desconhecido.mp4 ou URL..." class="coletaveis-search-input">
+            <div class="combat-input-hint">Vídeos na pasta <code>assets/videos/</code> do GitHub tocam diretamente no fundo do combate.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mesa-modal-footer">
+        <button type="button" class="coletavel-form-cancel" onclick="MesaCombate.closeSelectModal()">Cancelar</button>
+        <button type="button" class="coletavel-form-submit" id="combat-modal-submit-btn" onclick="MesaCombate.confirmSelection()">
+          Iniciar Combate
+        </button>
+      </div>
+    </div>
   </div>
 
 </body>
