@@ -9036,12 +9036,12 @@ body.combat-active .player-slot {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 8px 22px;
-  background: rgba(14, 5, 2, 0.94);
-  border: 2px solid var(--mesa-orange, #ff5500);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.95), 0 0 16px rgba(255, 85, 0, 0.25);
-  max-width: min(90vw, 440px);
+  gap: 6px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  max-width: min(92vw, 560px);
   transform: translateY(-50px);
   opacity: 0;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
@@ -9049,15 +9049,21 @@ body.combat-active .player-slot {
 
 .combat-current-turn-sub {
   font-family: 'Press Start 2P', monospace;
-  font-size: clamp(0.5rem, 0.85vw, 0.62rem);
-  color: var(--mesa-orange, #ff5500);
-  background: rgba(0, 0, 0, 0.88);
-  border: 1px solid rgba(255, 85, 0, 0.6);
-  padding: 3px 10px;
-  margin-top: 2px;
-  letter-spacing: 0.08em;
+  font-size: clamp(0.55rem, 0.9vw, 0.72rem);
+  color: #ffaa33;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin-top: 4px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  box-shadow: 0 0 8px rgba(255, 85, 0, 0.35);
+  text-shadow: 
+    -1.5px -1.5px 0 #000,
+     1.5px -1.5px 0 #000,
+    -1.5px  1.5px 0 #000,
+     1.5px  1.5px 0 #000,
+     0px  3px 8px rgba(0, 0, 0, 0.95);
   animation: turnSubFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
   white-space: nowrap;
   overflow: hidden;
@@ -9081,16 +9087,26 @@ body.combat-active .combat-title-box {
   font-weight: 900;
   color: #ffffff;
   letter-spacing: 0.12em;
-  text-shadow: none;
+  text-shadow: 
+    -2px -2px 0 #000,
+     2px -2px 0 #000,
+    -2px  2px 0 #000,
+     2px  2px 0 #000;
 }
 
 .combat-title-name {
   font-family: 'Press Start 2P', 'Cinzel', monospace;
-  font-size: clamp(0.95rem, 2.2vw, 1.65rem);
+  font-size: clamp(1.05rem, 2.4vw, 1.8rem);
   font-weight: 900;
   color: var(--mesa-orange, #ff5500);
   letter-spacing: 0.14em;
-  text-shadow: none;
+  text-shadow: 
+    -2px -2px 0 #000,
+     2px -2px 0 #000,
+    -2px  2px 0 #000,
+     2px  2px 0 #000,
+     0 4px 12px rgba(0, 0, 0, 0.95);
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.85));
 }
 
 /* Efeito Slam de troca de oponente */
@@ -9795,8 +9811,8 @@ body.combat-active .combat-black-ramp {
   }
 
   .combat-title-box {
-    padding: 6px 14px;
-    gap: 8px;
+    padding: 0;
+    gap: 4px;
   }
 
   .combat-master-controls {
