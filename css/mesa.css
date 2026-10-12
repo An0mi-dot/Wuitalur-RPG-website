@@ -9076,6 +9076,16 @@ body.combat-active .player-slot {
   100% { opacity: 1; transform: translateY(0); }
 }
 
+.combat-current-turn-sub.turn-pulse {
+  animation: turnSubPulse 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes turnSubPulse {
+  0%   { opacity: 0.45; transform: scale(0.92) translateY(-2px); }
+  50%  { opacity: 1; transform: scale(1.05) translateY(0); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
 body.combat-active .combat-title-box {
   transform: translateY(0);
   opacity: 1;
@@ -9245,11 +9255,12 @@ body.combat-active .combat-black-ramp {
   font-family: 'Press Start 2P', 'VT323', monospace;
   color: #ffffff;
   border-radius: 0;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  animation: combatCardIdleFloat 3.8s ease-in-out infinite;
 }
 
 .combat-player-card.combat-card-entrance {
-  animation: combatCardSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: combatCardSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both !important;
 }
 
 .combat-player-card * {
@@ -9261,8 +9272,19 @@ body.combat-active .combat-black-ramp {
   100% { opacity: 1; transform: translateY(0); }
 }
 
+/* Animação de movimento discreto e sutil de respiração / flutuação idle */
+@keyframes combatCardIdleFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3.5px);
+  }
+}
+
 .combat-player-card:hover {
-  transform: translateY(-4px) scale(1.02);
+  animation-play-state: paused;
+  transform: translateY(-6px) scale(1.02) !important;
   box-shadow: 0 0 20px var(--mesa-orange, #ff5500), 0 8px 30px rgba(0, 0, 0, 0.95);
   border-color: #ffaa33;
 }
@@ -9414,7 +9436,7 @@ body.combat-active .combat-black-ramp {
 .combat-player-card.is-current-turn {
   border-color: #ffaa00 !important;
   box-shadow: 0 0 25px var(--mesa-orange, #ff5500), 0 0 12px #ffaa00, inset 0 0 14px rgba(255, 85, 0, 0.25) !important;
-  animation: turnCardPulse 1.8s ease-in-out infinite alternate !important;
+  animation: combatCardIdleFloat 3.8s ease-in-out infinite, turnCardPulse 1.8s ease-in-out infinite alternate !important;
 }
 
 @keyframes turnCardPulse {
@@ -9457,6 +9479,12 @@ body.combat-active .combat-black-ramp {
   color: #ffffff;
   font-family: 'Press Start 2P', monospace;
   font-size: 0.62rem;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+.combat-ctrl-btn.turn-nav-btn * {
+  pointer-events: none;
 }
 
 .combat-ctrl-btn.turn-nav-btn:hover {

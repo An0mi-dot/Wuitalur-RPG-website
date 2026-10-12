@@ -6570,6 +6570,15 @@ const MesaCombate = {
     return (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel) || null;
   },
 
+  saveCombatStateDebounced() {
+    if (this._saveCombatTimeout) {
+      clearTimeout(this._saveCombatTimeout);
+    }
+    this._saveCombatTimeout = setTimeout(() => {
+      this.saveCombatStateToSupabase();
+    }, 350);
+  },
+
   async saveCombatStateToSupabase() {
     if (!window.MesaApp || !MesaApp.supabase || !MesaApp.state || !MesaApp.state.isMaster) return;
     try {
@@ -6586,7 +6595,7 @@ const MesaCombate = {
         opponentId: this.opponentId || 'unknown',
         opponentName: this.opponentName || '???',
         videoUrl: this.videoUrl || 'assets/videos/cine1.mp4',
-        turnCycle: this.turnCycle || null,
+        turnCycle: this.turnCycle ? JSON.parse(JSON.stringify(this.turnCycle)) : null,
         updatedAt: Date.now()
       };
       await MesaApp.supabase
@@ -6944,12 +6953,13 @@ const MesaCombate = {
       `;
     }).join('');
 
-    // Remove a classe de animação inicial assim que terminar para nunca mais reexecutar ao trocar turnos
+    // Remove a classe de animação inicial após 800ms e aplica o delay staggered da flutuação idle
     setTimeout(() => {
-      const cards = dock.querySelectorAll('.combat-card-entrance');
-      cards.forEach(c => {
+      if (!dock) return;
+      const cards = dock.querySelectorAll('.combat-player-card');
+      cards.forEach((c, i) => {
         c.classList.remove('combat-card-entrance');
-        c.style.animationDelay = '';
+        c.style.animationDelay = `${((i % 5) * 0.45).toFixed(2)}s`;
       });
     }, 800);
 
@@ -7308,9 +7318,22 @@ const MesaCombate = {
   },
 
   setTurnCurrentIndex(index) {
-    if (!this.turnCycle) return;
+    if (!this.turnCycle || !this.turnCycle.order) return;
     this.turnCycle.currentIndex = index;
+    this.turnCycle.updatedAt = Date.now();
     this.renderTurnOrderList();
+    this.updateTurnUI();
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'combat_turn_sync',
+          payload: this.turnCycle
+        });
+      } catch(e) {}
+    }
+    this.saveCombatStateDebounced();
   },
 
   confirmTurnCycle() {
@@ -7318,6 +7341,7 @@ const MesaCombate = {
     if (!this.turnCycle) this.initDefaultTurnOrder();
 
     this.turnCycle.active = true;
+    this.turnCycle.updatedAt = Date.now();
     this.closeTurnModal();
     this.updateTurnUI();
     this.updateMasterControls();
@@ -7340,6 +7364,7 @@ const MesaCombate = {
 
     if (this.turnCycle) {
       this.turnCycle.active = false;
+      this.turnCycle.updatedAt = Date.now();
     }
     this.closeTurnModal();
     this.updateTurnUI();
@@ -7364,7 +7389,13 @@ const MesaCombate = {
     if (!MesaApp.state || !MesaApp.state.isMaster) return;
     if (!this.turnCycle || !this.turnCycle.order || this.turnCycle.order.length === 0) return;
 
-    this.turnCycle.currentIndex = (this.turnCycle.currentIndex + 1) % this.turnCycle.order.length;
+    const len = this.turnCycle.order.length;
+    let curr = parseInt(this.turnCycle.currentIndex, 10);
+    if (isNaN(curr) || curr < 0 || curr >= len) {
+      curr = 0;
+    }
+    this.turnCycle.currentIndex = (curr + 1) % len;
+    this.turnCycle.updatedAt = Date.now();
     this.updateTurnUI();
 
     const chan = this.getChannel();
@@ -7377,14 +7408,20 @@ const MesaCombate = {
         });
       } catch(e) {}
     }
-    this.saveCombatStateToSupabase();
+    this.saveCombatStateDebounced();
   },
 
   prevTurn() {
     if (!MesaApp.state || !MesaApp.state.isMaster) return;
     if (!this.turnCycle || !this.turnCycle.order || this.turnCycle.order.length === 0) return;
 
-    this.turnCycle.currentIndex = (this.turnCycle.currentIndex - 1 + this.turnCycle.order.length) % this.turnCycle.order.length;
+    const len = this.turnCycle.order.length;
+    let curr = parseInt(this.turnCycle.currentIndex, 10);
+    if (isNaN(curr) || curr < 0 || curr >= len) {
+      curr = 0;
+    }
+    this.turnCycle.currentIndex = (curr - 1 + len) % len;
+    this.turnCycle.updatedAt = Date.now();
     this.updateTurnUI();
 
     const chan = this.getChannel();
@@ -7397,11 +7434,23 @@ const MesaCombate = {
         });
       } catch(e) {}
     }
-    this.saveCombatStateToSupabase();
+    this.saveCombatStateDebounced();
   },
 
   syncTurnCycle(cycleData) {
-    if (!cycleData) return;
+    if (!cycleData || !Array.isArray(cycleData.order) || cycleData.order.length === 0) return;
+
+    const isMaster = !!(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    const localTs = (this.turnCycle && this.turnCycle.updatedAt) || 0;
+    const incomingTs = cycleData.updatedAt || 0;
+
+    // Se o cliente for o mestre e a atualização recebida for mais antiga ou igual ao estado local atual, ignora
+    if (isMaster && this.turnCycle && this.turnCycle.active) {
+      if (incomingTs && incomingTs <= localTs) {
+        return;
+      }
+    }
+
     this.turnCycle = cycleData;
     this.updateTurnUI();
     this.updateMasterControls();
@@ -7414,11 +7463,10 @@ const MesaCombate = {
     const navControls = document.getElementById('combat-turn-nav-controls');
     const opponentTitle = document.getElementById('combat-opponent-title');
 
-    // Remove destaques anteriores dos cards e limpa classes de entrada para evitar reexecução
+    // Remove destaques anteriores dos cards e limpa classes de entrada
     document.querySelectorAll('.combat-player-card').forEach(card => {
       card.classList.remove('is-current-turn');
       card.classList.remove('combat-card-entrance');
-      card.style.animationDelay = '';
     });
     if (opponentTitle) opponentTitle.classList.remove('is-current-turn-boss');
 
@@ -7435,21 +7483,57 @@ const MesaCombate = {
     if (turnBtnLabel) turnBtnLabel.textContent = 'Ordem de Turnos';
     if (navControls) navControls.style.display = (this.isActive && isMaster) ? 'flex' : 'none';
 
-    const currentItem = this.turnCycle.order[this.turnCycle.currentIndex];
+    // Normaliza o índice atual de forma segura
+    const len = this.turnCycle.order.length;
+    let idx = parseInt(this.turnCycle.currentIndex, 10);
+    if (isNaN(idx) || idx < 0 || idx >= len) {
+      idx = 0;
+      this.turnCycle.currentIndex = 0;
+    }
+
+    const currentItem = this.turnCycle.order[idx];
     if (!currentItem) return;
 
-    // 1. Atualiza "Turno de [Nome]" logo abaixo do nome do inimigo no topo
+    // Se o personagem/oponente agir mais de 1 vez na rodada, exibe o indicador de ação (ex: "(1/2)")
+    let actionCountText = '';
+    const sameItems = this.turnCycle.order.filter(it => {
+      if (currentItem.type === 'boss') return it.type === 'boss';
+      return it.type === 'player' && it.slot === currentItem.slot;
+    });
+    if (sameItems.length > 1) {
+      const myOccurrence = this.turnCycle.order.slice(0, idx + 1).filter(it => {
+        if (currentItem.type === 'boss') return it.type === 'boss';
+        return it.type === 'player' && it.slot === currentItem.slot;
+      }).length;
+      actionCountText = ` (${myOccurrence}/${sameItems.length})`;
+    }
+
+    // 1. Atualiza "Turno de [Nome]" logo abaixo do nome do inimigo com micro-pulso de confirmação
     if (subLabel) {
-      subLabel.textContent = `Turno de ${currentItem.name}`;
+      subLabel.textContent = `Turno de ${currentItem.name}${actionCountText}`;
       subLabel.style.display = 'block';
+      subLabel.classList.remove('turn-pulse');
+      void subLabel.offsetWidth;
+      subLabel.classList.add('turn-pulse');
     }
 
     // 2. Se for a vez de um jogador, destaca o card dele com brilho laranja
-    if (currentItem.type === 'player' && currentItem.slot) {
-      const card = document.getElementById(`combat-player-card-${currentItem.slot}`);
+    if (currentItem.type === 'player') {
+      let card = (currentItem.slot !== undefined && currentItem.slot !== null)
+        ? document.getElementById(`combat-player-card-${currentItem.slot}`)
+        : null;
+      if (!card && currentItem.name) {
+        const allCards = document.querySelectorAll('.combat-player-card');
+        for (const c of allCards) {
+          const nameEl = c.querySelector('.combat-card-name');
+          if (nameEl && nameEl.textContent.trim().toLowerCase() === currentItem.name.trim().toLowerCase()) {
+            card = c;
+            break;
+          }
+        }
+      }
       if (card) {
         card.classList.remove('combat-card-entrance');
-        card.style.animationDelay = '';
         card.classList.add('is-current-turn');
       }
     } else if (currentItem.type === 'boss') {
