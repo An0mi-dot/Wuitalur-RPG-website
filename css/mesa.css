@@ -9247,11 +9247,6 @@ body.combat-active .combat-black-ramp {
   animation: combatRoundBump 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.combat-round-badge-icon {
-  font-size: 0.72rem;
-  color: #ffaa00;
-}
-
 @keyframes combatRoundBadgeFadeIn {
   0%   { opacity: 0; transform: translateY(6px); }
   100% { opacity: 1; transform: translateY(0); }
