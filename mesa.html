@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.5.7">
   <link rel="stylesheet" href="css/components.css?v=1.5.7">
-  <link rel="stylesheet" href="css/mesa.css?v=1.5.7c">
+  <link rel="stylesheet" href="css/mesa.css?v=1.5.7d">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -170,7 +170,7 @@
               <span>Dispositivos da Campanha</span>
               <span class="quick-menu-badge-master">Mestre</span>
             </button>
-            <button type="button" id="menu-combate-btn" class="quick-menu-item master-item" onclick="MesaCombate.handleNavClick(); MesaQuickMenu.close();" style="display: none; color: #ef4444;">
+            <button type="button" id="menu-combate-btn" class="quick-menu-item master-item" onclick="MesaCombate.handleNavClick(); MesaQuickMenu.close();" style="display: none; color: var(--mesa-orange, #ff5500);">
               <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
               <span id="menu-combate-label">Iniciar Combate</span>
               <span class="quick-menu-badge-master">Mestre</span>
@@ -234,7 +234,7 @@
         </button>
 
         <!-- Botão Iniciar Combate (Exclusivo do Mestre) -->
-        <button id="nav-combate-btn" class="ink-tag nav-combate master-item" onclick="MesaCombate.handleNavClick()" style="display: none; color: #ef4444;" title="Iniciar / Gerenciar Modo de Combate">
+        <button id="nav-combate-btn" class="ink-tag nav-combate master-item" onclick="MesaCombate.handleNavClick()" style="display: none; color: var(--mesa-orange, #ff5500);" title="Iniciar / Gerenciar Modo de Combate">
           <span id="nav-combate-label">Iniciar Combate</span>
         </button>
 
@@ -623,7 +623,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
             <span>Dispositivos (Mestre)</span>
           </button>
 
-          <button id="mobile-combate-item" class="mobile-menu-item master-item" onclick="MesaCombate.handleNavClick(); MesaMobileMenu.close()" style="display: none; color: #ef4444;">
+          <button id="mobile-combate-item" class="mobile-menu-item master-item" onclick="MesaCombate.handleNavClick(); MesaMobileMenu.close()" style="display: none; color: var(--mesa-orange, #ff5500);">
             <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
             <span id="mobile-combate-label">Iniciar Combate (Mestre)</span>
           </button>
@@ -1112,7 +1112,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.5.7"></script>
 
-<script src="js/mesa.js?v=1.5.7c"></script>
+<script src="js/mesa.js?v=1.5.7d"></script>
   <!-- Versao da Mesa -->
   <div id="mesa-version-badge" class="mesa-version">v1.5.7</div>
 
@@ -1400,7 +1400,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
     <div class="combat-header">
       <div class="combat-title-box">
         <span class="combat-title-prefix">COMBATE CONTRA:</span>
-        <span class="combat-title-name" id="combat-opponent-title">? ? ?</span>
+        <span class="combat-title-name" id="combat-opponent-title">???</span>
       </div>
     </div>
 
@@ -1418,10 +1418,10 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
     <!-- Rampa Preta Diagonal Inferior Direita -->
     <div class="combat-black-ramp">
-      <!-- SVG com Geometria Exata e Borda Branca Nítida -->
+      <!-- SVG com Geometria Exata e Borda Laranja Nítida -->
       <svg class="combat-ramp-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
         <polygon points="0,100 100,0 100,100" fill="#000000" />
-        <line x1="0" y1="100" x2="100" y2="0" stroke="#ffffff" stroke-width="0.35" />
+        <line x1="0" y1="100" x2="100" y2="0" stroke="#ff5500" stroke-width="0.4" />
       </svg>
 
       <!-- Dock dos Cards dos Personagens (Estilo Undertale: Preto e Branco, Só o Rosto) -->
@@ -1436,7 +1436,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
     <div class="mesa-modal ink-modal combat-modal-dialog">
       <div class="mesa-modal-header">
         <div class="mesa-modal-title">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#ef4444" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#ff5500" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
           <span>GERENCIADOR DE COMBATE</span>
         </div>
         <button type="button" class="mesa-modal-close" onclick="MesaCombate.closeSelectModal()">&times;</button>
@@ -1456,12 +1456,12 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
           <div class="combat-section-subtitle">PERSONALIZAR / EDITAR</div>
           <div class="combat-form-row">
             <label for="combat-custom-name">Nome do Oponente:</label>
-            <input type="text" id="combat-custom-name" placeholder="Ex: ? ? ?, Espectro Ancestral, Sara..." class="coletaveis-search-input">
+            <input type="text" id="combat-custom-name" placeholder="Ex: ???" class="coletaveis-search-input">
           </div>
           <div class="combat-form-row">
             <label for="combat-custom-video">Arquivo ou URL do Vídeo:</label>
-            <input type="text" id="combat-custom-video" placeholder="Ex: assets/videos/combate_desconhecido.mp4 ou URL..." class="coletaveis-search-input">
-            <div class="combat-input-hint">Vídeos na pasta <code>assets/videos/</code> do GitHub tocam diretamente no fundo do combate.</div>
+            <input type="text" id="combat-custom-video" placeholder="Ex: assets/videos/cine1.mp4 ou URL..." class="coletaveis-search-input">
+            <div class="combat-input-hint">Vídeos na pasta <code>assets/videos/</code> tocam diretamente no fundo do combate.</div>
           </div>
         </div>
       </div>

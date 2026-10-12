@@ -8948,7 +8948,7 @@ body.combat-active .player-slot {
   width: 320px;
   height: 320px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(239, 68, 68, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 85, 0, 0.22) 0%, transparent 70%);
   filter: blur(20px);
   animation: combatPulseAura 4s ease-in-out infinite alternate;
 }
@@ -8963,12 +8963,12 @@ body.combat-active .player-slot {
   top: 36%;
   font-family: 'Press Start 2P', monospace;
   font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 140, 0, 0.65);
   letter-spacing: 0.25em;
   text-transform: uppercase;
   z-index: 5;
   user-select: none;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+  text-shadow: none;
 }
 
 .combat-vignette {
@@ -9011,9 +9011,9 @@ body.combat-active .player-slot {
   align-items: baseline;
   gap: 12px;
   padding: 8px 26px;
-  background: rgba(0, 0, 0, 0.75);
-  border: 1.5px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.95);
+  background: rgba(14, 5, 2, 0.9);
+  border: 2px solid var(--mesa-orange, #ff5500);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.95), 0 0 16px rgba(255, 85, 0, 0.25);
   transform: translateY(-50px);
   opacity: 0;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
@@ -9030,26 +9030,16 @@ body.combat-active .combat-title-box {
   font-weight: 900;
   color: #ffffff;
   letter-spacing: 0.12em;
-  text-shadow: 0 0 12px rgba(255, 255, 255, 0.7);
+  text-shadow: none;
 }
 
 .combat-title-name {
   font-family: 'Press Start 2P', 'Cinzel', monospace;
   font-size: clamp(0.95rem, 2.2vw, 1.65rem);
   font-weight: 900;
-  color: #ef4444;
+  color: var(--mesa-orange, #ff5500);
   letter-spacing: 0.14em;
-  text-shadow: 0 0 15px rgba(239, 68, 68, 0.9), 0 0 35px rgba(239, 68, 68, 0.5);
-  animation: combatPulseRed 2.2s ease-in-out infinite;
-}
-
-@keyframes combatPulseRed {
-  0%, 100% {
-    text-shadow: 0 0 12px rgba(239, 68, 68, 0.8), 0 0 25px rgba(239, 68, 68, 0.4);
-  }
-  50% {
-    text-shadow: 0 0 22px rgba(255, 80, 80, 1), 0 0 45px rgba(239, 68, 68, 0.75);
-  }
+  text-shadow: none;
 }
 
 /* Efeito Slam de troca de oponente */
@@ -9097,14 +9087,14 @@ body.combat-active .combat-title-box {
 }
 
 .combat-ctrl-btn.end-btn {
-  border-color: #ef4444;
-  color: #ef4444;
+  border-color: var(--mesa-orange, #ff5500);
+  color: var(--mesa-orange, #ff5500);
 }
 
 .combat-ctrl-btn.end-btn:hover {
-  background: #ef4444;
-  color: #ffffff;
-  box-shadow: 0 0 16px #ef4444;
+  background: var(--mesa-orange, #ff5500);
+  color: #000000;
+  box-shadow: 0 0 16px rgba(255, 85, 0, 0.6);
 }
 
 /* Rampa Preta Diagonal Inferior Direita (Geometria do Mockup) */
@@ -9191,15 +9181,15 @@ body.combat-active .combat-black-ramp {
 
 .combat-player-card:hover {
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 0 16px #ffffff, 0 8px 25px rgba(0, 0, 0, 0.95);
-  border-color: #ffffff;
+  box-shadow: 0 0 16px var(--mesa-orange, #ff5500), 0 8px 25px rgba(0, 0, 0, 0.95);
+  border-color: var(--mesa-orange, #ff5500);
 }
 
 .combat-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  border-bottom: 1px solid rgba(255, 85, 0, 0.45);
   padding-bottom: 4px;
 }
 
@@ -9212,11 +9202,13 @@ body.combat-active .combat-black-ramp {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 130px;
+  text-shadow: none;
 }
 
 .combat-card-slot-badge {
   font-size: 0.52rem;
-  color: #888888;
+  color: var(--mesa-orange, #ff5500);
+  font-weight: 700;
 }
 
 .combat-card-body {
@@ -9292,7 +9284,7 @@ body.combat-active .combat-black-ramp {
 
 .undertale-hp-bar {
   height: 100%;
-  background: #ffff00; /* Amarelo característico de HP do Undertale */
+  background: #ffaa00;
   transition: width 0.3s ease;
 }
 
@@ -9300,6 +9292,7 @@ body.combat-active .combat-black-ramp {
   font-size: 0.52rem;
   color: #ffffff;
   font-family: monospace;
+  text-shadow: none;
 }
 
 .undertale-stress-row {
@@ -9317,20 +9310,20 @@ body.combat-active .combat-black-ramp {
 }
 
 .undertale-stress-pip.filled {
-  background: #ffffff;
+  background: var(--mesa-orange, #ff5500);
 }
 
 /* Modal do Gerenciador de Combate (Mestre) */
 .combat-modal-dialog {
   width: min(94vw, 580px) !important;
   max-width: 580px !important;
-  border-color: #ef4444 !important;
-  box-shadow: 0 0 35px rgba(239, 68, 68, 0.45), 0 25px 70px rgba(0, 0, 0, 0.95) !important;
+  border-color: var(--mesa-orange, #ff5500) !important;
+  box-shadow: 0 0 35px rgba(255, 85, 0, 0.45), 0 25px 70px rgba(0, 0, 0, 0.95) !important;
 }
 
 .combat-modal-desc {
   font-size: 0.84rem;
-  color: #a1a1aa;
+  color: #d4d4d8;
   line-height: 1.5;
   margin-bottom: 16px;
 }
@@ -9338,10 +9331,11 @@ body.combat-active .combat-black-ramp {
 .combat-section-subtitle {
   font-size: 0.72rem;
   font-weight: 800;
-  color: #ef4444;
+  color: var(--mesa-orange, #ff5500);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   margin-bottom: 10px;
+  text-shadow: none;
 }
 
 .combat-presets-grid {
@@ -9352,43 +9346,44 @@ body.combat-active .combat-black-ramp {
 }
 
 .combat-preset-card {
-  background: #141416;
-  border: 1.5px solid #27272a;
-  padding: 10px 12px;
+  background: rgba(255, 85, 0, 0.06);
+  border: 1.5px solid rgba(255, 85, 0, 0.35);
+  padding: 12px 14px;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .combat-preset-card:hover {
-  background: #1f1f23;
-  border-color: #ffffff;
+  background: rgba(255, 85, 0, 0.14);
+  border-color: var(--mesa-orange, #ff5500);
   transform: translateY(-2px);
 }
 
 .combat-preset-card.selected {
-  border-color: #ef4444;
-  background: rgba(239, 68, 68, 0.1);
-  box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);
+  border-color: var(--mesa-orange, #ff5500);
+  background: rgba(255, 85, 0, 0.2);
+  box-shadow: 0 0 14px rgba(255, 85, 0, 0.45);
 }
 
 .combat-preset-name {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.65rem;
+  font-size: 0.72rem;
   color: #ffffff;
   font-weight: 700;
+  text-shadow: none;
 }
 
 .combat-preset-desc {
   font-size: 0.72rem;
-  color: #71717a;
+  color: #a1a1aa;
   line-height: 1.3;
 }
 
 .combat-custom-section {
-  border-top: 1px solid #27272a;
+  border-top: 1px solid rgba(255, 85, 0, 0.25);
   padding-top: 14px;
   margin-top: 10px;
 }
@@ -9408,13 +9403,13 @@ body.combat-active .combat-black-ramp {
 
 .combat-input-hint {
   font-size: 0.7rem;
-  color: #71717a;
+  color: #a1a1aa;
   margin-top: 2px;
 }
 
 .combat-input-hint code {
-  color: #ef4444;
-  background: #1c1917;
+  color: var(--mesa-orange, #ff5500);
+  background: rgba(255, 85, 0, 0.12);
   padding: 2px 4px;
 }
 

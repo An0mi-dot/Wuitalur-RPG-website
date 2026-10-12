@@ -6492,34 +6492,16 @@ window.MesaNotebookSara = MesaNotebookSara;
 const MesaCombate = {
   isActive: false,
   opponentId: 'unknown',
-  opponentName: '? ? ?',
-  videoUrl: '',
+  opponentName: '???',
+  videoUrl: 'assets/videos/cine1.mp4',
   selectedPresetId: 'unknown',
 
   presets: [
     {
       id: 'unknown',
-      name: '? ? ?',
-      video: 'assets/videos/combate_desconhecido.mp4',
-      desc: 'Ameaça oculta ou entidade não identificada'
-    },
-    {
-      id: 'espectro',
-      name: 'ESPECTRO SOMBRIO',
-      video: 'assets/videos/espectro.mp4',
-      desc: 'Manifestação fantasmagórica na residência Auguil'
-    },
-    {
-      id: 'sara',
-      name: 'SARA AUGUIL',
-      video: 'assets/videos/sara.mp4',
-      desc: 'A presença misteriosa no centro do enigma'
-    },
-    {
-      id: 'vazio',
-      name: 'CRIATURA DO VAZIO',
-      video: 'assets/videos/vazio.mp4',
-      desc: 'Abominação aberrante das profundezas'
+      name: '???',
+      video: 'assets/videos/cine1.mp4',
+      desc: 'Oponente de teste'
     }
   ],
 
@@ -6546,8 +6528,8 @@ const MesaCombate = {
       attrs._sys_combate = {
         active: !!this.isActive,
         opponentId: this.opponentId || 'unknown',
-        opponentName: this.opponentName || '? ? ?',
-        videoUrl: this.videoUrl || '',
+        opponentName: this.opponentName || '???',
+        videoUrl: this.videoUrl || 'assets/videos/cine1.mp4',
         updatedAt: Date.now()
       };
       await MesaApp.supabase
@@ -6582,8 +6564,8 @@ const MesaCombate = {
 
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
-    if (nameInput) nameInput.value = this.opponentName || '? ? ?';
-    if (videoInput) videoInput.value = this.videoUrl || '';
+    if (nameInput) nameInput.value = this.opponentName || '???';
+    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/cine1.mp4';
   },
 
   closeSelectModal() {
@@ -6631,8 +6613,8 @@ const MesaCombate = {
 
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
-    const name = (nameInput && nameInput.value.trim()) || '? ? ?';
-    const video = (videoInput && videoInput.value.trim()) || '';
+    const name = (nameInput && nameInput.value.trim()) || '???';
+    const video = (videoInput && videoInput.value.trim()) || 'assets/videos/cine1.mp4';
 
     this.closeSelectModal();
 
@@ -6648,8 +6630,8 @@ const MesaCombate = {
 
     this.isActive = true;
     this.opponentId = data.opponentId || 'unknown';
-    this.opponentName = data.opponentName || '? ? ?';
-    this.videoUrl = data.videoUrl || '';
+    this.opponentName = data.opponentName || '???';
+    this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/cine1.mp4');
 
     // Flash dramático de encontro (estilo Undertale)
     const flash = document.getElementById('combat-encounter-flash');
