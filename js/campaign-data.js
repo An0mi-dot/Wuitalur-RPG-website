@@ -433,7 +433,131 @@
         "gancho": "O último rastro lógico de Sara após sua fuga."
       }
     ]
-
+  },
+  "casa-auguil": {
+    "id": "casa-auguil",
+    "nome": "Casa Auguil",
+    "shortName": "Casa Auguil",
+    "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"></path><polyline points=\"9 22 9 12 15 12 15 22\"></polyline></svg>",
+    "themeClass": "area-casa-auguil",
+    "district": "Bairro Residencial • Mina de Prata",
+    "dangerLevel": "Isolamento Policial & Atividade Paranormal",
+    "dangerLevelClass": "danger",
+    "titulo_narrativo": "Entrada na Casa Auguil",
+    "texto_narrativo": "\"A fechadura cede com um estalo abafado e vocês entram, deixando a noite fria e as fitas amarelas da polícia para trás. O ar dentro da Casa Auguil é pesado, denso e tem o gosto amargo de um lugar que foi trancado às pressas e abandonado. Quando vocês acendem as lanternas, os feixes de luz cortam a escuridão absoluta do térreo e revelam algo profundamente perturbador: a normalidade. A sala de estar está impecavelmente arrumada. Os móveis estão alinhados, as almofadas estão em seus lugares e o silêncio é tão espesso que vocês conseguem ouvir a respiração uns dos outros.\"",
+    "resumo_atmosfera": "Uma moradia de dois andares de alto padrão, agora transformada em cena de crime. O exterior está isolado e envolto em dezenas de fitas policiais amarelas e pretas de 'Não Ultrapasse'. Durante o dia, viaturas e peritos da polícia bloqueiam o perímetro, tornando qualquer aproximação impossível. É apenas durante a calada da noite, quando as viaturas se retiram e a casa mergulha numa escuridão absoluta, que a oportunidade de infiltração surge. A atmosfera é pesada, cheirando a lodo e abandono.",
+    "requisitos_acesso": "Acesso noturno furtivo contornando o isolamento policial; pode ser facilitado com o Molho de Chaves da Casa Auguil obtido com Elias.",
+    "npcs_presentes": [],
+    "pontos_de_interesse": [
+      {
+        "cabecalho": {
+          "nome": "A Janela da Cozinha (Infiltração)",
+          "descricao_publica": "Nas traseiras da casa, a janela da cozinha encontra-se meio aberta. Não há fitas da polícia aqui, mas o quintal está escuro e coberto de folhas secas."
+        },
+        "testes": [
+          {
+            "pericia": "Ladinagem / Crime",
+            "ct_dt": 6,
+            "informacao_revelada": "Forçar a tranca da janela basculante de forma limpa para abrir passagem suficiente sem quebrar o vidro."
+          },
+          {
+            "pericia": "Furtividade",
+            "ct_dt": 7,
+            "informacao_revelada": "Necessário se os jogadores tentarem entrar pela frente ou pelos fundos sem alertar os vizinhos. A casa está sob investigação, e qualquer luz de lanterna muito forte pode chamar a atenção de patrulhas."
+          },
+          {
+            "pericia": "Sem Teste (Uso de Item)",
+            "ct_dt": "-",
+            "informacao_revelada": "Se utilizarem o \"Molho de Chaves da Casa Auguil\" obtido com Elias, abrem a porta da frente ou dos fundos silenciosamente e sem qualquer risco."
+          }
+        ],
+        "notas_mestre": "Este ponto define como os jogadores entram. O silêncio inicial da casa é propositado para contrastar com a tensão do que vão encontrar no andar superior e com a fuga barulhenta que terão de fazer no final."
+      },
+      {
+        "cabecalho": {
+          "nome": "O Tapete da Escada (O Rastro)",
+          "descricao_publica": "A escada de madeira que liga a sala ao corredor do segundo andar é forrada por um tapete que outrora foi claro. Agora, está imundo. O silêncio na casa é quebrado apenas pelo ranger dos degraus sob o peso dos jogadores."
+        },
+        "testes": [
+          {
+            "pericia": "Investigação",
+            "ct_dt": 6,
+            "informacao_revelada": "Permite analisar as manchas escuras no tapete de perto. Os jogadores percebem que, nos primeiros degraus, as manchas têm o formato perfeito de patas de um gato grande. Contudo, à medida que a escada sobe, as pegadas distorcem-se, derretem e transformam-se nas pegadas pesadas e arrastadas de lodo de um humanoide deformado."
+          },
+          {
+            "pericia": "Sobrevivência / Rastrear",
+            "ct_dt": 7,
+            "informacao_revelada": "O jogador percebe que as pegadas não indicam alguém a descer. O que quer que tenha subido, nunca mais voltou para o andar de baixo. A ameaça ainda está no segundo piso."
+          }
+        ],
+        "notas_mestre": "Esta é a principal construção de tensão do cenário. Confirma aos jogadores que a entidade parasitou o gato e depois mudou de forma. Prepara o estado mental do grupo para o combate iminente."
+      },
+      {
+        "cabecalho": {
+          "nome": "A Mesa de Sara (A Escrivaninha no Quarto)",
+          "descricao_publica": "O quarto de Sara é um reflexo de uma mente em colapso. A escrivaninha encostada à parede é um caos absoluto de cadernos rasgados, pratos com restos de comida e canetas partidas. No centro deste desastre, três coisas destacam-se imediatamente à luz das lanternas."
+        },
+        "testes": [
+          {
+            "pericia": "Sem Teste (Interação Automática)",
+            "ct_dt": "-",
+            "informacao_revelada": "Os jogadores avistam imediatamente os três itens centrais:\n\n• O Diário de Sara (que dita que \"a porta precisa de carne para girar a chave\").\n• A Poção Solar de Cura (frasco dourado que cura 1d8).\n• O Notebook de Sara (ligado, bloqueado por senha, mas com o botão \"Acesso Rápido: Câmaras de Segurança\" disponível)."
+          },
+          {
+            "pericia": "Investigação",
+            "ct_dt": 7,
+            "informacao_revelada": "Vasculhando com cuidado as gavetas e as pilhas de papel no escuro. Se passarem, encontram dois itens fora do comum soterrados: o Livro Infantil \"O Viajante e a Terra\" e a Caixa Negra e Dourada selada."
+          },
+          {
+            "pericia": "Tecnologia (Falha Automática)",
+            "ct_dt": "-",
+            "informacao_revelada": "Tentar hackear a senha do Notebook falha. Apenas a interface das câmaras está acessível."
+          }
+        ],
+        "notas_mestre": "É crucial que encontrem a poção antes do combate (para terem hipótese contra o Zumbi). A interação com o Notebook deve ser apresentada aqui, mas o seu uso definitivo e aterrante (a falha de sinal e a chegada de Constança) só ocorre após o combate na banheira."
+      },
+      {
+        "cabecalho": {
+          "nome": "A Banheira de Porcelana (O Clímax)",
+          "descricao_publica": "A porta do quarto de banho adjacente ao quarto de Sara está entreaberta. O cheiro de água podre, esgoto e cobre (sangue) atinge os jogadores como um soco. Lá dentro, a banheira de porcelana branca está transbordar de uma água densa, negra e imóvel, como piche líquido."
+        },
+        "testes": [
+          {
+            "pericia": "Percepção",
+            "ct_dt": 8,
+            "informacao_revelada": "Ao aproximarem-se da porta do quarto de banho, permite notar que a superfície da água preta na banheira vibrou ligeiramente, não devido a passos, mas como se algo denso estivesse a respirar submerso. Evita que o grupo sofra um ataque surpresa."
+          },
+          {
+            "pericia": "Iniciativa (Combate Automático)",
+            "ct_dt": "-",
+            "informacao_revelada": "Assim que entrarem no raio de alcance ou tocarem na água, o Zumbi de Lodo (Cadáver de Kali) ergue-se violentamente da banheira, iniciando o combate final da sessão."
+          },
+          {
+            "pericia": "Sem Teste (Pós-Combate)",
+            "ct_dt": "-",
+            "informacao_revelada": "Com o monstro morto e o lodo a escoar pelo ralo da banheira, os jogadores encontram automaticamente o Laço Rosa de Kali preso no metal, confirmando o sacrifício."
+          }
+        ],
+        "notas_mestre": "Após encontrarem o Laço Rosa e a tensão baixar momentaneamente, deve ativar o gatilho sonoro da Porta da Frente a abrir-se no andar de baixo. Se os jogadores correrem para ver as câmaras no Notebook, verão a figura encapuzada de Constança a subir as escadas antes de o ecrã falhar em estática, dando início à fuga desesperada."
+      }
+    ],
+    "conexoes_saida": [
+      {
+        "area_id": "cafe-da-nevoa",
+        "nome": "Café da Névoa",
+        "gancho": "Onde Sara trabalhava e de onde Elias guarda as chaves da casa."
+      },
+      {
+        "area_id": "colegio-primordio",
+        "nome": "Colégio Integrado Primórdio",
+        "gancho": "O local de estudo de Sara."
+      },
+      {
+        "area_id": "floresta-proibida",
+        "nome": "A Mata do Norte",
+        "gancho": "Para onde Sara fugiu em direção ao sacrifício."
+      }
+    ]
   }
 };
 
@@ -572,6 +696,40 @@
       desbloqueado: false,
       resumo: "Um pequeno laço de cetim preso a um elástico de cabelo, exalando um forte cheiro de água estagnada.",
       detalhe: "O cetim rosa claro original está enrijecido e manchado de um tom escarlate muito escuro, coberto por resíduos lamacentos."
+    }
+      ,
+    {
+      id: "col_notebook_sara",
+      nome: "Notebook de Sara",
+      peso: 2,
+      tipo: "Dispositivo Eletrónico",
+      campo_tipo: "Efeito",
+      area: "Casa Auguil (Quarto de Sara)",
+      desbloqueado: false,
+      resumo: "Um computador portátil moderno, com a carcaça ligeiramente arranhada e o ecrã a emitir um brilho pálido no quarto escuro.",
+      detalhe: "O sistema operativo está bloqueado por uma palavra-passe desconhecida. No ecrã de bloqueio, existe apenas um atalho interativo e funcional rotulado como \"Acesso Rápido: Câmaras de Segurança\"."
+    },
+    {
+      id: "col_livro_viajante_terra",
+      nome: "Livro Infantil: \"O Viajante e a Terra\"",
+      peso: 0,
+      tipo: "Documento",
+      campo_tipo: "Conteúdo",
+      area: "Casa Auguil (Quarto de Sara)",
+      desbloqueado: false,
+      resumo: "Um livrinho de capa dura e colorida, muito bem conservado, que destoa completamente da bagunça e dos livros escolares da escrivaninha.",
+      detalhe: "Um conto ilustrado de quatro páginas sobre uma criatura que desce do espaço para \"abençoar\" um povo doente, consumindo os seus sonhos e colocando o mundo inteiro num sono eterno."
+    },
+    {
+      id: "col_caixa_negra_dourada",
+      nome: "Caixa Negra e Dourada",
+      peso: 1,
+      tipo: "Artefacto Selado",
+      campo_tipo: "Efeito",
+      area: "Casa Auguil (Quarto de Sara)",
+      desbloqueado: false,
+      resumo: "Uma pequena caixa pesada de material desconhecido, negra como obsidiana e contornada por filetes de ouro puro que formam padrões geométricos.",
+      detalhe: "A caixa encontra-se completamente selada. Qualquer tentativa de impacto, uso de força bruta, lâminas ou ferramentas de arrombamento falha automaticamente, sem deixar um único arranhão na superfície."
     }
   ];
 

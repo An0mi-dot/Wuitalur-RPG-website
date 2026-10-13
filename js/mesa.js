@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI & Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.8.0';
+const MESA_VERSION = 'v1.8.1';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -3303,7 +3303,99 @@ const MESA_AREAS = {
     "ambience": "Uma moradia de dois andares de alto padrão, agora transformada em cena de crime. O exterior está isolado e envolto em dezenas de fitas policiais amarelas e pretas de 'Não Ultrapasse'. A atmosfera é pesada, cheirando a lodo e abandono.",
     "lore": "Casa da família de Sara e Trisha. O local de onde Trisha desapareceu, e onde Sara sofreu seus últimos dias de delírio antes de fugir para a floresta.",
     "rumor": "A polícia investigou a casa durante o dia, mas não encontraram nada. Contudo, os vizinhos dizem que, à noite, a casa parece... respirar.",
-    "pois": []
+        "pois": [
+      {
+        "cabecalho": {
+          "nome": "A Janela da Cozinha (Infiltração)",
+          "descricao_publica": "Nas traseiras da casa, a janela da cozinha encontra-se meio aberta. Não há fitas da polícia aqui, mas o quintal está escuro e coberto de folhas secas."
+        },
+        "testes": [
+          {
+            "pericia": "Ladinagem / Crime",
+            "ct_dt": 6,
+            "informacao_revelada": "Forçar a tranca da janela basculante de forma limpa para abrir passagem suficiente sem quebrar o vidro."
+          },
+          {
+            "pericia": "Furtividade",
+            "ct_dt": 7,
+            "informacao_revelada": "Necessário se os jogadores tentarem entrar pela frente ou pelos fundos sem alertar os vizinhos. A casa está sob investigação, e qualquer luz de lanterna muito forte pode chamar a atenção de patrulhas."
+          },
+          {
+            "pericia": "Sem Teste (Uso de Item)",
+            "ct_dt": "-",
+            "informacao_revelada": "Se utilizarem o \"Molho de Chaves da Casa Auguil\" obtido com Elias, abrem a porta da frente ou dos fundos silenciosamente e sem qualquer risco."
+          }
+        ],
+        "notas_mestre": "Este ponto define como os jogadores entram. O silêncio inicial da casa é propositado para contrastar com a tensão do que vão encontrar no andar superior e com a fuga barulhenta que terão de fazer no final."
+      },
+      {
+        "cabecalho": {
+          "nome": "O Tapete da Escada (O Rastro)",
+          "descricao_publica": "A escada de madeira que liga a sala ao corredor do segundo andar é forrada por um tapete que outrora foi claro. Agora, está imundo. O silêncio na casa é quebrado apenas pelo ranger dos degraus sob o peso dos jogadores."
+        },
+        "testes": [
+          {
+            "pericia": "Investigação",
+            "ct_dt": 6,
+            "informacao_revelada": "Permite analisar as manchas escuras no tapete de perto. Os jogadores percebem que, nos primeiros degraus, as manchas têm o formato perfeito de patas de um gato grande. Contudo, à medida que a escada sobe, as pegadas distorcem-se, derretem e transformam-se nas pegadas pesadas e arrastadas de lodo de um humanoide deformado."
+          },
+          {
+            "pericia": "Sobrevivência / Rastrear",
+            "ct_dt": 7,
+            "informacao_revelada": "O jogador percebe que as pegadas não indicam alguém a descer. O que quer que tenha subido, nunca mais voltou para o andar de baixo. A ameaça ainda está no segundo piso."
+          }
+        ],
+        "notas_mestre": "Esta é a principal construção de tensão do cenário. Confirma aos jogadores que a entidade parasitou o gato e depois mudou de forma. Prepara o estado mental do grupo para o combate iminente."
+      },
+      {
+        "cabecalho": {
+          "nome": "A Mesa de Sara (A Escrivaninha no Quarto)",
+          "descricao_publica": "O quarto de Sara é um reflexo de uma mente em colapso. A escrivaninha encostada à parede é um caos absoluto de cadernos rasgados, pratos com restos de comida e canetas partidas. No centro deste desastre, três coisas destacam-se imediatamente à luz das lanternas."
+        },
+        "testes": [
+          {
+            "pericia": "Sem Teste (Interação Automática)",
+            "ct_dt": "-",
+            "informacao_revelada": "Os jogadores avistam imediatamente os três itens centrais:\n\n• O Diário de Sara (que dita que \"a porta precisa de carne para girar a chave\").\n• A Poção Solar de Cura (frasco dourado que cura 1d8).\n• O Notebook de Sara (ligado, bloqueado por senha, mas com o botão \"Acesso Rápido: Câmaras de Segurança\" disponível)."
+          },
+          {
+            "pericia": "Investigação",
+            "ct_dt": 7,
+            "informacao_revelada": "Vasculhando com cuidado as gavetas e as pilhas de papel no escuro. Se passarem, encontram dois itens fora do comum soterrados: o Livro Infantil \"O Viajante e a Terra\" e a Caixa Negra e Dourada selada."
+          },
+          {
+            "pericia": "Tecnologia (Falha Automática)",
+            "ct_dt": "-",
+            "informacao_revelada": "Tentar hackear a senha do Notebook falha. Apenas a interface das câmaras está acessível."
+          }
+        ],
+        "notas_mestre": "É crucial que encontrem a poção antes do combate (para terem hipótese contra o Zumbi). A interação com o Notebook deve ser apresentada aqui, mas o seu uso definitivo e aterrante (a falha de sinal e a chegada de Constança) só ocorre após o combate na banheira."
+      },
+      {
+        "cabecalho": {
+          "nome": "A Banheira de Porcelana (O Clímax)",
+          "descricao_publica": "A porta do quarto de banho adjacente ao quarto de Sara está entreaberta. O cheiro de água podre, esgoto e cobre (sangue) atinge os jogadores como um soco. Lá dentro, a banheira de porcelana branca está transbordar de uma água densa, negra e imóvel, como piche líquido."
+        },
+        "testes": [
+          {
+            "pericia": "Percepção",
+            "ct_dt": 8,
+            "informacao_revelada": "Ao aproximarem-se da porta do quarto de banho, permite notar que a superfície da água preta na banheira vibrou ligeiramente, não devido a passos, mas como se algo denso estivesse a respirar submerso. Evita que o grupo sofra um ataque surpresa."
+          },
+          {
+            "pericia": "Iniciativa (Combate Automático)",
+            "ct_dt": "-",
+            "informacao_revelada": "Assim que entrarem no raio de alcance ou tocarem na água, o Zumbi de Lodo (Cadáver de Kali) ergue-se violentamente da banheira, iniciando o combate final da sessão."
+          },
+          {
+            "pericia": "Sem Teste (Pós-Combate)",
+            "ct_dt": "-",
+            "informacao_revelada": "Com o monstro morto e o lodo a escoar pelo ralo da banheira, os jogadores encontram automaticamente o Laço Rosa de Kali preso no metal, confirmando o sacrifício."
+          }
+        ],
+        "notas_mestre": "Após encontrarem o Laço Rosa e a tensão baixar momentaneamente, deve ativar o gatilho sonoro da Porta da Frente a abrir-se no andar de baixo. Se os jogadores correrem para ver as câmaras no Notebook, verão a figura encapuzada de Constança a subir as escadas antes de o ecrã falhar em estática, dando início à fuga desesperada."
+      }
+    ]
   },
   "cafe-da-nevoa": {
     "id": "cafe-da-nevoa",
