@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=1.8.7">
+  <link rel="stylesheet" href="css/mesa.css?v=1.8.8">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -101,7 +101,7 @@
     <!-- Canvas de Efeito Glitch no Background -->
     <canvas id="glitch-canvas" class="mesa-glitch-canvas"></canvas>
 
-    <!-- Barra Superior de Navegação & Ações (Limpa e com Menu Hambúrguer) -->
+    <!-- Barra Superior de Navegação e Ações (Limpa e com Menu Hambúrguer) -->
     <nav class="mesa-floating-nav">
       <div class="nav-left-group">
         <a href="index.html" class="ink-tag nav-back-link">
@@ -425,7 +425,7 @@
     <div id="area-map-modal" class="mesa-modal-overlay">
       <div class="mesa-modal area-map-modal-dialog">
         <button class="mesa-modal-close" onclick="MesaAreaManager.closeMapModal()">&times;</button>
-        <div class="ink-ribbon-title">MAPA DE INVESTIGAÇÃO • FRAGKTUS & MINA DE PRATA</div>
+        <div class="ink-ribbon-title">MAPA DE INVESTIGAÇÃO • FRAGKTUS E MINA DE PRATA</div>
         
         <div class="area-map-container">
           <div id="area-roadmap-board" class="area-roadmap-board">
@@ -446,7 +446,7 @@
       </div>
     </div>
 
-    <!-- Modal de Informações da Área & Pontos de Interesse (Clean UI com Tabs & Acordeões) -->
+    <!-- Modal de Informações da Área e Pontos de Interesse (Clean UI com Tabs e Acordeões) -->
     <div id="area-info-modal" class="mesa-modal-overlay">
       <div class="mesa-modal area-info-modal-dialog">
         <button class="mesa-modal-close" onclick="MesaApp.closeModal('area-info-modal')">&times;</button>
@@ -745,7 +745,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         <button class="mesa-modal-close" onclick="MesaColetaveis.closeModal()">&times;</button>
         
         <div class="coletaveis-header-box">
-          <div class="ink-ribbon-title">COLETÁVEIS & ITENS ENCONTRADOS</div>
+          <div class="ink-ribbon-title">COLETÁVEIS E ITENS ENCONTRADOS</div>
           <div class="coletaveis-subtitle">Artefatos, registros e pertences resgatados pelo grupo durante a investigação.</div>
         </div>
 
@@ -925,7 +925,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
             <h2 style="margin: 0 0 5px; font-family: var(--font-heading, 'Cinzel', serif); font-size: 1.8rem; color: var(--ink-text);">Sara Auguil</h2>
             <div style="display: flex; gap: 10px; margin-bottom: 20px;">
               <span class="area-meta-tag" style="font-size: 0.75rem; border: 1px solid var(--ink-edge-soft);">18 anos</span>
-              <span class="area-meta-tag" style="font-size: 0.75rem; border: 1px solid var(--ink-edge-soft);">Estudante & Gerente</span>
+              <span class="area-meta-tag" style="font-size: 0.75rem; border: 1px solid var(--ink-edge-soft);">Estudante e Gerente</span>
             </div>
             
             <div style="font-family: var(--font-body, 'Merriweather', serif); font-size: 0.95rem; line-height: 1.6; color: var(--ink-text-dim);">
@@ -1012,7 +1012,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
   <!-- Navigation Tabs -->
   <div class="adm-tab-bar">
-    <button id="adm-tab-video" class="adm-tab-btn active" onclick="MesaMediaPlayer.switchTab('video')">[VIDEOS] Player de Videos (Loop A-B & Fade)</button>
+    <button id="adm-tab-video" class="adm-tab-btn active" onclick="MesaMediaPlayer.switchTab('video')">[VIDEOS] Player de Videos (Loop A-B e Fade)</button>
     <button id="adm-tab-slideshow" class="adm-tab-btn" onclick="MesaMediaPlayer.switchTab('slideshow')">[SLIDESHOW] Compartilhador de Imagens</button>
   </div>
 
@@ -1046,7 +1046,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         </div>
       </div>
 
-      <!-- Coluna 2: Monitor do Mestre & Controles -->
+      <!-- Coluna 2: Monitor do Mestre e Controles -->
       <div class="adm-col-monitor">
         <div class="adm-col-header">
           <span>MONITOR DO MESTRE</span>
@@ -1185,11 +1185,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=1.8.5"></script>
+<script src="js/campaign-data.js?v=1.8.8"></script>
 
-<script src="js/mesa.js?v=1.8.7"></script>
+<script src="js/mesa.js?v=1.8.8"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v1.8.7</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.8.8</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -1281,7 +1281,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
             <div class="dispositivo-glitch-row" style="margin-top: 8px; display: flex; gap: 6px;">
               <button type="button" class="disp-glitch-btn" onclick="MesaNotebookSara.triggerGlitch()" title="Aciona chiado intenso e derruba sinal para todos">
-                ⚡ Provocar Chiado & Queda
+                ⚡ Provocar Chiado e Queda
               </button>
               <button type="button" class="disp-glitch-btn restore" onclick="MesaNotebookSara.restoreSignal()" title="Restaura sinal do monitor">
                 ↺ Restaurar Sinal
@@ -1425,7 +1425,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
           <div class="cctv-hud-overlay">
             <div class="cctv-hud-tl">
               <div id="cctv-hud-channel">CH-01 [SALA DE ESTAR]</div>
-              <div>15.0 FPS • VISÃO NOTURNA P&B</div>
+              <div>15.0 FPS • VISÃO NOTURNA P/B</div>
             </div>
             <div class="cctv-hud-tr">
               <span class="cctv-compromised-notice">Imagem comprometida</span>
@@ -1481,7 +1481,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
   <div id="combat-encounter-flash" class="combat-flash-fx"></div>
 
   <!-- ========================================================================== -->
-  <!-- MESA COMBATE OVERLAY (MODO DE COMBATE CINEMATOGRÁFICO & RAMPA PRETA UNDERTALE) -->
+  <!-- MESA COMBATE OVERLAY (MODO DE COMBATE CINEMATOGRÁFICO E RAMPA PRETA UNDERTALE) -->
   <!-- ========================================================================== -->
   <div id="mesa-combat-overlay" class="mesa-combat-overlay">
     <!-- Camada de Vídeo / Fundo do Oponente -->
@@ -1496,7 +1496,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <div class="combat-scanlines"></div>
     </div>
 
-    <!-- Topo Central: TÍTULO DO COMBATE & BOTÃO DE MENU -->
+    <!-- Topo Central: TÍTULO DO COMBATE E BOTÃO DE MENU -->
     <div class="combat-header">
       <div class="combat-title-box">
         <span class="combat-title-name" id="combat-opponent-title">???</span>
@@ -1749,15 +1749,15 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         <span>Sara (IA / Guia)</span>
       </button>
 
-      <!-- Coletáveis & Pistas -->
-      <!-- Coletáveis & Pistas (Mestre) -->
+      <!-- Coletáveis e Pistas -->
+      <!-- Coletáveis e Pistas (Mestre) -->
       <button type="button" id="combat-coletaveis-item" class="combat-menu-item master-item combat-menu-master-item" onclick="MesaColetaveis.openModal(); MesaCombatMenu.close();" style="display: none; color: #f59e0b;">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
           <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
           <line x1="12" y1="22.08" x2="12" y2="12"></line>
         </svg>
-        <span>Coletáveis & Pistas (Mestre)</span>
+        <span>Coletáveis e Pistas (Mestre)</span>
       </button>
 
       <!-- Reações Rápidas -->

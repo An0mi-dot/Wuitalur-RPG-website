@@ -1,11 +1,11 @@
 /* ============================================================
-   MESA VIRTUAL & ENGINES — WUITALUR RPG
+   MESA VIRTUAL E ENGINES — WUITALUR RPG
    - Glitch Background Engine
    - Diagonal Comic Stream Engine (Ficha)
-   - State, 4-Char Tokens, Mobile UI & Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
+   - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.8.7';
+const MESA_VERSION = 'v1.8.8';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -566,7 +566,7 @@ const BoardCenterGlitchEngine = {
 };
 
 
-// ---- 2.2 MOTOR DE SEGURANÇA E PROTEÇÃO CONTRA FORÇA BRUTA (RATE LIMITING & TIMING PROTECTION) ----
+// ---- 2.2 MOTOR DE SEGURANÇA E PROTEÇÃO CONTRA FORÇA BRUTA (RATE LIMITING E TIMING PROTECTION) ----
 const MesaSecurity = {
   STORAGE_KEY_ATTEMPTS: 'mesa_sec_fails',
   STORAGE_KEY_LOCKOUT: 'mesa_sec_lockout_until',
@@ -696,7 +696,7 @@ const MesaSecurity = {
 };
 
 
-// ---- 3. MESA APP (GERENCIADOR DE ESTADO, SUPABASE & TOKENS SEGUROS) ----
+// ---- 3. MESA APP (GERENCIADOR DE ESTADO, SUPABASE E TOKENS SEGUROS) ----
 const MesaApp = {
   SUPABASE_URL: 'https://qkupdpgcjusbedaoahwi.supabase.co', 
   SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFrdXBkcGdjanVzYmVkYW9haHdpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgxNzk1ODAsImV4cCI6MjEwMzc1NTU4MH0.UDc5nE7ZwUyWmwNZKpq7bGrty1N6Uh0bjq2PJtBkVrk', 
@@ -2277,7 +2277,7 @@ const MesaApp = {
         <!-- 5. Coletáveis e Itens da Campanha -->
         <div class="ficha-open-section ficha-section-coletaveis" style="margin-top: 18px; width: 100%;">
           <div class="ink-ribbon-title" style="background: #d97706; display: flex; align-items: center; justify-content: space-between;">
-            <span>ITENS & COLETÁVEIS EM POSSE</span>
+            <span>ITENS E COLETÁVEIS EM POSSE</span>
             ${isMaster ? `
               <button type="button" class="ficha-open-catalog-btn" onclick="MesaColetaveis.openModal()" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.3); color: #fff; font-size: 0.72rem; padding: 2px 8px; cursor: pointer; border-radius: 2px;">Catálogo Geral (Mestre) &rarr;</button>
             ` : ''}
@@ -2704,7 +2704,7 @@ const MesaChat = {
 };
 
 
-// ---- 5. MOTOR DE REAÇÕES DE EMOJIS EM PIXEL ART & BALÕES DE FALA COMIC ----
+// ---- 5. MOTOR DE REAÇÕES DE EMOJIS EM PIXEL ART E BALÕES DE FALA COMIC ----
 const PIXEL_FACES_SVG = {
   smile: `<svg class="pixel-face-svg" viewBox="0 0 16 16"><rect x="4" y="1" width="8" height="14" fill="#facc15"/><rect x="2" y="2" width="12" height="12" fill="#facc15"/><rect x="1" y="4" width="14" height="8" fill="#facc15"/><rect x="4" y="0" width="8" height="1" fill="#000"/><rect x="4" y="15" width="8" height="1" fill="#000"/><rect x="0" y="4" width="1" height="8" fill="#000"/><rect x="15" y="4" width="1" height="8" fill="#000"/><rect x="2" y="1" width="2" height="1" fill="#000"/><rect x="12" y="1" width="2" height="1" fill="#000"/><rect x="1" y="2" width="1" height="2" fill="#000"/><rect x="14" y="2" width="1" height="2" fill="#000"/><rect x="1" y="12" width="1" height="2" fill="#000"/><rect x="14" y="12" width="1" height="2" fill="#000"/><rect x="2" y="14" width="2" height="1" fill="#000"/><rect x="12" y="14" width="2" height="1" fill="#000"/><rect x="4" y="5" width="2" height="3" fill="#000"/><rect x="10" y="5" width="2" height="3" fill="#000"/><rect x="4" y="10" width="1" height="1" fill="#000"/><rect x="11" y="10" width="1" height="1" fill="#000"/><rect x="5" y="11" width="6" height="1" fill="#000"/></svg>`,
   
@@ -3168,7 +3168,7 @@ const MesaDice = {
 
 
 // ============================================================
-// 7. SISTEMA DE ÁREAS & MAPA DE INVESTIGAÇÃO — WUITALUR RPG
+// 7. SISTEMA DE ÁREAS E MAPA DE INVESTIGAÇÃO — WUITALUR RPG
 // 7 Áreas Canônicas, 10 Pontos de Interesse Estruturados (Cabeçalho, Quadro de Perícias e Descrição Contextual)
 // ============================================================
 
@@ -3194,8 +3194,8 @@ const MESA_AREAS = {
     "shortName": "Colégio Primórdio",
     "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 10v6M2 10l10-5 10 5-10 5z\"></path><path d=\"M6 12v5c3 3 9 3 12 0v-5\"></path></svg>",
     "themeClass": "area-colegio-primordio",
-    "district": "Setor Estudantil & Cívico • Centro de Fragktus",
-    "dangerLevel": "Inspetores Rígidos & Vigilância Escolar",
+    "district": "Setor Estudantil e Cívico • Centro de Fragktus",
+    "dangerLevel": "Inspetores Rígidos e Vigilância Escolar",
     "dangerLevelClass": "warning",
     "ambience": "A arquitetura impõe-se de forma rígida e asseada. Os corredores longos possuem pisos de mosaico polido que refletem uma luz fluorescente pálida, ladeados por filas intermináveis de cacifos de metal verde-oliva. Os passos ecoam de forma seca e solitária nas paredes frias, transmitindo a sensação constante de vigilância e de que as conversas nunca são verdadeiramente privadas. No pátio central e no ginásio, a grandiosidade da infraestrutura serve apenas para reforçar a pequenez e a vulnerabilidade de quem ali estuda.\n\nO ar carrega uma mistura enjoativa de cera de polir, papel velho da biblioteca e desinfetante forte — o aroma da limpeza extrema, usado pela direção para apagar rapidamente qualquer vestígio de fraqueza, dor ou escândalo. Durante as aulas, um silêncio opressivo domina os pisos, quebrado apenas pelo tiquetaque rígido dos relógios de parede e pelo som distante e calculista de sapatos de salto alto a ecoar no rés-do-chão.\n\nA pressão social paira densa nos intervalos. Os alunos, filhos da elite local, agrupam-se com posturas impecáveis e olhares de julgamento, criando um ecossistema hostil a quem não partilha do mesmo estatuto. É um espaço claustrofóbico e profundamente hipócrita, onde o arranjo de flores mortas no corredor contrasta com a ordem imaculada da instituição, provando aos investigadores que o sofrimento ali não é tratado, mas sim silenciado de imediato.",
     "lore": "O colégio mais tradicional de Fragktus, onde Sara e seus colegas estudavam. Sob o verniz da disciplina impecável, circulam segredos sombrios sobre chantagens entre grêmios, favores concedidos a filhos de diretores e o silenciamento sistemático de alunos que faziam perguntas demais.",
@@ -3288,7 +3288,7 @@ const MESA_AREAS = {
           {
             "skill": "Investigação",
             "dt": 6,
-            "info": "No fundo da gaveta há uma pasta suspensa rotulada 'Transferências & Saúde - Casos Especiais', contendo os relatórios de Trisha Auguil (ano letivo de 2060) e Sara Auguil (2061), acompanhados de cópias de laudos médicos confidenciais."
+            "info": "No fundo da gaveta há uma pasta suspensa rotulada 'Transferências e Saúde - Casos Especiais', contendo os relatórios de Trisha Auguil (ano letivo de 2060) e Sara Auguil (2061), acompanhados de cópias de laudos médicos confidenciais."
           },
           {
             "skill": "Intuição",
@@ -3344,7 +3344,7 @@ const MESA_AREAS = {
     "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"></path><polyline points=\"9 22 9 12 15 12 15 22\"></polyline></svg>",
     "themeClass": "area-casa-auguil",
     "district": "Bairro Residencial • Mina de Prata",
-    "dangerLevel": "Isolamento Policial & Atividade Paranormal",
+    "dangerLevel": "Isolamento Policial e Atividade Paranormal",
     "dangerLevelClass": "danger",
     "ambience": "Uma moradia de dois andares de alto padrão, agora transformada em cena de crime. O exterior está isolado e envolto em dezenas de fitas policiais amarelas e pretas de 'Não Ultrapasse'. A atmosfera é pesada, cheirando a lodo e abandono.",
     "lore": "Casa da família de Sara e Trisha. O local de onde Trisha desapareceu, e onde Sara sofreu seus últimos dias de delírio antes de fugir para a floresta.",
@@ -3450,7 +3450,7 @@ const MESA_AREAS = {
     "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 8h1a4 4 0 0 1 0 8h-1\"></path><path d=\"M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z\"></path><line x1=\"6\" y1=\"1\" x2=\"6\" y2=\"4\"></line><line x1=\"10\" y1=\"1\" x2=\"10\" y2=\"4\"></line><line x1=\"14\" y1=\"1\" x2=\"14\" y2=\"4\"></line></svg>",
     "themeClass": "area-cafe-da-nevoa",
     "district": "Rua Comercial • Centro",
-    "dangerLevel": "Abandono Recente & Luto",
+    "dangerLevel": "Abandono Recente e Luto",
     "dangerLevelClass": "warning",
     "ambience": "O sol está a pôr-se e a rua comercial está a esvaziar. O letreiro de néon do Café da Névoa, que costumava ser um ponto de encontro acolhedor, está apagado. As cadeiras da esplanada já foram recolhidas e empilhadas de forma descuidada. O cheiro a café torrado mistura-se com o odor forte a lixívia e água suja do chão recém-lavado.",
     "lore": "Café onde Sara trabalhava como barista. Era um ambiente agitado, mas que perdeu sua luz nos últimos dias.",
@@ -3464,7 +3464,7 @@ const MESA_AREAS = {
     "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 12h-4l-3 9L9 3l-3 9H2\"></path></svg>",
     "themeClass": "area-clinica-renovare",
     "district": "Centro Médico • Setor Sul",
-    "dangerLevel": "Risco Biológico & Segurança",
+    "dangerLevel": "Risco Biológico e Segurança",
     "dangerLevelClass": "danger",
     "ambience": "A Clínica Renovare revela-se muito mais do que um simples pronto-socorro de bairro. O interior é uma instalação de ponta, com iluminação fria, piso impecável e um design circular opressivo. O núcleo do edifício é um grande bloco central fechado, rodeado por um longo corredor quadrado. A clínica está ativa, com luzes acesas e enfermeiros circulando.",
     "lore": "Centro hospitalar altamente equipado sob direção da misteriosa Dra. Melissa Vane.",
@@ -3926,7 +3926,7 @@ const MesaAreaManager = {
       if (area.conexoes_saida && area.conexoes_saida.length > 0) {
         exitsHtml = `
           <div class="area-exits-block">
-            <strong class="area-exits-title">ROTAS & CONEXÕES DE SAÍDA:</strong>
+            <strong class="area-exits-title">ROTAS E CONEXÕES DE SAÍDA:</strong>
             <div class="area-exits-row">
               ${area.conexoes_saida.map(ex => {
                 return `<button type="button" class="mesa-exit-btn" onclick="MesaAreaManager.openAboutAreaModal('${ex.area_id}')" title="${ex.gancho}">
@@ -3940,13 +3940,13 @@ const MesaAreaManager = {
 
       publicInfo.innerHTML = `
         <div class="area-section-header">
-          <h4 class="area-section-title">ATMOSFERA & CENÁRIO</h4>
+          <h4 class="area-section-title">ATMOSFERA E CENÁRIO</h4>
         </div>
         <div class="area-atmosphere-content">
           ${atmosferaParagraphs}
         </div>
         ${exitsHtml}
-        ${area.lore ? `<div class="area-lore-block"><h4 class="area-section-title" style="margin-top: 20px;">HISTÓRIA & CONTEXTO LOCAL</h4><p class="area-atmosphere-p">${area.lore}</p></div>` : ''}
+        ${area.lore ? `<div class="area-lore-block"><h4 class="area-section-title" style="margin-top: 20px;">HISTÓRIA E CONTEXTO LOCAL</h4><p class="area-atmosphere-p">${area.lore}</p></div>` : ''}
         ${area.rumor ? `<div class="area-rumor-box"><strong>RUMOR INVESTIGATIVO:</strong> ${area.rumor}</div>` : ''}
       `;
     }
@@ -3992,7 +3992,7 @@ const MesaAreaManager = {
           <div class="backstage-panel-header">
             <div class="backstage-panel-title-wrap">
               <svg class="backstage-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-              <h5>CONDIÇÕES DE ACESSO & INFILTRAÇÃO</h5>
+              <h5>CONDIÇÕES DE ACESSO E INFILTRAÇÃO</h5>
             </div>
             <span class="backstage-confidential-badge">ACESSO DO MESTRE</span>
           </div>
@@ -4552,7 +4552,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 // ============================================================
 
 // ============================================================
-// SISTEMA DE COLETÁVEIS & ITENS ENCONTRADOS
+// SISTEMA DE COLETÁVEIS E ITENS ENCONTRADOS
 // ============================================================
 const MesaColetaveis = {
   items: [],
@@ -5262,7 +5262,7 @@ const MesaColetaveis = {
 
 
 // ==========================================================================
-// MESA LIVRO & DOCUMENTOS READER (O VIAJANTE E A TERRA / DIÁRIO / CAIXA)
+// MESA LIVRO E DOCUMENTOS READER (O VIAJANTE E A TERRA / DIÁRIO / CAIXA)
 // ==========================================================================
 const MesaLivroReader = {
   currentDocId: 'col_livro_viajante_terra',
@@ -6463,7 +6463,7 @@ window.MesaDispositivos = MesaDispositivos;
 
 // ==========================================================================
 // ==========================================================================
-// MESA NOTEBOOK DA SARA (SISTEMA OPERACIONAL & CFTV)
+// MESA NOTEBOOK DA SARA (SISTEMA OPERACIONAL E CFTV)
 // ==========================================================================
 const MesaNotebookSara = {
   isActive: false,
@@ -7124,7 +7124,7 @@ const MesaNotebookSara = {
 window.MesaNotebookSara = MesaNotebookSara;
 
 // ==========================================================================
-// MESA MODO DE COMBATE (CINEMATOGRÁFICO, VÍDEO & RAMPA PRETA UNDERTALE)
+// MESA MODO DE COMBATE (CINEMATOGRÁFICO, VÍDEO E RAMPA PRETA UNDERTALE)
 // ==========================================================================
 const MesaCombate = {
   isActive: false,
@@ -8567,7 +8567,7 @@ const MesaCombate = {
 window.MesaCombate = MesaCombate;
 
 // ==========================================================================
-// MENU LATERAL / DRAWER DE COMBATE (MOBILE & DESKTOP)
+// MENU LATERAL / DRAWER DE COMBATE (MOBILE E DESKTOP)
 // ==========================================================================
 const MesaCombatMenu = {
   isOpen: false,

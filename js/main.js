@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ============================================================
-   PAGE & TOPIC TRANSITIONS / RADIAL RIPPLE ENGINE
+   PAGE E TOPIC TRANSITIONS / RADIAL RIPPLE ENGINE
    ============================================================ */
 (function () {
   'use strict';
@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('click', skipHandler, { once: true, capture: true });
   }
 
-  // 3. TOPIC & PAGE TRANSITION HANDLERS
+  // 3. TOPIC E PAGE TRANSITION HANDLERS
   document.addEventListener('DOMContentLoaded', () => {
     const isInsideFdm = window.location.pathname.includes('fios-do-medo');
 

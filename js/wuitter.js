@@ -64,7 +64,7 @@ const DEFAULT_ACCOUNTS = [
     hashes: ['2dd19af57e1afab99db2a52767841b4188121375b4e107e25f1e19b5a08074b7', '67444813cdcd8add28ec10fe6184264bd4acddcd339083da3cee52779ef2b52f'],
     name: 'Thulita',
     handle: '@thulita',
-    bio: 'Investigadora da Guarda & perita em rastreamento etéreo. Sempre em busca de pistas que não façam sentido.',
+    bio: 'Investigadora da Guarda e perita em rastreamento etéreo. Sempre em busca de pistas que não façam sentido.',
     avatarLetter: 'T',
     avatarImage: '',
     avatarColor: '#10b981',
@@ -202,7 +202,7 @@ const DEFAULT_ACCOUNTS = [
     slot: null,
     tokens: ['FRAGKTUS-GOV', 'GOV-FRAGKTUS', 'ALTO-COMANDO'],
     hashes: [],
-    name: 'Governo & Alto Comando de Fragktus',
+    name: 'Governo e Alto Comando de Fragktus',
     handle: '@gov_fragktus',
     bio: 'Gabinete Supremo do Alto Comando Militar e Administração Civil de Fragktus. Defesa territorial, decretos de ordem e comunicados oficiais.',
     avatarLetter: 'F',
@@ -218,7 +218,7 @@ const DEFAULT_ACCOUNTS = [
     hashes: [],
     name: 'Governo de Paladium',
     handle: '@gov_paladium',
-    bio: 'Canal Oficial do Governo & Departamento de Segurança e Ordem de Paladium. Comunicados da Chancelaria, decretos civis, registros penitenciários e mandados de custódia da metrópole.',
+    bio: 'Canal Oficial do Governo e Departamento de Segurança e Ordem de Paladium. Comunicados da Chancelaria, decretos civis, registros penitenciários e mandados de custódia da metrópole.',
     avatarLetter: 'G',
     avatarImage: '',
     avatarColor: '#1e3a8a',
@@ -232,7 +232,7 @@ const DEFAULT_ACCOUNTS = [
     hashes: [],
     name: 'Sara Auguil',
     handle: '@sara',
-    bio: 'Aluna do Colégio Integrado Primórdio de Fragktus & barista no Café Névoa. Amante de gatos, arte, chás e alquimia. (Desaparecimento catalogado em 01/08/2061).',
+    bio: 'Aluna do Colégio Integrado Primórdio de Fragktus e barista no Café Névoa. Amante de gatos, arte, chás e alquimia. (Desaparecimento catalogado em 01/08/2061).',
     avatarLetter: 'S',
     avatarImage: 'assets/sara_avatar.jpg?v=4',
     avatarColor: '#f43f5e',
@@ -268,7 +268,7 @@ const DEFAULT_ACCOUNTS = [
     slot: null,
     tokens: ['PALADIUM-ART'],
     hashes: [],
-    name: 'Galeria Paladium | Arte & Conceito',
+    name: 'Galeria Paladium | Arte e Conceito',
     handle: '@paladium_art',
     bio: 'Página dedicada aos artistas independentes, murais de rua e ilustrações conceituais do Distrito Alto e Baixo de Paladium. Curadoria visual da metrópole.',
     avatarLetter: 'A',
@@ -1337,7 +1337,7 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
               exists.badge = 'gold';
             }
             if (def.id === 'npc_gov_fragktus') {
-              exists.name = 'Governo & Alto Comando de Fragktus';
+              exists.name = 'Governo e Alto Comando de Fragktus';
               exists.handle = '@gov_fragktus';
               exists.badge = 'gold';
             }
@@ -1639,7 +1639,7 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
     throw new Error('Serviço de imagens indisponível. Você pode colar o link direto clicando no botão ao lado.');
   }
 
-  // ---- ENGAJAMENTO ORGÂNICO AUTOMÁTICO (CURTIDAS & RE-WUITS VIVOS) ----
+  // ---- ENGAJAMENTO ORGÂNICO AUTOMÁTICO (CURTIDAS E RE-WUITS VIVOS) ----
   ensureOrganicBaselineEngagement() {
     if (!this.posts || this.posts.length === 0) return;
     let modified = false;

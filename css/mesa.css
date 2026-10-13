@@ -1014,7 +1014,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
 
 
 /* ============================================================
-   MODAIS (TOKEN & FICHA) COM OVERLAYS FIXOS
+   MODAIS (TOKEN E FICHA) COM OVERLAYS FIXOS
    ============================================================ */
 
 .mesa-modal-overlay {
@@ -1262,7 +1262,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
 }
 
 /* ============================================================
-   TRANSIÇÃO DA ILUSTRAÇÃO DA FICHA: MULTI-LAYER GLITCH & SLIDE
+   TRANSIÇÃO DA ILUSTRAÇÃO DA FICHA: MULTI-LAYER GLITCH E SLIDE
    ============================================================ */
 
 .glitch-portrait-box {
@@ -1647,7 +1647,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   transform: scale(1.1);
 }
 
-/* 2. Barra Roxa de Estresse & 6 Pontos de Estresse */
+/* 2. Barra Roxa de Estresse e 6 Pontos de Estresse */
 .ficha-stress-container {
   display: flex;
   flex-direction: column;
@@ -1887,7 +1887,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
 
 
 /* ============================================================
-   MENU DROPDOWN DO MESTRE & SIDEBAR LATERAL DE ASSETS (TÉCNICO)
+   MENU DROPDOWN DO MESTRE E SIDEBAR LATERAL DE ASSETS (TÉCNICO)
    ============================================================ */
 
 .master-dropdown-popover {
@@ -2539,7 +2539,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
 }
 
 /* ============================================================
-   PAINEL DE CHAT EM TEMPO REAL (NANQUIM & INVESTIGAÇÃO)
+   PAINEL DE CHAT EM TEMPO REAL (NANQUIM E INVESTIGAÇÃO)
    ============================================================ */
 
 .chat-unread-pip {
@@ -2766,7 +2766,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
 }
 
 /* ============================================================
-   PALETA DE REAÇÃO COM EMOJIS & BALÃO DE FALA COMIC
+   PALETA DE REAÇÃO COM EMOJIS E BALÃO DE FALA COMIC
    ============================================================ */
 
 .reaction-picker-popover {
@@ -2826,7 +2826,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   display: block;
 }
 
-/* BALÃO DE REAÇÃO ESTILO NANQUIM & VIDRO ESCURO (CYBER-NOIR / INVESTIGAÇÃO) */
+/* BALÃO DE REAÇÃO ESTILO NANQUIM E VIDRO ESCURO (CYBER-NOIR / INVESTIGAÇÃO) */
 .comic-speech-bubble {
   position: absolute;
   background: rgba(12, 3, 0, 0.94);
@@ -2938,7 +2938,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
 }
 
 /* ============================================================
-   SISTEMA DE ROLAGEM DE DADOS & PALCO CENTRAL (MESA QUADRADA)
+   SISTEMA DE ROLAGEM DE DADOS E PALCO CENTRAL (MESA QUADRADA)
    ============================================================ */
 
 /* 1. Modal de Configuração de Dados */
@@ -3596,7 +3596,7 @@ body.mp-drawer-open .mesa-board-container,
   font-family: 'Courier New', monospace;
 }
 
-/* Coluna 2: Monitor do Mestre & Controles */
+/* Coluna 2: Monitor do Mestre e Controles */
 .adm-col-monitor {
   background: #141417;
   border: 1px solid #27272a;
@@ -4105,8 +4105,8 @@ body.mp-drawer-open .mesa-board-container,
 }
 
 /* ============================================================
-   SISTEMA DE ÁREAS & MAPA DE INVESTIGAÇÃO — WUITALUR RPG
-   Atmosferas Visuais, Mapa Interativo & Dossiê do Mestre
+   SISTEMA DE ÁREAS E MAPA DE INVESTIGAÇÃO — WUITALUR RPG
+   Atmosferas Visuais, Mapa Interativo e Dossiê do Mestre
    ============================================================ */
 
 /* 1. PALETAS TEMÁTICAS DAS ÁREAS */
@@ -4424,7 +4424,7 @@ body.mesa-body.area-refugio-gustavo {
   gap: 10px;
 }
 
-/* 3. MODAL DE INFORMAÇÕES DA ÁREA & DOSSIÊ DO MESTRE */
+/* 3. MODAL DE INFORMAÇÕES DA ÁREA E DOSSIÊ DO MESTRE */
 .area-info-modal-dialog {
   max-width: 1040px !important;
   width: 95% !important;
@@ -5016,7 +5016,7 @@ body.mesa-body.area-refugio-gustavo {
 
 
 /* ==========================================================================
-   SISTEMA DE SEPARADORES (TABS) & ACORDEOES DO MODAL DA AREA (CLEAN UI)
+   SISTEMA DE SEPARADORES (TABS) E ACORDEOES DO MODAL DA AREA (CLEAN UI)
    ========================================================================== */
 
 /* Barra de Abas (Tabs Nav) */
@@ -5301,7 +5301,7 @@ body.mesa-body.area-refugio-gustavo {
   color: #ffffff;
 }
 
-/* TAB 3: INVESTIGACAO / PDIS & ACORDEOES */
+/* TAB 3: INVESTIGACAO / PDIS E ACORDEOES */
 .pdis-toolbar {
   display: flex;
   align-items: center;
@@ -7414,7 +7414,7 @@ body:has(#abertura-overlay.active) .reaction-picker-popover {
 
 
 /* ============================================================
-   SISTEMA DE COLETÁVEIS & ITENS DA CAMPANHA
+   SISTEMA DE COLETÁVEIS E ITENS DA CAMPANHA
    ============================================================ */
 
 .coletaveis-modal-dialog {
@@ -7837,7 +7837,7 @@ body:has(#abertura-overlay.active) .reaction-picker-popover {
 
 
 /* ==========================================================================
-   DISPOSITIVOS DA CAMPANHA (HUB DO MESTRE) & NOTEBOOK DA SARA
+   DISPOSITIVOS DA CAMPANHA (HUB DO MESTRE) E NOTEBOOK DA SARA
    ========================================================================== */
 
 /* Drawer Lateral de Dispositivos */
@@ -8907,7 +8907,7 @@ body.dispositivos-drawer-open .dispositivos-drawer {
 }
 
 /* ==========================================================================
-   MODO DE COMBATE CINEMATOGRÁFICO & RAMPA PRETA (ESTILO UNDERTALE)
+   MODO DE COMBATE CINEMATOGRÁFICO E RAMPA PRETA (ESTILO UNDERTALE)
    ========================================================================== */
 
 /* Flash de Encontro de Combate (Triple-Flash Undertale) */
@@ -9617,7 +9617,7 @@ body.combat-active .combat-black-ramp {
 }
 
 /* ============================================================
-   EFEITO DE DANO BRUTAL (TREMOR ÁSPERO, FLASH VERMELHO & CORTES PIXEL ART)
+   EFEITO DE DANO BRUTAL (TREMOR ÁSPERO, FLASH VERMELHO E CORTES PIXEL ART)
    ============================================================ */
 .combat-player-card.damaged {
   animation: combatDamageShakeRough 0.55s steps(2, jump-none), combatDamageRedFlash 0.55s ease both !important;
@@ -10217,7 +10217,7 @@ body.combat-active .combat-black-ramp {
 }
 
 /* ============================================================
-   BOTÃO SUPERIOR, DRAWER & MODAL DE PERSONAGENS DE COMBATE
+   BOTÃO SUPERIOR, DRAWER E MODAL DE PERSONAGENS DE COMBATE
    ============================================================ */
 .combat-top-menu-btn {
   position: fixed;
@@ -10913,7 +10913,7 @@ body.combat-active .combat-black-ramp {
 }
 
 /* ============================================================
-   SOBREPOSICAO PRIORITARIA DE MODAIS DE LEITURA & DISPOSITIVOS
+   SOBREPOSICAO PRIORITARIA DE MODAIS DE LEITURA E DISPOSITIVOS
    ============================================================ */
 #livro-reader-modal {
   z-index: 100050 !important;

@@ -648,7 +648,7 @@ body.wuitter-body select {
 }
 
 /* ============================================================
-   FEED & POST CARDS
+   FEED E POST CARDS
    ============================================================ */
 .w-wuit-list {
   display: flex;
@@ -1347,7 +1347,7 @@ body.wuitter-body select {
 }
 
 /* ============================================================
-   PROFILE VIEW (TWITTER/X STYLE) & SEARCH ENHANCEMENTS
+   PROFILE VIEW (TWITTER/X STYLE) E SEARCH ENHANCEMENTS
    ============================================================ */
 .w-btn-back {
   background: transparent;
@@ -1538,7 +1538,7 @@ body.wuitter-body select {
   background: var(--w-primary);
 }
 
-/* SEARCH ACTIVE BANNER & CLEAR BUTTON */
+/* SEARCH ACTIVE BANNER E CLEAR BUTTON */
 .w-search-box {
   position: relative;
 }
@@ -1600,7 +1600,7 @@ body.wuitter-body select {
 }
 
 /* ============================================================
-   REPLY TO REPLIES (SUB-REPLIES & NESTED THREADING)
+   REPLY TO REPLIES (SUB-REPLIES E NESTED THREADING)
    ============================================================ */
 .w-comment-actions {
   display: flex;

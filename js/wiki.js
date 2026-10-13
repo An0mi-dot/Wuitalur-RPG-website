@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ========== CONSTRUCTION ==========
   function openConstruction(id) {
-    const labels = { areas:'Áreas do Mundo', eventos:'Eventos Históricos', divindades:'Deuses & Cosmo', faccoes:'Facções & Organizações', criaturas:'Criaturas & Bestiário' };
+    const labels = { areas:'Áreas do Mundo', eventos:'Eventos Históricos', divindades:'Deuses e Cosmo', faccoes:'Facções e Organizações', criaturas:'Criaturas e Bestiário' };
     hubEl.hidden = true;
     topicEl.hidden = false;
     topicEl.innerHTML = `

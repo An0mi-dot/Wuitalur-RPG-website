@@ -52,8 +52,8 @@
     "shortName": "Colégio Primórdio",
     "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 10v6M2 10l10-5 10 5-10 5z\"></path><path d=\"M6 12v5c3 3 9 3 12 0v-5\"></path></svg>",
     "themeClass": "area-colegio-primordio",
-    "district": "Setor Estudantil & Cívico • Centro de Fragktus",
-    "dangerLevel": "Inspetores Rígidos & Vigilância Escolar",
+    "district": "Setor Estudantil e Cívico • Centro de Fragktus",
+    "dangerLevel": "Inspetores Rígidos e Vigilância Escolar",
     "dangerLevelClass": "warning",
     "resumo_atmosfera": "A arquitetura impõe-se de forma rígida e asseada. Os corredores longos possuem pisos de mosaico polido que refletem uma luz fluorescente pálida, ladeados por filas intermináveis de cacifos de metal verde-oliva. Os passos ecoam de forma seca e solitária nas paredes frias, transmitindo a sensação constante de vigilância e de que as conversas nunca são verdadeiramente privadas. No pátio central e no ginásio, a grandiosidade da infraestrutura serve apenas para reforçar a pequenez e a vulnerabilidade de quem ali estuda.\n\nO ar carrega uma mistura enjoativa de cera de polir, papel velho da biblioteca e desinfetante forte — o aroma da limpeza extrema, usado pela direção para apagar rapidamente qualquer vestígio de fraqueza, dor ou escândalo. Durante as aulas, um silêncio opressivo domina os pisos, quebrado apenas pelo tiquetaque rígido dos relógios de parede e pelo som distante e calculista de sapatos de salto alto a ecoar no rés-do-chão.\n\nA pressão social paira densa nos intervalos. Os alunos, filhos da elite local, agrupam-se com posturas impecáveis e olhares de julgamento, criando um ecossistema hostil a quem não partilha do mesmo estatuto. É um espaço claustrofóbico e profundamente hipócrita, onde o arranjo de flores mortas no corredor contrasta com a ordem imaculada da instituição, provando aos investigadores que o sofrimento ali não é tratado, mas sim silenciado de imediato.",
     "requisitos_acesso": "Aberto ao público das 07h00 às 18h30 com uniforme escolar ou credencial de visitante. Acesso noturno requer arrombamento do portão lateral (Ladinagem DT 6) ou despistar a ronda dos inspetores de pátio.",
@@ -224,7 +224,7 @@
     "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 8h1a4 4 0 0 1 0 8h-1\"></path><path d=\"M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z\"></path><line x1=\"6\" y1=\"1\" x2=\"6\" y2=\"4\"></line><line x1=\"10\" y1=\"1\" x2=\"10\" y2=\"4\"></line><line x1=\"14\" y1=\"1\" x2=\"14\" y2=\"4\"></line></svg>",
     "themeClass": "area-cafe-da-nevoa",
     "district": "Rua Comercial • Centro",
-    "dangerLevel": "Abandono Recente & Luto",
+    "dangerLevel": "Abandono Recente e Luto",
     "dangerLevelClass": "warning",
     "titulo_narrativo": "Chegada ao Café",
     "texto_narrativo": "\"Você dobram a esquina e avistam a fachada do Café da Névoa. O letreiro está apagado e as luzes lá dentro já foram cortadas. O som da grade metálica a descer ecoa pela calçada quase deserta. Junto à porta de vidro, um homem de avental sujo — Elias — está com as mãos a tremer enquanto tenta acertar com a chave na fechadura. O rosto dele está encovado, iluminado apenas pela luz pálida do poste de rua. Colado no vidro da porta, mesmo ao lado da cabeça dele, há um papel manuscrito que diz: 'Encerrado por Luto'. Elias olha freneticamente por cima do ombro, para as sombras do beco ao lado do café, como se esperasse que algo saísse de lá a qualquer momento. Vocês chegaram no exato segundo antes de ele fugir para casa.\"",
@@ -321,7 +321,7 @@
     "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 12h-4l-3 9L9 3l-3 9H2\"></path></svg>",
     "themeClass": "area-clinica-renovare",
     "district": "Centro Médico • Setor Sul",
-    "dangerLevel": "Risco Biológico & Segurança",
+    "dangerLevel": "Risco Biológico e Segurança",
     "dangerLevelClass": "danger",
     "titulo_narrativo": "Entrada na Clínica",
     "texto_narrativo": "\"Quando vocês passam pelas portas da Clínica Renovare, o cheiro de desinfetante forte queima as narinas. O lugar é iluminado por uma luz branca e fria que não deixa espaço para sombras. À vossa frente, pintado no chão de forma simétrica, há um grande círculo com um 'X' azul apontando para um balcão de triagem angular e moderno.\n\nO layout é intimidador: um enorme bloco central de vidro e metal domina o meio do edifício, abrigando mesas de computadores, prateleiras de suprimentos e equipamentos estranhos que mais parecem de um centro de pesquisa do que de um hospital comum. Ao redor desse bloco, um longo corredor dá acesso a dezenas de quartos individuais, onde o bip constante de monitores cardíacos ecoa no silêncio. Enfermeiros de branco circulam de forma metódica, com os olhos fixos em pranchetas eletrônicas. Para descobrir o que a Dra. Melissa Vane estava a injetar na Sara, vocês terão de se esgueirar por estes corredores limpos ou encontrar uma forma de aceder aos terminais do bloco central sem disparar o alarme.\"",
@@ -441,7 +441,7 @@
     "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"></path><polyline points=\"9 22 9 12 15 12 15 22\"></polyline></svg>",
     "themeClass": "area-casa-auguil",
     "district": "Bairro Residencial • Mina de Prata",
-    "dangerLevel": "Isolamento Policial & Atividade Paranormal",
+    "dangerLevel": "Isolamento Policial e Atividade Paranormal",
     "dangerLevelClass": "danger",
     "titulo_narrativo": "Entrada na Casa Auguil",
     "texto_narrativo": "\"A fechadura cede com um estalo abafado e vocês entram, deixando a noite fria e as fitas amarelas da polícia para trás. O ar dentro da Casa Auguil é pesado, denso e tem o gosto amargo de um lugar que foi trancado às pressas e abandonado. Quando vocês acendem as lanternas, os feixes de luz cortam a escuridão absoluta do térreo e revelam algo profundamente perturbador: a normalidade. A sala de estar está impecavelmente arrumada. Os móveis estão alinhados, as almofadas estão em seus lugares e o silêncio é tão espesso que vocês conseguem ouvir a respiração uns dos outros.\"",
@@ -562,7 +562,7 @@
 };
 
   // ============================================================
-  // 3. BANCO DE DADOS DE COLETÁVEIS & ITENS ENCONTRADOS
+  // 3. BANCO DE DADOS DE COLETÁVEIS E ITENS ENCONTRADOS
   // ============================================================
   const CAMPAIGN_COLETAVEIS = [
     {

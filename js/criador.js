@@ -563,7 +563,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ================================================================== */
-  /*  CHARACTER DATA & REVIEW                                            */
+  /*  CHARACTER DATA AND REVIEW                                            */
   /* ================================================================== */
   function getClassAbilitiesFinal(classId, level) {
     const cls = SYSTEM_DATA.classes.find(c => c.id === classId);
@@ -759,7 +759,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="sheet-field"><label>Dinheiro</label><div class="val" contenteditable="true">${d.money || '—'}</div></div>
   </div>
   <div class="sheet-section">
-    <h2>Atributos & Derivados</h2>
+    <h2>Atributos e Derivados</h2>
     <div class="sheet-stats">
       <div class="sheet-stat"><div class="stat-label" style="color:#55a630">PVs</div><div class="stat-val" contenteditable="true" style="color:#55a630">${d.pvs}</div></div>
       <div class="sheet-stat"><div class="stat-label" style="color:#4a49ff">RE</div><div class="stat-val" contenteditable="true" style="color:#4a49ff">${d.re}</div></div>

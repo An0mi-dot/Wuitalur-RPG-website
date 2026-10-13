@@ -1,6 +1,6 @@
 /* ============================================================
    FIOS DO MEDO — SUPLEMENTO OFICIAL (SISTEMA FILHO)
-   Intense Vivid Blood Red (#ff1133) & Deep Charcoal UI
+   Intense Vivid Blood Red (#ff1133) and Deep Charcoal UI
    ============================================================ */
 
 :root {
@@ -283,7 +283,7 @@
   margin-bottom: var(--space-md);
 }
 
-/* Home Grid & Cards */
+/* Home Grid e Cards */
 .home-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -382,7 +382,7 @@
 }
 
 /* ============================================================
-   GRID & CARDS DE ATRIBUTOS
+   GRID E CARDS DE ATRIBUTOS
    ============================================================ */
 .attr-grid-presentation {
   display: grid;
