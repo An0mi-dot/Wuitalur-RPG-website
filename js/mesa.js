@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI & Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.8.2';
+const MESA_VERSION = 'v1.8.3';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -1514,11 +1514,16 @@ const MesaApp = {
           const p1Attrs = typeof data[0].atributos === 'string' ? JSON.parse(data[0].atributos) : data[0].atributos;
           if (p1Attrs) {
             if (Array.isArray(p1Attrs._sys_coletaveis) && p1Attrs._sys_coletaveis.length > 0 && window.MesaColetaveis) {
-              const remoteStr = JSON.stringify(p1Attrs._sys_coletaveis);
+              const { items: merged, changed } = MesaColetaveis.mergeCanonical(p1Attrs._sys_coletaveis);
+              const remoteStr = JSON.stringify(merged);
               if (remoteStr !== JSON.stringify(MesaColetaveis.items)) {
-                MesaColetaveis.items = p1Attrs._sys_coletaveis;
+                MesaColetaveis.items = merged;
                 localStorage.setItem('wu_coletaveis_v2', remoteStr);
                 if (typeof MesaColetaveis.render === 'function') MesaColetaveis.render();
+                if (typeof MesaColetaveis.renderFicha === 'function') MesaColetaveis.renderFicha();
+                if (changed && MesaApp && MesaApp.state && MesaApp.state.isMaster) {
+                  MesaColetaveis.saveAndSync();
+                }
               }
             }
             if (p1Attrs._sys_notebook && window.MesaNotebookSara) {
@@ -1602,12 +1607,14 @@ const MesaApp = {
 
           // 2. Sincronização de Coletáveis (liberações/edições do Mestre)
           if (attrs && Array.isArray(attrs._sys_coletaveis) && window.MesaColetaveis) {
-            const remoteStr = JSON.stringify(attrs._sys_coletaveis);
+            const { items: merged } = MesaColetaveis.mergeCanonical(attrs._sys_coletaveis);
+            const remoteStr = JSON.stringify(merged);
             const localStr = JSON.stringify(MesaColetaveis.items);
             if (remoteStr !== localStr) {
-              MesaColetaveis.items = attrs._sys_coletaveis;
+              MesaColetaveis.items = merged;
               localStorage.setItem('wu_coletaveis_v2', remoteStr);
               MesaColetaveis.render();
+              if (typeof MesaColetaveis.renderFicha === 'function') MesaColetaveis.renderFicha();
             }
           }
 
@@ -1711,9 +1718,11 @@ const MesaApp = {
     channel.on('broadcast', { event: 'coletaveis_sync' }, (payload) => {
       const data = payload.payload;
       if (data && Array.isArray(data.items) && window.MesaColetaveis) {
-        MesaColetaveis.items = data.items;
-        localStorage.setItem('wu_coletaveis_v2', JSON.stringify(data.items));
+        const { items: merged } = MesaColetaveis.mergeCanonical(data.items);
+        MesaColetaveis.items = merged;
+        localStorage.setItem('wu_coletaveis_v2', JSON.stringify(merged));
         MesaColetaveis.render();
+        if (typeof MesaColetaveis.renderFicha === 'function') MesaColetaveis.renderFicha();
       }
     });
 
@@ -2245,6 +2254,15 @@ const MesaApp = {
             </ul>
           </div>
         </div>
+
+        <!-- 5. Coletáveis e Itens da Campanha -->
+        <div class="ficha-open-section ficha-section-coletaveis" style="margin-top: 18px; width: 100%;">
+          <div class="ink-ribbon-title" style="background: #d97706; display: flex; align-items: center; justify-content: space-between;">
+            <span>COLETÁVEIS & ITENS DA CAMPANHA</span>
+            <button type="button" class="ficha-open-catalog-btn" onclick="MesaColetaveis.openModal()" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.3); color: #fff; font-size: 0.72rem; padding: 2px 8px; cursor: pointer; border-radius: 2px;">Abrir Catálogo Completo &rarr;</button>
+          </div>
+          <div id="ficha-coletaveis-container" class="ficha-coletaveis-container" style="margin-top: 12px;"></div>
+        </div>
       </div>
     `;
 
@@ -2253,6 +2271,9 @@ const MesaApp = {
     }
 
     fichaModal.classList.add('active');
+    if (window.MesaColetaveis) {
+      MesaColetaveis.renderFicha();
+    }
 
     // Inicia o motor de glitch procedural na ilustração (mesma frequência e tipos do BG)
     setTimeout(() => {
@@ -4505,6 +4526,42 @@ const MesaColetaveis = {
   searchQuery: '',
   fichaSearchQuery: '',
 
+  mergeCanonical(list) {
+    const canonical = window.CAMPAIGN_COLETAVEIS || window.MESA_COLETAVEIS || [];
+    if (!Array.isArray(list)) list = [];
+    let merged = [...list];
+    let changed = false;
+
+    canonical.forEach(can => {
+      const idx = merged.findIndex(it => it.id === can.id);
+      if (idx === -1) {
+        merged.push({ ...can, desbloqueado: can.desbloqueado !== undefined ? can.desbloqueado : true });
+        changed = true;
+      } else {
+        if (can.paginas && !merged[idx].paginas) {
+          merged[idx].paginas = can.paginas;
+          changed = true;
+        }
+        if (can.detalhe && merged[idx].detalhe !== can.detalhe) {
+          merged[idx].detalhe = can.detalhe;
+          changed = true;
+        }
+        if (can.resumo && merged[idx].resumo !== can.resumo) {
+          merged[idx].resumo = can.resumo;
+          changed = true;
+        }
+        if (['col_notebook_sara', 'col_livro_viajante_terra', 'col_caixa_negra_dourada'].includes(can.id)) {
+          if (!merged[idx].desbloqueado) {
+            merged[idx].desbloqueado = true;
+            changed = true;
+          }
+        }
+      }
+    });
+
+    return { items: merged, changed };
+  },
+
   init() {
     const canonical = window.CAMPAIGN_COLETAVEIS || window.MESA_COLETAVEIS || [];
 
@@ -4514,8 +4571,12 @@ const MesaColetaveis = {
         const raw = MesaApp.state.players[0].atributos;
         const attrs = typeof raw === 'string' ? JSON.parse(raw) : raw;
         if (attrs && Array.isArray(attrs._sys_coletaveis) && attrs._sys_coletaveis.length > 0) {
-          this.items = attrs._sys_coletaveis;
+          const { items: merged, changed } = this.mergeCanonical(attrs._sys_coletaveis);
+          this.items = merged;
           localStorage.setItem('wu_coletaveis_v2', JSON.stringify(this.items));
+          if (changed && MesaApp && MesaApp.state && MesaApp.state.isMaster) {
+            this.saveAndSync();
+          }
           return;
         }
       } catch(e) {}
@@ -4526,39 +4587,16 @@ const MesaColetaveis = {
       try {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          // Usa os itens salvos preservando totalmente as edições feitas pelo Mestre
-          this.items = parsed.map(it => ({
-            ...it,
-            desbloqueado: it.desbloqueado === true
-          }));
-          // Adiciona itens canônicos ausentes caso ainda não existam no array
-          canonical.forEach(can => {
-            if (!this.items.some(it => it.id === can.id)) {
-              this.items.push({ ...can, desbloqueado: false });
-            }
-          });
+          const { items: merged } = this.mergeCanonical(parsed);
+          this.items = merged;
         } else {
-          this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
+          this.items = canonical.map(it => ({ ...it, desbloqueado: it.desbloqueado === true }));
         }
       } catch (e) {
-        this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
+        this.items = canonical.map(it => ({ ...it, desbloqueado: it.desbloqueado === true }));
       }
     } else {
-      const legacy = localStorage.getItem('wu_coletaveis_v1_revised_revised') || localStorage.getItem('wu_coletaveis_v1_revised');
-      if (legacy) {
-        try {
-          const parsed = JSON.parse(legacy);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            this.items = parsed.map(it => ({ ...it, desbloqueado: it.desbloqueado === true }));
-          } else {
-            this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
-          }
-        } catch (e) {
-          this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
-        }
-      } else {
-        this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
-      }
+      this.items = canonical.map(it => ({ ...it, desbloqueado: it.desbloqueado === true }));
       localStorage.setItem('wu_coletaveis_v2', JSON.stringify(this.items));
     }
   },
@@ -4774,7 +4812,7 @@ const MesaColetaveis = {
 
   restoreDefaults() {
     if (!MesaApp.state.isMaster) return;
-    if (!confirm('Deseja restaurar todos os 12 coletáveis canônicos da campanha (todos virão bloqueados)?')) return;
+    if (!confirm('Deseja restaurar todos os 15 coletáveis canônicos da campanha?')) return;
     const canonical = window.CAMPAIGN_COLETAVEIS || window.MESA_COLETAVEIS || [];
     this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
     this.saveAndSync();

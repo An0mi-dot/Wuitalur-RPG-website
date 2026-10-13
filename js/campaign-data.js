@@ -705,7 +705,7 @@
       tipo: "Dispositivo Eletrónico",
       campo_tipo: "Efeito",
       area: "Casa Auguil (Quarto de Sara)",
-      desbloqueado: false,
+      desbloqueado: true,
       resumo: "Um computador portátil moderno, com a carcaça ligeiramente arranhada e o ecrã a emitir um brilho pálido no quarto escuro.",
       detalhe: "O sistema operativo está bloqueado por uma palavra-passe desconhecida. No ecrã de bloqueio, existe apenas um atalho interativo e funcional rotulado como \"Acesso Rápido: Câmaras de Segurança\"."
     },
@@ -716,7 +716,7 @@
       tipo: "Documento",
       campo_tipo: "Conteúdo",
       area: "Casa Auguil (Quarto de Sara)",
-      desbloqueado: false,
+      desbloqueado: true,
       resumo: "Um livrinho de capa dura e colorida, muito bem conservado, que destoa completamente da bagunça e dos livros escolares da escrivaninha.",
       detalhe: "Um conto ilustrado de quatro páginas sobre uma criatura que desce do espaço para \"abençoar\" um povo doente, consumindo os seus sonhos e colocando o mundo inteiro num sono eterno. Clique em \"Ler Livro\" para folhear as 4 páginas ilustradas.",
       paginas: [
@@ -749,7 +749,7 @@
       tipo: "Artefacto Selado",
       campo_tipo: "Efeito",
       area: "Casa Auguil (Quarto de Sara)",
-      desbloqueado: false,
+      desbloqueado: true,
       resumo: "Uma pequena caixa pesada de material desconhecido, negra como obsidiana e contornada por filetes de ouro puro que formam padrões geométricos.",
       detalhe: "A caixa encontra-se completamente selada. Qualquer tentativa de impacto, uso de força bruta, lâminas ou ferramentas de arrombamento falha automaticamente, sem deixar um único arranhão na superfície."
     }
