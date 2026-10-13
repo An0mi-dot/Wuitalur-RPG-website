@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI & Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.8.1';
+const MESA_VERSION = 'v1.8.2';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -5056,6 +5056,185 @@ const MesaColetaveis = {
     `;
   }
 };
+
+
+// ==========================================================================
+// MESA LIVRO READER: "O VIAJANTE E A TERRA"
+// ==========================================================================
+const MesaLivroReader = {
+  currentPage: 1,
+  totalPags: 4,
+  mode: 'single', // 'single' ou 'all'
+  pages: [
+    {
+      num: 1,
+      titulo: 'Página 1',
+      ilustracaoTitulo: 'Ilustração de uma estrela cadente escura',
+      ilustracaoDesc: 'Uma estrela negra cruza o vácuo silencioso do espaço, desenhando uma trilha de sombras.',
+      svgIcon: '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#f59e0b" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon><path d="M4 4l4 4"></path><path d="M20 4l-4 4"></path></svg>',
+      texto: 'Veio do céu que não tem fim um Viajante bondoso. Ele viajava pelo escuro do espaço procurando uma casa que precisasse de luz e de cuidado.'
+    },
+    {
+      num: 2,
+      titulo: 'Página 2',
+      ilustracaoTitulo: 'Ilustração de um ser brilhante descendo numa floresta triste',
+      ilustracaoDesc: 'Nas copas secas e doentes da floresta, uma silhueta imensa de luz desce com braços acolhedores.',
+      svgIcon: '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#f59e0b" stroke-width="1.8"><path d="M12 2a5 5 0 0 0-5 5v3a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5z"></path><path d="M12 15v7"></path><path d="M8 22h8"></path><path d="M5 12H2"></path><path d="M22 12h-3"></path><path d="M6 18l-3 3"></path><path d="M18 18l3 3"></path></svg>',
+      texto: 'Ele desceu nas árvores de uma terra cansada. O povo de lá estava doente, fraco e com medo. O Viajante abriu os braços e disse: \'Não chorem mais. Eu trago o presente da energia infinita\'.'
+    },
+    {
+      num: 3,
+      titulo: 'Página 3',
+      ilustracaoTitulo: 'Ilustração do povo de mãos dadas com o Viajante',
+      ilustracaoDesc: 'As famílias abrem suas portas e unem suas mãos às do Viajante, entregando seus pensamentos e sonhos.',
+      svgIcon: '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#f59e0b" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path><path d="M1 12h4"></path><path d="M19 12h4"></path></svg>',
+      texto: 'O povo ficou feliz e abriu as portas de suas casas para ele. O Viajante pediu que todos fechassem os olhos e lhe entregassem os seus sonhos, pois só ele poderia guardá-los de todo o mal.'
+    },
+    {
+      num: 4,
+      titulo: 'Página 4',
+      ilustracaoTitulo: 'Ilustração do Viajante cobrindo o planeta como um cobertor escuro',
+      ilustracaoDesc: 'O abraço do ser expande-se sobre todo o globo, envolvendo cidades e florestas num silêncio perpétuo.',
+      svgIcon: '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#f59e0b" stroke-width="1.8"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>',
+      texto: 'Eles entregaram. Então, o Viajante cresceu tanto que abraçou o mundo inteiro. E todos dormiram para sempre, bem quentinhos em seu abraço, em silêncio e em paz.'
+    }
+  ],
+
+  open(itemId = 'col_livro_viajante_terra', page = 1) {
+    this.currentPage = page;
+    this.mode = 'single';
+    this.render();
+    MesaApp.openModal('livro-reader-modal');
+  },
+
+  close() {
+    MesaApp.closeModal('livro-reader-modal');
+  },
+
+  nextPage() {
+    if (this.currentPage < this.totalPags) {
+      this.currentPage++;
+      this.render();
+    }
+  },
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.render();
+    }
+  },
+
+  goToPage(p) {
+    if (p >= 1 && p <= this.totalPags) {
+      this.currentPage = p;
+      this.mode = 'single';
+      this.render();
+    }
+  },
+
+  toggleMode() {
+    this.mode = this.mode === 'single' ? 'all' : 'single';
+    this.render();
+  },
+
+  render() {
+    const container = document.getElementById('livro-reader-body');
+    const indicator = document.getElementById('livro-page-indicator-text');
+    const prevBtn = document.getElementById('livro-prev-btn');
+    const nextBtn = document.getElementById('livro-next-btn');
+    const modeBtn = document.getElementById('livro-mode-btn');
+
+    if (indicator) {
+      indicator.textContent = this.mode === 'single'
+        ? `PÁGINA ${this.currentPage} DE ${this.totalPags}`
+        : `TODAS AS PÁGINAS (1 A ${this.totalPags})`;
+    }
+
+    if (prevBtn) {
+      prevBtn.style.display = this.mode === 'single' ? 'inline-flex' : 'none';
+      prevBtn.disabled = this.currentPage <= 1;
+      prevBtn.style.opacity = this.currentPage <= 1 ? '0.35' : '1';
+    }
+
+    if (nextBtn) {
+      nextBtn.style.display = this.mode === 'single' ? 'inline-flex' : 'none';
+      nextBtn.disabled = this.currentPage >= this.totalPags;
+      nextBtn.style.opacity = this.currentPage >= this.totalPags ? '0.35' : '1';
+    }
+
+    if (modeBtn) {
+      modeBtn.textContent = this.mode === 'single' ? 'Ver Todas as Páginas' : 'Ver Página por Página';
+    }
+
+    if (!container) return;
+
+    if (this.mode === 'all') {
+      container.innerHTML = `
+        <div class="livro-all-pages-container">
+          ${this.pages.map(p => this.renderPageCard(p)).join('')}
+        </div>
+      `;
+    } else {
+      const pageData = this.pages[this.currentPage - 1];
+      container.innerHTML = `
+        <div class="livro-single-page-wrap">
+          ${this.renderPageCard(pageData)}
+          <div class="livro-quick-dots-row">
+            ${this.pages.map(p => `
+              <button type="button" class="livro-dot-btn ${p.num === this.currentPage ? 'active' : ''}" onclick="MesaLivroReader.goToPage(${p.num})" title="Ir para Página ${p.num}">
+                ${p.num}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+  },
+
+  renderPageCard(p) {
+    return `
+      <article class="livro-page-card" id="livro-page-${p.num}">
+        <div class="livro-page-card-header">
+          <span class="livro-page-num-pill">Página ${p.num}</span>
+          <span class="livro-page-label">O Viajante e a Terra</span>
+        </div>
+
+        <div class="livro-illustration-frame">
+          <div class="livro-illustration-icon-box">
+            ${p.svgIcon}
+          </div>
+          <div class="livro-illustration-meta">
+            <h5 class="livro-illustration-title">${p.ilustracaoTitulo}</h5>
+            <p class="livro-illustration-desc">${p.ilustracaoDesc}</p>
+          </div>
+        </div>
+
+        <div class="livro-page-text-box">
+          <span class="livro-quote-mark">&ldquo;</span>
+          <p class="livro-page-text">${p.texto}</p>
+          <span class="livro-quote-mark right">&rdquo;</span>
+        </div>
+      </article>
+    `;
+  }
+};
+window.MesaLivroReader = MesaLivroReader;
+
+// Suporte para teclas de seta do teclado ao ler o livro
+document.addEventListener('keydown', (e) => {
+  const modal = document.getElementById('livro-reader-modal');
+  if (modal && modal.classList.contains('active')) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      MesaLivroReader.nextPage();
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      MesaLivroReader.prevPage();
+    } else if (e.key === 'Escape') {
+      MesaLivroReader.close();
+    }
+  }
+});
+
 
 const MesaSara = {
   openModal() {

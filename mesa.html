@@ -11,9 +11,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/variables.css?v=1.8.1">
-  <link rel="stylesheet" href="css/components.css?v=1.8.1">
-  <link rel="stylesheet" href="css/mesa.css?v=1.8.1">
+  <link rel="stylesheet" href="css/variables.css?v=1.8.2">
+  <link rel="stylesheet" href="css/components.css?v=1.8.2">
+  <link rel="stylesheet" href="css/mesa.css?v=1.8.2">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -842,7 +842,51 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       </div>
     </div>
 
-    <!-- Modal Sobre Sara -->
+    
+  <!-- MODAL: LEITOR DO LIVRO INFANTIL "O VIAJANTE E A TERRA" -->
+  <div id="livro-reader-modal" class="mesa-modal-overlay" onclick="if(event.target===this) MesaLivroReader.close()">
+    <div class="mesa-modal livro-reader-dialog">
+      <button type="button" class="mesa-modal-close" onclick="MesaLivroReader.close()" aria-label="Fechar Leitor">&times;</button>
+      
+      <!-- Cabeçalho do Leitor -->
+      <div class="livro-reader-header">
+        <div class="livro-reader-badge">DOCUMENTO DA CAMPANHA • RESIDÊNCIA AUGUIL</div>
+        <h2 class="livro-reader-title">O VIAJANTE E A TERRA</h2>
+        <div class="livro-reader-subtitle">Conto Infantil Ilustrado • 4 Páginas</div>
+      </div>
+
+      <!-- Barra de Ferramentas / Controles de Navegação -->
+      <div class="livro-reader-controls">
+        <div class="livro-reader-page-indicator">
+          <span class="livro-page-badge" id="livro-page-indicator-text">PÁGINA 1 DE 4</span>
+        </div>
+        <div class="livro-reader-nav-btns">
+          <button type="button" class="livro-nav-btn" id="livro-prev-btn" onclick="MesaLivroReader.prevPage()">
+            &larr; Anterior
+          </button>
+          <button type="button" class="livro-nav-btn primary" id="livro-next-btn" onclick="MesaLivroReader.nextPage()">
+            Próxima &rarr;
+          </button>
+          <button type="button" class="livro-mode-toggle-btn" id="livro-mode-btn" onclick="MesaLivroReader.toggleMode()">
+            Ver Todas as Páginas
+          </button>
+        </div>
+      </div>
+
+      <!-- Corpo do Leitor -->
+      <div class="livro-reader-body" id="livro-reader-body">
+        <!-- Renderizado dinamicamente por MesaLivroReader -->
+      </div>
+
+      <!-- Rodapé do Leitor -->
+      <div class="livro-reader-footer">
+        <div class="livro-reader-note">Item encontrado soterrado na escrivaninha de Sara Auguil (Casa Auguil).</div>
+        <button type="button" class="coletavel-form-cancel" onclick="MesaLivroReader.close()">Fechar Livro</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Sobre Sara -->
     <div id="sara-modal" class="mesa-modal-overlay">
       <div class="mesa-modal ink-modal" style="max-width: 600px; padding: 0;">
         <button class="mesa-modal-close" onclick="MesaSara.closeModal()" style="top: 14px; right: 18px; z-index: 10;">&times;</button>
@@ -1121,11 +1165,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=1.8.1"></script>
+<script src="js/campaign-data.js?v=1.8.2"></script>
 
-<script src="js/mesa.js?v=1.8.1"></script>
+<script src="js/mesa.js?v=1.8.2"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v1.8.1</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.8.2</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>

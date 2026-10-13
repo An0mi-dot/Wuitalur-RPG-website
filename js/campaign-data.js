@@ -718,7 +718,29 @@
       area: "Casa Auguil (Quarto de Sara)",
       desbloqueado: false,
       resumo: "Um livrinho de capa dura e colorida, muito bem conservado, que destoa completamente da bagunça e dos livros escolares da escrivaninha.",
-      detalhe: "Um conto ilustrado de quatro páginas sobre uma criatura que desce do espaço para \"abençoar\" um povo doente, consumindo os seus sonhos e colocando o mundo inteiro num sono eterno."
+      detalhe: "Um conto ilustrado de quatro páginas sobre uma criatura que desce do espaço para \"abençoar\" um povo doente, consumindo os seus sonhos e colocando o mundo inteiro num sono eterno. Clique em \"Ler Livro\" para folhear as 4 páginas ilustradas.",
+      paginas: [
+        {
+          numero: 1,
+          ilustracao: "Ilustração de uma estrela cadente escura",
+          texto: "Veio do céu que não tem fim um Viajante bondoso. Ele viajava pelo escuro do espaço procurando uma casa que precisasse de luz e de cuidado."
+        },
+        {
+          numero: 2,
+          ilustracao: "Ilustração de um ser brilhante descendo numa floresta triste",
+          texto: "Ele desceu nas árvores de uma terra cansada. O povo de lá estava doente, fraco e com medo. O Viajante abriu os braços e disse: 'Não chorem mais. Eu trago o presente da energia infinita'."
+        },
+        {
+          numero: 3,
+          ilustracao: "Ilustração do povo de mãos dadas com o Viajante",
+          texto: "O povo ficou feliz e abriu as portas de suas casas para ele. O Viajante pediu que todos fechassem os olhos e lhe entregassem os seus sonhos, pois só ele poderia guardá-los de todo o mal."
+        },
+        {
+          numero: 4,
+          ilustracao: "Ilustração do Viajante cobrindo o planeta como um cobertor escuro",
+          texto: "Eles entregaram. Então, o Viajante cresceu tanto que abraçou o mundo inteiro. E todos dormiram para sempre, bem quentinhos em seu abraço, em silêncio e em paz."
+        }
+      ]
     },
     {
       id: "col_caixa_negra_dourada",
