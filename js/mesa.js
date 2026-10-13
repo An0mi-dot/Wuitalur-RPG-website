@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI & Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.8.3';
+const MESA_VERSION = 'v1.8.5';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -905,6 +905,12 @@ const MesaApp = {
       if (menuCombateBtn) menuCombateBtn.style.display = 'flex';
       const mobileCombateBtn = document.getElementById('mobile-combate-item');
       if (mobileCombateBtn) mobileCombateBtn.style.display = 'flex';
+      const menuColetaveisBtn = document.getElementById('menu-coletaveis-btn');
+      if (menuColetaveisBtn) menuColetaveisBtn.style.display = 'flex';
+      const mobileColetaveisBtn = document.getElementById('mobile-coletaveis-item');
+      if (mobileColetaveisBtn) mobileColetaveisBtn.style.display = 'flex';
+      const combatColetaveisBtn = document.getElementById('combat-coletaveis-item');
+      if (combatColetaveisBtn) combatColetaveisBtn.style.display = 'flex';
     } else if (this.state.myToken) {
       if (tokenLabel) {
         tokenLabel.textContent = this.state.myPlayerSlot ? `Slot ${this.state.myPlayerSlot} Conectado` : 'Token Ativo';
@@ -919,6 +925,12 @@ const MesaApp = {
       if (menuCombateBtn) menuCombateBtn.style.display = 'none';
       const mobileCombateBtn = document.getElementById('mobile-combate-item');
       if (mobileCombateBtn) mobileCombateBtn.style.display = 'none';
+      const menuColetaveisBtn = document.getElementById('menu-coletaveis-btn');
+      if (menuColetaveisBtn) menuColetaveisBtn.style.display = 'none';
+      const mobileColetaveisBtn = document.getElementById('mobile-coletaveis-item');
+      if (mobileColetaveisBtn) mobileColetaveisBtn.style.display = 'none';
+      const combatColetaveisBtn = document.getElementById('combat-coletaveis-item');
+      if (combatColetaveisBtn) combatColetaveisBtn.style.display = 'none';
     } else {
       if (tokenLabel) tokenLabel.textContent = 'Token';
       if (alertBadge) alertBadge.style.display = 'flex';
@@ -931,6 +943,12 @@ const MesaApp = {
       if (menuCombateBtn) menuCombateBtn.style.display = 'none';
       const mobileCombateBtn = document.getElementById('mobile-combate-item');
       if (mobileCombateBtn) mobileCombateBtn.style.display = 'none';
+      const menuColetaveisBtn = document.getElementById('menu-coletaveis-btn');
+      if (menuColetaveisBtn) menuColetaveisBtn.style.display = 'none';
+      const mobileColetaveisBtn = document.getElementById('mobile-coletaveis-item');
+      if (mobileColetaveisBtn) mobileColetaveisBtn.style.display = 'none';
+      const combatColetaveisBtn = document.getElementById('combat-coletaveis-item');
+      if (combatColetaveisBtn) combatColetaveisBtn.style.display = 'none';
     }
 
     this.updateAuthChip();
@@ -2258,8 +2276,10 @@ const MesaApp = {
         <!-- 5. Coletáveis e Itens da Campanha -->
         <div class="ficha-open-section ficha-section-coletaveis" style="margin-top: 18px; width: 100%;">
           <div class="ink-ribbon-title" style="background: #d97706; display: flex; align-items: center; justify-content: space-between;">
-            <span>COLETÁVEIS & ITENS DA CAMPANHA</span>
-            <button type="button" class="ficha-open-catalog-btn" onclick="MesaColetaveis.openModal()" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.3); color: #fff; font-size: 0.72rem; padding: 2px 8px; cursor: pointer; border-radius: 2px;">Abrir Catálogo Completo &rarr;</button>
+            <span>ITENS & COLETÁVEIS EM POSSE</span>
+            ${isMaster ? `
+              <button type="button" class="ficha-open-catalog-btn" onclick="MesaColetaveis.openModal()" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.3); color: #fff; font-size: 0.72rem; padding: 2px 8px; cursor: pointer; border-radius: 2px;">Catálogo Geral (Mestre) &rarr;</button>
+            ` : ''}
           </div>
           <div id="ficha-coletaveis-container" class="ficha-coletaveis-container" style="margin-top: 12px;"></div>
         </div>
@@ -4321,6 +4341,10 @@ const MesaQuickMenu = {
     if (menuCombateBtn) {
       menuCombateBtn.style.display = isMaster ? 'flex' : 'none';
     }
+    const menuColetaveisBtn = document.getElementById('menu-coletaveis-btn');
+    if (menuColetaveisBtn) {
+      menuColetaveisBtn.style.display = isMaster ? 'flex' : 'none';
+    }
 
     const notebookCloseBtn = document.getElementById('notebook-close-btn');
     if (notebookCloseBtn) {
@@ -4433,6 +4457,10 @@ const MesaMobileMenu = {
     if (mobileCombateBtn) {
       mobileCombateBtn.style.display = isMaster ? 'flex' : 'none';
     }
+    const mobileColetaveisBtn = document.getElementById('mobile-coletaveis-item');
+    if (mobileColetaveisBtn) {
+      mobileColetaveisBtn.style.display = isMaster ? 'flex' : 'none';
+    }
 
     if (tokenLabel) {
       const authInfo = MesaApp.getAuthInfo();
@@ -4526,6 +4554,35 @@ const MesaColetaveis = {
   searchQuery: '',
   fichaSearchQuery: '',
 
+  getPlayerOptions() {
+    const players = (MesaApp && MesaApp.state && MesaApp.state.players) || [];
+    const options = [];
+    const defaultNames = [
+      'Thulita De La Benevidez',
+      'Sanguiminerva "Minerva" Qamari',
+      'Eric "Blade" Tepes Adams',
+      'Pera Hylidae da Silva',
+      'Willian Kars',
+      'John Doe',
+      'Odara De La Benevidez',
+      "Canneth 'Blinko' Biloxi"
+    ];
+    for (let slot = 1; slot <= 8; slot++) {
+      const p = players[slot - 1] || (players.find ? players.find(x => x && (x.slot === slot || x.id === slot)) : null);
+      const name = p && p.nome ? p.nome : defaultNames[slot - 1];
+      options.push({ slot, name });
+    }
+    return options;
+  },
+
+  getPlayerName(slot) {
+    if (!slot) return null;
+    const num = parseInt(slot, 10);
+    const opts = this.getPlayerOptions();
+    const found = opts.find(o => o.slot === num);
+    return found ? found.name : `Slot ${slot}`;
+  },
+
   mergeCanonical(list) {
     const canonical = window.CAMPAIGN_COLETAVEIS || window.MESA_COLETAVEIS || [];
     if (!Array.isArray(list)) list = [];
@@ -4535,7 +4592,11 @@ const MesaColetaveis = {
     canonical.forEach(can => {
       const idx = merged.findIndex(it => it.id === can.id);
       if (idx === -1) {
-        merged.push({ ...can, desbloqueado: can.desbloqueado !== undefined ? can.desbloqueado : true });
+        merged.push({ 
+          ...can, 
+          desbloqueado: can.desbloqueado !== undefined ? can.desbloqueado : true,
+          posse: can.posse !== undefined ? can.posse : null
+        });
         changed = true;
       } else {
         if (can.paginas && !merged[idx].paginas) {
@@ -4548,6 +4609,10 @@ const MesaColetaveis = {
         }
         if (can.resumo && merged[idx].resumo !== can.resumo) {
           merged[idx].resumo = can.resumo;
+          changed = true;
+        }
+        if (merged[idx].posse === undefined) {
+          merged[idx].posse = can.posse !== undefined ? can.posse : null;
           changed = true;
         }
         if (['col_notebook_sara', 'col_livro_viajante_terra', 'col_caixa_negra_dourada'].includes(can.id)) {
@@ -4590,18 +4655,64 @@ const MesaColetaveis = {
           const { items: merged } = this.mergeCanonical(parsed);
           this.items = merged;
         } else {
-          this.items = canonical.map(it => ({ ...it, desbloqueado: it.desbloqueado === true }));
+          this.items = canonical.map(it => ({ ...it, desbloqueado: it.desbloqueado === true, posse: it.posse || null }));
         }
       } catch (e) {
-        this.items = canonical.map(it => ({ ...it, desbloqueado: it.desbloqueado === true }));
+        this.items = canonical.map(it => ({ ...it, desbloqueado: it.desbloqueado === true, posse: it.posse || null }));
       }
     } else {
-      this.items = canonical.map(it => ({ ...it, desbloqueado: it.desbloqueado === true }));
+      this.items = canonical.map(it => ({ ...it, desbloqueado: it.desbloqueado === true, posse: it.posse || null }));
       localStorage.setItem('wu_coletaveis_v2', JSON.stringify(this.items));
     }
   },
 
+  assignItem(itemId, slotValue) {
+    if (!MesaApp || !MesaApp.state || !MesaApp.state.isMaster) return;
+    const item = this.items.find(it => it.id === itemId);
+    if (!item) return;
+
+    const newSlot = (slotValue === '' || slotValue === 'none' || slotValue === null || slotValue === undefined)
+      ? null
+      : parseInt(slotValue, 10);
+
+    item.posse = newSlot;
+    if (newSlot !== null) {
+      item.desbloqueado = true;
+    }
+
+    this.saveAndSync();
+    this.render();
+    this.renderFicha();
+
+    let targetName = 'Acervo Geral do Grupo';
+    if (newSlot !== null) {
+      targetName = this.getPlayerName(newSlot) || `Slot ${newSlot}`;
+    }
+
+    if (MesaChat && MesaChat.channel) {
+      try {
+        MesaChat.channel.send({
+          type: 'broadcast',
+          event: 'chat_message',
+          payload: {
+            id: 'msg_' + Date.now(),
+            text: newSlot !== null
+              ? `[ITEM ENTREGUE]: "${item.nome}" foi entregue a ${targetName}! O item já aparece na ficha do personagem.`
+              : `[ITEM RECOLHIDO]: "${item.nome}" foi devolvido ao acervo geral pelo Mestre.`,
+            sender: 'Mestre',
+            role: 'mestre',
+            timestamp: Date.now()
+          }
+        });
+      } catch(e) {}
+    }
+  },
+
   openModal() {
+    if (!MesaApp || !MesaApp.state || !MesaApp.state.isMaster) {
+      alert('[ACESSO RESTRITO]: O Catálogo Geral de Coletáveis é exclusivo do Mestre. Os itens obtidos pelo seu personagem ficam disponíveis na sua ficha.');
+      return;
+    }
     this.init();
     this.searchQuery = '';
     const input = document.getElementById('coletaveis-search-input');
@@ -4609,9 +4720,8 @@ const MesaColetaveis = {
     
     const addBtn = document.getElementById('coletaveis-master-add-btn');
     const restoreBtn = document.getElementById('coletaveis-master-restore-btn');
-    const isMaster = (MesaApp && MesaApp.state && MesaApp.state.isMaster);
-    if (addBtn) addBtn.style.display = isMaster ? 'inline-flex' : 'none';
-    if (restoreBtn) restoreBtn.style.display = isMaster ? 'inline-flex' : 'none';
+    if (addBtn) addBtn.style.display = 'inline-flex';
+    if (restoreBtn) restoreBtn.style.display = 'inline-flex';
 
     this.render();
     MesaApp.openModal('coletaveis-modal');
@@ -4632,6 +4742,7 @@ const MesaColetaveis = {
     const areaEl = document.getElementById('coletavel-form-area');
     const campoTipoEl = document.getElementById('coletavel-form-campo-tipo');
     const statusEl = document.getElementById('coletavel-form-status');
+    const posseEl = document.getElementById('coletavel-form-posse');
     const resumoEl = document.getElementById('coletavel-form-resumo');
     const detalheEl = document.getElementById('coletavel-form-detalhe');
 
@@ -4643,7 +4754,8 @@ const MesaColetaveis = {
     if (tipoEl) tipoEl.value = '';
     if (areaEl) areaEl.value = '';
     if (campoTipoEl) campoTipoEl.value = 'Detalhe';
-    if (statusEl) statusEl.value = 'locked';
+    if (statusEl) statusEl.value = 'unlocked';
+    if (posseEl) posseEl.value = '';
     if (resumoEl) resumoEl.value = '';
     if (detalheEl) detalheEl.value = '';
 
@@ -4664,6 +4776,7 @@ const MesaColetaveis = {
     const areaEl = document.getElementById('coletavel-form-area');
     const campoTipoEl = document.getElementById('coletavel-form-campo-tipo');
     const statusEl = document.getElementById('coletavel-form-status');
+    const posseEl = document.getElementById('coletavel-form-posse');
     const resumoEl = document.getElementById('coletavel-form-resumo');
     const detalheEl = document.getElementById('coletavel-form-detalhe');
 
@@ -4676,6 +4789,7 @@ const MesaColetaveis = {
     if (areaEl) areaEl.value = item.area || '';
     if (campoTipoEl) campoTipoEl.value = item.campo_tipo || 'Detalhe';
     if (statusEl) statusEl.value = item.desbloqueado ? 'unlocked' : 'locked';
+    if (posseEl) posseEl.value = item.posse !== null && item.posse !== undefined ? String(item.posse) : '';
     if (resumoEl) resumoEl.value = item.resumo || '';
     if (detalheEl) detalheEl.value = item.detalhe || item.desc || '';
 
@@ -4702,6 +4816,8 @@ const MesaColetaveis = {
     const campo_tipo = (document.getElementById('coletavel-form-campo-tipo')?.value || '').trim() || 'Detalhe';
     const statusVal = document.getElementById('coletavel-form-status')?.value;
     const desbloqueado = (statusVal === 'unlocked');
+    const posseVal = document.getElementById('coletavel-form-posse')?.value;
+    const posse = (posseVal === '' || posseVal === null || posseVal === undefined) ? null : parseInt(posseVal, 10);
     const resumo = (document.getElementById('coletavel-form-resumo')?.value || '').trim();
     const detalhe = (document.getElementById('coletavel-form-detalhe')?.value || '').trim() || 'Sem detalhes adicionais.';
 
@@ -4716,6 +4832,7 @@ const MesaColetaveis = {
         item.area = area;
         item.campo_tipo = campo_tipo;
         item.desbloqueado = desbloqueado;
+        item.posse = posse;
         item.resumo = resumo;
         item.detalhe = detalhe;
         item.desc = detalhe;
@@ -4726,7 +4843,7 @@ const MesaColetaveis = {
           event: 'chat_message',
           payload: {
             id: 'msg_' + Date.now(),
-            text: `📝 [COLETÁVEL ATUALIZADO]: O Mestre editou as informações de "${nome}".`,
+            text: `[COLETÁVEL ATUALIZADO]: O Mestre editou as informações de "${nome}".`,
             sender: 'Mestre',
             role: 'mestre',
             timestamp: Date.now()
@@ -4745,6 +4862,7 @@ const MesaColetaveis = {
         detalhe,
         desc: detalhe,
         desbloqueado,
+        posse,
         dataCriacao: new Date().toLocaleDateString('pt-BR')
       };
       this.items.unshift(newItem);
@@ -4754,7 +4872,7 @@ const MesaColetaveis = {
           event: 'chat_message',
           payload: {
             id: 'msg_' + Date.now(),
-            text: `📦 [NOVO COLETÁVEL REGISTRADO]: ${nome} (${tipo}) foi catalogado pelo Mestre (${desbloqueado ? 'Liberado' : 'Bloqueado'}).`,
+            text: `[NOVO COLETÁVEL REGISTRADO]: ${nome} (${tipo}) foi catalogado pelo Mestre (${desbloqueado ? 'Liberado' : 'Bloqueado'}).`,
             sender: 'Mestre',
             role: 'mestre',
             timestamp: Date.now()
@@ -4790,8 +4908,8 @@ const MesaColetaveis = {
         payload: {
           id: 'msg_' + Date.now(),
           text: item.desbloqueado
-            ? `🔓 [COLETÁVEL LIBERADO]: O Mestre liberou o item "${item.nome}" para o grupo!`
-            : `🔒 [COLETÁVEL TRANCADO]: O item "${item.nome}" foi trancado pelo Mestre.`,
+            ? `[COLETÁVEL LIBERADO]: O Mestre liberou o item "${item.nome}"!`
+            : `[COLETÁVEL TRANCADO]: O item "${item.nome}" foi trancado pelo Mestre.`,
           sender: 'Mestre',
           role: 'mestre',
           timestamp: Date.now()
@@ -4814,7 +4932,7 @@ const MesaColetaveis = {
     if (!MesaApp.state.isMaster) return;
     if (!confirm('Deseja restaurar todos os 15 coletáveis canônicos da campanha?')) return;
     const canonical = window.CAMPAIGN_COLETAVEIS || window.MESA_COLETAVEIS || [];
-    this.items = canonical.map(it => ({ ...it, desbloqueado: false }));
+    this.items = canonical.map(it => ({ ...it, desbloqueado: true, posse: it.posse || null }));
     this.saveAndSync();
     this.render();
     this.renderFicha();
@@ -4867,43 +4985,35 @@ const MesaColetaveis = {
     this.renderFicha();
   },
 
-  renderFicha() {
+  renderFicha(targetPlayer) {
     const container = document.getElementById('ficha-coletaveis-container');
     if (!container) return;
     this.init();
 
-    const isMaster = MesaApp && MesaApp.state && MesaApp.state.isMaster;
+    const isMaster = Boolean(MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    const activePlayer = targetPlayer || (MesaApp && MesaApp.state && MesaApp.state.activeViewingPlayer);
+    if (!activePlayer) return;
 
-    if (!this.items || this.items.length === 0) {
+    const playerSlot = activePlayer.slot;
+    const playerName = activePlayer.nome || `Slot ${playerSlot}`;
+
+    // Filtra estritamente os itens que estão na posse deste personagem
+    const playerItems = this.items.filter(it => it.posse !== null && it.posse !== undefined && it.posse !== '' && String(it.posse) === String(playerSlot));
+
+    if (playerItems.length === 0) {
       container.innerHTML = `
-        <div class="coletaveis-empty-state" style="padding: 24px 14px;">
-          <div class="coletaveis-empty-title" style="font-size: 0.95rem;">[ NENHUM COLETÁVEL ENCONTRADO ]</div>
-          <div class="coletaveis-empty-desc" style="font-size: 0.8rem;">Nenhum item ou pista foi coletado pelo grupo até o momento.</div>
-        </div>
-      `;
-      return;
-    }
-
-    const filtered = this.items.filter(it => {
-      if (!this.fichaSearchQuery) return true;
-      const q = this.fichaSearchQuery;
-      if (!isMaster && !it.desbloqueado) {
-        return false; // Jogadores não filtram pelo conteúdo de itens trancados
-      }
-      return (
-        (it.nome && it.nome.toLowerCase().includes(q)) ||
-        (it.tipo && it.tipo.toLowerCase().includes(q)) ||
-        (it.area && it.area.toLowerCase().includes(q)) ||
-        (it.resumo && it.resumo.toLowerCase().includes(q)) ||
-        (it.detalhe && it.detalhe.toLowerCase().includes(q))
-      );
-    });
-
-    if (filtered.length === 0) {
-      container.innerHTML = `
-        <div class="coletaveis-empty-state" style="padding: 20px 14px;">
-          <div class="coletaveis-empty-title" style="font-size: 0.88rem;">[ NENHUM RESULTADO ]</div>
-          <div class="coletaveis-empty-desc" style="font-size: 0.78rem;">Nenhum item corresponde à pesquisa "${this.fichaSearchQuery}".</div>
+        <div class="coletaveis-empty-state" style="padding: 22px 14px; text-align: center; border: 1px dashed rgba(245, 158, 11, 0.25); border-radius: 4px; background: rgba(0,0,0,0.35);">
+          <div class="coletaveis-empty-title" style="font-size: 0.9rem; color: #a3a3a3; font-family: var(--font-heading, 'Cinzel', serif);">[ NENHUM ITEM EM POSSE ]</div>
+          <div class="coletaveis-empty-desc" style="font-size: 0.8rem; color: #737373; margin-top: 6px;">
+            Nenhum item, pista ou documento da campanha está em posse de <strong>${playerName}</strong> no momento.
+          </div>
+          ${isMaster ? `
+            <div style="margin-top: 12px;">
+              <button type="button" class="mesa-btn ink-tag" onclick="MesaColetaveis.openModal()" style="font-size: 0.74rem; padding: 4px 10px; color: #fbbf24; border-color: rgba(245, 158, 11, 0.4); cursor: pointer;">
+                Entregar Itens pelo Catálogo do Mestre &rarr;
+              </button>
+            </div>
+          ` : ''}
         </div>
       `;
       return;
@@ -4911,64 +5021,51 @@ const MesaColetaveis = {
 
     container.innerHTML = `
       <div class="coletaveis-cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px;">
-        ${filtered.map(it => {
-          if (!isMaster && !it.desbloqueado) {
-            return `
-              <div class="coletavel-card coletavel-card-locked" title="Item Bloqueado">
-                <div class="coletavel-locked-inner">
-                  <svg class="coletavel-locked-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                    <rect x="4" y="11" width="16" height="11"></rect>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                  </svg>
-                </div>
-              </div>
-            `;
-          }
+        ${playerItems.map(it => {
+          const isBook = it.id === 'col_livro_viajante_terra' || (it.paginas && it.paginas.length > 0);
+          const isNotebook = it.id === 'col_notebook_sara';
+          const isClickable = isBook || isNotebook;
 
           return `
-            <div class="coletavel-card ${isMaster ? (it.desbloqueado ? 'master-unlocked' : 'master-locked') : ''}" style="padding: 10px 12px;">
+            <div class="coletavel-card ${isClickable ? 'clickable-item' : ''}" style="padding: 12px 14px;" ${isBook ? `onclick="MesaLivroReader.open('${it.id}')" title="Clique para folhear e ler este livro"` : (isNotebook ? `onclick="if(window.MesaNotebookSara) MesaNotebookSara.open()" title="Clique para acessar as câmeras de segurança"` : '')}>
               <div class="coletavel-card-header">
-                <h4 class="coletavel-card-title" style="font-size: 0.92rem;">${it.nome}</h4>
+                <h4 class="coletavel-card-title" style="font-size: 0.95rem; color: #fbbf24;">${it.nome}</h4>
                 <div class="coletavel-card-badges">
-                  ${isMaster ? `<span class="coletavel-status-badge ${it.desbloqueado ? 'unlocked' : 'locked'}">${it.desbloqueado ? 'Liberado' : 'Bloqueado'}</span>` : ''}
-                  <span class="coletavel-card-badge">${it.tipo || 'Pista'}</span>
+                  <span class="coletavel-card-badge">${it.tipo || 'Item'}</span>
                   <span class="coletavel-weight-badge">Peso ${it.peso !== undefined ? it.peso : 0}</span>
                 </div>
               </div>
               ${it.area ? `
-                <div class="coletavel-card-area" style="font-size: 0.72rem;">
+                <div class="coletavel-card-area" style="font-size: 0.72rem; margin-top: 4px;">
                   <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                   <span>${it.area}</span>
                 </div>
               ` : ''}
-              ${it.resumo ? `<div class="coletavel-card-resumo">${it.resumo}</div>` : ''}
+              ${it.resumo ? `<div class="coletavel-card-resumo" style="font-size: 0.8rem; margin-top: 6px;">${it.resumo}</div>` : ''}
               ${(it.detalhe || it.desc) ? `
-                <p class="coletavel-card-desc" style="font-size: 0.78rem; margin-top: 4px;">
+                <p class="coletavel-card-desc" style="font-size: 0.8rem; margin-top: 6px;">
                   <strong>${it.campo_tipo || (it.efeito ? 'Efeito' : 'Detalhe')}:</strong>
                   ${it.detalhe || it.desc}
                 </p>
               ` : ''}
+              ${isBook ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('${it.id}');">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                  <span>Abrir e Ler Livro (4 Páginas Ilustradas)</span>
+                </button>
+              ` : ''}
+              ${isNotebook ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); if(window.MesaNotebookSara) MesaNotebookSara.open();" style="background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.45); color: #38bdf8;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                  <span>Acesso Rápido: Câmeras de Segurança</span>
+                </button>
+              ` : ''}
               ${isMaster ? `
-                <div class="coletavel-card-footer" style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-top:8px;">
-                  <button type="button" class="coletavel-lock-btn ${it.desbloqueado ? 'lock-action' : 'unlock-action'}" onclick="MesaColetaveis.toggleLock('${it.id}')">
-                    ${it.desbloqueado ? `
-                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                      Trancar Item
-                    ` : `
-                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="11"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>
-                      Liberar Item
-                    `}
+                <div class="coletavel-card-footer" style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-top:8px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 6px;">
+                  <span style="font-size: 0.7rem; color: #a3a3a3;">Posse: Slot ${playerSlot}</span>
+                  <button type="button" class="coletavel-delete-btn" onclick="event.stopPropagation(); MesaColetaveis.assignItem('${it.id}', '');" title="Desvincular item deste personagem" style="font-size: 0.72rem; padding: 2px 6px;">
+                    Desvincular
                   </button>
-                  <div style="display:flex; gap:6px; align-items:center;">
-                    <button type="button" class="coletavel-edit-btn" onclick="MesaColetaveis.openEditModal('${it.id}')" title="Editar Coletável">
-                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-                      Editar
-                    </button>
-                    <button type="button" class="coletavel-delete-btn" onclick="MesaColetaveis.deleteItem('${it.id}')" title="Excluir Coletável">
-                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                      Excluir
-                    </button>
-                  </div>
                 </div>
               ` : ''}
             </div>
@@ -4982,7 +5079,8 @@ const MesaColetaveis = {
     const container = document.getElementById('coletaveis-scroll-container');
     if (!container) return;
 
-    const isMaster = MesaApp && MesaApp.state && MesaApp.state.isMaster;
+    const isMaster = Boolean(MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    const playerOptions = this.getPlayerOptions();
 
     if (!this.items || this.items.length === 0) {
       container.innerHTML = `
@@ -4993,7 +5091,7 @@ const MesaColetaveis = {
             <line x1="12" y1="22.08" x2="12" y2="12"></line>
           </svg>
           <div class="coletaveis-empty-title">[ NENHUM COLETÁVEL ENCONTRADO ]</div>
-          <div class="coletaveis-empty-desc">Nenhum item ou registro foi coletado pelo grupo até o momento. Conforme os investigadores explorarem áreas e resolverem enigmas, os itens e pistas coletados serão catalogados aqui.</div>
+          <div class="coletaveis-empty-desc">Nenhum item ou registro foi catalogado pelo grupo até o momento.</div>
         </div>
       `;
       return;
@@ -5002,9 +5100,6 @@ const MesaColetaveis = {
     const filtered = this.items.filter(it => {
       if (!this.searchQuery) return true;
       const q = this.searchQuery;
-      if (!isMaster && !it.desbloqueado) {
-        return false; // Jogadores não filtram pelo conteúdo de itens trancados
-      }
       return (
         (it.nome && it.nome.toLowerCase().includes(q)) ||
         (it.tipo && it.tipo.toLowerCase().includes(q)) ||
@@ -5028,21 +5123,12 @@ const MesaColetaveis = {
     container.innerHTML = `
       <div class="coletaveis-cards-grid">
         ${filtered.map(it => {
-          if (!isMaster && !it.desbloqueado) {
-            return `
-              <div class="coletavel-card coletavel-card-locked" title="Item Bloqueado">
-                <div class="coletavel-locked-inner">
-                  <svg class="coletavel-locked-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                    <rect x="4" y="11" width="16" height="11"></rect>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                  </svg>
-                </div>
-              </div>
-            `;
-          }
+          const isBook = it.id === 'col_livro_viajante_terra' || (it.paginas && it.paginas.length > 0);
+          const isNotebook = it.id === 'col_notebook_sara';
+          const isClickable = isBook || isNotebook;
 
           return `
-            <div class="coletavel-card ${isMaster ? (it.desbloqueado ? 'master-unlocked' : 'master-locked') : ''}">
+            <div class="coletavel-card ${isMaster ? (it.desbloqueado ? 'master-unlocked' : 'master-locked') : ''} ${isClickable ? 'clickable-item' : ''}" ${isBook ? `onclick="MesaLivroReader.open('${it.id}')" title="Clique para folhear e ler este livro"` : (isNotebook ? `onclick="if(window.MesaNotebookSara) MesaNotebookSara.open()" title="Clique para acessar as câmeras de segurança"` : '')}>
               <div class="coletavel-card-header">
                 <h3 class="coletavel-card-title">${it.nome}</h3>
                 <div class="coletavel-card-badges">
@@ -5064,9 +5150,32 @@ const MesaColetaveis = {
                   ${it.detalhe || it.desc}
                 </p>
               ` : ''}
+              ${isBook ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('${it.id}');">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                  <span>Abrir e Ler Livro (4 Páginas Ilustradas)</span>
+                </button>
+              ` : ''}
+              ${isNotebook ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); if(window.MesaNotebookSara) MesaNotebookSara.open();" style="background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.45); color: #38bdf8;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                  <span>Acesso Rápido: Câmeras de Segurança</span>
+                </button>
+              ` : ''}
               ${isMaster ? `
+                <div class="coletavel-assign-row" onclick="event.stopPropagation();">
+                  <span class="coletavel-assign-label">Posse:</span>
+                  <select class="coletavel-assign-select" onchange="MesaColetaveis.assignItem('${it.id}', this.value)">
+                    <option value="" ${!it.posse ? 'selected' : ''}>-- Nenhum (Acervo Geral do Grupo) --</option>
+                    ${playerOptions.map(opt => `
+                      <option value="${opt.slot}" ${String(it.posse) === String(opt.slot) ? 'selected' : ''}>
+                        Slot ${opt.slot}: ${opt.name}
+                      </option>
+                    `).join('')}
+                  </select>
+                </div>
                 <div class="coletavel-card-footer" style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-top:10px;">
-                  <button type="button" class="coletavel-lock-btn ${it.desbloqueado ? 'lock-action' : 'unlock-action'}" onclick="MesaColetaveis.toggleLock('${it.id}')">
+                  <button type="button" class="coletavel-lock-btn ${it.desbloqueado ? 'lock-action' : 'unlock-action'}" onclick="event.stopPropagation(); MesaColetaveis.toggleLock('${it.id}')">
                     ${it.desbloqueado ? `
                       <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                       Trancar Item
@@ -5076,11 +5185,11 @@ const MesaColetaveis = {
                     `}
                   </button>
                   <div style="display:flex; gap:6px; align-items:center;">
-                    <button type="button" class="coletavel-edit-btn" onclick="MesaColetaveis.openEditModal('${it.id}')" title="Editar Coletável">
+                    <button type="button" class="coletavel-edit-btn" onclick="event.stopPropagation(); MesaColetaveis.openEditModal('${it.id}')" title="Editar Coletável">
                       <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                       Editar
                     </button>
-                    <button type="button" class="coletavel-delete-btn" onclick="MesaColetaveis.deleteItem('${it.id}')" title="Excluir Coletável">
+                    <button type="button" class="coletavel-delete-btn" onclick="event.stopPropagation(); MesaColetaveis.deleteItem('${it.id}')" title="Excluir Coletável">
                       <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                       Excluir
                     </button>
