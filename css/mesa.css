@@ -7299,6 +7299,9 @@ body.interior-drawer-open .mesa-board-container,
 .abertura-overlay {
   position: fixed;
   inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   background: #000;
   z-index: 9000;
   display: flex;
@@ -7306,7 +7309,7 @@ body.interior-drawer-open .mesa-board-container,
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 1.5s ease-in-out;
+  transition: opacity 1.2s ease-in-out;
 }
 
 .abertura-overlay.active {
@@ -7317,7 +7320,9 @@ body.interior-drawer-open .mesa-board-container,
 #abertura-video {
   width: 100vw;
   height: 100vh;
-  object-fit: cover;
+  height: 100dvh;
+  object-fit: contain;
+  background: #000;
 }
 
 

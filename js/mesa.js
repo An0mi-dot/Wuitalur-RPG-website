@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI & Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.7.8';
+const MESA_VERSION = 'v1.7.9';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -1536,8 +1536,9 @@ const MesaApp = {
               const ab = p1Attrs._sys_abertura;
               const ov = document.getElementById('abertura-overlay');
               const isActive = ov && ov.classList.contains('active');
-              if (ab.active && !isActive && (Date.now() - (ab.timestamp || 0) < 35000)) {
-                MesaAbertura.triggerAbertura();
+              if (ab.active && !isActive && (Date.now() - (ab.timestamp || 0) < 55000)) {
+                const offset = Math.max(0, (Date.now() - (ab.timestamp || 0)) / 1000);
+                MesaAbertura.triggerAbertura(offset);
               } else if (!ab.active && isActive) {
                 MesaAbertura.triggerStop();
               }
@@ -1654,8 +1655,9 @@ const MesaApp = {
             const ov = document.getElementById('abertura-overlay');
             const isActive = ov && ov.classList.contains('active');
             if (ab.active && !isActive) {
-              if (Date.now() - (ab.timestamp || 0) < 40000) {
-                MesaAbertura.triggerAbertura();
+              if (Date.now() - (ab.timestamp || 0) < 55000) {
+                const offset = Math.max(0, (Date.now() - (ab.timestamp || 0)) / 1000);
+                MesaAbertura.triggerAbertura(offset);
               }
             } else if (!ab.active && isActive) {
               MesaAbertura.triggerStop();
@@ -1725,8 +1727,10 @@ const MesaApp = {
     });
 
     // 4. Abertura da Mesa
-    channel.on('broadcast', { event: 'play_abertura' }, () => {
-      if (window.MesaAbertura) MesaAbertura.triggerAbertura();
+    channel.on('broadcast', { event: 'play_abertura' }, (payload) => {
+      const ts = payload && payload.payload && payload.payload.timestamp;
+      const offset = ts ? Math.max(0, (Date.now() - ts) / 1000) : 0;
+      if (window.MesaAbertura) MesaAbertura.triggerAbertura(offset);
     });
     channel.on('broadcast', { event: 'stop_abertura' }, () => {
       if (window.MesaAbertura) MesaAbertura.triggerStop();
@@ -5757,6 +5761,8 @@ const MesaAbertura = {
   play() {
     if (!MesaApp.state || !MesaApp.state.isMaster) return;
     
+    const now = Date.now();
+
     // 1. Broadcast para todos os jogadores
     const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
     if (chan) {
@@ -5764,7 +5770,7 @@ const MesaAbertura = {
         chan.send({
           type: 'broadcast',
           event: 'play_abertura',
-          payload: {}
+          payload: { timestamp: now }
         });
       } catch(e) {}
     }
@@ -5781,7 +5787,7 @@ const MesaAbertura = {
           const attrs = data && data.atributos 
             ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos) 
             : {};
-          attrs._sys_abertura = { active: true, timestamp: Date.now() };
+          attrs._sys_abertura = { active: true, timestamp: now };
           await MesaApp.supabase
             .from('personagens')
             .update({ atributos: attrs })
@@ -5791,7 +5797,7 @@ const MesaAbertura = {
     }
     
     // Toca para o Mestre
-    this.triggerAbertura();
+    this.triggerAbertura(0);
   },
 
   stop() {
@@ -5838,22 +5844,27 @@ const MesaAbertura = {
       setTimeout(() => {
         video.pause();
         video.currentTime = 0;
-      }, 1500);
+      }, 1200);
     }
   },
 
-  triggerAbertura() {
+  triggerAbertura(startTime = 0) {
     const overlay = document.getElementById('abertura-overlay');
     const video = document.getElementById('abertura-video');
     
     if (overlay && video) {
-      video.currentTime = 0;
+      video.muted = false;
+      if (typeof startTime === 'number' && startTime > 0 && startTime < 46) {
+        try { video.currentTime = startTime; } catch(e) {}
+      } else {
+        try { video.currentTime = 0; } catch(e) {}
+      }
       overlay.classList.add('active');
       
       const playPromise = video.play();
       if (playPromise !== undefined) {
         playPromise.catch(e => {
-          console.warn("Autoplay bloqueado pelo navegador. Tentando com mudo...", e);
+          console.warn("Autoplay com áudio bloqueado pelo navegador. Tentando com mudo...", e);
           video.muted = true;
           video.play().catch(err2 => console.error("Abertura video bloqueado:", err2));
         });
@@ -5864,7 +5875,7 @@ const MesaAbertura = {
         setTimeout(() => {
           video.pause();
           video.currentTime = 0;
-        }, 1500);
+        }, 1200);
       };
     }
   }
