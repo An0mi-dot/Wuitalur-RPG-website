@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI & Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.8.5';
+const MESA_VERSION = 'v1.8.6';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -2084,6 +2084,7 @@ const MesaApp = {
     this.state.activeViewingPlayer = player;
     const content = document.getElementById('ficha-content');
     const editable = this.canEdit(player);
+    const isMaster = Boolean(this.state && this.state.isMaster);
 
     let rawAttrs = player.atributos || {};
     let skills = player.pericias || [];
