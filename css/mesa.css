@@ -7303,7 +7303,7 @@ body.interior-drawer-open .mesa-board-container,
   height: 100vh;
   height: 100dvh;
   background: #000;
-  z-index: 9000;
+  z-index: 9999999 !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7313,8 +7313,9 @@ body.interior-drawer-open .mesa-board-container,
 }
 
 .abertura-overlay.active {
-  opacity: 1;
-  pointer-events: all;
+  opacity: 1 !important;
+  pointer-events: all !important;
+  z-index: 9999999 !important;
 }
 
 #abertura-video {
@@ -7325,7 +7326,6 @@ body.interior-drawer-open .mesa-board-container,
   background: #000;
 }
 
-
 .abertura-skip-btn {
   position: absolute;
   top: 24px;
@@ -7333,15 +7333,15 @@ body.interior-drawer-open .mesa-board-container,
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   color: #fff;
   font-size: 1.8rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 9001;
+  z-index: 10000000 !important;
   transition: all 0.2s;
   display: none; /* Controlled by JS isMaster */
 }
@@ -7350,6 +7350,41 @@ body.interior-drawer-open .mesa-board-container,
   background: rgba(239, 68, 68, 0.8);
   border-color: #ef4444;
   transform: scale(1.1);
+}
+
+/* Oculta todos os botões e navegações da mesa e do combate durante a abertura */
+body.abertura-active .mesa-floating-nav,
+body.abertura-active .mesa-mobile-fab-container,
+body.abertura-active .mesa-version,
+body.abertura-active .combat-header,
+body.abertura-active .combat-dock-container,
+body.abertura-active .combat-master-controls,
+body.abertura-active .combat-menu-drawer,
+body.abertura-active .combat-menu-backdrop,
+body.abertura-active .mesa-mobile-menu-drawer,
+body.abertura-active .mesa-mobile-backdrop,
+body.abertura-active .mesa-ink-frame,
+body.abertura-active .reaction-picker-popover {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+body:has(#abertura-overlay.active) .mesa-floating-nav,
+body:has(#abertura-overlay.active) .mesa-mobile-fab-container,
+body:has(#abertura-overlay.active) .mesa-version,
+body:has(#abertura-overlay.active) .combat-header,
+body:has(#abertura-overlay.active) .combat-dock-container,
+body:has(#abertura-overlay.active) .combat-master-controls,
+body:has(#abertura-overlay.active) .combat-menu-drawer,
+body:has(#abertura-overlay.active) .combat-menu-backdrop,
+body:has(#abertura-overlay.active) .mesa-mobile-menu-drawer,
+body:has(#abertura-overlay.active) .mesa-mobile-backdrop,
+body:has(#abertura-overlay.active) .mesa-ink-frame,
+body:has(#abertura-overlay.active) .reaction-picker-popover {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
 }
 
 

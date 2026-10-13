@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI & Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.7.9';
+const MESA_VERSION = 'v1.8.0';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -5837,6 +5837,7 @@ const MesaAbertura = {
   },
 
   triggerStop() {
+    document.body.classList.remove('abertura-active');
     const overlay = document.getElementById('abertura-overlay');
     const video = document.getElementById('abertura-video');
     if (overlay && video) {
@@ -5849,6 +5850,7 @@ const MesaAbertura = {
   },
 
   triggerAbertura(startTime = 0) {
+    document.body.classList.add('abertura-active');
     const overlay = document.getElementById('abertura-overlay');
     const video = document.getElementById('abertura-video');
     
@@ -5871,6 +5873,7 @@ const MesaAbertura = {
       }
 
       video.onended = () => {
+        document.body.classList.remove('abertura-active');
         overlay.classList.remove('active');
         setTimeout(() => {
           video.pause();
