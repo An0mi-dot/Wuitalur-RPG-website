@@ -1143,7 +1143,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   z-index: 3;
 }
 
-/* Wrapper da Tela da Ficha */
+/* Wrapper da Tela da Ficha (Scroll Suave sem Barra de Rolagem) */
 .ficha-screen-wrapper {
   position: relative;
   width: 100vw;
@@ -1154,12 +1154,26 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   display: flex;
   flex-direction: column;
   z-index: 10;
-  overflow: hidden;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
 }
 
-/* Botão Fechar */
+/* Ocultar barra de rolagem em todos os elementos da ficha (Cross-Browser) */
+.ficha-screen-wrapper::-webkit-scrollbar,
+.ficha-content-layout::-webkit-scrollbar,
+.ficha-info-col::-webkit-scrollbar,
+.ficha-overlay::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Botão Fechar Fixo (Permanece no Canto Superior Direito ao Rolar) */
 .ficha-screen-close {
-  position: absolute;
+  position: fixed !important;
   top: 20px;
   right: 32px;
   background: var(--mesa-ink-red);
@@ -1173,7 +1187,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   filter: url(#nanquim-rough);
   cursor: pointer;
   transition: transform 0.2s;
-  z-index: 50;
+  z-index: 100000;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
 }
 
@@ -1182,17 +1196,20 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   background: #ff3300;
 }
 
-/* Layout 2 Colunas Aberto (Sem Scroll no Desktop) */
+/* Layout 2 Colunas Aberto (Scroll Sem Barra no Desktop) */
 .ficha-content-layout {
   display: grid;
   grid-template-columns: minmax(460px, 44vw) 1fr;
   gap: 28px;
   width: 100%;
-  height: calc(100vh - 20px);
-  max-height: calc(100vh - 20px);
+  min-height: calc(100vh - 40px);
+  height: auto;
+  max-height: none;
   padding-top: 0;
-  padding-bottom: 0;
-  overflow: hidden;
+  padding-bottom: 60px;
+  overflow: visible !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
 }
 
 /* ---- KEYFRAME DE TRANSIÇÃO (SLIDE-IN DA ESQUERDA) ---- */
@@ -1207,15 +1224,18 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   }
 }
 
-/* Coluna Esquerda: Ilustração — 1º A ENTRAR DA ESQUERDA */
+/* Coluna Esquerda: Ilustração — Sticky no Topo Durante a Rolagem */
 .ficha-portrait-col {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  position: relative;
+  position: sticky;
+  top: 20px;
+  align-self: flex-start;
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 40px);
+  max-height: calc(100vh - 40px);
   border-right: none;
   overflow: visible;
   padding-bottom: 0;
@@ -1460,7 +1480,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   border: 1px solid rgba(255, 85, 0, 0.35);
 }
 
-/* Coluna Direita: Informações Espaçosas que vêm da Esquerda */
+/* Coluna Direita: Informações Espaçosas com rolagem vertical */
 .ficha-info-col {
   display: flex;
   flex-direction: column;
@@ -1468,7 +1488,10 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   padding: 0;
   color: #fff;
   width: 100%;
-  overflow: hidden;
+  overflow: visible !important;
+  padding-bottom: 40px;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
 }
 
 /* Sequência Escalonada: */
@@ -2383,10 +2406,12 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   }
 
   .ficha-screen-close {
+    position: fixed !important;
     top: 10px;
     right: 10px;
     padding: 5px 14px;
     font-size: 0.78rem;
+    z-index: 100000;
   }
 
   .ficha-content-layout {
