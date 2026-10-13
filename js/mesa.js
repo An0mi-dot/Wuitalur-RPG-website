@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI & Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.7.7';
+const MESA_VERSION = 'v1.7.8';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -1200,7 +1200,7 @@ const MesaApp = {
       altura: '1,75m',
       raca: 'Animalesco',
       arquetipo: 'Teimoso',
-      imagem: 'assets/blinko.png',
+      imagem: 'assets/blinko.png?v=2',
       avatar: 'assets/blinko_avatar.png',
       hp: 17, hpMax: 17,
       pe: 10, peMax: 10,
@@ -1359,7 +1359,7 @@ const MesaApp = {
           }
 
           if (p.token === 'F9C5' || p.slot === 8) {
-            p.imagem = 'assets/blinko.png';
+            p.imagem = 'assets/blinko.png?v=2';
             p.avatar = 'assets/blinko_avatar.png';
           }
 
@@ -1492,7 +1492,7 @@ const MesaApp = {
       if (!this.state.players[7]) {
         this.state.players[7] = {
           id: 8, slot: 8, token: 'F9C5', nome: "Canneth 'Blinko' Biloxi", idade: '18 anos', altura: '1,75m', raca: 'Animalesco', arquetipo: 'Teimoso',
-          imagem: 'assets/blinko.png', avatar: 'assets/blinko_avatar.png',
+          imagem: 'assets/blinko.png?v=2', avatar: 'assets/blinko_avatar.png',
           hp: 17, hpMax: 17, pe: 10, peMax: 10, st: 0, stMax: 36, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Vigor': 'd12', 'Saúde': 'd8', 'Força': 'd4', 'Mente': 'd16' },
           bonus: [
