@@ -1143,7 +1143,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   z-index: 3;
 }
 
-/* Wrapper da Tela da Ficha (Scroll Suave sem Barra de Rolagem) */
+/* Wrapper da Tela da Ficha (Fixo no Desktop, 2 Colunas Independentes) */
 .ficha-screen-wrapper {
   position: relative;
   width: 100vw;
@@ -1154,11 +1154,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   display: flex;
   flex-direction: column;
   z-index: 10;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
+  overflow: hidden !important;
 }
 
 /* Ocultar barra de rolagem em todos os elementos da ficha (Cross-Browser) */
@@ -1171,7 +1167,21 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   height: 0 !important;
 }
 
-/* Botão Fechar Fixo (Permanece no Canto Superior Direito ao Rolar) */
+/* Botões exclusivos do Mestre nos Coletáveis da Ficha (Ocultos para Jogadores) */
+.ficha-open-catalog-btn,
+.coletaveis-master-deliver-btn {
+  display: none !important;
+}
+
+body.is-master .ficha-open-catalog-btn {
+  display: inline-block !important;
+}
+
+body.is-master .coletaveis-master-deliver-btn {
+  display: inline-block !important;
+}
+
+/* Botão Fechar Fixo (Permanece no Canto Superior Direito) */
 .ficha-screen-close {
   position: fixed !important;
   top: 20px;
@@ -1196,20 +1206,17 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   background: #ff3300;
 }
 
-/* Layout 2 Colunas Aberto (Scroll Sem Barra no Desktop) */
+/* Layout 2 Colunas: Esquerda Imagem Estática | Direita Ficha com Scroll */
 .ficha-content-layout {
   display: grid;
   grid-template-columns: minmax(460px, 44vw) 1fr;
   gap: 28px;
   width: 100%;
-  min-height: calc(100vh - 40px);
-  height: auto;
-  max-height: none;
+  height: calc(100vh - 20px);
+  max-height: calc(100vh - 20px);
   padding-top: 0;
-  padding-bottom: 60px;
-  overflow: visible !important;
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
+  padding-bottom: 0;
+  overflow: hidden !important;
 }
 
 /* ---- KEYFRAME DE TRANSIÇÃO (SLIDE-IN DA ESQUERDA) ---- */
@@ -1224,18 +1231,16 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   }
 }
 
-/* Coluna Esquerda: Ilustração — Sticky no Topo Durante a Rolagem */
+/* Coluna Esquerda: Ilustração — 100% Estática, Não Acompanha o Scroll */
 .ficha-portrait-col {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  position: sticky;
-  top: 20px;
-  align-self: flex-start;
+  position: relative;
   width: 100%;
-  height: calc(100vh - 40px);
-  max-height: calc(100vh - 40px);
+  height: 100%;
+  max-height: 100%;
   border-right: none;
   overflow: visible;
   padding-bottom: 0;
@@ -1480,18 +1485,28 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   border: 1px solid rgba(255, 85, 0, 0.35);
 }
 
-/* Coluna Direita: Informações Espaçosas com rolagem vertical */
+/* Coluna Direita: Informações da Ficha — A ÚNICA PARTE QUE ROLA (Scroll Invisível) */
 .ficha-info-col {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding: 0;
+  padding: 0 16px 80px 0;
   color: #fff;
   width: 100%;
-  overflow: visible !important;
-  padding-bottom: 40px;
+  height: 100%;
+  max-height: calc(100vh - 20px);
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
+}
+
+.ficha-info-col::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 /* Sequência Escalonada: */
@@ -2432,6 +2447,14 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
     max-height: 280px !important;
     align-items: center !important;
     justify-content: center !important;
+  }
+
+  .ficha-info-col {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding-right: 0 !important;
+    padding-bottom: 40px !important;
   }
 
   .ficha-char-portrait-box {

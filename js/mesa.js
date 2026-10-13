@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.8.8';
+const MESA_VERSION = 'v1.8.9';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -879,6 +879,7 @@ const MesaApp = {
   },
 
   updateTokenBtnState() {
+    document.body.classList.toggle('is-master', Boolean(this.state && this.state.isMaster));
     const tokenBtn = document.getElementById('nav-token-btn');
     const tokenLabel = document.getElementById('nav-token-label');
     const alertBadge = document.getElementById('token-alert-badge');
@@ -2292,9 +2293,18 @@ const MesaApp = {
     }
 
     fichaModal.classList.add('active');
-    const fichaWrapper = document.querySelector('.ficha-screen-wrapper');
-    if (fichaWrapper) {
-      fichaWrapper.scrollTop = 0;
+    const infoCol = document.querySelector('.ficha-info-col');
+    if (infoCol) {
+      infoCol.scrollTop = 0;
+    }
+    const portraitCol = document.querySelector('.ficha-portrait-col');
+    if (portraitCol) {
+      portraitCol.onwheel = (e) => {
+        const targetInfo = document.querySelector('.ficha-info-col');
+        if (targetInfo) {
+          targetInfo.scrollTop += e.deltaY;
+        }
+      };
     }
     if (window.MesaColetaveis) {
       MesaColetaveis.renderFicha();
@@ -5023,7 +5033,7 @@ const MesaColetaveis = {
           </div>
           ${isMaster ? `
             <div style="margin-top: 12px;">
-              <button type="button" class="mesa-btn ink-tag" onclick="MesaColetaveis.openModal()" style="font-size: 0.74rem; padding: 4px 10px; color: #fbbf24; border-color: rgba(245, 158, 11, 0.4); cursor: pointer;">
+              <button type="button" class="mesa-btn ink-tag coletaveis-master-deliver-btn" onclick="MesaColetaveis.openModal()" style="font-size: 0.74rem; padding: 4px 10px; color: #fbbf24; border-color: rgba(245, 158, 11, 0.4); cursor: pointer;">
                 Entregar Itens pelo Catálogo do Mestre &rarr;
               </button>
             </div>
