@@ -681,10 +681,11 @@
       peso: 1,
       tipo: "Documento",
       campo_tipo: "Conteúdo",
-      area: "Casa Auguil",
-      desbloqueado: false,
-      resumo: "Um caderno espiral de capa preta, manchado de terra umedecida e lodo nas bordas.",
-      detalhe: "As dezenas de páginas iniciais foram arrancadas. Na única página restante no fim do caderno, há um texto escrito com caligrafia borrada: \"Ele me chamou. Eu só preciso abrir a porta. E a porta precisa de carne para girar a chave.\""
+      area: "Casa Auguil (Quarto de Sara)",
+      desbloqueado: true,
+      imagem: "assets/pagina_diario.png",
+      resumo: "Um caderno espiral de capa escura encontrado na escrivaninha. Todas as folhas anteriores foram arrancadas, restando apenas uma única folha escrita à mão.",
+      detalhe: "A porta precisa de carne para girar a chave."
     },
     {
       id: "col_laco_rosa",
@@ -750,6 +751,7 @@
       campo_tipo: "Efeito",
       area: "Casa Auguil (Quarto de Sara)",
       desbloqueado: true,
+      imagem: "assets/caixa.png",
       resumo: "Uma pequena caixa pesada de material desconhecido, negra como obsidiana e contornada por filetes de ouro puro que formam padrões geométricos.",
       detalhe: "A caixa encontra-se completamente selada. Qualquer tentativa de impacto, uso de força bruta, lâminas ou ferramentas de arrombamento falha automaticamente, sem deixar um único arranhão na superfície."
     }

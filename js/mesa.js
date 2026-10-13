@@ -4599,6 +4599,10 @@ const MesaColetaveis = {
         });
         changed = true;
       } else {
+        if (can.imagem && merged[idx].imagem !== can.imagem) {
+          merged[idx].imagem = can.imagem;
+          changed = true;
+        }
         if (can.paginas && !merged[idx].paginas) {
           merged[idx].paginas = can.paginas;
           changed = true;
@@ -4756,6 +4760,7 @@ const MesaColetaveis = {
     if (campoTipoEl) campoTipoEl.value = 'Detalhe';
     if (statusEl) statusEl.value = 'unlocked';
     if (posseEl) posseEl.value = '';
+    const imgEl = document.getElementById('coletavel-form-imagem'); if (imgEl) imgEl.value = '';
     if (resumoEl) resumoEl.value = '';
     if (detalheEl) detalheEl.value = '';
 
@@ -4790,6 +4795,7 @@ const MesaColetaveis = {
     if (campoTipoEl) campoTipoEl.value = item.campo_tipo || 'Detalhe';
     if (statusEl) statusEl.value = item.desbloqueado ? 'unlocked' : 'locked';
     if (posseEl) posseEl.value = item.posse !== null && item.posse !== undefined ? String(item.posse) : '';
+    const imgEl = document.getElementById('coletavel-form-imagem'); if (imgEl) imgEl.value = item.imagem || '';
     if (resumoEl) resumoEl.value = item.resumo || '';
     if (detalheEl) detalheEl.value = item.detalhe || item.desc || '';
 
@@ -4818,6 +4824,7 @@ const MesaColetaveis = {
     const desbloqueado = (statusVal === 'unlocked');
     const posseVal = document.getElementById('coletavel-form-posse')?.value;
     const posse = (posseVal === '' || posseVal === null || posseVal === undefined) ? null : parseInt(posseVal, 10);
+    const imagem = (document.getElementById('coletavel-form-imagem')?.value || '').trim();
     const resumo = (document.getElementById('coletavel-form-resumo')?.value || '').trim();
     const detalhe = (document.getElementById('coletavel-form-detalhe')?.value || '').trim() || 'Sem detalhes adicionais.';
 
@@ -4833,6 +4840,7 @@ const MesaColetaveis = {
         item.campo_tipo = campo_tipo;
         item.desbloqueado = desbloqueado;
         item.posse = posse;
+        if (imagem) item.imagem = imagem;
         item.resumo = resumo;
         item.detalhe = detalhe;
         item.desc = detalhe;
@@ -4863,6 +4871,7 @@ const MesaColetaveis = {
         desc: detalhe,
         desbloqueado,
         posse,
+        imagem,
         dataCriacao: new Date().toLocaleDateString('pt-BR')
       };
       this.items.unshift(newItem);
@@ -5023,11 +5032,15 @@ const MesaColetaveis = {
       <div class="coletaveis-cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px;">
         ${playerItems.map(it => {
           const isBook = it.id === 'col_livro_viajante_terra' || (it.paginas && it.paginas.length > 0);
+          const isDiario = it.id === 'col_diario_sara';
+          const isCaixa = it.id === 'col_caixa_negra_dourada';
           const isNotebook = it.id === 'col_notebook_sara';
-          const isClickable = isBook || isNotebook;
+          const isClickable = isBook || isDiario || isCaixa || isNotebook;
+          const clickAction = isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : '')));
+          const clickTitle = isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : '')));
 
           return `
-            <div class="coletavel-card ${isClickable ? 'clickable-item' : ''}" style="padding: 12px 14px;" ${isBook ? `onclick="MesaLivroReader.open('${it.id}')" title="Clique para folhear e ler este livro"` : (isNotebook ? `onclick="if(window.MesaNotebookSara) MesaNotebookSara.open()" title="Clique para acessar as câmeras de segurança"` : '')}>
+            <div class="coletavel-card ${isClickable ? 'clickable-item' : ''}" style="padding: 12px 14px;" ${isClickable ? `onclick="${clickAction}" title="${clickTitle}"` : ''}>
               <div class="coletavel-card-header">
                 <h4 class="coletavel-card-title" style="font-size: 0.95rem; color: #fbbf24;">${it.nome}</h4>
                 <div class="coletavel-card-badges">
@@ -5048,10 +5061,27 @@ const MesaColetaveis = {
                   ${it.detalhe || it.desc}
                 </p>
               ` : ''}
+              ${it.imagem ? `
+                <div class="coletavel-card-media" style="margin: 8px 0; border-radius: 4px; overflow: hidden; border: 1px solid rgba(245, 158, 11, 0.25); background: #08070b; text-align: center; max-height: 180px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <img src="${it.imagem}" alt="${it.nome}" style="max-height: 180px; width: 100%; object-fit: contain; display: block;" />
+                </div>
+              ` : ''}
               ${isBook ? `
-                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('${it.id}');">
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_livro_viajante_terra');">
                   <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
                   <span>Abrir e Ler Livro (4 Páginas Ilustradas)</span>
+                </button>
+              ` : ''}
+              ${isDiario ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_diario_sara');">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                  <span>Abrir e Ler Diário (1 Página)</span>
+                </button>
+              ` : ''}
+              ${isCaixa ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_caixa_negra_dourada');" style="background: rgba(245, 158, 11, 0.16); border-color: #f59e0b; color: #fbbf24;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                  <span>Inspecionar Caixa Negra e Dourada</span>
                 </button>
               ` : ''}
               ${isNotebook ? `
@@ -5124,11 +5154,15 @@ const MesaColetaveis = {
       <div class="coletaveis-cards-grid">
         ${filtered.map(it => {
           const isBook = it.id === 'col_livro_viajante_terra' || (it.paginas && it.paginas.length > 0);
+          const isDiario = it.id === 'col_diario_sara';
+          const isCaixa = it.id === 'col_caixa_negra_dourada';
           const isNotebook = it.id === 'col_notebook_sara';
-          const isClickable = isBook || isNotebook;
+          const isClickable = isBook || isDiario || isCaixa || isNotebook;
+          const clickAction = isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : '')));
+          const clickTitle = isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : '')));
 
           return `
-            <div class="coletavel-card ${isMaster ? (it.desbloqueado ? 'master-unlocked' : 'master-locked') : ''} ${isClickable ? 'clickable-item' : ''}" ${isBook ? `onclick="MesaLivroReader.open('${it.id}')" title="Clique para folhear e ler este livro"` : (isNotebook ? `onclick="if(window.MesaNotebookSara) MesaNotebookSara.open()" title="Clique para acessar as câmeras de segurança"` : '')}>
+            <div class="coletavel-card ${isMaster ? (it.desbloqueado ? 'master-unlocked' : 'master-locked') : ''} ${isClickable ? 'clickable-item' : ''}" ${isClickable ? `onclick="${clickAction}" title="${clickTitle}"` : ''}>
               <div class="coletavel-card-header">
                 <h3 class="coletavel-card-title">${it.nome}</h3>
                 <div class="coletavel-card-badges">
@@ -5150,10 +5184,27 @@ const MesaColetaveis = {
                   ${it.detalhe || it.desc}
                 </p>
               ` : ''}
+              ${it.imagem ? `
+                <div class="coletavel-card-media" style="margin: 8px 0; border-radius: 4px; overflow: hidden; border: 1px solid rgba(245, 158, 11, 0.25); background: #08070b; text-align: center; max-height: 180px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <img src="${it.imagem}" alt="${it.nome}" style="max-height: 180px; width: 100%; object-fit: contain; display: block;" />
+                </div>
+              ` : ''}
               ${isBook ? `
-                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('${it.id}');">
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_livro_viajante_terra');">
                   <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
                   <span>Abrir e Ler Livro (4 Páginas Ilustradas)</span>
+                </button>
+              ` : ''}
+              ${isDiario ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_diario_sara');">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                  <span>Abrir e Ler Diário (1 Página)</span>
+                </button>
+              ` : ''}
+              ${isCaixa ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_caixa_negra_dourada');" style="background: rgba(245, 158, 11, 0.16); border-color: #f59e0b; color: #fbbf24;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                  <span>Inspecionar Caixa Negra e Dourada</span>
                 </button>
               ` : ''}
               ${isNotebook ? `
@@ -5206,9 +5257,10 @@ const MesaColetaveis = {
 
 
 // ==========================================================================
-// MESA LIVRO READER: "O VIAJANTE E A TERRA"
+// MESA LIVRO & DOCUMENTOS READER (O VIAJANTE E A TERRA / DIÁRIO / CAIXA)
 // ==========================================================================
 const MesaLivroReader = {
+  currentDocId: 'col_livro_viajante_terra',
   currentPage: 1,
   totalPags: 4,
   mode: 'single', // 'single' ou 'all'
@@ -5248,6 +5300,7 @@ const MesaLivroReader = {
   ],
 
   open(itemId = 'col_livro_viajante_terra', page = 1) {
+    this.currentDocId = itemId || 'col_livro_viajante_terra';
     this.currentPage = page;
     this.mode = 'single';
     this.render();
@@ -5259,6 +5312,7 @@ const MesaLivroReader = {
   },
 
   nextPage() {
+    if (this.currentDocId !== 'col_livro_viajante_terra') return;
     if (this.currentPage < this.totalPags) {
       this.currentPage++;
       this.render();
@@ -5266,6 +5320,7 @@ const MesaLivroReader = {
   },
 
   prevPage() {
+    if (this.currentDocId !== 'col_livro_viajante_terra') return;
     if (this.currentPage > 1) {
       this.currentPage--;
       this.render();
@@ -5273,6 +5328,7 @@ const MesaLivroReader = {
   },
 
   goToPage(p) {
+    if (this.currentDocId !== 'col_livro_viajante_terra') return;
     if (p >= 1 && p <= this.totalPags) {
       this.currentPage = p;
       this.mode = 'single';
@@ -5281,12 +5337,83 @@ const MesaLivroReader = {
   },
 
   toggleMode() {
+    if (this.currentDocId !== 'col_livro_viajante_terra') return;
     this.mode = this.mode === 'single' ? 'all' : 'single';
     this.render();
   },
 
   render() {
+    const modal = document.getElementById('livro-reader-modal');
+    if (!modal) return;
+    const badge = document.getElementById('livro-reader-badge');
+    const title = document.getElementById('livro-reader-title');
+    const subtitle = document.getElementById('livro-reader-subtitle');
+    const controls = document.getElementById('livro-reader-controls');
     const container = document.getElementById('livro-reader-body');
+    const note = document.getElementById('livro-reader-note');
+
+    // MODO 1: DIÁRIO DE SARA (1 PÁGINA)
+    if (this.currentDocId === 'col_diario_sara') {
+      if (badge) badge.textContent = 'DOCUMENTO DA CAMPANHA • RESIDÊNCIA AUGUIL';
+      if (title) title.textContent = 'DIÁRIO DE SARA';
+      if (subtitle) subtitle.textContent = 'Página Única Encontrada na Escrivaninha';
+      if (controls) controls.style.display = 'none';
+      if (note) note.textContent = 'Caderno espiral encontrado na escrivaninha de Sara Auguil. As demais folhas foram arrancadas.';
+      if (container) {
+        container.innerHTML = `
+          <div class="livro-single-doc-wrap" style="display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 6px 4px;">
+            <div class="livro-doc-img-container" style="max-width: 100%; border-radius: 4px; overflow: hidden; border: 1px solid rgba(245, 158, 11, 0.4); box-shadow: 0 8px 32px rgba(0,0,0,0.85); background: #000; text-align: center;">
+              <img src="assets/pagina_diario.png" alt="Página do Diário de Sara" style="max-height: 480px; width: 100%; object-fit: contain; display: block;" />
+            </div>
+            <div class="livro-page-text-box" style="width: 100%; max-width: 620px; text-align: center; border-color: rgba(245, 158, 11, 0.45); background: rgba(20, 16, 26, 0.88); padding: 16px 20px;">
+              <span class="livro-quote-mark">&ldquo;</span>
+              <p class="livro-page-text" style="font-size: 1.18rem; color: #fef08a; font-style: italic; letter-spacing: 0.5px; margin: 0; line-height: 1.5;">
+                A porta precisa de carne para girar a chave.
+              </p>
+              <span class="livro-quote-mark right">&rdquo;</span>
+            </div>
+          </div>
+        `;
+      }
+      return;
+    }
+
+    // MODO 2: CAIXA NEGRA E DOURADA (INSPEÇÃO DO ARTEFACTO)
+    if (this.currentDocId === 'col_caixa_negra_dourada') {
+      if (badge) badge.textContent = 'ARTEFACTO DA CAMPANHA • RESIDÊNCIA AUGUIL';
+      if (title) title.textContent = 'CAIXA NEGRA E DOURADA';
+      if (subtitle) subtitle.textContent = 'Artefacto Selado • Inspeção Detalhada';
+      if (controls) controls.style.display = 'none';
+      if (note) note.textContent = 'Item encontrado soterrado na escrivaninha de Sara Auguil.';
+      if (container) {
+        container.innerHTML = `
+          <div class="livro-single-doc-wrap" style="display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 6px 4px;">
+            <div class="livro-doc-img-container" style="max-width: 100%; border-radius: 4px; overflow: hidden; border: 1px solid rgba(245, 158, 11, 0.45); box-shadow: 0 8px 32px rgba(0,0,0,0.9), 0 0 24px rgba(245, 158, 11, 0.2); background: radial-gradient(circle, rgba(245,158,11,0.1) 0%, rgba(8,7,12,0.98) 75%); text-align: center; padding: 14px;">
+              <img src="assets/caixa.png" alt="Caixa Negra e Dourada" style="max-height: 380px; width: 100%; object-fit: contain; display: block;" />
+            </div>
+            <div class="livro-page-text-box" style="width: 100%; max-width: 620px; text-align: left; border-color: rgba(245, 158, 11, 0.4); background: rgba(20, 16, 26, 0.88); padding: 16px 20px;">
+              <div style="font-size: 0.8rem; color: #fbbf24; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; font-family: monospace;">Descrição Sensorial:</div>
+              <p style="font-size: 0.95rem; color: #f3f4f6; margin: 0 0 12px; line-height: 1.55;">
+                Uma pequena caixa pesada de material desconhecido, negra como obsidiana e contornada por filetes de ouro puro que formam padrões geométricos.
+              </p>
+              <div style="font-size: 0.8rem; color: #f87171; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; font-family: monospace;">Efeito / Investigação:</div>
+              <p style="font-size: 0.92rem; color: #d1d5db; margin: 0; line-height: 1.55;">
+                A caixa encontra-se completamente selada. Qualquer tentativa de impacto, uso de força bruta, lâminas ou ferramentas de arrombamento falha automaticamente, sem deixar um único arranhão na superfície.
+              </p>
+            </div>
+          </div>
+        `;
+      }
+      return;
+    }
+
+    // MODO 3: "O VIAJANTE E A TERRA" (4 PÁGINAS ILUSTRADAS)
+    if (badge) badge.textContent = 'DOCUMENTO DA CAMPANHA • RESIDÊNCIA AUGUIL';
+    if (title) title.textContent = 'O VIAJANTE E A TERRA';
+    if (subtitle) subtitle.textContent = 'Conto Infantil Ilustrado • 4 Páginas';
+    if (controls) controls.style.display = 'flex';
+    if (note) note.textContent = 'Item encontrado soterrado na escrivaninha de Sara Auguil (Casa Auguil).';
+
     const indicator = document.getElementById('livro-page-indicator-text');
     const prevBtn = document.getElementById('livro-prev-btn');
     const nextBtn = document.getElementById('livro-next-btn');

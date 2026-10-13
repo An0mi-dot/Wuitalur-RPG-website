@@ -838,6 +838,10 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
               <option value="8">Slot 8 - Canneth 'Blinko' Biloxi</option>
             </select>
           </div>
+          <div>
+            <label style="display: block; font-size: 0.75rem; color: #a3a3a3; margin-bottom: 4px; font-weight: 700; text-transform: uppercase;">Arquivo / URL da Imagem (Opcional)</label>
+            <input type="text" id="coletavel-form-imagem" class="coletaveis-search-input" style="padding-left: 12px;" placeholder="Ex: assets/caixa.png ou URL da imagem..." />
+          </div>
 
 
           <div>
@@ -866,13 +870,13 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       
       <!-- Cabeçalho do Leitor -->
       <div class="livro-reader-header">
-        <div class="livro-reader-badge">DOCUMENTO DA CAMPANHA • RESIDÊNCIA AUGUIL</div>
-        <h2 class="livro-reader-title">O VIAJANTE E A TERRA</h2>
-        <div class="livro-reader-subtitle">Conto Infantil Ilustrado • 4 Páginas</div>
+        <div class="livro-reader-badge" id="livro-reader-badge">DOCUMENTO DA CAMPANHA • RESIDÊNCIA AUGUIL</div>
+        <h2 class="livro-reader-title" id="livro-reader-title">O VIAJANTE E A TERRA</h2>
+        <div class="livro-reader-subtitle" id="livro-reader-subtitle">Conto Infantil Ilustrado • 4 Páginas</div>
       </div>
 
       <!-- Barra de Ferramentas / Controles de Navegação -->
-      <div class="livro-reader-controls">
+      <div class="livro-reader-controls" id="livro-reader-controls">
         <div class="livro-reader-page-indicator">
           <span class="livro-page-badge" id="livro-page-indicator-text">PÁGINA 1 DE 4</span>
         </div>
@@ -896,7 +900,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
       <!-- Rodapé do Leitor -->
       <div class="livro-reader-footer">
-        <div class="livro-reader-note">Item encontrado soterrado na escrivaninha de Sara Auguil (Casa Auguil).</div>
+        <div class="livro-reader-note" id="livro-reader-note">Item encontrado soterrado na escrivaninha de Sara Auguil (Casa Auguil).</div>
         <button type="button" class="coletavel-form-cancel" onclick="MesaLivroReader.close()">Fechar Livro</button>
       </div>
     </div>
