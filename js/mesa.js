@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI & Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.7.6';
+const MESA_VERSION = 'v1.7.7';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -1200,6 +1200,8 @@ const MesaApp = {
       altura: '1,75m',
       raca: 'Animalesco',
       arquetipo: 'Teimoso',
+      imagem: 'assets/blinko.png',
+      avatar: 'assets/blinko_avatar.png',
       hp: 17, hpMax: 17,
       pe: 10, peMax: 10,
       st: 0, stMax: 36,
@@ -1336,6 +1338,16 @@ const MesaApp = {
             p.avatar = 'assets/eric_avatar.png';
           }
 
+          if (p.token === 'H2Q9' || p.slot === 4) {
+            p.imagem = 'assets/pera.png?v=1.5.1';
+            p.avatar = 'assets/pera_avatar.png?v=1.5.1';
+          }
+
+          if (p.token === 'J8W4' || p.slot === 5) {
+            p.imagem = 'assets/william.png?v=1.5.1';
+            p.avatar = 'assets/william_avatar.png?v=1.5.1';
+          }
+
           if (p.token === 'T6D3' || p.slot === 6) {
             p.imagem = 'assets/john.png';
             p.avatar = 'assets/john_avatar.png';
@@ -1344,6 +1356,11 @@ const MesaApp = {
           if (p.token === 'Y4M7' || p.slot === 7) {
             p.imagem = 'assets/odara.png?v=3';
             p.avatar = 'assets/odara_avatar.png?v=3';
+          }
+
+          if (p.token === 'F9C5' || p.slot === 8) {
+            p.imagem = 'assets/blinko.png';
+            p.avatar = 'assets/blinko_avatar.png';
           }
 
           if (p.slot >= 1 && p.slot <= 8) {
@@ -1475,6 +1492,7 @@ const MesaApp = {
       if (!this.state.players[7]) {
         this.state.players[7] = {
           id: 8, slot: 8, token: 'F9C5', nome: "Canneth 'Blinko' Biloxi", idade: '18 anos', altura: '1,75m', raca: 'Animalesco', arquetipo: 'Teimoso',
+          imagem: 'assets/blinko.png', avatar: 'assets/blinko_avatar.png',
           hp: 17, hpMax: 17, pe: 10, peMax: 10, st: 0, stMax: 36, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Vigor': 'd12', 'Saúde': 'd8', 'Força': 'd4', 'Mente': 'd16' },
           bonus: [

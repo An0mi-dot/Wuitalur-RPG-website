@@ -192,7 +192,7 @@ const DEFAULT_ACCOUNTS = [
     handle: '@canneth',
     bio: 'Especialista em segurança arcana e sobrevivência urbana. Cuidado onde pisa em Paladium.',
     avatarLetter: 'C',
-    avatarImage: '',
+    avatarImage: 'assets/blinko_wuitter.png',
     avatarColor: '#14b8a6',
     badge: 'none',
     isMaster: false
