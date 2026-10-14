@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.0.5';
+const MESA_VERSION = 'v2.0.6';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -7453,7 +7453,7 @@ const MesaIgrisShop = {
     this.updateMasterControls();
   },
 
-  // Atualiza o chip com o usuario logado
+  // Atualiza o chip com o usuario logado e a contagem de selecoes
   updateUserChip() {
     const chip = document.getElementById('igris-user-chip');
     if (!chip) return;
@@ -7465,10 +7465,23 @@ const MesaIgrisShop = {
       `;
       return;
     }
+
+    // Calcula quantos itens este usuario selecionou
+    let selectedCount = 0;
+    Object.keys(this.interests).forEach(id => {
+      if (Array.isArray(this.interests[id]) && this.interests[id].includes(user.id)) {
+        selectedCount++;
+      }
+    });
+
+    const isLimit = selectedCount >= 2;
+    const counterBadge = `<span class="igris-selection-counter ${isLimit ? 'at-limit' : ''}">${selectedCount}/2 itens</span>`;
+
     if (user.isMaster) {
       chip.innerHTML = `
         <div class="igris-user-chip-avatar" style="border-color: #94a3b8; color: #cbd5e1;">M</div>
         <span style="font-weight: 700;">Mestre da Mesa</span>
+        ${counterBadge}
       `;
       return;
     }
@@ -7478,6 +7491,7 @@ const MesaIgrisShop = {
     chip.innerHTML = `
       ${avatarHtml}
       <span>${user.name}</span>
+      ${counterBadge}
     `;
   },
 
@@ -7485,6 +7499,8 @@ const MesaIgrisShop = {
   renderShowcase() {
     const grid = document.getElementById('igris-showcase-grid');
     if (!grid) return;
+
+    this.updateUserChip();
 
     if (!this.items || this.items.length === 0) {
       this.items = [...IGRIS_DEFAULT_ITEMS];
@@ -7607,7 +7623,7 @@ const MesaIgrisShop = {
     return html;
   },
 
-  // Alterna o interesse do jogador logado no cartao
+  // Alterna o interesse do jogador logado no cartao com limite de 2 itens por jogador
   toggleInterest(itemId) {
     const user = this.getCurrentUserIdentity();
     if (!user) {
@@ -7623,12 +7639,27 @@ const MesaIgrisShop = {
 
     const index = this.interests[itemId].indexOf(user.id);
     if (index > -1) {
+      // Se ja esta selecionado pelo jogador, permite desmarcar livremente
       this.interests[itemId].splice(index, 1);
     } else {
+      // Regra: cada jogador pode selecionar no maximo 2 itens por visita
+      let currentSelectedCount = 0;
+      Object.keys(this.interests).forEach(id => {
+        if (Array.isArray(this.interests[id]) && this.interests[id].includes(user.id)) {
+          currentSelectedCount++;
+        }
+      });
+
+      if (currentSelectedCount >= 2) {
+        alert('Você já manifestou interesse no limite máximo de 2 itens nesta visita à Tenda do Igris. Desmarque um item para poder escolher outro.');
+        return;
+      }
+
       this.interests[itemId].push(user.id);
     }
 
     this.updateCardInterestsUI(itemId);
+    this.updateUserChip();
     this.updateMasterControls();
 
     const chan = this.getChannel();
@@ -7684,6 +7715,7 @@ const MesaIgrisShop = {
     } else {
       this.renderShowcase();
     }
+    this.updateUserChip();
     this.updateMasterControls();
   },
 
@@ -7985,6 +8017,7 @@ const MesaIgrisShop = {
     // Limpa os interesses mantendo os itens padroes da loja sempre presentes
     this.interests = {};
     this.renderShowcase();
+    this.updateUserChip();
     this.updateMasterControls();
     this.saveStateToSupabase();
 
