@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=1.9.2">
+  <link rel="stylesheet" href="css/mesa.css?v=1.9.3">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1187,9 +1187,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.8.8"></script>
 
-<script src="js/mesa.js?v=1.9.2"></script>
+<script src="js/mesa.js?v=1.9.3"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v1.9.2</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.9.3</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -1513,88 +1513,97 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
   <div id="igris-shop-overlay" class="igris-shop-overlay">
     <!-- Palco com Tela Preta caindo de cima e quicando -->
     <div class="igris-black-stage" id="igris-black-stage">
-      <!-- Escuridao Profunda ao Redor da Tela -->
+      <!-- Escuridao nas Bordas da Tela (Vignette suave) -->
       <div class="igris-darkness-veil" aria-hidden="true"></div>
 
-      <!-- Piscina de Iluminacao Ambar da Lanterna -->
+      <!-- Piscina Ampla de Iluminacao Ambar da Lanterna -->
       <div class="igris-lantern-light-pool" aria-hidden="true"></div>
 
-      <!-- Conjunto do Pendulo Suspenso: Corda de Canhamo e Lanterna Rustica em SVG -->
-      <div class="igris-pendulum-assembly" id="igris-pendulum-assembly" aria-hidden="true">
-        <!-- Corda Texturizada de Canhamo -->
-        <svg class="igris-rope-svg" viewBox="0 0 16 190" width="16" height="190" preserveAspectRatio="none">
-          <defs>
-            <pattern id="igris-rope-pat" width="12" height="16" patternUnits="userSpaceOnUse">
-              <path d="M2,0 L10,8 M0,8 L8,16 M8,0 L12,4 M0,0 L2,2" stroke="#8a5a36" stroke-width="2.6" stroke-linecap="round"/>
-              <path d="M2,0 L10,8 M0,8 L8,16" stroke="#b07d50" stroke-width="1.3" stroke-linecap="round"/>
-              <path d="M4,2 L8,6 M2,10 L6,14" stroke="#52341b" stroke-width="1" stroke-linecap="round"/>
-            </pattern>
-          </defs>
-          <rect x="3" y="0" width="10" height="178" fill="url(#igris-rope-pat)"/>
-          <ellipse cx="8" cy="180" rx="6" ry="5" fill="#6d4527" stroke="#3d2311" stroke-width="1.5"/>
-          <ellipse cx="8" cy="180" rx="4" ry="3" fill="#9c6d46" opacity="0.65"/>
-        </svg>
+      <!-- Suporte de Ferro Forjado no Teto (Onde a corda fica ancorada) -->
+      <div class="igris-ceiling-mount" aria-hidden="true">
+        <div class="igris-ceiling-beam"></div>
+        <div class="igris-ceiling-ring"></div>
+      </div>
 
-        <!-- Lanterna Rustica em SVG com filamento brilhante -->
-        <svg class="igris-lantern-svg" viewBox="0 0 80 124" width="80" height="124">
-          <defs>
-            <linearGradient id="igris-metal-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#141820"/>
-              <stop offset="35%" stop-color="#334155"/>
-              <stop offset="50%" stop-color="#475569"/>
-              <stop offset="70%" stop-color="#334155"/>
-              <stop offset="100%" stop-color="#11141a"/>
-            </linearGradient>
-            <radialGradient id="igris-bulb-glow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#ffffff"/>
-              <stop offset="25%" stop-color="#fef08a"/>
-              <stop offset="55%" stop-color="#f59e0b"/>
-              <stop offset="85%" stop-color="#d97706"/>
-              <stop offset="100%" stop-color="#78350f"/>
-            </radialGradient>
-            <filter id="igris-flare-glow" x="-60%" y="-60%" width="220%" height="220%">
-              <feGaussianBlur stdDeviation="7" result="glow"/>
-              <feMerge>
-                <feMergeNode in="glow"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
+      <!-- Pivot Centralizado para a Corda e a Lanterna -->
+      <div class="igris-pendulum-pivot" id="igris-pendulum-pivot" aria-hidden="true">
+        <div class="igris-pendulum-assembly" id="igris-pendulum-assembly">
+          <!-- Corda Texturizada de Canhamo (estendida para cima do teto para nunca parecer cortada) -->
+          <svg class="igris-rope-svg" viewBox="0 0 16 320" width="16" height="320" preserveAspectRatio="none">
+            <defs>
+              <pattern id="igris-rope-pat" width="12" height="16" patternUnits="userSpaceOnUse">
+                <path d="M2,0 L10,8 M0,8 L8,16 M8,0 L12,4 M0,0 L2,2" stroke="#8a5a36" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M2,0 L10,8 M0,8 L8,16" stroke="#b07d50" stroke-width="1.3" stroke-linecap="round"/>
+                <path d="M4,2 L8,6 M2,10 L6,14" stroke="#52341b" stroke-width="1" stroke-linecap="round"/>
+              </pattern>
+            </defs>
+            <rect x="3" y="0" width="10" height="308" fill="url(#igris-rope-pat)"/>
+            <ellipse cx="8" cy="310" rx="6" ry="5" fill="#6d4527" stroke="#3d2311" stroke-width="1.5"/>
+            <ellipse cx="8" cy="310" rx="4" ry="3" fill="#9c6d46" opacity="0.65"/>
+          </svg>
 
-          <!-- Argola superior de ferro -->
-          <circle cx="40" cy="10" r="7.5" fill="none" stroke="url(#igris-metal-grad)" stroke-width="3"/>
+          <!-- Lanterna Rustica em SVG com filamento brilhante -->
+          <svg class="igris-lantern-svg" viewBox="0 0 80 124" width="80" height="124">
+            <defs>
+              <linearGradient id="igris-metal-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#141820"/>
+                <stop offset="35%" stop-color="#334155"/>
+                <stop offset="50%" stop-color="#475569"/>
+                <stop offset="70%" stop-color="#334155"/>
+                <stop offset="100%" stop-color="#11141a"/>
+              </linearGradient>
+              <radialGradient id="igris-bulb-glow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="20%" stop-color="#fef08a"/>
+                <stop offset="50%" stop-color="#f59e0b"/>
+                <stop offset="80%" stop-color="#d97706"/>
+                <stop offset="100%" stop-color="#78350f"/>
+              </radialGradient>
+              <filter id="igris-flare-glow" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur stdDeviation="8" result="glow"/>
+                <feMerge>
+                  <feMergeNode in="glow"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
 
-          <!-- Cupula superior da lanterna -->
-          <rect x="33" y="14" width="14" height="6" rx="2" fill="#141820" stroke="#334155" stroke-width="1"/>
-          <path d="M24 20 L56 20 L62 30 L18 30 Z" fill="url(#igris-metal-grad)" stroke="#0b0e13" stroke-width="1.2"/>
+            <!-- Argola superior de ferro conectada a corda -->
+            <circle cx="40" cy="10" r="7.5" fill="none" stroke="url(#igris-metal-grad)" stroke-width="3"/>
 
-          <!-- Vidro escuro da lanterna com luz interior -->
-          <path d="M20 30 L60 30 L54 86 L26 86 Z" fill="rgba(24, 16, 8, 0.9)" stroke="#1e2530" stroke-width="1.5"/>
+            <!-- Cupula superior da lanterna -->
+            <rect x="33" y="14" width="14" height="6" rx="2" fill="#141820" stroke="#334155" stroke-width="1"/>
+            <path d="M24 20 L56 20 L62 30 L18 30 Z" fill="url(#igris-metal-grad)" stroke="#0b0e13" stroke-width="1.2"/>
 
-          <!-- Bulbo incandescente e filamento de luz ambar -->
-          <circle cx="40" cy="58" r="16" fill="url(#igris-bulb-glow)" filter="url(#igris-flare-glow)" opacity="0.95"/>
-          <ellipse cx="40" cy="56" rx="7" ry="9" fill="#ffffff" opacity="0.85"/>
-          <path d="M37 63 Q40 48 43 63" fill="none" stroke="#fff7ed" stroke-width="2"/>
+            <!-- Vidro escuro da lanterna com luz interior -->
+            <path d="M20 30 L60 30 L54 86 L26 86 Z" fill="rgba(24, 16, 8, 0.85)" stroke="#1e2530" stroke-width="1.5"/>
 
-          <!-- Hastes de protecao de metal -->
-          <line x1="40" y1="30" x2="40" y2="86" stroke="url(#igris-metal-grad)" stroke-width="2.5"/>
-          <line x1="26" y1="30" x2="31" y2="86" stroke="url(#igris-metal-grad)" stroke-width="2"/>
-          <line x1="54" y1="30" x2="49" y2="86" stroke="url(#igris-metal-grad)" stroke-width="2"/>
+            <!-- Bulbo incandescente e filamento de luz ambar -->
+            <circle cx="40" cy="58" r="16" fill="url(#igris-bulb-glow)" filter="url(#igris-flare-glow)" opacity="0.95"/>
+            <ellipse cx="40" cy="56" rx="7" ry="9" fill="#ffffff" opacity="0.85"/>
+            <path d="M37 63 Q40 48 43 63" fill="none" stroke="#fff7ed" stroke-width="2"/>
 
-          <!-- Base de ferro inferior -->
-          <path d="M24 86 L56 86 L60 98 L20 98 Z" fill="url(#igris-metal-grad)" stroke="#0b0e13" stroke-width="1.2"/>
-          <rect x="23" y="98" width="34" height="6" rx="2" fill="#141820" stroke="#334155" stroke-width="1"/>
-        </svg>
+            <!-- Hastes de protecao de metal -->
+            <line x1="40" y1="30" x2="40" y2="86" stroke="url(#igris-metal-grad)" stroke-width="2.5"/>
+            <line x1="26" y1="30" x2="31" y2="86" stroke="url(#igris-metal-grad)" stroke-width="2"/>
+            <line x1="54" y1="30" x2="49" y2="86" stroke="url(#igris-metal-grad)" stroke-width="2"/>
 
-        <!-- Cone de luz que balanca junto com o pendulo da lanterna -->
-        <div class="igris-lantern-swing-beam" aria-hidden="true"></div>
+            <!-- Base de ferro inferior -->
+            <path d="M24 86 L56 86 L60 98 L20 98 Z" fill="url(#igris-metal-grad)" stroke="#0b0e13" stroke-width="1.2"/>
+            <rect x="23" y="98" width="34" height="6" rx="2" fill="#141820" stroke="#334155" stroke-width="1"/>
+          </svg>
+
+          <!-- Cone de luz que acompanha o balanco da lanterna -->
+          <div class="igris-lantern-swing-beam" aria-hidden="true"></div>
+        </div>
       </div>
 
       <!-- Botao Discreto de Fechar no Canto Superior Direito -->
       <button type="button" class="igris-floating-close-btn" onclick="MesaIgrisShop.close()" title="Fechar Tenda de Igris">&times;</button>
 
-      <!-- Area Central: Contentor Iluminado do Mercador Igris -->
+      <!-- Area Central: Duas Colunas (Esquerda: Igris | Direita: Vitrina de Itens) -->
       <div class="igris-shop-body">
+        <!-- Coluna Esquerda: Ilustracao do Mercador Igris -->
         <div class="igris-portrait-col">
           <div class="igris-portrait-frame">
             <div class="igris-portrait-placeholder" id="igris-portrait-placeholder">
@@ -1626,13 +1635,24 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
           </div>
         </div>
 
-        <!-- Vitrina preparada em segundo plano caso itens sejam inseridos futuramente -->
-        <div class="igris-showcase-grid" id="igris-showcase-grid" style="display: none;"></div>
+        <!-- Coluna Direita: Vitrina de Itens (CSS Grid) -->
+        <div class="igris-showcase-col">
+          <div class="igris-showcase-header">
+            <div class="igris-showcase-title-row">
+              <h3 class="igris-showcase-heading">Vitrina de Trocas</h3>
+              <span class="igris-items-counter" id="igris-items-counter">0 Artefatos</span>
+            </div>
+            <div class="igris-user-chip" id="igris-user-chip"></div>
+          </div>
+
+          <!-- Grelha CSS Grid para os Cartoes de Itens -->
+          <div class="igris-showcase-grid" id="igris-showcase-grid"></div>
+        </div>
       </div>
     </div>
   </div>
 
-    <!-- ABERTURA OVERLAY -->
+  <!-- ABERTURA OVERLAY -->
   <div id="abertura-overlay" class="abertura-overlay">
     <video id="abertura-video" src="assets/videos/abertura.mp4" playsinline preload="auto"></video>
     <button id="abertura-skip-btn" class="abertura-skip-btn" onclick="MesaAbertura.stop()" title="Parar Abertura">&times;</button>

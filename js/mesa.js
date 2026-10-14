@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.9.2';
+const MESA_VERSION = 'v1.9.3';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -7247,8 +7247,11 @@ const MesaIgrisShop = {
     document.body.classList.add('igris-shop-open');
     const overlay = document.getElementById('igris-shop-overlay');
     if (overlay) {
+      overlay.classList.remove('active');
+      void overlay.offsetWidth;
       overlay.classList.add('active');
     }
+    this.updateUserChip();
     this.renderShowcase();
   },
 
@@ -7358,13 +7361,11 @@ const MesaIgrisShop = {
       counter.textContent = `${count} ${count === 1 ? 'Artefato Exposto' : 'Artefatos Expostos'}`;
     }
 
-    // Se nao ha itens cadastrados (fase atual da loja): oculta a vitrina completamente
+    // Se nao ha itens cadastrados (fase atual da loja): mantem a grelha limpa e vazia
     if (!this.items || this.items.length === 0) {
-      grid.style.display = 'none';
       grid.innerHTML = '';
       return;
     }
-    grid.style.display = 'grid';
 
     // Se houver itens futuramente, renderiza os cards
     const user = this.getCurrentUserIdentity();

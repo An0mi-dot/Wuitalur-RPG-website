@@ -11092,7 +11092,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
 .igris-black-stage {
   position: absolute;
   inset: 0;
-  background-color: #000000;
+  background: radial-gradient(circle at 50% 35%, #18202c 0%, #10141b 50%, #090c10 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11135,93 +11135,157 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   }
 }
 
-/* 2. Escuridao Profunda ao Redor da Tela (Tudo ao redor fica em escuridao total) */
+/* 2. Escuridao nas Bordas da Tela (Vignette suave para sensacao de lugar escuro) */
 .igris-darkness-veil {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 20;
   background: radial-gradient(
-    ellipse 620px 480px at 50% 210px,
+    ellipse 85% 80% at 50% 40%,
     transparent 0%,
-    rgba(0, 0, 0, 0.45) 40%,
-    rgba(0, 0, 0, 0.88) 65%,
-    #000000 85%,
-    #000000 100%
+    transparent 55%,
+    rgba(0, 0, 0, 0.35) 75%,
+    rgba(0, 0, 0, 0.72) 90%,
+    rgba(0, 0, 0, 0.90) 100%
   );
 }
 
-/* Piscina de Luz Ambar Estatica no Chao e Pedestal */
+/* 3. Piscina Ampla de Iluminacao Ambar da Lanterna */
 .igris-lantern-light-pool {
   position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 950px;
-  height: 800px;
+  width: 1400px;
+  max-width: 100vw;
+  height: 950px;
   pointer-events: none;
   z-index: 4;
   background: radial-gradient(
-    ellipse 480px 380px at 50% 230px,
-    rgba(251, 191, 36, 0.35) 0%,
-    rgba(245, 158, 11, 0.18) 35%,
-    rgba(180, 83, 9, 0.08) 60%,
-    transparent 85%
+    ellipse 720px 540px at 50% 240px,
+    rgba(252, 211, 77, 0.36) 0%,
+    rgba(245, 158, 11, 0.24) 30%,
+    rgba(217, 119, 6, 0.12) 55%,
+    rgba(180, 83, 9, 0.05) 75%,
+    transparent 100%
   );
-  filter: blur(28px);
+  filter: blur(32px);
 }
 
-/* 3. Conjunto do Pendulo (Corda de canhamo + Lanterna SVG) */
-.igris-pendulum-assembly {
+/* Suporte de Ferro Forjado no Teto (Cobre perfeitamente o ponto de saida da corda) */
+.igris-ceiling-mount {
   position: absolute;
   top: 0;
   left: 50%;
-  transform-origin: top center;
+  transform: translateX(-50%);
+  z-index: 28;
   display: flex;
   flex-direction: column;
   align-items: center;
+  pointer-events: none;
+}
+
+.igris-ceiling-beam {
+  width: 240px;
+  height: 12px;
+  background: linear-gradient(180deg, #11141a 0%, #1c2430 50%, #0d1015 100%);
+  border-bottom: 2px solid #2d3748;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.9);
+  border-radius: 0 0 3px 3px;
+}
+
+.igris-ceiling-ring {
+  width: 20px;
+  height: 16px;
+  border: 3px solid #475569;
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  background: transparent;
+  margin-top: -2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+/* Pivot Centralizado e Suspensao Pendular */
+.igris-pendulum-pivot {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
   z-index: 25;
   pointer-events: none;
-  transform: translateY(-400px);
+}
+
+.igris-pendulum-assembly {
+  position: absolute;
+  top: -140px;
+  left: -40px;
+  width: 80px;
+  transform-origin: 40px 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  transform: translateY(-500px) rotate(22deg);
+  opacity: 0;
 }
 
 .igris-shop-overlay.active .igris-pendulum-assembly {
   animation: 
-    igrisLampDropIn 0.65s cubic-bezier(0.18, 0.89, 0.32, 1.25) 0.8s forwards,
-    igrisPendulumWiggle 5s ease-in-out 1.45s forwards,
-    igrisPendulumIdle 4.5s ease-in-out 6.45s infinite alternate;
+    igrisLampDescendSwing 5.2s cubic-bezier(0.25, 1, 0.5, 1) 0.8s forwards,
+    igrisPendulumIdle 4.5s ease-in-out 6.0s infinite alternate;
 }
 
-@keyframes igrisLampDropIn {
+/* Animacao fluida: a lanterna cai JA BALANCANDO e vai desacelerando o balanco */
+@keyframes igrisLampDescendSwing {
   0% {
-    transform: translateY(-400px) rotate(0deg);
+    transform: translateY(-380px) rotate(22deg);
+    opacity: 0;
   }
-  75% {
-    transform: translateY(12px) rotate(4deg);
+  2% {
+    opacity: 1;
   }
-  88% {
-    transform: translateY(-5px) rotate(-2deg);
+  8% {
+    transform: translateY(-240px) rotate(10deg);
+  }
+  16% {
+    transform: translateY(-130px) rotate(-16deg);
+  }
+  24% {
+    transform: translateY(-40px) rotate(-6deg);
+  }
+  32% {
+    transform: translateY(14px) rotate(13deg);
+  }
+  40% {
+    transform: translateY(-4px) rotate(4deg);
+  }
+  48% {
+    transform: translateY(0px) rotate(-9.5deg);
+  }
+  56% {
+    transform: translateY(0px) rotate(6.8deg);
+  }
+  65% {
+    transform: translateY(0px) rotate(-4.6deg);
+  }
+  74% {
+    transform: translateY(0px) rotate(3.0deg);
+  }
+  83% {
+    transform: translateY(0px) rotate(-1.8deg);
+  }
+  91% {
+    transform: translateY(0px) rotate(0.9deg);
   }
   100% {
-    transform: translateY(0) rotate(0deg);
+    transform: translateY(0px) rotate(0deg);
+    opacity: 1;
   }
 }
 
-/* Wiggle da lanterna que vai diminuindo a velocidade ate desacelerar */
-@keyframes igrisPendulumWiggle {
-  0% { transform: translateY(0) rotate(0deg); }
-  8% { transform: translateY(0) rotate(18deg); }
-  22% { transform: translateY(0) rotate(-15deg); }
-  36% { transform: translateY(0) rotate(11deg); }
-  50% { transform: translateY(0) rotate(-7.5deg); }
-  64% { transform: translateY(0) rotate(4.8deg); }
-  76% { transform: translateY(0) rotate(-2.8deg); }
-  86% { transform: translateY(0) rotate(1.6deg); }
-  94% { transform: translateY(0) rotate(-0.9deg); }
-  100% { transform: translateY(0) rotate(0deg); }
-}
-
-/* Movimento bem discreto e continuo de um lado para o outro */
+/* Balanco continuo bem discreto e suave */
 @keyframes igrisPendulumIdle {
   0% {
     transform: translateY(0) rotate(-0.8deg);
@@ -11234,14 +11298,22 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   }
 }
 
-/* Feixe de Luz que acompanha o balanço da lanterna */
+/* Feixe de Luz que acompanha o balanco da lanterna */
 .igris-lantern-swing-beam {
   position: absolute;
-  top: 90px;
-  width: 500px;
-  height: 450px;
-  background: radial-gradient(ellipse 260px 220px at 50% 20%, rgba(251, 191, 36, 0.22) 0%, rgba(217, 119, 6, 0.08) 50%, transparent 75%);
-  filter: blur(20px);
+  top: 180px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 650px;
+  background: radial-gradient(
+    ellipse 380px 320px at 50% 15%,
+    rgba(254, 240, 138, 0.32) 0%,
+    rgba(251, 191, 36, 0.20) 35%,
+    rgba(245, 158, 11, 0.08) 65%,
+    transparent 85%
+  );
+  filter: blur(24px);
   pointer-events: none;
 }
 
@@ -11249,13 +11321,13 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
 .igris-rope-svg {
   display: block;
   margin-bottom: -6px;
-  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.8));
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.85));
 }
 
 /* Lanterna SVG */
 .igris-lantern-svg {
   display: block;
-  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.9));
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.95));
 }
 
 /* Botao Flutuante Discreto de Fechar */
@@ -11287,32 +11359,38 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   transform: scale(1.05);
 }
 
-/* Area Central: Contentor Iluminado do Mercador Igris */
+/* Area Central: Duas Colunas (Esquerda: Igris | Direita: Vitrina de Itens) */
 .igris-shop-body {
   position: relative;
   z-index: 15;
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  align-items: stretch;
   justify-content: center;
+  gap: 32px;
   width: 100%;
-  height: 100vh;
-  height: 100dvh;
-  padding-top: 140px;
+  max-width: 1280px;
+  height: calc(100vh - 120px);
+  height: calc(100dvh - 120px);
+  margin-top: 100px;
+  padding: 0 32px 24px;
   box-sizing: border-box;
 }
 
+/* Coluna da Esquerda: Ilustracao do Mercador Igris */
 .igris-portrait-col {
   width: 380px;
-  max-width: 90vw;
+  max-width: 380px;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   position: relative;
-  background: transparent;
-  border: none;
-  padding: 0;
 }
 
 .igris-portrait-frame {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   border: 1px solid rgba(71, 85, 105, 0.4);
   border-radius: 8px;
   background: radial-gradient(circle at 50% 30%, #151a22 0%, #080a0d 100%);
@@ -11434,7 +11512,268 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   z-index: 4;
 }
 
-/* Vitrina Grid Reservada */
+/* Coluna da Direita: Vitrina de Itens (CSS Grid) */
+.igris-showcase-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: rgba(18, 22, 30, 0.65);
+  border: 1px solid rgba(71, 85, 105, 0.35);
+  border-radius: 8px;
+  padding: 20px 24px;
+  box-sizing: border-box;
+  backdrop-filter: blur(4px);
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.igris-showcase-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+  flex-shrink: 0;
+}
+
+.igris-showcase-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.igris-showcase-heading {
+  margin: 0;
+  font-family: var(--font-title, 'Cinzel', serif);
+  font-size: 1.15rem;
+  letter-spacing: 0.1em;
+  color: #f1f5f9;
+  text-transform: uppercase;
+}
+
+.igris-items-counter {
+  font-size: 0.76rem;
+  color: #94a3b8;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.igris-user-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(11, 15, 20, 0.75);
+  border: 1px solid rgba(71, 85, 105, 0.4);
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  color: #cbd5e1;
+}
+
+.igris-user-chip-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #334155;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border: 1px solid #64748b;
+}
+
 .igris-showcase-grid {
-  display: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 220px;
+  padding-right: 4px;
+}
+
+/* Card de Item na Vitrina */
+.igris-item-card {
+  background: linear-gradient(145deg, #18202a 0%, #0f131a 100%);
+  border: 1px solid #2e3a4e;
+  border-radius: 6px;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.igris-item-card:hover {
+  transform: translateY(-3px);
+  border-color: #64748b;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 16px rgba(245, 158, 11, 0.15);
+}
+
+.igris-item-card.has-my-interest {
+  border-color: #d97706;
+  box-shadow: 0 0 0 1px #d97706, 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 20px rgba(245, 158, 11, 0.25);
+}
+
+.igris-card-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.igris-card-thumb-wrapper {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  background: #0a0d12;
+  overflow: hidden;
+}
+
+.igris-card-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.igris-item-card:hover .igris-card-thumb {
+  transform: scale(1.05);
+}
+
+.igris-card-rarity-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid #334155;
+  color: #cbd5e1;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 3px;
+  backdrop-filter: blur(4px);
+}
+
+.igris-card-content {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.igris-card-title {
+  margin: 0 0 4px;
+  font-family: var(--font-title, 'Cinzel', serif);
+  font-size: 0.95rem;
+  color: #f1f5f9;
+  letter-spacing: 0.04em;
+}
+
+.igris-card-type {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.igris-card-desc {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #cbd5e1;
+  margin: 0 0 12px;
+  flex: 1;
+}
+
+.igris-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  border-top: 1px solid #1e293b;
+}
+
+.igris-card-price {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #f59e0b;
+}
+
+/* Avatares de Interesse no Canto Inferior Direito do Card */
+.igris-card-interests {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  gap: -6px;
+  z-index: 10;
+}
+
+.igris-interest-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #0f172a;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+  margin-left: -6px;
+  background: #334155;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #fff;
+  transition: transform 0.15s ease;
+}
+
+.igris-interest-avatar:hover {
+  transform: scale(1.2);
+  z-index: 20;
+}
+
+.igris-dispute-badge {
+  background: #dc2626;
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 8px;
+  margin-right: 4px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 900px) {
+  .igris-shop-body {
+    flex-direction: column;
+    height: auto;
+    max-height: calc(100vh - 100px);
+    max-height: calc(100dvh - 100px);
+    overflow-y: auto;
+    padding: 0 16px 24px;
+    margin-top: 80px;
+    gap: 20px;
+  }
+  .igris-portrait-col {
+    width: 100%;
+    max-width: 100%;
+  }
+  .igris-portrait-placeholder {
+    min-height: 280px;
+  }
+  .igris-showcase-col {
+    width: 100%;
+  }
 }
