@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=1.9.4">
+  <link rel="stylesheet" href="css/mesa.css?v=1.9.5">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1187,9 +1187,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.8.8"></script>
 
-<script src="js/mesa.js?v=1.9.4"></script>
+<script src="js/mesa.js?v=1.9.5"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v1.9.4</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.9.5</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -1624,24 +1624,8 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
           </div>
         </div>
 
-        <!-- Coluna Direita: Vitrina de Itens (Mercado Negro Clandestino / Interface Suja com Cortes) -->
+        <!-- Coluna Direita: Grelha Vazia sem textos -->
         <div class="igris-showcase-col">
-          <div class="igris-showcase-header">
-            <div class="igris-showcase-title-row">
-              <h3 class="igris-showcase-heading igris-slashed-text" data-text="Mercado Clandestino">Mercado Clandestino</h3>
-              <span class="igris-illegal-badge">[ CONTRABANDO ILEGAL ]</span>
-              <span class="igris-items-counter" id="igris-items-counter">0 Artefatos</span>
-            </div>
-            <div class="igris-user-chip" id="igris-user-chip"></div>
-          </div>
-
-          <div class="igris-illicit-notice">
-            <span class="igris-warning-slash">///</span>
-            <span>TRANSACOES CLANDESTINAS SEM RASTRO - COMPRE POR SUA CONTA E RISCO</span>
-            <span class="igris-warning-slash">///</span>
-          </div>
-
-          <!-- Grelha CSS Grid para os Cartoes de Itens com Cortes e Textura Suja -->
           <div class="igris-showcase-grid" id="igris-showcase-grid"></div>
         </div>
       </div>

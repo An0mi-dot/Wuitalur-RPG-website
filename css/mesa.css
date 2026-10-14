@@ -11417,9 +11417,9 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   gap: 32px;
   width: 100%;
   max-width: 1280px;
-  height: calc(100vh - 80px);
-  height: calc(100dvh - 80px);
-  margin-top: 50px;
+  height: calc(100vh - 140px);
+  height: calc(100dvh - 140px);
+  margin-top: 110px;
   padding: 0 32px 24px;
   box-sizing: border-box;
 }
