@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=1.9.7">
+  <link rel="stylesheet" href="css/mesa.css?v=1.9.8">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1187,9 +1187,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.8.8"></script>
 
-<script src="js/mesa.js?v=1.9.7"></script>
+<script src="js/mesa.js?v=1.9.8"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v1.9.7</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.9.8</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -1519,6 +1519,12 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Piscina de Iluminacao Ambar Vinda do Alto (Brilho Ambiente) -->
       <div class="igris-lantern-light-pool" aria-hidden="true"></div>
 
+      <!-- Particulas de Poeira e Brasas Flutuantes (Animacao Constante tipo Mesa Virtual) -->
+      <div class="igris-ambient-dust" aria-hidden="true"></div>
+
+      <!-- Nevoa de Chao Rastejante na Tenda -->
+      <div class="igris-ground-fog" aria-hidden="true"></div>
+
       <!-- Botao Discreto de Fechar no Canto Superior Direito -->
       <button type="button" class="igris-floating-close-btn" onclick="MesaIgrisShop.close(true)" title="Fechar Tenda de Igris">&times;</button>
 
@@ -1527,13 +1533,8 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         <!-- Coluna Esquerda: Ilustracao do Mercador Igris Bem Maior com Sombras Negras -->
         <div class="igris-portrait-col">
           <div class="igris-character-stage" id="igris-character-stage">
-            <!-- Imagem do mercador: livre no cenario sem moldura -->
+            <!-- Imagem do mercador: livre no cenario sem moldura nem corte de luz -->
             <img id="igris-merchant-img" class="igris-merchant-img" src="assets/igris.png" alt="Mercador Igris" />
-
-            <!-- Sombras Pretas: esquerda e inferior para fundir com a escuridao -->
-            <div class="igris-shade-left" aria-hidden="true"></div>
-            <div class="igris-shade-bottom" aria-hidden="true"></div>
-            <div class="igris-shade-top" aria-hidden="true"></div>
 
             <!-- Placeholder minimalista livre, sem card ao redor -->
             <div class="igris-figure-placeholder" id="igris-figure-placeholder" style="display: none;">

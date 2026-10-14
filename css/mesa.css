@@ -11126,7 +11126,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   }
 }
 
-/* 2. Escuridao nas Bordas da Tela (Vignette Profunda) */
+/* 2. Escuridao nas Bordas da Tela (Vignette Profunda em Toda a Tela) */
 .igris-darkness-veil {
   position: absolute;
   inset: 0;
@@ -11135,33 +11135,110 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   background: radial-gradient(
     ellipse 85% 80% at 50% 35%,
     transparent 0%,
-    transparent 42%,
-    rgba(0, 0, 0, 0.55) 68%,
-    rgba(0, 0, 0, 0.94) 86%,
+    transparent 45%,
+    rgba(0, 0, 0, 0.45) 68%,
+    rgba(0, 0, 0, 0.90) 86%,
     #000000 100%
   );
 }
 
-/* 3. Piscina de Iluminacao Ambar no Alto (Apenas o Brilho Ambiente da Lanterna) */
+/* 3. Piscina de Iluminacao Ambar no Alto com Respiracao e Pulso Constante */
 .igris-lantern-light-pool {
   position: absolute;
-  top: -6%;
-  left: 45%;
+  top: -8%;
+  left: 48%;
   transform: translateX(-50%);
-  width: 1400px;
-  max-width: 95vw;
-  height: 850px;
+  width: 1600px;
+  max-width: 100vw;
+  height: 900px;
   pointer-events: none;
   z-index: 2;
   background: radial-gradient(
-    ellipse 700px 480px at 50% 120px,
-    rgba(252, 211, 77, 0.28) 0%,
-    rgba(249, 115, 22, 0.16) 28%,
+    ellipse 800px 520px at 50% 120px,
+    rgba(252, 211, 77, 0.32) 0%,
+    rgba(249, 115, 22, 0.18) 28%,
     rgba(217, 119, 6, 0.08) 55%,
     rgba(180, 83, 9, 0.02) 75%,
     transparent 90%
   );
-  filter: blur(34px);
+  filter: blur(36px);
+  animation: igrisLanternBreathe 6.5s ease-in-out infinite alternate;
+}
+
+@keyframes igrisLanternBreathe {
+  0% {
+    opacity: 0.85;
+    transform: translateX(-50%) scale(0.98);
+    filter: blur(36px);
+  }
+  50% {
+    opacity: 1.12;
+    transform: translateX(-50%) scale(1.03);
+    filter: blur(32px);
+  }
+  100% {
+    opacity: 0.88;
+    transform: translateX(-50%) scale(0.99);
+    filter: blur(36px);
+  }
+}
+
+/* 4. Particulas Flutuantes de Brasas e Poeira (Animacao Constante estilo Mesa Virtual) */
+.igris-ambient-dust {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background-image: 
+    radial-gradient(circle, rgba(245, 158, 11, 0.40) 1.2px, transparent 1.4px),
+    radial-gradient(circle, rgba(217, 119, 6, 0.22) 1px, transparent 1.2px);
+  background-size: 36px 36px, 56px 56px;
+  background-position: 0 0, 18px 28px;
+  opacity: 0.22;
+  animation: igrisEmbersRise 8s linear infinite;
+}
+
+@keyframes igrisEmbersRise {
+  0% {
+    background-position: 0 0, 18px 28px;
+  }
+  100% {
+    background-position: 0 -112px, 18px -140px;
+  }
+}
+
+/* 5. Nevoa de Chao Rastejante na Tenda */
+.igris-ground-fog {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 360px;
+  pointer-events: none;
+  z-index: 4;
+  background: radial-gradient(
+    ellipse 70% 55% at 35% 100%,
+    rgba(245, 158, 11, 0.08) 0%,
+    rgba(0, 0, 0, 0.45) 45%,
+    transparent 100%
+  );
+  filter: blur(30px);
+  animation: igrisGroundFogDrift 9s ease-in-out infinite alternate;
+}
+
+@keyframes igrisGroundFogDrift {
+  0% {
+    transform: scaleX(1) translateX(0);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scaleX(1.06) translateX(30px);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scaleX(0.97) translateX(-20px);
+    opacity: 0.75;
+  }
 }
 
 /* Efeito de Letras Cortadas (Sliced Text com acentos em Laranja) */
@@ -11231,7 +11308,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   transform: scale(1.05);
 }
 
-/* Area Central: Duas Colunas (Esquerda: Igris Livre e Bem Maior | Direita: Vitrina Mercado Negro) */
+/* Area Central: Duas Colunas (Esquerda: Igris Livre e Gigante | Direita: Vitrina Mercado Negro) */
 .igris-shop-body {
   position: relative;
   z-index: 15;
@@ -11240,19 +11317,19 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   align-items: stretch;
   justify-content: flex-start;
   gap: 28px;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   height: 100dvh;
-  padding: 24px 36px 40px;
+  padding: 16px 36px 20px 0;
   box-sizing: border-box;
   overflow: hidden;
 }
 
-/* Coluna da Esquerda: Ilustracao do Mercador Igris (Bem Maior, Livre no Fundo Preto) */
+/* Coluna da Esquerda: Ilustracao do Mercador Igris Bem Maior, sem card, sem corte de luz */
 .igris-portrait-col {
-  flex: 0 0 48vw;
-  max-width: 720px;
-  min-width: 440px;
+  flex: 0 0 56vw;
+  max-width: 960px;
+  min-width: 500px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -11262,7 +11339,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   border: none !important;
   box-shadow: none !important;
   position: relative;
-  overflow: hidden;
+  overflow: visible !important;
 }
 
 .igris-character-stage {
@@ -11273,28 +11350,35 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   align-items: flex-start;
   justify-content: flex-end;
   position: relative;
-  background: transparent;
-  border: none;
-  box-shadow: none;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  overflow: visible !important;
 }
 
-/* Ilustracao do Igris: Fundo livre, bem maior, com fade in retardado de ~1s */
+/* Ilustracao do Igris: Bem maior, com fade in e respiracao idle constante */
 .igris-merchant-img {
-  width: 100%;
+  width: auto;
   max-width: 100%;
-  height: auto;
-  max-height: 92vh;
+  height: 96vh;
+  height: 96dvh;
+  max-height: 98vh;
   object-fit: contain;
   object-position: bottom left;
-  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.95));
+  filter: drop-shadow(0 20px 45px rgba(0, 0, 0, 0.98));
   pointer-events: none;
   user-select: none;
   opacity: 0;
-  z-index: 2;
+  z-index: 5;
+  /* Dissolve sutilmente apenas a borda inferior na escuridao, sem criar caixas nem cortar luz */
+  -webkit-mask-image: linear-gradient(to top, transparent 0%, rgba(0, 0, 0, 0.5) 4%, black 14%);
+  mask-image: linear-gradient(to top, transparent 0%, rgba(0, 0, 0, 0.5) 4%, black 14%);
 }
 
 .igris-shop-overlay.active .igris-merchant-img {
-  animation: igrisPortraitFadeIn 0.85s ease-out 1s forwards;
+  animation: 
+    igrisPortraitFadeIn 0.85s ease-out 1s forwards,
+    igrisBreathingIdle 7s ease-in-out 1.9s infinite alternate;
 }
 
 @keyframes igrisPortraitFadeIn {
@@ -11308,55 +11392,16 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   }
 }
 
-/* Sombras Pretas de Profundidade: Esquerda e Abaixo do Igris para Fundir com a Escuridao */
-.igris-shade-left {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 46%;
-  z-index: 5;
-  pointer-events: none;
-  background: linear-gradient(
-    to right,
-    #000000 0%,
-    rgba(0, 0, 0, 0.92) 28%,
-    rgba(0, 0, 0, 0.45) 65%,
-    transparent 100%
-  );
-}
-
-.igris-shade-bottom {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 38%;
-  z-index: 5;
-  pointer-events: none;
-  background: linear-gradient(
-    to top,
-    #000000 0%,
-    rgba(0, 0, 0, 0.95) 28%,
-    rgba(0, 0, 0, 0.5) 68%,
-    transparent 100%
-  );
-}
-
-.igris-shade-top {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 20%;
-  z-index: 5;
-  pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    #000000 0%,
-    rgba(0, 0, 0, 0.7) 40%,
-    transparent 100%
-  );
+@keyframes igrisBreathingIdle {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.008);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
 }
 
 .igris-figure-placeholder {
@@ -11397,7 +11442,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   border: 1px dashed rgba(249, 115, 22, 0.5);
 }
 
-/* Coluna da Direita: Vitrina (Fundo escuro, cortes angulares e detalhes em Laranja) */
+/* Coluna da Direita: Vitrina (Fundo escuro, cortes angulares, detalhes em Laranja e aura pulsante) */
 .igris-showcase-col {
   flex: 1;
   min-width: 380px;
@@ -11423,10 +11468,6 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   filter: url(#nanquim-rough);
   padding: 20px 24px 24px;
   box-sizing: border-box;
-  box-shadow: 
-    0 15px 40px rgba(0, 0, 0, 0.95),
-    inset 0 0 45px rgba(0, 0, 0, 0.9),
-    inset 0 0 15px rgba(249, 115, 22, 0.15);
   position: relative;
   margin-bottom: 52px;
   background-image: 
@@ -11438,6 +11479,31 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
       transparent 7px
     ),
     radial-gradient(circle at 80% 20%, rgba(249, 115, 22, 0.08) 0%, transparent 60%);
+  animation: igrisShowcaseAura 6s ease-in-out infinite alternate;
+}
+
+@keyframes igrisShowcaseAura {
+  0% {
+    border-color: rgba(249, 115, 22, 0.35);
+    box-shadow: 
+      0 15px 40px rgba(0, 0, 0, 0.95),
+      inset 0 0 35px rgba(0, 0, 0, 0.9),
+      inset 0 0 10px rgba(249, 115, 22, 0.1);
+  }
+  50% {
+    border-color: rgba(249, 115, 22, 0.58);
+    box-shadow: 
+      0 15px 40px rgba(0, 0, 0, 0.95),
+      inset 0 0 45px rgba(0, 0, 0, 0.9),
+      inset 0 0 22px rgba(249, 115, 22, 0.22);
+  }
+  100% {
+    border-color: rgba(249, 115, 22, 0.35);
+    box-shadow: 
+      0 15px 40px rgba(0, 0, 0, 0.95),
+      inset 0 0 35px rgba(0, 0, 0, 0.9),
+      inset 0 0 10px rgba(249, 115, 22, 0.1);
+  }
 }
 
 /* Aviso de Tutorial Rapido na Vitrina */
