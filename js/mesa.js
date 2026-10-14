@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.9.5';
+const MESA_VERSION = 'v1.9.6';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -7166,7 +7166,7 @@ window.MesaNotebookSara = MesaNotebookSara;
 // ==========================================================================
 const MesaIgrisShop = {
   isOpen: false,
-  merchantImage: null, // Pode ser preenchida dinamicamente no futuro
+  merchantImage: 'assets/igris.png', // Pode ser preenchida dinamicamente no futuro
   items: [], // Conforme solicitado: nenhum item na loja nesta fase (array vazio)
   interests: {}, // Map: { [itemId]: [slotOrMaster, ...] }
 

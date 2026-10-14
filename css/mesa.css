@@ -11164,9 +11164,9 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   z-index: 4;
   background: radial-gradient(
     ellipse 700px 500px at 50% 85px,
-    rgba(252, 211, 77, 0.38) 0%,
-    rgba(245, 158, 11, 0.24) 25%,
-    rgba(217, 119, 6, 0.11) 52%,
+    rgba(252, 211, 77, 0.40) 0%,
+    rgba(249, 115, 22, 0.25) 25%,
+    rgba(217, 119, 6, 0.12) 52%,
     rgba(180, 83, 9, 0.03) 72%,
     transparent 90%
   );
@@ -11319,8 +11319,8 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   background: radial-gradient(
     ellipse 360px 300px at 50% 12%,
     rgba(254, 240, 138, 0.32) 0%,
-    rgba(251, 191, 36, 0.20) 35%,
-    rgba(245, 158, 11, 0.08) 65%,
+    rgba(249, 115, 22, 0.20) 35%,
+    rgba(217, 119, 6, 0.08) 65%,
     transparent 85%
   );
   filter: blur(24px);
@@ -11339,7 +11339,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.95));
 }
 
-/* Efeito de Letras e Titulos Cortados (Sliced Text / Mercado Negro Clandestino) */
+/* Efeito de Letras Cortadas (Sliced Text com acentos em Laranja) */
 .igris-slashed-text {
   position: relative;
   display: inline-block;
@@ -11359,7 +11359,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   color: #f8fafc;
   clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
   transform: translate(-1.5px, -0.5px);
-  text-shadow: -1px 0 0 rgba(220, 38, 38, 0.85);
+  text-shadow: -1px 0 0 rgba(249, 115, 22, 0.9);
   pointer-events: none;
 }
 
@@ -11373,7 +11373,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   color: #cbd5e1;
   clip-path: polygon(0 45%, 100% 45%, 100% 100%, 0 100%);
   transform: translate(2px, 0.5px);
-  text-shadow: 1px 0 0 rgba(217, 119, 6, 0.85);
+  text-shadow: 1px 0 0 rgba(217, 119, 6, 0.9);
   pointer-events: none;
 }
 
@@ -11384,7 +11384,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   right: 20px;
   z-index: 30;
   background: rgba(18, 18, 20, 0.85);
-  border: 1px solid #332020;
+  border: 1px solid #332014;
   color: #94a3b8;
   width: 36px;
   height: 36px;
@@ -11400,9 +11400,9 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
 }
 
 .igris-floating-close-btn:hover {
-  background: rgba(185, 28, 28, 0.9);
-  color: #fee2e2;
-  border-color: #dc2626;
+  background: rgba(194, 65, 12, 0.9);
+  color: #ffedd5;
+  border-color: #f97316;
   transform: scale(1.05);
 }
 
@@ -11424,15 +11424,15 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   box-sizing: border-box;
 }
 
-/* Coluna da Esquerda: Ilustracao do Mercador Igris (Sem Card, sem Moldura, Livre no Preto) */
+/* Coluna da Esquerda: Ilustracao do Mercador Igris (Sem Card, sem Moldura, Livre no Fundo Preto) */
 .igris-portrait-col {
-  width: 380px;
-  max-width: 380px;
+  width: 440px;
+  max-width: 45vw;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -11445,7 +11445,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   position: relative;
   background: transparent;
   border: none;
@@ -11454,9 +11454,9 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
 
 .igris-merchant-img {
   max-width: 100%;
-  max-height: 82vh;
+  max-height: 78vh;
   object-fit: contain;
-  filter: drop-shadow(0 20px 35px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 30px rgba(245, 158, 11, 0.2));
+  filter: drop-shadow(0 25px 40px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 35px rgba(249, 115, 22, 0.2));
   pointer-events: none;
   user-select: none;
 }
@@ -11491,22 +11491,22 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
 .igris-figure-tag {
   font-size: 0.72rem;
   letter-spacing: 0.14em;
-  color: #ef4444;
+  color: #f97316;
   font-weight: 700;
   text-transform: uppercase;
-  background: rgba(220, 38, 38, 0.12);
+  background: rgba(249, 115, 22, 0.12);
   padding: 3px 10px;
-  border: 1px dashed rgba(220, 38, 38, 0.45);
+  border: 1px dashed rgba(249, 115, 22, 0.5);
 }
 
-/* Coluna da Direita: Vitrina Mercado Negro (Interface Suja, Cortes de Gilete e Textura Clandestina) */
+/* Coluna da Direita: Vitrina (Fundo escuro, cortes angulares e detalhes em Laranja) */
 .igris-showcase-col {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
   background: rgba(8, 8, 10, 0.94);
-  border: 1.5px solid rgba(185, 28, 28, 0.45);
+  border: 1.5px solid rgba(249, 115, 22, 0.45);
   clip-path: polygon(
     0 0, 
     calc(100% - 16px) 0, 
@@ -11523,12 +11523,12 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
     0 26%
   );
   filter: url(#nanquim-rough);
-  padding: 20px 24px;
+  padding: 20px;
   box-sizing: border-box;
   box-shadow: 
     0 15px 40px rgba(0, 0, 0, 0.95),
     inset 0 0 45px rgba(0, 0, 0, 0.9),
-    inset 0 0 15px rgba(185, 28, 28, 0.12);
+    inset 0 0 15px rgba(249, 115, 22, 0.15);
   position: relative;
   background-image: 
     repeating-linear-gradient(
@@ -11538,99 +11538,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
       transparent 1px,
       transparent 7px
     ),
-    radial-gradient(circle at 80% 20%, rgba(220, 38, 38, 0.06) 0%, transparent 60%);
-}
-
-.igris-showcase-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 12px;
-  margin-bottom: 10px;
-  border-bottom: 1px dashed rgba(185, 28, 28, 0.35);
-  flex-shrink: 0;
-}
-
-.igris-showcase-title-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.igris-showcase-heading {
-  margin: 0;
-  font-size: 1.15rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  color: #f1f5f9;
-}
-
-.igris-illegal-badge {
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  color: #ef4444;
-  background: rgba(220, 38, 38, 0.14);
-  border: 1px solid rgba(220, 38, 38, 0.5);
-  padding: 2px 7px;
-  clip-path: polygon(0 0, 96% 0, 100% 25%, 100% 100%, 4% 100%, 0 75%);
-}
-
-.igris-items-counter {
-  font-size: 0.74rem;
-  color: #71717a;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.igris-illicit-notice {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  color: #a1a1aa;
-  background: rgba(18, 18, 18, 0.6);
-  border-left: 2px solid #b91c1c;
-  border-right: 2px solid #b91c1c;
-  padding: 4px 10px;
-  margin-bottom: 14px;
-  text-transform: uppercase;
-}
-
-.igris-warning-slash {
-  color: #dc2626;
-  font-weight: 900;
-}
-
-.igris-user-chip {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(10, 10, 10, 0.85);
-  border: 1px solid rgba(185, 28, 28, 0.4);
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 0.74rem;
-  color: #cbd5e1;
-}
-
-.igris-user-chip-avatar {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: #27272a;
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.65rem;
-  font-weight: 700;
-  border: 1px solid #71717a;
+    radial-gradient(circle at 80% 20%, rgba(249, 115, 22, 0.08) 0%, transparent 60%);
 }
 
 .igris-showcase-grid {
@@ -11643,10 +11551,10 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   padding-right: 4px;
 }
 
-/* Card de Item na Vitrina Clandestina: Bordas Cortadas com Razor Notches e Textura Suja */
+/* Card de Item na Vitrina Clandestina: Bordas Cortadas com Razor Notches e Acentos Laranjas */
 .igris-item-card {
   background: linear-gradient(145deg, #121215 0%, #08080a 100%);
-  border: 1px solid #332020;
+  border: 1px solid #332014;
   clip-path: polygon(
     0 0, 
     calc(100% - 12px) 0, 
@@ -11671,13 +11579,13 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
 
 .igris-item-card:hover {
   transform: translateY(-3px) scale(1.01);
-  border-color: #dc2626;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.95), 0 0 18px rgba(220, 38, 38, 0.35);
+  border-color: #ea580c;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.95), 0 0 18px rgba(249, 115, 22, 0.35);
 }
 
 .igris-item-card.has-my-interest {
-  border-color: #ef4444;
-  box-shadow: 0 0 0 1px #dc2626, 0 10px 30px rgba(0, 0, 0, 0.95), 0 0 25px rgba(220, 38, 38, 0.4);
+  border-color: #f97316;
+  box-shadow: 0 0 0 1px #ea580c, 0 10px 30px rgba(0, 0, 0, 0.95), 0 0 25px rgba(249, 115, 22, 0.4);
 }
 
 .igris-card-inner {
@@ -11692,7 +11600,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   height: 135px;
   background: #050507;
   overflow: hidden;
-  border-bottom: 1px dashed rgba(185, 28, 28, 0.3);
+  border-bottom: 1px dashed rgba(249, 115, 22, 0.35);
 }
 
 .igris-card-thumb {
@@ -11713,8 +11621,8 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   top: 8px;
   left: 8px;
   background: rgba(10, 10, 10, 0.9);
-  border: 1px solid rgba(185, 28, 28, 0.6);
-  color: #fca5a5;
+  border: 1px solid rgba(249, 115, 22, 0.6);
+  color: #fed7aa;
   font-size: 0.62rem;
   font-weight: 800;
   letter-spacing: 0.1em;
@@ -11740,7 +11648,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
 
 .igris-card-type {
   font-size: 0.70rem;
-  color: #991b1b;
+  color: #ea580c;
   font-weight: 700;
   margin-bottom: 8px;
   text-transform: uppercase;
@@ -11760,7 +11668,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   align-items: center;
   justify-content: space-between;
   padding-top: 8px;
-  border-top: 1px dashed rgba(185, 28, 28, 0.25);
+  border-top: 1px dashed rgba(249, 115, 22, 0.3);
 }
 
 .igris-card-price {
@@ -11805,7 +11713,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
 }
 
 .igris-dispute-badge {
-  background: #dc2626;
+  background: #ea580c;
   color: #fff;
   font-size: 0.62rem;
   font-weight: 800;

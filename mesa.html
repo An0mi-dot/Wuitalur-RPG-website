@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=1.9.5">
+  <link rel="stylesheet" href="css/mesa.css?v=1.9.6">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1187,9 +1187,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.8.8"></script>
 
-<script src="js/mesa.js?v=1.9.5"></script>
+<script src="js/mesa.js?v=1.9.6"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v1.9.5</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.9.6</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -1605,10 +1605,10 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         <div class="igris-portrait-col">
           <div class="igris-character-stage" id="igris-character-stage">
             <!-- Imagem do mercador: fica livre no cenario sem nenhum card ao redor -->
-            <img id="igris-merchant-img" class="igris-merchant-img" src="" alt="Mercador Igris" style="display: none;" />
+            <img id="igris-merchant-img" class="igris-merchant-img" src="assets/igris.png" alt="Mercador Igris" />
 
             <!-- Placeholder minimalista livre, sem card ao redor -->
-            <div class="igris-figure-placeholder" id="igris-figure-placeholder">
+            <div class="igris-figure-placeholder" id="igris-figure-placeholder" style="display: none;">
               <div class="igris-silhouette-icon">
                 <svg viewBox="0 0 80 120" width="130" height="195" fill="currentColor">
                   <path d="M40 8 C32 8 26 14 24 22 C22 30 22 38 28 44 C20 48 12 56 8 68 C4 80 2 98 2 118 L78 118 C78 98 76 80 72 68 C68 56 60 48 52 44 C58 38 58 30 56 22 C54 14 48 8 40 8 Z" opacity="0.45"/>
