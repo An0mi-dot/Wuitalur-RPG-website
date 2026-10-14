@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.0.8';
+const MESA_VERSION = 'v2.0.9';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -7735,7 +7735,7 @@ const MesaIgrisShop = {
       });
 
       if (currentSelectedCount >= 2) {
-        alert('Você já manifestou interesse no limite máximo de 2 itens nesta visita à Tenda do Igris. Desmarque um item para poder escolher outro.');
+        alert('Você já manifestou interesse no limite máximo de 2 itens nesta visita à Tenda. Desmarque um item para poder escolher outro.');
         return;
       }
 
