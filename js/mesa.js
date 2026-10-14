@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.0.4';
+const MESA_VERSION = 'v2.0.5';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -7536,7 +7536,19 @@ const MesaIgrisShop = {
     };
 
     grid.innerHTML = `
-      <!-- SECAO 1: ITENS TRANSITORIOS -->
+      <!-- SECAO 1: ITENS PADROES (AS FRUTAS ESTRANHAS - SEMPRE NO TOPO) -->
+      <div class="igris-category-block">
+        <div class="igris-category-header">
+          <div class="igris-category-badge">[ ITENS PADRÕES — ESTOQUE PERMANENTE ]</div>
+          <div class="igris-category-line"></div>
+          <span class="igris-category-count">${defaultItems.length} permanente(s)</span>
+        </div>
+        <div class="igris-cards-subgrid">
+          ${defaultItems.map(renderCard).join('')}
+        </div>
+      </div>
+
+      <!-- SECAO 2: ITENS TRANSITORIOS -->
       <div class="igris-category-block">
         <div class="igris-category-header">
           <div class="igris-category-badge">[ ARTEFATOS TRANSITÓRIOS ]</div>
@@ -7550,18 +7562,6 @@ const MesaIgrisShop = {
         ` : `
           <div class="igris-category-empty">Nenhum artefato transitório disponível nesta visita.</div>
         `}
-      </div>
-
-      <!-- SECAO 2: ITENS PADROES (AS FRUTAS ESTRANHAS) -->
-      <div class="igris-category-block">
-        <div class="igris-category-header">
-          <div class="igris-category-badge">[ ITENS PADRÕES — ESTOQUE PERMANENTE ]</div>
-          <div class="igris-category-line"></div>
-          <span class="igris-category-count">${defaultItems.length} permanente(s)</span>
-        </div>
-        <div class="igris-cards-subgrid">
-          ${defaultItems.map(renderCard).join('')}
-        </div>
       </div>
     `;
 
