@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.0.7';
+const MESA_VERSION = 'v2.0.8';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -1702,14 +1702,18 @@ const MesaApp = {
             }
           }
 
-          // 3.1 Sincronização da Tenda do Igris
+          // 3.1 Sincronização da Tenda do Igris (somente se a loja estiver fechada ou update for mais novo)
           if (attrs && attrs._sys_igris_shop && window.MesaIgrisShop) {
             const ig = attrs._sys_igris_shop;
-            if (ig.interests) {
-              MesaIgrisShop.interests = ig.interests;
-              if (MesaIgrisShop.isOpen) MesaIgrisShop.renderShowcase();
+            const remoteTime = ig.updatedAt || 0;
+            const localTime = MesaIgrisShop.lastLocalUpdate || 0;
+            // Se a loja estiver aberta na tela, as selecoes sao gerenciadas em tempo real via WebSocket (evita reverter desselecao)
+            if (!MesaIgrisShop.isOpen && remoteTime > localTime) {
+              if (ig.interests) {
+                MesaIgrisShop.interests = ig.interests;
+              }
+              if (ig.merchantImage) MesaIgrisShop.setMerchantImage(ig.merchantImage);
             }
-            if (ig.merchantImage) MesaIgrisShop.setMerchantImage(ig.merchantImage);
           }
 
           // 4. Sincronização de Abertura
@@ -1730,17 +1734,21 @@ const MesaApp = {
           // 5. Sincronização de Combate
           if (attrs && attrs._sys_combate && window.MesaCombate) {
             const cb = attrs._sys_combate;
-            if (cb.active && !MesaCombate.isActive) {
-              MesaCombate.startCombat(cb, false);
-            } else if (!cb.active && MesaCombate.isActive) {
-              MesaCombate.stopCombat(false);
-            } else if (cb.active && MesaCombate.isActive && cb.opponentName !== MesaCombate.opponentName) {
-              MesaCombate.setOpponent(cb, false);
-            }
-            if (cb.turnCycle) {
-              MesaCombate.syncTurnCycle(cb.turnCycle);
-            } else if (MesaCombate.turnCycle && MesaCombate.turnCycle.active && !cb.active) {
-              MesaCombate.stopTurnCycle(false);
+            const remoteTime = cb.updatedAt || 0;
+            const localTime = MesaCombate.lastLocalUpdate || 0;
+            if (remoteTime >= localTime) {
+              if (cb.active && !MesaCombate.isActive) {
+                MesaCombate.startCombat(cb, false);
+              } else if (!cb.active && MesaCombate.isActive) {
+                MesaCombate.stopCombat(false);
+              } else if (cb.active && MesaCombate.isActive && cb.opponentName !== MesaCombate.opponentName) {
+                MesaCombate.setOpponent(cb, false);
+              }
+              if (cb.turnCycle) {
+                MesaCombate.syncTurnCycle(cb.turnCycle);
+              } else if (MesaCombate.turnCycle && MesaCombate.turnCycle.active && !cb.active) {
+                MesaCombate.stopTurnCycle(false);
+              }
             }
           }
         }
@@ -7713,10 +7721,10 @@ const MesaIgrisShop = {
 
     this.lastLocalUpdate = Date.now();
 
-    const index = this.interests[itemId].indexOf(user.id);
-    if (index > -1) {
-      // Se ja esta selecionado pelo jogador, permite desmarcar livremente
-      this.interests[itemId].splice(index, 1);
+    const hasMyInterest = this.interests[itemId].includes(user.id);
+    if (hasMyInterest) {
+      // Se ja esta selecionado pelo jogador, desmarca completamente removendo todas as ocorrencias
+      this.interests[itemId] = this.interests[itemId].filter(id => id !== user.id);
     } else {
       // Regra: cada jogador pode selecionar no maximo 2 itens por visita
       let currentSelectedCount = 0;
@@ -7796,6 +7804,13 @@ const MesaIgrisShop = {
     }
     this.updateUserChip();
     this.updateMasterControls();
+
+    // Se o Mestre estiver na sala, persiste no banco de dados para manter novos participantes alinhados
+    const user = this.getCurrentUserIdentity();
+    if (user && user.isMaster) {
+      this.lastLocalUpdate = Date.now();
+      this.saveStateToSupabase(false);
+    }
   },
 
   // Retorna itens que possuem mais interessados do que unidades disponiveis (padrao 1)
