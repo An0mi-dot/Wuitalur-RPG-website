@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.0.6';
+const MESA_VERSION = 'v2.0.7';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -1247,6 +1247,17 @@ const MesaApp = {
     this.renderMesa();
   },
 
+  _fetchDebounceTimer: null,
+  fetchPlayersDebounced() {
+    if (this._fetchDebounceTimer) {
+      clearTimeout(this._fetchDebounceTimer);
+    }
+    this._fetchDebounceTimer = setTimeout(() => {
+      this._fetchDebounceTimer = null;
+      this.fetchPlayers();
+    }, 250);
+  },
+
   async fetchPlayers() {
     if (!this.supabase) return;
     
@@ -1334,8 +1345,10 @@ const MesaApp = {
               });
             }
 
-            // Sincroniza e limpa no banco de dados do Supabase
-            if (this.supabase && p.id) {
+            // Sincroniza e limpa no banco de dados do Supabase apenas se houver divergencia real e se for Mestre
+            const rawHabsStr = typeof raw.habilidades === 'string' ? raw.habilidades : JSON.stringify(raw.habilidades || []);
+            const needsSync = !rawHabsStr.includes('Olhar Investigativo') || rawHabsStr.toLowerCase().includes('visao');
+            if (needsSync && this.supabase && p.id && this.state && this.state.isMaster) {
               this.supabase.from('personagens').update({
                 habilidades: p.habilidades
               }).eq('id', p.id).then(() => {});
@@ -1558,8 +1571,13 @@ const MesaApp = {
             }
             if (p1Attrs._sys_igris_shop && window.MesaIgrisShop) {
               const ig = p1Attrs._sys_igris_shop;
-              if (ig.interests) MesaIgrisShop.interests = ig.interests;
-              if (ig.merchantImage) MesaIgrisShop.setMerchantImage(ig.merchantImage);
+              const isShopOpen = MesaIgrisShop.isOpen;
+              const remoteTime = ig.updatedAt || 0;
+              const localTime = MesaIgrisShop.lastLocalUpdate || 0;
+              if (!isShopOpen || remoteTime > localTime) {
+                if (ig.interests) MesaIgrisShop.interests = ig.interests;
+                if (ig.merchantImage) MesaIgrisShop.setMerchantImage(ig.merchantImage);
+              }
             }
             if (p1Attrs._sys_abertura && window.MesaAbertura) {
               const ab = p1Attrs._sys_abertura;
@@ -1574,17 +1592,21 @@ const MesaApp = {
             }
             if (p1Attrs._sys_combate && window.MesaCombate) {
               const cb = p1Attrs._sys_combate;
-              if (cb.active && !MesaCombate.isActive) {
-                MesaCombate.startCombat(cb, false);
-              } else if (!cb.active && MesaCombate.isActive) {
-                MesaCombate.stopCombat(false);
-              } else if (cb.active && MesaCombate.isActive && cb.opponentName !== MesaCombate.opponentName) {
-                MesaCombate.setOpponent(cb, false);
-              }
-              if (cb.turnCycle) {
-                MesaCombate.syncTurnCycle(cb.turnCycle);
-              } else if (MesaCombate.turnCycle && MesaCombate.turnCycle.active && !cb.active) {
-                MesaCombate.stopTurnCycle(false);
+              const remoteTime = cb.updatedAt || 0;
+              const localTime = MesaCombate.lastLocalUpdate || 0;
+              if (remoteTime >= localTime) {
+                if (cb.active && !MesaCombate.isActive) {
+                  MesaCombate.startCombat(cb, false);
+                } else if (!cb.active && MesaCombate.isActive) {
+                  MesaCombate.stopCombat(false);
+                } else if (cb.active && MesaCombate.isActive && cb.opponentName !== MesaCombate.opponentName) {
+                  MesaCombate.setOpponent(cb, false);
+                }
+                if (cb.turnCycle) {
+                  MesaCombate.syncTurnCycle(cb.turnCycle);
+                } else if (MesaCombate.turnCycle && MesaCombate.turnCycle.active && !cb.active) {
+                  MesaCombate.stopTurnCycle(false);
+                }
               }
             }
           }
@@ -1726,6 +1748,8 @@ const MesaApp = {
     }, 1000);
   },
 
+  clientId: 'c_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now(),
+
   subscribeToRealtime() {
     if (!this.supabase) return;
 
@@ -1733,23 +1757,49 @@ const MesaApp = {
       try { this.supabase.removeChannel(this.channel); } catch(e) {}
     }
 
+    if (!this.clientId) {
+      this.clientId = 'c_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now();
+    }
+
     const channel = this.supabase.channel('mesa_main_channel', {
       config: {
-        broadcast: { ack: false }
+        broadcast: { ack: false, self: false }
       }
     });
+
+    // Envolve o envio para anexar automaticamente o identificador unico do cliente emissor (_senderId)
+    const rawSend = channel.send.bind(channel);
+    channel.send = (msg) => {
+      if (msg && msg.type === 'broadcast') {
+        if (!msg.payload) msg.payload = {};
+        if (!msg.payload._senderId) {
+          msg.payload._senderId = this.clientId;
+        }
+      }
+      return rawSend(msg);
+    };
 
     this.channel = channel;
     if (window.MesaChat) MesaChat.channel = channel;
 
-    // 1. Postgres changes para sincronizar dados dos personagens e estados
+    // Helper universal para ignorar broadcasts vindos deste proprio cliente (elimina eco, duplo disparo e replay de animacoes)
+    const isFromSelf = (payload) => {
+      if (!payload) return false;
+      const data = payload.payload;
+      if (data && data._senderId && data._senderId === this.clientId) {
+        return true;
+      }
+      return false;
+    };
+
+    // 1. Postgres changes com debounce para evitar tempestade de selects e loops
     channel.on('postgres_changes', { event: '*', schema: 'public', table: 'personagens' }, (payload) => {
-      console.log("Atualização da mesa recebida via Postgres CDC:", payload);
-      this.fetchPlayers();
+      this.fetchPlayersDebounced();
     });
 
     // 2. Sincronização de Coletáveis
     channel.on('broadcast', { event: 'coletaveis_sync' }, (payload) => {
+      if (isFromSelf(payload)) return;
       const data = payload.payload;
       if (data && Array.isArray(data.items) && window.MesaColetaveis) {
         const { items: merged } = MesaColetaveis.mergeCanonical(data.items);
@@ -1762,6 +1812,7 @@ const MesaApp = {
 
     // 3. Sincronização de Área
     channel.on('broadcast', { event: 'area_changed' }, (payload) => {
+      if (isFromSelf(payload)) return;
       const data = payload.payload;
       if (data && data.areaId && window.MesaAreaManager && MesaAreaManager.currentAreaId !== data.areaId) {
         MesaAreaManager.applyArea(data.areaId, false);
@@ -1771,16 +1822,19 @@ const MesaApp = {
 
     // 4. Abertura da Mesa
     channel.on('broadcast', { event: 'play_abertura' }, (payload) => {
+      if (isFromSelf(payload)) return;
       const ts = payload && payload.payload && payload.payload.timestamp;
       const offset = ts ? Math.max(0, (Date.now() - ts) / 1000) : 0;
       if (window.MesaAbertura) MesaAbertura.triggerAbertura(offset);
     });
-    channel.on('broadcast', { event: 'stop_abertura' }, () => {
+    channel.on('broadcast', { event: 'stop_abertura' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaAbertura) MesaAbertura.triggerStop();
     });
 
     // 5. Notebook da Sara (Dispositivos da Campanha)
     channel.on('broadcast', { event: 'notebook_start' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaNotebookSara) {
         if (payload.payload && payload.payload.camImages) {
           MesaNotebookSara.camImages = payload.payload.camImages;
@@ -1792,13 +1846,15 @@ const MesaApp = {
       }
     });
 
-    channel.on('broadcast', { event: 'notebook_stop' }, () => {
+    channel.on('broadcast', { event: 'notebook_stop' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaNotebookSara) {
         MesaNotebookSara.triggerStop();
       }
     });
 
     channel.on('broadcast', { event: 'notebook_sync' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaNotebookSara && payload.payload) {
         MesaNotebookSara.handleIncomingSync(payload.payload);
       }
@@ -1806,26 +1862,31 @@ const MesaApp = {
 
     // 5.1 Modo de Combate da Campanha
     channel.on('broadcast', { event: 'combat_start' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaCombate && payload.payload) {
         MesaCombate.startCombat(payload.payload, false);
       }
     });
     channel.on('broadcast', { event: 'combat_update' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaCombate && payload.payload) {
         MesaCombate.setOpponent(payload.payload, false);
       }
     });
-    channel.on('broadcast', { event: 'combat_stop' }, () => {
+    channel.on('broadcast', { event: 'combat_stop' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaCombate) {
         MesaCombate.stopCombat(false);
       }
     });
     channel.on('broadcast', { event: 'combat_turn_sync' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaCombate && payload.payload) {
         MesaCombate.syncTurnCycle(payload.payload);
       }
     });
-    channel.on('broadcast', { event: 'combat_turn_stop' }, () => {
+    channel.on('broadcast', { event: 'combat_turn_stop' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaCombate) {
         MesaCombate.stopTurnCycle(false);
       }
@@ -1833,6 +1894,7 @@ const MesaApp = {
 
     // 5.2 A Tenda do Igris (Interface de Mercador)
     channel.on('broadcast', { event: 'igris_shop_open' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaIgrisShop) {
         if (payload.payload && payload.payload.interests) {
           MesaIgrisShop.interests = payload.payload.interests;
@@ -1845,18 +1907,21 @@ const MesaApp = {
     });
 
     channel.on('broadcast', { event: 'igris_interest_sync' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaIgrisShop && payload.payload) {
         MesaIgrisShop.handleIncomingInterestSync(payload.payload);
       }
     });
 
-    channel.on('broadcast', { event: 'igris_shop_close' }, () => {
+    channel.on('broadcast', { event: 'igris_shop_close' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaIgrisShop) {
         MesaIgrisShop.close(false);
       }
     });
 
     channel.on('broadcast', { event: 'igris_roulette_spin' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaIgrisShop && payload && payload.payload) {
         const p = payload.payload;
         MesaIgrisShop.runRouletteAnimation(p.itemId, p.itemName, p.participants, p.winnerId);
@@ -1864,6 +1929,7 @@ const MesaApp = {
     });
 
     channel.on('broadcast', { event: 'igris_items_granted' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaIgrisShop && payload && payload.payload) {
         MesaIgrisShop.handleItemsGranted(payload.payload);
       }
@@ -1871,10 +1937,12 @@ const MesaApp = {
 
     // 6. Mensagens de Chat e Reações
     channel.on('broadcast', { event: 'chat_msg' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaChat) MesaChat.receiveMessage(payload.payload);
     });
 
     channel.on('broadcast', { event: 'chat_message' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaChat && payload.payload) {
         MesaChat.receiveMessage({
           id: payload.payload.id || 'msg_' + Date.now(),
@@ -1887,6 +1955,7 @@ const MesaApp = {
     });
 
     channel.on('broadcast', { event: 'player_reaction' }, (payload) => {
+      if (isFromSelf(payload)) return;
       const data = payload.payload;
       if (data && data.slot && window.MesaReactions) {
         MesaReactions.showBubble(data.slot, data.faceKey || data.emoji);
@@ -1894,6 +1963,7 @@ const MesaApp = {
     });
 
     channel.on('broadcast', { event: 'dice_roll' }, (payload) => {
+      if (isFromSelf(payload)) return;
       const data = payload.payload;
       if (data && window.MesaDice) {
         MesaDice.playRollAnimation(data);
@@ -1901,6 +1971,7 @@ const MesaApp = {
     });
 
     channel.on('broadcast', { event: 'vitals_sync' }, (payload) => {
+      if (isFromSelf(payload)) return;
       const data = payload.payload;
       if (data && data.slot) {
         MesaApp.handleIncomingVitals(data);
@@ -1908,6 +1979,7 @@ const MesaApp = {
     });
 
     channel.on('broadcast', { event: 'media_sync' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaMediaPlayer && (!MesaApp.state || !MesaApp.state.isMaster)) {
         MesaMediaPlayer.handleIncomingSync(payload.payload);
       }
@@ -7282,6 +7354,8 @@ const IGRIS_DEFAULT_ITEMS = [
 
 const MesaIgrisShop = {
   isOpen: false,
+  lastLocalUpdate: 0,
+  _saveTimer: null,
   merchantImage: 'assets/igris.png',
   items: [...IGRIS_DEFAULT_ITEMS], // Itens padroes da loja sempre presentes
   interests: {}, // Map: { [itemId]: [slotOrMaster, ...] }
@@ -7637,6 +7711,8 @@ const MesaIgrisShop = {
       this.interests[itemId] = [];
     }
 
+    this.lastLocalUpdate = Date.now();
+
     const index = this.interests[itemId].indexOf(user.id);
     if (index > -1) {
       // Se ja esta selecionado pelo jogador, permite desmarcar livremente
@@ -7679,15 +7755,18 @@ const MesaIgrisShop = {
       }
     }
 
-    this.saveStateToSupabase();
+    this.saveStateToSupabase(false);
   },
 
-  // Atualiza apenas os avatares do cartao no DOM
+  // Atualiza apenas os avatares do cartao no DOM de forma cirurgica
   updateCardInterestsUI(itemId) {
     const cardEl = document.querySelector(`.igris-item-card[data-item-id="${itemId}"]`);
     const container = document.getElementById(`igris-card-interests-${itemId}`);
     if (container) {
-      container.innerHTML = this.renderInterestAvatars(itemId);
+      const newHtml = this.renderInterestAvatars(itemId);
+      if (container.innerHTML !== newHtml) {
+        container.innerHTML = newHtml;
+      }
     }
     if (cardEl) {
       const user = this.getCurrentUserIdentity();
@@ -8037,29 +8116,41 @@ const MesaIgrisShop = {
     }
   },
 
-  // Persiste estado no Supabase (se mestre estiver conectado)
-  async saveStateToSupabase() {
+  // Persiste estado no Supabase com suporte a debounce inteligente
+  saveStateToSupabase(immediate = false) {
     if (!window.MesaApp || !MesaApp.supabase || !MesaApp.state || !MesaApp.state.isMaster) return;
-    try {
-      const { data } = await MesaApp.supabase
-        .from('personagens')
-        .select('atributos')
-        .eq('id', 1)
-        .single();
-      const attrs = data && data.atributos 
-        ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos) 
-        : {};
-      attrs._sys_igris_shop = {
-        interests: this.interests || {},
-        merchantImage: this.merchantImage || null,
-        updatedAt: Date.now()
-      };
-      await MesaApp.supabase
-        .from('personagens')
-        .update({ atributos: attrs })
-        .eq('id', 1);
-    } catch(e) {
-      console.warn('Erro ao persistir tenda de Igris no Supabase:', e);
+    if (this._saveTimer) {
+      clearTimeout(this._saveTimer);
+      this._saveTimer = null;
+    }
+    const doSave = async () => {
+      try {
+        const { data } = await MesaApp.supabase
+          .from('personagens')
+          .select('atributos')
+          .eq('id', 1)
+          .single();
+        const attrs = data && data.atributos 
+          ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos) 
+          : {};
+        attrs._sys_igris_shop = {
+          interests: this.interests || {},
+          merchantImage: this.merchantImage || null,
+          updatedAt: Date.now()
+        };
+        await MesaApp.supabase
+          .from('personagens')
+          .update({ atributos: attrs })
+          .eq('id', 1);
+      } catch(e) {
+        console.warn('Erro ao persistir tenda de Igris no Supabase:', e);
+      }
+    };
+
+    if (immediate) {
+      doSave();
+    } else {
+      this._saveTimer = setTimeout(doSave, 600);
     }
   }
 };
@@ -8070,6 +8161,7 @@ window.MesaIgrisShop = MesaIgrisShop;
 // ==========================================================================
 const MesaCombate = {
   isActive: false,
+  lastLocalUpdate: 0,
   opponentId: 'unknown',
   opponentName: '???',
   videoUrl: 'assets/videos/cine1.mp4',
@@ -8254,6 +8346,7 @@ const MesaCombate = {
     if (shouldBroadcast && (!MesaApp.state || !MesaApp.state.isMaster)) return;
 
     this.isActive = true;
+    this.lastLocalUpdate = Date.now();
     this.opponentId = data.opponentId || 'unknown';
     this.opponentName = data.opponentName || '???';
     this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/cine1.mp4');
@@ -8369,6 +8462,7 @@ const MesaCombate = {
     if (shouldBroadcast && (!MesaApp.state || !MesaApp.state.isMaster)) return;
 
     this.isActive = false;
+    this.lastLocalUpdate = Date.now();
     if (this.turnCycle) {
       this.turnCycle.active = false;
     }
