@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#a855f7" stop-opacity="0.35"/>
+      <stop offset="60%" stop-color="#2e1065" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#050507" stop-opacity="0"/>
+    </radialGradient>
+    
+    <radialGradient id="sphereGrad" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#c084fc"/>
+      <stop offset="35%" stop-color="#6b21a8"/>
+      <stop offset="75%" stop-color="#2e1065"/>
+      <stop offset="100%" stop-color="#050807"/>
+    </radialGradient>
+
+    <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e9d5ff" stop-opacity="0.9"/>
+      <stop offset="50%" stop-color="#9333ea" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="fruitGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Fundo Sombrio da Reliquia -->
+  <rect width="400" height="400" fill="#07070a"/>
+  
+  <!-- Aura de Luz da Fruta -->
+  <circle cx="200" cy="200" r="175" fill="url(#bgGlow)"/>
+
+  <!-- Esfera Base Simetrica Perfeita -->
+  <g filter="url(#fruitGlow)">
+    <circle cx="200" cy="200" r="115" fill="url(#sphereGrad)" stroke="#9333ea" stroke-width="2.5" stroke-opacity="0.6"/>
+
+    <!-- Camadas Folhadas Convexas tipo Repolho Esferico Perfeito -->
+    <!-- Camada Exterior de Folhas Cruzadas em Simetria -->
+    <path d="M 200,85 Q 265,115 295,160 Q 315,200 295,245 Q 260,290 200,315 Q 140,290 105,245 Q 85,200 105,160 Q 135,115 200,85 Z" 
+          fill="none" stroke="#2e1065" stroke-width="3" opacity="0.85"/>
+
+    <!-- Folhas da Esquerda que Envolvem a Esfera -->
+    <path d="M 200,85 C 130,110 110,170 120,230 C 130,275 165,305 200,315 C 160,285 145,225 155,165 C 165,120 185,95 200,85 Z" 
+          fill="#2e1065" fill-opacity="0.5" stroke="#9333ea" stroke-width="1.8" opacity="0.9"/>
+
+    <!-- Folhas da Direita em Espelho Simetrico -->
+    <path d="M 200,85 C 270,110 290,170 280,230 C 270,275 235,305 200,315 C 240,285 255,225 245,165 C 235,120 215,95 200,85 Z" 
+          fill="#6b21a8" fill-opacity="0.45" stroke="#9333ea" stroke-width="1.8" opacity="0.9"/>
+
+    <!-- Folhas Frontais Sobrepostas - Camada Media -->
+    <path d="M 200,105 C 150,135 140,185 150,235 C 160,275 180,290 200,295 C 175,270 168,215 178,165 C 185,130 195,112 200,105 Z" 
+          fill="#c084fc" fill-opacity="0.3" stroke="#e9d5ff" stroke-width="1.5" opacity="0.95"/>
+
+    <path d="M 200,105 C 250,135 260,185 250,235 C 240,275 220,290 200,295 C 225,270 232,215 222,165 C 215,130 205,112 200,105 Z" 
+          fill="#6b21a8" fill-opacity="0.55" stroke="#e9d5ff" stroke-width="1.5" opacity="0.95"/>
+
+    <!-- Folhas Centrais Estreitas Protegendo o Nucleo -->
+    <path d="M 200,125 C 175,155 170,200 180,240 C 190,265 195,275 200,280 C 188,260 182,215 190,175 C 194,150 198,135 200,125 Z" 
+          fill="#c084fc" fill-opacity="0.5" stroke="#e9d5ff" stroke-width="1.8"/>
+
+    <path d="M 200,125 C 225,155 230,200 220,240 C 210,265 205,275 200,280 C 212,260 218,215 210,175 C 206,150 202,135 200,125 Z" 
+          fill="#9333ea" fill-opacity="0.65" stroke="#e9d5ff" stroke-width="1.8"/>
+
+    <!-- Nervuras Folhadas Geometricas e Linhas de Casca Perfeitas -->
+    <line x1="200" y1="85" x2="200" y2="315" stroke="#9333ea" stroke-width="1.8" stroke-dasharray="3,3" opacity="0.8"/>
+    <path d="M 160,150 Q 200,175 240,150" fill="none" stroke="#e9d5ff" stroke-width="1.2" opacity="0.75"/>
+    <path d="M 150,200 Q 200,225 250,200" fill="none" stroke="#e9d5ff" stroke-width="1.2" opacity="0.75"/>
+    <path d="M 165,250 Q 200,270 235,250" fill="none" stroke="#e9d5ff" stroke-width="1.2" opacity="0.75"/>
+
+    <!-- Ponto Central do Nucleo Brilhante -->
+    <circle cx="200" cy="200" r="40" fill="url(#coreGlow)"/>
+    <circle cx="200" cy="200" r="5" fill="#ffffff" opacity="0.8"/>
+    <circle cx="165" cy="150" r="2.5" fill="#ffffff" opacity="0.7"/>
+
+    <!-- Haste / No Pequeno Simetrico no Topo -->
+    <rect x="196" y="80" width="8" height="9" rx="2" fill="#2e1065" stroke="#9333ea" stroke-width="1.2"/>
+  </g>
+</svg>

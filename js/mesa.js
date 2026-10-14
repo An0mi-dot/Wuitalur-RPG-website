@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.9.9';
+const MESA_VERSION = 'v2.0.0';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -7183,10 +7183,52 @@ window.MesaNotebookSara = MesaNotebookSara;
 // ==========================================================================
 // A TENDA DO IGRIS (INTERFACE DE MERCADOR - SALAO DE RELIQUIAS E TROCAS)
 // ==========================================================================
+const IGRIS_DEFAULT_ITEMS = [
+  {
+    id: 'igris_fruta_verde',
+    nome: 'FRUTA VERDE ESTRANHA',
+    tipo: 'Consumível [ Peso 1 ]',
+    peso: 1,
+    raridade: 'Consumível',
+    efeito: 'Ao ser consumida, tem um sabor estranhamente metálico e doce. Cura 1d4 de vida e remove instantaneamente condições de estado negativas ativas.',
+    descricao: 'Uma estranha fruta pequena de casca folhada, semelhante a um repolho, mas em um formato esférico absolutamente perfeito e simétrico.',
+    imagem: 'assets/fruta_verde.svg',
+    preco: '1 Unidade',
+    quantidade: 1,
+    isDefault: true
+  },
+  {
+    id: 'igris_fruta_roxa',
+    nome: 'FRUTA ROXA ESTRANHA',
+    tipo: 'Consumível [ Peso 1 ]',
+    peso: 1,
+    raridade: 'Consumível',
+    efeito: 'Ao ser consumida, tem um sabor denso e relaxante. Restaura 4 pontos na barra de stresse do consumidor.',
+    descricao: 'Uma estranha fruta pequena de casca folhada e tom arroxeado escuro, semelhante a um repolho, mas num formato esférico absolutamente perfeito e simétrico.',
+    imagem: 'assets/fruta_roxa.svg',
+    preco: '1 Unidade',
+    quantidade: 1,
+    isDefault: true
+  },
+  {
+    id: 'igris_fruta_amarela',
+    nome: 'FRUTA AMARELA ESTRANHA',
+    tipo: 'Consumível [ Peso 1 ]',
+    peso: 1,
+    raridade: 'Consumível',
+    efeito: 'Ao ser consumida, o seu sumo é efervescente e revigorante. Concede 1d2 PE (Pontos de Esforço) de imediato a quem a consumir.',
+    descricao: 'Uma estranha fruta pequena de casca folhada e tom amarelo vibrante, semelhante a um repolho, mas num formato esférico absolutamente perfeito e simétrico.',
+    imagem: 'assets/fruta_amarela.svg',
+    preco: '1 Unidade',
+    quantidade: 1,
+    isDefault: true
+  }
+];
+
 const MesaIgrisShop = {
   isOpen: false,
   merchantImage: 'assets/igris.png',
-  items: [], // Array vazio nesta fase conforme solicitado; cards serao recebidos futuramente
+  items: [...IGRIS_DEFAULT_ITEMS], // Itens padroes da loja sempre presentes
   interests: {}, // Map: { [itemId]: [slotOrMaster, ...] }
   rouletteInProgress: false,
 
@@ -7267,7 +7309,7 @@ const MesaIgrisShop = {
     const overlay = document.getElementById('igris-shop-overlay');
     if (overlay) {
       overlay.classList.remove('active', 'igris-closing');
-      void overlay.offsetWidth; // Forca reflow para reiniciar animacoes
+      void overlay.offsetWidth;
       overlay.classList.add('active');
     }
     this.updateUserChip();
@@ -7346,9 +7388,12 @@ const MesaIgrisShop = {
     }
   },
 
-  // Permite alimentar itens na loja futuramente
+  // Permite alimentar itens na loja futuramente garantindo que os padroes sempre fiquem presentes
   setItems(newItems) {
-    this.items = Array.isArray(newItems) ? newItems : [];
+    const list = Array.isArray(newItems) ? newItems : [];
+    const defaultIds = IGRIS_DEFAULT_ITEMS.map(x => x.id);
+    const customOnly = list.filter(it => !defaultIds.includes(it.id));
+    this.items = [...IGRIS_DEFAULT_ITEMS, ...customOnly];
     this.renderShowcase();
     this.updateMasterControls();
   },
@@ -7386,10 +7431,8 @@ const MesaIgrisShop = {
     const grid = document.getElementById('igris-showcase-grid');
     if (!grid) return;
 
-    // Se nao ha itens cadastrados (fase atual da loja): mantem a grelha vazia
     if (!this.items || this.items.length === 0) {
-      grid.innerHTML = '';
-      return;
+      this.items = [...IGRIS_DEFAULT_ITEMS];
     }
 
     const user = this.getCurrentUserIdentity();
@@ -7411,14 +7454,19 @@ const MesaIgrisShop = {
                    alt="${item.nome || 'Artefato'}" 
                    class="igris-card-thumb" 
                    onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\\'http://www.w3.org/2000/svg\\\' width=\\\'100\\\' height=\\\'100\\\' viewBox=\\\'0 0 24 24\\\' fill=\\\'none\\\' stroke=\\\'%23475569\\\' stroke-width=\\\'1\\\'><rect width=\\\'18\\\' height=\\\'18\\\' x=\\\'3\\\' y=\\\'3\\\' rx=\\\'2\\\'/><circle cx=\\\'8.5\\\' cy=\\\'8.5\\\' r=\\\'1.5\\\'/><path d=\\\'m21 15-5-5L5 21\\\'/></svg>'" />
-              <span class="igris-card-rarity-badge">${item.raridade || 'Relíquia'}</span>
+              <span class="igris-card-rarity-badge">${item.raridade || 'Consumível'}</span>
             </div>
             <div class="igris-card-content">
               <h4 class="igris-card-title igris-slashed-text" data-text="${item.nome || 'Item Desconhecido'}">${item.nome || 'Item Desconhecido'}</h4>
-              <span class="igris-card-type">${item.tipo || 'Artefato de Pedra'}</span>
+              <span class="igris-card-type">${item.tipo || 'Consumível [ Peso 1 ]'}</span>
+              ${item.efeito ? `
+                <div class="igris-card-effect">
+                  <strong>Efeito:</strong> ${item.efeito}
+                </div>
+              ` : ''}
               <p class="igris-card-desc">${item.descricao || 'Nenhuma informação decifrada sobre esta relíquia.'}</p>
               <div class="igris-card-footer">
-                <span class="igris-card-price">${item.preco || 'Sob Consulta'}</span>
+                <span class="igris-card-price">${item.preco || '1 Unidade'}</span>
               </div>
             </div>
           </div>
@@ -7490,18 +7538,14 @@ const MesaIgrisShop = {
 
     const index = this.interests[itemId].indexOf(user.id);
     if (index > -1) {
-      // Jogador ja estava interessado: remove o interesse
       this.interests[itemId].splice(index, 1);
     } else {
-      // Adiciona o jogador a lista de interessados
       this.interests[itemId].push(user.id);
     }
 
-    // Atualiza a visualizacao do card especifico na tela
     this.updateCardInterestsUI(itemId);
     this.updateMasterControls();
 
-    // Broadcast para todos os outros jogadores
     const chan = this.getChannel();
     if (chan) {
       try {
@@ -7602,8 +7646,6 @@ const MesaIgrisShop = {
     const btnConfirm = document.getElementById('igris-btn-confirm');
 
     const conflicts = this.getConflictedItems();
-
-    // Conta itens que possuem ao menos 1 participante interessado
     const selectedEntries = Object.entries(this.interests).filter(([_, list]) => list && list.length > 0);
 
     if (conflicts.length > 0) {
@@ -7646,10 +7688,8 @@ const MesaIgrisShop = {
     const participants = conflict.participants;
     if (!participants || participants.length === 0) return;
 
-    // Mestre escolhe aleatoriamente o vencedor entre os participantes da disputa
     const winnerId = participants[Math.floor(Math.random() * participants.length)];
 
-    // Transmite inicio da roleta para todos na mesa
     const chan = this.getChannel();
     if (chan) {
       try {
@@ -7668,7 +7708,6 @@ const MesaIgrisShop = {
       }
     }
 
-    // Executa a animacao visual da roleta
     this.runRouletteAnimation(conflict.id, conflict.nome, participants, winnerId);
   },
 
@@ -7691,7 +7730,6 @@ const MesaIgrisShop = {
 
     overlay.style.display = 'flex';
 
-    // Monta sequencia de giros que desacelera progressivamente
     const totalSteps = 24;
     let currentStep = 0;
     let participantIdx = 0;
@@ -7715,12 +7753,10 @@ const MesaIgrisShop = {
       if (nameEl) nameEl.textContent = partData.name;
 
       if (currentStep < totalSteps) {
-        // Velocidade que desacelera: de 60ms ate ~450ms
         const progress = currentStep / totalSteps;
         const delay = Math.round(60 + Math.pow(progress, 2.5) * 400);
         setTimeout(stepTick, delay);
       } else {
-        // Chegou no vencedor definitivo
         if (statusEl) {
           statusEl.textContent = `VENCEDOR: ${winnerData.name.toUpperCase()}!`;
           statusEl.style.color = '#10b981';
@@ -7730,7 +7766,6 @@ const MesaIgrisShop = {
           winnerAnnounceEl.textContent = `Artefato travado exclusivamente para ${winnerData.name}!`;
         }
 
-        // Trava o item exclusivamente para o vencedor
         this.interests[itemId] = [winnerId];
         this.updateCardInterestsUI(itemId);
 
@@ -7740,7 +7775,6 @@ const MesaIgrisShop = {
           this.updateMasterControls();
         }
 
-        // Mantem exibicao do vencedor por 3.5 segundos antes de fechar a roleta
         setTimeout(() => {
           overlay.style.display = 'none';
           this.rouletteInProgress = false;
@@ -7791,14 +7825,18 @@ const MesaIgrisShop = {
 
         // Se o slot foi identificado, atribui a posse no acervo de coletaveis do jogo
         if (slotNum && window.MesaColetaveis) {
-          let colItem = MesaColetaveis.items.find(x => String(x.id) === String(itemId));
+          // Cria id unico para a copia entregue ao jogador caso seja um item padrao repetivel
+          const grantedId = (shopItem && shopItem.isDefault) ? `${itemId}_${slotNum}_${Date.now()}` : itemId;
+          let colItem = MesaColetaveis.items.find(x => String(x.id) === String(grantedId));
           if (!colItem && shopItem) {
             colItem = {
-              id: shopItem.id,
+              id: grantedId,
               nome: shopItem.nome || `Artefato ${itemId}`,
-              tipo: shopItem.tipo || 'Artefato de Igris',
-              resumo: shopItem.resumo || shopItem.descricao || '',
-              detalhe: shopItem.detalhe || shopItem.descricao || '',
+              tipo: shopItem.tipo || 'Consumível',
+              peso: shopItem.peso !== undefined ? shopItem.peso : 1,
+              resumo: shopItem.descricao || '',
+              detalhe: shopItem.efeito || shopItem.descricao || '',
+              campo_tipo: shopItem.efeito ? 'Efeito' : 'Detalhe',
               imagem: shopItem.imagem || null,
               desbloqueado: true,
               posse: slotNum
@@ -7859,7 +7897,7 @@ const MesaIgrisShop = {
       } catch(e) {}
     }
 
-    // Limpa os interesses concedidos
+    // Limpa os interesses mantendo os itens padroes da loja sempre presentes
     this.interests = {};
     this.renderShowcase();
     this.updateMasterControls();

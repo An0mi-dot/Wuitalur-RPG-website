@@ -11413,9 +11413,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
 }
 
 .igris-shop-overlay.active .igris-merchant-img {
-  animation: 
-    igrisPortraitFadeIn 0.85s ease-out 1s forwards,
-    igrisBreathingIdle 7s ease-in-out 1.9s infinite alternate;
+  animation: igrisPortraitFadeIn 0.85s ease-out 1s forwards;
 }
 
 @keyframes igrisPortraitFadeIn {
@@ -11516,7 +11514,6 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
       transparent 7px
     ),
     radial-gradient(circle at 80% 20%, rgba(249, 115, 22, 0.08) 0%, transparent 60%);
-  animation: igrisShowcaseAura 6s ease-in-out infinite alternate;
 }
 
 @keyframes igrisShowcaseAura {
@@ -12104,4 +12101,22 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
     padding: 8px 14px;
     bottom: 8px;
   }
+}
+
+
+/* Efeito Destacado dos Artefatos na Vitrina */
+.igris-card-effect {
+  font-size: 0.74rem;
+  line-height: 1.42;
+  color: #fed7aa;
+  background: rgba(249, 115, 22, 0.08);
+  border-left: 2.5px solid #f97316;
+  padding: 6px 9px;
+  margin: 6px 0 10px;
+  border-radius: 0 3px 3px 0;
+}
+
+.igris-card-effect strong {
+  color: #fbbf24;
+  letter-spacing: 0.04em;
 }
