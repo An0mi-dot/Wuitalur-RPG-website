@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.0.0';
+const MESA_VERSION = 'v2.0.1';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -7449,16 +7449,13 @@ const MesaIgrisShop = {
              onclick="MesaIgrisShop.toggleInterest('${item.id}')"
              title="Clique para manifestar interesse de troca">
           <div class="igris-card-inner">
-            <div class="igris-card-thumb-wrapper">
-              <img src="${item.imagem || 'assets/images/placeholder_stone.png'}" 
-                   alt="${item.nome || 'Artefato'}" 
-                   class="igris-card-thumb" 
-                   onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\\'http://www.w3.org/2000/svg\\\' width=\\\'100\\\' height=\\\'100\\\' viewBox=\\\'0 0 24 24\\\' fill=\\\'none\\\' stroke=\\\'%23475569\\\' stroke-width=\\\'1\\\'><rect width=\\\'18\\\' height=\\\'18\\\' x=\\\'3\\\' y=\\\'3\\\' rx=\\\'2\\\'/><circle cx=\\\'8.5\\\' cy=\\\'8.5\\\' r=\\\'1.5\\\'/><path d=\\\'m21 15-5-5L5 21\\\'/></svg>'" />
+            <div class="igris-card-header-top">
               <span class="igris-card-rarity-badge">${item.raridade || 'Consumível'}</span>
+              <span class="igris-card-type-tag">${item.tipo || 'Consumível [ Peso 1 ]'}</span>
             </div>
             <div class="igris-card-content">
-              <h4 class="igris-card-title igris-slashed-text" data-text="${item.nome || 'Item Desconhecido'}">${item.nome || 'Item Desconhecido'}</h4>
-              <span class="igris-card-type">${item.tipo || 'Consumível [ Peso 1 ]'}</span>
+              <!-- Titulo estritamente limpo e sem qualquer distorcao -->
+              <h4 class="igris-card-title">${item.nome || 'Item Desconhecido'}</h4>
               ${item.efeito ? `
                 <div class="igris-card-effect">
                   <strong>Efeito:</strong> ${item.efeito}

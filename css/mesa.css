@@ -170,7 +170,7 @@ body.mesa-body.area-floresta-proibida .mesa-forest-backdrop {
   border: 1px solid rgba(255, 85, 0, 0.35);
   pointer-events: none;
   z-index: 3;
-  filter: url(#nanquim-rough);
+  /* Sem distorcao */
   animation: mesaFrameEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
 }
 
@@ -11500,7 +11500,6 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
     3px 29%, 
     0 26%
   );
-  filter: url(#nanquim-rough);
   padding: 20px 24px 24px;
   box-sizing: border-box;
   position: relative;
@@ -11634,7 +11633,6 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
     3px 52%, 
     0 49%
   );
-  filter: url(#nanquim-rough);
   position: relative;
   cursor: pointer;
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
@@ -11661,41 +11659,35 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   height: 100%;
 }
 
-.igris-card-thumb-wrapper {
-  position: relative;
-  width: 100%;
-  height: 135px;
-  background: #050507;
-  overflow: hidden;
-  border-bottom: 1px dashed rgba(249, 115, 22, 0.35);
-}
-
-.igris-card-thumb {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: contrast(115%) brightness(0.9);
-  transition: transform 0.3s ease, filter 0.3s ease;
-}
-
-.igris-item-card:hover .igris-card-thumb {
-  transform: scale(1.06);
-  filter: contrast(125%) brightness(1);
+/* Cabecalho Limpo do Cartao (Sem Ilustracao) */
+.igris-card-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px 6px;
+  border-bottom: 1px dashed rgba(249, 115, 22, 0.25);
 }
 
 .igris-card-rarity-badge {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  background: rgba(10, 10, 10, 0.9);
+  background: rgba(18, 14, 12, 0.95);
   border: 1px solid rgba(249, 115, 22, 0.6);
   color: #fed7aa;
-  font-size: 0.62rem;
+  font-size: 0.64rem;
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 2px 7px;
+  padding: 2px 8px;
   clip-path: polygon(0 0, 94% 0, 100% 30%, 100% 100%, 6% 100%, 0 70%);
+  font-family: monospace;
+}
+
+.igris-card-type-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #ea580c;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-family: monospace;
 }
 
 .igris-card-content {
@@ -11706,11 +11698,14 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
 }
 
 .igris-card-title {
-  margin: 0 0 4px;
-  font-size: 0.94rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  color: #f1f5f9;
+  margin: 6px 0 4px;
+  font-family: var(--font-title, 'Cinzel', serif);
+  font-size: 0.96rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #f8fafc;
+  text-transform: uppercase;
+  line-height: 1.3;
 }
 
 .igris-card-type {
