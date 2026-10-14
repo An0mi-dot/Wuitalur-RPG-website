@@ -11356,6 +11356,41 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   overflow: visible !important;
 }
 
+/* Sombra Intensa e Organica da Esquerda e de Baixo (Sem Caixa, Sem Corte de Luz no Topo) */
+.igris-shadow-corner {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
+  background:
+    /* Sombra profunda subindo do chao */
+    linear-gradient(
+      to top,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.96) 15%,
+      rgba(0, 0, 0, 0.82) 30%,
+      rgba(0, 0, 0, 0.42) 48%,
+      transparent 70%
+    ),
+    /* Sombra profunda avancando da lateral esquerda */
+    linear-gradient(
+      to right,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.95) 16%,
+      rgba(0, 0, 0, 0.76) 32%,
+      rgba(0, 0, 0, 0.32) 52%,
+      transparent 74%
+    ),
+    /* Nucleo denso no canto inferior esquerdo onde o manto repousa */
+    radial-gradient(
+      ellipse 80% 65% at 0% 100%,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.95) 32%,
+      rgba(0, 0, 0, 0.65) 60%,
+      transparent 90%
+    );
+}
+
 /* Ilustracao do Igris: Bem maior, com fade in e respiracao idle constante */
 .igris-merchant-img {
   width: auto;
@@ -11371,8 +11406,10 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   opacity: 0;
   z-index: 5;
   /* Dissolve sutilmente apenas a borda inferior na escuridao, sem criar caixas nem cortar luz */
-  -webkit-mask-image: linear-gradient(to top, transparent 0%, rgba(0, 0, 0, 0.5) 4%, black 14%);
-  mask-image: linear-gradient(to top, transparent 0%, rgba(0, 0, 0, 0.5) 4%, black 14%);
+  -webkit-mask-image: linear-gradient(to top, transparent 0%, rgba(0, 0, 0, 0.4) 6%, black 20%), linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.5) 4%, black 15%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to top, transparent 0%, rgba(0, 0, 0, 0.4) 6%, black 20%), linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.5) 4%, black 15%);
+  mask-composite: intersect;
 }
 
 .igris-shop-overlay.active .igris-merchant-img {
