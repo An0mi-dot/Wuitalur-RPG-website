@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.0.9';
+const MESA_VERSION = 'v2.1.0';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -1305,11 +1305,21 @@ const MesaApp = {
             stMax: raw.st_max !== undefined ? raw.st_max : (raw.stMax || 44),
             stressPoints: raw.stress_points !== undefined ? raw.stress_points : (raw.stressPoints || 0),
             stressPointsMax: raw.stress_points_max !== undefined ? raw.stress_points_max : (raw.stressPointsMax || 6),
+            vidrilhos: (() => {
+              const parsed = typeof raw.atributos === 'string' ? JSON.parse(raw.atributos || '{}') : (raw.atributos || {});
+              if (parsed && parsed.vidrilhos !== undefined && parsed.vidrilhos !== null) {
+                return Number(parsed.vidrilhos);
+              }
+              if (raw.vidrilhos !== undefined && raw.vidrilhos !== null) {
+                return Number(raw.vidrilhos);
+              }
+              return 25;
+            })(),
             atributos: (() => {
               const parsed = typeof raw.atributos === 'string' ? JSON.parse(raw.atributos || '{}') : (raw.atributos || {});
               const clean = {};
               for (const [k, v] of Object.entries(parsed)) {
-                if (!k.startsWith('_') && !k.startsWith('$') && typeof v !== 'object') {
+                if (!k.startsWith('_') && !k.startsWith('$') && k !== 'vidrilhos' && typeof v !== 'object') {
                   clean[k] = v;
                 }
               }
@@ -2089,6 +2099,12 @@ const MesaApp = {
     if (stEl) stEl.textContent = `${stCurrent} / ${stMax}`;
     if (fillEl) fillEl.style.width = `${stPercent}%`;
 
+    const vidEl = document.getElementById('ficha-vidrilhos-val');
+    const vidInvEl = document.getElementById('ficha-inv-vidrilhos-val');
+    const vidVal = player.vidrilhos != null ? player.vidrilhos : 25;
+    if (vidEl) vidEl.textContent = `${vidVal}`;
+    if (vidInvEl) vidInvEl.textContent = `${vidVal}`;
+
     if (pipsEl) {
       let stressPipsHtml = '';
       for (let i = 0; i < maxStressPoints; i++) {
@@ -2176,6 +2192,83 @@ const MesaApp = {
     }
   },
 
+  async savePlayerVidrilhos(slot, vidrilhos) {
+    const player = this.state.players[slot - 1];
+    if (!player || !this.supabase || !player.id) return;
+
+    try {
+      const { data, error } = await this.supabase
+        .from('personagens')
+        .select('atributos')
+        .eq('id', player.id)
+        .single();
+
+      let currentAttrs = {};
+      if (data && data.atributos) {
+        currentAttrs = typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos;
+      }
+      currentAttrs.vidrilhos = vidrilhos;
+
+      await this.supabase
+        .from('personagens')
+        .update({ atributos: currentAttrs })
+        .eq('id', player.id);
+    } catch(err) {
+      console.error("Erro ao salvar Vidrilhos no Supabase:", err);
+    }
+  },
+
+  async updateVidrilhos(slot, delta) {
+    const player = this.state.players[slot - 1];
+    if (!player) return;
+
+    const current = (player.vidrilhos != null) ? player.vidrilhos : 25;
+    const next = Math.max(0, current + delta);
+    player.vidrilhos = next;
+
+    // 1. Atualiza cirurgicamente no DOM
+    this.updateVitalsUI(player);
+    this.renderMesa();
+    if (window.MesaIgrisShop && MesaIgrisShop.isOpen) {
+      MesaIgrisShop.updateUserChip();
+    }
+
+    // 2. Transmissao WebSocket em tempo real
+    if (MesaChat.channel) {
+      try {
+        MesaChat.channel.send({
+          type: 'broadcast',
+          event: 'vitals_sync',
+          payload: {
+            slot: player.slot,
+            vidrilhos: player.vidrilhos
+          }
+        });
+      } catch(e) {}
+    }
+
+    // 3. Persiste no banco Supabase
+    await this.savePlayerVidrilhos(slot, next);
+  },
+
+  async promptSetVidrilhos(slot) {
+    const isMaster = Boolean(this.state && this.state.isMaster);
+    if (!isMaster) return;
+    const player = this.state.players[slot - 1];
+    if (!player) return;
+
+    const current = (player.vidrilhos != null) ? player.vidrilhos : 25;
+    const input = prompt(`Definir saldo exato de Vidrilhos para ${player.nome}:`, current);
+    if (input === null) return;
+    const val = parseInt(input.trim(), 10);
+    if (isNaN(val) || val < 0) {
+      alert('Por favor, informe um número inteiro válido maior ou igual a zero.');
+      return;
+    }
+    const delta = val - current;
+    await this.updateVidrilhos(slot, delta);
+  },
+
   // RECEBE SINCRONIZAÇÃO DE STATUS EM TEMPO REAL VIA WEBSOCKET
   handleIncomingVitals(data) {
     if (!data || !data.slot) return;
@@ -2190,6 +2283,12 @@ const MesaApp = {
     if (data.stMax !== undefined) player.stMax = data.stMax;
     if (data.stressPoints !== undefined) player.stressPoints = data.stressPoints;
     if (data.stressPointsMax !== undefined) player.stressPointsMax = data.stressPointsMax;
+    if (data.vidrilhos !== undefined) {
+      player.vidrilhos = data.vidrilhos;
+      if (window.MesaIgrisShop && MesaIgrisShop.isOpen) {
+        MesaIgrisShop.updateUserChip();
+      }
+    }
 
     // Atualiza o card correspondente na mesa
     this.renderMesa();
@@ -2228,8 +2327,8 @@ const MesaApp = {
       { origem: `Arquétipo (${player.arquetipo || 'Curioso'})`, desc: '+d4 em Mente' }
     ];
 
-    // Atributos limpos (ignora metadados e namespaces internos como _wuitter)
-    let validKeys = Object.keys(rawAttrs).filter(k => !k.startsWith('_') && !k.startsWith('$') && typeof rawAttrs[k] !== 'object');
+    // Atributos limpos (ignora metadados e namespaces internos como _wuitter e a moeda vidrilhos)
+    let validKeys = Object.keys(rawAttrs).filter(k => !k.startsWith('_') && !k.startsWith('$') && k !== 'vidrilhos' && typeof rawAttrs[k] !== 'object');
     let attrsHtml = validKeys.map((k, idx) => {
       let val = rawAttrs[k];
       return `
@@ -2342,6 +2441,16 @@ const MesaApp = {
               <button class="stat-edit-btn" onclick="MesaApp.updateStat(${player.slot}, 'pe', +1)" title="Restaurar PE">+</button>
             ` : ''}
           </div>
+
+          <div class="vital-stat-block vital-stat-vidrilhos">
+            <span class="vital-stat-tag vidrilhos-tag"><img src="assets/vidrilhos.png" class="vidrilhos-icon" alt="" /> VIDRILHOS</span>
+            <span id="ficha-vidrilhos-val" class="vital-stat-val">${player.vidrilhos != null ? player.vidrilhos : 25}</span>
+            ${isMaster ? `
+              <button class="stat-edit-btn" onclick="MesaApp.updateVidrilhos(${player.slot}, -1)" title="Diminuir Vidrilhos">-</button>
+              <button class="stat-edit-btn" onclick="MesaApp.updateVidrilhos(${player.slot}, +1)" title="Aumentar Vidrilhos">+</button>
+              <button class="stat-edit-btn" onclick="MesaApp.promptSetVidrilhos(${player.slot})" title="Definir Valor Exato">&#9998;</button>
+            ` : ''}
+          </div>
         </div>
 
         <!-- 2. Barra Roxa de Estresse e 6 Bolinhas Transparentes Abaixo -->
@@ -2411,9 +2520,15 @@ const MesaApp = {
         <!-- 5. Coletáveis e Itens da Campanha -->
         <div class="ficha-open-section ficha-section-coletaveis" style="margin-top: 18px; width: 100%;">
           <div class="ink-ribbon-title ficha-coletaveis-title" style="background: #d97706; display: flex; align-items: center; justify-content: space-between; transform: none !important; clip-path: none !important; width: 100%; box-sizing: border-box; border-radius: 0;">
-            <span>ITENS E COLETÁVEIS EM POSSE</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span>ITENS E COLETÁVEIS EM POSSE</span>
+              <span class="ficha-inventory-vidrilhos-pill" title="Saldo de Vidrilhos"><img src="assets/vidrilhos.png" class="vidrilhos-icon" alt="" /> <strong id="ficha-inv-vidrilhos-val">${player.vidrilhos != null ? player.vidrilhos : 25}</strong> Vidrilhos</span>
+            </div>
             ${isMaster ? `
-              <button type="button" class="ficha-open-catalog-btn" onclick="MesaColetaveis.openModal()" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.3); color: #fff; font-size: 0.72rem; padding: 2px 8px; cursor: pointer; border-radius: 2px;">Catálogo Geral (Mestre) &rarr;</button>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <button type="button" class="ficha-open-catalog-btn" onclick="MesaApp.promptSetVidrilhos(${player.slot})" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.3); color: #fbbf24; font-size: 0.72rem; padding: 2px 8px; cursor: pointer; border-radius: 2px;">Editar Vidrilhos</button>
+                <button type="button" class="ficha-open-catalog-btn" onclick="MesaColetaveis.openModal()" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.3); color: #fff; font-size: 0.72rem; padding: 2px 8px; cursor: pointer; border-radius: 2px;">Catálogo Geral (Mestre) &rarr;</button>
+              </div>
             ` : ''}
           </div>
           <div id="ficha-coletaveis-container" class="ficha-coletaveis-container" style="margin-top: 12px;"></div>
@@ -7274,6 +7389,7 @@ const IGRIS_DEFAULT_ITEMS = [
     efeito: 'Ao ser consumida, tem um sabor estranhamente metálico e doce. Cura 1d4 de vida e remove instantaneamente condições de estado negativas ativas.',
     descricao: 'Uma estranha fruta pequena de casca folhada, semelhante a um repolho, mas em um formato esférico absolutamente perfeito e simétrico.',
     preco: '1 Unidade',
+    precoVidrilhos: 5,
     quantidade: 1,
     isDefault: true,
     categoria: 'padrao'
@@ -7287,6 +7403,7 @@ const IGRIS_DEFAULT_ITEMS = [
     efeito: 'Ao ser consumida, tem um sabor denso e relaxante. Restaura 4 pontos na barra de stresse do consumidor.',
     descricao: 'Uma estranha fruta pequena de casca folhada e tom arroxeado escuro, semelhante a um repolho, mas num formato esférico absolutamente perfeito e simétrico.',
     preco: '1 Unidade',
+    precoVidrilhos: 6,
     quantidade: 1,
     isDefault: true,
     categoria: 'padrao'
@@ -7300,6 +7417,7 @@ const IGRIS_DEFAULT_ITEMS = [
     efeito: 'Ao ser consumida, o seu sumo é efervescente e revigorante. Concede 1d2 PE (Pontos de Esforço) de imediato a quem a consumir.',
     descricao: 'Uma estranha fruta pequena de casca folhada e tom amarelo vibrante, semelhante a um repolho, mas num formato esférico absolutamente perfeito e simétrico.',
     preco: '1 Unidade',
+    precoVidrilhos: 6,
     quantidade: 1,
     isDefault: true,
     categoria: 'padrao'
@@ -7315,6 +7433,7 @@ const IGRIS_DEFAULT_ITEMS = [
     efeito: 'Produz uma pequena chama azulada que ilumina um raio curto ao redor do utilizador. A chama não emite calor e é impossível de ser apagada por causas naturais (como vento forte ou chuva). Só se apaga quando fechado.',
     descricao: 'Um isqueiro de metal pesado e fosco, constantemente gelado ao toque, com inscrições desgastadas numa língua desconhecida na lateral.',
     preco: '1 Unidade',
+    precoVidrilhos: 12,
     quantidade: 1,
     isDefault: false,
     categoria: 'transitorio'
@@ -7328,6 +7447,7 @@ const IGRIS_DEFAULT_ITEMS = [
     efeito: 'Passivo. Se o utilizador sofrer um ataque ou dano que reduza a sua Vida a 0 (ou que o deixasse inconsciente/a morrer), o pingente estilhaça-se imediatamente, absorvendo o golpe fatal e deixando o utilizador com 1 ponto de Vida.',
     descricao: 'Um pequeno pedaço de osso envelhecido, esculpido na forma de um olho fechado e pendurado num cordão de cabedal escuro.',
     preco: '1 Unidade',
+    precoVidrilhos: 20,
     quantidade: 1,
     isDefault: false,
     categoria: 'transitorio'
@@ -7341,6 +7461,7 @@ const IGRIS_DEFAULT_ITEMS = [
     efeito: 'Permite desenhar ou escrever em qualquer superfície física. As marcações feitas com este giz são completamente invisíveis sob qualquer tipo de luz (natural ou artificial), mas brilham intensamente num tom esverdeado na escuridão absoluta. Contém giz suficiente para 5 marcações grandes.',
     descricao: 'Um pequeno cilindro irregular de giz calcário que emite um odor muito fraco a terra húmida e a ozono.',
     preco: '1 Unidade',
+    precoVidrilhos: 8,
     quantidade: 1,
     isDefault: false,
     categoria: 'transitorio'
@@ -7354,6 +7475,7 @@ const IGRIS_DEFAULT_ITEMS = [
     efeito: 'Ao ser consumido, acalma os nervos e foca a mente, concedendo um estado de clareza temporário. Você recebe Vantagem em seu próximo teste de resistência de sanidade OU reduz pela metade o próximo dano recebido na barra de estresse. O efeito é consumido e se encerra assim que um desses dois benefícios for ativado (o que ocorrer primeiro). Para obter a proteção novamente, é necessário consumir uma nova dose.',
     descricao: 'Um pequeno cantil de metal amolgado. O líquido no seu interior mantém-se perpetuamente morno e exala um aroma forte de especiarias exóticas.',
     preco: '1 Unidade',
+    precoVidrilhos: 10,
     quantidade: 1,
     isDefault: false,
     categoria: 'transitorio'
@@ -7380,12 +7502,14 @@ const MesaIgrisShop = {
     const slot = MesaApp.state.myPlayerSlot;
     if (slot) {
       const player = MesaApp.state.players && MesaApp.state.players[slot - 1];
+      const vidrilhos = (player && player.vidrilhos != null) ? player.vidrilhos : 25;
       return {
         id: `slot_${slot}`,
         slot: slot,
         isMaster: false,
         name: (player && player.nome) ? player.nome : `Jogador ${slot}`,
-        image: (player && player.imagem) ? player.imagem : null
+        image: (player && player.imagem) ? player.imagem : null,
+        vidrilhos: vidrilhos
       };
     }
     if (isMaster) {
@@ -7570,9 +7694,11 @@ const MesaIgrisShop = {
     const avatarHtml = user.image 
       ? `<img src="${user.image}" class="igris-user-chip-avatar" alt="${user.name}" onerror="this.outerHTML='<div class=\\\'igris-user-chip-avatar\\\'>${user.name.charAt(0).toUpperCase()}</div>'" />`
       : `<div class="igris-user-chip-avatar">${user.name.charAt(0).toUpperCase()}</div>`;
+    const playerBalance = user.vidrilhos != null ? user.vidrilhos : 25;
     chip.innerHTML = `
       ${avatarHtml}
       <span>${user.name}</span>
+      <span class="igris-user-saldo-badge" title="Saldo disponível de Vidrilhos">Saldo: <img src="assets/vidrilhos.png" class="vidrilhos-icon" alt="" /> <strong>${playerBalance}</strong> Vidrilhos</span>
       ${counterBadge}
     `;
   },
@@ -7620,7 +7746,8 @@ const MesaIgrisShop = {
               ` : ''}
               <p class="igris-card-desc">${item.descricao || 'Nenhuma informação decifrada sobre esta relíquia.'}</p>
               <div class="igris-card-footer">
-                <span class="igris-card-price">${item.preco || (item.quantidade ? `${item.quantidade} Unidade` : '1 Unidade')}</span>
+                <span class="igris-card-stock">${item.preco || (item.quantidade ? `${item.quantidade} Unidade` : '1 Unidade')}</span>
+                <span class="igris-card-price"><img src="assets/vidrilhos.png" class="vidrilhos-icon" alt="" /> ${item.precoVidrilhos != null ? item.precoVidrilhos : 5} Vidrilhos</span>
               </div>
             </div>
           </div>
@@ -7736,6 +7863,24 @@ const MesaIgrisShop = {
 
       if (currentSelectedCount >= 2) {
         alert('Você já manifestou interesse no limite máximo de 2 itens nesta visita à Tenda. Desmarque um item para poder escolher outro.');
+        return;
+      }
+
+      // Verifica se o jogador possui saldo de Vidrilhos suficiente para esta escolha
+      const shopItem = this.items.find(x => String(x.id) === String(itemId));
+      const itemCost = (shopItem && shopItem.precoVidrilhos != null) ? shopItem.precoVidrilhos : 5;
+      
+      let currentCommitment = 0;
+      Object.keys(this.interests).forEach(id => {
+        if (Array.isArray(this.interests[id]) && this.interests[id].includes(user.id)) {
+          const it = this.items.find(x => String(x.id) === String(id));
+          currentCommitment += (it && it.precoVidrilhos != null) ? it.precoVidrilhos : 5;
+        }
+      });
+
+      const playerBalance = user.vidrilhos != null ? user.vidrilhos : 25;
+      if (currentCommitment + itemCost > playerBalance) {
+        alert(`Saldo insuficiente de Vidrilhos! Você possui ${playerBalance} Vidrilhos, mas esta seleção exigiria ${currentCommitment + itemCost} Vidrilhos no total.`);
         return;
       }
 
@@ -7974,7 +8119,9 @@ const MesaIgrisShop = {
         }
         if (footerEl) footerEl.style.display = 'block';
         if (winnerAnnounceEl) {
-          winnerAnnounceEl.textContent = `Artefato travado exclusivamente para ${winnerData.name}!`;
+          const shopItem = (this.items && this.items.find(x => String(x.id) === String(itemId))) || null;
+          const itemPrice = (shopItem && shopItem.precoVidrilhos != null) ? shopItem.precoVidrilhos : 5;
+          winnerAnnounceEl.innerHTML = `Artefato travado exclusivamente para <strong>${winnerData.name}</strong> por <img src="assets/vidrilhos.png" class="vidrilhos-icon" alt="" /> <strong>${itemPrice} Vidrilhos</strong>!`;
         }
 
         this.interests[itemId] = [winnerId];
@@ -7999,7 +8146,7 @@ const MesaIgrisShop = {
   },
 
   // Confirmacao e entrega de todos os artefatos selecionados para os inventarios dos jogadores
-  confirmSelections() {
+  async confirmSelections() {
     const user = this.getCurrentUserIdentity();
     if (!user || !user.isMaster) return;
 
@@ -8066,6 +8213,38 @@ const MesaIgrisShop = {
       return;
     }
 
+    // 1. Verifica se todos os jogadores possuem saldo suficiente de Vidrilhos
+    const playerTotals = {};
+    deliveries.forEach(d => {
+      if (d.slot) {
+        const itemCost = (d.item && d.item.precoVidrilhos != null) ? d.item.precoVidrilhos : 5;
+        playerTotals[d.slot] = (playerTotals[d.slot] || 0) + itemCost;
+      }
+    });
+
+    const insufficientFunds = [];
+    Object.entries(playerTotals).forEach(([slotStr, totalCost]) => {
+      const slotNum = parseInt(slotStr, 10);
+      const player = window.MesaApp && MesaApp.state.players[slotNum - 1];
+      const balance = (player && player.vidrilhos != null) ? player.vidrilhos : 25;
+      if (balance < totalCost) {
+        insufficientFunds.push(`${player ? player.nome : `Slot ${slotNum}`}: possui ${balance} Vidrilhos, mas o custo total é ${totalCost}`);
+      }
+    });
+
+    if (insufficientFunds.length > 0) {
+      alert(`Não é possível concluir a entrega. Saldo insuficiente de Vidrilhos:\n- ${insufficientFunds.join('\n- ')}`);
+      return;
+    }
+
+    // 2. Deduz o custo em Vidrilhos do saldo de cada jogador
+    for (const [slotStr, totalCost] of Object.entries(playerTotals)) {
+      const slotNum = parseInt(slotStr, 10);
+      if (window.MesaApp && typeof MesaApp.updateVidrilhos === 'function') {
+        await MesaApp.updateVidrilhos(slotNum, -totalCost);
+      }
+    }
+
     // Salva e sincroniza os coletaveis no Supabase e fichas
     if (window.MesaColetaveis) {
       MesaColetaveis.saveAndSync();
@@ -8091,7 +8270,8 @@ const MesaIgrisShop = {
       try {
         const summary = deliveries.map(d => {
           const p = this.getParticipantDisplay(d.targetId);
-          return `"${d.itemName}" &rarr; ${p.name}`;
+          const cost = (d.item && d.item.precoVidrilhos != null) ? d.item.precoVidrilhos : 5;
+          return `"${d.itemName}" &rarr; ${p.name} (${cost} Vidrilhos)`;
         }).join(', ');
 
         MesaChat.channel.send({

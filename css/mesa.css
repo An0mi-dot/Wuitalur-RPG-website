@@ -12251,3 +12251,76 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   background: rgba(239, 68, 68, 0.18);
   border-color: rgba(239, 68, 68, 0.5);
 }
+
+/* ==========================================================================
+   MOEDA OFICIAL: VIDRILHOS (FICHA DE PERSONAGEM & TENDA DO IGRIS)
+   ========================================================================== */
+.vidrilhos-icon {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  vertical-align: -2px;
+  object-fit: contain;
+  filter: brightness(0) invert(0.85) sepia(100%) saturate(400%) hue-rotate(5deg) drop-shadow(0 0 2px rgba(245, 158, 11, 0.5));
+}
+
+.vital-stat-block.vital-stat-vidrilhos {
+  border-left: 2px solid rgba(245, 158, 11, 0.4);
+  padding-left: 10px;
+}
+
+.vital-stat-tag.vidrilhos-tag {
+  background: #b45309;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
+}
+
+.ficha-inventory-vidrilhos-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fbbf24;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  padding: 1px 8px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  letter-spacing: 0.02em;
+}
+
+.igris-user-saldo-badge {
+  font-size: 0.70rem;
+  font-weight: 700;
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  padding: 1px 8px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  letter-spacing: 0.02em;
+}
+
+.igris-card-price {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #f59e0b;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.igris-card-stock {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
