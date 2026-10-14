@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.9.6';
+const MESA_VERSION = 'v1.9.7';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -1847,6 +1847,25 @@ const MesaApp = {
     channel.on('broadcast', { event: 'igris_interest_sync' }, (payload) => {
       if (window.MesaIgrisShop && payload.payload) {
         MesaIgrisShop.handleIncomingInterestSync(payload.payload);
+      }
+    });
+
+    channel.on('broadcast', { event: 'igris_shop_close' }, () => {
+      if (window.MesaIgrisShop) {
+        MesaIgrisShop.close(false);
+      }
+    });
+
+    channel.on('broadcast', { event: 'igris_roulette_spin' }, (payload) => {
+      if (window.MesaIgrisShop && payload && payload.payload) {
+        const p = payload.payload;
+        MesaIgrisShop.runRouletteAnimation(p.itemId, p.itemName, p.participants, p.winnerId);
+      }
+    });
+
+    channel.on('broadcast', { event: 'igris_items_granted' }, (payload) => {
+      if (window.MesaIgrisShop && payload && payload.payload) {
+        MesaIgrisShop.handleItemsGranted(payload.payload);
       }
     });
 
@@ -7166,9 +7185,10 @@ window.MesaNotebookSara = MesaNotebookSara;
 // ==========================================================================
 const MesaIgrisShop = {
   isOpen: false,
-  merchantImage: 'assets/igris.png', // Pode ser preenchida dinamicamente no futuro
-  items: [], // Conforme solicitado: nenhum item na loja nesta fase (array vazio)
+  merchantImage: 'assets/igris.png',
+  items: [], // Array vazio nesta fase conforme solicitado; cards serao recebidos futuramente
   interests: {}, // Map: { [itemId]: [slotOrMaster, ...] }
+  rouletteInProgress: false,
 
   getChannel() {
     return (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel) || null;
@@ -7212,7 +7232,6 @@ const MesaIgrisShop = {
         isMaster: true
       };
     }
-    // Formato 'slot_1', 'slot_2' etc. ou numero 1, 2
     let slotNum = null;
     if (typeof identifier === 'string' && identifier.startsWith('slot_')) {
       slotNum = parseInt(identifier.replace('slot_', ''), 10);
@@ -7241,28 +7260,39 @@ const MesaIgrisShop = {
     };
   },
 
-  // Abre a interface localmente
+  // Abre a interface localmente com animacao suave de fade-in
   open() {
     this.isOpen = true;
     document.body.classList.add('igris-shop-open');
     const overlay = document.getElementById('igris-shop-overlay');
     if (overlay) {
-      overlay.classList.remove('active');
-      void overlay.offsetWidth;
+      overlay.classList.remove('active', 'igris-closing');
+      void overlay.offsetWidth; // Forca reflow para reiniciar animacoes
       overlay.classList.add('active');
     }
     this.updateUserChip();
     this.renderShowcase();
+    this.updateMasterControls();
   },
 
-  // Fecha a interface localmente
+  // Fecha a interface localmente com fade-out suave
   close(broadcast = false) {
-    this.isOpen = false;
-    document.body.classList.remove('igris-shop-open');
     const overlay = document.getElementById('igris-shop-overlay');
-    if (overlay) {
-      overlay.classList.remove('active');
+    const doClose = () => {
+      this.isOpen = false;
+      document.body.classList.remove('igris-shop-open');
+      if (overlay) {
+        overlay.classList.remove('active', 'igris-closing');
+      }
+    };
+
+    if (overlay && overlay.classList.contains('active')) {
+      overlay.classList.add('igris-closing');
+      setTimeout(doClose, 400);
+    } else {
+      doClose();
     }
+
     if (broadcast && window.MesaApp && MesaApp.state && MesaApp.state.isMaster) {
       const chan = this.getChannel();
       if (chan) {
@@ -7298,7 +7328,7 @@ const MesaIgrisShop = {
     this.saveStateToSupabase();
   },
 
-  // Define uma imagem para o mercador futuramente (sem card, fica livre no fundo preto)
+  // Define uma imagem para o mercador
   setMerchantImage(url) {
     this.merchantImage = url;
     const imgEl = document.getElementById('igris-merchant-img');
@@ -7320,9 +7350,10 @@ const MesaIgrisShop = {
   setItems(newItems) {
     this.items = Array.isArray(newItems) ? newItems : [];
     this.renderShowcase();
+    this.updateMasterControls();
   },
 
-  // Atualiza o chip com o usuario logado no topo
+  // Atualiza o chip com o usuario logado
   updateUserChip() {
     const chip = document.getElementById('igris-user-chip');
     if (!chip) return;
@@ -7342,7 +7373,7 @@ const MesaIgrisShop = {
       return;
     }
     const avatarHtml = user.image 
-      ? `<img src="${user.image}" class="igris-user-chip-avatar" alt="${user.name}" onerror="this.outerHTML='<div class=\\'igris-user-chip-avatar\\'>${user.name.charAt(0).toUpperCase()}</div>'" />`
+      ? `<img src="${user.image}" class="igris-user-chip-avatar" alt="${user.name}" onerror="this.outerHTML='<div class=\\\'igris-user-chip-avatar\\\'>${user.name.charAt(0).toUpperCase()}</div>'" />`
       : `<div class="igris-user-chip-avatar">${user.name.charAt(0).toUpperCase()}</div>`;
     chip.innerHTML = `
       ${avatarHtml}
@@ -7353,21 +7384,14 @@ const MesaIgrisShop = {
   // Renderiza a vitrina (CSS Grid)
   renderShowcase() {
     const grid = document.getElementById('igris-showcase-grid');
-    const counter = document.getElementById('igris-items-counter');
     if (!grid) return;
 
-    if (counter) {
-      const count = (this.items && this.items.length) || 0;
-      counter.textContent = `${count} ${count === 1 ? 'Artefato Exposto' : 'Artefatos Expostos'}`;
-    }
-
-    // Se nao ha itens cadastrados (fase atual da loja): mantem a grelha limpa e vazia
+    // Se nao ha itens cadastrados (fase atual da loja): mantem a grelha vazia
     if (!this.items || this.items.length === 0) {
       grid.innerHTML = '';
       return;
     }
 
-    // Se houver itens futuramente, renderiza os cards
     const user = this.getCurrentUserIdentity();
     const myId = user ? user.id : null;
 
@@ -7386,13 +7410,13 @@ const MesaIgrisShop = {
               <img src="${item.imagem || 'assets/images/placeholder_stone.png'}" 
                    alt="${item.nome || 'Artefato'}" 
                    class="igris-card-thumb" 
-                   onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'%23475569\\' stroke-width=\\'1\\'><rect width=\\'18\\' height=\\'18\\' x=\\'3\\' y=\\'3\\' rx=\\'2\\'/><circle cx=\\'8.5\\' cy=\\'8.5\\' r=\\'1.5\\'/><path d=\\'m21 15-5-5L5 21\\'/></svg>'" />
-              <span class="igris-card-rarity-badge">${item.raridade || 'Reliquia'}</span>
+                   onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\\'http://www.w3.org/2000/svg\\\' width=\\\'100\\\' height=\\\'100\\\' viewBox=\\\'0 0 24 24\\\' fill=\\\'none\\\' stroke=\\\'%23475569\\\' stroke-width=\\\'1\\\'><rect width=\\\'18\\\' height=\\\'18\\\' x=\\\'3\\\' y=\\\'3\\\' rx=\\\'2\\\'/><circle cx=\\\'8.5\\\' cy=\\\'8.5\\\' r=\\\'1.5\\\'/><path d=\\\'m21 15-5-5L5 21\\\'/></svg>'" />
+              <span class="igris-card-rarity-badge">${item.raridade || 'Relíquia'}</span>
             </div>
             <div class="igris-card-content">
               <h4 class="igris-card-title igris-slashed-text" data-text="${item.nome || 'Item Desconhecido'}">${item.nome || 'Item Desconhecido'}</h4>
               <span class="igris-card-type">${item.tipo || 'Artefato de Pedra'}</span>
-              <p class="igris-card-desc">${item.descricao || 'Nenhuma informacao decifrada sobre esta reliquia.'}</p>
+              <p class="igris-card-desc">${item.descricao || 'Nenhuma informação decifrada sobre esta relíquia.'}</p>
               <div class="igris-card-footer">
                 <span class="igris-card-price">${item.preco || 'Sob Consulta'}</span>
               </div>
@@ -7406,6 +7430,8 @@ const MesaIgrisShop = {
         </div>
       `;
     }).join('');
+
+    this.updateMasterControls();
   },
 
   // Gera o HTML dos avatares de personagens interessados em determinado cartao
@@ -7419,7 +7445,7 @@ const MesaIgrisShop = {
 
     let html = '';
     if (isDisputed) {
-      html += `<span class="igris-dispute-badge" title="Multiplos interessados em disputa!">Disputa (${list.length})</span>`;
+      html += `<span class="igris-dispute-badge" title="Múltiplos interessados em disputa!">Disputa (${list.length})</span>`;
     }
 
     list.forEach(identifier => {
@@ -7432,7 +7458,7 @@ const MesaIgrisShop = {
           <div class="igris-interest-avatar ${isMe ? 'is-my-slot' : ''} ${participant.isMaster ? 'is-master' : ''}" 
                title="${titleAttr}">
             <img src="${participant.image}" class="igris-interest-avatar-img" alt="${participant.name}" 
-                 onerror="this.outerHTML='<span class=\\'igris-interest-initial\\'>${participant.initial}</span>'" />
+                 onerror="this.outerHTML='<span class=\\\'igris-interest-initial\\\'>${participant.initial}</span>'" />
           </div>
         `;
       } else {
@@ -7473,6 +7499,7 @@ const MesaIgrisShop = {
 
     // Atualiza a visualizacao do card especifico na tela
     this.updateCardInterestsUI(itemId);
+    this.updateMasterControls();
 
     // Broadcast para todos os outros jogadores
     const chan = this.getChannel();
@@ -7495,7 +7522,7 @@ const MesaIgrisShop = {
     this.saveStateToSupabase();
   },
 
-  // Atualiza apenas os avatares do cartao no DOM com animacao suave
+  // Atualiza apenas os avatares do cartao no DOM
   updateCardInterestsUI(itemId) {
     const cardEl = document.querySelector(`.igris-item-card[data-item-id="${itemId}"]`);
     const container = document.getElementById(`igris-card-interests-${itemId}`);
@@ -7527,6 +7554,330 @@ const MesaIgrisShop = {
       this.updateCardInterestsUI(payload.itemId);
     } else {
       this.renderShowcase();
+    }
+    this.updateMasterControls();
+  },
+
+  // Retorna itens que possuem mais interessados do que unidades disponiveis (padrao 1)
+  getConflictedItems() {
+    const conflicts = [];
+    const allItemIds = Object.keys(this.interests);
+
+    allItemIds.forEach(itemId => {
+      const interested = this.interests[itemId] || [];
+      const shopItem = (this.items && this.items.find(x => String(x.id) === String(itemId))) || null;
+      const availableQty = (shopItem && shopItem.quantidade !== undefined) ? shopItem.quantidade : 1;
+
+      if (interested.length > availableQty) {
+        conflicts.push({
+          id: itemId,
+          nome: shopItem ? shopItem.nome : `Artefato ${itemId}`,
+          item: shopItem,
+          participants: interested
+        });
+      }
+    });
+
+    return conflicts;
+  },
+
+  // Atualiza os controles exclusivos do mestre (confirmacao e botao de roleta)
+  updateMasterControls() {
+    const controls = document.getElementById('igris-master-controls');
+    if (!controls) return;
+
+    const user = this.getCurrentUserIdentity();
+    const isMaster = user && user.isMaster;
+
+    if (!isMaster) {
+      controls.style.display = 'none';
+      return;
+    }
+
+    controls.style.display = 'flex';
+
+    const statusEl = document.getElementById('igris-master-status');
+    const btnRoulette = document.getElementById('igris-btn-roulette');
+    const disputeCountEl = document.getElementById('igris-dispute-count');
+    const btnConfirm = document.getElementById('igris-btn-confirm');
+
+    const conflicts = this.getConflictedItems();
+
+    // Conta itens que possuem ao menos 1 participante interessado
+    const selectedEntries = Object.entries(this.interests).filter(([_, list]) => list && list.length > 0);
+
+    if (conflicts.length > 0) {
+      if (statusEl) statusEl.textContent = `${conflicts.length} artefato(s) em disputa! É necessário rodar a roleta.`;
+      if (btnRoulette) {
+        btnRoulette.style.display = 'inline-flex';
+        if (disputeCountEl) disputeCountEl.textContent = conflicts.length;
+      }
+      if (btnConfirm) {
+        btnConfirm.disabled = true;
+        btnConfirm.title = 'Resolva todas as disputas na roleta antes de entregar os itens.';
+      }
+    } else if (selectedEntries.length > 0) {
+      if (statusEl) statusEl.textContent = `${selectedEntries.length} artefato(s) pronto(s) para entrega direta.`;
+      if (btnRoulette) btnRoulette.style.display = 'none';
+      if (btnConfirm) {
+        btnConfirm.disabled = false;
+        btnConfirm.title = 'Clique para entregar todos os itens selecionados aos jogadores.';
+      }
+    } else {
+      if (statusEl) statusEl.textContent = 'Aguardando seleções dos jogadores...';
+      if (btnRoulette) btnRoulette.style.display = 'none';
+      if (btnConfirm) {
+        btnConfirm.disabled = true;
+        btnConfirm.title = 'Nenhum item selecionado.';
+      }
+    }
+  },
+
+  // Disparado pelo Mestre: inicia o sorteio da primeira disputa na Roleta
+  triggerRoulette() {
+    const user = this.getCurrentUserIdentity();
+    if (!user || !user.isMaster) return;
+    if (this.rouletteInProgress) return;
+
+    const conflicts = this.getConflictedItems();
+    if (conflicts.length === 0) return;
+
+    const conflict = conflicts[0];
+    const participants = conflict.participants;
+    if (!participants || participants.length === 0) return;
+
+    // Mestre escolhe aleatoriamente o vencedor entre os participantes da disputa
+    const winnerId = participants[Math.floor(Math.random() * participants.length)];
+
+    // Transmite inicio da roleta para todos na mesa
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'igris_roulette_spin',
+          payload: {
+            itemId: conflict.id,
+            itemName: conflict.nome,
+            participants: participants,
+            winnerId: winnerId
+          }
+        });
+      } catch(e) {
+        console.warn('Erro ao transmitir roleta:', e);
+      }
+    }
+
+    // Executa a animacao visual da roleta
+    this.runRouletteAnimation(conflict.id, conflict.nome, participants, winnerId);
+  },
+
+  // Executa a animacao visual da Roleta Clandestina no centro da tela para todos os jogadores
+  runRouletteAnimation(itemId, itemName, participants, winnerId) {
+    this.rouletteInProgress = true;
+    const overlay = document.getElementById('igris-roulette-overlay');
+    const titleEl = document.getElementById('igris-roulette-item-title');
+    const avatarEl = document.getElementById('igris-roulette-avatar');
+    const nameEl = document.getElementById('igris-roulette-name');
+    const statusEl = document.getElementById('igris-roulette-status');
+    const footerEl = document.getElementById('igris-roulette-footer');
+    const winnerAnnounceEl = document.getElementById('igris-roulette-winner-announcement');
+
+    if (!overlay) return;
+
+    if (titleEl) titleEl.textContent = itemName || 'Artefato em Disputa';
+    if (statusEl) statusEl.textContent = 'GIRANDO A ROLETA...';
+    if (footerEl) footerEl.style.display = 'none';
+
+    overlay.style.display = 'flex';
+
+    // Monta sequencia de giros que desacelera progressivamente
+    const totalSteps = 24;
+    let currentStep = 0;
+    let participantIdx = 0;
+
+    const winnerData = this.getParticipantDisplay(winnerId);
+
+    const stepTick = () => {
+      currentStep++;
+      participantIdx = (participantIdx + 1) % participants.length;
+
+      const currentPartId = (currentStep >= totalSteps) ? winnerId : participants[participantIdx];
+      const partData = this.getParticipantDisplay(currentPartId);
+
+      if (avatarEl) {
+        if (partData.image) {
+          avatarEl.innerHTML = `<img src="${partData.image}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" alt="${partData.name}" />`;
+        } else {
+          avatarEl.innerHTML = `<span>${partData.initial}</span>`;
+        }
+      }
+      if (nameEl) nameEl.textContent = partData.name;
+
+      if (currentStep < totalSteps) {
+        // Velocidade que desacelera: de 60ms ate ~450ms
+        const progress = currentStep / totalSteps;
+        const delay = Math.round(60 + Math.pow(progress, 2.5) * 400);
+        setTimeout(stepTick, delay);
+      } else {
+        // Chegou no vencedor definitivo
+        if (statusEl) {
+          statusEl.textContent = `VENCEDOR: ${winnerData.name.toUpperCase()}!`;
+          statusEl.style.color = '#10b981';
+        }
+        if (footerEl) footerEl.style.display = 'block';
+        if (winnerAnnounceEl) {
+          winnerAnnounceEl.textContent = `Artefato travado exclusivamente para ${winnerData.name}!`;
+        }
+
+        // Trava o item exclusivamente para o vencedor
+        this.interests[itemId] = [winnerId];
+        this.updateCardInterestsUI(itemId);
+
+        const user = this.getCurrentUserIdentity();
+        if (user && user.isMaster) {
+          this.saveStateToSupabase();
+          this.updateMasterControls();
+        }
+
+        // Mantem exibicao do vencedor por 3.5 segundos antes de fechar a roleta
+        setTimeout(() => {
+          overlay.style.display = 'none';
+          this.rouletteInProgress = false;
+          if (statusEl) statusEl.style.color = '#f59e0b';
+          this.updateMasterControls();
+        }, 3500);
+      }
+    };
+
+    setTimeout(stepTick, 80);
+  },
+
+  // Confirmacao e entrega de todos os artefatos selecionados para os inventarios dos jogadores
+  confirmSelections() {
+    const user = this.getCurrentUserIdentity();
+    if (!user || !user.isMaster) return;
+
+    const conflicts = this.getConflictedItems();
+    if (conflicts.length > 0) {
+      alert(`Há ${conflicts.length} item(ns) em disputa! Resolva as disputas na roleta antes de entregar os itens.`);
+      return;
+    }
+
+    const deliveries = [];
+    const allItemIds = Object.keys(this.interests);
+
+    allItemIds.forEach(itemId => {
+      const interested = this.interests[itemId] || [];
+      if (interested.length === 1) {
+        const targetId = interested[0];
+        let slotNum = null;
+        if (typeof targetId === 'string' && targetId.startsWith('slot_')) {
+          slotNum = parseInt(targetId.replace('slot_', ''), 10);
+        } else if (typeof targetId === 'number') {
+          slotNum = targetId;
+        }
+
+        const shopItem = (this.items && this.items.find(x => String(x.id) === String(itemId))) || null;
+        const itemName = shopItem ? shopItem.nome : `Artefato ${itemId}`;
+
+        deliveries.push({
+          itemId: itemId,
+          slot: slotNum,
+          item: shopItem,
+          itemName: itemName,
+          targetId: targetId
+        });
+
+        // Se o slot foi identificado, atribui a posse no acervo de coletaveis do jogo
+        if (slotNum && window.MesaColetaveis) {
+          let colItem = MesaColetaveis.items.find(x => String(x.id) === String(itemId));
+          if (!colItem && shopItem) {
+            colItem = {
+              id: shopItem.id,
+              nome: shopItem.nome || `Artefato ${itemId}`,
+              tipo: shopItem.tipo || 'Artefato de Igris',
+              resumo: shopItem.resumo || shopItem.descricao || '',
+              detalhe: shopItem.detalhe || shopItem.descricao || '',
+              imagem: shopItem.imagem || null,
+              desbloqueado: true,
+              posse: slotNum
+            };
+            MesaColetaveis.items.push(colItem);
+          } else if (colItem) {
+            colItem.posse = slotNum;
+            colItem.desbloqueado = true;
+          }
+        }
+      }
+    });
+
+    if (deliveries.length === 0) {
+      alert('Nenhum item com seleção válida para ser entregue.');
+      return;
+    }
+
+    // Salva e sincroniza os coletaveis no Supabase e fichas
+    if (window.MesaColetaveis) {
+      MesaColetaveis.saveAndSync();
+      MesaColetaveis.renderFicha();
+    }
+
+    // Transmite evento de concessao de itens
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'igris_items_granted',
+          payload: { deliveries }
+        });
+      } catch(e) {
+        console.warn('Erro ao transmitir concessao de itens:', e);
+      }
+    }
+
+    // Envia aviso no chat
+    if (window.MesaChat && MesaChat.channel) {
+      try {
+        const summary = deliveries.map(d => {
+          const p = this.getParticipantDisplay(d.targetId);
+          return `"${d.itemName}" &rarr; ${p.name}`;
+        }).join(', ');
+
+        MesaChat.channel.send({
+          type: 'broadcast',
+          event: 'chat_message',
+          payload: {
+            id: 'msg_' + Date.now(),
+            text: `[TENDA DO IGRIS]: O Mercador Igris concluiu os acordos! Os seguintes artefatos foram entregues: ${summary}`,
+            sender: 'Mestre',
+            role: 'mestre',
+            timestamp: Date.now()
+          }
+        });
+      } catch(e) {}
+    }
+
+    // Limpa os interesses concedidos
+    this.interests = {};
+    this.renderShowcase();
+    this.updateMasterControls();
+    this.saveStateToSupabase();
+
+    alert(`Acordo concluído! ${deliveries.length} artefato(s) transferido(s) com sucesso aos inventários dos jogadores.`);
+  },
+
+  // Recebe notificacao de itens entregues
+  handleItemsGranted(payload) {
+    if (!payload || !payload.deliveries) return;
+    this.interests = {};
+    this.renderShowcase();
+    this.updateMasterControls();
+
+    if (window.MesaColetaveis) {
+      MesaColetaveis.init();
+      MesaColetaveis.renderFicha();
     }
   },
 
