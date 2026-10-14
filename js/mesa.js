@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.8.9';
+const MESA_VERSION = 'v1.9.0';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -2277,7 +2277,7 @@ const MesaApp = {
 
         <!-- 5. Coletáveis e Itens da Campanha -->
         <div class="ficha-open-section ficha-section-coletaveis" style="margin-top: 18px; width: 100%;">
-          <div class="ink-ribbon-title" style="background: #d97706; display: flex; align-items: center; justify-content: space-between;">
+          <div class="ink-ribbon-title ficha-coletaveis-title" style="background: #d97706; display: flex; align-items: center; justify-content: space-between; transform: none !important; clip-path: none !important; width: 100%; box-sizing: border-box; border-radius: 0;">
             <span>ITENS E COLETÁVEIS EM POSSE</span>
             ${isMaster ? `
               <button type="button" class="ficha-open-catalog-btn" onclick="MesaColetaveis.openModal()" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.3); color: #fff; font-size: 0.72rem; padding: 2px 8px; cursor: pointer; border-radius: 2px;">Catálogo Geral (Mestre) &rarr;</button>

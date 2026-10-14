@@ -1181,6 +1181,17 @@ body.is-master .coletaveis-master-deliver-btn {
   display: inline-block !important;
 }
 
+/* Título de Coletáveis na Ficha: Reto (Sem inclinação) */
+.ficha-section-coletaveis .ink-ribbon-title,
+.ficha-coletaveis-title {
+  transform: none !important;
+  clip-path: none !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  border-radius: 0 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6) !important;
+}
+
 /* Botão Fechar Fixo (Permanece no Canto Superior Direito) */
 .ficha-screen-close {
   position: fixed !important;
