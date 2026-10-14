@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.0.1';
+const MESA_VERSION = 'v2.0.2';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -7192,7 +7192,6 @@ const IGRIS_DEFAULT_ITEMS = [
     raridade: 'Consumível',
     efeito: 'Ao ser consumida, tem um sabor estranhamente metálico e doce. Cura 1d4 de vida e remove instantaneamente condições de estado negativas ativas.',
     descricao: 'Uma estranha fruta pequena de casca folhada, semelhante a um repolho, mas em um formato esférico absolutamente perfeito e simétrico.',
-    imagem: 'assets/fruta_verde.svg',
     preco: '1 Unidade',
     quantidade: 1,
     isDefault: true
@@ -7205,7 +7204,6 @@ const IGRIS_DEFAULT_ITEMS = [
     raridade: 'Consumível',
     efeito: 'Ao ser consumida, tem um sabor denso e relaxante. Restaura 4 pontos na barra de stresse do consumidor.',
     descricao: 'Uma estranha fruta pequena de casca folhada e tom arroxeado escuro, semelhante a um repolho, mas num formato esférico absolutamente perfeito e simétrico.',
-    imagem: 'assets/fruta_roxa.svg',
     preco: '1 Unidade',
     quantidade: 1,
     isDefault: true
@@ -7218,7 +7216,54 @@ const IGRIS_DEFAULT_ITEMS = [
     raridade: 'Consumível',
     efeito: 'Ao ser consumida, o seu sumo é efervescente e revigorante. Concede 1d2 PE (Pontos de Esforço) de imediato a quem a consumir.',
     descricao: 'Uma estranha fruta pequena de casca folhada e tom amarelo vibrante, semelhante a um repolho, mas num formato esférico absolutamente perfeito e simétrico.',
-    imagem: 'assets/fruta_amarela.svg',
+    preco: '1 Unidade',
+    quantidade: 1,
+    isDefault: true
+  },
+  {
+    id: 'igris_isqueiro_prata_fria',
+    nome: 'ISQUEIRO DE PRATA FRIA',
+    tipo: 'Ferramenta / Iluminação [ Peso 0 ]',
+    peso: 0,
+    raridade: 'Ferramenta',
+    efeito: 'Produz uma pequena chama azulada que ilumina um raio curto ao redor do utilizador. A chama não emite calor e é impossível de ser apagada por causas naturais (como vento forte ou chuva). Só se apaga quando fechado.',
+    descricao: 'Um isqueiro de metal pesado e fosco, constantemente gelado ao toque, com inscrições desgastadas numa língua desconhecida na lateral.',
+    preco: '1 Unidade',
+    quantidade: 1,
+    isDefault: true
+  },
+  {
+    id: 'igris_pingente_osso_polido',
+    nome: 'PINGENTE DE OSSO POLIDO',
+    tipo: 'Consumível - Ativação Automática [ Peso 0 ]',
+    peso: 0,
+    raridade: 'Relíquia',
+    efeito: 'Passivo. Se o utilizador sofrer um ataque ou dano que reduza a sua Vida a 0 (ou que o deixasse inconsciente/a morrer), o pingente estilhaça-se imediatamente, absorvendo o golpe fatal e deixando o utilizador com 1 ponto de Vida.',
+    descricao: 'Um pequeno pedaço de osso envelhecido, esculpido na forma de um olho fechado e pendurado num cordão de cabedal escuro.',
+    preco: '1 Unidade',
+    quantidade: 1,
+    isDefault: true
+  },
+  {
+    id: 'igris_giz_andarilho',
+    nome: 'GIZ DO ANDARILHO',
+    tipo: 'Ferramenta [ Peso 0 ]',
+    peso: 0,
+    raridade: 'Ferramenta',
+    efeito: 'Permite desenhar ou escrever em qualquer superfície física. As marcações feitas com este giz são completamente invisíveis sob qualquer tipo de luz (natural ou artificial), mas brilham intensamente num tom esverdeado na escuridão absoluta. Contém giz suficiente para 5 marcações grandes.',
+    descricao: 'Um pequeno cilindro irregular de giz calcário que emite um odor muito fraco a terra húmida e a ozono.',
+    preco: '1 Unidade',
+    quantidade: 1,
+    isDefault: true
+  },
+  {
+    id: 'igris_cantil_cha_dourado',
+    nome: 'CANTIL DE CHÁ DOURADO',
+    tipo: 'Consumível - 1 Dose [ Peso 1 ]',
+    peso: 1,
+    raridade: 'Consumível',
+    efeito: 'Ao ser consumido, acalma os nervos e foca a mente, concedendo um estado de clareza temporário. Você recebe Vantagem em seu próximo teste de resistência de sanidade OU reduz pela metade o próximo dano recebido na barra de estresse. O efeito é consumido e se encerra assim que um desses dois benefícios for ativado (o que ocorrer primeiro). Para obter a proteção novamente, é necessário consumir uma nova dose.',
+    descricao: 'Um pequeno cantil de metal amolgado. O líquido no seu interior mantém-se perpetuamente morno e exala um aroma forte de especiarias exóticas.',
     preco: '1 Unidade',
     quantidade: 1,
     isDefault: true
