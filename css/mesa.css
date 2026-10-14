@@ -11032,3 +11032,635 @@ body.combat-active .combat-black-ramp {
   border-color: rgba(245, 158, 11, 0.65);
   box-shadow: 0 4px 16px rgba(245, 158, 11, 0.2);
 }
+
+/* ========================================================================== */
+/* A TENDA DO IGRIS (INTERFACE DE MERCADOR - TEMA PEDRA E ROCHA SOMBRIA)      */
+/* ========================================================================== */
+
+.igris-shop-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100050 !important;
+  display: none;
+  flex-direction: column;
+  background-color: #0b0d11;
+  background-image: 
+    radial-gradient(circle at 50% 20%, rgba(30, 36, 46, 0.9) 0%, rgba(11, 13, 17, 0.98) 75%),
+    radial-gradient(ellipse at 85% 90%, rgba(20, 24, 30, 0.8) 0%, transparent 60%);
+  color: #e2e8f0;
+  font-family: var(--font-body, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  user-select: none;
+}
+
+.igris-shop-overlay.active {
+  display: flex;
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Header de Pedra Rustica */
+.igris-shop-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: linear-gradient(180deg, #181d24 0%, #111419 100%);
+  border-bottom: 2px solid #28303b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.igris-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.igris-header-icon-box {
+  width: 42px;
+  height: 42px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #222933 0%, #151920 100%);
+  border: 1px solid #3d4756;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.igris-header-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.igris-shop-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #f1f5f9;
+  text-transform: uppercase;
+  font-family: var(--font-title, 'Cinzel', serif);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.igris-shop-subtitle {
+  font-size: 0.68rem;
+  color: #64748b;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.igris-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.igris-user-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: #14181f;
+  border: 1px solid #2e3745;
+  font-size: 0.75rem;
+  color: #cbd5e1;
+}
+
+.igris-user-chip-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #475569;
+  object-fit: cover;
+  background: #1e293b;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.igris-btn-sync {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #1e242d;
+  color: #cbd5e1;
+  border: 1px solid #3b4656;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.igris-btn-sync:hover {
+  background: #2b3340;
+  color: #f8fafc;
+  border-color: #64748b;
+}
+
+.igris-shop-close-btn {
+  background: #1a1f26;
+  border: 1px solid #333d4b;
+  color: #94a3b8;
+  width: 34px;
+  height: 34px;
+  border-radius: 4px;
+  font-size: 20px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.igris-shop-close-btn:hover {
+  background: #2d1818;
+  color: #f87171;
+  border-color: #7f1d1d;
+}
+
+/* Corpo Principal em Duas Colunas */
+.igris-shop-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  height: calc(100vh - 70px);
+}
+
+/* ========================================================================== */
+/* COLUNA DA ESQUERDA: ILUSTRACAO / PLACEHOLDER DE IGRIS                      */
+/* ========================================================================== */
+.igris-portrait-col {
+  width: 360px;
+  min-width: 300px;
+  max-width: 420px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, #13171e 0%, #0d1015 100%);
+  border-right: 2px solid #232b36;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-y: auto;
+}
+
+.igris-portrait-frame {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #2e3846;
+  border-radius: 8px;
+  background: radial-gradient(circle at 50% 35%, #181d25 0%, #0e1116 100%);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8), 0 4px 16px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.igris-portrait-placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 20px;
+  text-align: center;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.igris-pedestal-texture {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.012) 0px,
+    rgba(255, 255, 255, 0.012) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+  pointer-events: none;
+}
+
+.igris-pedestal-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 280px;
+}
+
+.igris-pedestal-rune {
+  width: 110px;
+  height: 110px;
+  margin-bottom: -75px;
+  color: #475569;
+  pointer-events: none;
+}
+
+.igris-rune-svg {
+  width: 100%;
+  height: 100%;
+  animation: igrisRuneRotate 60s linear infinite;
+}
+
+@keyframes igrisRuneRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.igris-pedestal-icon {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #242c38 0%, #151a22 100%);
+  border: 2px solid #3b4657;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 3;
+}
+
+.igris-placeholder-tag {
+  font-family: var(--font-title, 'Cinzel', serif);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #cbd5e1;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.igris-placeholder-sub {
+  font-size: 0.72rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 20px;
+}
+
+.igris-placeholder-lore {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  font-style: italic;
+  color: #94a3b8;
+  background: rgba(13, 16, 21, 0.6);
+  padding: 12px 14px;
+  border-radius: 4px;
+  border-left: 2px solid #475569;
+  border-right: 2px solid #475569;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.igris-merchant-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+}
+
+/* ========================================================================== */
+/* COLUNA DA DIREITA: VITRINA EM GRELHA (CSS GRID)                            */
+/* ========================================================================== */
+.igris-showcase-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #0d1015;
+  padding: 24px 28px;
+  overflow-y: auto;
+}
+
+.igris-showcase-header {
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #1e2632;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.igris-showcase-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.igris-showcase-badge {
+  font-family: var(--font-title, 'Cinzel', serif);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #cbd5e1;
+  text-transform: uppercase;
+}
+
+.igris-items-counter {
+  font-size: 0.7rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: #141921;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid #27313f;
+}
+
+.igris-showcase-hint {
+  font-size: 0.74rem;
+  color: #64748b;
+  font-style: italic;
+}
+
+/* Grid Preparada para os Cards */
+.igris-showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+/* Estado Vazio da Vitrina */
+.igris-empty-showcase {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 380px;
+  border: 2px dashed #242c38;
+  border-radius: 8px;
+  background: rgba(17, 21, 28, 0.4);
+  padding: 40px 24px;
+}
+
+.igris-empty-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 440px;
+}
+
+.igris-empty-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #161b23;
+  border: 1px solid #2d3746;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.igris-empty-title {
+  margin: 0 0 8px 0;
+  font-family: var(--font-title, 'Cinzel', serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.igris-empty-desc {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: #64748b;
+}
+
+/* ========================================================================== */
+/* COMPORTAMENTO E DESIGN DOS CARTÕES DE ITENS (CARDS)                        */
+/* ========================================================================== */
+.igris-item-card {
+  position: relative;
+  background: linear-gradient(180deg, #181d26 0%, #11151c 100%);
+  border: 1px solid #2a3443;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+  user-select: none;
+  overflow: visible; /* Permite que os avatares no canto inferior direito fiquem elegantes sobre a borda */
+}
+
+.igris-item-card:hover {
+  transform: translateY(-3px);
+  border-color: #4b586d;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.igris-item-card.has-my-interest {
+  border-color: #64748b;
+  box-shadow: 0 0 0 1px #94a3b8, 0 8px 24px rgba(0, 0, 0, 0.7);
+}
+
+.igris-card-inner {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.igris-card-thumb-wrapper {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  background: #0b0e13;
+  border: 1px solid #212935;
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.igris-card-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.igris-item-card:hover .igris-card-thumb {
+  transform: scale(1.04);
+}
+
+.igris-card-rarity-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 7px;
+  border-radius: 3px;
+  background: rgba(11, 14, 19, 0.85);
+  border: 1px solid #334155;
+  color: #cbd5e1;
+  backdrop-filter: blur(4px);
+}
+
+.igris-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.igris-card-title {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  letter-spacing: 0.04em;
+}
+
+.igris-card-type {
+  font-size: 0.68rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.igris-card-desc {
+  margin: 0;
+  font-size: 0.74rem;
+  line-height: 1.45;
+  color: #94a3b8;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.igris-card-footer {
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid #1f2733;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.igris-card-price {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  letter-spacing: 0.03em;
+}
+
+/* ========================================================================== */
+/* SELEÇÃO E AVATARES DE DISPUTA NO CANTO INFERIOR DIREITO                    */
+/* ========================================================================== */
+.igris-card-interests {
+  position: absolute;
+  bottom: -10px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.igris-interest-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #475569;
+  background: #1e2530;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.75);
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #f1f5f9;
+  position: relative;
+  animation: igrisAvatarPop 0.24s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+
+.igris-interest-avatar.is-my-slot {
+  border-color: #cbd5e1;
+  box-shadow: 0 0 8px rgba(203, 213, 225, 0.5), 0 3px 8px rgba(0, 0, 0, 0.75);
+  transform: scale(1.08);
+}
+
+.igris-interest-avatar.is-master {
+  border-color: #94a3b8;
+  background: #2a3340;
+}
+
+.igris-interest-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.igris-dispute-badge {
+  font-size: 0.6rem;
+  font-weight: 800;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: #334155;
+  color: #f1f5f9;
+  border: 1px solid #475569;
+  margin-right: 2px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  animation: igrisAvatarPop 0.2s ease;
+}
+
+@keyframes igrisAvatarPop {
+  0% { transform: scale(0.3); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+  .igris-shop-body {
+    flex-direction: column;
+    height: auto;
+    overflow-y: auto;
+  }
+  .igris-portrait-col {
+    width: 100%;
+    max-width: 100%;
+    border-right: none;
+    border-bottom: 2px solid #232b36;
+  }
+  .igris-portrait-placeholder {
+    min-height: 280px;
+  }
+}

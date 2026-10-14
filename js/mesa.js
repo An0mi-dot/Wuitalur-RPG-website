@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.9.0';
+const MESA_VERSION = 'v1.9.1';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -1556,6 +1556,11 @@ const MesaApp = {
                 MesaNotebookSara.triggerStop();
               }
             }
+            if (p1Attrs._sys_igris_shop && window.MesaIgrisShop) {
+              const ig = p1Attrs._sys_igris_shop;
+              if (ig.interests) MesaIgrisShop.interests = ig.interests;
+              if (ig.merchantImage) MesaIgrisShop.setMerchantImage(ig.merchantImage);
+            }
             if (p1Attrs._sys_abertura && window.MesaAbertura) {
               const ab = p1Attrs._sys_abertura;
               const ov = document.getElementById('abertura-overlay');
@@ -1673,6 +1678,16 @@ const MesaApp = {
             } else if (!nb.active && MesaNotebookSara.isActive) {
               MesaNotebookSara.triggerStop();
             }
+          }
+
+          // 3.1 Sincronização da Tenda do Igris
+          if (attrs && attrs._sys_igris_shop && window.MesaIgrisShop) {
+            const ig = attrs._sys_igris_shop;
+            if (ig.interests) {
+              MesaIgrisShop.interests = ig.interests;
+              if (MesaIgrisShop.isOpen) MesaIgrisShop.renderShowcase();
+            }
+            if (ig.merchantImage) MesaIgrisShop.setMerchantImage(ig.merchantImage);
           }
 
           // 4. Sincronização de Abertura
@@ -1813,6 +1828,25 @@ const MesaApp = {
     channel.on('broadcast', { event: 'combat_turn_stop' }, () => {
       if (window.MesaCombate) {
         MesaCombate.stopTurnCycle(false);
+      }
+    });
+
+    // 5.2 A Tenda do Igris (Interface de Mercador)
+    channel.on('broadcast', { event: 'igris_shop_open' }, (payload) => {
+      if (window.MesaIgrisShop) {
+        if (payload.payload && payload.payload.interests) {
+          MesaIgrisShop.interests = payload.payload.interests;
+        }
+        if (payload.payload && payload.payload.merchantImage) {
+          MesaIgrisShop.setMerchantImage(payload.payload.merchantImage);
+        }
+        MesaIgrisShop.open();
+      }
+    });
+
+    channel.on('broadcast', { event: 'igris_interest_sync' }, (payload) => {
+      if (window.MesaIgrisShop && payload.payload) {
+        MesaIgrisShop.handleIncomingInterestSync(payload.payload);
       }
     });
 
@@ -7132,6 +7166,401 @@ const MesaNotebookSara = {
   }
 };
 window.MesaNotebookSara = MesaNotebookSara;
+
+// ==========================================================================
+// A TENDA DO IGRIS (INTERFACE DE MERCADOR - SALAO DE RELIQUIAS E TROCAS)
+// ==========================================================================
+const MesaIgrisShop = {
+  isOpen: false,
+  merchantImage: null, // Pode ser preenchida dinamicamente no futuro
+  items: [], // Conforme solicitado: nenhum item na loja nesta fase (array vazio)
+  interests: {}, // Map: { [itemId]: [slotOrMaster, ...] }
+
+  getChannel() {
+    return (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel) || null;
+  },
+
+  // Retorna os dados do usuario atual (slot do jogador ou mestre)
+  getCurrentUserIdentity() {
+    if (!window.MesaApp || !MesaApp.state) return null;
+    const isMaster = !!MesaApp.state.isMaster;
+    const slot = MesaApp.state.myPlayerSlot;
+    if (slot) {
+      const player = MesaApp.state.players && MesaApp.state.players[slot - 1];
+      return {
+        id: `slot_${slot}`,
+        slot: slot,
+        isMaster: false,
+        name: (player && player.nome) ? player.nome : `Jogador ${slot}`,
+        image: (player && player.imagem) ? player.imagem : null
+      };
+    }
+    if (isMaster) {
+      return {
+        id: 'master',
+        slot: null,
+        isMaster: true,
+        name: 'Mestre',
+        image: null
+      };
+    }
+    return null;
+  },
+
+  // Retorna dados visuais para renderizar o avatar de um participante interessado
+  getParticipantDisplay(identifier) {
+    if (identifier === 'master') {
+      return {
+        id: 'master',
+        name: 'Mestre',
+        image: null,
+        initial: 'M',
+        isMaster: true
+      };
+    }
+    // Formato 'slot_1', 'slot_2' etc. ou numero 1, 2
+    let slotNum = null;
+    if (typeof identifier === 'string' && identifier.startsWith('slot_')) {
+      slotNum = parseInt(identifier.replace('slot_', ''), 10);
+    } else if (typeof identifier === 'number') {
+      slotNum = identifier;
+    }
+    if (slotNum && window.MesaApp && MesaApp.state && MesaApp.state.players) {
+      const p = MesaApp.state.players[slotNum - 1];
+      if (p) {
+        return {
+          id: `slot_${slotNum}`,
+          slot: slotNum,
+          name: p.nome || `Jogador ${slotNum}`,
+          image: p.imagem || null,
+          initial: (p.nome ? p.nome.trim().charAt(0) : `${slotNum}`).toUpperCase(),
+          isMaster: false
+        };
+      }
+    }
+    return {
+      id: identifier,
+      name: `Jogador ${identifier}`,
+      image: null,
+      initial: '?',
+      isMaster: false
+    };
+  },
+
+  // Abre a interface localmente
+  open() {
+    this.isOpen = true;
+    const overlay = document.getElementById('igris-shop-overlay');
+    if (overlay) {
+      overlay.classList.add('active');
+    }
+    this.updateUserChip();
+    this.renderShowcase();
+  },
+
+  // Fecha a interface localmente
+  close() {
+    this.isOpen = false;
+    const overlay = document.getElementById('igris-shop-overlay');
+    if (overlay) {
+      overlay.classList.remove('active');
+    }
+  },
+
+  // Transmite a abertura da tenda para todos os jogadores na mesa
+  broadcastOpen() {
+    this.open();
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'igris_shop_open',
+          payload: {
+            interests: this.interests,
+            merchantImage: this.merchantImage
+          }
+        });
+      } catch (e) {
+        console.warn('Erro ao transmitir abertura da Tenda de Igris:', e);
+      }
+    }
+    this.saveStateToSupabase();
+  },
+
+  // Define uma imagem para o mercador futuramente
+  setMerchantImage(url) {
+    this.merchantImage = url;
+    const imgEl = document.getElementById('igris-merchant-img');
+    const pedestalContent = document.querySelector('#igris-portrait-placeholder .igris-pedestal-content');
+    if (imgEl) {
+      if (url) {
+        imgEl.src = url;
+        imgEl.style.display = 'block';
+        if (pedestalContent) pedestalContent.style.opacity = '0.15';
+      } else {
+        imgEl.src = '';
+        imgEl.style.display = 'none';
+        if (pedestalContent) pedestalContent.style.opacity = '1';
+      }
+    }
+  },
+
+  // Permite alimentar itens na loja futuramente
+  setItems(newItems) {
+    this.items = Array.isArray(newItems) ? newItems : [];
+    this.renderShowcase();
+  },
+
+  // Atualiza o chip com o usuario logado no topo
+  updateUserChip() {
+    const chip = document.getElementById('igris-user-chip');
+    if (!chip) return;
+    const user = this.getCurrentUserIdentity();
+    if (!user) {
+      chip.innerHTML = `
+        <span style="color: #94a3b8; font-style: italic;">Modo Visitante (Sem Token)</span>
+        <button type="button" onclick="MesaApp.openTokenModal()" style="background:#28303b; border:1px solid #475569; color:#f1f5f9; border-radius:3px; padding:2px 6px; font-size:0.68rem; cursor:pointer;">Conectar</button>
+      `;
+      return;
+    }
+    if (user.isMaster) {
+      chip.innerHTML = `
+        <div class="igris-user-chip-avatar" style="border-color: #94a3b8; color: #cbd5e1;">M</div>
+        <span style="font-weight: 700;">Mestre da Mesa</span>
+      `;
+      return;
+    }
+    const avatarHtml = user.image 
+      ? `<img src="${user.image}" class="igris-user-chip-avatar" alt="${user.name}" onerror="this.outerHTML='<div class=\\'igris-user-chip-avatar\\'>${user.name.charAt(0).toUpperCase()}</div>'" />`
+      : `<div class="igris-user-chip-avatar">${user.name.charAt(0).toUpperCase()}</div>`;
+    chip.innerHTML = `
+      ${avatarHtml}
+      <span>${user.name}</span>
+    `;
+  },
+
+  // Renderiza a vitrina (CSS Grid)
+  renderShowcase() {
+    const grid = document.getElementById('igris-showcase-grid');
+    const counter = document.getElementById('igris-items-counter');
+    if (!grid) return;
+
+    if (counter) {
+      const count = (this.items && this.items.length) || 0;
+      counter.textContent = `${count} ${count === 1 ? 'Artefato Exposto' : 'Artefatos Expostos'}`;
+    }
+
+    // Se nao ha itens cadastrados (fase atual da loja)
+    if (!this.items || this.items.length === 0) {
+      grid.innerHTML = `
+        <div class="igris-empty-showcase" id="igris-empty-showcase">
+          <div class="igris-empty-box">
+            <div class="igris-empty-icon">
+              <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M20 12V8H4v4M4 8l8-4 8 4M4 12v8h16v-8M10 16h4"></path>
+              </svg>
+            </div>
+            <h4 class="igris-empty-title">A VITRINA ESTA SILENCIOSA</h4>
+            <p class="igris-empty-desc">
+              O mercador Igris ainda repousa seus mostruarios de pedra. Nenhum item exposto para negociacao no momento.
+            </p>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    // Se houver itens futuramente, renderiza os cards
+    const user = this.getCurrentUserIdentity();
+    const myId = user ? user.id : null;
+
+    grid.innerHTML = this.items.map(item => {
+      const interestedList = this.interests[item.id] || [];
+      const hasMyInterest = myId && interestedList.includes(myId);
+      const avatarsHtml = this.renderInterestAvatars(item.id);
+
+      return `
+        <div class="igris-item-card ${hasMyInterest ? 'has-my-interest' : ''}" 
+             data-item-id="${item.id}" 
+             onclick="MesaIgrisShop.toggleInterest('${item.id}')"
+             title="Clique para manifestar interesse de troca">
+          <div class="igris-card-inner">
+            <div class="igris-card-thumb-wrapper">
+              <img src="${item.imagem || 'assets/images/placeholder_stone.png'}" 
+                   alt="${item.nome || 'Artefato'}" 
+                   class="igris-card-thumb" 
+                   onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'%23475569\\' stroke-width=\\'1\\'><rect width=\\'18\\' height=\\'18\\' x=\\'3\\' y=\\'3\\' rx=\\'2\\'/><circle cx=\\'8.5\\' cy=\\'8.5\\' r=\\'1.5\\'/><path d=\\'m21 15-5-5L5 21\\'/></svg>'" />
+              <span class="igris-card-rarity-badge">${item.raridade || 'Reliquia'}</span>
+            </div>
+            <div class="igris-card-content">
+              <h4 class="igris-card-title">${item.nome || 'Item Desconhecido'}</h4>
+              <span class="igris-card-type">${item.tipo || 'Artefato de Pedra'}</span>
+              <p class="igris-card-desc">${item.descricao || 'Nenhuma informacao decifrada sobre esta reliquia.'}</p>
+              <div class="igris-card-footer">
+                <span class="igris-card-price">${item.preco || 'Sob Consulta'}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Borda inferior direita: Avatares lado a lado indicando disputa -->
+          <div class="igris-card-interests" id="igris-card-interests-${item.id}">
+            ${avatarsHtml}
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
+  // Gera o HTML dos avatares de personagens interessados em determinado cartao
+  renderInterestAvatars(itemId) {
+    const list = this.interests[itemId] || [];
+    if (!list || list.length === 0) return '';
+
+    const user = this.getCurrentUserIdentity();
+    const myId = user ? user.id : null;
+    const isDisputed = list.length > 1;
+
+    let html = '';
+    if (isDisputed) {
+      html += `<span class="igris-dispute-badge" title="Multiplos interessados em disputa!">Disputa (${list.length})</span>`;
+    }
+
+    list.forEach(identifier => {
+      const participant = this.getParticipantDisplay(identifier);
+      const isMe = (myId && participant.id === myId);
+      const titleAttr = `Interessado: ${participant.name}${participant.isMaster ? ' (Mestre)' : ''}`;
+
+      if (participant.image) {
+        html += `
+          <div class="igris-interest-avatar ${isMe ? 'is-my-slot' : ''} ${participant.isMaster ? 'is-master' : ''}" 
+               title="${titleAttr}">
+            <img src="${participant.image}" class="igris-interest-avatar-img" alt="${participant.name}" 
+                 onerror="this.outerHTML='<span class=\\'igris-interest-initial\\'>${participant.initial}</span>'" />
+          </div>
+        `;
+      } else {
+        html += `
+          <div class="igris-interest-avatar ${isMe ? 'is-my-slot' : ''} ${participant.isMaster ? 'is-master' : ''}" 
+               title="${titleAttr}">
+            <span>${participant.initial}</span>
+          </div>
+        `;
+      }
+    });
+
+    return html;
+  },
+
+  // Alterna o interesse do jogador logado no cartao
+  toggleInterest(itemId) {
+    const user = this.getCurrentUserIdentity();
+    if (!user) {
+      if (window.MesaApp && typeof MesaApp.openTokenModal === 'function') {
+        MesaApp.openTokenModal();
+      }
+      return;
+    }
+
+    if (!this.interests[itemId]) {
+      this.interests[itemId] = [];
+    }
+
+    const index = this.interests[itemId].indexOf(user.id);
+    if (index > -1) {
+      // Jogador ja estava interessado: remove o interesse
+      this.interests[itemId].splice(index, 1);
+    } else {
+      // Adiciona o jogador a lista de interessados
+      this.interests[itemId].push(user.id);
+    }
+
+    // Atualiza a visualizacao do card especifico na tela
+    this.updateCardInterestsUI(itemId);
+
+    // Broadcast para todos os outros jogadores
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'igris_interest_sync',
+          payload: {
+            itemId: itemId,
+            interests: this.interests[itemId],
+            allInterests: this.interests
+          }
+        });
+      } catch (e) {
+        console.warn('Erro ao transmitir interesse:', e);
+      }
+    }
+
+    this.saveStateToSupabase();
+  },
+
+  // Atualiza apenas os avatares do cartao no DOM com animacao suave
+  updateCardInterestsUI(itemId) {
+    const cardEl = document.querySelector(`.igris-item-card[data-item-id="${itemId}"]`);
+    const container = document.getElementById(`igris-card-interests-${itemId}`);
+    if (container) {
+      container.innerHTML = this.renderInterestAvatars(itemId);
+    }
+    if (cardEl) {
+      const user = this.getCurrentUserIdentity();
+      const myId = user ? user.id : null;
+      const list = this.interests[itemId] || [];
+      if (myId && list.includes(myId)) {
+        cardEl.classList.add('has-my-interest');
+      } else {
+        cardEl.classList.remove('has-my-interest');
+      }
+    }
+  },
+
+  // Recebe atualizacoes de outros jogadores via Realtime
+  handleIncomingInterestSync(payload) {
+    if (!payload) return;
+    if (payload.allInterests) {
+      this.interests = payload.allInterests;
+    } else if (payload.itemId && payload.interests) {
+      this.interests[payload.itemId] = payload.interests;
+    }
+
+    if (payload.itemId) {
+      this.updateCardInterestsUI(payload.itemId);
+    } else {
+      this.renderShowcase();
+    }
+  },
+
+  // Persiste estado no Supabase (se mestre estiver conectado)
+  async saveStateToSupabase() {
+    if (!window.MesaApp || !MesaApp.supabase || !MesaApp.state || !MesaApp.state.isMaster) return;
+    try {
+      const { data } = await MesaApp.supabase
+        .from('personagens')
+        .select('atributos')
+        .eq('id', 1)
+        .single();
+      const attrs = data && data.atributos 
+        ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos) 
+        : {};
+      attrs._sys_igris_shop = {
+        interests: this.interests || {},
+        merchantImage: this.merchantImage || null,
+        updatedAt: Date.now()
+      };
+      await MesaApp.supabase
+        .from('personagens')
+        .update({ atributos: attrs })
+        .eq('id', 1);
+    } catch(e) {
+      console.warn('Erro ao persistir tenda de Igris no Supabase:', e);
+    }
+  }
+};
+window.MesaIgrisShop = MesaIgrisShop;
 
 // ==========================================================================
 // MESA MODO DE COMBATE (CINEMATOGRÁFICO, VÍDEO E RAMPA PRETA UNDERTALE)
