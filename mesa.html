@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=1.9.1">
+  <link rel="stylesheet" href="css/mesa.css?v=1.9.2">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1187,9 +1187,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.8.8"></script>
 
-<script src="js/mesa.js?v=1.9.1"></script>
+<script src="js/mesa.js?v=1.9.2"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v1.9.1</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.9.2</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -1511,86 +1511,128 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
   <!-- OVERLAY DE TELA CHEIA: A TENDA DO IGRIS (INTERFACE DE MERCADOR) -->
   <!-- ========================================================================== -->
   <div id="igris-shop-overlay" class="igris-shop-overlay">
-    <!-- Iluminacao da Lampada Laranja no Topo da Tenda -->
-    <div class="igris-tent-lamp-rig" aria-hidden="true">
-      <div class="igris-lamp-cable"></div>
-      <div class="igris-lamp-cap"></div>
-      <div class="igris-lamp-bulb"></div>
-      <div class="igris-lamp-halo"></div>
-      <div class="igris-lamp-beam"></div>
-    </div>
+    <!-- Palco com Tela Preta caindo de cima e quicando -->
+    <div class="igris-black-stage" id="igris-black-stage">
+      <!-- Escuridao Profunda ao Redor da Tela -->
+      <div class="igris-darkness-veil" aria-hidden="true"></div>
 
-    <!-- Botao Discreto de Fechar no Canto Superior -->
-    <button type="button" class="igris-floating-close-btn" onclick="MesaIgrisShop.close()" title="Fechar Tenda de Igris">&times;</button>
+      <!-- Piscina de Iluminacao Ambar da Lanterna -->
+      <div class="igris-lantern-light-pool" aria-hidden="true"></div>
 
-    <!-- Corpo Central: Estrutura de Duas Colunas -->
-    <div class="igris-shop-body">
-      <!-- Coluna da Esquerda: Placeholder para Ilustracao do Mercador Igris -->
-      <div class="igris-portrait-col">
-        <div class="igris-portrait-frame">
-          <div class="igris-portrait-placeholder" id="igris-portrait-placeholder">
-            <div class="igris-pedestal-texture"></div>
-            <div class="igris-pedestal-content">
-              <div class="igris-pedestal-rune">
-                <svg viewBox="0 0 80 80" class="igris-rune-svg" fill="none" stroke="currentColor">
-                  <circle cx="40" cy="40" r="36" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.3"></circle>
-                  <circle cx="40" cy="40" r="26" stroke-width="1" stroke-dasharray="2 2" opacity="0.45"></circle>
-                  <polygon points="40,8 68,60 12,60" stroke-width="1.2" opacity="0.25"></polygon>
-                  <polygon points="40,72 68,20 12,20" stroke-width="1.2" opacity="0.25"></polygon>
-                </svg>
-              </div>
-              <div class="igris-pedestal-icon">
-                <svg viewBox="0 0 64 64" width="68" height="68" fill="none" stroke="currentColor" stroke-width="1.6">
-                  <path d="M32 6c-8.8 0-16 7.2-16 16 0 5.4 2.7 10.2 6.8 13.1C13.8 38.6 8 46.5 8 56h48c0-9.5-5.8-17.4-14.8-20.9 4.1-2.9 6.8-7.7 6.8-13.1 0-8.8-7.2-16-16-16z" opacity="0.75"></path>
-                  <path d="M22 24h20M32 16v14M18 46l14-9 14 9" opacity="0.55"></path>
-                  <circle cx="32" cy="22" r="3.5" fill="currentColor" opacity="0.6"></circle>
-                </svg>
-              </div>
-              <div class="igris-placeholder-tag">[ ILUSTRACAO DE IGRIS ]</div>
-              <div class="igris-placeholder-sub">Espaco reservado para o mercador</div>
-              <div class="igris-placeholder-lore">
-                "A pedra e o ferro nao mentem. O que trazes para a balanca, viajante?"
-              </div>
-            </div>
-            <!-- Imagem reservada para quando o usuario inserir a ilustracao posteriormente -->
-            <img id="igris-merchant-img" class="igris-merchant-img" src="" alt="Mercador Igris" style="display: none;" />
-          </div>
-        </div>
+      <!-- Conjunto do Pendulo Suspenso: Corda de Canhamo e Lanterna Rustica em SVG -->
+      <div class="igris-pendulum-assembly" id="igris-pendulum-assembly" aria-hidden="true">
+        <!-- Corda Texturizada de Canhamo -->
+        <svg class="igris-rope-svg" viewBox="0 0 16 190" width="16" height="190" preserveAspectRatio="none">
+          <defs>
+            <pattern id="igris-rope-pat" width="12" height="16" patternUnits="userSpaceOnUse">
+              <path d="M2,0 L10,8 M0,8 L8,16 M8,0 L12,4 M0,0 L2,2" stroke="#8a5a36" stroke-width="2.6" stroke-linecap="round"/>
+              <path d="M2,0 L10,8 M0,8 L8,16" stroke="#b07d50" stroke-width="1.3" stroke-linecap="round"/>
+              <path d="M4,2 L8,6 M2,10 L6,14" stroke="#52341b" stroke-width="1" stroke-linecap="round"/>
+            </pattern>
+          </defs>
+          <rect x="3" y="0" width="10" height="178" fill="url(#igris-rope-pat)"/>
+          <ellipse cx="8" cy="180" rx="6" ry="5" fill="#6d4527" stroke="#3d2311" stroke-width="1.5"/>
+          <ellipse cx="8" cy="180" rx="4" ry="3" fill="#9c6d46" opacity="0.65"/>
+        </svg>
+
+        <!-- Lanterna Rustica em SVG com filamento brilhante -->
+        <svg class="igris-lantern-svg" viewBox="0 0 80 124" width="80" height="124">
+          <defs>
+            <linearGradient id="igris-metal-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#141820"/>
+              <stop offset="35%" stop-color="#334155"/>
+              <stop offset="50%" stop-color="#475569"/>
+              <stop offset="70%" stop-color="#334155"/>
+              <stop offset="100%" stop-color="#11141a"/>
+            </linearGradient>
+            <radialGradient id="igris-bulb-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="25%" stop-color="#fef08a"/>
+              <stop offset="55%" stop-color="#f59e0b"/>
+              <stop offset="85%" stop-color="#d97706"/>
+              <stop offset="100%" stop-color="#78350f"/>
+            </radialGradient>
+            <filter id="igris-flare-glow" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="7" result="glow"/>
+              <feMerge>
+                <feMergeNode in="glow"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+
+          <!-- Argola superior de ferro -->
+          <circle cx="40" cy="10" r="7.5" fill="none" stroke="url(#igris-metal-grad)" stroke-width="3"/>
+
+          <!-- Cupula superior da lanterna -->
+          <rect x="33" y="14" width="14" height="6" rx="2" fill="#141820" stroke="#334155" stroke-width="1"/>
+          <path d="M24 20 L56 20 L62 30 L18 30 Z" fill="url(#igris-metal-grad)" stroke="#0b0e13" stroke-width="1.2"/>
+
+          <!-- Vidro escuro da lanterna com luz interior -->
+          <path d="M20 30 L60 30 L54 86 L26 86 Z" fill="rgba(24, 16, 8, 0.9)" stroke="#1e2530" stroke-width="1.5"/>
+
+          <!-- Bulbo incandescente e filamento de luz ambar -->
+          <circle cx="40" cy="58" r="16" fill="url(#igris-bulb-glow)" filter="url(#igris-flare-glow)" opacity="0.95"/>
+          <ellipse cx="40" cy="56" rx="7" ry="9" fill="#ffffff" opacity="0.85"/>
+          <path d="M37 63 Q40 48 43 63" fill="none" stroke="#fff7ed" stroke-width="2"/>
+
+          <!-- Hastes de protecao de metal -->
+          <line x1="40" y1="30" x2="40" y2="86" stroke="url(#igris-metal-grad)" stroke-width="2.5"/>
+          <line x1="26" y1="30" x2="31" y2="86" stroke="url(#igris-metal-grad)" stroke-width="2"/>
+          <line x1="54" y1="30" x2="49" y2="86" stroke="url(#igris-metal-grad)" stroke-width="2"/>
+
+          <!-- Base de ferro inferior -->
+          <path d="M24 86 L56 86 L60 98 L20 98 Z" fill="url(#igris-metal-grad)" stroke="#0b0e13" stroke-width="1.2"/>
+          <rect x="23" y="98" width="34" height="6" rx="2" fill="#141820" stroke="#334155" stroke-width="1"/>
+        </svg>
+
+        <!-- Cone de luz que balanca junto com o pendulo da lanterna -->
+        <div class="igris-lantern-swing-beam" aria-hidden="true"></div>
       </div>
 
-      <!-- Coluna da Direita: Grelha (CSS Grid) Vitrina -->
-      <div class="igris-showcase-col">
-        <div class="igris-showcase-header">
-          <div class="igris-showcase-title-row">
-            <span class="igris-showcase-badge">VITRINA DE RELIQUIAS</span>
-            <span class="igris-items-counter" id="igris-items-counter">0 Itens Expostos</span>
-          </div>
-          <div class="igris-showcase-hint">
-            Clique no cartao de um item para manifestar interesse de compra e disputa em tempo real.
-          </div>
-        </div>
+      <!-- Botao Discreto de Fechar no Canto Superior Direito -->
+      <button type="button" class="igris-floating-close-btn" onclick="MesaIgrisShop.close()" title="Fechar Tenda de Igris">&times;</button>
 
-        <!-- Vitrina em CSS Grid (Vazia por enquanto, pronta para receber cards) -->
-        <div class="igris-showcase-grid" id="igris-showcase-grid">
-          <div class="igris-empty-showcase" id="igris-empty-showcase">
-            <div class="igris-empty-box">
-              <div class="igris-empty-icon">
-                <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.4">
-                  <path d="M20 12V8H4v4M4 8l8-4 8 4M4 12v8h16v-8M10 16h4"></path>
-                </svg>
+      <!-- Area Central: Contentor Iluminado do Mercador Igris -->
+      <div class="igris-shop-body">
+        <div class="igris-portrait-col">
+          <div class="igris-portrait-frame">
+            <div class="igris-portrait-placeholder" id="igris-portrait-placeholder">
+              <div class="igris-pedestal-texture"></div>
+              <div class="igris-pedestal-content">
+                <div class="igris-pedestal-rune">
+                  <svg viewBox="0 0 80 80" class="igris-rune-svg" fill="none" stroke="currentColor">
+                    <circle cx="40" cy="40" r="36" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.3"></circle>
+                    <circle cx="40" cy="40" r="26" stroke-width="1" stroke-dasharray="2 2" opacity="0.45"></circle>
+                    <polygon points="40,8 68,60 12,60" stroke-width="1.2" opacity="0.25"></polygon>
+                    <polygon points="40,72 68,20 12,20" stroke-width="1.2" opacity="0.25"></polygon>
+                  </svg>
+                </div>
+                <div class="igris-pedestal-icon">
+                  <svg viewBox="0 0 64 64" width="68" height="68" fill="none" stroke="currentColor" stroke-width="1.6">
+                    <path d="M32 6c-8.8 0-16 7.2-16 16 0 5.4 2.7 10.2 6.8 13.1C13.8 38.6 8 46.5 8 56h48c0-9.5-5.8-17.4-14.8-20.9 4.1-2.9 6.8-7.7 6.8-13.1 0-8.8-7.2-16-16-16z" opacity="0.75"></path>
+                    <path d="M22 24h20M32 16v14M18 46l14-9 14 9" opacity="0.55"></path>
+                    <circle cx="32" cy="22" r="3.5" fill="currentColor" opacity="0.6"></circle>
+                  </svg>
+                </div>
+                <div class="igris-placeholder-tag">[ ILUSTRACAO DE IGRIS ]</div>
+                <div class="igris-placeholder-sub">Espaco reservado para o mercador</div>
+                <div class="igris-placeholder-lore">
+                  "A pedra e o ferro nao mentem. O que trazes para a balanca, viajante?"
+                </div>
               </div>
-              <h4 class="igris-empty-title">A VITRINA ESTA SILENCIOSA</h4>
-              <p class="igris-empty-desc">
-                O mercador Igris ainda repousa seus mostruarios de pedra. Nenhum item exposto para negociacao no momento.
-              </p>
+              <img id="igris-merchant-img" class="igris-merchant-img" src="" alt="Mercador Igris" style="display: none;" />
             </div>
           </div>
         </div>
+
+        <!-- Vitrina preparada em segundo plano caso itens sejam inseridos futuramente -->
+        <div class="igris-showcase-grid" id="igris-showcase-grid" style="display: none;"></div>
       </div>
     </div>
   </div>
 
-  <!-- ABERTURA OVERLAY -->
+    <!-- ABERTURA OVERLAY -->
   <div id="abertura-overlay" class="abertura-overlay">
     <video id="abertura-video" src="assets/videos/abertura.mp4" playsinline preload="auto"></video>
     <button id="abertura-skip-btn" class="abertura-skip-btn" onclick="MesaAbertura.stop()" title="Parar Abertura">&times;</button>

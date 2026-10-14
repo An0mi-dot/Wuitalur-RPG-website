@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.9.1';
+const MESA_VERSION = 'v1.9.2';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -7358,25 +7358,13 @@ const MesaIgrisShop = {
       counter.textContent = `${count} ${count === 1 ? 'Artefato Exposto' : 'Artefatos Expostos'}`;
     }
 
-    // Se nao ha itens cadastrados (fase atual da loja)
+    // Se nao ha itens cadastrados (fase atual da loja): oculta a vitrina completamente
     if (!this.items || this.items.length === 0) {
-      grid.innerHTML = `
-        <div class="igris-empty-showcase" id="igris-empty-showcase">
-          <div class="igris-empty-box">
-            <div class="igris-empty-icon">
-              <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.4">
-                <path d="M20 12V8H4v4M4 8l8-4 8 4M4 12v8h16v-8M10 16h4"></path>
-              </svg>
-            </div>
-            <h4 class="igris-empty-title">A VITRINA ESTA SILENCIOSA</h4>
-            <p class="igris-empty-desc">
-              O mercador Igris ainda repousa seus mostruarios de pedra. Nenhum item exposto para negociacao no momento.
-            </p>
-          </div>
-        </div>
-      `;
+      grid.style.display = 'none';
+      grid.innerHTML = '';
       return;
     }
+    grid.style.display = 'grid';
 
     // Se houver itens futuramente, renderiza os cards
     const user = this.getCurrentUserIdentity();

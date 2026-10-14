@@ -11034,7 +11034,7 @@ body.combat-active .combat-black-ramp {
 }
 
 /* ========================================================================== */
-/* A TENDA DO IGRIS (INTERFACE DE MERCADOR - TEMA PEDRA, ROCHA E LAMPADA ORANGE) */
+/* A TENDA DO IGRIS (TELA PRETA, QUEDA COM QUIQUE, CORDA, LANTERNA E ESCURIDAO) */
 /* ========================================================================== */
 
 .igris-shop-overlay {
@@ -11042,17 +11042,9 @@ body.combat-active .combat-black-ramp {
   inset: 0;
   z-index: 99999999 !important;
   display: none;
-  flex-direction: column;
-  background-color: #07090c;
-  background-image: 
-    radial-gradient(ellipse 65% 42% at 50% 0%, rgba(245, 158, 11, 0.24) 0%, rgba(217, 119, 6, 0.08) 45%, transparent 75%),
-    radial-gradient(circle at 50% 50%, rgba(26, 32, 42, 0.9) 0%, rgba(7, 9, 12, 0.98) 78%),
-    linear-gradient(180deg, #13171e 0%, #07090c 100%);
+  background-color: #000000 !important;
   color: #e2e8f0;
   font-family: var(--font-body, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
   user-select: none;
 }
@@ -11063,7 +11055,7 @@ body.combat-active .combat-black-ramp {
   pointer-events: all !important;
 }
 
-/* Oculta absolutamente todos os elementos e menus flutuantes quando a tenda estiver aberta */
+/* Oculta absolutamente todos os menus flutuantes quando a tenda estiver aberta */
 body.igris-shop-open .mesa-floating-nav,
 body.igris-shop-open .mesa-mobile-fab-container,
 body.igris-shop-open .mesa-version,
@@ -11096,78 +11088,174 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   display: none !important;
 }
 
-/* ========================================================================== */
-/* ILUMINACAO DA LAMPADA LARANJA NO TOPO DA TENDA                             */
-/* ========================================================================== */
-.igris-tent-lamp-rig {
+/* 1. Tela Totalmente Preta que Cai de Cima e Quica no Chao */
+.igris-black-stage {
+  position: absolute;
+  inset: 0;
+  background-color: #000000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.igris-shop-overlay.active .igris-black-stage {
+  animation: igrisBlackDropBounce 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes igrisBlackDropBounce {
+  0% {
+    transform: translateY(-100%);
+  }
+  48% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  64% {
+    transform: translateY(-52px);
+    animation-timing-function: ease-in;
+  }
+  78% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  88% {
+    transform: translateY(-16px);
+    animation-timing-function: ease-in;
+  }
+  95% {
+    transform: translateY(0);
+  }
+  98% {
+    transform: translateY(-4px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* 2. Escuridao Profunda ao Redor da Tela (Tudo ao redor fica em escuridao total) */
+.igris-darkness-veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  background: radial-gradient(
+    ellipse 620px 480px at 50% 210px,
+    transparent 0%,
+    rgba(0, 0, 0, 0.45) 40%,
+    rgba(0, 0, 0, 0.88) 65%,
+    #000000 85%,
+    #000000 100%
+  );
+}
+
+/* Piscina de Luz Ambar Estatica no Chao e Pedestal */
+.igris-lantern-light-pool {
   position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
+  width: 950px;
+  height: 800px;
+  pointer-events: none;
+  z-index: 4;
+  background: radial-gradient(
+    ellipse 480px 380px at 50% 230px,
+    rgba(251, 191, 36, 0.35) 0%,
+    rgba(245, 158, 11, 0.18) 35%,
+    rgba(180, 83, 9, 0.08) 60%,
+    transparent 85%
+  );
+  filter: blur(28px);
+}
+
+/* 3. Conjunto do Pendulo (Corda de canhamo + Lanterna SVG) */
+.igris-pendulum-assembly {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform-origin: top center;
   display: flex;
   flex-direction: column;
   align-items: center;
   z-index: 25;
   pointer-events: none;
+  transform: translateY(-400px);
 }
 
-.igris-lamp-cable {
-  width: 2px;
-  height: 20px;
-  background: #334155;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.9);
+.igris-shop-overlay.active .igris-pendulum-assembly {
+  animation: 
+    igrisLampDropIn 0.65s cubic-bezier(0.18, 0.89, 0.32, 1.25) 0.8s forwards,
+    igrisPendulumWiggle 5s ease-in-out 1.45s forwards,
+    igrisPendulumIdle 4.5s ease-in-out 6.45s infinite alternate;
 }
 
-.igris-lamp-cap {
-  width: 38px;
-  height: 12px;
-  background: linear-gradient(180deg, #1f2530 0%, #0d1015 100%);
-  border: 1px solid #475569;
-  border-bottom: none;
-  border-radius: 8px 8px 0 0;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+@keyframes igrisLampDropIn {
+  0% {
+    transform: translateY(-400px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(12px) rotate(4deg);
+  }
+  88% {
+    transform: translateY(-5px) rotate(-2deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
 }
 
-.igris-lamp-bulb {
-  width: 26px;
-  height: 26px;
-  background: radial-gradient(circle, #fffbeb 15%, #f59e0b 60%, #b45309 100%);
-  border-radius: 50%;
-  box-shadow: 
-    0 0 16px rgba(245, 158, 11, 0.95),
-    0 0 36px rgba(234, 88, 12, 0.75),
-    0 0 85px rgba(217, 119, 6, 0.5);
-  animation: igrisLampFlicker 6s ease-in-out infinite alternate;
+/* Wiggle da lanterna que vai diminuindo a velocidade ate desacelerar */
+@keyframes igrisPendulumWiggle {
+  0% { transform: translateY(0) rotate(0deg); }
+  8% { transform: translateY(0) rotate(18deg); }
+  22% { transform: translateY(0) rotate(-15deg); }
+  36% { transform: translateY(0) rotate(11deg); }
+  50% { transform: translateY(0) rotate(-7.5deg); }
+  64% { transform: translateY(0) rotate(4.8deg); }
+  76% { transform: translateY(0) rotate(-2.8deg); }
+  86% { transform: translateY(0) rotate(1.6deg); }
+  94% { transform: translateY(0) rotate(-0.9deg); }
+  100% { transform: translateY(0) rotate(0deg); }
 }
 
-.igris-lamp-halo {
+/* Movimento bem discreto e continuo de um lado para o outro */
+@keyframes igrisPendulumIdle {
+  0% {
+    transform: translateY(0) rotate(-0.8deg);
+  }
+  50% {
+    transform: translateY(0) rotate(0.8deg);
+  }
+  100% {
+    transform: translateY(0) rotate(-0.8deg);
+  }
+}
+
+/* Feixe de Luz que acompanha o balanço da lanterna */
+.igris-lantern-swing-beam {
   position: absolute;
-  top: 14px;
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.4) 0%, rgba(234, 88, 12, 0.15) 50%, transparent 75%);
-  filter: blur(14px);
+  top: 90px;
+  width: 500px;
+  height: 450px;
+  background: radial-gradient(ellipse 260px 220px at 50% 20%, rgba(251, 191, 36, 0.22) 0%, rgba(217, 119, 6, 0.08) 50%, transparent 75%);
+  filter: blur(20px);
   pointer-events: none;
-  animation: igrisLampFlicker 6s ease-in-out infinite alternate;
 }
 
-.igris-lamp-beam {
-  position: absolute;
-  top: 26px;
-  width: 800px;
-  height: 500px;
-  background: radial-gradient(ellipse at 50% 0%, rgba(245, 158, 11, 0.22) 0%, rgba(217, 119, 6, 0.08) 55%, transparent 75%);
-  pointer-events: none;
-  filter: blur(24px);
+/* Corda SVG */
+.igris-rope-svg {
+  display: block;
+  margin-bottom: -6px;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.8));
 }
 
-@keyframes igrisLampFlicker {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  28% { opacity: 0.95; transform: scale(0.98); }
-  30% { opacity: 0.98; transform: scale(1.01); }
-  72% { opacity: 0.93; transform: scale(0.99); }
-  74% { opacity: 1; transform: scale(1); }
+/* Lanterna SVG */
+.igris-lantern-svg {
+  display: block;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.9));
 }
 
 /* Botao Flutuante Discreto de Fechar */
@@ -11199,42 +11287,38 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   transform: scale(1.05);
 }
 
-/* Corpo Principal em Duas Colunas (Tela Cheia) */
+/* Area Central: Contentor Iluminado do Mercador Igris */
 .igris-shop-body {
+  position: relative;
+  z-index: 15;
   display: flex;
-  flex: 1;
-  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   height: 100vh;
   height: 100dvh;
-  padding-top: 36px;
+  padding-top: 140px;
   box-sizing: border-box;
 }
 
-/* ========================================================================== */
-/* COLUNA DA ESQUERDA: ILUSTRACAO / PLACEHOLDER DE IGRIS                      */
-/* ========================================================================== */
 .igris-portrait-col {
-  width: 360px;
-  min-width: 300px;
-  max-width: 420px;
-  flex-shrink: 0;
-  background: linear-gradient(180deg, #13171e 0%, #0d1015 100%);
-  border-right: 2px solid #232b36;
-  padding: 24px;
+  width: 380px;
+  max-width: 90vw;
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow-y: auto;
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 .igris-portrait-frame {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #2e3846;
+  border: 1px solid rgba(71, 85, 105, 0.4);
   border-radius: 8px;
-  background: radial-gradient(circle at 50% 35%, #181d25 0%, #0e1116 100%);
-  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8), 0 4px 16px rgba(0, 0, 0, 0.5);
+  background: radial-gradient(circle at 50% 30%, #151a22 0%, #080a0d 100%);
+  box-shadow: 
+    0 0 35px rgba(245, 158, 11, 0.12),
+    0 12px 36px rgba(0, 0, 0, 0.95);
   position: relative;
   overflow: hidden;
 }
@@ -11242,7 +11326,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
 .igris-portrait-placeholder {
   width: 100%;
   height: 100%;
-  min-height: 480px;
+  min-height: 440px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11350,355 +11434,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   z-index: 4;
 }
 
-/* ========================================================================== */
-/* COLUNA DA DIREITA: VITRINA EM GRELHA (CSS GRID)                            */
-/* ========================================================================== */
-.igris-showcase-col {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: #0d1015;
-  padding: 24px 28px;
-  overflow-y: auto;
-}
-
-.igris-showcase-header {
-  margin-bottom: 20px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid #1e2632;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.igris-showcase-title-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.igris-showcase-badge {
-  font-family: var(--font-title, 'Cinzel', serif);
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  color: #cbd5e1;
-  text-transform: uppercase;
-}
-
-.igris-items-counter {
-  font-size: 0.7rem;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  background: #141921;
-  padding: 3px 8px;
-  border-radius: 4px;
-  border: 1px solid #27313f;
-}
-
-.igris-showcase-hint {
-  font-size: 0.74rem;
-  color: #64748b;
-  font-style: italic;
-}
-
-/* Grid Preparada para os Cards */
+/* Vitrina Grid Reservada */
 .igris-showcase-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
-  align-items: start;
-}
-
-/* Estado Vazio da Vitrina */
-.igris-empty-showcase {
-  grid-column: 1 / -1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 380px;
-  border: 2px dashed #242c38;
-  border-radius: 8px;
-  background: rgba(17, 21, 28, 0.4);
-  padding: 40px 24px;
-}
-
-.igris-empty-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  max-width: 440px;
-}
-
-.igris-empty-icon {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: #161b23;
-  border: 1px solid #2d3746;
-  color: #64748b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
-
-.igris-empty-title {
-  margin: 0 0 8px 0;
-  font-family: var(--font-title, 'Cinzel', serif);
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: #94a3b8;
-  text-transform: uppercase;
-}
-
-.igris-empty-desc {
-  margin: 0;
-  font-size: 0.78rem;
-  line-height: 1.6;
-  color: #64748b;
-}
-
-/* ========================================================================== */
-/* COMPORTAMENTO E DESIGN DOS CARTÕES DE ITENS (CARDS)                        */
-/* ========================================================================== */
-.igris-item-card {
-  position: relative;
-  background: linear-gradient(180deg, #181d26 0%, #11151c 100%);
-  border: 1px solid #2a3443;
-  border-radius: 8px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  cursor: pointer;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
-  user-select: none;
-  overflow: visible; /* Permite que os avatares no canto inferior direito fiquem elegantes sobre a borda */
-}
-
-.igris-item-card:hover {
-  transform: translateY(-3px);
-  border-color: #4b586d;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.igris-item-card.has-my-interest {
-  border-color: #64748b;
-  box-shadow: 0 0 0 1px #94a3b8, 0 8px 24px rgba(0, 0, 0, 0.7);
-}
-
-.igris-card-inner {
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.igris-card-thumb-wrapper {
-  position: relative;
-  width: 100%;
-  height: 160px;
-  background: #0b0e13;
-  border: 1px solid #212935;
-  border-radius: 6px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.igris-card-thumb {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.igris-item-card:hover .igris-card-thumb {
-  transform: scale(1.04);
-}
-
-.igris-card-rarity-badge {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  font-size: 0.62rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 2px 7px;
-  border-radius: 3px;
-  background: rgba(11, 14, 19, 0.85);
-  border: 1px solid #334155;
-  color: #cbd5e1;
-  backdrop-filter: blur(4px);
-}
-
-.igris-card-content {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.igris-card-title {
-  margin: 0;
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: #f1f5f9;
-  letter-spacing: 0.04em;
-}
-
-.igris-card-type {
-  font-size: 0.68rem;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.igris-card-desc {
-  margin: 0;
-  font-size: 0.74rem;
-  line-height: 1.45;
-  color: #94a3b8;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.igris-card-footer {
-  margin-top: 6px;
-  padding-top: 10px;
-  border-top: 1px solid #1f2733;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.igris-card-price {
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: #cbd5e1;
-  letter-spacing: 0.03em;
-}
-
-/* ========================================================================== */
-/* SELEÇÃO E AVATARES DE DISPUTA NO CANTO INFERIOR DIREITO                    */
-/* ========================================================================== */
-.igris-card-interests {
-  position: absolute;
-  bottom: -10px;
-  right: 12px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.igris-interest-avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 2px solid #475569;
-  background: #1e2530;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.75);
-  overflow: hidden;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 800;
-  color: #f1f5f9;
-  position: relative;
-  animation: igrisAvatarPop 0.24s cubic-bezier(0.34, 1.56, 0.64, 1);
-  transition: transform 0.18s ease, border-color 0.18s ease;
-}
-
-.igris-interest-avatar.is-my-slot {
-  border-color: #cbd5e1;
-  box-shadow: 0 0 8px rgba(203, 213, 225, 0.5), 0 3px 8px rgba(0, 0, 0, 0.75);
-  transform: scale(1.08);
-}
-
-.igris-interest-avatar.is-master {
-  border-color: #94a3b8;
-  background: #2a3340;
-}
-
-.igris-interest-avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-.igris-dispute-badge {
-  font-size: 0.6rem;
-  font-weight: 800;
-  padding: 1px 4px;
-  border-radius: 3px;
-  background: #334155;
-  color: #f1f5f9;
-  border: 1px solid #475569;
-  margin-right: 2px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  animation: igrisAvatarPop 0.2s ease;
-}
-
-@keyframes igrisAvatarPop {
-  0% { transform: scale(0.3); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-/* Responsividade */
-@media (max-width: 900px) {
-  .igris-shop-body {
-    flex-direction: column;
-    height: auto;
-    overflow-y: auto;
-  }
-  .igris-portrait-col {
-    width: 100%;
-    max-width: 100%;
-    border-right: none;
-    border-bottom: 2px solid #232b36;
-  }
-  .igris-portrait-placeholder {
-    min-height: 280px;
-  }
-}
-
-
-/* Estilo Limpo da Ilustracao do Livro Infantil */
-.livro-illustration-frame.clean {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  background: rgba(14, 13, 20, 0.7);
-  border: 1px solid rgba(245, 158, 11, 0.25);
-  border-radius: 4px;
-  padding: 10px 14px;
-  margin-bottom: 12px;
-}
-
-.livro-illustration-label {
-  font-family: var(--font-heading, 'Cinzel', serif);
-  font-size: 0.76rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #fbbf24;
-}
-
-.livro-illustration-desc {
-  font-size: 0.88rem;
-  color: #e5e7eb;
-  margin: 0;
-  line-height: 1.45;
-  font-style: italic;
+  display: none;
 }
