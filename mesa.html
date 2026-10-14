@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=1.9.3">
+  <link rel="stylesheet" href="css/mesa.css?v=1.9.4">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1187,9 +1187,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.8.8"></script>
 
-<script src="js/mesa.js?v=1.9.3"></script>
+<script src="js/mesa.js?v=1.9.4"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v1.9.3</div>
+  <div id="mesa-version-badge" class="mesa-version">v1.9.4</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -1511,39 +1511,37 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
   <!-- OVERLAY DE TELA CHEIA: A TENDA DO IGRIS (INTERFACE DE MERCADOR) -->
   <!-- ========================================================================== -->
   <div id="igris-shop-overlay" class="igris-shop-overlay">
-    <!-- Palco com Tela Preta caindo de cima e quicando -->
+    <!-- Palco com Tela Totalmente Preta e Escuridao Profunda -->
     <div class="igris-black-stage" id="igris-black-stage">
-      <!-- Escuridao nas Bordas da Tela (Vignette suave) -->
+      <!-- Escuridao nas Bordas da Tela (Vignette) -->
       <div class="igris-darkness-veil" aria-hidden="true"></div>
 
-      <!-- Piscina Ampla de Iluminacao Ambar da Lanterna -->
+      <!-- Piscina de Iluminacao Ambar Vinda do Alto da Lanterna -->
       <div class="igris-lantern-light-pool" aria-hidden="true"></div>
 
-      <!-- Suporte de Ferro Forjado no Teto (Onde a corda fica ancorada) -->
+      <!-- Suporte de Ferro Forjado no Topo do Teto -->
       <div class="igris-ceiling-mount" aria-hidden="true">
         <div class="igris-ceiling-beam"></div>
         <div class="igris-ceiling-ring"></div>
       </div>
 
-      <!-- Pivot Centralizado para a Corda e a Lanterna -->
+      <!-- Pivot Centralizado no Topo para a Lanterna -->
       <div class="igris-pendulum-pivot" id="igris-pendulum-pivot" aria-hidden="true">
         <div class="igris-pendulum-assembly" id="igris-pendulum-assembly">
-          <!-- Corda Texturizada de Canhamo (estendida para cima do teto para nunca parecer cortada) -->
-          <svg class="igris-rope-svg" viewBox="0 0 16 320" width="16" height="320" preserveAspectRatio="none">
+          <!-- Corrente Curta de Ferro no Topo -->
+          <svg class="igris-rope-svg" viewBox="0 0 16 46" width="14" height="46" preserveAspectRatio="none">
             <defs>
-              <pattern id="igris-rope-pat" width="12" height="16" patternUnits="userSpaceOnUse">
-                <path d="M2,0 L10,8 M0,8 L8,16 M8,0 L12,4 M0,0 L2,2" stroke="#8a5a36" stroke-width="2.6" stroke-linecap="round"/>
-                <path d="M2,0 L10,8 M0,8 L8,16" stroke="#b07d50" stroke-width="1.3" stroke-linecap="round"/>
-                <path d="M4,2 L8,6 M2,10 L6,14" stroke="#52341b" stroke-width="1" stroke-linecap="round"/>
+              <pattern id="igris-chain-pat" width="12" height="14" patternUnits="userSpaceOnUse">
+                <path d="M4,1 L10,1 L10,10 L4,10 Z" fill="none" stroke="#475569" stroke-width="2.2" stroke-linecap="round"/>
+                <path d="M6,6 L8,6 L8,14 L6,14 Z" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round"/>
               </pattern>
             </defs>
-            <rect x="3" y="0" width="10" height="308" fill="url(#igris-rope-pat)"/>
-            <ellipse cx="8" cy="310" rx="6" ry="5" fill="#6d4527" stroke="#3d2311" stroke-width="1.5"/>
-            <ellipse cx="8" cy="310" rx="4" ry="3" fill="#9c6d46" opacity="0.65"/>
+            <rect x="2" y="0" width="12" height="40" fill="url(#igris-chain-pat)"/>
+            <circle cx="8" cy="42" r="3.5" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
           </svg>
 
           <!-- Lanterna Rustica em SVG com filamento brilhante -->
-          <svg class="igris-lantern-svg" viewBox="0 0 80 124" width="80" height="124">
+          <svg class="igris-lantern-svg" viewBox="0 0 80 124" width="68" height="106">
             <defs>
               <linearGradient id="igris-metal-grad" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stop-color="#141820"/>
@@ -1568,7 +1566,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
               </filter>
             </defs>
 
-            <!-- Argola superior de ferro conectada a corda -->
+            <!-- Argola superior de ferro -->
             <circle cx="40" cy="10" r="7.5" fill="none" stroke="url(#igris-metal-grad)" stroke-width="3"/>
 
             <!-- Cupula superior da lanterna -->
@@ -1601,51 +1599,49 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Botao Discreto de Fechar no Canto Superior Direito -->
       <button type="button" class="igris-floating-close-btn" onclick="MesaIgrisShop.close()" title="Fechar Tenda de Igris">&times;</button>
 
-      <!-- Area Central: Duas Colunas (Esquerda: Igris | Direita: Vitrina de Itens) -->
+      <!-- Area Central: Duas Colunas (Esquerda: Igris sem card | Direita: Vitrina Mercado Negro) -->
       <div class="igris-shop-body">
-        <!-- Coluna Esquerda: Ilustracao do Mercador Igris -->
+        <!-- Coluna Esquerda: Ilustracao do Mercador Igris (Livre no fundo preto, sem card nem moldura) -->
         <div class="igris-portrait-col">
-          <div class="igris-portrait-frame">
-            <div class="igris-portrait-placeholder" id="igris-portrait-placeholder">
-              <div class="igris-pedestal-texture"></div>
-              <div class="igris-pedestal-content">
-                <div class="igris-pedestal-rune">
-                  <svg viewBox="0 0 80 80" class="igris-rune-svg" fill="none" stroke="currentColor">
-                    <circle cx="40" cy="40" r="36" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.3"></circle>
-                    <circle cx="40" cy="40" r="26" stroke-width="1" stroke-dasharray="2 2" opacity="0.45"></circle>
-                    <polygon points="40,8 68,60 12,60" stroke-width="1.2" opacity="0.25"></polygon>
-                    <polygon points="40,72 68,20 12,20" stroke-width="1.2" opacity="0.25"></polygon>
-                  </svg>
-                </div>
-                <div class="igris-pedestal-icon">
-                  <svg viewBox="0 0 64 64" width="68" height="68" fill="none" stroke="currentColor" stroke-width="1.6">
-                    <path d="M32 6c-8.8 0-16 7.2-16 16 0 5.4 2.7 10.2 6.8 13.1C13.8 38.6 8 46.5 8 56h48c0-9.5-5.8-17.4-14.8-20.9 4.1-2.9 6.8-7.7 6.8-13.1 0-8.8-7.2-16-16-16z" opacity="0.75"></path>
-                    <path d="M22 24h20M32 16v14M18 46l14-9 14 9" opacity="0.55"></path>
-                    <circle cx="32" cy="22" r="3.5" fill="currentColor" opacity="0.6"></circle>
-                  </svg>
-                </div>
-                <div class="igris-placeholder-tag">[ ILUSTRACAO DE IGRIS ]</div>
-                <div class="igris-placeholder-sub">Espaco reservado para o mercador</div>
-                <div class="igris-placeholder-lore">
-                  "A pedra e o ferro nao mentem. O que trazes para a balanca, viajante?"
-                </div>
+          <div class="igris-character-stage" id="igris-character-stage">
+            <!-- Imagem do mercador: fica livre no cenario sem nenhum card ao redor -->
+            <img id="igris-merchant-img" class="igris-merchant-img" src="" alt="Mercador Igris" style="display: none;" />
+
+            <!-- Placeholder minimalista livre, sem card ao redor -->
+            <div class="igris-figure-placeholder" id="igris-figure-placeholder">
+              <div class="igris-silhouette-icon">
+                <svg viewBox="0 0 80 120" width="130" height="195" fill="currentColor">
+                  <path d="M40 8 C32 8 26 14 24 22 C22 30 22 38 28 44 C20 48 12 56 8 68 C4 80 2 98 2 118 L78 118 C78 98 76 80 72 68 C68 56 60 48 52 44 C58 38 58 30 56 22 C54 14 48 8 40 8 Z" opacity="0.45"/>
+                  <path d="M40 14 C35 14 31 18 30 24 C29 30 30 36 34 40 C37 42 43 42 46 40 C50 36 51 30 50 24 C49 18 45 14 40 14 Z" opacity="0.65"/>
+                  <path d="M40 22 L35 38 L45 38 Z" fill="#000" opacity="0.7"/>
+                  <circle cx="36" cy="28" r="1.6" fill="#f59e0b" opacity="0.9"/>
+                  <circle cx="44" cy="28" r="1.6" fill="#f59e0b" opacity="0.9"/>
+                </svg>
               </div>
-              <img id="igris-merchant-img" class="igris-merchant-img" src="" alt="Mercador Igris" style="display: none;" />
+              <div class="igris-figure-name igris-slashed-text" data-text="Igris">Igris</div>
+              <span class="igris-figure-tag">[ Mercador Clandestino ]</span>
             </div>
           </div>
         </div>
 
-        <!-- Coluna Direita: Vitrina de Itens (CSS Grid) -->
+        <!-- Coluna Direita: Vitrina de Itens (Mercado Negro Clandestino / Interface Suja com Cortes) -->
         <div class="igris-showcase-col">
           <div class="igris-showcase-header">
             <div class="igris-showcase-title-row">
-              <h3 class="igris-showcase-heading">Vitrina de Trocas</h3>
+              <h3 class="igris-showcase-heading igris-slashed-text" data-text="Mercado Clandestino">Mercado Clandestino</h3>
+              <span class="igris-illegal-badge">[ CONTRABANDO ILEGAL ]</span>
               <span class="igris-items-counter" id="igris-items-counter">0 Artefatos</span>
             </div>
             <div class="igris-user-chip" id="igris-user-chip"></div>
           </div>
 
-          <!-- Grelha CSS Grid para os Cartoes de Itens -->
+          <div class="igris-illicit-notice">
+            <span class="igris-warning-slash">///</span>
+            <span>TRANSACOES CLANDESTINAS SEM RASTRO - COMPRE POR SUA CONTA E RISCO</span>
+            <span class="igris-warning-slash">///</span>
+          </div>
+
+          <!-- Grelha CSS Grid para os Cartoes de Itens com Cortes e Textura Suja -->
           <div class="igris-showcase-grid" id="igris-showcase-grid"></div>
         </div>
       </div>

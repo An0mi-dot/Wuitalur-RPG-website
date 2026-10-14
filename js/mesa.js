@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v1.9.3';
+const MESA_VERSION = 'v1.9.4';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -7298,20 +7298,20 @@ const MesaIgrisShop = {
     this.saveStateToSupabase();
   },
 
-  // Define uma imagem para o mercador futuramente
+  // Define uma imagem para o mercador futuramente (sem card, fica livre no fundo preto)
   setMerchantImage(url) {
     this.merchantImage = url;
     const imgEl = document.getElementById('igris-merchant-img');
-    const pedestalContent = document.querySelector('#igris-portrait-placeholder .igris-pedestal-content');
+    const placeholder = document.getElementById('igris-figure-placeholder');
     if (imgEl) {
       if (url) {
         imgEl.src = url;
         imgEl.style.display = 'block';
-        if (pedestalContent) pedestalContent.style.opacity = '0.15';
+        if (placeholder) placeholder.style.display = 'none';
       } else {
         imgEl.src = '';
         imgEl.style.display = 'none';
-        if (pedestalContent) pedestalContent.style.opacity = '1';
+        if (placeholder) placeholder.style.display = 'flex';
       }
     }
   },
@@ -7390,7 +7390,7 @@ const MesaIgrisShop = {
               <span class="igris-card-rarity-badge">${item.raridade || 'Reliquia'}</span>
             </div>
             <div class="igris-card-content">
-              <h4 class="igris-card-title">${item.nome || 'Item Desconhecido'}</h4>
+              <h4 class="igris-card-title igris-slashed-text" data-text="${item.nome || 'Item Desconhecido'}">${item.nome || 'Item Desconhecido'}</h4>
               <span class="igris-card-type">${item.tipo || 'Artefato de Pedra'}</span>
               <p class="igris-card-desc">${item.descricao || 'Nenhuma informacao decifrada sobre esta reliquia.'}</p>
               <div class="igris-card-footer">
