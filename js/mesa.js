@@ -5316,34 +5316,22 @@ const MesaLivroReader = {
   pages: [
     {
       num: 1,
-      titulo: 'Página 1',
-      ilustracaoTitulo: 'Ilustração de uma estrela cadente escura',
-      ilustracaoDesc: 'Uma estrela negra cruza o vácuo silencioso do espaço, desenhando uma trilha de sombras.',
-      svgIcon: '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#f59e0b" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon><path d="M4 4l4 4"></path><path d="M20 4l-4 4"></path></svg>',
+      ilustracaoDesc: 'Uma estrela cadente escura.',
       texto: 'Veio do céu que não tem fim um Viajante bondoso. Ele viajava pelo escuro do espaço procurando uma casa que precisasse de luz e de cuidado.'
     },
     {
       num: 2,
-      titulo: 'Página 2',
-      ilustracaoTitulo: 'Ilustração de um ser brilhante descendo numa floresta triste',
-      ilustracaoDesc: 'Nas copas secas e doentes da floresta, uma silhueta imensa de luz desce com braços acolhedores.',
-      svgIcon: '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#f59e0b" stroke-width="1.8"><path d="M12 2a5 5 0 0 0-5 5v3a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5z"></path><path d="M12 15v7"></path><path d="M8 22h8"></path><path d="M5 12H2"></path><path d="M22 12h-3"></path><path d="M6 18l-3 3"></path><path d="M18 18l3 3"></path></svg>',
+      ilustracaoDesc: 'Um ser brilhante descendo numa floresta triste.',
       texto: 'Ele desceu nas árvores de uma terra cansada. O povo de lá estava doente, fraco e com medo. O Viajante abriu os braços e disse: \'Não chorem mais. Eu trago o presente da energia infinita\'.'
     },
     {
       num: 3,
-      titulo: 'Página 3',
-      ilustracaoTitulo: 'Ilustração do povo de mãos dadas com o Viajante',
-      ilustracaoDesc: 'As famílias abrem suas portas e unem suas mãos às do Viajante, entregando seus pensamentos e sonhos.',
-      svgIcon: '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#f59e0b" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path><path d="M1 12h4"></path><path d="M19 12h4"></path></svg>',
+      ilustracaoDesc: 'O povo de mãos dadas com o Viajante.',
       texto: 'O povo ficou feliz e abriu as portas de suas casas para ele. O Viajante pediu que todos fechassem os olhos e lhe entregassem os seus sonhos, pois só ele poderia guardá-los de todo o mal.'
     },
     {
       num: 4,
-      titulo: 'Página 4',
-      ilustracaoTitulo: 'Ilustração do Viajante cobrindo o planeta como um cobertor escuro',
-      ilustracaoDesc: 'O abraço do ser expande-se sobre todo o globo, envolvendo cidades e florestas num silêncio perpétuo.',
-      svgIcon: '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#f59e0b" stroke-width="1.8"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>',
+      ilustracaoDesc: 'O Viajante cobrindo o planeta como um cobertor escuro.',
       texto: 'Eles entregaram. Então, o Viajante cresceu tanto que abraçou o mundo inteiro. E todos dormiram para sempre, bem quentinhos em seu abraço, em silêncio e em paz.'
     }
   ],
@@ -5403,9 +5391,15 @@ const MesaLivroReader = {
 
     // MODO 1: DIÁRIO DE SARA (1 PÁGINA)
     if (this.currentDocId === 'col_diario_sara') {
-      if (badge) badge.textContent = 'DOCUMENTO DA CAMPANHA • RESIDÊNCIA AUGUIL';
+      if (badge) {
+        badge.textContent = 'DOCUMENTO DA CAMPANHA • RESIDÊNCIA AUGUIL';
+        badge.style.display = 'inline-block';
+      }
       if (title) title.textContent = 'DIÁRIO DE SARA';
-      if (subtitle) subtitle.textContent = 'Página Única Encontrada na Escrivaninha';
+      if (subtitle) {
+        subtitle.textContent = 'Página Única Encontrada na Escrivaninha';
+        subtitle.style.display = 'block';
+      }
       if (controls) controls.style.display = 'none';
       if (note) note.textContent = 'Caderno espiral encontrado na escrivaninha de Sara Auguil. As demais folhas foram arrancadas.';
       if (container) {
@@ -5429,9 +5423,15 @@ const MesaLivroReader = {
 
     // MODO 2: CAIXA NEGRA E DOURADA (INSPEÇÃO DO ARTEFACTO)
     if (this.currentDocId === 'col_caixa_negra_dourada') {
-      if (badge) badge.textContent = 'ARTEFACTO DA CAMPANHA • RESIDÊNCIA AUGUIL';
+      if (badge) {
+        badge.textContent = 'ARTEFACTO DA CAMPANHA • RESIDÊNCIA AUGUIL';
+        badge.style.display = 'inline-block';
+      }
       if (title) title.textContent = 'CAIXA NEGRA E DOURADA';
-      if (subtitle) subtitle.textContent = 'Artefacto Selado • Inspeção Detalhada';
+      if (subtitle) {
+        subtitle.textContent = 'Artefacto Selado • Inspeção Detalhada';
+        subtitle.style.display = 'block';
+      }
       if (controls) controls.style.display = 'none';
       if (note) note.textContent = 'Item encontrado soterrado na escrivaninha de Sara Auguil.';
       if (container) {
@@ -5456,10 +5456,10 @@ const MesaLivroReader = {
       return;
     }
 
-    // MODO 3: "O VIAJANTE E A TERRA" (4 PÁGINAS ILUSTRADAS)
-    if (badge) badge.textContent = 'DOCUMENTO DA CAMPANHA • RESIDÊNCIA AUGUIL';
-    if (title) title.textContent = 'O VIAJANTE E A TERRA';
-    if (subtitle) subtitle.textContent = 'Conto Infantil Ilustrado • 4 Páginas';
+    // MODO 3: "O VIAJANTE DA TERRA" (4 PÁGINAS LIMPAS)
+    if (badge) badge.style.display = 'none';
+    if (title) title.textContent = 'O VIAJANTE DA TERRA';
+    if (subtitle) subtitle.style.display = 'none';
     if (controls) controls.style.display = 'flex';
     if (note) note.textContent = 'Item encontrado soterrado na escrivaninha de Sara Auguil (Casa Auguil).';
 
@@ -5519,18 +5519,12 @@ const MesaLivroReader = {
     return `
       <article class="livro-page-card" id="livro-page-${p.num}">
         <div class="livro-page-card-header">
-          <span class="livro-page-num-pill">Página ${p.num}</span>
-          <span class="livro-page-label">O Viajante e a Terra</span>
+          <span class="livro-page-num-pill">Página ${p.num} de ${this.totalPags}</span>
         </div>
 
-        <div class="livro-illustration-frame">
-          <div class="livro-illustration-icon-box">
-            ${p.svgIcon}
-          </div>
-          <div class="livro-illustration-meta">
-            <h5 class="livro-illustration-title">${p.ilustracaoTitulo}</h5>
-            <p class="livro-illustration-desc">${p.ilustracaoDesc}</p>
-          </div>
+        <div class="livro-illustration-frame clean">
+          <span class="livro-illustration-label">Ilustração</span>
+          <p class="livro-illustration-desc">${p.ilustracaoDesc}</p>
         </div>
 
         <div class="livro-page-text-box">
@@ -7250,20 +7244,33 @@ const MesaIgrisShop = {
   // Abre a interface localmente
   open() {
     this.isOpen = true;
+    document.body.classList.add('igris-shop-open');
     const overlay = document.getElementById('igris-shop-overlay');
     if (overlay) {
       overlay.classList.add('active');
     }
-    this.updateUserChip();
     this.renderShowcase();
   },
 
   // Fecha a interface localmente
-  close() {
+  close(broadcast = false) {
     this.isOpen = false;
+    document.body.classList.remove('igris-shop-open');
     const overlay = document.getElementById('igris-shop-overlay');
     if (overlay) {
       overlay.classList.remove('active');
+    }
+    if (broadcast && window.MesaApp && MesaApp.state && MesaApp.state.isMaster) {
+      const chan = this.getChannel();
+      if (chan) {
+        try {
+          chan.send({
+            type: 'broadcast',
+            event: 'igris_shop_close',
+            payload: {}
+          });
+        } catch(e) {}
+      }
     }
   },
 

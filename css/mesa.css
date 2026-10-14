@@ -11034,173 +11034,180 @@ body.combat-active .combat-black-ramp {
 }
 
 /* ========================================================================== */
-/* A TENDA DO IGRIS (INTERFACE DE MERCADOR - TEMA PEDRA E ROCHA SOMBRIA)      */
+/* A TENDA DO IGRIS (INTERFACE DE MERCADOR - TEMA PEDRA, ROCHA E LAMPADA ORANGE) */
 /* ========================================================================== */
 
 .igris-shop-overlay {
   position: fixed;
   inset: 0;
-  z-index: 100050 !important;
+  z-index: 99999999 !important;
   display: none;
   flex-direction: column;
-  background-color: #0b0d11;
+  background-color: #07090c;
   background-image: 
-    radial-gradient(circle at 50% 20%, rgba(30, 36, 46, 0.9) 0%, rgba(11, 13, 17, 0.98) 75%),
-    radial-gradient(ellipse at 85% 90%, rgba(20, 24, 30, 0.8) 0%, transparent 60%);
+    radial-gradient(ellipse 65% 42% at 50% 0%, rgba(245, 158, 11, 0.24) 0%, rgba(217, 119, 6, 0.08) 45%, transparent 75%),
+    radial-gradient(circle at 50% 50%, rgba(26, 32, 42, 0.9) 0%, rgba(7, 9, 12, 0.98) 78%),
+    linear-gradient(180deg, #13171e 0%, #07090c 100%);
   color: #e2e8f0;
   font-family: var(--font-body, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
   user-select: none;
 }
 
 .igris-shop-overlay.active {
-  display: flex;
-  opacity: 1;
-  pointer-events: all;
+  display: flex !important;
+  opacity: 1 !important;
+  pointer-events: all !important;
 }
 
-/* Header de Pedra Rustica */
-.igris-shop-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 24px;
-  background: linear-gradient(180deg, #181d24 0%, #111419 100%);
-  border-bottom: 2px solid #28303b;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-  flex-shrink: 0;
-  z-index: 10;
+/* Oculta absolutamente todos os elementos e menus flutuantes quando a tenda estiver aberta */
+body.igris-shop-open .mesa-floating-nav,
+body.igris-shop-open .mesa-mobile-fab-container,
+body.igris-shop-open .mesa-version,
+body.igris-shop-open .combat-header,
+body.igris-shop-open .combat-dock-container,
+body.igris-shop-open .combat-master-controls,
+body.igris-shop-open .combat-menu-drawer,
+body.igris-shop-open .combat-menu-backdrop,
+body.igris-shop-open .mesa-mobile-menu-drawer,
+body.igris-shop-open .mesa-mobile-backdrop,
+body.igris-shop-open .mesa-quick-menu-dropdown,
+body.igris-shop-open .mesa-ink-frame,
+body.igris-shop-open .reaction-picker-popover,
+body:has(#igris-shop-overlay.active) .mesa-floating-nav,
+body:has(#igris-shop-overlay.active) .mesa-mobile-fab-container,
+body:has(#igris-shop-overlay.active) .mesa-version,
+body:has(#igris-shop-overlay.active) .combat-header,
+body:has(#igris-shop-overlay.active) .combat-dock-container,
+body:has(#igris-shop-overlay.active) .combat-master-controls,
+body:has(#igris-shop-overlay.active) .combat-menu-drawer,
+body:has(#igris-shop-overlay.active) .combat-menu-backdrop,
+body:has(#igris-shop-overlay.active) .mesa-mobile-menu-drawer,
+body:has(#igris-shop-overlay.active) .mesa-mobile-backdrop,
+body:has(#igris-shop-overlay.active) .mesa-quick-menu-dropdown,
+body:has(#igris-shop-overlay.active) .mesa-ink-frame,
+body:has(#igris-shop-overlay.active) .reaction-picker-popover {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  display: none !important;
 }
 
-.igris-header-left {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.igris-header-icon-box {
-  width: 42px;
-  height: 42px;
-  border-radius: 6px;
-  background: linear-gradient(135deg, #222933 0%, #151920 100%);
-  border: 1px solid #3d4756;
-  color: #94a3b8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 2px 6px rgba(0, 0, 0, 0.4);
-}
-
-.igris-header-titles {
+/* ========================================================================== */
+/* ILUMINACAO DA LAMPADA LARANJA NO TOPO DA TENDA                             */
+/* ========================================================================== */
+.igris-tent-lamp-rig {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
-  gap: 2px;
-}
-
-.igris-shop-title {
-  margin: 0;
-  font-size: 1.15rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  color: #f1f5f9;
-  text-transform: uppercase;
-  font-family: var(--font-title, 'Cinzel', serif);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-}
-
-.igris-shop-subtitle {
-  font-size: 0.68rem;
-  color: #64748b;
-  letter-spacing: 0.14em;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.igris-header-actions {
-  display: flex;
   align-items: center;
-  gap: 12px;
+  z-index: 25;
+  pointer-events: none;
 }
 
-.igris-user-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 4px 12px;
-  border-radius: 20px;
-  background: #14181f;
-  border: 1px solid #2e3745;
-  font-size: 0.75rem;
-  color: #cbd5e1;
-}
-
-.igris-user-chip-avatar {
-  width: 20px;
+.igris-lamp-cable {
+  width: 2px;
   height: 20px;
-  border-radius: 50%;
+  background: #334155;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.9);
+}
+
+.igris-lamp-cap {
+  width: 38px;
+  height: 12px;
+  background: linear-gradient(180deg, #1f2530 0%, #0d1015 100%);
   border: 1px solid #475569;
-  object-fit: cover;
-  background: #1e293b;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  font-weight: 700;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.igris-btn-sync {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: #1e242d;
-  color: #cbd5e1;
-  border: 1px solid #3b4656;
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  transition: all 0.2s ease;
+.igris-lamp-bulb {
+  width: 26px;
+  height: 26px;
+  background: radial-gradient(circle, #fffbeb 15%, #f59e0b 60%, #b45309 100%);
+  border-radius: 50%;
+  box-shadow: 
+    0 0 16px rgba(245, 158, 11, 0.95),
+    0 0 36px rgba(234, 88, 12, 0.75),
+    0 0 85px rgba(217, 119, 6, 0.5);
+  animation: igrisLampFlicker 6s ease-in-out infinite alternate;
 }
 
-.igris-btn-sync:hover {
-  background: #2b3340;
-  color: #f8fafc;
-  border-color: #64748b;
+.igris-lamp-halo {
+  position: absolute;
+  top: 14px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.4) 0%, rgba(234, 88, 12, 0.15) 50%, transparent 75%);
+  filter: blur(14px);
+  pointer-events: none;
+  animation: igrisLampFlicker 6s ease-in-out infinite alternate;
 }
 
-.igris-shop-close-btn {
-  background: #1a1f26;
-  border: 1px solid #333d4b;
+.igris-lamp-beam {
+  position: absolute;
+  top: 26px;
+  width: 800px;
+  height: 500px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(245, 158, 11, 0.22) 0%, rgba(217, 119, 6, 0.08) 55%, transparent 75%);
+  pointer-events: none;
+  filter: blur(24px);
+}
+
+@keyframes igrisLampFlicker {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  28% { opacity: 0.95; transform: scale(0.98); }
+  30% { opacity: 0.98; transform: scale(1.01); }
+  72% { opacity: 0.93; transform: scale(0.99); }
+  74% { opacity: 1; transform: scale(1); }
+}
+
+/* Botao Flutuante Discreto de Fechar */
+.igris-floating-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  z-index: 30;
+  background: rgba(18, 22, 28, 0.85);
+  border: 1px solid #333f50;
   color: #94a3b8;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 4px;
-  font-size: 20px;
+  font-size: 22px;
   line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
 }
 
-.igris-shop-close-btn:hover {
-  background: #2d1818;
+.igris-floating-close-btn:hover {
+  background: rgba(69, 10, 10, 0.9);
   color: #f87171;
-  border-color: #7f1d1d;
+  border-color: #991b1b;
+  transform: scale(1.05);
 }
 
-/* Corpo Principal em Duas Colunas */
+/* Corpo Principal em Duas Colunas (Tela Cheia) */
 .igris-shop-body {
   display: flex;
   flex: 1;
   overflow: hidden;
-  height: calc(100vh - 70px);
+  height: 100vh;
+  height: 100dvh;
+  padding-top: 36px;
+  box-sizing: border-box;
 }
 
 /* ========================================================================== */
@@ -11663,4 +11670,35 @@ body.combat-active .combat-black-ramp {
   .igris-portrait-placeholder {
     min-height: 280px;
   }
+}
+
+
+/* Estilo Limpo da Ilustracao do Livro Infantil */
+.livro-illustration-frame.clean {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  background: rgba(14, 13, 20, 0.7);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 4px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+}
+
+.livro-illustration-label {
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #fbbf24;
+}
+
+.livro-illustration-desc {
+  font-size: 0.88rem;
+  color: #e5e7eb;
+  margin: 0;
+  line-height: 1.45;
+  font-style: italic;
 }

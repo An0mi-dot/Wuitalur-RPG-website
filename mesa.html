@@ -870,9 +870,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       
       <!-- Cabeçalho do Leitor -->
       <div class="livro-reader-header">
-        <div class="livro-reader-badge" id="livro-reader-badge">DOCUMENTO DA CAMPANHA • RESIDÊNCIA AUGUIL</div>
-        <h2 class="livro-reader-title" id="livro-reader-title">O VIAJANTE E A TERRA</h2>
-        <div class="livro-reader-subtitle" id="livro-reader-subtitle">Conto Infantil Ilustrado • 4 Páginas</div>
+        <div class="livro-reader-badge" id="livro-reader-badge" style="display: none;"></div>
+        <h2 class="livro-reader-title" id="livro-reader-title">O VIAJANTE DA TERRA</h2>
+        <div class="livro-reader-subtitle" id="livro-reader-subtitle" style="display: none;"></div>
       </div>
 
       <!-- Barra de Ferramentas / Controles de Navegação -->
@@ -1220,7 +1220,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
               <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
             </div>
             <div class="dispositivo-meta">
-              <div class="dispositivo-title">O Viajante e a Terra</div>
+              <div class="dispositivo-title">O Viajante da Terra</div>
               <div class="dispositivo-subtitle">Livro Infantil Ilustrado • Casa Auguil</div>
             </div>
             <span class="dispositivo-status-badge ready">4 Páginas</span>
@@ -1511,34 +1511,17 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
   <!-- OVERLAY DE TELA CHEIA: A TENDA DO IGRIS (INTERFACE DE MERCADOR) -->
   <!-- ========================================================================== -->
   <div id="igris-shop-overlay" class="igris-shop-overlay">
-    <!-- Topo da Interface: Pedra e Estilo Rustico -->
-    <div class="igris-shop-header">
-      <div class="igris-header-left">
-        <div class="igris-header-icon-box">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6a3 3 0 0 1 6 0v6"></path>
-          </svg>
-        </div>
-        <div class="igris-header-titles">
-          <h2 class="igris-shop-title">A TENDA DO IGRIS</h2>
-          <span class="igris-shop-subtitle">MERCADOR ERRANTE &bull; SALAO DE RELIQUIAS E TROCAS</span>
-        </div>
-      </div>
-
-      <div class="igris-header-actions">
-        <div class="igris-user-chip" id="igris-user-chip">
-          <!-- Renderizado dinamicamente com personagem do jogador ou mestre -->
-        </div>
-        <button type="button" class="igris-btn-sync master-only" id="igris-btn-sync" onclick="MesaIgrisShop.broadcastOpen()" title="Transmitir Tenda a todos os jogadores">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="2"></circle>
-            <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
-          </svg>
-          <span>Transmitir Tela</span>
-        </button>
-        <button type="button" class="igris-shop-close-btn" onclick="MesaIgrisShop.close()" title="Fechar Tenda de Igris">&times;</button>
-      </div>
+    <!-- Iluminacao da Lampada Laranja no Topo da Tenda -->
+    <div class="igris-tent-lamp-rig" aria-hidden="true">
+      <div class="igris-lamp-cable"></div>
+      <div class="igris-lamp-cap"></div>
+      <div class="igris-lamp-bulb"></div>
+      <div class="igris-lamp-halo"></div>
+      <div class="igris-lamp-beam"></div>
     </div>
+
+    <!-- Botao Discreto de Fechar no Canto Superior -->
+    <button type="button" class="igris-floating-close-btn" onclick="MesaIgrisShop.close()" title="Fechar Tenda de Igris">&times;</button>
 
     <!-- Corpo Central: Estrutura de Duas Colunas -->
     <div class="igris-shop-body">
