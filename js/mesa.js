@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.1.0';
+const MESA_VERSION = 'v2.1.1';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -1313,7 +1313,7 @@ const MesaApp = {
               if (raw.vidrilhos !== undefined && raw.vidrilhos !== null) {
                 return Number(raw.vidrilhos);
               }
-              return 25;
+              return 0;
             })(),
             atributos: (() => {
               const parsed = typeof raw.atributos === 'string' ? JSON.parse(raw.atributos || '{}') : (raw.atributos || {});
@@ -2101,7 +2101,7 @@ const MesaApp = {
 
     const vidEl = document.getElementById('ficha-vidrilhos-val');
     const vidInvEl = document.getElementById('ficha-inv-vidrilhos-val');
-    const vidVal = player.vidrilhos != null ? player.vidrilhos : 25;
+    const vidVal = player.vidrilhos != null ? player.vidrilhos : 0;
     if (vidEl) vidEl.textContent = `${vidVal}`;
     if (vidInvEl) vidInvEl.textContent = `${vidVal}`;
 
@@ -2444,7 +2444,7 @@ const MesaApp = {
 
           <div class="vital-stat-block vital-stat-vidrilhos">
             <span class="vital-stat-tag vidrilhos-tag"><img src="assets/vidrilhos.png" class="vidrilhos-icon" alt="" /> VIDRILHOS</span>
-            <span id="ficha-vidrilhos-val" class="vital-stat-val">${player.vidrilhos != null ? player.vidrilhos : 25}</span>
+            <span id="ficha-vidrilhos-val" class="vital-stat-val">${player.vidrilhos != null ? player.vidrilhos : 0}</span>
             ${isMaster ? `
               <button class="stat-edit-btn" onclick="MesaApp.updateVidrilhos(${player.slot}, -1)" title="Diminuir Vidrilhos">-</button>
               <button class="stat-edit-btn" onclick="MesaApp.updateVidrilhos(${player.slot}, +1)" title="Aumentar Vidrilhos">+</button>
@@ -2522,7 +2522,7 @@ const MesaApp = {
           <div class="ink-ribbon-title ficha-coletaveis-title" style="background: #d97706; display: flex; align-items: center; justify-content: space-between; transform: none !important; clip-path: none !important; width: 100%; box-sizing: border-box; border-radius: 0;">
             <div style="display: flex; align-items: center; gap: 8px;">
               <span>ITENS E COLETÁVEIS EM POSSE</span>
-              <span class="ficha-inventory-vidrilhos-pill" title="Saldo de Vidrilhos"><img src="assets/vidrilhos.png" class="vidrilhos-icon" alt="" /> <strong id="ficha-inv-vidrilhos-val">${player.vidrilhos != null ? player.vidrilhos : 25}</strong> Vidrilhos</span>
+              <span class="ficha-inventory-vidrilhos-pill" title="Saldo de Vidrilhos"><img src="assets/vidrilhos.png" class="vidrilhos-icon" alt="" /> <strong id="ficha-inv-vidrilhos-val">${player.vidrilhos != null ? player.vidrilhos : 0}</strong> Vidrilhos</span>
             </div>
             ${isMaster ? `
               <div style="display: flex; align-items: center; gap: 6px;">
@@ -7389,7 +7389,7 @@ const IGRIS_DEFAULT_ITEMS = [
     efeito: 'Ao ser consumida, tem um sabor estranhamente metálico e doce. Cura 1d4 de vida e remove instantaneamente condições de estado negativas ativas.',
     descricao: 'Uma estranha fruta pequena de casca folhada, semelhante a um repolho, mas em um formato esférico absolutamente perfeito e simétrico.',
     preco: '1 Unidade',
-    precoVidrilhos: 5,
+    precoVidrilhos: 2,
     quantidade: 1,
     isDefault: true,
     categoria: 'padrao'
@@ -7403,7 +7403,7 @@ const IGRIS_DEFAULT_ITEMS = [
     efeito: 'Ao ser consumida, tem um sabor denso e relaxante. Restaura 4 pontos na barra de stresse do consumidor.',
     descricao: 'Uma estranha fruta pequena de casca folhada e tom arroxeado escuro, semelhante a um repolho, mas num formato esférico absolutamente perfeito e simétrico.',
     preco: '1 Unidade',
-    precoVidrilhos: 6,
+    precoVidrilhos: 3,
     quantidade: 1,
     isDefault: true,
     categoria: 'padrao'
@@ -7417,7 +7417,7 @@ const IGRIS_DEFAULT_ITEMS = [
     efeito: 'Ao ser consumida, o seu sumo é efervescente e revigorante. Concede 1d2 PE (Pontos de Esforço) de imediato a quem a consumir.',
     descricao: 'Uma estranha fruta pequena de casca folhada e tom amarelo vibrante, semelhante a um repolho, mas num formato esférico absolutamente perfeito e simétrico.',
     preco: '1 Unidade',
-    precoVidrilhos: 6,
+    precoVidrilhos: 3,
     quantidade: 1,
     isDefault: true,
     categoria: 'padrao'
@@ -7433,7 +7433,7 @@ const IGRIS_DEFAULT_ITEMS = [
     efeito: 'Produz uma pequena chama azulada que ilumina um raio curto ao redor do utilizador. A chama não emite calor e é impossível de ser apagada por causas naturais (como vento forte ou chuva). Só se apaga quando fechado.',
     descricao: 'Um isqueiro de metal pesado e fosco, constantemente gelado ao toque, com inscrições desgastadas numa língua desconhecida na lateral.',
     preco: '1 Unidade',
-    precoVidrilhos: 12,
+    precoVidrilhos: 7,
     quantidade: 1,
     isDefault: false,
     categoria: 'transitorio'
@@ -7447,7 +7447,7 @@ const IGRIS_DEFAULT_ITEMS = [
     efeito: 'Passivo. Se o utilizador sofrer um ataque ou dano que reduza a sua Vida a 0 (ou que o deixasse inconsciente/a morrer), o pingente estilhaça-se imediatamente, absorvendo o golpe fatal e deixando o utilizador com 1 ponto de Vida.',
     descricao: 'Um pequeno pedaço de osso envelhecido, esculpido na forma de um olho fechado e pendurado num cordão de cabedal escuro.',
     preco: '1 Unidade',
-    precoVidrilhos: 20,
+    precoVidrilhos: 10,
     quantidade: 1,
     isDefault: false,
     categoria: 'transitorio'
@@ -7461,7 +7461,7 @@ const IGRIS_DEFAULT_ITEMS = [
     efeito: 'Permite desenhar ou escrever em qualquer superfície física. As marcações feitas com este giz são completamente invisíveis sob qualquer tipo de luz (natural ou artificial), mas brilham intensamente num tom esverdeado na escuridão absoluta. Contém giz suficiente para 5 marcações grandes.',
     descricao: 'Um pequeno cilindro irregular de giz calcário que emite um odor muito fraco a terra húmida e a ozono.',
     preco: '1 Unidade',
-    precoVidrilhos: 8,
+    precoVidrilhos: 4,
     quantidade: 1,
     isDefault: false,
     categoria: 'transitorio'
@@ -7475,7 +7475,7 @@ const IGRIS_DEFAULT_ITEMS = [
     efeito: 'Ao ser consumido, acalma os nervos e foca a mente, concedendo um estado de clareza temporário. Você recebe Vantagem em seu próximo teste de resistência de sanidade OU reduz pela metade o próximo dano recebido na barra de estresse. O efeito é consumido e se encerra assim que um desses dois benefícios for ativado (o que ocorrer primeiro). Para obter a proteção novamente, é necessário consumir uma nova dose.',
     descricao: 'Um pequeno cantil de metal amolgado. O líquido no seu interior mantém-se perpetuamente morno e exala um aroma forte de especiarias exóticas.',
     preco: '1 Unidade',
-    precoVidrilhos: 10,
+    precoVidrilhos: 5,
     quantidade: 1,
     isDefault: false,
     categoria: 'transitorio'
@@ -7502,7 +7502,7 @@ const MesaIgrisShop = {
     const slot = MesaApp.state.myPlayerSlot;
     if (slot) {
       const player = MesaApp.state.players && MesaApp.state.players[slot - 1];
-      const vidrilhos = (player && player.vidrilhos != null) ? player.vidrilhos : 25;
+      const vidrilhos = (player && player.vidrilhos != null) ? player.vidrilhos : 0;
       return {
         id: `slot_${slot}`,
         slot: slot,
@@ -7694,7 +7694,7 @@ const MesaIgrisShop = {
     const avatarHtml = user.image 
       ? `<img src="${user.image}" class="igris-user-chip-avatar" alt="${user.name}" onerror="this.outerHTML='<div class=\\\'igris-user-chip-avatar\\\'>${user.name.charAt(0).toUpperCase()}</div>'" />`
       : `<div class="igris-user-chip-avatar">${user.name.charAt(0).toUpperCase()}</div>`;
-    const playerBalance = user.vidrilhos != null ? user.vidrilhos : 25;
+    const playerBalance = user.vidrilhos != null ? user.vidrilhos : 0;
     chip.innerHTML = `
       ${avatarHtml}
       <span>${user.name}</span>
@@ -7878,7 +7878,7 @@ const MesaIgrisShop = {
         }
       });
 
-      const playerBalance = user.vidrilhos != null ? user.vidrilhos : 25;
+      const playerBalance = user.vidrilhos != null ? user.vidrilhos : 0;
       if (currentCommitment + itemCost > playerBalance) {
         alert(`Saldo insuficiente de Vidrilhos! Você possui ${playerBalance} Vidrilhos, mas esta seleção exigiria ${currentCommitment + itemCost} Vidrilhos no total.`);
         return;
@@ -8226,7 +8226,7 @@ const MesaIgrisShop = {
     Object.entries(playerTotals).forEach(([slotStr, totalCost]) => {
       const slotNum = parseInt(slotStr, 10);
       const player = window.MesaApp && MesaApp.state.players[slotNum - 1];
-      const balance = (player && player.vidrilhos != null) ? player.vidrilhos : 25;
+      const balance = (player && player.vidrilhos != null) ? player.vidrilhos : 0;
       if (balance < totalCost) {
         insufficientFunds.push(`${player ? player.nome : `Slot ${slotNum}`}: possui ${balance} Vidrilhos, mas o custo total é ${totalCost}`);
       }
