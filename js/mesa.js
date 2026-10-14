@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.0.3';
+const MESA_VERSION = 'v2.0.4';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -7184,6 +7184,7 @@ window.MesaNotebookSara = MesaNotebookSara;
 // A TENDA DO IGRIS (INTERFACE DE MERCADOR - SALAO DE RELIQUIAS E TROCAS)
 // ==========================================================================
 const IGRIS_DEFAULT_ITEMS = [
+  // --- ITENS PADROES: AS FRUTAS ESTRANHAS (ESTOQUE PERMANENTE) ---
   {
     id: 'igris_fruta_verde',
     nome: 'FRUTA VERDE ESTRANHA',
@@ -7194,7 +7195,8 @@ const IGRIS_DEFAULT_ITEMS = [
     descricao: 'Uma estranha fruta pequena de casca folhada, semelhante a um repolho, mas em um formato esférico absolutamente perfeito e simétrico.',
     preco: '1 Unidade',
     quantidade: 1,
-    isDefault: true
+    isDefault: true,
+    categoria: 'padrao'
   },
   {
     id: 'igris_fruta_roxa',
@@ -7206,7 +7208,8 @@ const IGRIS_DEFAULT_ITEMS = [
     descricao: 'Uma estranha fruta pequena de casca folhada e tom arroxeado escuro, semelhante a um repolho, mas num formato esférico absolutamente perfeito e simétrico.',
     preco: '1 Unidade',
     quantidade: 1,
-    isDefault: true
+    isDefault: true,
+    categoria: 'padrao'
   },
   {
     id: 'igris_fruta_amarela',
@@ -7218,8 +7221,11 @@ const IGRIS_DEFAULT_ITEMS = [
     descricao: 'Uma estranha fruta pequena de casca folhada e tom amarelo vibrante, semelhante a um repolho, mas num formato esférico absolutamente perfeito e simétrico.',
     preco: '1 Unidade',
     quantidade: 1,
-    isDefault: true
+    isDefault: true,
+    categoria: 'padrao'
   },
+
+  // --- ITENS TRANSITORIOS: ARTEFATOS DA CAMPANHA ---
   {
     id: 'igris_isqueiro_prata_fria',
     nome: 'ISQUEIRO DE PRATA FRIA',
@@ -7230,7 +7236,8 @@ const IGRIS_DEFAULT_ITEMS = [
     descricao: 'Um isqueiro de metal pesado e fosco, constantemente gelado ao toque, com inscrições desgastadas numa língua desconhecida na lateral.',
     preco: '1 Unidade',
     quantidade: 1,
-    isDefault: true
+    isDefault: false,
+    categoria: 'transitorio'
   },
   {
     id: 'igris_pingente_osso_polido',
@@ -7242,7 +7249,8 @@ const IGRIS_DEFAULT_ITEMS = [
     descricao: 'Um pequeno pedaço de osso envelhecido, esculpido na forma de um olho fechado e pendurado num cordão de cabedal escuro.',
     preco: '1 Unidade',
     quantidade: 1,
-    isDefault: true
+    isDefault: false,
+    categoria: 'transitorio'
   },
   {
     id: 'igris_giz_andarilho',
@@ -7254,7 +7262,8 @@ const IGRIS_DEFAULT_ITEMS = [
     descricao: 'Um pequeno cilindro irregular de giz calcário que emite um odor muito fraco a terra húmida e a ozono.',
     preco: '1 Unidade',
     quantidade: 1,
-    isDefault: true
+    isDefault: false,
+    categoria: 'transitorio'
   },
   {
     id: 'igris_cantil_cha_dourado',
@@ -7266,7 +7275,8 @@ const IGRIS_DEFAULT_ITEMS = [
     descricao: 'Um pequeno cantil de metal amolgado. O líquido no seu interior mantém-se perpetuamente morno e exala um aroma forte de especiarias exóticas.',
     preco: '1 Unidade',
     quantidade: 1,
-    isDefault: true
+    isDefault: false,
+    categoria: 'transitorio'
   }
 ];
 
@@ -7483,7 +7493,11 @@ const MesaIgrisShop = {
     const user = this.getCurrentUserIdentity();
     const myId = user ? user.id : null;
 
-    grid.innerHTML = this.items.map(item => {
+    // Separa os itens transitorios dos itens padroes (as frutas)
+    const defaultItems = this.items.filter(it => it.isDefault === true || (it.categoria === 'padrao') || String(it.id).includes('fruta'));
+    const transitorioItems = this.items.filter(it => !it.isDefault && it.categoria !== 'padrao' && !String(it.id).includes('fruta'));
+
+    const renderCard = (item) => {
       const interestedList = this.interests[item.id] || [];
       const hasMyInterest = myId && interestedList.includes(myId);
       const avatarsHtml = this.renderInterestAvatars(item.id);
@@ -7499,7 +7513,7 @@ const MesaIgrisShop = {
               <span class="igris-card-type-tag">${item.tipo || 'Consumível [ Peso 1 ]'}</span>
             </div>
             <div class="igris-card-content">
-              <!-- Titulo estritamente limpo e sem qualquer distorcao -->
+              <!-- Titulo limpo e sem distorcao -->
               <h4 class="igris-card-title">${item.nome || 'Item Desconhecido'}</h4>
               ${item.efeito ? `
                 <div class="igris-card-effect">
@@ -7508,7 +7522,7 @@ const MesaIgrisShop = {
               ` : ''}
               <p class="igris-card-desc">${item.descricao || 'Nenhuma informação decifrada sobre esta relíquia.'}</p>
               <div class="igris-card-footer">
-                <span class="igris-card-price">${item.preco || '1 Unidade'}</span>
+                <span class="igris-card-price">${item.preco || (item.quantidade ? `${item.quantidade} Unidade` : '1 Unidade')}</span>
               </div>
             </div>
           </div>
@@ -7519,12 +7533,41 @@ const MesaIgrisShop = {
           </div>
         </div>
       `;
-    }).join('');
+    };
+
+    grid.innerHTML = `
+      <!-- SECAO 1: ITENS TRANSITORIOS -->
+      <div class="igris-category-block">
+        <div class="igris-category-header">
+          <div class="igris-category-badge">[ ARTEFATOS TRANSITÓRIOS ]</div>
+          <div class="igris-category-line"></div>
+          <span class="igris-category-count">${transitorioItems.length} disponível(is)</span>
+        </div>
+        ${transitorioItems.length > 0 ? `
+          <div class="igris-cards-subgrid">
+            ${transitorioItems.map(renderCard).join('')}
+          </div>
+        ` : `
+          <div class="igris-category-empty">Nenhum artefato transitório disponível nesta visita.</div>
+        `}
+      </div>
+
+      <!-- SECAO 2: ITENS PADROES (AS FRUTAS ESTRANHAS) -->
+      <div class="igris-category-block">
+        <div class="igris-category-header">
+          <div class="igris-category-badge">[ ITENS PADRÕES — ESTOQUE PERMANENTE ]</div>
+          <div class="igris-category-line"></div>
+          <span class="igris-category-count">${defaultItems.length} permanente(s)</span>
+        </div>
+        <div class="igris-cards-subgrid">
+          ${defaultItems.map(renderCard).join('')}
+        </div>
+      </div>
+    `;
 
     this.updateMasterControls();
   },
 
-  // Gera o HTML dos avatares de personagens interessados em determinado cartao
   renderInterestAvatars(itemId) {
     const list = this.interests[itemId] || [];
     if (!list || list.length === 0) return '';

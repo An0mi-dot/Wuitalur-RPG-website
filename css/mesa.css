@@ -11481,9 +11481,12 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
 .igris-showcase-col {
   flex: 1;
   min-width: 380px;
+  height: 100%;
+  max-height: calc(100vh - 40px);
+  max-height: calc(100dvh - 40px);
   display: flex;
   flex-direction: column;
-  background: rgba(8, 8, 10, 0.94);
+  background: rgba(8, 8, 10, 0.95);
   border: 1.5px solid rgba(249, 115, 22, 0.45);
   clip-path: polygon(
     0 0, 
@@ -11500,10 +11503,11 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
     3px 29%, 
     0 26%
   );
-  padding: 20px 24px 24px;
+  padding: 20px 22px 20px;
   box-sizing: border-box;
   position: relative;
   margin-bottom: 52px;
+  overflow: hidden;
   background-image: 
     repeating-linear-gradient(
       118deg,
@@ -11608,13 +11612,14 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
 }
 
 .igris-showcase-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 16px;
   overflow-y: auto;
+  overflow-x: hidden;
   flex: 1;
-  min-height: 200px;
-  padding-right: 4px;
+  min-height: 0;
+  padding-right: 6px;
 }
 
 /* Card de Item na Vitrina Clandestina: Bordas Cortadas com Razor Notches e Acentos Laranjas */
@@ -11638,7 +11643,8 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  height: auto;
+  min-height: fit-content;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.8);
 }
 
@@ -12114,4 +12120,84 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
 .igris-card-effect strong {
   color: #fbbf24;
   letter-spacing: 0.04em;
+}
+
+
+/* Categorias de Itens na Vitrina (Separacao entre Transitorios e Padroes) */
+.igris-category-block {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.igris-category-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 6px 0 12px;
+  width: 100%;
+}
+
+.igris-category-badge {
+  font-family: var(--font-title, 'Cinzel', serif);
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #f97316;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.igris-category-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, rgba(249, 115, 22, 0.45), rgba(249, 115, 22, 0.05));
+}
+
+.igris-category-count {
+  font-family: monospace;
+  font-size: 0.68rem;
+  color: #cbd5e1;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  padding: 2px 7px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.igris-category-empty {
+  font-size: 0.78rem;
+  color: #71717a;
+  font-style: italic;
+  padding: 14px 18px;
+  border: 1px dashed rgba(249, 115, 22, 0.2);
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.igris-cards-subgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  width: 100%;
+}
+
+/* Scrollbar Tematica da Vitrina */
+.igris-showcase-grid::-webkit-scrollbar {
+  width: 6px;
+}
+
+.igris-showcase-grid::-webkit-scrollbar-track {
+  background: rgba(8, 8, 10, 0.8);
+  border-radius: 3px;
+}
+
+.igris-showcase-grid::-webkit-scrollbar-thumb {
+  background: rgba(249, 115, 22, 0.45);
+  border-radius: 3px;
+}
+
+.igris-showcase-grid::-webkit-scrollbar-thumb:hover {
+  background: rgba(249, 115, 22, 0.75);
 }
