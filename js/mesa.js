@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.1.4';
+const MESA_VERSION = 'v2.1.5';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -4796,6 +4796,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
       if (window.MesaAreaManager) {
         MesaAreaManager.closeNpcDrawer();
+      }
+      if (window.MesaDispositivos && MesaDispositivos.isOpen) {
+        MesaDispositivos.closeDrawer();
       }
       if (window.MesaQuickMenu) {
         MesaQuickMenu.close();
