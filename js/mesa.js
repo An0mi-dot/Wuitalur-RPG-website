@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.1.1';
+const MESA_VERSION = 'v2.1.2';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -7563,6 +7563,117 @@ const MesaIgrisShop = {
     };
   },
 
+  // Audio procedural de voz sintetizada sinistra estilo Undertale / Deltarune
+  playVoiceBlip() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      if (!this.audioCtx) {
+        this.audioCtx = new AudioCtx();
+      }
+      if (this.audioCtx.state === 'suspended') {
+        this.audioCtx.resume();
+      }
+      const t = this.audioCtx.currentTime;
+      const osc = this.audioCtx.createOscillator();
+      const gain = this.audioCtx.createGain();
+
+      // Frequencia baixa e profunda, com leve modulacao aleatoria criando a textura vocal
+      const freq = 100 + (Math.random() * 18 - 9);
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, t);
+      osc.frequency.exponentialRampToValueAtTime(freq * 0.72, t + 0.045);
+
+      gain.gain.setValueAtTime(0.001, t);
+      gain.gain.linearRampToValueAtTime(0.18, t + 0.004);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.048);
+
+      osc.connect(gain);
+      gain.connect(this.audioCtx.destination);
+
+      osc.start(t);
+      osc.stop(t + 0.052);
+    } catch (err) {}
+  },
+
+  // Exibe a fala de recusa de Igris letra por letra com som procedural e tremedeira individual
+  speakRefusal() {
+    const box = document.getElementById('igris-dialogue-box');
+    const textEl = document.getElementById('igris-dialogue-text');
+    if (!box || !textEl) return;
+
+    if (this.speechTimer) {
+      clearTimeout(this.speechTimer);
+      this.speechTimer = null;
+    }
+    if (this.speechFadeTimer) {
+      clearTimeout(this.speechFadeTimer);
+      this.speechFadeTimer = null;
+    }
+
+    const phrases = [
+      'VOCE NAO TEM O SUFICIENTE...',
+      'SEM VIDRILHOS...',
+      'VOLTE UMA OUTRA VEZ...',
+      'FALTA LHE VIDRILHOS...'
+    ];
+
+    let phrase = phrases[Math.floor(Math.random() * phrases.length)];
+    if (this.lastSpeechPhrase && phrases.length > 1) {
+      const filtered = phrases.filter(p => p !== this.lastSpeechPhrase);
+      phrase = filtered[Math.floor(Math.random() * filtered.length)];
+    }
+    this.lastSpeechPhrase = phrase;
+
+    textEl.innerHTML = '';
+    box.classList.remove('active', 'fading-out');
+    void box.offsetWidth;
+    box.classList.add('active');
+
+    let charIndex = 0;
+    const typeNextChar = () => {
+      if (!this.isOpen) return;
+
+      if (charIndex >= phrase.length) {
+        this.speechFadeTimer = setTimeout(() => {
+          box.classList.add('fading-out');
+          setTimeout(() => {
+            box.classList.remove('active', 'fading-out');
+            textEl.innerHTML = '';
+          }, 500);
+        }, 3800);
+        return;
+      }
+
+      const char = phrase.charAt(charIndex);
+      charIndex++;
+
+      if (char === ' ') {
+        const spaceSpan = document.createElement('span');
+        spaceSpan.innerHTML = '&nbsp;';
+        spaceSpan.className = 'igris-dialogue-space';
+        textEl.appendChild(spaceSpan);
+        this.speechTimer = setTimeout(typeNextChar, 50);
+      } else {
+        const charSpan = document.createElement('span');
+        charSpan.className = 'igris-shaky-char';
+        charSpan.textContent = char;
+        const delay = -(Math.random() * 0.3).toFixed(3);
+        const dur = (0.09 + Math.random() * 0.06).toFixed(3);
+        charSpan.style.setProperty('--jitter-delay', delay + 's');
+        charSpan.style.setProperty('--jitter-dur', dur + 's');
+        textEl.appendChild(charSpan);
+
+        this.playVoiceBlip();
+
+        const delayMs = (char === '.') ? 90 : 55;
+        this.speechTimer = setTimeout(typeNextChar, delayMs);
+      }
+    };
+
+    typeNextChar();
+  },
+
   // Abre a interface localmente com animacao suave de fade-in
   open() {
     this.isOpen = true;
@@ -7587,6 +7698,18 @@ const MesaIgrisShop = {
       if (overlay) {
         overlay.classList.remove('active', 'igris-closing');
       }
+      if (this.speechTimer) {
+        clearTimeout(this.speechTimer);
+        this.speechTimer = null;
+      }
+      if (this.speechFadeTimer) {
+        clearTimeout(this.speechFadeTimer);
+        this.speechFadeTimer = null;
+      }
+      const dBox = document.getElementById('igris-dialogue-box');
+      if (dBox) dBox.classList.remove('active', 'fading-out');
+      const dText = document.getElementById('igris-dialogue-text');
+      if (dText) dText.innerHTML = '';
     };
 
     if (overlay && overlay.classList.contains('active')) {
@@ -7880,7 +8003,7 @@ const MesaIgrisShop = {
 
       const playerBalance = user.vidrilhos != null ? user.vidrilhos : 0;
       if (currentCommitment + itemCost > playerBalance) {
-        alert(`Saldo insuficiente de Vidrilhos! Você possui ${playerBalance} Vidrilhos, mas esta seleção exigiria ${currentCommitment + itemCost} Vidrilhos no total.`);
+        this.speakRefusal();
         return;
       }
 

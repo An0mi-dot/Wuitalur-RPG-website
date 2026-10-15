@@ -1,3 +1,20 @@
+
+@font-face {
+  font-family: 'Who asks Satan';
+  src: url('../assets/fonts/WhoAsksSatan.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'WhoAsksSatan';
+  src: url('../assets/fonts/WhoAsksSatan.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ============================================================
    MESA VIRTUAL — WUITALUR RPG (Estilo Tinta Nanquim & Investigação)
    Bordas falhadas, fita adesiva/tags angulares, vidro orgânico
@@ -12322,5 +12339,77 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   color: #94a3b8;
   letter-spacing: 0.03em;
   text-transform: uppercase;
+}
+
+/* ==========================================================================
+   TENDA DO IGRIS: DIÁLOGO SINISTRO E TREMEDEIRA (ESTILO UNDERTALE / DELTARUNE)
+   ========================================================================== */
+.igris-dialogue-box {
+  position: absolute;
+  bottom: 110px;
+  left: 60px;
+  max-width: 440px;
+  pointer-events: none;
+  z-index: 15;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  user-select: none;
+}
+
+.igris-dialogue-box.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.igris-dialogue-box.fading-out {
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.igris-dialogue-text {
+  font-family: 'Who asks Satan', 'WhoAsksSatan', var(--font-heading), monospace, sans-serif;
+  font-size: 1.65rem;
+  letter-spacing: 0.10em;
+  color: #f1f5f9;
+  text-shadow: 
+    0 0 10px rgba(245, 158, 11, 0.6),
+    0 0 20px rgba(0, 0, 0, 0.95),
+    2px 2px 4px #000;
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+@keyframes igrisLetterTremble {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-1.2px, 1.2px); }
+  50% { transform: translate(1.4px, -1px); }
+  75% { transform: translate(-1px, -1.4px); }
+  100% { transform: translate(1.2px, 1px); }
+}
+
+.igris-shaky-char {
+  display: inline-block;
+  animation: igrisLetterTremble var(--jitter-dur, 0.1s) infinite alternate ease-in-out;
+  animation-delay: var(--jitter-delay, 0s);
+  will-change: transform;
+}
+
+.igris-dialogue-space {
+  display: inline-block;
+  width: 0.5em;
+}
+
+@media (max-width: 992px) {
+  .igris-dialogue-box {
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    max-width: 90%;
+  }
+  .igris-dialogue-text {
+    font-size: 1.3rem;
+  }
 }
 
