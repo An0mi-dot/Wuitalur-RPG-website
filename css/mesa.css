@@ -7896,7 +7896,7 @@ body:has(#abertura-overlay.active) .reaction-picker-popover {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
-  z-index: 1040;
+  z-index: 2100;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
@@ -7914,7 +7914,7 @@ body.dispositivos-drawer-open .dispositivos-drawer-backdrop {
   width: 440px;
   max-width: 100vw;
   height: 100vh;
-  z-index: 1050;
+  z-index: 2200;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -7929,6 +7929,17 @@ body.dispositivos-drawer-open .dispositivos-drawer-backdrop {
 
 body.dispositivos-drawer-open .dispositivos-drawer {
   right: 0 !important;
+}
+
+/* Evita que botoes de navegacao fiquem por cima ou capturem cliques */
+body.dispositivos-drawer-open .mesa-floating-nav {
+  pointer-events: none;
+}
+
+/* Preserva a escala e proporcao da mesa sem compressao indesejada */
+body.dispositivos-drawer-open .mesa-board-container,
+.mesa-body.dispositivos-drawer-open .mesa-board-container {
+  transform: translate(-50%, -50%) !important;
 }
 
 .dispositivos-drawer-header {
