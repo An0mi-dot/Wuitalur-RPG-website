@@ -5843,6 +5843,143 @@ body.mesa-body.area-refugio-gustavo {
   border-color: var(--ink-amber);
 }
 
+/* Botao Mapa [Owlbear] na barra superior */
+.ink-tag.nav-owlbear {
+  border-color: #38bdf8;
+  color: #38bdf8;
+  background: rgba(8, 28, 44, 0.85);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ink-tag.nav-owlbear:hover {
+  background: #0284c7;
+  color: #fff;
+  border-color: #38bdf8;
+}
+
+/* Botao Mapa [Owlbear] central no Quadrado Preto */
+.board-owlbear-btn {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(10, 18, 28, 0.92);
+  border: 1.5px solid rgba(56, 189, 248, 0.55);
+  color: #7dd3fc;
+  padding: 6px 16px;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  z-index: 6;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.8), 0 0 10px rgba(56, 189, 248, 0.2);
+}
+
+.board-owlbear-btn:hover {
+  background: #0284c7;
+  color: #ffffff;
+  border-color: #38bdf8;
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.9), 0 0 20px rgba(56, 189, 248, 0.6);
+}
+
+.board-owlbear-btn .ink-icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* Toast de Notificação de Convite do Owlbear */
+.owlbear-invite-toast {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 999999;
+  background: #0d121c;
+  border: 2px solid #38bdf8;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.85), 0 0 25px rgba(56, 189, 248, 0.35);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  animation: owlbearToastIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes owlbearToastIn {
+  0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.owlbear-toast-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  flex-shrink: 0;
+}
+
+.owlbear-toast-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.owlbear-toast-title {
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 0.86rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #38bdf8;
+}
+
+.owlbear-toast-desc {
+  font-size: 0.76rem;
+  color: #cbd5e1;
+}
+
+.owlbear-toast-btn {
+  background: #0284c7;
+  color: #fff;
+  border: 1px solid #38bdf8;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.owlbear-toast-btn:hover {
+  background: #38bdf8;
+  color: #031320;
+}
+
+.owlbear-toast-close {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.owlbear-toast-close:hover {
+  color: #fff;
+}
+
 /* --------------------------------------------------------------------------
    3. MENU DE FERRAMENTAS (DROPDOWN)
    -------------------------------------------------------------------------- */

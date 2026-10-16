@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.1.5';
+const MESA_VERSION = 'v2.1.6';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -2000,6 +2000,20 @@ const MesaApp = {
       if (isFromSelf(payload)) return;
       if (window.MesaMediaPlayer && (!MesaApp.state || !MesaApp.state.isMaster)) {
         MesaMediaPlayer.handleIncomingSync(payload.payload);
+      }
+    });
+
+    channel.on('broadcast', { event: 'owlbear_url_sync' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaOwlbear && payload.payload) {
+        MesaOwlbear.handleIncomingSync(payload.payload);
+      }
+    });
+
+    channel.on('broadcast', { event: 'owlbear_broadcast_open' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaOwlbear && payload.payload) {
+        MesaOwlbear.handleIncomingBroadcastOpen(payload.payload);
       }
     });
 
@@ -4805,6 +4819,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
   });
+
+  if (window.MesaOwlbear) {
+    MesaOwlbear.init();
+  }
 });
 
 
@@ -6714,6 +6732,177 @@ const MesaDispositivos = {
   }
 };
 window.MesaDispositivos = MesaDispositivos;
+ 
+// ==========================================================================
+// MESA TABULEIRO TÁTICO: MAPA [OWLBEAR] (POPUP DEDICADO E SINCRONIZADO)
+// ==========================================================================
+const MesaOwlbear = {
+  urlKey: 'wu_owlbear_room_url',
+  url: '',
+  windowRef: null,
+
+  init() {
+    this.url = localStorage.getItem(this.urlKey) || '';
+    const input = document.getElementById('disp-owlbear-url');
+    if (input && this.url) {
+      input.value = this.url;
+    }
+    this.updateStatusBadge();
+  },
+
+  updateStatusBadge() {
+    const badge = document.getElementById('owlbear-status-badge');
+    if (!badge) return;
+    if (this.url && this.url.trim().length > 0) {
+      badge.textContent = 'Configurado';
+      badge.style.color = '#38bdf8';
+      badge.style.borderColor = '#38bdf8';
+    } else {
+      badge.textContent = 'Pendente';
+      badge.style.color = '#94a3b8';
+      badge.style.borderColor = '#64748b';
+    }
+  },
+
+  setUrl(newUrl, broadcast = true) {
+    if (!newUrl) return;
+    this.url = newUrl.trim();
+    localStorage.setItem(this.urlKey, this.url);
+    const input = document.getElementById('disp-owlbear-url');
+    if (input && input.value !== this.url) {
+      input.value = this.url;
+    }
+    this.updateStatusBadge();
+
+    if (broadcast && window.MesaApp && MesaApp.supabaseChannel && MesaApp.state && MesaApp.state.isMaster) {
+      MesaApp.supabaseChannel.send({
+        type: 'broadcast',
+        event: 'owlbear_url_sync',
+        payload: {
+          clientId: MesaApp.clientId,
+          url: this.url
+        }
+      });
+    }
+  },
+
+  open(customUrl) {
+    let targetUrl = customUrl || this.url;
+    if (!targetUrl || targetUrl.trim().length === 0) {
+      if (window.MesaApp && MesaApp.state && MesaApp.state.isMaster) {
+        const entered = prompt('Insira o link da sala do Owlbear Rodeo para a sessão:', 'https://www.owlbear.rodeo/room/');
+        if (entered && entered.trim().length > 0) {
+          this.setUrl(entered);
+          targetUrl = this.url;
+        } else {
+          return;
+        }
+      } else {
+        alert('O Mestre ainda não configurou o link do Mapa [Owlbear] para esta sessão.');
+        return;
+      }
+    }
+
+    const screenW = window.screen.availWidth || 1280;
+    const screenH = window.screen.availHeight || 720;
+    const width = Math.min(1180, Math.floor(screenW * 0.72));
+    const height = Math.min(760, Math.floor(screenH * 0.8));
+    const left = Math.floor((screenW - width) / 2);
+    const top = Math.floor((screenH - height) / 2);
+
+    const windowFeatures = `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes`;
+
+    try {
+      if (this.windowRef && !this.windowRef.closed) {
+        this.windowRef.focus();
+      } else {
+        this.windowRef = window.open(targetUrl, 'wu_owlbear_map_window', windowFeatures);
+      }
+    } catch (err) {
+      console.warn('[OWLBEAR] Falha ao abrir popup:', err);
+      window.open(targetUrl, '_blank');
+    }
+  },
+
+  broadcastOpen() {
+    this.open();
+    if (window.MesaApp && MesaApp.supabaseChannel && MesaApp.state && MesaApp.state.isMaster) {
+      MesaApp.supabaseChannel.send({
+        type: 'broadcast',
+        event: 'owlbear_broadcast_open',
+        payload: {
+          clientId: MesaApp.clientId,
+          url: this.url
+        }
+      });
+    }
+  },
+
+  handleIncomingSync(payload) {
+    if (!payload || !payload.url) return;
+    this.url = payload.url;
+    localStorage.setItem(this.urlKey, this.url);
+    const input = document.getElementById('disp-owlbear-url');
+    if (input) input.value = this.url;
+    this.updateStatusBadge();
+  },
+
+  handleIncomingBroadcastOpen(payload) {
+    if (payload && payload.url) {
+      this.handleIncomingSync(payload);
+    }
+    const screenW = window.screen.availWidth || 1280;
+    const screenH = window.screen.availHeight || 720;
+    const width = Math.min(1180, Math.floor(screenW * 0.72));
+    const height = Math.min(760, Math.floor(screenH * 0.8));
+    const left = Math.floor((screenW - width) / 2);
+    const top = Math.floor((screenH - height) / 2);
+    const windowFeatures = `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes`;
+
+    try {
+      const win = window.open(this.url, 'wu_owlbear_map_window', windowFeatures);
+      if (!win || win.closed || typeof win.closed === 'undefined') {
+        this.showPromptToast();
+      } else {
+        this.windowRef = win;
+      }
+    } catch (e) {
+      this.showPromptToast();
+    }
+  },
+
+  showPromptToast() {
+    const old = document.getElementById('owlbear-invite-toast');
+    if (old) old.remove();
+
+    const toast = document.createElement('div');
+    toast.id = 'owlbear-invite-toast';
+    toast.className = 'owlbear-invite-toast';
+    toast.innerHTML = `
+      <div class="owlbear-toast-icon">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#38bdf8" stroke-width="2">
+          <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+          <line x1="8" y1="2" x2="8" y2="18"></line>
+          <line x1="16" y1="6" x2="16" y2="22"></line>
+        </svg>
+      </div>
+      <div class="owlbear-toast-body">
+        <div class="owlbear-toast-title">MAPA [OWLBEAR]</div>
+        <div class="owlbear-toast-desc">O Mestre abriu o tabuleiro tático da cena.</div>
+      </div>
+      <button type="button" class="owlbear-toast-btn" onclick="MesaOwlbear.open(); const el = document.getElementById('owlbear-invite-toast'); if(el) el.remove();">
+        Abrir Tabuleiro
+      </button>
+      <button type="button" class="owlbear-toast-close" onclick="const el = document.getElementById('owlbear-invite-toast'); if(el) el.remove();">&times;</button>
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      const el = document.getElementById('owlbear-invite-toast');
+      if (el) el.remove();
+    }, 15000);
+  }
+};
+window.MesaOwlbear = MesaOwlbear;
 
 
 // ==========================================================================
