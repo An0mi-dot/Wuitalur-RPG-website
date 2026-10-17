@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.1.9';
+const MESA_VERSION = 'v2.2.0';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -4498,6 +4498,11 @@ const MesaAreaManager = {
       return;
     }
 
+    if (window.MesaApp && typeof MesaApp.closeModal === 'function') {
+      MesaApp.closeModal('area-map-modal');
+      MesaApp.closeModal('area-info-modal');
+    }
+
     const npcsList = this.getAllNpcs();
     if (npcsList.length === 0) return;
 
@@ -6041,7 +6046,6 @@ window.MesaColetaveis = MesaColetaveis;
 window.MesaRoteiro = MesaRoteiro;
 window.MesaReactions = MesaReactions;
 window.MesaDice = MesaDice;
-window.MesaCenterArtwork = MesaCenterArtwork;
 
 
 
@@ -7086,6 +7090,14 @@ const MesaCenterArtwork = {
     }
   },
 
+  normalizeNpcId(npcId) {
+    if (!npcId || typeof npcId !== 'string') return '';
+    const clean = npcId.trim().toLowerCase();
+    if (clean === 'elias') return 'elias-ribeiro';
+    if (clean === 'isaque') return 'isaque-valente';
+    return clean;
+  },
+
   async saveToSupabase(payload) {
     if (!window.MesaApp || !MesaApp.supabase || !MesaApp.state || !MesaApp.state.isMaster) return;
     try {
@@ -7107,13 +7119,15 @@ const MesaCenterArtwork = {
     }
   },
 
-  setNpc(npcId, broadcast = true) {
+  setNpc(rawNpcId, broadcast = true) {
+    const npcId = this.normalizeNpcId(rawNpcId);
     let npc = null;
     if (window.MesaAreaManager && typeof MesaAreaManager.getNpcById === 'function') {
       npc = MesaAreaManager.getNpcById(npcId);
     }
     if (!npc && window.CAMPAIGN_NPCS) {
-      npc = window.CAMPAIGN_NPCS.find(n => n.id === npcId);
+      const list = Array.isArray(window.CAMPAIGN_NPCS) ? window.CAMPAIGN_NPCS : Object.values(window.CAMPAIGN_NPCS);
+      npc = list.find(n => n && this.normalizeNpcId(n.id) === npcId);
     }
     if (!npc) {
       if (npcId === 'elias-ribeiro') {
@@ -7122,13 +7136,18 @@ const MesaCenterArtwork = {
         npc = { id: 'isaque-valente', nome: 'Isaque Valente', ilustracao: 'assets/npcs/isaque-valente.png' };
       }
     }
-    if (!npc || !npc.ilustracao) return;
+    if (!npc || !npc.ilustracao) {
+      console.warn('[CENTER ARTWORK] Ilustracao nao encontrada para:', rawNpcId);
+      return;
+    }
 
+    console.log('[CENTER ARTWORK] Definindo NPC:', npc.id, npc.nome, npc.ilustracao);
     this.show(npc.ilustracao, npc.nome, npc.id, broadcast);
   },
 
-  toggleNpc(npcId) {
-    if (this.active && this.npcId === npcId) {
+  toggleNpc(rawNpcId) {
+    const npcId = this.normalizeNpcId(rawNpcId);
+    if (this.active && this.normalizeNpcId(this.npcId) === npcId) {
       this.clearArtwork();
     } else {
       this.setNpc(npcId);
@@ -7139,7 +7158,7 @@ const MesaCenterArtwork = {
     this.active = true;
     this.imgUrl = imgUrl;
     this.title = title;
-    this.npcId = npcId;
+    this.npcId = this.normalizeNpcId(npcId);
 
     this.render();
 
@@ -7219,7 +7238,7 @@ const MesaCenterArtwork = {
       this.active = true;
       this.imgUrl = payload.imgUrl;
       this.title = payload.title || '';
-      this.npcId = payload.npcId || null;
+      this.npcId = this.normalizeNpcId(payload.npcId);
     } else {
       this.active = false;
       this.imgUrl = '';
@@ -7272,9 +7291,9 @@ const MesaCenterArtwork = {
 
     const displayBtns = document.querySelectorAll('.npc-display-btn');
     displayBtns.forEach(btn => {
-      const btnNpcId = btn.dataset.npcId;
+      const btnNpcId = this.normalizeNpcId(btn.dataset.npcId);
       if (btnNpcId) {
-        const isCurrent = this.active && this.npcId === btnNpcId;
+        const isCurrent = this.active && this.normalizeNpcId(this.npcId) === btnNpcId;
         btn.classList.toggle('active', isCurrent);
         btn.textContent = isCurrent ? 'Remover da Mesa Virtual' : 'Exibir Ilustração no Centro da Mesa';
       }
@@ -7295,6 +7314,13 @@ const MesaCenterArtwork = {
   }
 };
 window.MesaCenterArtwork = MesaCenterArtwork;
+window.closeNpcDrawer = () => {
+  if (window.MesaAreaManager && typeof MesaAreaManager.closeNpcDrawer === 'function') {
+    MesaAreaManager.closeNpcDrawer();
+  } else {
+    document.body.classList.remove('npc-drawer-open');
+  }
+};
 
 
 // ==========================================================================
