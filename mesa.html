@@ -279,6 +279,7 @@
 
         <!-- Botão Mapa [Owlbear] -->
         <button id="nav-owlbear-btn" class="ink-tag nav-owlbear" onclick="MesaOwlbear.open()" oncontextmenu="event.preventDefault(); MesaOwlbear.editUrl();" title="Abrir Mapa [Owlbear] (Clique com botão direito para alterar o link)">
+          <span id="nav-owlbear-dot" class="nav-owlbear-dot" style="display: none;"></span>
           <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
             <line x1="8" y1="2" x2="8" y2="18"></line>
@@ -600,6 +601,17 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
     <!-- BACKDROP PARA FECHAR O MENU MOBILE AO CLICAR FORA -->
     <div id="mesa-mobile-backdrop" class="mesa-mobile-backdrop" onclick="MesaMobileMenu.close()"></div>
+
+    <!-- BOTÃO FLUTUANTE PARA TRAZER MAPA OWLBEAR PARA FRENTE -->
+    <button id="owlbear-floating-dock-btn" class="owlbear-floating-dock-btn" onclick="MesaOwlbear.focusWindow()" style="display: none;" title="Clique para trazer o Mapa [Owlbear] para frente da mesa">
+      <span class="owlbear-dock-dot"></span>
+      <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;">
+        <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+        <line x1="8" y1="2" x2="8" y2="18"></line>
+        <line x1="16" y1="6" x2="16" y2="22"></line>
+      </svg>
+      <span>Focar Mapa [Owlbear]</span>
+    </button>
 
     <!-- BOTÃO FLUTUANTE HAMBÚRGUER MOBILE (CANTO INFERIOR DIREITO) -->
     <div id="mesa-mobile-fab-container" class="mesa-mobile-fab-container">
@@ -1410,7 +1422,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
             <input type="text" id="disp-owlbear-url" placeholder="https://www.owlbear.rodeo/room/..." class="coletaveis-search-input" style="font-size: 0.72rem; padding: 4px 8px; height: 28px;" onchange="MesaOwlbear.setUrl(this.value)">
           </div>
 
-          <div class="dispositivo-actions">
+          <div class="dispositivo-actions" style="flex-wrap: wrap; gap: 8px;">
             <button type="button" class="dispositivo-btn-primary" onclick="MesaOwlbear.open()" style="background: #0284c7; border-color: #38bdf8; color: #f0f9ff;">
               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
                 <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
@@ -1418,6 +1430,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
                 <line x1="16" y1="6" x2="16" y2="22"></line>
               </svg>
               <span>Abrir Mapa [Owlbear]</span>
+            </button>
+            <button type="button" class="dispositivo-btn-primary" onclick="MesaOwlbear.open(null, 'split-right')" style="background: rgba(2, 132, 199, 0.22); border-color: #38bdf8; color: #7dd3fc;" title="Abre posicionado na metade direita do monitor para que a mesa e o mapa fiquem visiveis juntos">
+              <span>Lado a Lado (Metade Direita)</span>
             </button>
             <button type="button" class="dispositivo-btn-secondary" onclick="MesaOwlbear.broadcastOpen()" title="Transmite abertura para todos os jogadores presentes">
               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">

@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.2.1';
+const MESA_VERSION = 'v2.2.2';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -6945,7 +6945,56 @@ const MesaOwlbear = {
     }
   },
 
-  async open(customUrl) {
+  focusWindow() {
+    if (this.windowRef && !this.windowRef.closed) {
+      try {
+        this.windowRef.focus();
+        this.updateActiveUI(true);
+      } catch(e) {
+        console.warn('[OWLBEAR] Falha ao focar janela:', e);
+      }
+    } else {
+      this.open();
+    }
+  },
+
+  startWindowWatcher() {
+    if (this.pollTimer) clearInterval(this.pollTimer);
+    this.pollTimer = setInterval(() => {
+      const isAlive = Boolean(this.windowRef && !this.windowRef.closed);
+      this.updateActiveUI(isAlive);
+      if (!isAlive && this.pollTimer) {
+        clearInterval(this.pollTimer);
+        this.pollTimer = null;
+      }
+    }, 1000);
+  },
+
+  updateActiveUI(isOpen) {
+    const navBtn = document.getElementById('nav-owlbear-btn');
+    const navDot = document.getElementById('nav-owlbear-dot');
+    const floatBtn = document.getElementById('owlbear-floating-dock-btn');
+    if (navBtn) {
+      navBtn.classList.toggle('active-map-open', isOpen);
+    }
+    if (navDot) {
+      navDot.style.display = isOpen ? 'inline-block' : 'none';
+    }
+    if (floatBtn) {
+      floatBtn.style.display = isOpen ? 'inline-flex' : 'none';
+    }
+  },
+
+  open(customUrl, layout = 'smart') {
+    // 1. SE A JANELA JA ESTIVER ABERTA, FOCA IMEDIATAMENTE (SINCRONO NO CLIQUE)
+    if (this.windowRef && !this.windowRef.closed && !customUrl) {
+      try {
+        this.windowRef.focus();
+      } catch(e) {}
+      this.updateActiveUI(true);
+      return;
+    }
+
     if (window.event && (window.event.shiftKey || window.event.altKey)) {
       return this.editUrl();
     }
@@ -6954,7 +7003,7 @@ const MesaOwlbear = {
     if (!targetUrl || targetUrl.trim().length === 0) {
       if (window.MesaApp && MesaApp.supabase) {
         try {
-          const { data } = await MesaApp.supabase
+          const { data } = MesaApp.supabase
             .from('personagens')
             .select('atributos')
             .eq('id', 1)
@@ -6982,10 +7031,20 @@ const MesaOwlbear = {
 
     const screenW = window.screen.availWidth || 1280;
     const screenH = window.screen.availHeight || 720;
-    const width = Math.min(1180, Math.floor(screenW * 0.72));
-    const height = Math.min(760, Math.floor(screenH * 0.8));
-    const left = Math.floor((screenW - width) / 2);
-    const top = Math.floor((screenH - height) / 2);
+    let width, height, left, top;
+
+    if (layout === 'split-right' || (screenW >= 1500 && layout === 'smart')) {
+      // Posicionamento inteligente lado a lado: ocupa a metade direita sem cobrir a mesa virtual
+      width = Math.floor(screenW * 0.48);
+      height = Math.floor(screenH * 0.95);
+      left = Math.floor(screenW * 0.51);
+      top = Math.floor((screenH - height) / 2);
+    } else {
+      width = Math.min(1180, Math.floor(screenW * 0.72));
+      height = Math.min(760, Math.floor(screenH * 0.8));
+      left = Math.floor((screenW - width) / 2);
+      top = Math.floor((screenH - height) / 2);
+    }
 
     const windowFeatures = `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes`;
 
@@ -6994,6 +7053,8 @@ const MesaOwlbear = {
         this.windowRef.focus();
       } else {
         this.windowRef = window.open(targetUrl, 'wu_owlbear_map_window', windowFeatures);
+        this.startWindowWatcher();
+        this.updateActiveUI(true);
       }
     } catch (err) {
       console.warn('[OWLBEAR] Falha ao abrir popup:', err);
@@ -7032,24 +7093,7 @@ const MesaOwlbear = {
     if (payload && payload.url) {
       this.syncFromRemote(payload.url);
     }
-    const screenW = window.screen.availWidth || 1280;
-    const screenH = window.screen.availHeight || 720;
-    const width = Math.min(1180, Math.floor(screenW * 0.72));
-    const height = Math.min(760, Math.floor(screenH * 0.8));
-    const left = Math.floor((screenW - width) / 2);
-    const top = Math.floor((screenH - height) / 2);
-    const windowFeatures = `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes`;
-
-    try {
-      const win = window.open(this.url, 'wu_owlbear_map_window', windowFeatures);
-      if (!win || win.closed || typeof win.closed === 'undefined') {
-        this.showPromptToast();
-      } else {
-        this.windowRef = win;
-      }
-    } catch (e) {
-      this.showPromptToast();
-    }
+    this.open();
   },
 
   showPromptToast() {
