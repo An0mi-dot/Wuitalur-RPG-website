@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.2.2';
+const MESA_VERSION = 'v2.2.3';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -6972,16 +6972,8 @@ const MesaOwlbear = {
 
   updateActiveUI(isOpen) {
     const navBtn = document.getElementById('nav-owlbear-btn');
-    const navDot = document.getElementById('nav-owlbear-dot');
-    const floatBtn = document.getElementById('owlbear-floating-dock-btn');
     if (navBtn) {
       navBtn.classList.toggle('active-map-open', isOpen);
-    }
-    if (navDot) {
-      navDot.style.display = isOpen ? 'inline-block' : 'none';
-    }
-    if (floatBtn) {
-      floatBtn.style.display = isOpen ? 'inline-flex' : 'none';
     }
   },
 

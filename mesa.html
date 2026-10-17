@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.2.1">
+  <link rel="stylesheet" href="css/mesa.css?v=2.2.3">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -279,7 +279,6 @@
 
         <!-- Botão Mapa [Owlbear] -->
         <button id="nav-owlbear-btn" class="ink-tag nav-owlbear" onclick="MesaOwlbear.open()" oncontextmenu="event.preventDefault(); MesaOwlbear.editUrl();" title="Abrir Mapa [Owlbear] (Clique com botão direito para alterar o link)">
-          <span id="nav-owlbear-dot" class="nav-owlbear-dot" style="display: none;"></span>
           <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
             <line x1="8" y1="2" x2="8" y2="18"></line>
@@ -604,7 +603,6 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
     <!-- BOTÃO FLUTUANTE PARA TRAZER MAPA OWLBEAR PARA FRENTE -->
     <button id="owlbear-floating-dock-btn" class="owlbear-floating-dock-btn" onclick="MesaOwlbear.focusWindow()" style="display: none;" title="Clique para trazer o Mapa [Owlbear] para frente da mesa">
-      <span class="owlbear-dock-dot"></span>
       <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;">
         <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
         <line x1="8" y1="2" x2="8" y2="18"></line>
@@ -1250,9 +1248,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.8.8"></script>
 
-<script src="js/mesa.js?v=2.2.1"></script>
+<script src="js/mesa.js?v=2.2.3"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.2.1</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.2.3</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
