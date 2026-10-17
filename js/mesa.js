@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.2.4';
+const MESA_VERSION = 'v2.2.5';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -1374,6 +1374,22 @@ const MesaApp = {
           if (p.token === 'X7V2' || p.slot === 1) {
             p.imagem = 'assets/thulita.png';
             p.avatar = 'assets/thulita_avatar.png';
+            if (!p.atributos || typeof p.atributos !== 'object') p.atributos = {};
+            if (!p.atributos['Saúde']) p.atributos['Saúde'] = 'd12';
+            if (!p.atributos['Vigor']) p.atributos['Vigor'] = 'd16';
+            if (!p.atributos['Força']) p.atributos['Força'] = 'd4';
+            if (!p.atributos['Mente']) p.atributos['Mente'] = 'd8';
+
+            const rawAttrsObj = typeof raw.atributos === 'string' ? JSON.parse(raw.atributos || '{}') : (raw.atributos || {});
+            if (!rawAttrsObj['Saúde'] || !rawAttrsObj['Vigor'] || !rawAttrsObj['Força'] || !rawAttrsObj['Mente']) {
+              rawAttrsObj['Saúde'] = 'd12';
+              rawAttrsObj['Vigor'] = 'd16';
+              rawAttrsObj['Força'] = 'd4';
+              rawAttrsObj['Mente'] = 'd8';
+              if (this.supabase && p.id && this.state && this.state.isMaster) {
+                this.supabase.from('personagens').update({ atributos: rawAttrsObj }).eq('id', p.id).then(() => {});
+              }
+            }
           }
 
           if (p.token === 'N3L8' || p.slot === 2) {
@@ -1409,6 +1425,26 @@ const MesaApp = {
           if (p.token === 'F9C5' || p.slot === 8) {
             p.imagem = 'assets/blinko.png?v=2';
             p.avatar = 'assets/blinko_avatar.png';
+          }
+
+          const DEFAULT_SLOT_ATTRS = {
+            1: { 'Saúde': 'd12', 'Vigor': 'd16', 'Força': 'd4', 'Mente': 'd8' },
+            2: { 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd4', 'Mente': 'd16' },
+            3: { 'Mente': 'd16', 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd4' },
+            4: { 'Mente': 'd4', 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd16' },
+            5: { 'Saúde': 'd4', 'Vigor': 'd16', 'Força': 'd12', 'Mente': 'd8' },
+            6: { 'Força': 'd16', 'Mente': 'd12', 'Saúde': 'd8', 'Vigor': 'd4' },
+            7: { 'Força': 'd16', 'Mente': 'd12', 'Saúde': 'd8', 'Vigor': 'd4' },
+            8: { 'Vigor': 'd12', 'Saúde': 'd8', 'Força': 'd4', 'Mente': 'd16' }
+          };
+          if (p.slot && DEFAULT_SLOT_ATTRS[p.slot]) {
+            const canonical = DEFAULT_SLOT_ATTRS[p.slot];
+            if (!p.atributos || typeof p.atributos !== 'object') p.atributos = {};
+            for (const [attrName, defaultVal] of Object.entries(canonical)) {
+              if (!p.atributos[attrName]) {
+                p.atributos[attrName] = defaultVal;
+              }
+            }
           }
 
           if (p.slot >= 1 && p.slot <= 8) {
@@ -2379,6 +2415,22 @@ const MesaApp = {
 
     // Atributos limpos (ignora metadados e namespaces internos como _wuitter e a moeda vidrilhos)
     let validKeys = Object.keys(rawAttrs).filter(k => !k.startsWith('_') && !k.startsWith('$') && k !== 'vidrilhos' && typeof rawAttrs[k] !== 'object');
+    if (validKeys.length === 0) {
+      const fallbackMap = {
+        1: { 'Saúde': 'd12', 'Vigor': 'd16', 'Força': 'd4', 'Mente': 'd8' },
+        2: { 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd4', 'Mente': 'd16' },
+        3: { 'Mente': 'd16', 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd4' },
+        4: { 'Mente': 'd4', 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd16' },
+        5: { 'Saúde': 'd4', 'Vigor': 'd16', 'Força': 'd12', 'Mente': 'd8' },
+        6: { 'Força': 'd16', 'Mente': 'd12', 'Saúde': 'd8', 'Vigor': 'd4' },
+        7: { 'Força': 'd16', 'Mente': 'd12', 'Saúde': 'd8', 'Vigor': 'd4' },
+        8: { 'Vigor': 'd12', 'Saúde': 'd8', 'Força': 'd4', 'Mente': 'd16' }
+      };
+      const defaults = fallbackMap[player.slot] || { 'Saúde': 'd12', 'Vigor': 'd16', 'Força': 'd4', 'Mente': 'd8' };
+      player.atributos = { ...defaults, ...rawAttrs };
+      rawAttrs = player.atributos;
+      validKeys = Object.keys(rawAttrs).filter(k => !k.startsWith('_') && !k.startsWith('$') && k !== 'vidrilhos' && typeof rawAttrs[k] !== 'object');
+    }
     let attrsHtml = validKeys.map((k, idx) => {
       let val = rawAttrs[k];
       return `

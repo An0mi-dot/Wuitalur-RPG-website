@@ -503,6 +503,10 @@ class WuitterSystem {
       if (currentRecord && currentRecord.atributos) {
         atributosObj = typeof currentRecord.atributos === 'string' ? JSON.parse(currentRecord.atributos) : currentRecord.atributos;
       }
+      if (!atributosObj['Saúde']) atributosObj['Saúde'] = 'd12';
+      if (!atributosObj['Vigor']) atributosObj['Vigor'] = 'd16';
+      if (!atributosObj['Força']) atributosObj['Força'] = 'd4';
+      if (!atributosObj['Mente']) atributosObj['Mente'] = 'd8';
 
       // Adiciona / atualiza o namespace _wuitter com posts e contas (sem dados binários Base64 para consumo zero de egress)
       const sanitizedPosts = this.posts.slice(0, 35).map(p => {
