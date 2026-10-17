@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.2.0';
+const MESA_VERSION = 'v2.2.1';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -6926,8 +6926,31 @@ const MesaOwlbear = {
     }
   },
 
+  editUrl() {
+    const current = this.url || localStorage.getItem(this.urlKey) || 'https://www.owlbear.rodeo/room/';
+    const entered = prompt('Configurar link individual do Mapa [Owlbear Rodeo]:', current);
+    if (entered !== null) {
+      const cleaned = entered.trim();
+      if (cleaned.length > 0) {
+        this.setUrl(cleaned);
+        alert('Link do Mapa [Owlbear] salvo com sucesso!');
+      } else {
+        this.url = '';
+        localStorage.removeItem(this.urlKey);
+        this.updateStatusBadge();
+        const input = document.getElementById('disp-owlbear-url');
+        if (input) input.value = '';
+        alert('Link do Mapa [Owlbear] removido.');
+      }
+    }
+  },
+
   async open(customUrl) {
-    let targetUrl = customUrl || this.url;
+    if (window.event && (window.event.shiftKey || window.event.altKey)) {
+      return this.editUrl();
+    }
+
+    let targetUrl = customUrl || this.url || localStorage.getItem(this.urlKey) || '';
     if (!targetUrl || targetUrl.trim().length === 0) {
       if (window.MesaApp && MesaApp.supabase) {
         try {
@@ -6948,16 +6971,11 @@ const MesaOwlbear = {
     }
 
     if (!targetUrl || targetUrl.trim().length === 0) {
-      if (window.MesaApp && MesaApp.state && MesaApp.state.isMaster) {
-        const entered = prompt('Insira o link da sala do Owlbear Rodeo para a sessão:', 'https://www.owlbear.rodeo/room/');
-        if (entered && entered.trim().length > 0) {
-          this.setUrl(entered);
-          targetUrl = this.url;
-        } else {
-          return;
-        }
+      const entered = prompt('Insira o link da sala do Owlbear Rodeo:', 'https://www.owlbear.rodeo/room/');
+      if (entered && entered.trim().length > 0) {
+        this.setUrl(entered.trim());
+        targetUrl = this.url;
       } else {
-        alert('O Mestre ainda não configurou o link do Mapa [Owlbear] para esta sessão.');
         return;
       }
     }
