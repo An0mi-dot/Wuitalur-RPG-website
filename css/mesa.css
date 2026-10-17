@@ -17,7 +17,7 @@
 
 /* ============================================================
    MESA VIRTUAL — WUITALUR RPG (Estilo Tinta Nanquim & Investigação)
-   Bordas falhadas, fita adesiva/tags angulares, vidro orgânico
+   Bordas falhadas, fita adesiva/tags angulares, vidro orgânico — v2.1.8
    ============================================================ */
 
 *, *::before, *::after {
@@ -6070,38 +6070,61 @@ body.mesa-body.area-refugio-gustavo {
               transform 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
+/* Preserva o posicionamento da mesa sem compressao distorcida */
 body.npc-drawer-open .mesa-board-container,
 .mesa-body.npc-drawer-open .mesa-board-container {
-  left: calc((100vw - 400px) / 2) !important;
-  width: min(calc(100vw - 440px), 1050px) !important;
-  transform: translate(-50%, -50%) scale(0.96) !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
 }
 
-/* A barra superior recua para nao ficar escondida atras do painel */
-body.npc-drawer-open .mesa-floating-nav {
-  right: 424px;
+/* Oculta temporariamente a barra superior e fab para nunca sobrepor o dossie nem interceptar cliques */
+body.npc-drawer-open .mesa-floating-nav,
+body.npc-drawer-open .mesa-mobile-fab-container,
+body.npc-drawer-open .mesa-version {
+  z-index: 1000 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
-/* Sem escurecer a mesa: tudo continua visivel e utilizavel */
-.npc-drawer-backdrop,
+/* Backdrop funcional escurecendo o fundo e fechando ao clicar fora */
+.npc-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  z-index: 2500 !important;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
 body.npc-drawer-open .npc-drawer-backdrop {
-  display: none !important;
+  display: block !important;
+  opacity: 1;
+  pointer-events: all !important;
 }
 
 .npc-dossier-drawer {
   position: fixed;
   top: 0;
   right: -100%;
-  width: 400px;
+  width: 440px;
   max-width: 100vw;
   height: 100vh;
-  z-index: 1050;
+  z-index: 2600 !important;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background: rgba(13, 14, 18, 0.98);
+  border-left: 2px solid var(--ink-hot);
+  box-shadow: -14px 0 40px rgba(0, 0, 0, 0.85);
   color: var(--ink-text);
   font-family: var(--font-body, 'Inter', sans-serif);
-  transition: right 0.3s ease;
+  transition: right 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-sizing: border-box;
   user-select: text;
 }
 
@@ -6154,27 +6177,30 @@ body.npc-drawer-open .npc-dossier-drawer {
 }
 
 .npc-drawer-close-btn {
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.05);
   border: 1.5px solid var(--ink-edge-soft);
-  border-radius: 0;
+  border-radius: 4px;
   color: var(--ink-text);
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   line-height: 1;
-  cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 2610 !important;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
 }
 
 .npc-drawer-close-btn:hover {
   background: var(--ink-hot);
   border-color: var(--ink-hot);
   color: #fff;
-  transform: none;
+  transform: scale(1.05);
 }
 
 .npc-dossier-drawer-body {
@@ -7209,7 +7235,8 @@ body.npc-drawer-open .npc-dossier-drawer {
   }
 
   body.npc-drawer-open .mesa-floating-nav {
-    right: 24px;
+    display: none !important;
+    pointer-events: none !important;
   }
 
   .area-info-modal-dialog,

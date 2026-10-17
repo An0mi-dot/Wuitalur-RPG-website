@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.1.7">
+  <link rel="stylesheet" href="css/mesa.css?v=2.1.8">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -695,6 +695,16 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
             <span>Rolar Dados</span>
           </button>
 
+          <!-- Mapa [Owlbear] (Mobile) -->
+          <button class="mobile-menu-item" onclick="MesaOwlbear.open(); MesaMobileMenu.close()" style="color: #38bdf8;">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+              <line x1="8" y1="2" x2="8" y2="18"></line>
+              <line x1="16" y1="6" x2="16" y2="22"></line>
+            </svg>
+            <span>Mapa [Owlbear]</span>
+          </button>
+
           <!-- Sobre Área Atual (Mobile) -->
           <button id="mobile-about-area-btn" class="mobile-menu-item" onclick="MesaAreaManager.openAboutAreaModal(); MesaMobileMenu.close()" style="display: none;">
             <span class="m-item-icon" id="mobile-about-area-icon">
@@ -1206,9 +1216,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.8.8"></script>
 
-<script src="js/mesa.js?v=2.1.7"></script>
+<script src="js/mesa.js?v=2.1.8"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.1.7</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.1.8</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>

@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.1.7';
+const MESA_VERSION = 'v2.1.8';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -1280,6 +1280,9 @@ const MesaApp = {
           if (raw.atributos) {
             const attr = typeof raw.atributos === 'string' ? JSON.parse(raw.atributos) : raw.atributos;
             if (attr && attr._sys_area) sysArea = attr._sys_area;
+            if (attr && attr._sys_owlbear_url && window.MesaOwlbear) {
+              MesaOwlbear.syncFromRemote(attr._sys_owlbear_url);
+            }
           }
         });
         if (window.MesaAreaManager) {
@@ -1619,6 +1622,9 @@ const MesaApp = {
                 }
               }
             }
+            if (p1Attrs._sys_owlbear_url && window.MesaOwlbear) {
+              MesaOwlbear.syncFromRemote(p1Attrs._sys_owlbear_url);
+            }
           }
         } catch(eSync) {}
       }
@@ -1759,6 +1765,13 @@ const MesaApp = {
               } else if (MesaCombate.turnCycle && MesaCombate.turnCycle.active && !cb.active) {
                 MesaCombate.stopTurnCycle(false);
               }
+            }
+          }
+
+          // 6. Sincronizacao do Tabuleiro Mapa [Owlbear]
+          if (attrs && attrs._sys_owlbear_url && window.MesaOwlbear) {
+            if (attrs._sys_owlbear_url !== MesaOwlbear.url) {
+              MesaOwlbear.syncFromRemote(attrs._sys_owlbear_url);
             }
           }
         }
@@ -4450,6 +4463,10 @@ const MesaAreaManager = {
   
   closeNpcDrawer() {
     document.body.classList.remove('npc-drawer-open');
+    const drawer = document.getElementById('npc-dossier-drawer');
+    if (drawer) {
+      drawer.scrollTop = 0;
+    }
   },
 
   openNpcModal(npcId = null) {
@@ -4788,9 +4805,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // Fecha Ficha, Dossiê de NPCs e menus ao pressionar Escape
+  // Fecha Ficha, Dossie de NPCs e menus ao pressionar Escape
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
+      if (document.body.classList.contains('npc-drawer-open')) {
+        if (window.MesaAreaManager) MesaAreaManager.closeNpcDrawer();
+        else document.body.classList.remove('npc-drawer-open');
+        return;
+      }
+      if (document.body.classList.contains('interior-drawer-open')) {
+        if (window.MesaAreaManager) MesaAreaManager.closeInteriorDrawer();
+        else document.body.classList.remove('interior-drawer-open');
+        return;
+      }
       const fichaModal = document.getElementById('ficha-modal');
       if (fichaModal && fichaModal.classList.contains('active')) {
         MesaApp.closeModal('ficha-modal');
@@ -4816,6 +4843,16 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
       if (window.MesaQuickMenu) {
         MesaQuickMenu.close();
+      }
+    }
+  });
+
+  // Garante que o Dossie de NPCs feche confiavelmente ao clicar no botao de fechar ou no backdrop
+  document.addEventListener('click', (e) => {
+    if (e.target && (e.target.matches('#npc-drawer-backdrop') || e.target.closest('#npc-dossier-drawer .npc-drawer-close-btn'))) {
+      if (document.body.classList.contains('npc-drawer-open')) {
+        if (window.MesaAreaManager) MesaAreaManager.closeNpcDrawer();
+        else document.body.classList.remove('npc-drawer-open');
       }
     }
   });
@@ -6743,6 +6780,17 @@ const MesaOwlbear = {
 
   init() {
     this.url = localStorage.getItem(this.urlKey) || '';
+    if (window.MesaApp && MesaApp.state && MesaApp.state.players && MesaApp.state.players[0] && MesaApp.state.players[0].atributos) {
+      try {
+        const p1Attrs = typeof MesaApp.state.players[0].atributos === 'string'
+          ? JSON.parse(MesaApp.state.players[0].atributos)
+          : MesaApp.state.players[0].atributos;
+        if (p1Attrs && p1Attrs._sys_owlbear_url && p1Attrs._sys_owlbear_url.trim().length > 0) {
+          this.url = p1Attrs._sys_owlbear_url.trim();
+          localStorage.setItem(this.urlKey, this.url);
+        }
+      } catch(e) {}
+    }
     const input = document.getElementById('disp-owlbear-url');
     if (input && this.url) {
       input.value = this.url;
@@ -6764,6 +6812,40 @@ const MesaOwlbear = {
     }
   },
 
+  async saveToSupabase(newUrl) {
+    if (!window.MesaApp || !MesaApp.supabase || !MesaApp.state || !MesaApp.state.isMaster) return;
+    try {
+      const { data } = await MesaApp.supabase
+        .from('personagens')
+        .select('atributos')
+        .eq('id', 1)
+        .single();
+      const attrs = data && data.atributos
+        ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+        : {};
+      attrs._sys_owlbear_url = newUrl;
+      await MesaApp.supabase
+        .from('personagens')
+        .update({ atributos: attrs })
+        .eq('id', 1);
+    } catch(err) {
+      console.warn('[OWLBEAR] Falha ao persistir link no Supabase:', err);
+    }
+  },
+
+  syncFromRemote(remoteUrl) {
+    if (!remoteUrl || typeof remoteUrl !== 'string') return;
+    const cleaned = remoteUrl.trim();
+    if (!cleaned) return;
+    this.url = cleaned;
+    localStorage.setItem(this.urlKey, this.url);
+    const input = document.getElementById('disp-owlbear-url');
+    if (input && input.value !== this.url) {
+      input.value = this.url;
+    }
+    this.updateStatusBadge();
+  },
+
   setUrl(newUrl, broadcast = true) {
     if (!newUrl) return;
     this.url = newUrl.trim();
@@ -6774,20 +6856,50 @@ const MesaOwlbear = {
     }
     this.updateStatusBadge();
 
-    if (broadcast && window.MesaApp && MesaApp.supabaseChannel && MesaApp.state && MesaApp.state.isMaster) {
-      MesaApp.supabaseChannel.send({
-        type: 'broadcast',
-        event: 'owlbear_url_sync',
-        payload: {
-          clientId: MesaApp.clientId,
-          url: this.url
+    const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    if (isMaster) {
+      this.saveToSupabase(this.url);
+      if (broadcast) {
+        const chan = (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel);
+        if (chan) {
+          try {
+            chan.send({
+              type: 'broadcast',
+              event: 'owlbear_url_sync',
+              payload: {
+                clientId: (window.MesaApp && MesaApp.clientId) || '',
+                url: this.url
+              }
+            });
+          } catch(e) {
+            console.warn('[OWLBEAR] Erro ao enviar broadcast owlbear_url_sync:', e);
+          }
         }
-      });
+      }
     }
   },
 
-  open(customUrl) {
+  async open(customUrl) {
     let targetUrl = customUrl || this.url;
+    if (!targetUrl || targetUrl.trim().length === 0) {
+      if (window.MesaApp && MesaApp.supabase) {
+        try {
+          const { data } = await MesaApp.supabase
+            .from('personagens')
+            .select('atributos')
+            .eq('id', 1)
+            .single();
+          if (data && data.atributos) {
+            const attrs = typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos;
+            if (attrs && attrs._sys_owlbear_url && attrs._sys_owlbear_url.trim().length > 0) {
+              this.syncFromRemote(attrs._sys_owlbear_url);
+              targetUrl = this.url;
+            }
+          }
+        } catch(e) {}
+      }
+    }
+
     if (!targetUrl || targetUrl.trim().length === 0) {
       if (window.MesaApp && MesaApp.state && MesaApp.state.isMaster) {
         const entered = prompt('Insira o link da sala do Owlbear Rodeo para a sessão:', 'https://www.owlbear.rodeo/room/');
@@ -6826,30 +6938,34 @@ const MesaOwlbear = {
 
   broadcastOpen() {
     this.open();
-    if (window.MesaApp && MesaApp.supabaseChannel && MesaApp.state && MesaApp.state.isMaster) {
-      MesaApp.supabaseChannel.send({
-        type: 'broadcast',
-        event: 'owlbear_broadcast_open',
-        payload: {
-          clientId: MesaApp.clientId,
-          url: this.url
+    const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    if (isMaster) {
+      const chan = (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel);
+      if (chan) {
+        try {
+          chan.send({
+            type: 'broadcast',
+            event: 'owlbear_broadcast_open',
+            payload: {
+              clientId: (window.MesaApp && MesaApp.clientId) || '',
+              url: this.url
+            }
+          });
+        } catch(e) {
+          console.warn('[OWLBEAR] Erro ao enviar broadcast owlbear_broadcast_open:', e);
         }
-      });
+      }
     }
   },
 
   handleIncomingSync(payload) {
     if (!payload || !payload.url) return;
-    this.url = payload.url;
-    localStorage.setItem(this.urlKey, this.url);
-    const input = document.getElementById('disp-owlbear-url');
-    if (input) input.value = this.url;
-    this.updateStatusBadge();
+    this.syncFromRemote(payload.url);
   },
 
   handleIncomingBroadcastOpen(payload) {
     if (payload && payload.url) {
-      this.handleIncomingSync(payload);
+      this.syncFromRemote(payload.url);
     }
     const screenW = window.screen.availWidth || 1280;
     const screenH = window.screen.availHeight || 720;
