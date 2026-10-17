@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.1.8';
+const MESA_VERSION = 'v2.1.9';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -1283,6 +1283,9 @@ const MesaApp = {
             if (attr && attr._sys_owlbear_url && window.MesaOwlbear) {
               MesaOwlbear.syncFromRemote(attr._sys_owlbear_url);
             }
+            if (attr && attr._sys_center_artwork && window.MesaCenterArtwork) {
+              MesaCenterArtwork.syncFromRemote(attr._sys_center_artwork);
+            }
           }
         });
         if (window.MesaAreaManager) {
@@ -1625,6 +1628,9 @@ const MesaApp = {
             if (p1Attrs._sys_owlbear_url && window.MesaOwlbear) {
               MesaOwlbear.syncFromRemote(p1Attrs._sys_owlbear_url);
             }
+            if (p1Attrs._sys_center_artwork && window.MesaCenterArtwork) {
+              MesaCenterArtwork.syncFromRemote(p1Attrs._sys_center_artwork);
+            }
           }
         } catch(eSync) {}
       }
@@ -1772,6 +1778,16 @@ const MesaApp = {
           if (attrs && attrs._sys_owlbear_url && window.MesaOwlbear) {
             if (attrs._sys_owlbear_url !== MesaOwlbear.url) {
               MesaOwlbear.syncFromRemote(attrs._sys_owlbear_url);
+            }
+          }
+
+          // 7. Sincronizacao da Ilustracao Central de Cena / NPC
+          if (attrs && attrs._sys_center_artwork && window.MesaCenterArtwork) {
+            const remoteArt = attrs._sys_center_artwork;
+            const isDiff = (Boolean(remoteArt.active) !== MesaCenterArtwork.active) || 
+                           (remoteArt.active && (remoteArt.npcId !== MesaCenterArtwork.npcId || remoteArt.imgUrl !== MesaCenterArtwork.imgUrl));
+            if (isDiff) {
+              MesaCenterArtwork.syncFromRemote(remoteArt);
             }
           }
         }
@@ -2027,6 +2043,13 @@ const MesaApp = {
       if (isFromSelf(payload)) return;
       if (window.MesaOwlbear && payload.payload) {
         MesaOwlbear.handleIncomingBroadcastOpen(payload.payload);
+      }
+    });
+
+    channel.on('broadcast', { event: 'center_artwork_sync' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaCenterArtwork && payload.payload) {
+        MesaCenterArtwork.syncFromRemote(payload.payload);
       }
     });
 
@@ -4517,6 +4540,20 @@ const MesaAreaManager = {
       }
     }
 
+    const ilustracao = npc.ilustracao || (npc.id === 'elias-ribeiro' ? 'assets/npcs/elias-ribeiro.png' : (npc.id === 'isaque-valente' ? 'assets/npcs/isaque-valente.png' : null));
+    const isDisplayed = Boolean(window.MesaCenterArtwork && MesaCenterArtwork.active && (MesaCenterArtwork.npcId === npc.id || MesaCenterArtwork.imgUrl === ilustracao));
+
+    const artworkHtml = ilustracao ? `
+      <div class="npc-artwork-section">
+        <div class="npc-artwork-preview">
+          <img src="${ilustracao}" alt="${npc.nome}" />
+        </div>
+        <button type="button" class="npc-display-btn ${isDisplayed ? 'active' : ''}" data-npc-id="${npc.id}" onclick="MesaCenterArtwork.toggleNpc('${npc.id}')">
+          ${isDisplayed ? 'Remover da Mesa Virtual' : 'Exibir Ilustração no Centro da Mesa'}
+        </button>
+      </div>
+    ` : '';
+
     content.innerHTML = `
       ${npcTabsHtml}
 
@@ -4526,6 +4563,8 @@ const MesaAreaManager = {
         ${npc.pv !== undefined ? `<span class="npc-pv-tag" style="background:#16a34a; color:#fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">PV: ${npc.pv}</span>` : ''}
       </div>
       
+      ${artworkHtml}
+
       ${attrHtml}
 
       <div class="npc-fields">
@@ -4859,6 +4898,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (window.MesaOwlbear) {
     MesaOwlbear.init();
+  }
+  if (window.MesaCenterArtwork) {
+    MesaCenterArtwork.init();
   }
 });
 
@@ -5999,6 +6041,7 @@ window.MesaColetaveis = MesaColetaveis;
 window.MesaRoteiro = MesaRoteiro;
 window.MesaReactions = MesaReactions;
 window.MesaDice = MesaDice;
+window.MesaCenterArtwork = MesaCenterArtwork;
 
 
 
@@ -7019,6 +7062,239 @@ const MesaOwlbear = {
   }
 };
 window.MesaOwlbear = MesaOwlbear;
+
+
+// ==========================================================================
+// MESA ILUSTRAÇÃO CENTRAL DO TABULEIRO: NPCS E CENÁRIO (O QUADRADO PRETO)
+// ==========================================================================
+const MesaCenterArtwork = {
+  active: false,
+  npcId: null,
+  imgUrl: '',
+  title: '',
+
+  init() {
+    if (window.MesaApp && MesaApp.state && MesaApp.state.players && MesaApp.state.players[0] && MesaApp.state.players[0].atributos) {
+      try {
+        const p1Attrs = typeof MesaApp.state.players[0].atributos === 'string'
+          ? JSON.parse(MesaApp.state.players[0].atributos)
+          : MesaApp.state.players[0].atributos;
+        if (p1Attrs && p1Attrs._sys_center_artwork) {
+          this.syncFromRemote(p1Attrs._sys_center_artwork);
+        }
+      } catch(e) {}
+    }
+  },
+
+  async saveToSupabase(payload) {
+    if (!window.MesaApp || !MesaApp.supabase || !MesaApp.state || !MesaApp.state.isMaster) return;
+    try {
+      const { data } = await MesaApp.supabase
+        .from('personagens')
+        .select('atributos')
+        .eq('id', 1)
+        .single();
+      const attrs = data && data.atributos
+        ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+        : {};
+      attrs._sys_center_artwork = payload;
+      await MesaApp.supabase
+        .from('personagens')
+        .update({ atributos: attrs })
+        .eq('id', 1);
+    } catch(err) {
+      console.warn('[CENTER ARTWORK] Falha ao persistir no Supabase:', err);
+    }
+  },
+
+  setNpc(npcId, broadcast = true) {
+    let npc = null;
+    if (window.MesaAreaManager && typeof MesaAreaManager.getNpcById === 'function') {
+      npc = MesaAreaManager.getNpcById(npcId);
+    }
+    if (!npc && window.CAMPAIGN_NPCS) {
+      npc = window.CAMPAIGN_NPCS.find(n => n.id === npcId);
+    }
+    if (!npc) {
+      if (npcId === 'elias-ribeiro') {
+        npc = { id: 'elias-ribeiro', nome: 'Elias Ribeiro', ilustracao: 'assets/npcs/elias-ribeiro.png' };
+      } else if (npcId === 'isaque-valente') {
+        npc = { id: 'isaque-valente', nome: 'Isaque Valente', ilustracao: 'assets/npcs/isaque-valente.png' };
+      }
+    }
+    if (!npc || !npc.ilustracao) return;
+
+    this.show(npc.ilustracao, npc.nome, npc.id, broadcast);
+  },
+
+  toggleNpc(npcId) {
+    if (this.active && this.npcId === npcId) {
+      this.clearArtwork();
+    } else {
+      this.setNpc(npcId);
+    }
+  },
+
+  show(imgUrl, title = '', npcId = null, broadcast = true) {
+    this.active = true;
+    this.imgUrl = imgUrl;
+    this.title = title;
+    this.npcId = npcId;
+
+    this.render();
+
+    const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    if (isMaster) {
+      const payload = {
+        active: true,
+        imgUrl: this.imgUrl,
+        title: this.title,
+        npcId: this.npcId,
+        timestamp: Date.now()
+      };
+      this.saveToSupabase(payload);
+
+      if (broadcast) {
+        const chan = (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel);
+        if (chan) {
+          try {
+            chan.send({
+              type: 'broadcast',
+              event: 'center_artwork_sync',
+              payload: {
+                clientId: (window.MesaApp && MesaApp.clientId) || '',
+                ...payload
+              }
+            });
+          } catch(e) {
+            console.warn('[CENTER ARTWORK] Erro ao enviar broadcast:', e);
+          }
+        }
+      }
+    }
+  },
+
+  clearArtwork(broadcast = true) {
+    this.active = false;
+    this.imgUrl = '';
+    this.title = '';
+    this.npcId = null;
+
+    this.render();
+
+    const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    if (isMaster) {
+      const payload = {
+        active: false,
+        imgUrl: '',
+        title: '',
+        npcId: null,
+        timestamp: Date.now()
+      };
+      this.saveToSupabase(payload);
+
+      if (broadcast) {
+        const chan = (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel);
+        if (chan) {
+          try {
+            chan.send({
+              type: 'broadcast',
+              event: 'center_artwork_sync',
+              payload: {
+                clientId: (window.MesaApp && MesaApp.clientId) || '',
+                ...payload
+              }
+            });
+          } catch(e) {
+            console.warn('[CENTER ARTWORK] Erro ao enviar broadcast:', e);
+          }
+        }
+      }
+    }
+  },
+
+  syncFromRemote(payload) {
+    if (!payload) return;
+    if (payload.active && payload.imgUrl) {
+      this.active = true;
+      this.imgUrl = payload.imgUrl;
+      this.title = payload.title || '';
+      this.npcId = payload.npcId || null;
+    } else {
+      this.active = false;
+      this.imgUrl = '';
+      this.title = '';
+      this.npcId = null;
+    }
+    this.render();
+  },
+
+  render() {
+    const container = document.getElementById('board-center-artwork');
+    const imgEl = document.getElementById('board-center-artwork-img');
+    const tagEl = document.getElementById('board-center-artwork-tag');
+    const clearBtn = document.getElementById('board-center-artwork-clear-btn');
+    const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+
+    if (container && imgEl) {
+      if (this.active && this.imgUrl) {
+        imgEl.src = this.imgUrl;
+        imgEl.alt = this.title || 'Ilustração';
+        container.style.display = 'flex';
+        void container.offsetWidth;
+        container.classList.add('active');
+
+        if (tagEl) {
+          if (this.title) {
+            tagEl.textContent = this.title;
+            tagEl.style.display = 'block';
+          } else {
+            tagEl.style.display = 'none';
+          }
+        }
+
+        if (clearBtn) {
+          clearBtn.style.display = isMaster ? 'inline-flex' : 'none';
+        }
+      } else {
+        container.classList.remove('active');
+        setTimeout(() => {
+          if (!this.active && container) {
+            container.style.display = 'none';
+            if (imgEl) imgEl.src = '';
+          }
+        }, 350);
+
+        if (tagEl) tagEl.style.display = 'none';
+        if (clearBtn) clearBtn.style.display = 'none';
+      }
+    }
+
+    const displayBtns = document.querySelectorAll('.npc-display-btn');
+    displayBtns.forEach(btn => {
+      const btnNpcId = btn.dataset.npcId;
+      if (btnNpcId) {
+        const isCurrent = this.active && this.npcId === btnNpcId;
+        btn.classList.toggle('active', isCurrent);
+        btn.textContent = isCurrent ? 'Remover da Mesa Virtual' : 'Exibir Ilustração no Centro da Mesa';
+      }
+    });
+
+    const dispStatus = document.getElementById('disp-artwork-status');
+    if (dispStatus) {
+      if (this.active && this.title) {
+        dispStatus.textContent = 'Exibindo: ' + this.title;
+        dispStatus.style.color = '#38bdf8';
+        dispStatus.style.borderColor = '#38bdf8';
+      } else {
+        dispStatus.textContent = 'Nenhuma';
+        dispStatus.style.color = '#94a3b8';
+        dispStatus.style.borderColor = '#64748b';
+      }
+    }
+  }
+};
+window.MesaCenterArtwork = MesaCenterArtwork;
 
 
 // ==========================================================================

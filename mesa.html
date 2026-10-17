@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.1.8">
+  <link rel="stylesheet" href="css/mesa.css?v=2.1.9">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -288,6 +288,13 @@
     <div class="mesa-board-container" id="mesa-board-container">
         <!-- O Quadrado Preto com borda de nanquim artesanal -->
         <div class="mesa-black-board">
+          <!-- Camada de Ilustração Central de Cena / NPC -->
+          <div id="board-center-artwork" class="board-center-artwork" style="display: none;">
+            <img id="board-center-artwork-img" class="board-center-artwork-img" src="" alt="Ilustração da Cena" />
+            <div id="board-center-artwork-tag" class="board-center-artwork-tag" style="display: none;"></div>
+            <button id="board-center-artwork-clear-btn" type="button" class="board-artwork-clear-btn" onclick="MesaCenterArtwork.clearArtwork()" title="Ocultar Ilustração da Mesa">&times; Ocultar da Mesa</button>
+          </div>
+
           <div class="board-ink-inner-border"></div>
           <div class="board-crosshair-c"></div>
           
@@ -1216,9 +1223,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.8.8"></script>
 
-<script src="js/mesa.js?v=2.1.8"></script>
+<script src="js/mesa.js?v=2.1.9"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.1.8</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.1.9</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -1403,6 +1410,40 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
                 <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
               </svg>
               <span>Transmitir a Todos</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card Dispositivo: Ilustrações de Cena (Centro da Mesa) -->
+        <div class="dispositivo-card" id="dispositivo-card-center-artwork">
+          <div class="dispositivo-card-header" style="cursor: pointer;" title="Ilustrações no quadrado preto da mesa">
+            <div class="dispositivo-icon-box">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#38bdf8" stroke-width="1.8">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+            </div>
+            <div class="dispositivo-meta">
+              <div class="dispositivo-title">Ilustração da Cena (Mesa)</div>
+              <div class="dispositivo-subtitle">Arte de Personagem • Tabuleiro Central</div>
+            </div>
+            <span id="disp-artwork-status" class="dispositivo-status-badge ready" style="border-color: #64748b; color: #94a3b8;">Nenhuma</span>
+          </div>
+
+          <p class="dispositivo-card-desc">
+            Exibe ilustrações oficiais de NPCs (2200x1200) diretamente dentro do quadrado preto no centro da mesa virtual, sincronizando em tempo real para todos os jogadores.
+          </p>
+
+          <div class="dispositivo-actions" style="flex-wrap: wrap; gap: 8px;">
+            <button type="button" class="dispositivo-btn-primary" onclick="MesaCenterArtwork.setNpc('elias-ribeiro')" style="background: rgba(255, 85, 0, 0.2); border-color: var(--ink-hot); color: #fff;">
+              <span>Exibir Elias Ribeiro</span>
+            </button>
+            <button type="button" class="dispositivo-btn-primary" onclick="MesaCenterArtwork.setNpc('isaque-valente')" style="background: rgba(56, 189, 248, 0.2); border-color: #38bdf8; color: #fff;">
+              <span>Exibir Isaque Valente</span>
+            </button>
+            <button type="button" class="dispositivo-btn-stop" onclick="MesaCenterArtwork.clearArtwork()" title="Ocultar ilustração atual da mesa">
+              <span>Ocultar da Mesa</span>
             </button>
           </div>
         </div>

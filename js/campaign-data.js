@@ -15,6 +15,7 @@
     {
       id: "isaque-valente",
       nome: "Isaque Valente",
+      ilustracao: "assets/npcs/isaque-valente.png",
       papel: "Ex-namorado de Sara / Aluno do Colégio Primórdio",
       pv: 12,
       atributos: { Vigor: "d16", Força: "d12", Saúde: "d8", Mente: "d4" },
@@ -29,6 +30,7 @@
     {
       id: "elias-ribeiro",
       nome: "Elias Ribeiro",
+      ilustracao: "assets/npcs/elias-ribeiro.png",
       papel: "Funcionário e Barista do Café da Névoa",
       pv: 10,
       atributos: { Saúde: "d16", Força: "d12", Mente: "d8", Vigor: "d4" },
