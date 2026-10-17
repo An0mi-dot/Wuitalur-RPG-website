@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.2.5">
+  <link rel="stylesheet" href="css/mesa.css?v=2.2.6">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -233,11 +233,25 @@
         <button type="button" id="nav-auth-chip" class="nav-auth-chip auth-none" onclick="if (!MesaApp.state.isMaster && !MesaApp.state.myToken) MesaApp.openTokenModal();" title="Clique para autenticar seu token">
           <span class="nav-auth-dot"></span>
           <span class="nav-auth-text">Não autenticado</span>
-        </button>      </div>
+        </button>
+      </div>
 
-      <!-- Paleta de Emojis Pixel Flutuante -->
-      <div id="mesa-reaction-picker" class="reaction-picker-popover">
-        <div id="reaction-picker-grid" class="reaction-picker-grid"></div>
+      <!-- Botão Central de Reações com Emojis (Posicionado no topo, acima do Card do Mestre) -->
+      <div class="nav-reaction-wrapper">
+        <button id="nav-reaction-btn" class="ink-tag nav-reaction-btn" onclick="MesaReactions.togglePicker(event)" title="Reagir com Emoji">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+          </svg>
+          <span>Reagir</span>
+        </button>
+
+        <!-- Paleta de Emojis Pixel Flutuante -->
+        <div id="mesa-reaction-picker" class="reaction-picker-popover">
+          <div id="reaction-picker-grid" class="reaction-picker-grid"></div>
+        </div>
       </div>
 
       <div class="mesa-actions">
@@ -1239,9 +1253,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.8.8"></script>
 
-<script src="js/mesa.js?v=2.2.5"></script>
+<script src="js/mesa.js?v=2.2.6"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.2.5</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.2.6</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>

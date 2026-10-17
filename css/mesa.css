@@ -2424,7 +2424,8 @@ body.is-master .coletaveis-master-deliver-btn {
   }
 
   /* Oculta os botões de ação do topo no mobile (agora unificados no FAB Hambúrguer) */
-  .mesa-floating-nav .mesa-actions {
+  .mesa-floating-nav .mesa-actions,
+  .mesa-floating-nav .nav-reaction-wrapper {
     display: none !important;
   }
 
@@ -2907,6 +2908,31 @@ body.is-master .coletaveis-master-deliver-btn {
    PALETA DE REAÇÃO COM EMOJIS E BALÃO DE FALA COMIC
    ============================================================ */
 
+.nav-reaction-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.nav-reaction-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  background: rgba(15, 5, 0, 0.82);
+  border-color: rgba(255, 85, 0, 0.55);
+}
+
+.nav-reaction-btn:hover,
+.nav-reaction-btn.active {
+  border-color: var(--mesa-orange);
+  background: rgba(255, 85, 0, 0.28);
+  box-shadow: 0 0 16px rgba(255, 85, 0, 0.5);
+  color: #fff;
+}
+
 .reaction-picker-popover {
   position: absolute;
   top: calc(100% + 8px);
@@ -2917,11 +2943,11 @@ body.is-master .coletaveis-master-deliver-btn {
   border-radius: 0;
   padding: 10px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.95), 0 0 15px rgba(255, 85, 0, 0.3);
-  filter: url(#nanquim-rough);
+  filter: none !important;
   opacity: 0;
   pointer-events: none;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 900;
+  z-index: 2500;
   width: 240px;
 }
 
@@ -2973,13 +2999,13 @@ body.is-master .coletaveis-master-deliver-btn {
   border: 2px solid var(--mesa-orange);
   border-radius: 0;
   clip-path: polygon(0% 4%, 98% 0%, 100% 96%, 2% 100%);
-  filter: url(#nanquim-rough);
+  filter: none !important;
   padding: 6px 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.95), 0 0 16px rgba(255, 85, 0, 0.45);
-  z-index: 500;
+  z-index: 2500;
   pointer-events: none;
   animation: comicBubblePopIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
 }
@@ -5735,8 +5761,6 @@ body.mesa-body.area-refugio-gustavo {
 .ficha-badge-tag,
 .ficha-vital-row,
 .ficha-stress-container,
-.reaction-picker-popover,
-.comic-speech-bubble,
 .mesa-mobile-menu-drawer {
   filter: url(#nanquim-soft);
 }

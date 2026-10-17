@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.2.5';
+const MESA_VERSION = 'v2.2.6';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -3093,11 +3093,14 @@ const MesaReactions = {
   init() {
     this.renderPickerGrid();
 
-    // Fecha a paleta ao clicar fora
+    // Fecha a paleta ao clicar fora (sem propagar erro ou fechar imediatamente)
     document.addEventListener('click', (e) => {
       const picker = document.getElementById('mesa-reaction-picker');
       const btn = document.getElementById('nav-reaction-btn');
-      if (picker && this.isPickerOpen && !picker.contains(e.target) && !btn.contains(e.target)) {
+      if (picker && this.isPickerOpen) {
+        if (picker.contains(e.target)) return;
+        if (btn && btn.contains(e.target)) return;
+        if (e.target.closest && (e.target.closest('#nav-reaction-btn') || e.target.closest('.quick-menu-item') || e.target.closest('.mobile-menu-item') || e.target.closest('.combat-menu-item'))) return;
         this.closePicker();
       }
     });
@@ -3113,12 +3116,19 @@ const MesaReactions = {
       btn.className = 'reaction-btn';
       btn.title = key;
       btn.innerHTML = PIXEL_FACES_SVG[key];
-      btn.onclick = () => this.sendReaction(key);
+      btn.onclick = (e) => {
+        if (e && e.stopPropagation) e.stopPropagation();
+        this.sendReaction(key);
+      };
       grid.appendChild(btn);
     });
   },
 
-  togglePicker() {
+  togglePicker(e) {
+    if (e && e.stopPropagation) {
+      e.stopPropagation();
+    }
+
     if (!MesaApp.state.myToken && !MesaApp.state.isMaster) {
       alert("Observadores não podem usar reações de emojis. Conecte seu token de personagem para reagir na mesa!");
       MesaApp.openTokenModal();
@@ -3127,19 +3137,21 @@ const MesaReactions = {
 
     this.isPickerOpen = !this.isPickerOpen;
     const picker = document.getElementById('mesa-reaction-picker');
+    const btn = document.getElementById('nav-reaction-btn');
     if (picker) {
-      if (this.isPickerOpen) {
-        picker.classList.add('active');
-      } else {
-        picker.classList.remove('active');
-      }
+      picker.classList.toggle('active', this.isPickerOpen);
+    }
+    if (btn) {
+      btn.classList.toggle('active', this.isPickerOpen);
     }
   },
 
   closePicker() {
     this.isPickerOpen = false;
     const picker = document.getElementById('mesa-reaction-picker');
+    const btn = document.getElementById('nav-reaction-btn');
     if (picker) picker.classList.remove('active');
+    if (btn) btn.classList.remove('active');
   },
 
   sendReaction(faceKey) {
@@ -3200,6 +3212,7 @@ const MesaReactions = {
     const bubble = document.createElement('div');
     bubble.id = `comic-bubble-slot-${slot}`;
     bubble.className = 'comic-speech-bubble';
+    bubble.style.zIndex = '2500';
     bubble.innerHTML = svgContent;
 
     if (slot === 'master') {
