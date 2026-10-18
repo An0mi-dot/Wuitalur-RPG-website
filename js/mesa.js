@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.2.6';
+const MESA_VERSION = 'v2.2.7';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -8277,7 +8277,7 @@ const MesaIgrisShop = {
           id: `slot_${slotNum}`,
           slot: slotNum,
           name: p.nome || `Jogador ${slotNum}`,
-          image: p.imagem || null,
+          image: null,
           initial: (p.nome ? p.nome.trim().charAt(0) : `${slotNum}`).toUpperCase(),
           isMaster: false
         };
@@ -8663,22 +8663,12 @@ const MesaIgrisShop = {
       const isMe = (myId && participant.id === myId);
       const titleAttr = `Interessado: ${participant.name}${participant.isMaster ? ' (Mestre)' : ''}`;
 
-      if (participant.image) {
-        html += `
-          <div class="igris-interest-avatar ${isMe ? 'is-my-slot' : ''} ${participant.isMaster ? 'is-master' : ''}" 
-               title="${titleAttr}">
-            <img src="${participant.image}" class="igris-interest-avatar-img" alt="${participant.name}" 
-                 onerror="this.outerHTML='<span class=\\\'igris-interest-initial\\\'>${participant.initial}</span>'" />
-          </div>
-        `;
-      } else {
-        html += `
-          <div class="igris-interest-avatar ${isMe ? 'is-my-slot' : ''} ${participant.isMaster ? 'is-master' : ''}" 
-               title="${titleAttr}">
-            <span>${participant.initial}</span>
-          </div>
-        `;
-      }
+      html += `
+        <div class="igris-interest-avatar ${isMe ? 'is-my-slot' : ''} ${participant.isMaster ? 'is-master' : ''}" 
+             title="${titleAttr}">
+          <span class="igris-interest-initial">${participant.initial}</span>
+        </div>
+      `;
     });
 
     return html;
