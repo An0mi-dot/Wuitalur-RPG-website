@@ -229,6 +229,7 @@ const BoletimApp = {
           ${item.conteudoHtml}
         </div>
 
+        ${(prevItem || nextItem) ? `
         <!-- Rodapé com Navegação Entre Edições -->
         <footer class="boletim-article-footer">
           <div class="boletim-nav-actions">
@@ -253,6 +254,7 @@ const BoletimApp = {
             ` : '<div class="boletim-nav-arrow-placeholder"></div>'}
           </div>
         </footer>
+        ` : ''}
       </article>
     `;
   }
