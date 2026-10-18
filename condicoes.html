@@ -1,9 +1,9 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CondiÃ§Ãµes â€” Wuitalur RPG</title>
+  <title>Condições — Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/components.css">
@@ -32,31 +32,32 @@
     <nav class="sidebar-nav">
             <div class="sidebar-section-title">Extras</div>
       <a href="suplementos.html" class="sidebar-link"><span class="icon"></span> Suplementos</a>
+      <a href="boletim.html" class="sidebar-link" style="color: #f43f5e;"><span class="icon"></span> Boletim</a>
       <a href="mesa.html" class="sidebar-link" style="color: #ff7700;"><span class="icon"></span> Mesa Virtual</a>
       <a href="wuitter.html" class="sidebar-link" style="color: #1d9bf0;"><span class="icon"></span> Wuitter</a>
 
       <div class="sidebar-section-title">Principal</div>
-      <a href="index.html" class="sidebar-link"><span class="icon"></span> InÃ­cio</a>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
       <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
-      <a href="races.html" class="sidebar-link"><span class="icon"></span> RaÃ§as</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
       <a href="origins.html" class="sidebar-link"><span class="icon"></span> Origens</a>
-      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> CriaÃ§Ã£o de Personagem</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
 
       <div class="sidebar-section-title">Regras</div>
 
-      <a href="condicoes.html" class="sidebar-link active"><span class="icon"></span> CondiÃ§Ãµes</a>
+      <a href="condicoes.html" class="sidebar-link active"><span class="icon"></span> Condições</a>
       <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
-      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> PerÃ­cias</a>
-      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> MecÃ¢nicas</a>
-      <a href="glossario.html" class="sidebar-link"><span class="icon"></span> GlossÃ¡rio</a>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+      <a href="glossario.html" class="sidebar-link"><span class="icon"></span> Glossário</a>
 
-      <div class="sidebar-section-title">ConteÃºdo</div>
+      <div class="sidebar-section-title">Conteúdo</div>
       <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
       <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
       <a href="selos.html" class="sidebar-link"><span class="icon"></span> Selos</a>
       <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
       <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
-      <a href="bestiario.html" class="sidebar-link"><span class="icon"></span> BestiÃ¡rio</a>
+      <a href="bestiario.html" class="sidebar-link"><span class="icon"></span> Bestiário</a>
 
       <div class="sidebar-section-title">Ferramentas</div>
       <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
@@ -67,12 +68,12 @@
   <div class="main-wrapper">
 
     <header class="page-header">
-      <h1>CondiÃ§Ãµes</h1>
+      <h1>Condições</h1>
       <div style="position:relative">
         <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
         <div class="wiki-dropdown" id="wiki-menu-dropdown">
           <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
-          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> GlossÃ¡rio</a>
+          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
           <a href="criador.html" class="wiki-dropdown-item"><span class="icon">&#x270E;</span> Criador de Ficha</a>
         </div>
       </div>
@@ -83,221 +84,221 @@
       <!-- INTRO -->
       <section class="subsection" id="intro">
         <div class="section-heading">
-          <h2>CondiÃ§Ãµes</h2>
+          <h2>Condições</h2>
         </div>
         <div class="race-card" style="max-width: 800px; margin: 0 auto var(--space-2xl);">
           <div class="race-card-body">
-            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8;">CondiÃ§Ãµes sÃ£o estados que afetam os personagens de maneira temporÃ¡ria ou permanente, modificando suas capacidades, atributos ou aÃ§Ãµes durante o jogo. Elas podem ser causadas por efeitos elementais, combates, doenÃ§as, ou outros fatores do ambiente. Cada condiÃ§Ã£o tem uma duraÃ§Ã£o e efeitos especÃ­ficos, podendo ser removida com itens, habilidades ou ao final de um determinado tempo. Entender e gerenciar as condiÃ§Ãµes Ã© essencial para sobreviver aos desafios do mundo.</p>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8;">Condições são estados que afetam os personagens de maneira temporária ou permanente, modificando suas capacidades, atributos ou ações durante o jogo. Elas podem ser causadas por efeitos elementais, combates, doenças, ou outros fatores do ambiente. Cada condição tem uma duração e efeitos específicos, podendo ser removida com itens, habilidades ou ao final de um determinado tempo. Entender e gerenciar as condições é essencial para sobreviver aos desafios do mundo.</p>
           </div>
         </div>
       </section>
 
-      <!-- CONDIÃ‡Ã•ES GERAIS -->
+      <!-- CONDIÇÕES GERAIS -->
       <section class="subsection" id="gerais">
         <div class="section-heading">
-          <h2>CondiÃ§Ãµes Gerais</h2>
+          <h2>Condições Gerais</h2>
         </div>
         <div class="cond-grid">
 
           <div class="cond-card">
             <h4>Agarrado</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: AtÃ© ser removido</span>
-            <p>O deslocamento de uma criatura agarrada se torna 0, e ela nÃ£o pode se beneficiar de qualquer bÃ´nus em seu movimento e nÃ£o pode realizar AÃ§Ãµes ou ReaÃ§Ãµes.</p>
-            <p>A condiÃ§Ã£o se encerra se um efeito, como o de empurrar uma criatura, remover a criatura agarrada do alcance da criatura que a agarrou ou do efeito que causa a condiÃ§Ã£o.</p>
-            <p>Pode acontecer uma intervenÃ§Ã£o de outra criatura nÃ£o agarrada, contra o agressor, concedendo vantagem nos testes de libertaÃ§Ã£o da criatura agarrada.</p>
+            <span class="cond-dur">Duração: Até ser removido</span>
+            <p>O deslocamento de uma criatura agarrada se torna 0, e ela não pode se beneficiar de qualquer bônus em seu movimento e não pode realizar Ações ou Reações.</p>
+            <p>A condição se encerra se um efeito, como o de empurrar uma criatura, remover a criatura agarrada do alcance da criatura que a agarrou ou do efeito que causa a condição.</p>
+            <p>Pode acontecer uma intervenção de outra criatura não agarrada, contra o agressor, concedendo vantagem nos testes de libertação da criatura agarrada.</p>
           </div>
 
           <div class="cond-card">
             <h4>Afogado</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: AtÃ© recuperar o fÃ´lego</span>
-            <p>O alvo estÃ¡ totalmente privado de ar. A cada turno em que permanecer submerso sem conseguir respirar, ele sofre <span class="dice">1d10</span> de dano direto (nÃ£o reduzido por ResistÃªncias).</p>
+            <span class="cond-dur">Duração: Até recuperar o fôlego</span>
+            <p>O alvo está totalmente privado de ar. A cada turno em que permanecer submerso sem conseguir respirar, ele sofre <span class="dice">1d10</span> de dano direto (não reduzido por Resistências).</p>
           </div>
 
           <div class="cond-card">
             <h4>Amedrontado</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos ou atÃ© vencer um teste de resistÃªncia</span>
-            <p>O alvo nÃ£o pode se aproximar da fonte do medo e realiza todos os testes com desvantagem enquanto estiver na Ã¡rea do medo (igual Ã  quantidade de movimento da fonte). AlÃ©m disso, nÃ£o pode usar aÃ§Ãµes que exijam mirar ou focar na fonte.</p>
+            <span class="cond-dur">Duração: Turnos definidos ou até vencer um teste de resistência</span>
+            <p>O alvo não pode se aproximar da fonte do medo e realiza todos os testes com desvantagem enquanto estiver na área do medo (igual à quantidade de movimento da fonte). Além disso, não pode usar ações que exijam mirar ou focar na fonte.</p>
           </div>
 
           <div class="cond-card">
             <h4>Atordoado</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos</span>
-            <p>O alvo nÃ£o pode realizar aÃ§Ãµes no prÃ³ximo turno.</p>
+            <span class="cond-dur">Duração: Turnos definidos</span>
+            <p>O alvo não pode realizar ações no próximo turno.</p>
           </div>
 
           <div class="cond-card">
             <h4>Cego</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos ou permanente</span>
-            <p>O alvo sofre Desvantagem em todos os testes que dependam de visÃ£o, incluindo ataques Ã  distÃ¢ncia ou golpes que exijam mira. Ataques corpo a corpo contra criaturas adjacentes nÃ£o recebem penalidade adicional, mas ataques que dependam de precisÃ£o sofrem Desvantagem.</p>
+            <span class="cond-dur">Duração: Turnos definidos ou permanente</span>
+            <p>O alvo sofre Desvantagem em todos os testes que dependam de visão, incluindo ataques à distância ou golpes que exijam mira. Ataques corpo a corpo contra criaturas adjacentes não recebem penalidade adicional, mas ataques que dependam de precisão sofrem Desvantagem.</p>
           </div>
 
           <div class="cond-card">
             <h4>Confuso</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos</span>
-            <p>O alvo perde controle momentÃ¢neo de suas aÃ§Ãµes. No inÃ­cio de cada turno, ele deve rolar <span class="dice">1d4</span> para determinar seu comportamento:</p>
-            <p><strong>1</strong> â€” Ataca a criatura mais prÃ³xima, aliada ou inimiga.<br>
-            <strong>2</strong> â€” Move-se <span class="dice">1d8</span>B em direÃ§Ã£o aleatÃ³ria e nÃ£o pode realizar aÃ§Ãµes ofensivas.<br>
-            <strong>3</strong> â€” Fica desorientado: perde a aÃ§Ã£o padrÃ£o.<br>
-            <strong>4</strong> â€” Age normalmente.</p>
+            <span class="cond-dur">Duração: Turnos definidos</span>
+            <p>O alvo perde controle momentâneo de suas ações. No início de cada turno, ele deve rolar <span class="dice">1d4</span> para determinar seu comportamento:</p>
+            <p><strong>1</strong> — Ataca a criatura mais próxima, aliada ou inimiga.<br>
+            <strong>2</strong> — Move-se <span class="dice">1d8</span>B em direção aleatória e não pode realizar ações ofensivas.<br>
+            <strong>3</strong> — Fica desorientado: perde a ação padrão.<br>
+            <strong>4</strong> — Age normalmente.</p>
           </div>
 
           <div class="cond-card">
-            <h4>CorroÃ­do</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos ou atÃ© neutralizar o Ã¡cido</span>
-            <p>O alvo sofre <span class="dice">1d6</span> de dano Ã¡cido por turno, e suas armaduras ou equipamentos que lhe concedem defesa comeÃ§am a danificar e perdem 1 ponto de defesa permanente a cada 2 turnos que essa condiÃ§Ã£o estiver aplicada.</p>
+            <h4>Corroído</h4>
+            <span class="cond-dur">Duração: Turnos definidos ou até neutralizar o ácido</span>
+            <p>O alvo sofre <span class="dice">1d6</span> de dano ácido por turno, e suas armaduras ou equipamentos que lhe concedem defesa começam a danificar e perdem 1 ponto de defesa permanente a cada 2 turnos que essa condição estiver aplicada.</p>
           </div>
 
           <div class="cond-card">
             <h4>Desarmado</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: AtÃ© recuperar ou substituir a arma</span>
-            <p>O alvo solta sua arma atual e nÃ£o pode usÃ¡-la atÃ© gastar uma aÃ§Ã£o padrÃ£o para recuperÃ¡-la ou equipar outra arma disponÃ­vel.</p>
+            <span class="cond-dur">Duração: Até recuperar ou substituir a arma</span>
+            <p>O alvo solta sua arma atual e não pode usá-la até gastar uma ação padrão para recuperá-la ou equipar outra arma disponível.</p>
           </div>
 
           <div class="cond-card">
             <h4>Desorientado</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos</span>
-            <p>A coordenaÃ§Ã£o do alvo estÃ¡ comprometida. Enquanto desorientado, ele sofre Desvantagem em ataques, esquivas e testes de PercepÃ§Ã£o.</p>
+            <span class="cond-dur">Duração: Turnos definidos</span>
+            <p>A coordenação do alvo está comprometida. Enquanto desorientado, ele sofre Desvantagem em ataques, esquivas e testes de Percepção.</p>
           </div>
 
           <div class="cond-card">
             <h4>Dilacerado</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos ou atÃ© estabilizar</span>
-            <p>Ferimentos profundos deixam o alvo vulnerÃ¡vel. Ele recebe +<span class="dice">2d8</span> de dano de qualquer dano.</p>
+            <span class="cond-dur">Duração: Turnos definidos ou até estabilizar</span>
+            <p>Ferimentos profundos deixam o alvo vulnerável. Ele recebe +<span class="dice">2d8</span> de dano de qualquer dano.</p>
           </div>
 
           <div class="cond-card">
             <h4>Encantado</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos ou atÃ© sofrer dano</span>
-            <p>O alvo nÃ£o pode atacar, prejudicar ou agir intencionalmente contra quem o encantou. AlÃ©m disso, realiza testes de ResistÃªncia com Desvantagem enquanto permanecer sob a influÃªncia.</p>
+            <span class="cond-dur">Duração: Turnos definidos ou até sofrer dano</span>
+            <p>O alvo não pode atacar, prejudicar ou agir intencionalmente contra quem o encantou. Além disso, realiza testes de Resistência com Desvantagem enquanto permanecer sob a influência.</p>
           </div>
 
           <div class="cond-card">
             <h4>Enfraquecido</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos</span>
-            <p>A forÃ§a fÃ­sica do alvo estÃ¡ comprometida. Ele sofre â€“2 em <span class="attr-fr">ForÃ§a</span> e <span class="attr-des">Destreza</span> e seus ataques corpo a corpo causam -<span class="dice">2d8</span> de dano.</p>
+            <span class="cond-dur">Duração: Turnos definidos</span>
+            <p>A força física do alvo está comprometida. Ele sofre –2 em <span class="attr-fr">Força</span> e <span class="attr-des">Destreza</span> e seus ataques corpo a corpo causam -<span class="dice">2d8</span> de dano.</p>
           </div>
 
           <div class="cond-card">
             <h4>Enraizado</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos ou atÃ© destruir a fonte</span>
-            <p>O alvo estÃ¡ preso ao solo e nÃ£o pode se mover nem realizar aÃ§Ãµes que exijam deslocamento. Ataques contra ele tÃªm Vantagem.</p>
+            <span class="cond-dur">Duração: Turnos definidos ou até destruir a fonte</span>
+            <p>O alvo está preso ao solo e não pode se mover nem realizar ações que exijam deslocamento. Ataques contra ele têm Vantagem.</p>
           </div>
 
           <div class="cond-card">
             <h4>Envenenado</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos ou atÃ© neutralizar</span>
-            <p>O veneno circula pelo corpo do alvo, corroendo sua vitalidade. Ele sofre <span class="dice">1d8</span> de dano por turno e tem desvantagem em testes fÃ­sicos (<span class="attr-des">DES</span>, <span class="attr-fr">FOR</span>, <span class="attr-saude">SAU</span> e <span class="attr-rf">RF</span>).</p>
+            <span class="cond-dur">Duração: Turnos definidos ou até neutralizar</span>
+            <p>O veneno circula pelo corpo do alvo, corroendo sua vitalidade. Ele sofre <span class="dice">1d8</span> de dano por turno e tem desvantagem em testes físicos (<span class="attr-des">DES</span>, <span class="attr-fr">FOR</span>, <span class="attr-saude">SAU</span> e <span class="attr-rf">RF</span>).</p>
           </div>
 
           <div class="cond-card">
             <h4>Espectral</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos ou tempo limitado</span>
-            <p>O alvo perde sua forma fÃ­sica, tornando-se intangÃ­vel. NÃ£o pode realizar ataques fÃ­sicos nem ser atingido por eles. Habilidades que afetam energia, mente ou essÃªncia ainda podem afetÃ¡-lo normalmente. Pode atravessar criaturas e obstÃ¡culos sÃ³lidos, mas nÃ£o pode interagir fisicamente com o ambiente.</p>
+            <span class="cond-dur">Duração: Turnos definidos ou tempo limitado</span>
+            <p>O alvo perde sua forma física, tornando-se intangível. Não pode realizar ataques físicos nem ser atingido por eles. Habilidades que afetam energia, mente ou essência ainda podem afetá-lo normalmente. Pode atravessar criaturas e obstáculos sólidos, mas não pode interagir fisicamente com o ambiente.</p>
           </div>
 
           <div class="cond-card">
             <h4>Exausto</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: AtÃ© um descanso longo ou curto</span>
-            <p>O alvo estÃ¡ fisicamente e mentalmente drenado. Seu deslocamento e nÃºmero de aÃ§Ãµes sÃ£o reduzidos pela metade, e sofre desvantagem em testes fÃ­sicos (<span class="attr-des">DES</span>, <span class="attr-fr">FOR</span>, <span class="attr-saude">SAU</span> e <span class="attr-rf">RF</span>).</p>
+            <span class="cond-dur">Duração: Até um descanso longo ou curto</span>
+            <p>O alvo está fisicamente e mentalmente drenado. Seu deslocamento e número de ações são reduzidos pela metade, e sofre desvantagem em testes físicos (<span class="attr-des">DES</span>, <span class="attr-fr">FOR</span>, <span class="attr-saude">SAU</span> e <span class="attr-rf">RF</span>).</p>
           </div>
 
           <div class="cond-card">
             <h4>Iluminado</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos ou atÃ© a marca se apagar</span>
-            <p>O alvo Ã© marcado por uma luz intensa que o destaca no ambiente. Sofre desvantagem em testes de furtividade e ataques contra ele tÃªm +2 de acerto. Criaturas prÃ³ximas podem detectÃ¡-lo mesmo atravÃ©s de cobertura leve.</p>
+            <span class="cond-dur">Duração: Turnos definidos ou até a marca se apagar</span>
+            <p>O alvo é marcado por uma luz intensa que o destaca no ambiente. Sofre desvantagem em testes de furtividade e ataques contra ele têm +2 de acerto. Criaturas próximas podem detectá-lo mesmo através de cobertura leve.</p>
           </div>
 
           <div class="cond-card">
             <h4>Paralisado</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos ou atÃ© ser dissipado</span>
-            <p>O alvo fica completamente imÃ³vel e incapaz de agir. NÃ£o pode se mover, atacar ou usar habilidades, falha automaticamente em testes de resistÃªncia baseados em corpo e ataques contra ele tÃªm vantagem.</p>
+            <span class="cond-dur">Duração: Turnos definidos ou até ser dissipado</span>
+            <p>O alvo fica completamente imóvel e incapaz de agir. Não pode se mover, atacar ou usar habilidades, falha automaticamente em testes de resistência baseados em corpo e ataques contra ele têm vantagem.</p>
           </div>
 
           <div class="cond-card">
             <h4>Petrificado</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: Permanente ou atÃ© ser curado</span>
-            <p>O alvo se transforma completamente em pedra, ficando incapaz de agir, se mover ou perceber o ambiente. Enquanto petrificado, Ã© tratado como objeto inerte, podendo ser destruÃ­do fisicamente.</p>
+            <span class="cond-dur">Duração: Permanente ou até ser curado</span>
+            <p>O alvo se transforma completamente em pedra, ficando incapaz de agir, se mover ou perceber o ambiente. Enquanto petrificado, é tratado como objeto inerte, podendo ser destruído fisicamente.</p>
           </div>
 
           <div class="cond-card">
             <h4>Queimando</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos ou atÃ© o fogo ser apagado</span>
-            <p>O alvo estÃ¡ em chamas. Ele sofre <span class="dice">1d8</span> de dano de fogo por turno, e ataques de fogo contra ele causam <span class="dice">1d8</span> de dano adicional.</p>
+            <span class="cond-dur">Duração: Turnos definidos ou até o fogo ser apagado</span>
+            <p>O alvo está em chamas. Ele sofre <span class="dice">1d8</span> de dano de fogo por turno, e ataques de fogo contra ele causam <span class="dice">1d8</span> de dano adicional.</p>
           </div>
 
           <div class="cond-card">
             <h4>Sangramento</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos</span>
-            <p>Sangramento possui trÃªs graus: <strong>Leve</strong> (<span class="dice">1d4</span> por turno), <strong>Normal</strong> (<span class="dice">1d8</span> por turno) e <strong>Grave</strong> (<span class="dice">2d6</span> por turno).</p>
-            <p>Aplicar Sangramento em um alvo jÃ¡ afetado aumenta o grau nessa ordem: Leve â†’ Normal â†’ Grave. Grave Ã© o grau mÃ¡ximo. Se aplicado novamente, o dano passa a ser <span class="dice">2d6</span> + <span class="dice">1d4</span> por turno. Se ainda assim Sangramento for aplicado outra vez, o alvo sofre imediatamente (<span class="dice">2d6</span> + <span class="dice">1d4</span>) Ã— 2 e Desorientado e o efeito termina.</p>
+            <span class="cond-dur">Duração: Turnos definidos</span>
+            <p>Sangramento possui três graus: <strong>Leve</strong> (<span class="dice">1d4</span> por turno), <strong>Normal</strong> (<span class="dice">1d8</span> por turno) e <strong>Grave</strong> (<span class="dice">2d6</span> por turno).</p>
+            <p>Aplicar Sangramento em um alvo já afetado aumenta o grau nessa ordem: Leve ? Normal ? Grave. Grave é o grau máximo. Se aplicado novamente, o dano passa a ser <span class="dice">2d6</span> + <span class="dice">1d4</span> por turno. Se ainda assim Sangramento for aplicado outra vez, o alvo sofre imediatamente (<span class="dice">2d6</span> + <span class="dice">1d4</span>) × 2 e Desorientado e o efeito termina.</p>
           </div>
 
           <div class="cond-card">
             <h4>Sobrecarga</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos ou atÃ© neutralizar</span>
-            <p>O alvo Ã© tomado por energia elÃ©trica instÃ¡vel. Sofre <span class="dice">1d6</span> de dano elÃ©trico por turno e tem desvantagem em aÃ§Ãµes de precisÃ£o, testes mentais e ataques Ã  distÃ¢ncia. Se falhar um teste de <span class="attr-rf">RF</span>, a carga se intensifica, causando +<span class="dice">1d6</span> de dano adicional naquele turno. Caso falhe e tenha uma criatura adjacente (2B), a Sobrecarga salta para essa criatura.</p>
+            <span class="cond-dur">Duração: Turnos definidos ou até neutralizar</span>
+            <p>O alvo é tomado por energia elétrica instável. Sofre <span class="dice">1d6</span> de dano elétrico por turno e tem desvantagem em ações de precisão, testes mentais e ataques à distância. Se falhar um teste de <span class="attr-rf">RF</span>, a carga se intensifica, causando +<span class="dice">1d6</span> de dano adicional naquele turno. Caso falhe e tenha uma criatura adjacente (2B), a Sobrecarga salta para essa criatura.</p>
           </div>
 
           <div class="cond-card">
             <h4>Surdo</h4>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos ou permanente</span>
-            <p>O alvo perde totalmente a capacidade de ouvir. NÃ£o pode realizar aÃ§Ãµes que dependam de audiÃ§Ã£o, sofre desvantagem em testes de percepÃ§Ã£o baseados em som e falha automaticamente em testes que envolvam identificar ameaÃ§as auditivas. ComunicaÃ§Ã£o verbal com o alvo tambÃ©m se torna difÃ­cil ou impossÃ­vel.</p>
+            <span class="cond-dur">Duração: Turnos definidos ou permanente</span>
+            <p>O alvo perde totalmente a capacidade de ouvir. Não pode realizar ações que dependam de audição, sofre desvantagem em testes de percepção baseados em som e falha automaticamente em testes que envolvam identificar ameaças auditivas. Comunicação verbal com o alvo também se torna difícil ou impossível.</p>
           </div>
 
         </div>
       </section>
 
-      <!-- CONDIÃ‡Ã•ES ELEMENTAIS -->
+      <!-- CONDIÇÕES ELEMENTAIS -->
       <section class="subsection" id="elementais">
         <div class="section-heading">
-          <h2>CondiÃ§Ãµes Elementais</h2>
+          <h2>Condições Elementais</h2>
         </div>
         <div class="cond-grid">
 
           <div class="cond-card" style="border-color: rgba(255,0,0,0.3);">
             <h4 style="color: #ff0000;">Fragmentado</h4>
-            <span class="cond-elem-label" style="color: #ff0000; border-color: rgba(255,0,0,0.3);">NulÃ­drico</span>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos ou atÃ© sair da Ã¡rea</span>
-            <p>O corpo do alvo Ã© cortado por fissuras vermelhas que se espalham como rachaduras na realidade, afetando sua estabilidade fÃ­sica e mental.</p>
-            <p>Reduz <span class="attr-rf">RF</span> e ResistÃªncia Elemental em 2 pontos. O alvo sofre desvantagem em testes de esquiva. Ataques contra o alvo tÃªm <span class="dice">1d15</span> (CT 15) de chance de causar dano crÃ­tico adicional.</p>
-            <p class="cond-acum">NÃ£o acumulÃ¡vel</p>
+            <span class="cond-elem-label" style="color: #ff0000; border-color: rgba(255,0,0,0.3);">Nulídrico</span>
+            <span class="cond-dur">Duração: Turnos definidos ou até sair da área</span>
+            <p>O corpo do alvo é cortado por fissuras vermelhas que se espalham como rachaduras na realidade, afetando sua estabilidade física e mental.</p>
+            <p>Reduz <span class="attr-rf">RF</span> e Resistência Elemental em 2 pontos. O alvo sofre desvantagem em testes de esquiva. Ataques contra o alvo têm <span class="dice">1d15</span> (CT 15) de chance de causar dano crítico adicional.</p>
+            <p class="cond-acum">Não acumulável</p>
           </div>
 
           <div class="cond-card" style="border-color: rgba(180,95,6,0.3);">
             <h4 style="color: #b45f06;">Assombrado</h4>
             <span class="cond-elem-label" style="color: #b45f06; border-color: rgba(180,95,6,0.3);">Pesadelo</span>
-            <span class="cond-dur">DuraÃ§Ã£o: Turnos definidos ou atÃ© superar teste de ResistÃªncia Mental</span>
-            <p>A mente do alvo Ã© invadida por ilusÃµes aterrorizantes, forÃ§ando-o a reviver seus piores medos.</p>
-            <p>O alvo sofre <span class="dice">1d6</span> de dano mental por turno. Penalidade de -2 em todos os testes mentais. Testes de esquiva tÃªm desvantagem devido Ã  distraÃ§Ã£o mental.</p>
-            <p class="cond-acum">NÃ£o acumulÃ¡vel</p>
+            <span class="cond-dur">Duração: Turnos definidos ou até superar teste de Resistência Mental</span>
+            <p>A mente do alvo é invadida por ilusões aterrorizantes, forçando-o a reviver seus piores medos.</p>
+            <p>O alvo sofre <span class="dice">1d6</span> de dano mental por turno. Penalidade de -2 em todos os testes mentais. Testes de esquiva têm desvantagem devido à distração mental.</p>
+            <p class="cond-acum">Não acumulável</p>
           </div>
 
           <div class="cond-card" style="border-color: rgba(103,78,167,0.3);">
             <h4 style="color: #674EA7;">Infectado</h4>
             <span class="cond-elem-label" style="color: #674EA7; border-color: rgba(103,78,167,0.3);">Praga</span>
-            <span class="cond-dur">DuraÃ§Ã£o: Permanente atÃ© ser regredida</span>
-            <p>A vÃ­tima Ã© contaminada por uma doenÃ§a viva e incurÃ¡vel que se manifesta atravÃ©s de pele acinzentada e veias negras visÃ­veis que se espalham lentamente.</p>
-            <p>O alvo sofre 1% de sua Vida MÃ¡xima enquanto a doenÃ§a avanÃ§a com o tempo. Reduz <span class="attr-fr">FR</span> e Movimento em 2 pontos. Testes que giram em torno de forÃ§a fÃ­sica sofrem com desvantagens. Caso o alvo morra infectado, ele se transforma em uma criatura de Praga apÃ³s <span class="dice">1d4</span> horas.</p>
-            <p><strong>RegressÃ£o:</strong> Itens especÃ­ficos podem regredir a doenÃ§a, reduzindo os sintomas temporariamente, mas sem curÃ¡-la.</p>
-            <p class="cond-acum">NÃ£o acumulÃ¡vel</p>
+            <span class="cond-dur">Duração: Permanente até ser regredida</span>
+            <p>A vítima é contaminada por uma doença viva e incurável que se manifesta através de pele acinzentada e veias negras visíveis que se espalham lentamente.</p>
+            <p>O alvo sofre 1% de sua Vida Máxima enquanto a doença avança com o tempo. Reduz <span class="attr-fr">FR</span> e Movimento em 2 pontos. Testes que giram em torno de força física sofrem com desvantagens. Caso o alvo morra infectado, ele se transforma em uma criatura de Praga após <span class="dice">1d4</span> horas.</p>
+            <p><strong>Regressão:</strong> Itens específicos podem regredir a doença, reduzindo os sintomas temporariamente, mas sem curá-la.</p>
+            <p class="cond-acum">Não acumulável</p>
           </div>
 
           <div class="cond-card" style="border-color: rgba(11,83,148,0.3);">
             <h4 style="color: #0B5394;">Congelado</h4>
             <span class="cond-elem-label" style="color: #0B5394; border-color: rgba(11,83,148,0.3);">Estase</span>
-            <span class="cond-dur">DuraÃ§Ã£o: 1 rodada</span>
-            <p>O alvo Ã© atingido por pedaÃ§os de gelo azul profundo, ficando preso em uma camada de gelo cÃ³smico que retarda seus movimentos e aÃ§Ãµes.</p>
-            <p>O alvo perde seu turno enquanto estiver congelado. Reduz Movimento a 0 durante o efeito. ApÃ³s sair da condiÃ§Ã£o, sofre penalidade de -2 em aÃ§Ãµes fÃ­sicas nos dois prÃ³ximos turnos devido ao frio extremo.</p>
-            <p class="cond-acum">NÃ£o acumulÃ¡vel</p>
+            <span class="cond-dur">Duração: 1 rodada</span>
+            <p>O alvo é atingido por pedaços de gelo azul profundo, ficando preso em uma camada de gelo cósmico que retarda seus movimentos e ações.</p>
+            <p>O alvo perde seu turno enquanto estiver congelado. Reduz Movimento a 0 durante o efeito. Após sair da condição, sofre penalidade de -2 em ações físicas nos dois próximos turnos devido ao frio extremo.</p>
+            <p class="cond-acum">Não acumulável</p>
           </div>
 
           <div class="cond-card" style="border-color: rgba(152,0,0,0.3);">
             <h4 style="color: #980000;">Amalgamado</h4>
-            <span class="cond-elem-label" style="color: #980000; border-color: rgba(152,0,0,0.3);">PodridÃ£o</span>
-            <span class="cond-dur">DuraÃ§Ã£o: AtÃ© o parasita ser removido</span>
-            <p>Um parasita pÃºtrido se aloja profundamente no corpo do alvo, nascido da gosma viva da PodridÃ£o. Ele se alimenta do sangue e dos tecidos internos, crescendo a cada batida do coraÃ§Ã£o. A pele comeÃ§a a escurecer, pulsar e vazar um lodo negro, enquanto o hospedeiro sente sua vitalidade sendo drenada por dentro atÃ© que o parasita tome completamente o controle.</p>
-            <p>O alvo sofre <span class="dice">1d8</span> de dano por turno (ignora resistÃªncias). A condiÃ§Ã£o permanece atÃ© ser removida por qualquer tipo de Cura elemental. Caso o parasita permaneÃ§a atÃ© o fim da cena, o alvo entra imediatamente em estado de <strong>Morrendo</strong>.</p>
-            <p class="cond-acum">NÃ£o acumulÃ¡vel</p>
+            <span class="cond-elem-label" style="color: #980000; border-color: rgba(152,0,0,0.3);">Podridão</span>
+            <span class="cond-dur">Duração: Até o parasita ser removido</span>
+            <p>Um parasita pútrido se aloja profundamente no corpo do alvo, nascido da gosma viva da Podridão. Ele se alimenta do sangue e dos tecidos internos, crescendo a cada batida do coração. A pele começa a escurecer, pulsar e vazar um lodo negro, enquanto o hospedeiro sente sua vitalidade sendo drenada por dentro até que o parasita tome completamente o controle.</p>
+            <p>O alvo sofre <span class="dice">1d8</span> de dano por turno (ignora resistências). A condição permanece até ser removida por qualquer tipo de Cura elemental. Caso o parasita permaneça até o fim da cena, o alvo entra imediatamente em estado de <strong>Morrendo</strong>.</p>
+            <p class="cond-acum">Não acumulável</p>
           </div>
 
         </div>
@@ -307,7 +308,7 @@
   </div>
 </div>
 
-<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">â˜°</button>
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">?</button>
 
 <script src="js/conditions.js"></script>
 <script src="js/main.js"></script>

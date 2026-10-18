@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boletim — Wuitalur RPG</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/boletim.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- SIDEBAR LATERAL -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema v1.5.7</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Extras</div>
+      <a href="suplementos.html" class="sidebar-link"><span class="icon"></span> Suplementos</a>
+      <a href="boletim.html" class="sidebar-link active" style="color: #f43f5e;"><span class="icon"></span> Boletim</a>
+      <a href="mesa.html" class="sidebar-link" style="color: #ff7700;"><span class="icon"></span> Mesa Virtual</a>
+      <a href="wuitter.html" class="sidebar-link" style="color: #1d9bf0;"><span class="icon"></span> Wuitter</a>
+
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="origins.html" class="sidebar-link"><span class="icon"></span> Origens</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
+      <a href="glossario.html" class="sidebar-link"><span class="icon"></span> Glossário</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+      <a href="selos.html" class="sidebar-link"><span class="icon"></span> Selos</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+      <a href="bestiario.html" class="sidebar-link"><span class="icon"></span> Bestiário</a>
+
+      <div class="sidebar-section-title">Ferramentas</div>
+      <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
+      <a href="criador.html" class="sidebar-link"><span class="icon"></span> Criador de Ficha</a>
+    </nav>
+  </aside>
+
+  <!-- WRAPPER PRINCIPAL -->
+  <div class="main-wrapper">
+
+    <!-- CABEÇALHO DA PÁGINA -->
+    <header class="page-header">
+      <div style="display: flex; align-items: center; gap: var(--space-md);">
+        <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+        <h1>Boletim de Wuitalur</h1>
+      </div>
+      <div style="position:relative">
+        <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
+        <div class="wiki-dropdown" id="wiki-menu-dropdown">
+          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
+          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
+          <a href="criador.html" class="wiki-dropdown-item"><span class="icon">&#x270E;</span> Criador de Ficha</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="page-content">
+
+      <!-- HERO INTRODUTÓRIO -->
+      <section class="boletim-hero">
+        <span class="boletim-hero-badge">Publicações Periódicas</span>
+        <h1>Boletim <span>Oficial</span></h1>
+        <p class="tagline">
+          Informativos sazonais, cartas dos criadores, bastidores de desenvolvimento e respostas às crônicas da comunidade de Wuitalur RPG.
+        </p>
+      </section>
+
+      <!-- BARRA DE SELEÇÃO RÁPIDA NO MOBILE -->
+      <div class="boletim-mobile-bar">
+        <div class="boletim-mobile-current-info">
+          <span class="boletim-mobile-label">Edição Visualizada</span>
+          <span class="boletim-mobile-title" id="boletim-mobile-current-title">Carregando...</span>
+        </div>
+        <button type="button" class="boletim-mobile-toggle-btn" id="boletim-mobile-toggle-btn" aria-expanded="false">
+          Ver Edições &darr;
+        </button>
+      </div>
+
+      <!-- CONTAINER DE DUAS COLUNAS: ARQUIVO À ESQUERDA + LEITOR À DIREITA -->
+      <div class="boletim-layout-container">
+
+        <!-- COLUNA DA ESQUERDA: ARQUIVO DE EDIÇÕES -->
+        <aside class="boletim-archive-pane" id="boletim-archive-pane" aria-label="Arquivo de Edições do Boletim">
+          <div class="boletim-archive-header">
+            <div class="boletim-archive-header-row">
+              <h2 class="boletim-archive-title">Boletins</h2>
+              <span class="boletim-archive-count" id="boletim-archive-count">0 edições</span>
+            </div>
+            <div class="boletim-search-box">
+              <input type="text" 
+                     id="boletim-search-input" 
+                     class="boletim-search-input" 
+                     placeholder="Buscar edições ou temas..." 
+                     aria-label="Buscar boletins">
+            </div>
+          </div>
+
+          <!-- LISTA DINÂMICA DE CARDS DO ARQUIVO (MAIS RECENTE PRIMEIRO) -->
+          <div class="boletim-archive-list" id="boletim-archive-list">
+            <!-- Renderizado via js/boletim.js -->
+          </div>
+        </aside>
+
+        <!-- COLUNA DA DIREITA: LEITOR PRINCIPAL DO BOLETIM -->
+        <section class="boletim-reader-pane" id="boletim-reader-view" aria-label="Conteúdo da Edição Selecionada">
+          <!-- Renderizado via js/boletim.js -->
+        </section>
+
+      </div>
+
+    </main>
+
+  </div>
+
+</div>
+
+<script src="js/main.js"></script>
+<script src="js/boletim-data.js"></script>
+<script src="js/boletim.js"></script>
+
+</body>
+</html>
