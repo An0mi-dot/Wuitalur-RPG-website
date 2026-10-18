@@ -1,28 +1,28 @@
 /* ============================================================
-   WUITALUR RPG — BANCO DE DADOS DOS BOLETINS INFORMATIVOS
-   Edições Oficiais, Cartas dos Criadores e Bastidores
-   (Zero Emojis, Formato Extensível)
+   WUITALUR RPG — BANCO DE DADOS DOS BOLETINS
+   Novidades, atualizacoes do sistema, historia e curiosidades
+   (Zero Emojis, Formato Extensivel)
    ============================================================ */
 
 const BOLETINS_DATA = [
   {
     id: "edicao-01",
     numero: 1,
-    edicao: "Edição #1",
+    edicao: "Edicao #1",
     epoca: "Outubro 2026",
     data: "18 de Outubro de 2026",
     dataIso: "2026-10-18",
     titulo: "Boletim #1",
-    subtitulo: "Primeira edição do Boletim Oficial de Wuitalur RPG.",
-    autor: "Equipe Wuitalur",
+    subtitulo: "Primeira edicao com novidades, sistema e historia.",
+    autor: "Mestre",
     tempoLeitura: "Em breve",
-    resumo: "Esta edição inaugural está sendo preparada e terá seu conteúdo publicado em breve.",
-    tags: ["Inaugural", "Boletim"],
+    resumo: "Esta primeira edicao esta sendo preparada e tera novidades em breve.",
+    tags: ["Novidades", "Boletim"],
     conteudoHtml: `
       <section class="boletim-section">
         <h3 class="boletim-section-title">Em Breve</h3>
         <p class="boletim-lead">
-          O conteúdo desta primeira edição do boletim está sendo preparado e será publicado aqui em breve.
+          O conteudo desta primeira edicao esta sendo preparado e vai sair aqui jaja.
         </p>
       </section>
     `
