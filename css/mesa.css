@@ -12694,6 +12694,12 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   text-transform: uppercase;
 }
 
+.igris-card-stock.is-infinite {
+  color: #38bdf8;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
 /* ==========================================================================
    TENDA DO IGRIS: DIÁLOGO SINISTRO E TREMEDEIRA (ESTILO UNDERTALE / DELTARUNE)
    ========================================================================== */

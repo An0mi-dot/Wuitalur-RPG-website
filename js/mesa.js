@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.2.7';
+const MESA_VERSION = 'v2.2.8';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -8108,7 +8108,7 @@ window.MesaNotebookSara = MesaNotebookSara;
 // A TENDA DO IGRIS (INTERFACE DE MERCADOR - SALAO DE RELIQUIAS E TROCAS)
 // ==========================================================================
 const IGRIS_DEFAULT_ITEMS = [
-  // --- ITENS PADROES: AS FRUTAS ESTRANHAS (ESTOQUE PERMANENTE) ---
+  // --- ITENS PADROES: AS FRUTAS ESTRANHAS (ESTOQUE PERMANENTE / INFINITO) ---
   {
     id: 'igris_fruta_verde',
     nome: 'FRUTA VERDE ESTRANHA',
@@ -8117,9 +8117,10 @@ const IGRIS_DEFAULT_ITEMS = [
     raridade: 'Consumível',
     efeito: 'Ao ser consumida, tem um sabor estranhamente metálico e doce. Cura 1d4 de vida e remove instantaneamente condições de estado negativas ativas.',
     descricao: 'Uma estranha fruta pequena de casca folhada, semelhante a um repolho, mas em um formato esférico absolutamente perfeito e simétrico.',
-    preco: '1 Unidade',
+    preco: 'Infinito',
     precoVidrilhos: 2,
-    quantidade: 1,
+    quantidade: Infinity,
+    isInfinite: true,
     isDefault: true,
     categoria: 'padrao'
   },
@@ -8131,9 +8132,10 @@ const IGRIS_DEFAULT_ITEMS = [
     raridade: 'Consumível',
     efeito: 'Ao ser consumida, tem um sabor denso e relaxante. Restaura 4 pontos na barra de stresse do consumidor.',
     descricao: 'Uma estranha fruta pequena de casca folhada e tom arroxeado escuro, semelhante a um repolho, mas num formato esférico absolutamente perfeito e simétrico.',
-    preco: '1 Unidade',
+    preco: 'Infinito',
     precoVidrilhos: 3,
-    quantidade: 1,
+    quantidade: Infinity,
+    isInfinite: true,
     isDefault: true,
     categoria: 'padrao'
   },
@@ -8145,9 +8147,10 @@ const IGRIS_DEFAULT_ITEMS = [
     raridade: 'Consumível',
     efeito: 'Ao ser consumida, o seu sumo é efervescente e revigorante. Concede 1d2 PE (Pontos de Esforço) de imediato a quem a consumir.',
     descricao: 'Uma estranha fruta pequena de casca folhada e tom amarelo vibrante, semelhante a um repolho, mas num formato esférico absolutamente perfeito e simétrico.',
-    preco: '1 Unidade',
+    preco: 'Infinito',
     precoVidrilhos: 3,
-    quantidade: 1,
+    quantidade: Infinity,
+    isInfinite: true,
     isDefault: true,
     categoria: 'padrao'
   },
@@ -8598,7 +8601,7 @@ const MesaIgrisShop = {
               ` : ''}
               <p class="igris-card-desc">${item.descricao || 'Nenhuma informação decifrada sobre esta relíquia.'}</p>
               <div class="igris-card-footer">
-                <span class="igris-card-stock">${item.preco || (item.quantidade ? `${item.quantidade} Unidade` : '1 Unidade')}</span>
+                <span class="igris-card-stock ${item.isInfinite || item.quantidade === Infinity || item.isDefault || item.categoria === 'padrao' || String(item.id).includes('fruta') ? 'is-infinite' : ''}">${(item.isInfinite || item.quantidade === Infinity || item.isDefault || item.categoria === 'padrao' || String(item.id).includes('fruta')) ? 'Infinito' : (item.preco || (item.quantidade ? `${item.quantidade} Unidade` : '1 Unidade'))}</span>
                 <span class="igris-card-price"><img src="assets/vidrilhos.png" class="vidrilhos-icon" alt="" /> ${item.precoVidrilhos != null ? item.precoVidrilhos : 5} Vidrilhos</span>
               </div>
             </div>
@@ -8808,6 +8811,12 @@ const MesaIgrisShop = {
     allItemIds.forEach(itemId => {
       const interested = this.interests[itemId] || [];
       const shopItem = (this.items && this.items.find(x => String(x.id) === String(itemId))) || null;
+      const isInfinite = shopItem && (shopItem.isInfinite || shopItem.quantidade === Infinity || shopItem.isDefault || shopItem.categoria === 'padrao' || String(shopItem.id).includes('fruta'));
+      if (isInfinite) {
+        // Frutas e itens de estoque infinito nunca entram em conflito de disputa
+        return;
+      }
+
       const availableQty = (shopItem && shopItem.quantidade !== undefined) ? shopItem.quantidade : 1;
 
       if (interested.length > availableQty) {
@@ -9003,17 +9012,23 @@ const MesaIgrisShop = {
 
     allItemIds.forEach(itemId => {
       const interested = this.interests[itemId] || [];
-      if (interested.length === 1) {
-        const targetId = interested[0];
+      if (!interested || interested.length === 0) return;
+
+      const shopItem = (this.items && this.items.find(x => String(x.id) === String(itemId))) || null;
+      const itemName = shopItem ? shopItem.nome : `Artefato ${itemId}`;
+      const isInfinite = shopItem && (shopItem.isInfinite || shopItem.quantidade === Infinity || shopItem.isDefault || shopItem.categoria === 'padrao' || String(shopItem.id).includes('fruta'));
+
+      // Itens de estoque infinito entregam para todos os que escolheram;
+      // Itens limitados requerem que a disputa tenha sido resolvida (exatamente 1 participante).
+      const recipients = isInfinite ? interested : (interested.length === 1 ? interested : []);
+
+      recipients.forEach(targetId => {
         let slotNum = null;
         if (typeof targetId === 'string' && targetId.startsWith('slot_')) {
           slotNum = parseInt(targetId.replace('slot_', ''), 10);
         } else if (typeof targetId === 'number') {
           slotNum = targetId;
         }
-
-        const shopItem = (this.items && this.items.find(x => String(x.id) === String(itemId))) || null;
-        const itemName = shopItem ? shopItem.nome : `Artefato ${itemId}`;
 
         deliveries.push({
           itemId: itemId,
@@ -9026,7 +9041,7 @@ const MesaIgrisShop = {
         // Se o slot foi identificado, atribui a posse no acervo de coletaveis do jogo
         if (slotNum && window.MesaColetaveis) {
           // Cria id unico para a copia entregue ao jogador caso seja um item padrao repetivel
-          const grantedId = (shopItem && shopItem.isDefault) ? `${itemId}_${slotNum}_${Date.now()}` : itemId;
+          const grantedId = (shopItem && (shopItem.isDefault || isInfinite)) ? `${itemId}_${slotNum}_${Date.now()}` : itemId;
           let colItem = MesaColetaveis.items.find(x => String(x.id) === String(grantedId));
           if (!colItem && shopItem) {
             colItem = {
@@ -9047,7 +9062,7 @@ const MesaIgrisShop = {
             colItem.desbloqueado = true;
           }
         }
-      }
+      });
     });
 
     if (deliveries.length === 0) {
