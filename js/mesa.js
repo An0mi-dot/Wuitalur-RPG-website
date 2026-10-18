@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.2.8';
+const MESA_VERSION = 'v2.2.9';
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -3462,7 +3462,10 @@ const MesaDice = {
   },
 
   playRollAnimation(data) {
-    const stage = document.getElementById('dice-stage');
+    const isCombat = document.body.classList.contains('combat-active');
+    const stage = (isCombat && document.getElementById('combat-dice-stage'))
+      ? document.getElementById('combat-dice-stage')
+      : document.getElementById('dice-stage');
     if (!stage) return;
 
     if (this.rollTimeout) clearTimeout(this.rollTimeout);
@@ -3493,7 +3496,7 @@ const MesaDice = {
     // Animação de números girando em alta velocidade por 1.2 segundos
     const interval = setInterval(() => {
       data.results.forEach((d, i) => {
-        const valEl = document.getElementById(`dice-val-${i}`);
+        const valEl = stage.querySelector(`#dice-val-${i}`);
         if (valEl) {
           valEl.textContent = this.cryptoRandomInt(1, d.sides);
         }
@@ -3505,8 +3508,8 @@ const MesaDice = {
       clearInterval(interval);
 
       data.results.forEach((d, i) => {
-        const box = document.getElementById(`dice-box-${i}`);
-        const valEl = document.getElementById(`dice-val-${i}`);
+        const box = stage.querySelector(`#dice-box-${i}`);
+        const valEl = stage.querySelector(`#dice-val-${i}`);
         if (box && valEl) {
           box.classList.remove('rolling');
           box.classList.add('settled');
@@ -3515,7 +3518,7 @@ const MesaDice = {
       });
 
       // Exibe o total final e detalhamento
-      const totalBox = document.getElementById('dice-total-box');
+      const totalBox = stage.querySelector('#dice-total-box');
       if (totalBox) {
         const breakdownStr = data.results.map(d => `d${d.sides}(${d.val})`).join(' + ');
         const modStr = data.modifier !== 0 ? (data.modifier > 0 ? ` + ${data.modifier}` : ` - ${Math.abs(data.modifier)}`) : '';

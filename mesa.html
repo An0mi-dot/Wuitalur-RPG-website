@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.2.8">
+  <link rel="stylesheet" href="css/mesa.css?v=2.2.9">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1253,9 +1253,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.8.8"></script>
 
-<script src="js/mesa.js?v=2.2.8"></script>
+<script src="js/mesa.js?v=2.2.9"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.2.8</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.2.9</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -1812,10 +1812,20 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         <span class="combat-title-name" id="combat-opponent-title">???</span>
         <div class="combat-current-turn-sub" id="combat-current-turn-sub" style="display: none;"></div>
       </div>
-      <button type="button" id="combat-top-menu-btn" class="combat-top-menu-btn" onclick="MesaCombatMenu.toggle()" title="Menu de Ferramentas e Personagens">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-        <span>Menu</span>
-      </button>
+      <!-- Ações Rápidas do Topo: Rolar Dados e Menu -->
+      <div class="combat-top-nav-group">
+        <button type="button" id="combat-top-dice-btn" class="combat-top-btn combat-top-dice-btn" onclick="MesaDice.openModal()" title="Rolar Dados no Combate">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="2" width="20" height="20" rx="3" ry="3"></rect>
+            <path d="M8 8h.01"></path><path d="M16 8h.01"></path><path d="M12 12h.01"></path><path d="M8 16h.01"></path><path d="M16 16h.01"></path>
+          </svg>
+          <span>Dados</span>
+        </button>
+        <button type="button" id="combat-top-menu-btn" class="combat-top-btn combat-top-menu-btn" onclick="MesaCombatMenu.toggle()" title="Menu de Ferramentas e Personagens">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          <span>Menu</span>
+        </button>
+      </div>
     </div>
 
     <!-- Controles Exclusivos do Mestre Durante o Combate -->
@@ -1860,16 +1870,19 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
           </button>
           <div id="combat-master-mobile-dropdown" class="combat-master-mobile-dropdown" style="display: none;">
             <button type="button" class="combat-mobile-drop-item" onclick="MesaCombate.prevTurn(); MesaCombate.closeMobileMasterMenu();" id="combat-mobile-prev-item" style="display: none;">
-              ◀ Turno Anterior
+              &larr; Turno Anterior
+            </button>
+            <button type="button" class="combat-mobile-drop-item" onclick="MesaDice.openModal(); MesaCombate.closeMobileMasterMenu();">
+              Rolar Dados
             </button>
             <button type="button" class="combat-mobile-drop-item" onclick="MesaCombate.openTurnModal(); MesaCombate.closeMobileMasterMenu();">
-              ⚡ <span id="combat-mobile-turn-label">Ciclo de Turnos</span>
+              <span id="combat-mobile-turn-label">Ciclo de Turnos</span>
             </button>
             <button type="button" class="combat-mobile-drop-item" onclick="MesaCombate.openSelectModal(); MesaCombate.closeMobileMasterMenu();">
-              🔄 Trocar Oponente
+              Trocar Oponente
             </button>
             <button type="button" class="combat-mobile-drop-item danger" onclick="MesaCombate.stopCombat(true); MesaCombate.closeMobileMasterMenu();">
-              ✕ Encerrar Combate
+              Encerrar Combate
             </button>
           </div>
         </div>
@@ -1894,6 +1907,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         </div>
       </div>
     </div>
+
+    <!-- Palco Central de Rolagem de Dados em Combate -->
+    <div id="combat-dice-stage" class="dice-stage combat-dice-stage"></div>
   </div>
 
   <!-- MODAL: GERENCIADOR DE COMBATE DO MESTRE -->
