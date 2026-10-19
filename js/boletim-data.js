@@ -22,13 +22,13 @@ const BOLETINS_DATA = [
       <section class="boletim-section">
         <h3 class="boletim-section-title">O Plano Começando a Tomar Forma</h3>
         <p class="boletim-lead">
-          Fala galera! Como eu tinha falado no boletim passado, já comecei a sentar pra planejar como vai ser a <strong>Edição 2.0</strong> do sistema de Wuitalur RPG.
+          Como eu tinha comentado no boletim anterior, comecei a planejar como vai ser a <strong>Edição 2.0</strong> do sistema de Wuitalur RPG.
         </p>
         <p>
-          Lembrando que o nosso sistema base continua sendo 100% focado em <strong>fantasia com poderes, magia elemental e builds estilosas</strong>. O lance mais investigativo e de horror da nossa mesa atual (com colégio, conspirações e etc) é só do suplemento <em>Fios do Medo</em>, não do sistema padrão.
+          Lembrando que o nosso sistema base continua sendo focado em <strong>fantasia com poderes, magia elemental e builds estilosas</strong>. O lance mais investigativo e de horror da nossa mesa atual (com colégio, conspirações e etc) é só do suplemento <em>Fios do Medo</em>, não do sistema padrão.
         </p>
         <p>
-          A ideia dessa versão 2.0 é tirar de vez toda aquela burocracia herdada de D&D, Tormenta e Ordem: nada de fórmulas malucas com potências na defesa, nada de somar bônus gigantescos e nada de ter centenas de pontos de mana pra ficar anotando toda hora. É pra ser simples, rápido e gostoso de jogar.
+          A ideia dessa versão 2.0 é tirar de vez toda aquela burocracia herdada de D&D, Tormenta e Ordem: nada de fórmulas malucas com potências na defesa, nada de somar bônus gigantescos e nada de ter centenas de pontos de mana pra ficar anotando toda hora. É pra ser simples, rápido e direto de jogar.
         </p>
       </section>
 
@@ -63,7 +63,7 @@ const BOLETINS_DATA = [
       </section>
 
       <section class="boletim-section">
-        <h3 class="boletim-section-title">De 36 para 12 Perícias (Com Vantagem!)</h3>
+        <h3 class="boletim-section-title">De 36 para 12 Perícias (Com Vantagem)</h3>
         <p>
           Aquela lista gigante de mais de 36 perícias cheia de coisas que quase ninguém usava foi enxugada. Agora temos exatamente <strong>12 perícias essenciais</strong>:
         </p>
@@ -73,17 +73,17 @@ const BOLETINS_DATA = [
           <li><strong>Sociais:</strong> Persuasão, Enganação e Intimidação.</li>
         </ul>
         <p>
-          Cada personagem vai escolher <strong>4 perícias treinadas</strong>. E aqui está a melhor parte da mecânica: ser treinado em uma perícia agora te dá <strong>Vantagem (rola 2d12 e escolhe o maior)</strong>! Se você também tiver o atributo especializado, ainda soma +2 no dado mais alto. Acabou aquela frustração de um especialista experiente tirar 1 no dado e falhar numa tarefa simples.
+          Cada personagem vai escolher <strong>4 perícias treinadas</strong>. E a mecânica funciona assim: ser treinado em uma perícia agora te dá <strong>Vantagem (rola 2d12 e escolhe o maior)</strong>. Se você também tiver o atributo especializado, soma +2 no dado mais alto. Isso evita aquela situação chata de um especialista experiente tirar 1 no dado e falhar numa tarefa simples.
         </p>
       </section>
 
       <section class="boletim-section">
         <h3 class="boletim-section-title">O Novo Molde das 11 Raças</h3>
         <p>
-          Todas as 11 raças originais de Wuitalur continuam firmes e fortes (Akivus, Animalescos, Plantíferos, Humanos, Vampiros, Dragão Anão, Insectóides, Praguentos, Abissais, E.X.O.s e Espectros).
+          Todas as 11 raças originais de Wuitalur continuam (Akivus, Animalescos, Plantíferos, Humanos, Vampiros, Dragão Anão, Insectóides, Praguentos, Abissais, E.X.O.s e Espectros).
         </p>
         <p>
-          Porém, para ninguém ter uma ficha de 5 páginas só de traços passivos, cada raça agora segue um molde padronizado e elegante:
+          Porém, para ninguém ter uma ficha cheia de traços passivos difíceis de lembrar, cada raça agora segue um molde padronizado:
         </p>
         <ul class="boletim-list">
           <li><strong>Bônus de Raça:</strong> Uma resistência ou fraqueza elemental, ou uma perícia cultural.</li>
@@ -95,13 +95,13 @@ const BOLETINS_DATA = [
       <div class="boletim-callout highlight-gold">
         <div class="boletim-callout-header">
           <span class="boletim-callout-tag">Próximos Passos</span>
-          <span class="boletim-callout-title">O Que Vem Pela Frente?</span>
+          <span class="boletim-callout-title">O Que Vem Pela Frente</span>
         </div>
         <p>
-          Os próximos tópicos que vou desenhar são o sistema de <strong>Defesa no combate</strong> (sem contas malucas), a calibragem da <strong>Energia Astral (EA)</strong> para valores menores e fáceis de controlar, e o rework das nossas classes para encaixar perfeitamente no motor de d12.
+          Os próximos tópicos que vou desenhar são o sistema de <strong>Defesa no combate</strong> (sem contas malucas), a calibragem da <strong>Energia Astral (EA)</strong> para valores menores e fáceis de controlar, e a adaptação das nossas classes para encaixar no motor de d12.
         </p>
         <p>
-          Conforme as coisas forem ficando prontas, vou soltando mais boletins por aqui. O que acharam dessa direção inicial? Depois me falem!
+          Conforme as coisas forem ficando prontas, vou soltando mais boletins por aqui. Depois me falem o que acharam dessa direção inicial.
         </p>
       </div>
     `
@@ -117,7 +117,7 @@ const BOLETINS_DATA = [
     subtitulo: "Agradecimento pela sessão, ritmo das próximas e os planos para uma nova versão do sistema.",
     autor: "Mestre",
     tempoLeitura: "2 min",
-    resumo: "Valeu por terem ido ontem! Um aviso sobre o ritmo das próximas sessões e o anúncio de uma reformulação geral do sistema.",
+    resumo: "Valeu por terem ido ontem. Um aviso sobre o ritmo das próximas sessões e o anúncio de uma reformulação geral do sistema.",
     tags: ["Campanha", "Sistema", "Atualizações"],
     conteudoHtml: `
       <section class="boletim-section">
