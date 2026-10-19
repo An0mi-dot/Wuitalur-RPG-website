@@ -13,7 +13,7 @@ const BOLETINS_DATA = [
     data: "19 de Outubro de 2026",
     dataIso: "2026-10-19",
     titulo: "Primeiros Passos da Edição 2.0",
-    subtitulo: "Atributos novos, adeus ao d20, lista de perícias enxuta e o novo molde das raças.",
+    subtitulo: "Atributos novos, não vai mais usar d20, lista de perícias enxuta e o novo molde das raças.",
     autor: "Mestre",
     tempoLeitura: "3 min",
     resumo: "Como prometido no último boletim, já comecei a planejar a nova versão do sistema. Aqui estão as primeiras decisões fechadas sobre dados, atributos, perícias e raças.",
@@ -33,9 +33,9 @@ const BOLETINS_DATA = [
       </section>
 
       <section class="boletim-section">
-        <h3 class="boletim-section-title">Adeus ao d20: O Novo Motor no d12</h3>
+        <h3 class="boletim-section-title">Não vai mais usar d20: O motor no d12</h3>
         <p>
-          A primeira grande mudança é que vamos <strong>sair do d20 tradicional</strong>. O d20 tem muita loteria e dependia de empilhar bônus infinitos na ficha. A partir de agora, o motor de Wuitalur vai rodar no <strong>d12</strong>, de um jeito bem mais direto:
+          A primeira grande mudança é que <strong>não vamos mais usar d20</strong>. O d20 tem muita loteria e dependia de empilhar bônus infinitos na ficha. A partir de agora, o motor de Wuitalur vai rodar no <strong>d12</strong>, de um jeito bem mais direto:
         </p>
         <ul class="boletim-list">
           <li><strong>Teste Comum:</strong> Você rola apenas <strong>1d12 seco</strong> (resultado de 1 a 12).</li>
