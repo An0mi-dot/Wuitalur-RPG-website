@@ -20,88 +20,85 @@ const BOLETINS_DATA = [
     tags: ["Sistema 2.0", "Regras", "Novidades"],
     conteudoHtml: `
       <section class="boletim-section">
-        <h3 class="boletim-section-title">O Plano Começando a Tomar Forma</h3>
+        <h3 class="boletim-section-title">Começando a planejar o sistema novo</h3>
         <p class="boletim-lead">
-          Como eu tinha comentado no boletim anterior, comecei a planejar como vai ser a <strong>Edição 2.0</strong> do sistema de Wuitalur RPG.
+          Como eu falei no outro boletim, sentei pra começar a rabiscar a versão 2.0 do sistema.
         </p>
         <p>
-          Lembrando que o nosso sistema base continua sendo focado em <strong>fantasia com poderes, magia elemental e builds estilosas</strong>. O lance mais investigativo e de horror da nossa mesa atual (com colégio, conspirações e etc) é só do suplemento <em>Fios do Medo</em>, não do sistema padrão.
+          Só lembrando que o sistema padrão continua sendo de fantasia, com as classes, magias e os elementos normais. Aquela parada de colégio e terror que a gente tá jogando agora é só da nossa campanha com o suplemento de Fios do Medo.
         </p>
         <p>
-          A ideia dessa versão 2.0 é tirar de vez toda aquela burocracia herdada de D&D, Tormenta e Ordem: nada de fórmulas malucas com potências na defesa, nada de somar bônus gigantescos e nada de ter centenas de pontos de mana pra ficar anotando toda hora. É pra ser simples, rápido e direto de jogar.
+          O objetivo dessa versão 2.0 é basicamente tirar o que tava chato e enrolado do sistema antigo. Coisa tipo ter que fazer conta com potência pra achar a defesa do personagem, ter 800 de mana pra ficar controlando no papel e ficar somando bônus toda hora. Quero algo que seja rápido de jogar na mesa.
         </p>
       </section>
 
       <section class="boletim-section">
-        <h3 class="boletim-section-title">Não vai mais usar d20: O motor no d12</h3>
+        <h3 class="boletim-section-title">Não vai mais usar d20</h3>
         <p>
-          A primeira grande mudança é que <strong>não vamos mais usar d20</strong>. O d20 tem muita loteria e dependia de empilhar bônus infinitos na ficha. A partir de agora, o motor de Wuitalur vai rodar no <strong>d12</strong>, de um jeito bem mais direto:
+          A primeira coisa é que não vamos mais usar d20. O d20 é muito 8 ou 80 e precisava de um monte de número somado pra fazer sentido. Agora a rolagem vai ser no d12:
         </p>
         <ul class="boletim-list">
-          <li><strong>Teste Comum:</strong> Você rola apenas <strong>1d12 seco</strong> (resultado de 1 a 12).</li>
-          <li><strong>Teste Especializado:</strong> Rola <strong>1d12 + 2</strong> (resultado de 3 a 14). Na criação da ficha, você escolhe 2 Atributos Especializados.</li>
-          <li><strong>Dificuldades Simples:</strong> 6 (Rotineira), 8 (Desafio comum/perigo ativo), 10 (Difícil), 12 (Heroica, limite humano) e 13 ou 14 (Lendária, exclusiva de quem é Especializado).</li>
-          <li><strong>Críticos:</strong> Tirar 12 natural é um Acerto Crítico decisivo. Tirar 1 é uma Complicação.</li>
+          <li><strong>Teste normal:</strong> Rola 1d12 puro (de 1 a 12).</li>
+          <li><strong>Teste com atributo especializado:</strong> Rola 1d12 + 2 (de 3 a 14). Na hora de criar a ficha você escolhe 2 atributos pra ser especializado.</li>
+          <li><strong>Dificuldades:</strong> 6 pra coisa tranquila, 8 pra situação de perigo comum, 10 pra difícil, 12 pra quase impossível e 13 ou 14 pra coisas lendárias (que só quem é especializado consegue bater).</li>
+          <li>Tirar 12 no dado é crítico e tirar 1 dá ruim.</li>
         </ul>
       </section>
 
       <section class="boletim-section">
-        <h3 class="boletim-section-title">Os 5 Novos Atributos Base</h3>
+        <h3 class="boletim-section-title">5 Atributos em vez de 8</h3>
         <p>
-          Em vez daqueles 8 atributos antigos que geravam confusão (como separar Saúde de Resistência Física, ou ter Fama como atributo), agora teremos apenas <strong>5 Atributos limpos e bem definidos</strong>:
+          Aqueles 8 atributos antigos eram meio redundantes. Não fazia sentido ter Saúde e Resistência Física separados, e Fama não precisava ser um atributo base. Agora são só 5:
         </p>
         <ul class="boletim-list">
-          <li><strong>FORÇA (FOR):</strong> Potência muscular, peso, armas pesadas e impacto.</li>
-          <li><strong>DESTREZA (DES):</strong> Reflexos rápidos, pontaria, esquiva e acrobacia.</li>
-          <li><strong>VIGOR (VIG):</strong> Saúde corporal, fôlego e tolerância a venenos e cansaço (juntou a antiga Saúde e Resistência Física).</li>
-          <li><strong>MENTE (MEN):</strong> Raciocínio, lógica, dedução, alquimia e saberes arcanos.</li>
-          <li><strong>EXPRESSÃO (EXP):</strong> Comunicação, lábia, persuasão, intimidação e comando (substituiu Carisma e Fama, sem ficar com cara de outros sistemas).</li>
+          <li><strong>Força:</strong> Dano físico, carregar peso e armas pesadas.</li>
+          <li><strong>Destreza:</strong> Reflexo, esquiva, pontaria e agilidade.</li>
+          <li><strong>Vigor:</strong> Fôlego, aguentar porrada, veneno e cansaço (juntei Saúde e Resistência Física aqui).</li>
+          <li><strong>Mente:</strong> Lógica, conhecimento, alquimia e dedução.</li>
+          <li><strong>Expressão:</strong> Conversa, lábia, intimidação e liderança.</li>
         </ul>
         <p>
-          <em>Nota: O Cosmo deixou de ser atributo comum e vai funcionar como uma trilha mística própria de corrupção e poder.</em>
+          <em>O Cosmo não é mais um atributo comum, vai ser uma trilha separada.</em>
         </p>
       </section>
 
       <section class="boletim-section">
-        <h3 class="boletim-section-title">De 36 para 12 Perícias (Com Vantagem)</h3>
+        <h3 class="boletim-section-title">Menos perícias e sistema de vantagem</h3>
         <p>
-          Aquela lista gigante de mais de 36 perícias cheia de coisas que quase ninguém usava foi enxugada. Agora temos exatamente <strong>12 perícias essenciais</strong>:
+          Tinha mais de 36 perícias e metade quase nunca entrava em jogo. Reduzi pra 12:
         </p>
         <ul class="boletim-list">
           <li><strong>Físicas:</strong> Acrobacia, Furtividade e Atletismo.</li>
-          <li><strong>Mentais e Exploração:</strong> Investigação, Medicina, Ofício, Astral, Sobrevivência e Percepção.</li>
+          <li><strong>Mentais / Exploração:</strong> Investigação, Medicina, Ofício, Astral, Sobrevivência e Percepção.</li>
           <li><strong>Sociais:</strong> Persuasão, Enganação e Intimidação.</li>
         </ul>
         <p>
-          Cada personagem vai escolher <strong>4 perícias treinadas</strong>. E a mecânica funciona assim: ser treinado em uma perícia agora te dá <strong>Vantagem (rola 2d12 e escolhe o maior)</strong>. Se você também tiver o atributo especializado, soma +2 no dado mais alto. Isso evita aquela situação chata de um especialista experiente tirar 1 no dado e falhar numa tarefa simples.
+          Cada um escolhe 4 perícias treinadas. E o treino agora funciona com vantagem: você rola 2d12 e pega o maior. Se tiver atributo especializado junto, soma +2 nesse maior. Assim quem é bom em algo não fica falhando à toa por azar no dado.
         </p>
       </section>
 
       <section class="boletim-section">
-        <h3 class="boletim-section-title">O Novo Molde das 11 Raças</h3>
+        <h3 class="boletim-section-title">Como vão funcionar as raças</h3>
         <p>
-          Todas as 11 raças originais de Wuitalur continuam (Akivus, Animalescos, Plantíferos, Humanos, Vampiros, Dragão Anão, Insectóides, Praguentos, Abissais, E.X.O.s e Espectros).
-        </p>
-        <p>
-          Porém, para ninguém ter uma ficha cheia de traços passivos difíceis de lembrar, cada raça agora segue um molde padronizado:
+          As 11 raças continuam no jogo, mas sem aquela lista gigante de poderes passivos que ninguém lembrava na hora da sessão. Cada raça vai ter:
         </p>
         <ul class="boletim-list">
-          <li><strong>Bônus de Raça:</strong> Uma resistência ou fraqueza elemental, ou uma perícia cultural.</li>
-          <li><strong>Mecânica Única Profunda:</strong> Algo que muda a forma de jogar com aquela espécie (como os Pontos de Chassi e autorreparo do E.X.O., a estabilidade e falta de cura biológica do Espectro, a biomassa do Praguento, a fome do Vampiro, etc.).</li>
-          <li><strong>Uma Habilidade Ativa Marcante:</strong> Apenas um poder ativo por raça, deixando espaço para as classes brilharem.</li>
+          <li>Um bônus básico ou resistência elemental.</li>
+          <li>Uma mecânica própria que muda o jeito de jogar com ela (tipo a carcaça do E.X.O., o espectro não ter cura comum, a fome do vampiro, etc).</li>
+          <li>Só uma habilidade ativa, pra deixar o foco nas classes.</li>
         </ul>
       </section>
 
       <div class="boletim-callout highlight-gold">
         <div class="boletim-callout-header">
-          <span class="boletim-callout-tag">Próximos Passos</span>
-          <span class="boletim-callout-title">O Que Vem Pela Frente</span>
+          <span class="boletim-callout-tag">Próximos passos</span>
+          <span class="boletim-callout-title">O que falta ver</span>
         </div>
         <p>
-          Os próximos tópicos que vou desenhar são o sistema de <strong>Defesa no combate</strong> (sem contas malucas), a calibragem da <strong>Energia Astral (EA)</strong> para valores menores e fáceis de controlar, e a adaptação das nossas classes para encaixar no motor de d12.
+          Agora falta eu fechar como vai ser a defesa nas lutas, diminuir os números da Energia Astral (EA) pra ficar fácil de marcar e passar as classes pro sistema novo.
         </p>
         <p>
-          Conforme as coisas forem ficando prontas, vou soltando mais boletins por aqui. Depois me falem o que acharam dessa direção inicial.
+          Conforme eu for terminando essas partes eu coloco aqui. Qualquer dúvida ou ideia me mandem no chat.
         </p>
       </div>
     `
