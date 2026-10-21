@@ -6,6 +6,112 @@
 
 const BOLETINS_DATA = [
   {
+    id: "edicao-03",
+    numero: 3,
+    edicao: "Edição #3",
+    epoca: "Outubro 2026",
+    data: "20 de Outubro de 2026",
+    dataIso: "2026-10-20",
+    titulo: "Como vai funcionar a Defesa no sistema novo",
+    subtitulo: "Fim da calculadora na mesa, uma única DEF pra tudo e as escolhas de desviar ou defender.",
+    autor: "Mestre",
+    tempoLeitura: "3 min",
+    resumo: "Fechei como vai funcionar a defesa na versão 2.0. Nada de calcular fórmula com potência, agora é uma DEF só somada pelo equipamento e a escolha entre esquivar ou defender.",
+    tags: ["Sistema 2.0", "Combate", "Defesa"],
+    conteudoHtml: `
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">A Defesa na Edição 2.0</h3>
+        <p class="boletim-lead">
+          Seguindo o que eu comentei no último boletim, hoje eu fechei como vai funcionar a parte de Defesa nos combates da versão 2.0.
+        </p>
+        <p>
+          No sistema antigo essa era uma das partes mais enroladas da mesa. Tinha duas defesas diferentes, fórmulas chatas com potência fracionária que precisavam de calculadora e três atributos disputando a mesma função. Agora isso foi totalmente simplificado.
+        </p>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">Comparativo: O Sistema Antigo vs. A Edição 2.0</h3>
+        <p>
+          Montei essa tabela comparando como era antes e como vai ficar agora pra dar pra ver a diferença direto:
+        </p>
+
+        <div class="boletim-table-wrapper">
+          <table class="boletim-table">
+            <thead>
+              <tr>
+                <th style="width: 25%;">Elemento</th>
+                <th style="width: 37%;">No Sistema Antigo (v1.5)</th>
+                <th style="width: 38%;">Na Nova Edição 2.0</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Quantidade de Defesas</strong></td>
+                <td>2 defesas separadas: DEF (Física) e DEFe (Elemental).</td>
+                <td><strong>1 única DEF unificada</strong> para qualquer tipo de dano direto.</td>
+              </tr>
+              <tr>
+                <td><strong>Cálculo da DEF</strong></td>
+                <td>
+                  Fórmulas algébricas com potências que precisavam de calculadora:<br>
+                  <code>DEF = RF × (PVs^0.6) / 6</code><br>
+                  <code>DEFe = RE × (PVs^0.5) / 8 + DEF</code>
+                </td>
+                <td>
+                  <strong>Soma direta de equipamento</strong> feita de cabeça em 1 segundo:<br>
+                  Armadura (0 a 6) + Escudo (+2) + Vigor Especializado (+2).
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Atributos Envolvidos</strong></td>
+                <td>Três atributos confusos disputando o corpo: Saúde, RF e RE.</td>
+                <td>Apenas <strong>Vigor</strong> (para absorção corporal) e <strong>Destreza</strong> (para esquiva).</td>
+              </tr>
+              <tr>
+                <td><strong>Reação: Desviar</strong></td>
+                <td>Rolar 1d20 + DES contra o acerto do atacante.</td>
+                <td>Rola <strong>Destreza</strong> (ou perícia Acrobacia) no d12. Se superar o ataque, sofre <strong>0 de dano</strong>.</td>
+              </tr>
+              <tr>
+                <td><strong>Reação: Defender</strong></td>
+                <td>Reduz o dano pela DEF física, ou pela DEFe se for ataque elemental.</td>
+                <td><strong>Sem rolagem.</strong> Absorve com segurança: reduz qualquer dano direto pela sua DEF única.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">Os 3 Grandes Ganhos dessa Mudança</h3>
+        <ul class="boletim-list">
+          <li>
+            <strong>Fim total da calculadora na mesa:</strong> Você nunca mais vai precisar abrir planilha ou o site pra saber quanto tomou de dano. O valor da sua DEF já fica anotado pronto na ficha (tipo DEF 4 ou DEF 6). Tomou dano, subtrai a DEF e pronto.
+          </li>
+          <li>
+            <strong>A escolha tática continua valendo a pena:</strong> Em todo golpe recebido o jogador continua tendo a decisão na mão: arriscar a esquiva na Destreza pra tentar não tomar nada de dano, ou jogar na segurança da armadura e garantir a redução direta pela DEF.
+          </li>
+          <li>
+            <strong>Equilíbrio entre os tipos de personagem:</strong> O personagem ágil brilha na esquiva rápida usando Desviar, e o personagem mais tanque e robusto brilha na couraça e no escudo defendendo com DEF alta.
+          </li>
+        </ul>
+      </section>
+
+      <div class="boletim-callout highlight-gold">
+        <div class="boletim-callout-header">
+          <span class="boletim-callout-tag">Próximos passos</span>
+          <span class="boletim-callout-title">O que vem a seguir</span>
+        </div>
+        <p>
+          Com a Defesa resolvida desse jeito simples, a próxima etapa vai ser calibrar os números da Energia Astral (EA) e passar para o rework das classes no novo motor de d12.
+        </p>
+        <p>
+          Qualquer dúvida sobre como vai funcionar a defesa ou ideias sobre isso podem mandar lá no chat.
+        </p>
+      </div>
+    `
+  },
+  {
     id: "edicao-02",
     numero: 2,
     edicao: "Edição #2",
