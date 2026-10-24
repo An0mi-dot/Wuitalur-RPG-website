@@ -154,7 +154,6 @@ body:not(.mesa-body)::before {
   100% { background-position: 0 -56px; }
 }
 
-.app-layout,
 .main-wrapper,
 .home-hero-v2,
 .demo-wrapper {
@@ -413,7 +412,7 @@ code, .mono {
   top: 0; left: 0;
   height: 100vh;
   overflow-y: auto;
-  z-index: 100;
+  z-index: 1050 !important;
   display: flex;
   flex-direction: column;
   transition: transform var(--transition-base);
@@ -627,7 +626,7 @@ code, .mono {
   position: fixed;
   bottom: var(--space-lg);
   right: var(--space-lg);
-  z-index: 200;
+  z-index: 1100 !important;
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -648,7 +647,7 @@ code, .mono {
 .sidebar-overlay {
   position: fixed;
   inset: 0;
-  z-index: 99;
+  z-index: 1040 !important;
   background: rgba(0, 0, 0, 0.5);
   opacity: 0;
   visibility: hidden;
@@ -660,11 +659,31 @@ code, .mono {
 }
 
 @media (max-width: 768px) {
-  .sidebar { transform: translateX(-100%); }
-  .sidebar.open { transform: translateX(0); }
-  .sidebar-overlay.open { opacity: 1; visibility: visible; }
+  .sidebar {
+    transform: translateX(-100%);
+    z-index: 1050 !important;
+    width: 280px !important;
+    max-width: 85vw !important;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 6px 0 0 #000000;
+  }
+  .sidebar-overlay {
+    z-index: 1040 !important;
+  }
+  .sidebar-overlay.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
   .main-wrapper { margin-left: 0; }
-  .sidebar-toggle { display: flex; align-items: center; justify-content: center; }
+  .sidebar-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1100 !important;
+  }
   .page-header { padding: var(--space-md); }
   .page-content { padding: var(--space-xl) var(--space-md); }
   h1 { font-size: 1.8rem; }

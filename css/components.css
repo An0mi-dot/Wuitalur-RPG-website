@@ -323,7 +323,7 @@
   .race-description { font-size: 0.85rem; }
   .ability-slot { padding: var(--space-sm); }
   .page-header h1 { font-size: 1rem; }
-  .sidebar { width: 100%; }
+  /* sidebar mantem largura de gaveta no mobile */
 }
 
 /* === CALCULATOR === */
