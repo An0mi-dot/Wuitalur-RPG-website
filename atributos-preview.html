@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preview Estilistico: Atributos — Wuitalur RPG</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Space+Grotesk:wght@600;700;800;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ============================================================
+       DEFINICAO DAS PALETAS (FEMTANYL / STREET / BREAKCORE)
+       Zero Emojis, Alto Contraste, Neo-Brutalismo
+       ============================================================ */
+    
+    /* PALETA 1: TOXIC BREAKCORE (Roxo Eletrico + Verde Acido) - Padrao */
+    :root,
+    body[data-palette="toxic"] {
+      --bg-canvas: #09070f;
+      --bg-surface: #130f1e;
+      --bg-surface-elevated: #1c162c;
+      --bg-header: #0e0b17;
+      
+      --purple-main: #8b24f5;
+      --purple-glow: #a855f7;
+      --purple-dark: #3b0764;
+      
+      --accent-contrast: #4ade80; /* Verde Lima Acido */
+      --accent-contrast-hover: #22c55e;
+      --accent-contrast-bg: rgba(74, 222, 128, 0.12);
+      
+      --danger-pop: #ff204e; /* Vermelho Sangue / Alerta */
+      --text-high: #f8fafc;
+      --text-muted: #94a3b8;
+      
+      --border-solid: #8b24f5;
+      --shadow-color: #000000;
+      --sticker-bg: #4ade80;
+      --sticker-text: #09070f;
+      --hazard-1: #4ade80;
+      --hazard-2: #09070f;
+      
+      --palette-name: "1. TOXIC BREAKCORE (Roxo Eletrico + Verde Acido)";
+    }
+
+    /* PALETA 2: STREET Y2K (Roxo Noturno + Laranja Neon + Ciano) */
+    body[data-palette="street"] {
+      --bg-canvas: #0c0b11;
+      --bg-surface: #15141e;
+      --bg-surface-elevated: #201e2e;
+      --bg-header: #111018;
+      
+      --purple-main: #7c3aed;
+      --purple-glow: #9061f9;
+      --purple-dark: #2e1065;
+      
+      --accent-contrast: #ff6600; /* Laranja Streetwear */
+      --accent-contrast-hover: #ff781f;
+      --accent-contrast-bg: rgba(255, 102, 0, 0.15);
+      
+      --danger-pop: #00e5ff; /* Ciano Eletrico */
+      --text-high: #ffffff;
+      --text-muted: #a3a3b2;
+      
+      --border-solid: #ff6600;
+      --shadow-color: #000000;
+      --sticker-bg: #ff6600;
+      --sticker-text: #000000;
+      --hazard-1: #ff6600;
+      --hazard-2: #0c0b11;
+      
+      --palette-name: "2. STREET Y2K (Roxo Noturno + Laranja Neon)";
+    }
+
+    /* PALETA 3: TOKYO PUNK (Roxo Profundo + Magenta / Hot Pink) */
+    body[data-palette="punk"] {
+      --bg-canvas: #0a0810;
+      --bg-surface: #14111d;
+      --bg-surface-elevated: #211a2f;
+      --bg-header: #0f0c16;
+      
+      --purple-main: #6b21a8;
+      --purple-glow: #a855f7;
+      --purple-dark: #3b0764;
+      
+      --accent-contrast: #ff007f; /* Magenta Puro / Hot Pink */
+      --accent-contrast-hover: #ff3399;
+      --accent-contrast-bg: rgba(255, 0, 127, 0.15);
+      
+      --danger-pop: #ffffff;
+      --text-high: #ffffff;
+      --text-muted: #a78bfa;
+      
+      --border-solid: #ff007f;
+      --shadow-color: #000000;
+      --sticker-bg: #ff007f;
+      --sticker-text: #ffffff;
+      --hazard-1: #ff007f;
+      --hazard-2: #0a0810;
+      
+      --palette-name: "3. TOKYO PUNK (Roxo Profundo + Hot Pink)";
+    }
+
+    /* PALETA 4: GLITCH TERMINAL (Roxo Cibernetico + Amarelo Alerta) */
+    body[data-palette="terminal"] {
+      --bg-canvas: #0e0a16;
+      --bg-surface: #181224;
+      --bg-surface-elevated: #241c35;
+      --bg-header: #120d1c;
+      
+      --purple-main: #9333ea;
+      --purple-glow: #c084fc;
+      --purple-dark: #4c1d95;
+      
+      --accent-contrast: #ffe600; /* Amarelo Sinalizacao */
+      --accent-contrast-hover: #facc15;
+      --accent-contrast-bg: rgba(255, 230, 0, 0.14);
+      
+      --danger-pop: #ff3b30;
+      --text-high: #ffffff;
+      --text-muted: #cbd5e1;
+      
+      --border-solid: #ffe600;
+      --shadow-color: #000000;
+      --sticker-bg: #ffe600;
+      --sticker-text: #0e0a16;
+      --hazard-1: #ffe600;
+      --hazard-2: #0e0a16;
+      
+      --palette-name: "4. GLITCH TERMINAL (Roxo + Amarelo Alerta)";
+    }
+
+    /* ESTILOS GERAIS */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-high);
+      font-family: 'Space Grotesk', -apple-system, sans-serif;
+      line-height: 1.5;
+      overflow-x: hidden;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* RETICULA DE FUNDO (HALFTONE SUTIL STREET) */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 18px 18px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* BARRA SUPERIOR FIXA DE CONTROLE DE PALETAS */
+    .palette-dock {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #000000;
+      border-bottom: 3px solid var(--accent-contrast);
+      padding: 12px 18px;
+      box-shadow: 0 6px 0px rgba(0, 0, 0, 0.9);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .palette-dock-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .palette-dock-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 4px 8px;
+      background: var(--sticker-bg);
+      color: var(--sticker-text);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: 1px solid #000;
+      box-shadow: 2px 2px 0px #fff;
+    }
+
+    .palette-dock-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .palette-buttons-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .btn-palette-switch {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 7px 13px;
+      background: #111116;
+      color: #ffffff;
+      border: 2px solid #333340;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.15s ease;
+      box-shadow: 2px 2px 0px #000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-palette-switch:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0px #000;
+      border-color: #fff;
+    }
+
+    .btn-palette-switch.active {
+      background: var(--accent-contrast);
+      color: var(--sticker-text);
+      border-color: #ffffff;
+      box-shadow: 3px 3px 0px #ffffff;
+      transform: translate(-1px, -1px);
+    }
+
+    .btn-palette-switch .color-indicator {
+      width: 10px;
+      height: 10px;
+      border: 1px solid #000;
+      display: inline-block;
+    }
+
+    /* CONTAINER PRINCIPAL */
+    .demo-wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 30px 20px 80px 20px;
+    }
+
+    /* FAIXA DE ALERTA INDUSTRIAL (HAZARD TAPE) */
+    .hazard-stripe {
+      height: 8px;
+      background: repeating-linear-gradient(
+        -45deg,
+        var(--hazard-1),
+        var(--hazard-1) 12px,
+        var(--hazard-2) 12px,
+        var(--hazard-2) 24px
+      );
+      border-top: 1px solid #000;
+      border-bottom: 1px solid #000;
+      margin-bottom: 24px;
+    }
+
+    /* HERO DA PAGINA */
+    .hero-banner {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 34px;
+    }
+
+    .hero-stickers-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sticker-tape {
+      display: inline-block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 900;
+      padding: 6px 14px;
+      background: var(--sticker-bg);
+      color: var(--sticker-text);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border: 2px solid #000000;
+      box-shadow: 4px 4px 0px var(--shadow-color);
+      transform: rotate(-1.5deg);
+    }
+
+    .barcode-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: #000;
+      color: #fff;
+      border: 1px solid var(--accent-contrast);
+      padding: 4px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 2px 2px 0px var(--accent-contrast);
+    }
+
+    .barcode-graphic {
+      letter-spacing: 2px;
+      font-weight: 900;
+      color: var(--accent-contrast);
+    }
+
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.4rem, 6vw, 4.4rem);
+      font-weight: 900;
+      line-height: 0.95;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      text-shadow: 4px 4px 0px var(--purple-main);
+    }
+
+    .hero-title span {
+      color: var(--accent-contrast);
+      text-shadow: 4px 4px 0px #000000;
+    }
+
+    .hero-description {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 860px;
+      background: var(--bg-surface);
+      border-left: 4px solid var(--purple-main);
+      padding: 14px 18px;
+      box-shadow: 3px 3px 0px #000000;
+    }
+
+    /* CARD DE JANELA NEO-BRUTALISTA (OS RETRO / CRT WINDOW) */
+    .os-window {
+      background: var(--bg-surface);
+      border: 3px solid var(--border-solid);
+      box-shadow: 6px 6px 0px var(--shadow-color);
+      margin-bottom: 36px;
+      position: relative;
+    }
+
+    .os-window-header {
+      background: var(--bg-header);
+      border-bottom: 2px solid var(--border-solid);
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+    }
+
+    .os-window-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-contrast);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .os-window-actions {
+      display: flex;
+      gap: 5px;
+    }
+
+    .os-btn-dot {
+      width: 14px;
+      height: 14px;
+      border: 1px solid #000;
+      background: #2a253a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: monospace;
+      font-size: 9px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .os-btn-dot.close {
+      background: var(--danger-pop);
+      color: #000;
+    }
+
+    .os-window-content {
+      padding: 22px;
+    }
+
+    /* GRID DE DISTRIBUICAO */
+    .dist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+    }
+
+    .dist-card {
+      background: var(--bg-surface-elevated);
+      border: 2px solid #2d2640;
+      border-left: 4px solid var(--accent-contrast);
+      padding: 14px;
+      box-shadow: 3px 3px 0px #000;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .dist-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0px var(--accent-contrast);
+      border-color: var(--accent-contrast);
+    }
+
+    .dist-card-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--accent-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+
+    .dist-card-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .dist-card-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* SECAO DE RESISTENCIAS & CALCULADORA UNIFICADA */
+    .split-two-cols {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+
+    .calc-card {
+      background: var(--bg-surface);
+      border: 2px solid var(--purple-main);
+      box-shadow: 5px 5px 0px #000;
+      padding: 20px;
+      position: relative;
+    }
+
+    .calc-card.highlight {
+      border-color: var(--accent-contrast);
+      box-shadow: 5px 5px 0px var(--accent-contrast);
+    }
+
+    .calc-card-badge {
+      position: absolute;
+      top: -12px;
+      right: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      background: var(--sticker-bg);
+      color: var(--sticker-text);
+      border: 2px solid #000;
+      box-shadow: 2px 2px 0px #000;
+      text-transform: uppercase;
+    }
+
+    .calc-card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .calc-formula-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+      background: #000000;
+      border: 1px solid var(--purple-main);
+      padding: 10px 14px;
+      margin: 12px 0;
+      color: var(--accent-contrast);
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+      border-left: 4px solid var(--accent-contrast);
+    }
+
+    .calc-inputs-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .calc-field-box {
+      flex: 1;
+    }
+
+    .calc-field-box label {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .calc-field-box input {
+      width: 100%;
+      background: #000000;
+      border: 2px solid #333045;
+      color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 800;
+      padding: 8px 10px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .calc-field-box input:focus {
+      border-color: var(--accent-contrast);
+    }
+
+    .calc-result-box {
+      margin-top: 14px;
+      background: var(--purple-dark);
+      border: 2px solid var(--purple-main);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .calc-result-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+
+    .calc-result-val {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--accent-contrast);
+    }
+
+    /* GRADE DOS DEMAIS ATRIBUTOS (COM ESTILO STREET STAMP) */
+    .section-headline {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-title-tape {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 900;
+      background: var(--purple-main);
+      color: #ffffff;
+      padding: 6px 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      box-shadow: 4px 4px 0px #000000;
+      transform: rotate(-1deg);
+    }
+
+    .section-title-line {
+      flex: 1;
+      height: 2px;
+      background: var(--purple-main);
+    }
+
+    .attributes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .attr-card-street {
+      background: var(--bg-surface);
+      border: 2px solid #2a223a;
+      box-shadow: 5px 5px 0px #000000;
+      padding: 18px;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .attr-card-street:hover {
+      border-color: var(--accent-contrast);
+      transform: translate(-3px, -3px);
+      box-shadow: 8px 8px 0px var(--accent-contrast);
+    }
+
+    .attr-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .attr-card-name-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .attr-sigla {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--accent-contrast);
+      letter-spacing: 0.1em;
+    }
+
+    .attr-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 900;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+    }
+
+    .attr-dice-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 800;
+      background: #000000;
+      color: var(--accent-contrast);
+      border: 1px solid var(--accent-contrast);
+      padding: 4px 10px;
+      box-shadow: 2px 2px 0px #000000;
+    }
+
+    .attr-card-body {
+      font-size: 0.87rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+
+    .attr-pericias-tag {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+
+    .p-chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: #000000;
+      color: #e2e8f0;
+      padding: 3px 8px;
+      border: 1px solid #332d48;
+    }
+
+    .p-chip.accent {
+      border-color: var(--accent-contrast);
+      color: var(--accent-contrast);
+    }
+
+    /* FOOTER DE FEEDBACK */
+    .feedback-box {
+      margin-top: 48px;
+      background: #000000;
+      border: 3px dashed var(--accent-contrast);
+      padding: 24px;
+      box-shadow: 6px 6px 0px var(--shadow-color);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .feedback-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--accent-contrast);
+      text-transform: uppercase;
+    }
+
+    .feedback-desc {
+      font-size: 0.95rem;
+      color: #ffffff;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body data-palette="toxic">
+
+  <!-- BARRA DE TROCA DE PALETAS INTERATIVA NO TOPO -->
+  <header class="palette-dock">
+    <div class="palette-dock-info">
+      <span class="palette-dock-badge">Preview Interativo</span>
+      <span class="palette-dock-title" id="active-palette-title">1. TOXIC BREAKCORE (Roxo + Verde)</span>
+    </div>
+
+    <div class="palette-buttons-group">
+      <button class="btn-palette-switch active" onclick="setPalette('toxic', this)">
+        <span class="color-indicator" style="background: #4ade80;"></span>
+        Toxic Breakcore
+      </button>
+
+      <button class="btn-palette-switch" onclick="setPalette('street', this)">
+        <span class="color-indicator" style="background: #ff6600;"></span>
+        Street Y2K
+      </button>
+
+      <button class="btn-palette-switch" onclick="setPalette('punk', this)">
+        <span class="color-indicator" style="background: #ff007f;"></span>
+        Tokyo Punk
+      </button>
+
+      <button class="btn-palette-switch" onclick="setPalette('terminal', this)">
+        <span class="color-indicator" style="background: #ffe600;"></span>
+        Glitch Terminal
+      </button>
+    </div>
+  </header>
+
+  <div class="demo-wrapper">
+
+    <!-- FAIXA ZEBRADA DE AVISO (HAZARD TAPE) -->
+    <div class="hazard-stripe"></div>
+
+    <!-- HERO INTRODUTÓRIO -->
+    <section class="hero-banner">
+      <div class="hero-stickers-row">
+        <div class="sticker-tape">WUITALUR // CORE SYS 2.0</div>
+        <div class="barcode-badge">
+          <span class="barcode-graphic">||||| ||| |||||||</span>
+          <span>REG: ATTR_MATRIX</span>
+        </div>
+      </div>
+
+      <h1 class="hero-title">
+        MATRIZ DE <span>ATRIBUTOS</span>
+      </h1>
+
+      <p class="hero-description">
+        Os atributos governam tudo o que seu personagem é e faz no mundo: rolagens de acerto, sobrevivência visceral, velocidade de esquiva, poder de impacto e estabilidade cósmica. Zero fórmulas burocráticas, alto contraste na mesa.
+      </p>
+    </section>
+
+    <!-- JANELA DE SISTEMA: REGRAS DE DISTRIBUIÇÃO -->
+    <section class="os-window">
+      <div class="os-window-header">
+        <div class="os-window-title">
+          <span>[SYS_CONFIG]</span>
+          <span>DISTRIBUICAO_PONTOS.EXE</span>
+        </div>
+        <div class="os-window-actions">
+          <div class="os-btn-dot">-</div>
+          <div class="os-btn-dot">[ ]</div>
+          <div class="os-btn-dot close">X</div>
+        </div>
+      </div>
+
+      <div class="os-window-content">
+        <div class="dist-grid">
+          <div class="dist-card">
+            <div class="dist-card-label">Nível Base</div>
+            <div class="dist-card-value">1 PONTO</div>
+            <p class="dist-card-desc">Todos os atributos começam rigorosamente no patamar 1.</p>
+          </div>
+
+          <div class="dist-card">
+            <div class="dist-card-label">Pontos Livres</div>
+            <div class="dist-card-value">+4 PONTOS</div>
+            <p class="dist-card-desc">Você aloca 4 pontos livremente entre os 5 atributos centrais.</p>
+          </div>
+
+          <div class="dist-card">
+            <div class="dist-card-label">Compensação</div>
+            <div class="dist-card-value">TROCA 1:1</div>
+            <p class="dist-card-desc">Pode reduzir 1 atributo a 0 para ganhar +1 ponto em outra área chave.</p>
+          </div>
+
+          <div class="dist-card">
+            <div class="dist-card-label">Progressão</div>
+            <div class="dist-card-value">+1 / 3 NÍVEIS</div>
+            <p class="dist-card-desc">A cada 3 níveis você adquire 1 novo ponto de atributo adicional.</p>
+          </div>
+
+          <div class="dist-card">
+            <div class="dist-card-label">Limite Teto</div>
+            <div class="dist-card-value">CAP: 8</div>
+            <p class="dist-card-desc">Nenhum atributo pode ultrapassar o teto máximo de 8 pontos.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALCULADORAS TÁTICAS: RF E RE -->
+    <section class="split-two-cols">
+      <!-- RESISTÊNCIA FÍSICA -->
+      <div class="calc-card highlight">
+        <div class="calc-card-badge">DEFESA FÍSICA</div>
+        <h3 class="calc-card-title">Resistência Física (RF)</h3>
+        <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.5;">
+          Define a robustez corporal contra pancadas e perfurações. Teste ativo: <strong>1d20 + RF</strong>.
+        </p>
+
+        <div class="calc-formula-display">
+          DEF = (RF × (PVs^0.6)) / 6
+        </div>
+
+        <div class="calc-inputs-row">
+          <div class="calc-field-box">
+            <label>RF (Valor)</label>
+            <input type="number" id="calc-rf" value="3" min="0" max="8" oninput="updateCalculators()">
+          </div>
+          <div class="calc-field-box">
+            <label>Pontos de Vida</label>
+            <input type="number" id="calc-pvs" value="25" min="1" oninput="updateCalculators()">
+          </div>
+        </div>
+
+        <div class="calc-result-box">
+          <span class="calc-result-label">DEF Calculada</span>
+          <span class="calc-result-val" id="result-rf">3.44</span>
+        </div>
+      </div>
+
+      <!-- RESISTÊNCIA ELEMENTAL -->
+      <div class="calc-card">
+        <div class="calc-card-badge">DEFESA EXTRA</div>
+        <h3 class="calc-card-title">Resistência Elemental (RE)</h3>
+        <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.5;">
+          Força da Energia Astral contra Electro, Praga, Solar e Nulídrico. Teste: <strong>1d20 + RE</strong>.
+        </p>
+
+        <div class="calc-formula-display">
+          DEFe = (RE × (PVs^0.5)) / 8 + DEF
+        </div>
+
+        <div class="calc-inputs-row">
+          <div class="calc-field-box">
+            <label>RE (Valor)</label>
+            <input type="number" id="calc-re" value="2" min="0" max="8" oninput="updateCalculators()">
+          </div>
+          <div class="calc-field-box">
+            <label>DEF Base</label>
+            <input type="number" id="calc-base-def" value="3.4" step="0.1" oninput="updateCalculators()">
+          </div>
+        </div>
+
+        <div class="calc-result-box">
+          <span class="calc-result-label">DEFe Total</span>
+          <span class="calc-result-val" id="result-re">4.65</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- GRADE DOS DEMAIS ATRIBUTOS -->
+    <div class="section-headline">
+      <div class="section-title-tape">ESPECIFICAÇÕES DOS ATRIBUTOS</div>
+      <div class="section-title-line"></div>
+    </div>
+
+    <section class="attributes-grid">
+      
+      <!-- FORÇA -->
+      <article class="attr-card-street">
+        <div class="attr-card-top">
+          <div class="attr-card-name-group">
+            <span class="attr-sigla">ATTR // 01</span>
+            <h4 class="attr-name">Força (FOR)</h4>
+          </div>
+          <span class="attr-dice-badge">1d20 + FOR</span>
+        </div>
+        <p class="attr-card-body">
+          Potência muscular pura, capacidade de carga e dano em ataques corpo a corpo com armas pesadas de impacto ou corte.
+        </p>
+        <div class="attr-pericias-tag">
+          <span class="p-chip accent">Atletismo</span>
+          <span class="p-chip">Luta</span>
+          <span class="p-chip">Carga</span>
+        </div>
+      </article>
+
+      <!-- DESTREZA -->
+      <article class="attr-card-street">
+        <div class="attr-card-top">
+          <div class="attr-card-name-group">
+            <span class="attr-sigla">ATTR // 02</span>
+            <h4 class="attr-name">Destreza (DES)</h4>
+          </div>
+          <span class="attr-dice-badge">1d20 + DES</span>
+        </div>
+        <p class="attr-card-body">
+          Reflexos, agilidade de fuga, precisão em disparos de projéteis e capacidade tática de desviar de ataques recebidos.
+        </p>
+        <div class="attr-pericias-tag">
+          <span class="p-chip accent">Acrobacia</span>
+          <span class="p-chip">Pontaria</span>
+          <span class="p-chip">Furtividade</span>
+        </div>
+      </article>
+
+      <!-- SAÚDE -->
+      <article class="attr-card-street">
+        <div class="attr-card-top">
+          <div class="attr-card-name-group">
+            <span class="attr-sigla">ATTR // 03</span>
+            <h4 class="attr-name">Saúde (SAU)</h4>
+          </div>
+          <span class="attr-dice-badge">1d20 + SAU</span>
+        </div>
+        <p class="attr-card-body">
+          Vitalidade biológica do organismo. Define os Pontos de Vida (PVs) iniciais, recuperação de ferimentos e resistência a venenos.
+        </p>
+        <div class="attr-pericias-tag">
+          <span class="p-chip accent">Fortitude</span>
+          <span class="p-chip">Resistência</span>
+          <span class="p-chip">Metabolismo</span>
+        </div>
+      </article>
+
+      <!-- INTELECTO -->
+      <article class="attr-card-street">
+        <div class="attr-card-top">
+          <div class="attr-card-name-group">
+            <span class="attr-sigla">ATTR // 04</span>
+            <h4 class="attr-name">Intelecto (INT)</h4>
+          </div>
+          <span class="attr-dice-badge">1d20 + INT</span>
+        </div>
+        <p class="attr-card-body">
+          Capacidade analítica, conhecimentos arcanos, compreensão da tecnologia e decifração de mistérios de Paladium.
+        </p>
+        <div class="attr-pericias-tag">
+          <span class="p-chip accent">Investigação</span>
+          <span class="p-chip">Ciência</span>
+          <span class="p-chip">História</span>
+        </div>
+      </article>
+
+      <!-- SENTIDOS -->
+      <article class="attr-card-street">
+        <div class="attr-card-top">
+          <div class="attr-card-name-group">
+            <span class="attr-sigla">ATTR // 05</span>
+            <h4 class="attr-name">Sentidos (SEN)</h4>
+          </div>
+          <span class="attr-dice-badge">1d20 + SEN</span>
+        </div>
+        <p class="attr-card-body">
+          Acuidade visual e auditiva, instinto para notar emboscadas, leitura de intenções em criaturas e intuição pura.
+        </p>
+        <div class="attr-pericias-tag">
+          <span class="p-chip accent">Percepção</span>
+          <span class="p-chip">Intuição</span>
+          <span class="p-chip">Iniciativa</span>
+        </div>
+      </article>
+
+      <!-- COSMO -->
+      <article class="attr-card-street">
+        <div class="attr-card-top">
+          <div class="attr-card-name-group">
+            <span class="attr-sigla">ATTR // 06</span>
+            <h4 class="attr-name">Cosmo (COS)</h4>
+          </div>
+          <span class="attr-dice-badge">1d20 + COS</span>
+        </div>
+        <p class="attr-card-body">
+          Sintonia com a Energia Astral primordial, manipulação de selos sagrados e manifestação de anomalias dimensionais.
+        </p>
+        <div class="attr-pericias-tag">
+          <span class="p-chip accent">Canalização</span>
+          <span class="p-chip">Ocultismo</span>
+          <span class="p-chip">Vontade</span>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- BOX DE CONTROLE DE DECISÃO -->
+    <div class="feedback-box">
+      <div class="feedback-title">Escolha da Direção Visual</div>
+      <p class="feedback-desc">
+        Clique nos 4 botões da barra superior para alternar entre as paletas e ver a página inteira mudar instantaneamente de tom. 
+        Observe como cada combinação (Roxo + Verde, Roxo + Laranja, Roxo + Hot Pink ou Roxo + Amarelo) muda a agressividade e a personalidade dos cards.
+      </p>
+    </div>
+
+  </div>
+
+  <script>
+    function setPalette(name, btn) {
+      document.body.setAttribute('data-palette', name);
+      
+      const buttons = document.querySelectorAll('.btn-palette-switch');
+      buttons.forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      const titleEl = document.getElementById('active-palette-title');
+      const paletteTitles = {
+        'toxic': '1. TOXIC BREAKCORE (Roxo Eletrico + Verde Acido)',
+        'street': '2. STREET Y2K (Roxo Noturno + Laranja Neon)',
+        'punk': '3. TOKYO PUNK (Roxo Profundo + Hot Pink)',
+        'terminal': '4. GLITCH TERMINAL (Roxo + Amarelo Alerta)'
+      };
+      if (titleEl) titleEl.textContent = paletteTitles[name] || name;
+    }
+
+    function updateCalculators() {
+      const rf = parseFloat(document.getElementById('calc-rf')?.value || 0);
+      const pvs = parseFloat(document.getElementById('calc-pvs')?.value || 1);
+      const def = (rf * Math.pow(pvs, 0.6)) / 6;
+      const resRf = document.getElementById('result-rf');
+      if (resRf) resRf.textContent = def.toFixed(2);
+
+      const re = parseFloat(document.getElementById('calc-re')?.value || 0);
+      const baseDef = parseFloat(document.getElementById('calc-base-def')?.value || def);
+      const defe = (re * Math.pow(pvs, 0.5)) / 8 + baseDef;
+      const resRe = document.getElementById('result-re');
+      if (resRe) resRe.textContent = defe.toFixed(2);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateCalculators();
+    });
+  </script>
+</body>
+</html>
