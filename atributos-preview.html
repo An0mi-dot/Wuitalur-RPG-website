@@ -153,18 +153,18 @@
       position: relative;
     }
 
-    /* RETICULA DE FUNDO (HALFTONE SUTIL STREET) */
-    body::before {
-      content: "";
+    /* CANVAS DE BOLINHAS DINAMICAS EM FLUXO DIAGONAL (IDENTICO AO DA MESA) */
+    .bg-particles-canvas {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-      background-size: 16px 16px;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
       pointer-events: none;
       z-index: 0;
     }
 
-    /* OVERLAY CRT SCANLINES (OPCIONAL/ATIVAVEL) */
+    /* OVERLAY CRT SCANLINES SUTIL */
     .crt-scanlines {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -172,45 +172,45 @@
         to bottom,
         rgba(255,255,255,0),
         rgba(255,255,255,0) 50%,
-        rgba(0, 0, 0, 0.25) 50%,
-        rgba(0, 0, 0, 0.25)
+        rgba(0, 0, 0, 0.2) 50%,
+        rgba(0, 0, 0, 0.2)
       );
       background-size: 100% 4px;
       pointer-events: none;
       z-index: 999;
-      opacity: 0.75;
+      opacity: 0.6;
       display: block;
     }
 
     /* ============================================================
-       MOTOR DE GLITCH (KEYFRAMES & ANIMACOES)
+       MOTOR DE GLITCH EXCLUSIVO PARA O CLIQUE DE BOTÕES
+       (Zero Glitch em cards e títulos)
        ============================================================ */
 
-    /* 1. GLITCH DE CLIQUE VIOLENTO (BUTTON CLICK IMPACT) */
     @keyframes btnGlitchImpact {
       0% {
         transform: translate(0, 0) skewX(0);
         filter: none;
         clip-path: none;
       }
-      15% {
-        transform: translate(-4px, 2px) skewX(-8deg);
+      18% {
+        transform: translate(-4px, 2px) skewX(-7deg);
         box-shadow: -5px 0px 0px var(--glitch-cyan), 5px 0px 0px var(--accent-contrast);
-        filter: contrast(1.8) hue-rotate(45deg);
-        clip-path: polygon(0 10%, 100% 10%, 100% 40%, 0 40%);
+        filter: contrast(1.7) hue-rotate(40deg);
+        clip-path: polygon(0 15%, 100% 15%, 100% 45%, 0 45%);
       }
-      35% {
+      38% {
         transform: translate(4px, -2px) skewX(6deg);
         box-shadow: 4px -2px 0px var(--glitch-cyan), -4px 2px 0px var(--accent-contrast);
         clip-path: polygon(0 60%, 100% 60%, 100% 85%, 0 85%);
       }
-      55% {
-        transform: translate(-3px, -1px) skewX(-3deg);
-        box-shadow: -3px 3px 0px #fff, 3px -1px 0px var(--accent-contrast);
-        clip-path: polygon(0 25%, 100% 25%, 100% 65%, 0 65%);
+      60% {
+        transform: translate(-2px, -1px) skewX(-3deg);
+        box-shadow: -3px 2px 0px #ffffff, 3px -1px 0px var(--accent-contrast);
+        clip-path: polygon(0 25%, 100% 25%, 100% 55%, 0 55%);
       }
-      75% {
-        transform: translate(2px, 1px) skewX(2deg);
+      80% {
+        transform: translate(2px, 1px) skewX(1deg);
         box-shadow: 2px 0px 0px var(--glitch-cyan);
         clip-path: none;
       }
@@ -221,67 +221,13 @@
       }
     }
 
-    /* Gatilho automatico de clique em botoes e cards */
-    .btn-palette-switch:active,
-    .btn-glitch:active,
-    .is-glitching {
-      animation: btnGlitchImpact 0.22s steps(2, start) forwards !important;
+    /* O glitch atua RIGOROSAMENTE apenas em botoes no clique */
+    button:active,
+    button.is-glitching,
+    .os-btn-dot:active,
+    .os-btn-dot.is-glitching {
+      animation: btnGlitchImpact 0.18s steps(2, start) forwards !important;
       position: relative;
-    }
-
-    /* 2. GLITCH CONTINUO DE TITULO COM DUPLO CANAL RGB */
-    .glitch-header {
-      position: relative;
-      display: inline-block;
-    }
-
-    .glitch-header::before,
-    .glitch-header::after {
-      content: attr(data-text);
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-
-    .glitch-header::before {
-      left: 2px;
-      text-shadow: -3px 0 var(--glitch-cyan);
-      clip-path: polygon(0 15%, 100% 15%, 100% 35%, 0 35%);
-      animation: glitchSlice1 2.8s infinite linear alternate-reverse;
-    }
-
-    .glitch-header::after {
-      left: -2px;
-      text-shadow: 3px 0 var(--accent-contrast);
-      clip-path: polygon(0 65%, 100% 65%, 100% 85%, 0 85%);
-      animation: glitchSlice2 3.2s infinite linear alternate-reverse;
-    }
-
-    @keyframes glitchSlice1 {
-      0% { clip-path: polygon(0 20%, 100% 20%, 100% 30%, 0 30%); transform: translate(-2px, 0); }
-      20% { clip-path: polygon(0 50%, 100% 50%, 100% 65%, 0 65%); transform: translate(2px, -1px); }
-      40% { clip-path: polygon(0 10%, 100% 10%, 100% 25%, 0 25%); transform: translate(-1px, 1px); }
-      60% { clip-path: polygon(0 75%, 100% 75%, 100% 90%, 0 90%); transform: translate(3px, 0); }
-      80% { clip-path: polygon(0 35%, 100% 35%, 100% 45%, 0 45%); transform: translate(-2px, -1px); }
-      100% { clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); transform: translate(1px, 1px); }
-    }
-
-    @keyframes glitchSlice2 {
-      0% { clip-path: polygon(0 65%, 100% 65%, 100% 85%, 0 85%); transform: translate(2px, 0); }
-      25% { clip-path: polygon(0 15%, 100% 15%, 100% 35%, 0 35%); transform: translate(-3px, 1px); }
-      50% { clip-path: polygon(0 80%, 100% 80%, 100% 95%, 0 95%); transform: translate(1px, -1px); }
-      75% { clip-path: polygon(0 40%, 100% 40%, 100% 55%, 0 55%); transform: translate(-2px, 0); }
-      100% { clip-path: polygon(0 5%, 100% 5%, 100% 20%, 0 20%); transform: translate(2px, 1px); }
-    }
-
-    /* 3. HOVER GLITCH EM CARDS E ELEMENTOS TÁTICOS */
-    .attr-card-street:hover .attr-name,
-    .dist-card:hover .dist-card-value {
-      text-shadow: -2px 0 var(--glitch-cyan), 2px 0 var(--accent-contrast);
-      transition: text-shadow 0.1s ease;
     }
 
     /* BARRA SUPERIOR FIXA DE CONTROLE */
@@ -397,7 +343,7 @@
       margin-bottom: 24px;
     }
 
-    /* HERO DA PAGINA */
+    /* HERO DA PAGINA - TITULO LIMPO E SOLIDO SEM GLITCH */
     .hero-banner {
       display: flex;
       flex-direction: column;
@@ -425,7 +371,6 @@
       border: 2px solid #000000;
       box-shadow: 4px 4px 0px var(--shadow-color);
       transform: rotate(-1.5deg);
-      cursor: pointer;
     }
 
     .barcode-badge {
@@ -448,6 +393,7 @@
       color: var(--accent-contrast);
     }
 
+    /* TITULO MATRIZ DE ATRIBUTOS: LIMPO, SOLIDO, FORTE (SEM EFEITO DE GLITCH) */
     .hero-title {
       font-family: 'Space Grotesk', sans-serif;
       font-size: clamp(2.4rem, 6vw, 4.4rem);
@@ -475,9 +421,7 @@
       box-shadow: 3px 3px 0px #000000;
     }
 
-    /* ============================================================
-       PAINEL TÁTICO DE LABORATÓRIO GLITCH (DEMO INTERATIVA)
-       ============================================================ */
+    /* PAINEL DE TESTE DE BOTOES (EXCLUSIVO PARA TESTAR GLITCH NOS BOTOES) */
     .glitch-lab-card {
       background: #000000;
       border: 3px solid var(--accent-contrast);
@@ -525,9 +469,9 @@
       gap: 12px;
     }
 
-    .btn-glitch-tester {
+    .btn-glitch-action {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 900;
       padding: 10px 18px;
       background: var(--purple-main);
@@ -536,29 +480,28 @@
       box-shadow: 4px 4px 0px #000000;
       cursor: pointer;
       text-transform: uppercase;
-      transition: all 0.15s ease;
+      transition: background 0.15s, border-color 0.15s;
       user-select: none;
     }
 
-    .btn-glitch-tester:hover {
+    .btn-glitch-action:hover {
       background: var(--accent-contrast);
       color: #000000;
-      box-shadow: 6px 6px 0px #ffffff;
-      transform: translate(-2px, -2px);
+      box-shadow: 4px 4px 0px #ffffff;
     }
 
-    .btn-glitch-tester.secondary {
+    .btn-glitch-action.secondary {
       background: #181126;
       border-color: #554477;
     }
 
-    .btn-glitch-tester.secondary:hover {
+    .btn-glitch-action.secondary:hover {
       border-color: var(--glitch-cyan);
       color: var(--glitch-cyan);
-      box-shadow: 5px 5px 0px var(--glitch-cyan);
+      box-shadow: 4px 4px 0px var(--glitch-cyan);
     }
 
-    /* CARD DE JANELA NEO-BRUTALISTA (OS RETRO / CRT WINDOW) */
+    /* CARD DE JANELA NEO-BRUTALISTA (SEM GLITCH - TOTALMENTE SOLIDO) */
     .os-window {
       background: var(--bg-surface);
       border: 3px solid var(--border-solid);
@@ -618,7 +561,7 @@
       padding: 22px;
     }
 
-    /* GRID DE DISTRIBUICAO */
+    /* GRID DE DISTRIBUICAO (CARDS SOLIDOS, LIMPOS, SEM GLITCH) */
     .dist-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -632,7 +575,6 @@
       padding: 14px;
       box-shadow: 3px 3px 0px #000;
       transition: transform 0.15s ease, border-color 0.15s ease;
-      cursor: pointer;
     }
 
     .dist-card:hover {
@@ -665,7 +607,7 @@
       line-height: 1.45;
     }
 
-    /* SECAO DE RESISTENCIAS & CALCULADORA UNIFICADA */
+    /* CALCULADORAS TATICAS */
     .split-two-cols {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -757,7 +699,6 @@
 
     .calc-field-box input:focus {
       border-color: var(--accent-contrast);
-      box-shadow: 0 0 8px var(--accent-contrast);
     }
 
     .calc-result-box {
@@ -785,7 +726,7 @@
       color: var(--accent-contrast);
     }
 
-    /* GRADE DOS DEMAIS ATRIBUTOS (COM ESTILO STREET STAMP) */
+    /* GRADE DOS DEMAIS ATRIBUTOS (CARDS SOLIDOS, LIMPOS, SEM GLITCH) */
     .section-headline {
       display: flex;
       align-items: center;
@@ -804,7 +745,6 @@
       letter-spacing: 0.08em;
       box-shadow: 4px 4px 0px #000000;
       transform: rotate(-1deg);
-      cursor: pointer;
     }
 
     .section-title-line {
@@ -826,7 +766,6 @@
       padding: 18px;
       position: relative;
       transition: all 0.2s ease;
-      cursor: pointer;
     }
 
     .attr-card-street:hover {
@@ -898,14 +837,6 @@
       color: #e2e8f0;
       padding: 3px 8px;
       border: 1px solid #332d48;
-      cursor: pointer;
-      user-select: none;
-      transition: all 0.12s;
-    }
-
-    .p-chip:hover {
-      border-color: #ffffff;
-      transform: translate(-1px, -1px);
     }
 
     .p-chip.accent {
@@ -942,13 +873,16 @@
 </head>
 <body data-palette="punk">
 
-  <!-- OVERLAY CRT SCANLINES -->
+  <!-- CANVAS DE BOLINHAS EM FLUXO DIAGONAL (IDENTICO A MESA VIRTUAL) -->
+  <canvas id="bg-particles-canvas" class="bg-particles-canvas"></canvas>
+
+  <!-- OVERLAY CRT SCANLINES SUTIL -->
   <div class="crt-scanlines" id="scanlines-layer"></div>
 
   <!-- BARRA DE TROCA DE PALETAS INTERATIVA NO TOPO -->
   <header class="palette-dock">
     <div class="palette-dock-info">
-      <span class="palette-dock-badge">Tokyo Punk + Glitch FX</span>
+      <span class="palette-dock-badge">Tokyo Punk</span>
       <span class="palette-dock-title" id="active-palette-title">3. TOKYO PUNK (Roxo Profundo + Hot Pink)</span>
     </div>
 
@@ -980,17 +914,18 @@
     <!-- FAIXA ZEBRADA DE AVISO (HAZARD TAPE) -->
     <div class="hazard-stripe"></div>
 
-    <!-- HERO INTRODUTÓRIO -->
+    <!-- HERO INTRODUTÓRIO (TITULO SOLIDO, LIMPO, SEM GLITCH) -->
     <section class="hero-banner">
       <div class="hero-stickers-row">
         <div class="sticker-tape">WUITALUR // TOKYO PUNK</div>
         <div class="barcode-badge">
           <span class="barcode-graphic">||||| ||| |||||||</span>
-          <span>REG: GLITCH_CORE</span>
+          <span>REG: ATTR_MATRIX</span>
         </div>
       </div>
 
-      <h1 class="hero-title glitch-header" data-text="MATRIZ DE ATRIBUTOS">
+      <!-- TITULO SOLIDO E LIMPO -->
+      <h1 class="hero-title">
         MATRIZ DE <span>ATRIBUTOS</span>
       </h1>
 
@@ -999,30 +934,30 @@
       </p>
     </section>
 
-    <!-- LABORATÓRIO INTERATIVO DE GLITCH (EXPERIMENTE OS CLIQUES) -->
+    <!-- PAINEL DE TESTE DE BOTOES (EXCLUSIVO PARA TESTAR GLITCH NOS BOTOES) -->
     <section class="glitch-lab-card">
-      <div class="glitch-lab-badge">TESTE DE IMPACTO</div>
-      <h2 class="glitch-lab-title">Laboratório de Efeitos Glitch</h2>
+      <div class="glitch-lab-badge">TESTE DE GLITCH</div>
+      <h2 class="glitch-lab-title">Efeito Glitch Estritamente nos Botões</h2>
       <p class="glitch-lab-desc">
-        Clique nos botões abaixo ou em qualquer card, chip e botão da página para ver a interferência digital acontecer no momento do clique (deslocamento RGB, aberração cromática e corte de linha).
+        O efeito de corte e deslocamento RGB agora ocorre <strong>exclusivamente ao clicar em botões</strong>. Os cards, textos, títulos e caixas permanecem 100% sólidos, firmes e legíveis.
       </p>
 
       <div class="glitch-lab-actions">
-        <button type="button" class="btn-glitch-tester" onclick="triggerPageGlitch(this)">
-          Disparar Glitch no Clique
+        <button type="button" class="btn-glitch-action" onclick="triggerBtnGlitch(this)">
+          Disparar Glitch no Botão
         </button>
 
-        <button type="button" class="btn-glitch-tester secondary" onclick="toggleScanlines(this)">
-          Scanlines CRT: Ativadas
+        <button type="button" class="btn-glitch-action secondary" onclick="toggleScanlines(this)">
+          Alternar Scanlines CRT
         </button>
 
-        <button type="button" class="btn-glitch-tester secondary" onclick="triggerStaticBlast()">
-          Pulso de Ruído Estático
+        <button type="button" class="btn-glitch-action secondary" onclick="triggerBtnGlitch(this)">
+          Ação Tática / Teste
         </button>
       </div>
     </section>
 
-    <!-- JANELA DE SISTEMA: REGRAS DE DISTRIBUIÇÃO -->
+    <!-- JANELA DE SISTEMA: REGRAS DE DISTRIBUIÇÃO (CARDS SOLIDOS) -->
     <section class="os-window">
       <div class="os-window-header">
         <div class="os-window-title">
@@ -1030,9 +965,9 @@
           <span>DISTRIBUICAO_PONTOS.EXE</span>
         </div>
         <div class="os-window-actions">
-          <div class="os-btn-dot">-</div>
-          <div class="os-btn-dot">[ ]</div>
-          <div class="os-btn-dot close">X</div>
+          <button type="button" class="os-btn-dot">-</button>
+          <button type="button" class="os-btn-dot">[ ]</button>
+          <button type="button" class="os-btn-dot close">X</button>
         </div>
       </div>
 
@@ -1071,7 +1006,7 @@
       </div>
     </section>
 
-    <!-- CALCULADORAS TÁTICAS: RF E RE -->
+    <!-- CALCULADORAS TÁTICAS: RF E RE (SOLIDAS) -->
     <section class="split-two-cols">
       <!-- RESISTÊNCIA FÍSICA -->
       <div class="calc-card highlight">
@@ -1132,13 +1067,13 @@
       </div>
     </section>
 
-    <!-- GRADE DOS DEMAIS ATRIBUTOS -->
+    <!-- GRADE DOS DEMAIS ATRIBUTOS (SOLIDAS) -->
     <div class="section-headline">
       <div class="section-title-tape">ESPECIFICAÇÕES DOS ATRIBUTOS</div>
       <div class="section-title-line"></div>
     </div>
 
-    <section class="attributes-grid" id="attr-cards-container">
+    <section class="attributes-grid">
       
       <!-- FORÇA -->
       <article class="attr-card-street">
@@ -1258,16 +1193,134 @@
 
     <!-- BOX DE CONTROLE DE DECISÃO -->
     <div class="feedback-box">
-      <div class="feedback-title">Direção Tokyo Punk com Glitch Interativo</div>
+      <div class="feedback-title">Ajustes Aplicados</div>
       <p class="feedback-desc">
-        Observe como o clique nos botões e cards cria um corte rápido com aberração cromática (separação de canais ciano e magenta) e deslocamento de eixos. 
-        Esse é o visual clássico do Digital Hardcore / Y2K Punk.
+        1. Fundo com partículas/bolinhas dinâmicas em fluxo diagonal idêntico ao motor da Mesa Virtual, com cores ajustadas para Tokyo Punk (magenta e roxo vivo).<br>
+        2. Título "MATRIZ DE ATRIBUTOS" totalmente limpo, sólido e sem efeito de glitch.<br>
+        3. Efeito glitch ativo estritamente no clique de botões. Os cards e caixas mantêm estabilidade total.
       </p>
     </div>
 
   </div>
 
   <script>
+    // ============================================================
+    // MOTOR DE BOLINHAS DINAMICAS EM FLUXO DIAGONAL (MOTOR DA MESA)
+    // ============================================================
+    const BgParticlesEngine = {
+      canvas: null,
+      ctx: null,
+      width: 0,
+      height: 0,
+      particles: [],
+      active: false,
+      palette: 'punk',
+
+      colors: {
+        punk: ['255, 0, 127', '147, 51, 234', '217, 70, 239'],
+        toxic: ['74, 222, 128', '139, 36, 245', '168, 85, 247'],
+        street: ['255, 102, 0', '124, 58, 237', '0, 229, 255'],
+        terminal: ['255, 230, 0', '147, 51, 234', '234, 88, 12']
+      },
+
+      init() {
+        this.canvas = document.getElementById('bg-particles-canvas');
+        if (!this.canvas) return;
+        this.ctx = this.canvas.getContext('2d');
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+        this.spawnParticles();
+        this.start();
+      },
+
+      resize() {
+        this.width = this.canvas.width = window.innerWidth;
+        this.height = this.canvas.height = window.innerHeight;
+      },
+
+      setPalette(name) {
+        this.palette = name;
+        const currentColors = this.colors[name] || this.colors.punk;
+        this.particles.forEach(p => {
+          p.color = currentColors[Math.floor(Math.random() * currentColors.length)];
+        });
+      },
+
+      createParticle(initial = false) {
+        let x, y;
+        if (initial) {
+          x = Math.random() * (this.width * 0.7);
+          y = this.height - (Math.random() * (this.height * 0.8));
+        } else {
+          if (Math.random() > 0.5) {
+            x = Math.random() * (this.width * 0.5);
+            y = this.height + 15;
+          } else {
+            x = -15;
+            y = this.height - (Math.random() * (this.height * 0.65));
+          }
+        }
+
+        const speed = Math.random() * 1.4 + 0.8;
+        const currentColors = this.colors[this.palette] || this.colors.punk;
+        const color = currentColors[Math.floor(Math.random() * currentColors.length)];
+
+        return {
+          x,
+          y,
+          radius: Math.random() * 6.5 + 2.5,
+          vx: speed,
+          vy: -speed * (Math.random() * 0.35 + 0.8),
+          baseAlpha: Math.random() * 0.35 + 0.15,
+          color
+        };
+      },
+
+      spawnParticles() {
+        this.particles = [];
+        const count = 55;
+        for (let i = 0; i < count; i++) {
+          this.particles.push(this.createParticle(true));
+        }
+      },
+
+      start() {
+        this.active = true;
+        this.loop();
+      },
+
+      loop() {
+        if (!this.active) return;
+        this.ctx.clearRect(0, 0, this.width, this.height);
+
+        for (let i = 0; i < this.particles.length; i++) {
+          let p = this.particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+
+          const distFromOrigin = Math.sqrt(p.x * p.x + (this.height - p.y) * (this.height - p.y));
+          const maxDist = Math.max(this.width, this.height) * 0.8;
+          let fade = 1 - Math.min(distFromOrigin / maxDist, 1);
+
+          if (fade > 0.05) {
+            this.ctx.beginPath();
+            this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            this.ctx.fillStyle = `rgba(${p.color}, ${p.baseAlpha * fade})`;
+            this.ctx.fill();
+          }
+
+          if (p.x > this.width * 0.85 || p.y < -20 || fade <= 0.05) {
+            this.particles[i] = this.createParticle(false);
+          }
+        }
+
+        requestAnimationFrame(() => this.loop());
+      }
+    };
+
+    // ============================================================
+    // CONTROLES DE PALETA E CALCULADORAS
+    // ============================================================
     function setPalette(name, btn) {
       document.body.setAttribute('data-palette', name);
       
@@ -1283,6 +1336,9 @@
         'terminal': '4. GLITCH TERMINAL (Roxo + Amarelo Alerta)'
       };
       if (titleEl) titleEl.textContent = paletteTitles[name] || name;
+
+      // Sincroniza cores das particulas de fundo
+      BgParticlesEngine.setPalette(name);
     }
 
     function updateCalculators() {
@@ -1299,10 +1355,10 @@
       if (resRe) resRe.textContent = defe.toFixed(2);
     }
 
-    // DISPARADOR MANUAL DE GLITCH
-    function triggerPageGlitch(btn) {
+    // DISPARADOR MANUAL DE GLITCH APENAS EM BOTOES
+    function triggerBtnGlitch(btn) {
       btn.classList.add('is-glitching');
-      setTimeout(() => btn.classList.remove('is-glitching'), 260);
+      setTimeout(() => btn.classList.remove('is-glitching'), 200);
     }
 
     function toggleScanlines(btn) {
@@ -1310,39 +1366,28 @@
       if (!scanlines) return;
       if (scanlines.style.display === 'none') {
         scanlines.style.display = 'block';
-        btn.textContent = 'Scanlines CRT: Ativadas';
-        btn.style.borderColor = 'var(--accent-contrast)';
+        btn.textContent = 'Scanlines: Ativadas';
       } else {
         scanlines.style.display = 'none';
-        btn.textContent = 'Scanlines CRT: Desativadas';
-        btn.style.borderColor = '#554477';
+        btn.textContent = 'Scanlines: Desativadas';
       }
     }
 
-    function triggerStaticBlast() {
-      const cards = document.querySelectorAll('.attr-card-street, .dist-card, .calc-card');
-      cards.forEach((card, index) => {
-        setTimeout(() => {
-          card.classList.add('is-glitching');
-          setTimeout(() => card.classList.remove('is-glitching'), 240);
-        }, index * 40);
-      });
-    }
-
-    // LISTENER GLOBAL DE CLIQUE PARA EFEITO GLITCH EM ELEMENTOS INTERATIVOS
+    // LISTENER GLOBAL EXCLUSIVO PARA O CLIQUE EM ELEMENTOS <button> OU .os-btn-dot
     document.addEventListener('click', (e) => {
-      const target = e.target.closest('button, .dist-card, .p-chip, .attr-card-street, .os-btn-dot, .sticker-tape');
-      if (target && !target.classList.contains('btn-palette-switch')) {
-        target.classList.remove('is-glitching');
-        void target.offsetWidth; // Forca reflow do DOM para reiniciar animacao
-        target.classList.add('is-glitching');
+      const btn = e.target.closest('button, .os-btn-dot');
+      if (btn) {
+        btn.classList.remove('is-glitching');
+        void btn.offsetWidth; // Reinicia reflow da animacao
+        btn.classList.add('is-glitching');
         setTimeout(() => {
-          target.classList.remove('is-glitching');
-        }, 240);
+          btn.classList.remove('is-glitching');
+        }, 200);
       }
     });
 
     document.addEventListener('DOMContentLoaded', () => {
+      BgParticlesEngine.init();
       updateCalculators();
     });
   </script>
