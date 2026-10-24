@@ -419,7 +419,7 @@
 .race-name {
   font-family: var(--font-heading);
   font-size: 1.8rem;
-  font-weight: 900;
+  font-weight: normal;
   margin: 0;
   color: var(--text-primary);
 }
@@ -1686,4 +1686,35 @@ button:active, .btn:active, .wiki-btn:active {
   border-color: #ffffff;
   box-shadow: 2px 2px 0 #000;
   transform: translateY(-1px);
+}
+
+/* ============================================================
+   TIPOGRAFIA REFINADA: CHINESE ROCKS (SEM NEGRITO) + INTER
+   ============================================================ */
+h1, h2, h3, h4, h5, h6,
+.page-header h1,
+.section-heading h2,
+.sidebar-logo,
+.sidebar-section-title,
+.sidebar-link,
+.v2-topic-banner,
+.ribbon-topic,
+button, .btn, .wiki-btn, .home-card h3 {
+  font-family: var(--font-heading) !important;
+  font-weight: normal !important;
+  letter-spacing: 0.05em;
+}
+
+body, p, li, td, th, label, input, textarea,
+.per-card p,
+.attr-card-body p,
+.race-card-body p,
+.class-desc,
+.callout p,
+.v2-skill-desc,
+.v2-lead-box p {
+  font-family: var(--font-body) !important;
+  font-weight: 400 !important;
+  letter-spacing: normal !important;
+  line-height: 1.65;
 }

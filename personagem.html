@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Personagem — Wuitalur RPG</title>
+  <title>Personagem Â— Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/components.css">
@@ -146,26 +146,26 @@
       <a href="wuitter.html" class="sidebar-link" style="color: #1d9bf0;"><span class="icon"></span> Wuitter</a>
 
       <div class="sidebar-section-title">Principal</div>
-      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> InÃ­cio</a>
       <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
-      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> RaÃ§as</a>
       <a href="origins.html" class="sidebar-link"><span class="icon"></span> Origens</a>
-      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> CriaÃ§Ã£o de Personagem</a>
 
       <div class="sidebar-section-title">Regras</div>
-      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> CondiÃ§Ãµes</a>
       <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
-      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
-      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> Mecânicas</a>
-      <a href="glossario.html" class="sidebar-link"><span class="icon"></span> Glossário</a>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> PerÃ­cias</a>
+      <a href="mecanicas.html" class="sidebar-link"><span class="icon"></span> MecÃ¢nicas</a>
+      <a href="glossario.html" class="sidebar-link"><span class="icon"></span> GlossÃ¡rio</a>
 
-      <div class="sidebar-section-title">Conteúdo</div>
+      <div class="sidebar-section-title">ConteÃºdo</div>
       <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
       <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
       <a href="selos.html" class="sidebar-link"><span class="icon"></span> Selos</a>
       <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
       <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
-      <a href="bestiario.html" class="sidebar-link"><span class="icon"></span> Bestiário</a>
+      <a href="bestiario.html" class="sidebar-link"><span class="icon"></span> BestiÃ¡rio</a>
 
       <div class="sidebar-section-title">Ferramentas</div>
       <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
@@ -181,7 +181,7 @@
         <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
         <div class="wiki-dropdown" id="wiki-menu-dropdown">
           <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
-          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
+          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> GlossÃ¡rio</a>
           <a href="criador.html" class="wiki-dropdown-item"><span class="icon">&#x270E;</span> Criador de Ficha</a>
         </div>
       </div>
@@ -236,11 +236,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const pageTitle = document.getElementById('page-title');
 
   if (!c) {
-    pageTitle.textContent = 'Personagem não encontrado';
+    pageTitle.textContent = 'Personagem nÃ£o encontrado';
     container.innerHTML = `
       <div class="char-not-found">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        <p>Personagem não encontrado.</p>
+        <p>Personagem nÃ£o encontrado.</p>
         <a href="personagens.html" class="char-back" style="justify-content:center;margin-top:var(--space-lg);">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="16" height="16"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
           Voltar para Personagens
@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="char-header-info">
           <h2 class="char-header-name">${escapeHtml(c.fullName || c.name || 'Sem nome')}</h2>
-          <div class="char-header-sub">${escapeHtml(c.className || '')}${c.race ? ' · ' + escapeHtml(c.race) : ''}</div>
+          <div class="char-header-sub">${escapeHtml(c.className || '')}${c.race ? ' Â· ' + escapeHtml(c.race) : ''}</div>
         </div>
         <span class="char-status-badge ${statusClass(c.status)}">
           <span class="status-dot" style="background:${statusColor(c.status)}"></span>
@@ -275,19 +275,19 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="char-stats-row">
         <div class="char-stat-box">
           <div class="char-stat-label">Idade</div>
-          <div class="char-stat-value">${escapeHtml(c.age || '—')}</div>
+          <div class="char-stat-value">${escapeHtml(c.age || 'Â—')}</div>
         </div>
         <div class="char-stat-box">
-          <div class="char-stat-label">Raça</div>
-          <div class="char-stat-value">${escapeHtml(c.race || '—')}</div>
+          <div class="char-stat-label">RaÃ§a</div>
+          <div class="char-stat-value">${escapeHtml(c.race || 'Â—')}</div>
         </div>
         <div class="char-stat-box">
           <div class="char-stat-label">Classe</div>
-          <div class="char-stat-value">${escapeHtml(c.className || '—')}</div>
+          <div class="char-stat-value">${escapeHtml(c.className || 'Â—')}</div>
         </div>
         <div class="char-stat-box">
-          <div class="char-stat-label">Afiliação</div>
-          <div class="char-stat-value">${escapeHtml(c.affiliation || '—')}</div>
+          <div class="char-stat-label">AfiliaÃ§Ã£o</div>
+          <div class="char-stat-value">${escapeHtml(c.affiliation || 'Â—')}</div>
         </div>
       </div>
 
@@ -307,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       ${c.appearance ? `
         <div class="char-section">
-          <h3>Aparência</h3>
+          <h3>AparÃªncia</h3>
           <p>${escapeHtml(c.appearance)}</p>
         </div>
       ` : ''}
@@ -329,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ${c.currentSituation ? `
         <div class="char-section">
           <div class="char-situation">
-            <div class="char-section-label">Situação Atual</div>
+            <div class="char-section-label">SituaÃ§Ã£o Atual</div>
             <p>${escapeHtml(c.currentSituation)}</p>
           </div>
         </div>

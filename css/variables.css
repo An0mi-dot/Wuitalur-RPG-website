@@ -74,7 +74,7 @@
   --accent:         #7C3AED;
 
   --font-heading: 'Chinese Rocks', 'Cinzel', serif;
-  --font-body: 'Chinese Rocks', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono:      'JetBrains Mono', 'Fira Code', monospace;
 
   --space-xs:  0.25rem;
@@ -798,4 +798,35 @@ code, .mono {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
     transform: translateY(0);
   }
+}
+
+/* ============================================================
+   TIPOGRAFIA REFINADA: CHINESE ROCKS (SEM NEGRITO) + INTER
+   ============================================================ */
+h1, h2, h3, h4, h5, h6,
+.page-header h1,
+.section-heading h2,
+.sidebar-logo,
+.sidebar-section-title,
+.sidebar-link,
+.v2-topic-banner,
+.ribbon-topic,
+button, .btn, .wiki-btn, .home-card h3 {
+  font-family: var(--font-heading) !important;
+  font-weight: normal !important;
+  letter-spacing: 0.05em;
+}
+
+body, p, li, td, th, label, input, textarea,
+.per-card p,
+.attr-card-body p,
+.race-card-body p,
+.class-desc,
+.callout p,
+.v2-skill-desc,
+.v2-lead-box p {
+  font-family: var(--font-body) !important;
+  font-weight: 400 !important;
+  letter-spacing: normal !important;
+  line-height: 1.65;
 }
