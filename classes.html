@@ -22,6 +22,7 @@
     .class-carga h5 { font-family: var(--font-heading); font-size: 0.9rem; color: #ff9500; }
     .class-carga p { font-size: 0.85rem; color: var(--text-secondary); margin: 0; }
   </style>
+  <link rel="stylesheet" href="css/showcase.css">
 </head>
 <body>
 
@@ -83,6 +84,65 @@
         </div>
       </div>
     </header>
+
+    <!-- STAGE SHOWCASE 100VH (SEM SCROLL GERAL) -->
+    <div class="showcase-viewport" id="showcase-viewport">
+
+      <!-- PALCO CENTRAL (ARTE + CANVAS DE PONTOS DA MESA) -->
+      <div class="showcase-center-stage">
+        <!-- Botão Hambúrguer Superior Esquerdo -->
+        <button type="button" class="showcase-hamburger-btn" id="showcase-hamburger-btn" aria-label="Abrir lista">
+          <span>&#x2630;</span> <span id="showcase-hamburger-label">Classes</span>
+        </button>
+
+        <!-- Canvas de Partículas / Pontos da Mesa -->
+        <canvas class="showcase-dots-canvas" id="showcase-dots-canvas"></canvas>
+        <div class="showcase-dots-overlay"></div>
+        <div class="showcase-hero-glow"></div>
+
+        <!-- Ilustração Central da Classe/Raça -->
+        <img src="" alt="" class="showcase-hero-art" id="showcase-hero-art">
+
+        <!-- Nome Gigante Sobreposto no Canto Inferior Direito -->
+        <div class="showcase-big-name" id="showcase-big-name">Carregando...</div>
+      </div>
+
+      <!-- PAINEL DA DIREITA COM CORTE DIAGONAL -->
+      <aside class="showcase-right-panel" id="showcase-right-panel">
+        <div class="showcase-panel-header">
+          <div class="showcase-panel-meta">
+            <span class="showcase-nd-badge" id="showcase-nd-badge">ND 1</span>
+          </div>
+          <!-- Menu de Tópicos (SEM SCROLL: Navegação na Mesma Tela) -->
+          <div class="showcase-topic-tabs" id="showcase-topic-tabs">
+            <!-- Gerado dinamicamente -->
+          </div>
+        </div>
+
+        <!-- Conteúdo do Tópico Selecionado -->
+        <div class="showcase-topic-content" id="showcase-topic-content">
+          <!-- Gerado dinamicamente -->
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- GAVETA MODAL LATERAL (SELEÇÃO RÁPIDA DE OUTRAS CLASSES) -->
+    <div class="showcase-drawer-backdrop" id="showcase-drawer-backdrop">
+      <div class="showcase-drawer">
+        <div class="showcase-drawer-header">
+          <h3 class="showcase-drawer-title" id="showcase-drawer-heading">Todas as Classes</h3>
+          <button type="button" class="showcase-drawer-close" id="showcase-drawer-close">&times;</button>
+        </div>
+        <div class="showcase-drawer-search">
+          <input type="text" class="showcase-drawer-input" id="showcase-drawer-input" placeholder="Buscar por nome...">
+        </div>
+        <div class="showcase-drawer-list" id="showcase-drawer-list">
+          <!-- Gerado dinamicamente -->
+        </div>
+      </div>
+    </div>
+
 
     <!-- BARRA FIXA DE NAVEGAÇÃO TÁTICA -->
     <nav class="tactical-subnav" id="class-subnav" aria-label="Navegação rápida de classes">
@@ -3611,8 +3671,7 @@
     });
   }
 </script>
-</body>
-</html>
+
 
 
 <section class="subsection" id="protegidos">
@@ -4418,7 +4477,11 @@
       </section>
 
       <!-- CONSAGRADOS -->
-      
-
-
-
+<script src="js/showcase.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    ShowcaseEngine.init("classes");
+  });
+</script>
+</body>
+</html>
