@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wuitalur RPG — Nova Interface V2</title>
+  <title>Wuitalur RPG — Proposta Visual (Sistema Atual v1.5)</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/nova-interface.css">
 </head>
@@ -18,400 +18,881 @@
     
     <div class="v2-sidebar-header">
       <div class="v2-logo-box">WUITALUR</div>
-      <span class="v2-logo-version">Sistema Edição 2.0</span>
+      <span class="v2-logo-version">Sistema v1.5.1-1</span>
     </div>
 
     <nav class="v2-sidebar-nav">
       
-      <!-- SEÇÃO PRINCIPAL (EXATAMENTE COMO NA FOTO) -->
-      <div class="v2-nav-section-title">Principal</div>
-      <a href="javascript:void(0)" class="v2-nav-link" data-page="home">
-        <span>Início</span>
-        <span class="v2-nav-badge">Hub</span>
-      </a>
-      <a href="javascript:void(0)" class="v2-nav-link" data-page="atributos">
-        <span>Atributos</span>
-      </a>
-      <a href="javascript:void(0)" class="v2-nav-link" data-page="racas">
-        <span>Raças</span>
-      </a>
-      <a href="javascript:void(0)" class="v2-nav-link" data-page="origens">
-        <span>Origens</span>
-      </a>
-      <a href="javascript:void(0)" class="v2-nav-link" data-page="criacao">
-        <span>Criação de Personagem</span>
-      </a>
-
-      <!-- SEÇÃO REGRAS (ONDE FICA PERÍCIAS) -->
-      <div class="v2-nav-section-title">Regras</div>
-      <a href="javascript:void(0)" class="v2-nav-link active" data-page="pericias">
-        <span>Perícias</span>
-        <span class="v2-nav-badge">12</span>
-      </a>
-      <a href="javascript:void(0)" class="v2-nav-link" data-page="combate">
-        <span>Combate & Defesa</span>
-      </a>
-      <a href="javascript:void(0)" class="v2-nav-link" data-page="sanidade">
-        <span>Sanidade</span>
-      </a>
-      <a href="javascript:void(0)" class="v2-nav-link" data-page="condicoes">
-        <span>Condições</span>
-      </a>
-      <a href="javascript:void(0)" class="v2-nav-link" data-page="mecanicas">
-        <span>Mecânicas Gerais</span>
-      </a>
-
-      <!-- SEÇÃO CONTEÚDO -->
-      <div class="v2-nav-section-title">Conteúdo</div>
-      <a href="javascript:void(0)" class="v2-nav-link" data-page="classes">
-        <span>Classes</span>
-      </a>
-      <a href="javascript:void(0)" class="v2-nav-link" data-page="elementos">
-        <span>Elementos</span>
-      </a>
-      <a href="javascript:void(0)" class="v2-nav-link" data-page="equipamentos">
-        <span>Equipamentos</span>
-      </a>
-
-      <!-- SEÇÃO EXTRAS -->
+      <!-- SEÇÃO EXTRAS (NO TOPO, COMO NO SITE ORIGINAL) -->
       <div class="v2-nav-section-title">Extras</div>
-      <a href="javascript:void(0)" class="v2-nav-link" data-page="boletim" style="color: #fb7185;">
+      <a href="javascript:void(0)" class="v2-nav-link" data-target="page-extras">
+        <span>Suplementos</span>
+      </a>
+      <a href="boletim.html" class="v2-nav-link" style="color: #fb7185;">
         <span>Boletim</span>
         <span class="v2-nav-badge" style="border-color: #fb7185; color: #fb7185;">#3</span>
       </a>
       <a href="mesa.html" class="v2-nav-link" style="color: #ffaa66;">
         <span>Mesa Virtual</span>
       </a>
+      <a href="wuitter.html" class="v2-nav-link" style="color: #38bdf8;">
+        <span>Wuitter</span>
+      </a>
+
+      <!-- SEÇÃO PRINCIPAL (EXATAMENTE COMO NA FOTO DO USUÁRIO) -->
+      <div class="v2-nav-section-title">Principal</div>
+      <a href="javascript:void(0)" class="v2-nav-link" data-target="page-home" id="nav-inicio">
+        <span>Início</span>
+        <span class="v2-nav-badge">Hub</span>
+      </a>
+      <a href="atributos.html" class="v2-nav-link" data-target="page-atributos">
+        <span>Atributos</span>
+      </a>
+      <a href="races.html" class="v2-nav-link" data-target="page-racas">
+        <span>Raças</span>
+      </a>
+      <a href="origins.html" class="v2-nav-link">
+        <span>Origens</span>
+      </a>
+      <a href="criacao-personagem.html" class="v2-nav-link">
+        <span>Criação de Personagem</span>
+      </a>
+
+      <!-- SEÇÃO REGRAS (ONDE FICA A PÁGINA PERÍCIAS ATIVA) -->
+      <div class="v2-nav-section-title">Regras</div>
+      <a href="condicoes.html" class="v2-nav-link">
+        <span>Condições</span>
+      </a>
+      <a href="sanidade.html" class="v2-nav-link">
+        <span>Sanidade</span>
+      </a>
+      <a href="javascript:void(0)" class="v2-nav-link active" data-target="page-pericias" id="nav-pericias">
+        <span>Perícias</span>
+        <span class="v2-nav-badge">36</span>
+      </a>
+      <a href="mecanicas.html" class="v2-nav-link">
+        <span>Mecânicas</span>
+      </a>
+      <a href="glossario.html" class="v2-nav-link">
+        <span>Glossário</span>
+      </a>
+
+      <!-- SEÇÃO CONTEÚDO -->
+      <div class="v2-nav-section-title">Conteúdo</div>
+      <a href="classes.html" class="v2-nav-link">
+        <span>Classes</span>
+      </a>
+      <a href="elementos.html" class="v2-nav-link">
+        <span>Elementos</span>
+      </a>
+      <a href="selos.html" class="v2-nav-link">
+        <span>Selos</span>
+      </a>
+      <a href="equipamentos.html" class="v2-nav-link">
+        <span>Equipamentos</span>
+      </a>
+      <a href="conclave.html" class="v2-nav-link">
+        <span>O Conclave</span>
+      </a>
+      <a href="bestiario.html" class="v2-nav-link">
+        <span>Bestiário</span>
+      </a>
+
+      <!-- SEÇÃO FERRAMENTAS -->
+      <div class="v2-nav-section-title">Ferramentas</div>
+      <a href="changelog.html" class="v2-nav-link">
+        <span>Changelog</span>
+      </a>
+      <a href="criador.html" class="v2-nav-link">
+        <span>Criador de Ficha</span>
+      </a>
 
     </nav>
   </aside>
 
   <!-- ============================================================
-       CONTEÚDO PRINCIPAL NA DIREITA (TOMANDO 100% DA TELA)
+       CONTEÚDO PRINCIPAL NA DIREITA (TOMANDO 100% DA LARGURA DA TELA)
        ============================================================ -->
   <div class="v2-main-content">
 
-    <!-- BARRA SUPERIOR FIXA DE CONTROLE DE PROPOSTAS -->
+    <!-- HEADER SUPERIOR COM O SELETOR DAS 5 PROPOSTAS DE ANIMAÇÃO -->
     <header class="v2-top-header">
       <div class="v2-header-left">
         <span style="font-size: 0.95rem; color: #ffaa66; text-transform: uppercase;">
-          Redesign da Interface
+          Redesign Visual — Sistema Atual
         </span>
       </div>
 
-      <!-- SELETOR DE ANIMAÇÕES DOS BOTÕES QUADRADOS -->
+      <!-- SELETOR DOS 5 MODELOS DE BOTÃO COM PONTAS FINAS -->
       <div class="v2-model-switcher-bar">
-        <span class="v2-switcher-label">Estilo de Botão:</span>
-        <button type="button" class="v2-anim-btn active" data-anim="anim-carimbo">
-          1. Carimbo P�rpura (Impacto)
+        <span class="v2-switcher-label">Modelo de Botão:</span>
+        <button type="button" class="v2-anim-btn active" data-anim="anim-carimbo" title="Impacto e recuo seco como carimbo">
+          1. Carimbo Púrpura (Recuo)
         </button>
-        <button type="button" class="v2-anim-btn" data-anim="anim-lamina">
-          2. Lâmina de Sangue (Corte)
+        <button type="button" class="v2-anim-btn" data-anim="anim-lamina" title="Corte afiado deslizando com rastro">
+          2. Lâmina Violeta (Corte)
         </button>
-        <button type="button" class="v2-anim-btn" data-anim="anim-sismico">
+        <button type="button" class="v2-anim-btn" data-anim="anim-sismico" title="Micro-glitch sísmico na borda rúnica">
           3. Glitch Rúnico (Tremor)
         </button>
-        <button type="button" class="v2-anim-btn" data-anim="anim-chapa">
+        <button type="button" class="v2-anim-btn" data-anim="anim-chapa" title="Snap 3D mecânico e brutal">
           4. Chapa Pesada (Snap 3D)
         </button>
       </div>
     </header>
 
-    <!-- ÁREA DE CONTEÚDO EXPANSIVA -->
+    <!-- ÁREA DE PÁGINA FULLSCREEN -->
     <main class="v2-page-viewport">
 
       <!-- ======================================================
-           PÁGINA 1: PERÍCIAS (RECRIAÇÃO TOTAL DA PRIMEIRA FOTO)
+           PÁGINA: PERÍCIAS (RECRIAÇÃO DA PRIMEIRA IMAGEM COM 36 PERÍCIAS)
            ====================================================== -->
-      <div id="page-pericias" class="page-content-block">
+      <div id="page-pericias" class="page-view-block">
 
-        <!-- O TÓPICO TORTO IDÊNTICO AO DA PRIMEIRA IMAGEM -->
+        <!-- O TÓPICO TORTO EM ROXO (IGUAL À IMAGEM DO USUÁRIO) -->
         <div class="v2-topic-banner">PERÍCIAS</div>
 
-        <!-- QUADRO INTRODUTÓRIO -->
+        <!-- QUADRO INTRODUTÓRIO DO SISTEMA ATUAL -->
         <div class="v2-lead-box">
           <p>
-            Na <strong>Edição 2.0</strong>, as perícias foram consolidadas de 36 para <strong>12 perícias essenciais</strong>.
-            Cada personagem escolhe <strong>4 perícias treinadas</strong>.
-            Ter treino concede <strong>Vantagem (rola 2d12 e escolhe o maior)</strong>, e se o atributo for especializado você soma <strong>+2</strong>.
+            No sistema atual de <strong>Wuitalur RPG</strong>, cada jogador pode escolher <strong>6 perícias</strong> para treinar seu personagem.
+            As perícias são divididas entre os atributos fundamentais: <em>Destreza, Intelecto, Força, Saúde, Fama e Sentidos</em>.
           </p>
         </div>
 
         <!-- BARRA DE FILTRO E BUSCA -->
         <div class="v2-pericias-filter-bar">
-          <input type="text" id="skill-search" class="v2-search-input" placeholder="Buscar perícia ou atributo..." aria-label="Buscar perícia">
+          <input type="text" id="skill-search" class="v2-search-input" placeholder="Buscar perícia (ex: Investigação, Medicina, Atletismo)..." aria-label="Buscar perícia">
 
           <div class="v2-filter-chips">
-            <button type="button" class="v2-filter-chip active" data-filter="all">Todas (12)</button>
+            <button type="button" class="v2-filter-chip active" data-filter="all">Todas (36)</button>
             <button type="button" class="v2-filter-chip" data-filter="Destreza">Destreza</button>
+            <button type="button" class="v2-filter-chip" data-filter="Intelecto">Intelecto</button>
             <button type="button" class="v2-filter-chip" data-filter="Força">Força</button>
-            <button type="button" class="v2-filter-chip" data-filter="Vigor">Vigor</button>
-            <button type="button" class="v2-filter-chip" data-filter="Mente">Mente</button>
-            <button type="button" class="v2-filter-chip" data-filter="Expressão">Expressão</button>
+            <button type="button" class="v2-filter-chip" data-filter="Saúde">Saúde</button>
+            <button type="button" class="v2-filter-chip" data-filter="Fama">Fama</button>
+            <button type="button" class="v2-filter-chip" data-filter="Sentidos">Sentidos</button>
           </div>
 
           <button type="button" class="v2-btn v2-btn-primary" id="btn-roll-dice">
-            <span>Rolar Teste de Exemplo</span>
+            <span>Rolar Teste d20</span>
           </button>
         </div>
 
-        <!-- GRID DE CARDS DE PERÍCIAS (TOMANDO A LARGURA TODA DA TELA) -->
+        <!-- GRID COM TODAS AS 36 PERÍCIAS DO SISTEMA ATUAL -->
         <div class="v2-skills-grid" id="skills-grid">
+          
+  <div class="v2-skill-card" data-attr="Destreza">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Disparada</h3>
+        <span class="v2-skill-attr-tag">Destreza</span>
+      </div>
+      <p class="v2-skill-desc">Momentos em que é necessário escapar rapidamente de perigos ou alcançar algo com agilidade.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Destreza</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Disparada', 'Destreza')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
 
-          <!-- 1. Acrobacia -->
-          <div class="v2-skill-card" data-attr="Destreza">
-            <div>
-              <div class="v2-skill-header">
-                <h3 class="v2-skill-name">Acrobacia</h3>
-                <span class="v2-skill-attr-tag">Destreza</span>
-              </div>
-              <p class="v2-skill-desc">
-                Manobras ágeis, saltos, amortecer quedas, equilíbrio em superfícies estreitas e esquiva acrobática contra ataques.
-              </p>
-            </div>
-            <div class="v2-skill-footer">
-              <span class="v2-skill-stat">Base: 1d12 + DES</span>
-              <button type="button" class="v2-skill-btn-roll" onclick="simulateRoll('Acrobacia', 'Destreza')">Testar</button>
-            </div>
-          </div>
 
-          <!-- 2. Atletismo -->
-          <div class="v2-skill-card" data-attr="Força Destreza">
-            <div>
-              <div class="v2-skill-header">
-                <h3 class="v2-skill-name">Atletismo</h3>
-                <span class="v2-skill-attr-tag">Força ou Destreza</span>
-              </div>
-              <p class="v2-skill-desc">
-                Corridas de impacto, escalada de muralhas, saltos longos, natação contra correntezas e arremesso de objetos pesados.
-              </p>
-            </div>
-            <div class="v2-skill-footer">
-              <span class="v2-skill-stat">Base: 1d12 + FOR/DES</span>
-              <button type="button" class="v2-skill-btn-roll" onclick="simulateRoll('Atletismo', 'Força')">Testar</button>
-            </div>
-          </div>
+  <div class="v2-skill-card" data-attr="Intelecto ou Saúde">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Medicina</h3>
+        <span class="v2-skill-attr-tag">Intelecto ou Saúde</span>
+      </div>
+      <p class="v2-skill-desc">Tratamento de ferimentos, cura de doenças, restauração de saúde de aliados.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Intelecto ou Saúde</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Medicina', 'Intelecto ou Saúde')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
 
-          <!-- 3. Furtividade -->
-          <div class="v2-skill-card" data-attr="Destreza">
-            <div>
-              <div class="v2-skill-header">
-                <h3 class="v2-skill-name">Furtividade</h3>
-                <span class="v2-skill-attr-tag">Destreza</span>
-              </div>
-              <p class="v2-skill-desc">
-                Mover-se em silêncio absoluto, esconder-se nas sombras, desviar do campo visual de sentinelas e preparar emboscadas.
-              </p>
-            </div>
-            <div class="v2-skill-footer">
-              <span class="v2-skill-stat">Base: 1d12 + DES</span>
-              <button type="button" class="v2-skill-btn-roll" onclick="simulateRoll('Furtividade', 'Destreza')">Testar</button>
-            </div>
-          </div>
 
-          <!-- 4. Investigação -->
-          <div class="v2-skill-card" data-attr="Mente">
-            <div>
-              <div class="v2-skill-header">
-                <h3 class="v2-skill-name">Investigação</h3>
-                <span class="v2-skill-attr-tag">Mente</span>
-              </div>
-              <p class="v2-skill-desc">
-                Encontrar pistas ocultas, decifrar códigos e documentos rasgados, reconstruir cenas de crime e identificar contradições.
-              </p>
-            </div>
-            <div class="v2-skill-footer">
-              <span class="v2-skill-stat">Base: 1d12 + MEN</span>
-              <button type="button" class="v2-skill-btn-roll" onclick="simulateRoll('Investigação', 'Mente')">Testar</button>
-            </div>
-          </div>
+  <div class="v2-skill-card" data-attr="Intelecto">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Investigação</h3>
+        <span class="v2-skill-attr-tag">Intelecto</span>
+      </div>
+      <p class="v2-skill-desc">Analisar cenas, pistas e padrões; reconstruir eventos passados; identificar contradições em relatos; deduzir a natureza de fenômenos estranhos; desvendar mistérios, crimes e anomalias.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Intelecto</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Investigação', 'Intelecto')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
 
-          <!-- 5. Medicina -->
-          <div class="v2-skill-card" data-attr="Mente">
-            <div>
-              <div class="v2-skill-header">
-                <h3 class="v2-skill-name">Medicina</h3>
-                <span class="v2-skill-attr-tag">Mente</span>
-              </div>
-              <p class="v2-skill-desc">
-                Tratamento de feridas abertas, primeiros socorros em combate, suturas, antídotos contra venenos e estabilização de aliados.
-              </p>
-            </div>
-            <div class="v2-skill-footer">
-              <span class="v2-skill-stat">Base: 1d12 + MEN</span>
-              <button type="button" class="v2-skill-btn-roll" onclick="simulateRoll('Medicina', 'Mente')">Testar</button>
-            </div>
-          </div>
 
-          <!-- 6. Percepção -->
-          <div class="v2-skill-card" data-attr="Mente Expressão">
-            <div>
-              <div class="v2-skill-header">
-                <h3 class="v2-skill-name">Percepção</h3>
-                <span class="v2-skill-attr-tag">Mente ou Expressão</span>
-              </div>
-              <p class="v2-skill-desc">
-                Notar aproximação de inimigos, ouvir passos atrás de portas, farejar substâncias anormais e ler a linguagem corporal alheia.
-              </p>
-            </div>
-            <div class="v2-skill-footer">
-              <span class="v2-skill-stat">Base: 1d12 + MEN/EXP</span>
-              <button type="button" class="v2-skill-btn-roll" onclick="simulateRoll('Percepção', 'Mente')">Testar</button>
-            </div>
-          </div>
+  <div class="v2-skill-card" data-attr="Fama">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Diplomacia</h3>
+        <span class="v2-skill-attr-tag">Fama</span>
+      </div>
+      <p class="v2-skill-desc">Negociações, resolução de conflitos e persuasão pacífica.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Fama</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Diplomacia', 'Fama')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
 
-          <!-- 7. Sobrevivência -->
-          <div class="v2-skill-card" data-attr="Mente Vigor">
-            <div>
-              <div class="v2-skill-header">
-                <h3 class="v2-skill-name">Sobrevivência</h3>
-                <span class="v2-skill-attr-tag">Mente ou Vigor</span>
-              </div>
-              <p class="v2-skill-desc">
-                Rastrear pegadas em terra úmida, acampar em áreas inóspitas, identificar água potável e resistir a intempéries brutais.
-              </p>
-            </div>
-            <div class="v2-skill-footer">
-              <span class="v2-skill-stat">Base: 1d12 + MEN/VIG</span>
-              <button type="button" class="v2-skill-btn-roll" onclick="simulateRoll('Sobrevivência', 'Vigor')">Testar</button>
-            </div>
-          </div>
 
-          <!-- 8. Astral -->
-          <div class="v2-skill-card" data-attr="Mente">
-            <div>
-              <div class="v2-skill-header">
-                <h3 class="v2-skill-name">Astral</h3>
-                <span class="v2-skill-attr-tag">Mente</span>
-              </div>
-              <p class="v2-skill-desc">
-                Compreensão dos 7 Elementos de Wuitalur, identificação de relíquias e runas arcanas, canalização mística e rituais de selamento.
-              </p>
-            </div>
-            <div class="v2-skill-footer">
-              <span class="v2-skill-stat">Base: 1d12 + MEN</span>
-              <button type="button" class="v2-skill-btn-roll" onclick="simulateRoll('Astral', 'Mente')">Testar</button>
-            </div>
-          </div>
+  <div class="v2-skill-card" data-attr="Destreza">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Acrobacia</h3>
+        <span class="v2-skill-attr-tag">Destreza</span>
+      </div>
+      <p class="v2-skill-desc">Realização de saltos, equilíbrio e manobras físicas ágeis.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Destreza</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Acrobacia', 'Destreza')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
 
-          <!-- 9. Ofício -->
-          <div class="v2-skill-card" data-attr="Mente">
-            <div>
-              <div class="v2-skill-header">
-                <h3 class="v2-skill-name">Ofício</h3>
-                <span class="v2-skill-attr-tag">Mente</span>
-              </div>
-              <p class="v2-skill-desc">
-                Forja de armas, reparo de armaduras de placas, alquimia prática, mecânica arcaica de Everact e conserto de equipamentos danificados.
-              </p>
-            </div>
-            <div class="v2-skill-footer">
-              <span class="v2-skill-stat">Base: 1d12 + MEN</span>
-              <button type="button" class="v2-skill-btn-roll" onclick="simulateRoll('Ofício', 'Mente')">Testar</button>
-            </div>
-          </div>
 
-          <!-- 10. Persuasão -->
-          <div class="v2-skill-card" data-attr="Expressão">
-            <div>
-              <div class="v2-skill-header">
-                <h3 class="v2-skill-name">Persuasão</h3>
-                <span class="v2-skill-attr-tag">Expressão</span>
-              </div>
-              <p class="v2-skill-desc">
-                Negociações diplomáticas, convencer autoridades através da argumentação, inspirar o grupo e conseguir informações pacificamente.
-              </p>
-            </div>
-            <div class="v2-skill-footer">
-              <span class="v2-skill-stat">Base: 1d12 + EXP</span>
-              <button type="button" class="v2-skill-btn-roll" onclick="simulateRoll('Persuasão', 'Expressão')">Testar</button>
-            </div>
-          </div>
+  <div class="v2-skill-card" data-attr="Força">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Atletismo</h3>
+        <span class="v2-skill-attr-tag">Força</span>
+      </div>
+      <p class="v2-skill-desc">Capacidade física para correr, saltar, escalar, nadar e executar esforços intensos. Mede força, resistência e explosão corporal em ações que exigem vigor físico.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Força</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Atletismo', 'Força')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
 
-          <!-- 11. Enganação -->
-          <div class="v2-skill-card" data-attr="Expressão">
-            <div>
-              <div class="v2-skill-header">
-                <h3 class="v2-skill-name">Enganação</h3>
-                <span class="v2-skill-attr-tag">Expressão</span>
-              </div>
-              <p class="v2-skill-desc">
-                Contar mentiras convincentes, forjar identidades falsas, dissimular emoções, blefar em combate e plantar pistas falsas.
-              </p>
-            </div>
-            <div class="v2-skill-footer">
-              <span class="v2-skill-stat">Base: 1d12 + EXP</span>
-              <button type="button" class="v2-skill-btn-roll" onclick="simulateRoll('Enganação', 'Expressão')">Testar</button>
-            </div>
-          </div>
 
-          <!-- 12. Intimidação -->
-          <div class="v2-skill-card" data-attr="Expressão Força">
-            <div>
-              <div class="v2-skill-header">
-                <h3 class="v2-skill-name">Intimidação</h3>
-                <span class="v2-skill-attr-tag">Expressão ou Força</span>
-              </div>
-              <p class="v2-skill-desc">
-                Coagir através de ameaças diretas, impor presença pelo medo físico, quebrar a moral de inimigos e forçar confissões sob pressão.
-              </p>
-            </div>
-            <div class="v2-skill-footer">
-              <span class="v2-skill-stat">Base: 1d12 + EXP/FOR</span>
-              <button type="button" class="v2-skill-btn-roll" onclick="simulateRoll('Intimidação', 'Força')">Testar</button>
-            </div>
-          </div>
+  <div class="v2-skill-card" data-attr="Intelecto">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">História</h3>
+        <span class="v2-skill-attr-tag">Intelecto</span>
+      </div>
+      <p class="v2-skill-desc">Conhecimento de eventos históricos, culturas e mitologias.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Intelecto</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('História', 'Intelecto')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Intelecto">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Engenharia</h3>
+        <span class="v2-skill-attr-tag">Intelecto</span>
+      </div>
+      <p class="v2-skill-desc">Construção, reparos e manipulação de dispositivos mecânicos.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Intelecto</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Engenharia', 'Intelecto')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Sentidos">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Sobrevivência</h3>
+        <span class="v2-skill-attr-tag">Sentidos</span>
+      </div>
+      <p class="v2-skill-desc">Navegação e obtenção de recursos em ambientes inóspitos.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Sentidos</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Sobrevivência', 'Sentidos')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Sentidos">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Navegação</h3>
+        <span class="v2-skill-attr-tag">Sentidos</span>
+      </div>
+      <p class="v2-skill-desc">Orientação em territórios desconhecidos e percepção do ambiente.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Sentidos</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Navegação', 'Sentidos')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Intelecto">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Cosmos</h3>
+        <span class="v2-skill-attr-tag">Intelecto</span>
+      </div>
+      <p class="v2-skill-desc">Premonição, leitura de aura e interação com o sobrenatural.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Intelecto</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Cosmos', 'Intelecto')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Fama">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Liderança</h3>
+        <span class="v2-skill-attr-tag">Fama</span>
+      </div>
+      <p class="v2-skill-desc">Inspirar aliados, organizar equipes e tomar decisões estratégicas.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Fama</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Liderança', 'Fama')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Destreza">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Furtividade</h3>
+        <span class="v2-skill-attr-tag">Destreza</span>
+      </div>
+      <p class="v2-skill-desc">Movimentação silenciosa e esconder-se de inimigos.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Destreza</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Furtividade', 'Destreza')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Intelecto">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Alquimia</h3>
+        <span class="v2-skill-attr-tag">Intelecto</span>
+      </div>
+      <p class="v2-skill-desc">Criação de poções, elixires e itens mágicos.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Intelecto</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Alquimia', 'Intelecto')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Fama">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Enganação</h3>
+        <span class="v2-skill-attr-tag">Fama</span>
+      </div>
+      <p class="v2-skill-desc">Enganar ou persuadir de forma dissimulada.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Fama</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Enganação', 'Fama')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Sentidos">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Domar</h3>
+        <span class="v2-skill-attr-tag">Sentidos</span>
+      </div>
+      <p class="v2-skill-desc">Controlar e se comunicar com criaturas selvagens.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Sentidos</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Domar', 'Sentidos')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Intelecto">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Astúcia</h3>
+        <span class="v2-skill-attr-tag">Intelecto</span>
+      </div>
+      <p class="v2-skill-desc">Desarmar armadilhas, operar mecanismos e resolver enigmas.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Intelecto</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Astúcia', 'Intelecto')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Força">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Natação</h3>
+        <span class="v2-skill-attr-tag">Força</span>
+      </div>
+      <p class="v2-skill-desc">Lidar com desafios aquáticos, como correntezas e mergulhos.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Força</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Natação', 'Força')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Intelecto">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Herbalismo</h3>
+        <span class="v2-skill-attr-tag">Intelecto</span>
+      </div>
+      <p class="v2-skill-desc">Identificação e uso de plantas e ervas medicinais.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Intelecto</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Herbalismo', 'Intelecto')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Fama">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Mímica</h3>
+        <span class="v2-skill-attr-tag">Fama</span>
+      </div>
+      <p class="v2-skill-desc">Imitar vozes, comportamentos e gestos.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Fama</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Mímica', 'Fama')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Intelecto">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Mecânica</h3>
+        <span class="v2-skill-attr-tag">Intelecto</span>
+      </div>
+      <p class="v2-skill-desc">Operar e consertar máquinas complexas.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Intelecto</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Mecânica', 'Intelecto')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Intelecto">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Línguas</h3>
+        <span class="v2-skill-attr-tag">Intelecto</span>
+      </div>
+      <p class="v2-skill-desc">Comunicação em diferentes idiomas e culturas.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Intelecto</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Línguas', 'Intelecto')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Fama">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Barganha</h3>
+        <span class="v2-skill-attr-tag">Fama</span>
+      </div>
+      <p class="v2-skill-desc">Negociar melhores preços ou obter informações valiosas.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Fama</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Barganha', 'Fama')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Força">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Forja</h3>
+        <span class="v2-skill-attr-tag">Força</span>
+      </div>
+      <p class="v2-skill-desc">Criação e aprimoramento de armas e armaduras.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Força</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Forja', 'Força')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Fama">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Atuação</h3>
+        <span class="v2-skill-attr-tag">Fama</span>
+      </div>
+      <p class="v2-skill-desc">Entretenimento, representação teatral e sedução.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Fama</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Atuação', 'Fama')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Sentidos">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Culinária</h3>
+        <span class="v2-skill-attr-tag">Sentidos</span>
+      </div>
+      <p class="v2-skill-desc">Preparação de refeições que conferem benefícios.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Sentidos</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Culinária', 'Sentidos')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Intelecto">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Estratégia</h3>
+        <span class="v2-skill-attr-tag">Intelecto</span>
+      </div>
+      <p class="v2-skill-desc">Planejamento de combates ou abordagens complexas.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Intelecto</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Estratégia', 'Intelecto')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Intelecto">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Astronomia</h3>
+        <span class="v2-skill-attr-tag">Intelecto</span>
+      </div>
+      <p class="v2-skill-desc">Navegação noturna e previsão de eventos astronômicos.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Intelecto</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Astronomia', 'Intelecto')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Intelecto">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Psicologia</h3>
+        <span class="v2-skill-attr-tag">Intelecto</span>
+      </div>
+      <p class="v2-skill-desc">Entendimento de motivações e comportamentos humanos.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Intelecto</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Psicologia', 'Intelecto')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Sentidos">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Meditação</h3>
+        <span class="v2-skill-attr-tag">Sentidos</span>
+      </div>
+      <p class="v2-skill-desc">Resistência a influências mentais e recuperação de foco.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Sentidos</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Meditação', 'Sentidos')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Destreza">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Reflexo</h3>
+        <span class="v2-skill-attr-tag">Destreza</span>
+      </div>
+      <p class="v2-skill-desc">Reação rápida a perigos ou ataques surpresa.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Destreza</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Reflexo', 'Destreza')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Fama">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Intimidação</h3>
+        <span class="v2-skill-attr-tag">Fama</span>
+      </div>
+      <p class="v2-skill-desc">Imposição de medo e influência em situações de confronto.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Fama</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Intimidação', 'Fama')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Sentidos">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Percepção</h3>
+        <span class="v2-skill-attr-tag">Sentidos</span>
+      </div>
+      <p class="v2-skill-desc">Analisar e interpretar o ambiente ao redor.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Sentidos</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Percepção', 'Sentidos')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Fama">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Persuasão</h3>
+        <span class="v2-skill-attr-tag">Fama</span>
+      </div>
+      <p class="v2-skill-desc">Influenciar, convencer ou negociar com outras pessoas por meio de fala, postura ou presença.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Fama</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Persuasão', 'Fama')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Sentidos">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Terapia</h3>
+        <span class="v2-skill-attr-tag">Sentidos</span>
+      </div>
+      <p class="v2-skill-desc">Auxílio psicológico para outros personagens.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Sentidos</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Terapia', 'Sentidos')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="v2-skill-card" data-attr="Sentidos">
+    <div>
+      <div class="v2-skill-header">
+        <h3 class="v2-skill-name">Intuição</h3>
+        <span class="v2-skill-attr-tag">Sentidos</span>
+      </div>
+      <p class="v2-skill-desc">Perceber intenções ocultas, pressentir perigos, interpretar linguagem corporal, identificar mentiras ou hesitações, captar mudanças sutis no ambiente e fazer julgamentos rápidos baseados em sinais não verbais.</p>
+    </div>
+    <div class="v2-skill-footer">
+      <span class="v2-skill-stat">Atributo: Sentidos</span>
+      <button type="button" class="v2-btn v2-btn-secondary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="simulateRoll('Intuição', 'Sentidos')">
+        <span>Testar</span>
+      </button>
+    </div>
+  </div>
 
         </div>
 
       </div>
 
       <!-- ======================================================
-           PÁGINA 2: INÍCIO / HUB (EXEMPLO COMPLETO)
+           PÁGINA: INÍCIO / HOME (RECRIAÇÃO DOS CARDS DO SITE ATUAL)
            ====================================================== -->
-      <div id="page-home" class="page-content-block" style="display: none;">
+      <div id="page-home" class="page-view-block" style="display: none;">
         
-        <div class="v2-topic-banner purple-style">WUITALUR RPG</div>
+        <div class="v2-topic-banner">WUITALUR RPG</div>
 
-        <div class="v2-lead-box" style="border-left-color: var(--accent-purple);">
+        <div class="v2-lead-box">
           <p>
-            Bem-vindo ao portal de regras e compêndio de <strong>Wuitalur RPG</strong>. Explore os capítulos oficiais da nova edição, as raças ancestrais e as ferramentas de jogo.
+            Compêndio oficial do sistema de RPG de mesa <strong>Wuitalur</strong>.
+            Navegue pelos módulos de regras, raças, classes de combate, elementos de Everact e fichas de personagens.
           </p>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; margin-top: 24px;">
+        <div class="v2-topic-banner subtitle-style" style="margin-top: 10px; margin-bottom: 18px;">
+          Módulos Principais
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
           
-          <div class="v2-skill-card" style="padding: 24px;">
-            <div class="v2-topic-banner subtitle-style" style="margin-bottom: 12px;">Compêndio Base</div>
-            <h3 style="font-size: 1.35rem; color: #fff; margin-bottom: 8px;">Atributos & Dados</h3>
-            <p style="color: var(--text-secondary); line-height: 1.7; font-size: 0.95rem; margin-bottom: 20px;">
-              A nova matriz de 5 atributos essenciais (Força, Destreza, Vigor, Mente, Expressão) e o motor no d12 com testes comuns e especializados.
+          <div class="v2-skill-card" style="padding: 22px;">
+            <div class="v2-skill-header">
+              <h3 class="v2-skill-name">Atributos</h3>
+              <span class="v2-skill-attr-tag">Base</span>
+            </div>
+            <p class="v2-skill-desc">
+              Saúde, Resistência Física (RF), Resistência Elemental (RE), Destreza, Força, Intelecto, Fama e Sentidos.
             </p>
             <button type="button" class="v2-btn v2-btn-primary" style="width: 100%;">
-              <span>Consultar Atributos</span>
+              <span>Acessar Atributos</span>
             </button>
           </div>
 
-          <div class="v2-skill-card" style="padding: 24px;">
-            <div class="v2-topic-banner subtitle-style" style="margin-bottom: 12px;">Combate & Sobrevivência</div>
-            <h3 style="font-size: 1.35rem; color: #fff; margin-bottom: 8px;">Sistema de Defesa</h3>
-            <p style="color: var(--text-secondary); line-height: 1.7; font-size: 0.95rem; margin-bottom: 20px;">
-              Uma DEF única calculada diretamente por armadura e escudo. A escolha tática a cada golpe: tentar esquivar na Destreza ou defender com a armadura.
+          <div class="v2-skill-card" style="padding: 22px;">
+            <div class="v2-skill-header">
+              <h3 class="v2-skill-name">Raças</h3>
+              <span class="v2-skill-attr-tag">11 Espécies</span>
+            </div>
+            <p class="v2-skill-desc">
+              Akivus, Animalescos, Plantíferos, Humanos, Vampiros, Dragão Anão, Insectóides, Praguentos, Abissais, E.X.O.s e Espectros.
             </p>
             <button type="button" class="v2-btn v2-btn-primary" style="width: 100%;">
-              <span>Regras de Defesa</span>
+              <span>Ver Raças</span>
             </button>
           </div>
 
-          <div class="v2-skill-card" style="padding: 24px;">
-            <div class="v2-topic-banner subtitle-style" style="margin-bottom: 12px;">Novidades & Avisos</div>
-            <h3 style="font-size: 1.35rem; color: #fff; margin-bottom: 8px;">Boletim #3 Publicado</h3>
-            <p style="color: var(--text-secondary); line-height: 1.7; font-size: 0.95rem; margin-bottom: 20px;">
-              Acompanhe a tabela comparativa entre o sistema antigo (v1.5) e a nova Edição 2.0 com os bastidores das alterações explicadas pelo mestre.
+          <div class="v2-skill-card" style="padding: 22px;">
+            <div class="v2-skill-header">
+              <h3 class="v2-skill-name">Classes</h3>
+              <span class="v2-skill-attr-tag">Combate</span>
+            </div>
+            <p class="v2-skill-desc">
+              Compactador, Cavaleiros de Paladium, Bestial, Consagrados, Manipuladores e arquétipos marciais de Wuitalur.
             </p>
-            <button type="button" class="v2-btn v2-btn-secondary" style="width: 100%;">
-              <span>Ler Boletim #3</span>
+            <button type="button" class="v2-btn v2-btn-primary" style="width: 100%;">
+              <span>Explorar Classes</span>
             </button>
+          </div>
+
+          <div class="v2-skill-card" style="padding: 22px;">
+            <div class="v2-skill-header">
+              <h3 class="v2-skill-name">Perícias</h3>
+              <span class="v2-skill-attr-tag">36 Treináveis</span>
+            </div>
+            <p class="v2-skill-desc">
+              Consulte todas as perícias de investigação, atletismo, magia astral, combate e interação social.
+            </p>
+            <button type="button" class="v2-btn v2-btn-secondary" style="width: 100%;" onclick="document.getElementById('nav-pericias').click();">
+              <span>Ir para Perícias</span>
+            </button>
+          </div>
+
+          <div class="v2-skill-card" style="padding: 22px;">
+            <div class="v2-skill-header">
+              <h3 class="v2-skill-name">Elementos</h3>
+              <span class="v2-skill-attr-tag">7 Forças</span>
+            </div>
+            <p class="v2-skill-desc">
+              Solar, Podridão, Praga, Sagrado, Electro, Nulídrico e Estase. Afinidades, fraquezas e magias.
+            </p>
+            <button type="button" class="v2-btn v2-btn-primary" style="width: 100%;">
+              <span>Ver Elementos</span>
+            </button>
+          </div>
+
+          <div class="v2-skill-card" style="padding: 22px;">
+            <div class="v2-skill-header">
+              <h3 class="v2-skill-name">Boletim de Novidades</h3>
+              <span class="v2-skill-attr-tag" style="color: #fb7185; border-color: #fb7185;">Novidades</span>
+            </div>
+            <p class="v2-skill-desc">
+              Informativos sobre as sessões, avisos do mestre e os planos em andamento para o futuro do sistema.
+            </p>
+            <a href="boletim.html" class="v2-btn v2-btn-secondary" style="width: 100%; text-decoration: none;">
+              <span>Ler Boletins</span>
+            </a>
           </div>
 
         </div>
@@ -424,15 +905,15 @@
 
 </div>
 
-<!-- FEEDBACK VISUAL DE ROLAGEM DE DADO -->
+<!-- FEEDBACK VISUAL DE ROLAGEM -->
 <div id="roll-toast" style="display: none; position: fixed; bottom: 30px; right: 30px; background: #000; border: 2px solid var(--accent-purple); box-shadow: 6px 6px 0px #000; padding: 16px 24px; z-index: 1000; min-width: 280px;">
   <div style="font-size: 0.8rem; color: #ffaa66; text-transform: uppercase; margin-bottom: 4px;" id="toast-title">Teste de Perícia</div>
-  <div style="font-size: 1.4rem; color: #fff; font-weight: 900;" id="toast-result">1d12 = 9</div>
-  <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;" id="toast-desc">Sucesso Desafiador (Meta 8 superada)</div>
+  <div style="font-size: 1.4rem; color: #fff; font-weight: 900;" id="toast-result">1d20 = 16</div>
+  <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;" id="toast-desc">Sucesso contra CT 15</div>
 </div>
 
 <script>
-  // Troca de Estilo de Animação de Botão
+  // Troca de Estilo de Botão
   const bodyEl = document.getElementById('v2-body');
   const animBtns = document.querySelectorAll('.v2-anim-btn');
 
@@ -440,7 +921,6 @@
     btn.addEventListener('click', () => {
       animBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-
       const animClass = btn.getAttribute('data-anim');
       bodyEl.className = animClass;
     });
@@ -452,17 +932,16 @@
   const pageHome = document.getElementById('page-home');
 
   navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      const page = link.getAttribute('data-page');
-      if (page === 'pericias' || page === 'home') {
-        e.preventDefault();
+    link.addEventListener('click', () => {
+      const target = link.getAttribute('data-target');
+      if (target === 'page-pericias' || target === 'page-home') {
         navLinks.forEach(l => l.classList.remove('active'));
         link.classList.add('active');
 
-        if (page === 'pericias') {
+        if (target === 'page-pericias') {
           pagePericias.style.display = 'block';
           pageHome.style.display = 'none';
-        } else if (page === 'home') {
+        } else if (target === 'page-home') {
           pagePericias.style.display = 'none';
           pageHome.style.display = 'block';
         }
@@ -490,7 +969,9 @@
     });
   }
 
-  searchInput.addEventListener('input', applyFilter);
+  if (searchInput) {
+    searchInput.addEventListener('input', applyFilter);
+  }
 
   filterChips.forEach(chip => {
     chip.addEventListener('click', () => {
@@ -501,23 +982,19 @@
     });
   });
 
-  // Simulação de Rolagem de Dado
+  // Simulação de Rolagem
   function simulateRoll(skillName, attrName) {
-    const d1 = Math.floor(Math.random() * 12) + 1;
-    const d2 = Math.floor(Math.random() * 12) + 1;
-    const maior = Math.max(d1, d2);
-    const bonus = 2;
-    const total = maior + bonus;
+    const d20 = Math.floor(Math.random() * 20) + 1;
+    const bonus = 4;
+    const total = d20 + bonus;
 
-    let meta = total >= 12 ? 'Sucesso Heroico' : total >= 10 ? 'Sucesso Difícil' : total >= 8 ? 'Sucesso Desafiador' : total >= 6 ? 'Sucesso Rotineiro' : 'Falha';
-
-    showToast(`Teste: ${skillName} (${attrName})`, `2d12: [${d1}, ${d2}] Maior: ${maior} + 2 = ${total}`, `Resultado: ${meta}`);
+    showToast('Teste: ' + skillName + ' (' + attrName + ')', '1d20 (' + d20 + ') + 4 = ' + total, total >= 15 ? 'Sucesso contra dificuldade média (CT 15)' : 'Falha contra CT 15');
   }
 
   const btnRollSample = document.getElementById('btn-roll-dice');
   if (btnRollSample) {
     btnRollSample.addEventListener('click', () => {
-      simulateRoll('Acrobacia', 'Destreza');
+      simulateRoll('Investigação', 'Intelecto');
     });
   }
 
