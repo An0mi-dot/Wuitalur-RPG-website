@@ -20,34 +20,15 @@ const DISCORD_CONFIG = {
 };
 
 function buildPayload(boletim) {
-  const siteUrl = 'https://an0mi-dot.github.io/Wuitalur-RPG-website/boletim.html#' + encodeURIComponent(boletim.id);
   const titleText = boletim.titulo || 'Novo Boletim';
-  const editionText = boletim.edicao || 'Boletim Informativo';
-  const summaryText = boletim.resumo || boletim.subtitulo || 'Confira as novidades e atualizacoes no site.';
 
   return {
     username: 'WuB - Utilities',
     avatar_url: DISCORD_CONFIG.botAvatar,
-    content: '@everyone [Novo Boletim] ' + titleText,
+    content: '@everyone [Novo Boletim]\nSOBRE: ' + titleText,
     allowed_mentions: {
       parse: ['everyone']
-    },
-    embeds: [
-      {
-        color: 16096779, // Ambar dourado (#f59e0b) do Boletim
-        author: {
-          name: 'BOLETIM WUITALUR • NOVIDADES',
-          icon_url: DISCORD_CONFIG.botAvatar
-        },
-        title: editionText + ': ' + titleText,
-        url: siteUrl,
-        description: '[NOVO BOLETIM PUBLICADO]\n**' + titleText + '**\n\n' + summaryText + '\n\nAcesse para ler as novidades no site:\n' + siteUrl,
-        footer: {
-          text: 'Wuitalur RPG • Atualizacoes e Novidades'
-        },
-        timestamp: new Date().toISOString()
-      }
-    ]
+    }
   };
 }
 
