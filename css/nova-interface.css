@@ -33,8 +33,10 @@
   --accent-purple-glow: rgba(124, 58, 237, 0.45);
   --accent-purple-bg: rgba(124, 58, 237, 0.18);
   
-  --accent-red-nanquim: #b30000;
-  --accent-red-bright: #e61919;
+  --accent-purple: #7c3aed;
+  --accent-purple-bright: #9055ff;
+  --accent-purple-deep: #581c87;
+  
   
   --text-primary: #ffffff;
   --text-secondary: #a2a0b8;
@@ -64,7 +66,7 @@ html, body {
 
 /* Fundo com Textura Pontilhada (Igual à imagem da tarja de Perícias) */
 body {
-  background-image: radial-gradient(rgba(179, 0, 0, 0.18) 1.2px, transparent 1.2px);
+  background-image: radial-gradient(rgba(124, 58, 237, 0.22) 1.2px, transparent 1.2px);
   background-size: 16px 16px;
   background-attachment: fixed;
 }
@@ -112,7 +114,7 @@ body {
 
 .v2-logo-box {
   display: inline-block;
-  background: var(--accent-red-nanquim);
+  background: var(--accent-purple);
   color: #fff;
   font-size: 1.15rem;
   font-weight: 900;
@@ -266,12 +268,12 @@ body {
 }
 
 .v2-anim-btn:hover {
-  border-color: var(--accent-red-nanquim);
+  border-color: var(--accent-purple);
   color: #ffffff;
 }
 
 .v2-anim-btn.active {
-  background: var(--accent-red-nanquim);
+  background: var(--accent-purple);
   color: #ffffff;
   border-color: #000000;
   box-shadow: 2px 2px 0 #000000;
@@ -289,7 +291,7 @@ body {
    ============================================================ */
 .v2-topic-banner {
   display: inline-block;
-  background: var(--accent-red-nanquim);
+  background: var(--accent-purple);
   color: #ffffff;
   font-family: var(--font-main);
   font-size: 1.45rem;
@@ -317,7 +319,7 @@ body {
   padding: 5px 16px;
   transform: rotate(1.2deg);
   background: #1e1d2b;
-  border-left: 4px solid var(--accent-red-nanquim);
+  border-left: 4px solid var(--accent-purple);
   clip-path: polygon(0% 4%, 98% 0%, 100% 96%, 2% 100%);
 }
 
@@ -350,7 +352,7 @@ body {
 
 /* Variação 1: Botão Carimbo Nanquim (Impacto e Recuo Seco) */
 .anim-carimbo .v2-btn-primary {
-  background: var(--accent-red-nanquim);
+  background: var(--accent-purple);
   color: #ffffff;
   border: 2px solid #000000;
   box-shadow: 4px 4px 0px #000000;
@@ -359,13 +361,13 @@ body {
 }
 .anim-carimbo .v2-btn-primary:hover {
   transform: rotate(1deg) translate(-2px, -2px);
-  box-shadow: 6px 6px 0px #000000, 0 0 14px rgba(179, 0, 0, 0.45);
-  background: var(--accent-red-bright);
+  box-shadow: 6px 6px 0px #000000, 0 0 14px rgba(124, 58, 237, 0.55);
+  background: var(--accent-purple-bright);
 }
 .anim-carimbo .v2-btn-primary:active {
   transform: translate(4px, 4px) rotate(0deg);
   box-shadow: 0px 0px 0px #000000;
-  background: #800000;
+  background: #581c87;
 }
 
 /* Variação 2: Botão Lâmina de Sangue (Corte com Traço) */
@@ -373,7 +375,7 @@ body {
   background: #14131d;
   color: #ffffff;
   border: 1px solid #38344d;
-  border-left: 5px solid var(--accent-red-nanquim);
+  border-left: 5px solid var(--accent-purple);
   box-shadow: 3px 3px 0px #000000;
   overflow: hidden;
   position: relative;
@@ -385,7 +387,7 @@ body {
   top: 0; left: 0;
   width: 0%;
   height: 100%;
-  background: var(--accent-red-nanquim);
+  background: var(--accent-purple);
   z-index: 0;
   transition: width 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -395,8 +397,8 @@ body {
   transition: transform 0.18s ease;
 }
 .anim-lamina .v2-btn-primary:hover {
-  border-color: var(--accent-red-bright);
-  box-shadow: 0 0 16px rgba(230, 25, 25, 0.45);
+  border-color: var(--accent-purple-bright);
+  box-shadow: 0 0 16px rgba(144, 85, 255, 0.5);
 }
 .anim-lamina .v2-btn-primary:hover::before {
   width: 100%;
@@ -412,17 +414,17 @@ body {
 .anim-sismico .v2-btn-primary {
   background: #171522;
   color: #ffffff;
-  border: 1px dashed var(--accent-red-nanquim);
-  box-shadow: 0 0 10px rgba(179, 0, 0, 0.2);
+  border: 1px dashed var(--accent-purple);
+  box-shadow: 0 0 10px rgba(124, 58, 237, 0.3);
   transition: all 0.18s ease;
 }
 .anim-sismico .v2-btn-primary:hover {
-  background: var(--accent-red-nanquim);
+  background: var(--accent-purple);
   color: #ffffff;
   border-style: solid;
   border-color: #ffffff;
   animation: sismicoShake 0.28s infinite;
-  box-shadow: 0 0 18px rgba(230, 25, 25, 0.6);
+  box-shadow: 0 0 18px rgba(144, 85, 255, 0.65);
 }
 @keyframes sismicoShake {
   0% { transform: translate(0, 0); }
@@ -504,8 +506,8 @@ body {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .v2-search-input:focus {
-  border-color: var(--accent-red-nanquim);
-  box-shadow: 0 0 10px rgba(179, 0, 0, 0.4);
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
 }
 
 .v2-filter-chips {
@@ -621,7 +623,7 @@ body {
   transition: all 0.15s ease;
 }
 .v2-skill-btn-roll:hover {
-  background: var(--accent-red-nanquim);
+  background: var(--accent-purple);
   border-color: #000;
 }
 
@@ -631,7 +633,7 @@ body {
 .v2-lead-box {
   background: var(--bg-surface);
   border: 2px solid #000000;
-  border-left: 6px solid var(--accent-red-nanquim);
+  border-left: 6px solid var(--accent-purple);
   box-shadow: 4px 4px 0px #000000;
   padding: 20px 24px;
   margin-bottom: 28px;
