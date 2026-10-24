@@ -15,8 +15,38 @@
        Zero Emojis, Alto Contraste, Neo-Brutalismo
        ============================================================ */
     
-    /* PALETA 1: TOXIC BREAKCORE (Roxo Eletrico + Verde Acido) - Padrao */
+    /* PALETA PADRAO: 3. TOKYO PUNK (Roxo Profundo + Hot Pink / Magenta) */
     :root,
+    body[data-palette="punk"] {
+      --bg-canvas: #090710;
+      --bg-surface: #140f1f;
+      --bg-surface-elevated: #201732;
+      --bg-header: #0d0a15;
+      
+      --purple-main: #6b21a8;
+      --purple-glow: #9333ea;
+      --purple-dark: #3b0764;
+      
+      --accent-contrast: #ff007f; /* Hot Pink / Magenta Puro */
+      --accent-contrast-hover: #ff3399;
+      --accent-contrast-bg: rgba(255, 0, 127, 0.16);
+      
+      --glitch-cyan: #00ffff;
+      --danger-pop: #ffffff;
+      --text-high: #ffffff;
+      --text-muted: #b5a5db;
+      
+      --border-solid: #ff007f;
+      --shadow-color: #000000;
+      --sticker-bg: #ff007f;
+      --sticker-text: #ffffff;
+      --hazard-1: #ff007f;
+      --hazard-2: #090710;
+      
+      --palette-name: "3. TOKYO PUNK (Roxo Profundo + Hot Pink)";
+    }
+
+    /* PALETA 1: TOXIC BREAKCORE (Roxo Eletrico + Verde Acido) */
     body[data-palette="toxic"] {
       --bg-canvas: #09070f;
       --bg-surface: #130f1e;
@@ -31,7 +61,8 @@
       --accent-contrast-hover: #22c55e;
       --accent-contrast-bg: rgba(74, 222, 128, 0.12);
       
-      --danger-pop: #ff204e; /* Vermelho Sangue / Alerta */
+      --glitch-cyan: #ff204e;
+      --danger-pop: #ff204e;
       --text-high: #f8fafc;
       --text-muted: #94a3b8;
       
@@ -60,7 +91,8 @@
       --accent-contrast-hover: #ff781f;
       --accent-contrast-bg: rgba(255, 102, 0, 0.15);
       
-      --danger-pop: #00e5ff; /* Ciano Eletrico */
+      --glitch-cyan: #00e5ff;
+      --danger-pop: #00e5ff;
       --text-high: #ffffff;
       --text-muted: #a3a3b2;
       
@@ -72,35 +104,6 @@
       --hazard-2: #0c0b11;
       
       --palette-name: "2. STREET Y2K (Roxo Noturno + Laranja Neon)";
-    }
-
-    /* PALETA 3: TOKYO PUNK (Roxo Profundo + Magenta / Hot Pink) */
-    body[data-palette="punk"] {
-      --bg-canvas: #0a0810;
-      --bg-surface: #14111d;
-      --bg-surface-elevated: #211a2f;
-      --bg-header: #0f0c16;
-      
-      --purple-main: #6b21a8;
-      --purple-glow: #a855f7;
-      --purple-dark: #3b0764;
-      
-      --accent-contrast: #ff007f; /* Magenta Puro / Hot Pink */
-      --accent-contrast-hover: #ff3399;
-      --accent-contrast-bg: rgba(255, 0, 127, 0.15);
-      
-      --danger-pop: #ffffff;
-      --text-high: #ffffff;
-      --text-muted: #a78bfa;
-      
-      --border-solid: #ff007f;
-      --shadow-color: #000000;
-      --sticker-bg: #ff007f;
-      --sticker-text: #ffffff;
-      --hazard-1: #ff007f;
-      --hazard-2: #0a0810;
-      
-      --palette-name: "3. TOKYO PUNK (Roxo Profundo + Hot Pink)";
     }
 
     /* PALETA 4: GLITCH TERMINAL (Roxo Cibernetico + Amarelo Alerta) */
@@ -118,6 +121,7 @@
       --accent-contrast-hover: #facc15;
       --accent-contrast-bg: rgba(255, 230, 0, 0.14);
       
+      --glitch-cyan: #00ffff;
       --danger-pop: #ff3b30;
       --text-high: #ffffff;
       --text-muted: #cbd5e1;
@@ -146,6 +150,7 @@
       line-height: 1.5;
       overflow-x: hidden;
       transition: background-color 0.25s ease, color 0.25s ease;
+      position: relative;
     }
 
     /* RETICULA DE FUNDO (HALFTONE SUTIL STREET) */
@@ -153,13 +158,133 @@
       content: "";
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-      background-size: 18px 18px;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 16px 16px;
       pointer-events: none;
       z-index: 0;
     }
 
-    /* BARRA SUPERIOR FIXA DE CONTROLE DE PALETAS */
+    /* OVERLAY CRT SCANLINES (OPCIONAL/ATIVAVEL) */
+    .crt-scanlines {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0) 50%,
+        rgba(0, 0, 0, 0.25) 50%,
+        rgba(0, 0, 0, 0.25)
+      );
+      background-size: 100% 4px;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.75;
+      display: block;
+    }
+
+    /* ============================================================
+       MOTOR DE GLITCH (KEYFRAMES & ANIMACOES)
+       ============================================================ */
+
+    /* 1. GLITCH DE CLIQUE VIOLENTO (BUTTON CLICK IMPACT) */
+    @keyframes btnGlitchImpact {
+      0% {
+        transform: translate(0, 0) skewX(0);
+        filter: none;
+        clip-path: none;
+      }
+      15% {
+        transform: translate(-4px, 2px) skewX(-8deg);
+        box-shadow: -5px 0px 0px var(--glitch-cyan), 5px 0px 0px var(--accent-contrast);
+        filter: contrast(1.8) hue-rotate(45deg);
+        clip-path: polygon(0 10%, 100% 10%, 100% 40%, 0 40%);
+      }
+      35% {
+        transform: translate(4px, -2px) skewX(6deg);
+        box-shadow: 4px -2px 0px var(--glitch-cyan), -4px 2px 0px var(--accent-contrast);
+        clip-path: polygon(0 60%, 100% 60%, 100% 85%, 0 85%);
+      }
+      55% {
+        transform: translate(-3px, -1px) skewX(-3deg);
+        box-shadow: -3px 3px 0px #fff, 3px -1px 0px var(--accent-contrast);
+        clip-path: polygon(0 25%, 100% 25%, 100% 65%, 0 65%);
+      }
+      75% {
+        transform: translate(2px, 1px) skewX(2deg);
+        box-shadow: 2px 0px 0px var(--glitch-cyan);
+        clip-path: none;
+      }
+      100% {
+        transform: translate(0, 0) skewX(0);
+        filter: none;
+        clip-path: none;
+      }
+    }
+
+    /* Gatilho automatico de clique em botoes e cards */
+    .btn-palette-switch:active,
+    .btn-glitch:active,
+    .is-glitching {
+      animation: btnGlitchImpact 0.22s steps(2, start) forwards !important;
+      position: relative;
+    }
+
+    /* 2. GLITCH CONTINUO DE TITULO COM DUPLO CANAL RGB */
+    .glitch-header {
+      position: relative;
+      display: inline-block;
+    }
+
+    .glitch-header::before,
+    .glitch-header::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .glitch-header::before {
+      left: 2px;
+      text-shadow: -3px 0 var(--glitch-cyan);
+      clip-path: polygon(0 15%, 100% 15%, 100% 35%, 0 35%);
+      animation: glitchSlice1 2.8s infinite linear alternate-reverse;
+    }
+
+    .glitch-header::after {
+      left: -2px;
+      text-shadow: 3px 0 var(--accent-contrast);
+      clip-path: polygon(0 65%, 100% 65%, 100% 85%, 0 85%);
+      animation: glitchSlice2 3.2s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitchSlice1 {
+      0% { clip-path: polygon(0 20%, 100% 20%, 100% 30%, 0 30%); transform: translate(-2px, 0); }
+      20% { clip-path: polygon(0 50%, 100% 50%, 100% 65%, 0 65%); transform: translate(2px, -1px); }
+      40% { clip-path: polygon(0 10%, 100% 10%, 100% 25%, 0 25%); transform: translate(-1px, 1px); }
+      60% { clip-path: polygon(0 75%, 100% 75%, 100% 90%, 0 90%); transform: translate(3px, 0); }
+      80% { clip-path: polygon(0 35%, 100% 35%, 100% 45%, 0 45%); transform: translate(-2px, -1px); }
+      100% { clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); transform: translate(1px, 1px); }
+    }
+
+    @keyframes glitchSlice2 {
+      0% { clip-path: polygon(0 65%, 100% 65%, 100% 85%, 0 85%); transform: translate(2px, 0); }
+      25% { clip-path: polygon(0 15%, 100% 15%, 100% 35%, 0 35%); transform: translate(-3px, 1px); }
+      50% { clip-path: polygon(0 80%, 100% 80%, 100% 95%, 0 95%); transform: translate(1px, -1px); }
+      75% { clip-path: polygon(0 40%, 100% 40%, 100% 55%, 0 55%); transform: translate(-2px, 0); }
+      100% { clip-path: polygon(0 5%, 100% 5%, 100% 20%, 0 20%); transform: translate(2px, 1px); }
+    }
+
+    /* 3. HOVER GLITCH EM CARDS E ELEMENTOS TÁTICOS */
+    .attr-card-street:hover .attr-name,
+    .dist-card:hover .dist-card-value {
+      text-shadow: -2px 0 var(--glitch-cyan), 2px 0 var(--accent-contrast);
+      transition: text-shadow 0.1s ease;
+    }
+
+    /* BARRA SUPERIOR FIXA DE CONTROLE */
     .palette-dock {
       position: sticky;
       top: 0;
@@ -224,6 +349,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      user-select: none;
     }
 
     .btn-palette-switch:hover {
@@ -299,6 +425,7 @@
       border: 2px solid #000000;
       box-shadow: 4px 4px 0px var(--shadow-color);
       transform: rotate(-1.5deg);
+      cursor: pointer;
     }
 
     .barcode-badge {
@@ -346,6 +473,89 @@
       border-left: 4px solid var(--purple-main);
       padding: 14px 18px;
       box-shadow: 3px 3px 0px #000000;
+    }
+
+    /* ============================================================
+       PAINEL TÁTICO DE LABORATÓRIO GLITCH (DEMO INTERATIVA)
+       ============================================================ */
+    .glitch-lab-card {
+      background: #000000;
+      border: 3px solid var(--accent-contrast);
+      box-shadow: 6px 6px 0px var(--shadow-color);
+      padding: 20px;
+      margin-bottom: 34px;
+      position: relative;
+    }
+
+    .glitch-lab-badge {
+      position: absolute;
+      top: -12px;
+      left: 18px;
+      background: var(--accent-contrast);
+      color: #000000;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 900;
+      padding: 3px 10px;
+      text-transform: uppercase;
+      border: 1px solid #fff;
+      box-shadow: 2px 2px 0px #000;
+    }
+
+    .glitch-lab-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #ffffff;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      margin-top: 4px;
+    }
+
+    .glitch-lab-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .glitch-lab-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn-glitch-tester {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 900;
+      padding: 10px 18px;
+      background: var(--purple-main);
+      color: #ffffff;
+      border: 2px solid var(--accent-contrast);
+      box-shadow: 4px 4px 0px #000000;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .btn-glitch-tester:hover {
+      background: var(--accent-contrast);
+      color: #000000;
+      box-shadow: 6px 6px 0px #ffffff;
+      transform: translate(-2px, -2px);
+    }
+
+    .btn-glitch-tester.secondary {
+      background: #181126;
+      border-color: #554477;
+    }
+
+    .btn-glitch-tester.secondary:hover {
+      border-color: var(--glitch-cyan);
+      color: var(--glitch-cyan);
+      box-shadow: 5px 5px 0px var(--glitch-cyan);
     }
 
     /* CARD DE JANELA NEO-BRUTALISTA (OS RETRO / CRT WINDOW) */
@@ -396,6 +606,7 @@
       font-size: 9px;
       font-weight: 800;
       color: #fff;
+      cursor: pointer;
     }
 
     .os-btn-dot.close {
@@ -421,6 +632,7 @@
       padding: 14px;
       box-shadow: 3px 3px 0px #000;
       transition: transform 0.15s ease, border-color 0.15s ease;
+      cursor: pointer;
     }
 
     .dist-card:hover {
@@ -545,6 +757,7 @@
 
     .calc-field-box input:focus {
       border-color: var(--accent-contrast);
+      box-shadow: 0 0 8px var(--accent-contrast);
     }
 
     .calc-result-box {
@@ -591,6 +804,7 @@
       letter-spacing: 0.08em;
       box-shadow: 4px 4px 0px #000000;
       transform: rotate(-1deg);
+      cursor: pointer;
     }
 
     .section-title-line {
@@ -612,6 +826,7 @@
       padding: 18px;
       position: relative;
       transition: all 0.2s ease;
+      cursor: pointer;
     }
 
     .attr-card-street:hover {
@@ -683,6 +898,14 @@
       color: #e2e8f0;
       padding: 3px 8px;
       border: 1px solid #332d48;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.12s;
+    }
+
+    .p-chip:hover {
+      border-color: #ffffff;
+      transform: translate(-1px, -1px);
     }
 
     .p-chip.accent {
@@ -717,17 +940,25 @@
     }
   </style>
 </head>
-<body data-palette="toxic">
+<body data-palette="punk">
+
+  <!-- OVERLAY CRT SCANLINES -->
+  <div class="crt-scanlines" id="scanlines-layer"></div>
 
   <!-- BARRA DE TROCA DE PALETAS INTERATIVA NO TOPO -->
   <header class="palette-dock">
     <div class="palette-dock-info">
-      <span class="palette-dock-badge">Preview Interativo</span>
-      <span class="palette-dock-title" id="active-palette-title">1. TOXIC BREAKCORE (Roxo + Verde)</span>
+      <span class="palette-dock-badge">Tokyo Punk + Glitch FX</span>
+      <span class="palette-dock-title" id="active-palette-title">3. TOKYO PUNK (Roxo Profundo + Hot Pink)</span>
     </div>
 
     <div class="palette-buttons-group">
-      <button class="btn-palette-switch active" onclick="setPalette('toxic', this)">
+      <button class="btn-palette-switch active" onclick="setPalette('punk', this)">
+        <span class="color-indicator" style="background: #ff007f;"></span>
+        Tokyo Punk (Ativo)
+      </button>
+
+      <button class="btn-palette-switch" onclick="setPalette('toxic', this)">
         <span class="color-indicator" style="background: #4ade80;"></span>
         Toxic Breakcore
       </button>
@@ -735,11 +966,6 @@
       <button class="btn-palette-switch" onclick="setPalette('street', this)">
         <span class="color-indicator" style="background: #ff6600;"></span>
         Street Y2K
-      </button>
-
-      <button class="btn-palette-switch" onclick="setPalette('punk', this)">
-        <span class="color-indicator" style="background: #ff007f;"></span>
-        Tokyo Punk
       </button>
 
       <button class="btn-palette-switch" onclick="setPalette('terminal', this)">
@@ -757,20 +983,43 @@
     <!-- HERO INTRODUTÓRIO -->
     <section class="hero-banner">
       <div class="hero-stickers-row">
-        <div class="sticker-tape">WUITALUR // CORE SYS 2.0</div>
+        <div class="sticker-tape">WUITALUR // TOKYO PUNK</div>
         <div class="barcode-badge">
           <span class="barcode-graphic">||||| ||| |||||||</span>
-          <span>REG: ATTR_MATRIX</span>
+          <span>REG: GLITCH_CORE</span>
         </div>
       </div>
 
-      <h1 class="hero-title">
+      <h1 class="hero-title glitch-header" data-text="MATRIZ DE ATRIBUTOS">
         MATRIZ DE <span>ATRIBUTOS</span>
       </h1>
 
       <p class="hero-description">
         Os atributos governam tudo o que seu personagem é e faz no mundo: rolagens de acerto, sobrevivência visceral, velocidade de esquiva, poder de impacto e estabilidade cósmica. Zero fórmulas burocráticas, alto contraste na mesa.
       </p>
+    </section>
+
+    <!-- LABORATÓRIO INTERATIVO DE GLITCH (EXPERIMENTE OS CLIQUES) -->
+    <section class="glitch-lab-card">
+      <div class="glitch-lab-badge">TESTE DE IMPACTO</div>
+      <h2 class="glitch-lab-title">Laboratório de Efeitos Glitch</h2>
+      <p class="glitch-lab-desc">
+        Clique nos botões abaixo ou em qualquer card, chip e botão da página para ver a interferência digital acontecer no momento do clique (deslocamento RGB, aberração cromática e corte de linha).
+      </p>
+
+      <div class="glitch-lab-actions">
+        <button type="button" class="btn-glitch-tester" onclick="triggerPageGlitch(this)">
+          Disparar Glitch no Clique
+        </button>
+
+        <button type="button" class="btn-glitch-tester secondary" onclick="toggleScanlines(this)">
+          Scanlines CRT: Ativadas
+        </button>
+
+        <button type="button" class="btn-glitch-tester secondary" onclick="triggerStaticBlast()">
+          Pulso de Ruído Estático
+        </button>
+      </div>
     </section>
 
     <!-- JANELA DE SISTEMA: REGRAS DE DISTRIBUIÇÃO -->
@@ -889,7 +1138,7 @@
       <div class="section-title-line"></div>
     </div>
 
-    <section class="attributes-grid">
+    <section class="attributes-grid" id="attr-cards-container">
       
       <!-- FORÇA -->
       <article class="attr-card-street">
@@ -1009,10 +1258,10 @@
 
     <!-- BOX DE CONTROLE DE DECISÃO -->
     <div class="feedback-box">
-      <div class="feedback-title">Escolha da Direção Visual</div>
+      <div class="feedback-title">Direção Tokyo Punk com Glitch Interativo</div>
       <p class="feedback-desc">
-        Clique nos 4 botões da barra superior para alternar entre as paletas e ver a página inteira mudar instantaneamente de tom. 
-        Observe como cada combinação (Roxo + Verde, Roxo + Laranja, Roxo + Hot Pink ou Roxo + Amarelo) muda a agressividade e a personalidade dos cards.
+        Observe como o clique nos botões e cards cria um corte rápido com aberração cromática (separação de canais ciano e magenta) e deslocamento de eixos. 
+        Esse é o visual clássico do Digital Hardcore / Y2K Punk.
       </p>
     </div>
 
@@ -1028,9 +1277,9 @@
 
       const titleEl = document.getElementById('active-palette-title');
       const paletteTitles = {
+        'punk': '3. TOKYO PUNK (Roxo Profundo + Hot Pink)',
         'toxic': '1. TOXIC BREAKCORE (Roxo Eletrico + Verde Acido)',
         'street': '2. STREET Y2K (Roxo Noturno + Laranja Neon)',
-        'punk': '3. TOKYO PUNK (Roxo Profundo + Hot Pink)',
         'terminal': '4. GLITCH TERMINAL (Roxo + Amarelo Alerta)'
       };
       if (titleEl) titleEl.textContent = paletteTitles[name] || name;
@@ -1049,6 +1298,49 @@
       const resRe = document.getElementById('result-re');
       if (resRe) resRe.textContent = defe.toFixed(2);
     }
+
+    // DISPARADOR MANUAL DE GLITCH
+    function triggerPageGlitch(btn) {
+      btn.classList.add('is-glitching');
+      setTimeout(() => btn.classList.remove('is-glitching'), 260);
+    }
+
+    function toggleScanlines(btn) {
+      const scanlines = document.getElementById('scanlines-layer');
+      if (!scanlines) return;
+      if (scanlines.style.display === 'none') {
+        scanlines.style.display = 'block';
+        btn.textContent = 'Scanlines CRT: Ativadas';
+        btn.style.borderColor = 'var(--accent-contrast)';
+      } else {
+        scanlines.style.display = 'none';
+        btn.textContent = 'Scanlines CRT: Desativadas';
+        btn.style.borderColor = '#554477';
+      }
+    }
+
+    function triggerStaticBlast() {
+      const cards = document.querySelectorAll('.attr-card-street, .dist-card, .calc-card');
+      cards.forEach((card, index) => {
+        setTimeout(() => {
+          card.classList.add('is-glitching');
+          setTimeout(() => card.classList.remove('is-glitching'), 240);
+        }, index * 40);
+      });
+    }
+
+    // LISTENER GLOBAL DE CLIQUE PARA EFEITO GLITCH EM ELEMENTOS INTERATIVOS
+    document.addEventListener('click', (e) => {
+      const target = e.target.closest('button, .dist-card, .p-chip, .attr-card-street, .os-btn-dot, .sticker-tape');
+      if (target && !target.classList.contains('btn-palette-switch')) {
+        target.classList.remove('is-glitching');
+        void target.offsetWidth; // Forca reflow do DOM para reiniciar animacao
+        target.classList.add('is-glitching');
+        setTimeout(() => {
+          target.classList.remove('is-glitching');
+        }, 240);
+      }
+    });
 
     document.addEventListener('DOMContentLoaded', () => {
       updateCalculators();
