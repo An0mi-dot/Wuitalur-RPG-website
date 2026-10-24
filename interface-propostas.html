@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratório de Interface — 5 Modelos de Design (Wuitalur RPG)</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/interface-propostas.css">
+</head>
+<body class="propostas-body theme-nanquim-sangue" id="propostas-body">
+
+  <!-- ============================================================
+       BARRA SUPERIOR FIXA: SELETOR DE MODELOS & MODOS DE PÁGINA
+       ============================================================ -->
+  <header class="propostas-control-bar">
+    <div class="propostas-title-group">
+      <span class="propostas-logo-badge">Wuitalur 2.0</span>
+      <span class="propostas-title-text">Laboratório de Interface</span>
+    </div>
+
+    <!-- SELETOR DOS 5 MODELOS -->
+    <div class="propostas-selector-tabs" id="model-tabs">
+      <button type="button" class="model-tab-btn active" data-theme="theme-nanquim-sangue">
+        1. Nanquim & Sangue
+      </button>
+      <button type="button" class="model-tab-btn" data-theme="theme-chapa-everact">
+        2. Chapa de Everact
+      </button>
+      <button type="button" class="model-tab-btn" data-theme="theme-ruptura-selo">
+        3. Ruptura de Selo
+      </button>
+      <button type="button" class="model-tab-btn" data-theme="theme-carimbo-brutalista">
+        4. Carimbo Brutalista
+      </button>
+      <button type="button" class="model-tab-btn" data-theme="theme-lamina-sangria">
+        5. Lâmina & Sangria
+      </button>
+    </div>
+
+    <!-- SELETOR DE EXEMPLOS DE TELA -->
+    <div class="view-selector-tabs" id="view-tabs">
+      <button type="button" class="view-tab-btn active" data-view="view-pericias">
+        Exemplo: Perícias
+      </button>
+      <button type="button" class="view-tab-btn" data-view="view-home">
+        Exemplo: Home Cards
+      </button>
+      <button type="button" class="view-tab-btn" data-view="view-botoes">
+        Laboratório de Botões
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       BANNER DINÂMICO DE INFORMAÇÕES DO MODELO SELECIONADO
+       ============================================================ -->
+  <section class="model-intro-banner" id="model-info-banner">
+    <div class="model-intro-header">
+      <h2 class="model-intro-name" id="model-name">Modelo 1: Nanquim & Fita de Sangue</h2>
+      <div class="model-intro-tags" id="model-tags">
+        <span class="model-tag">Tinta Crua</span>
+        <span class="model-tag">Tarja Vermelha Torta</span>
+        <span class="model-tag">Carimbo com Recuo Seco</span>
+        <span class="model-tag">Menu Rasgo Diagonal</span>
+      </div>
+    </div>
+    <p class="model-intro-desc" id="model-desc">
+      Inspirado na referência da tarja vermelha nanquim. O botão é um carimbo sólido com recuo de impacto seco ao clicar (box-shadow afunda no clique), cantos 100% quadrados afiados e menus que surgem com efeito de desdobrar e rasgar.
+    </p>
+  </section>
+
+  <!-- ============================================================
+       ESPAÇO DE TRABALHO E VISUALIZAÇÃO INTERATIVA
+       ============================================================ -->
+  <main class="propostas-workspace">
+
+    <!-- --------------------------------------------------------
+         EXEMPLO 1: PÁGINA DE PERÍCIAS / WIKI (COM O TÓPICO DA FOTO)
+         -------------------------------------------------------- -->
+    <div class="view-section active" id="view-pericias">
+      
+      <!-- Linha de Ações Rápidas & Menu Interativo -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <!-- O TÓPICO TORTO IDÊNTICO AO DA IMAGEM ENVIADA -->
+          <div class="ribbon-topic">PERÍCIAS</div>
+        </div>
+
+        <div style="display: flex; gap: 10px; align-items: center; position: relative;">
+          <button type="button" class="btn-ui" id="btn-toggle-menu">
+            <span>Abrir Menu Rápido &darr;</span>
+          </button>
+          <button type="button" class="btn-ui secondary">
+            <span>Nova Ficha</span>
+          </button>
+
+          <!-- MENU SUSPENSO INTERATIVO COM ANIMAÇÃO PRÓPRIA DO MODELO -->
+          <div class="menu-ui-container" id="interactive-dropdown-menu" style="display: none; position: absolute; right: 0; top: 110%; width: 240px; z-index: 100;">
+            <div style="font-weight: 700; color: #ffaa66; font-size: 0.85rem; text-transform: uppercase; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px;">
+              Navegação Rápida
+            </div>
+            <a href="#pericias" class="ui-nav-link" style="margin-bottom: 4px;">1. Perícias Físicas</a>
+            <a href="#mentais" class="ui-nav-link" style="margin-bottom: 4px;">2. Perícias Mentais</a>
+            <a href="#sociais" class="ui-nav-link" style="margin-bottom: 4px;">3. Perícias Sociais</a>
+            <a href="#atributos" class="ui-nav-link">4. Voltar aos Atributos</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Layout em Grid: Coluna Lateral + Tabela Central -->
+      <div class="propostas-layout-grid">
+
+        <!-- Coluna Esquerda: Menu Lateral Grosseiro -->
+        <aside class="ui-sidebar-box">
+          <div class="ui-sidebar-title">Índice do Sistema</div>
+          <ul class="ui-nav-list">
+            <li><a href="javascript:void(0)" class="ui-nav-link active">Perícias Oficiais</a></li>
+            <li><a href="javascript:void(0)" class="ui-nav-link">Atributos Base (5)</a></li>
+            <li><a href="javascript:void(0)" class="ui-nav-link">Motor de Dados d12</a></li>
+            <li><a href="javascript:void(0)" class="ui-nav-link">Classes de Combate</a></li>
+            <li><a href="javascript:void(0)" class="ui-nav-link">Raças de Wuitalur</a></li>
+          </ul>
+
+          <div style="margin-top: 24px;">
+            <div class="ui-sidebar-title">Filtro Rápido</div>
+            <input type="text" class="ui-input-field" placeholder="Buscar perícia..." aria-label="Buscar perícia">
+            <button type="button" class="btn-ui" style="width: 100%; padding: 8px;">
+              <span>Filtrar</span>
+            </button>
+          </div>
+        </aside>
+
+        <!-- Coluna Direita: Conteúdo Principal e Tabela -->
+        <section>
+          
+          <div class="ui-card-block">
+            <div class="ribbon-topic small">Regras Gerais</div>
+            <h3>Como Funciona o Treino em Perícias</h3>
+            <p>
+              Na Edição 2.0, o número de perícias foi reduzido de 36 para apenas <strong>12 perícias essenciais</strong>. Cada personagem escolhe exatamente 4 perícias treinadas na criação.
+            </p>
+            <p>
+              Ser treinado em uma perícia concede <strong>Vantagem</strong>: você joga <strong>2d12 e escolhe o maior resultado</strong>. Se o atributo associado for Especializado, você ainda soma <strong>+2</strong> no dado selecionado.
+            </p>
+
+            <div style="margin-top: 14px;">
+              <span class="ui-tag-badge">Destreza</span>
+              <span class="ui-tag-badge">Vigor</span>
+              <span class="ui-tag-badge">Força</span>
+              <span class="ui-tag-badge">Mente</span>
+              <span class="ui-tag-badge">Expressão</span>
+            </div>
+          </div>
+
+          <!-- Tabela Comparativa de Perícias Grosseira -->
+          <div class="ui-card-block" style="padding: 16px;">
+            <div class="ribbon-topic small alt">Tabela de Perícias Oficiais</div>
+            
+            <table class="ui-pericias-table">
+              <thead>
+                <tr>
+                  <th style="width: 28%;">Perícia</th>
+                  <th style="width: 22%;">Atributo Chave</th>
+                  <th style="width: 50%;">Aplicação Prática</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Acrobacia</strong></td>
+                  <td>Destreza</td>
+                  <td>Equilíbrio, saltos, amortecer quedas e esquiva ágil contra golpes.</td>
+                </tr>
+                <tr>
+                  <td><strong>Atletismo</strong></td>
+                  <td>Força ou Destreza</td>
+                  <td>Correr em velocidade máxima, escalada, natação e quebrar barreiras.</td>
+                </tr>
+                <tr>
+                  <td><strong>Furtividade</strong></td>
+                  <td>Destreza</td>
+                  <td>Mover-se sem ruído, ocultação em sombras e emboscadas.</td>
+                </tr>
+                <tr>
+                  <td><strong>Investigação</strong></td>
+                  <td>Mente</td>
+                  <td>Encontrar pistas ocultas, analisar cenas de crime e decifrar segredos.</td>
+                </tr>
+                <tr>
+                  <td><strong>Medicina</strong></td>
+                  <td>Mente</td>
+                  <td>Estancar hemorragias, tratar ferimentos graves e diagnosticar venenos.</td>
+                </tr>
+                <tr>
+                  <td><strong>Persuasão</strong></td>
+                  <td>Expressão</td>
+                  <td>Convencer aliados, negociar tréguas e inspirar companheiros de equipe.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
+              <button type="button" class="btn-ui">
+                <span>Rolar Teste (2d12)</span>
+              </button>
+              <button type="button" class="btn-ui secondary">
+                <span>Ver Todas as 12 Perícias</span>
+              </button>
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+
+    </div>
+
+    <!-- --------------------------------------------------------
+         EXEMPLO 2: CARDS DA PÁGINA INICIAL / HUB
+         -------------------------------------------------------- -->
+    <div class="view-section" id="view-home" style="display: none;">
+      
+      <div style="margin-bottom: 24px;">
+        <div class="ribbon-topic">SISTEMA & REGRAS</div>
+        <p style="color: #9a98a8; font-size: 1rem; margin-top: 4px;">
+          Selecione uma das seções do compêndio para explorar as regras do RPG.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+        
+        <div class="ui-card-block">
+          <div class="ribbon-topic small">Compêndio</div>
+          <h3>Atributos & Dados</h3>
+          <p>
+            Entenda como funciona a nova matriz dos 5 atributos e a mecânica de rolagem direta no d12 sem bônus inflados.
+          </p>
+          <button type="button" class="btn-ui" style="width: 100%;">
+            <span>Acessar Atributos &rarr;</span>
+          </button>
+        </div>
+
+        <div class="ui-card-block">
+          <div class="ribbon-topic small alt">Combate</div>
+          <h3>Regras de Defesa</h3>
+          <p>
+            Uma única DEF unificada para dano físico e elemental. Escolha entre esquivar na Destreza ou defender com armadura.
+          </p>
+          <button type="button" class="btn-ui" style="width: 100%;">
+            <span>Regras de Combate &rarr;</span>
+          </button>
+        </div>
+
+        <div class="ui-card-block">
+          <div class="ribbon-topic small">Informativo</div>
+          <h3>Boletim de Notícias</h3>
+          <p>
+            Acompanhe o andamento das sessões, novidades do desenvolvimento e avisos periódicos da mesa entre amigos.
+          </p>
+          <button type="button" class="btn-ui secondary" style="width: 100%;">
+            <span>Ler Boletins &rarr;</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- --------------------------------------------------------
+         EXEMPLO 3: LABORATÓRIO DE BOTÕES & ANIMAÇÕES INTERATIVAS
+         -------------------------------------------------------- -->
+    <div class="view-section" id="view-botoes" style="display: none;">
+      
+      <div style="margin-bottom: 24px;">
+        <div class="ribbon-topic">LABORATÓRIO DE BOTÕES</div>
+        <p style="color: #9a98a8; font-size: 1rem; margin-top: 4px;">
+          Passe o mouse, clique e sinta a resposta física de cada modelo. Todos os botões possuem pontas finas e comportamento exclusivo.
+        </p>
+      </div>
+
+      <div class="ui-card-block">
+        <h3>Variações de Estado e Ação</h3>
+        <p>Experimente clicar em cada botão abaixo para ver o recuo, vibração ou corte de cada proposta:</p>
+        
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin: 20px 0;">
+          <button type="button" class="btn-ui">
+            <span>Botão Primário</span>
+          </button>
+
+          <button type="button" class="btn-ui secondary">
+            <span>Botão Secundário</span>
+          </button>
+
+          <button type="button" class="btn-ui" style="padding: 14px 32px; font-size: 1.1rem;">
+            <span>Ação Heroica (Grande)</span>
+          </button>
+
+          <button type="button" class="btn-ui" style="padding: 6px 14px; font-size: 0.8rem;">
+            <span>Ação Rápida (Pequeno)</span>
+          </button>
+        </div>
+
+        <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08);">
+          <div class="ribbon-topic small">Campos de Entrada e Formulário</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px;">
+            <div>
+              <label style="display: block; font-size: 0.82rem; text-transform: uppercase; color: #ffaa66; margin-bottom: 6px;">Nome do Personagem</label>
+              <input type="text" class="ui-input-field" value="William de Paladium" aria-label="Nome do Personagem">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.82rem; text-transform: uppercase; color: #ffaa66; margin-bottom: 6px;">Atributo Especializado</label>
+              <input type="text" class="ui-input-field" value="Vigor (+2 na DEF)" aria-label="Atributo Especializado">
+            </div>
+          </div>
+          <button type="button" class="btn-ui" style="margin-top: 8px;">
+            <span>Salvar Informações</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ============================================================
+       SCRIPT INTERATIVO DE CONTROLE E TROCA DE MODELOS
+       ============================================================ -->
+  <script>
+    const MODEL_DATA = {
+      'theme-nanquim-sangue': {
+        name: 'Modelo 1: Nanquim & Fita de Sangue',
+        tags: ['Tinta Crua', 'Tarja Vermelha Torta', 'Carimbo com Recuo Seco', 'Menu Rasgo Diagonal'],
+        desc: 'Inspirado na referência da tarja vermelha nanquim. O botão é um carimbo sólido com recuo de impacto seco ao clicar (box-shadow afunda no clique), cantos 100% quadrados afiados e menus que surgem com efeito de desdobrar e rasgar.'
+      },
+      'theme-chapa-everact': {
+        name: 'Modelo 2: Chapa de Everact & Metal Oxidado',
+        tags: ['Industrial Brutalista', 'Chanfro Angular', 'Glitch / Faísca Metálica', 'Escotilha Hidráulica'],
+        desc: 'Inspirado na tecnologia arcaica e brutal de Everact. Botões com chanfros angulares cortados nas quinas, faísca luminosa cortando o metal no hover, e menus que descem com o peso e a inércia de uma escotilha pesada de metal.'
+      },
+      'theme-ruptura-selo': {
+        name: 'Modelo 3: Ruptura de Selo Rúnico',
+        tags: ['Ocultismo Rúnico', 'Bordas Interrompidas', 'Tremor Sísmico', 'Fenda Que se Abre'],
+        desc: 'Visual ligado à magia antiga e podridão. Botões com contornos tracejados/interrompidos que vibram em micro-glitch rúnico ao passar o mouse, e menus que nascem de uma fenda horizontal e se expandem na tela.'
+      },
+      'theme-carimbo-brutalista': {
+        name: 'Modelo 4: Carimbo Brutalista de Chancelaria',
+        tags: ['Papel Manchado', 'Carimbos Vermelhos', 'Rotação Inversa', 'Impacto com Choque'],
+        desc: 'Estilo de documentos de chancelaria e ordens de expedição. Botões com caixas grossas de carimbo que giram no sentido inverso no hover e sofrem um choque de carimbada rápida ao clicar. O menu abre como uma pasta de arquivo jogada na mesa.'
+      },
+      'theme-lamina-sangria': {
+        name: 'Modelo 5: Lâmina & Sangria Cortante',
+        tags: ['Cyber-Dark', 'Corte de Lâmina', 'Rastro Fantasma', 'Menu Fatiado'],
+        desc: 'Geometria afiadíssima com agressividade e elegância cortante. No hover, uma linha de sangue corta o botão e o texto desliza com um rastro fantasma colorido. O menu abre com efeito de lâmina fatiando a tela lateralmente.'
+      }
+    };
+
+    const bodyEl = document.getElementById('propostas-body');
+    const modelTabs = document.querySelectorAll('.model-tab-btn');
+    const viewTabs = document.querySelectorAll('.view-tab-btn');
+    const modelNameEl = document.getElementById('model-name');
+    const modelTagsEl = document.getElementById('model-tags');
+    const modelDescEl = document.getElementById('model-desc');
+    const btnToggleMenu = document.getElementById('btn-toggle-menu');
+    const dropdownMenu = document.getElementById('interactive-dropdown-menu');
+
+    // Troca de Modelo
+    modelTabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        modelTabs.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const theme = btn.getAttribute('data-theme');
+        // Remove temas antigos do body
+        bodyEl.className = 'propostas-body ' + theme;
+
+        // Atualiza textos do banner de descrição
+        const data = MODEL_DATA[theme];
+        if (data) {
+          modelNameEl.textContent = data.name;
+          modelDescEl.textContent = data.desc;
+          modelTagsEl.innerHTML = data.tags.map(t => `<span class="model-tag">${t}</span>`).join('');
+        }
+
+        // Se o menu estava aberto, re-engatilha a animação para o novo tema
+        if (dropdownMenu.style.display === 'block') {
+          dropdownMenu.style.display = 'none';
+          setTimeout(() => {
+            dropdownMenu.style.display = 'block';
+          }, 30);
+        }
+      });
+    });
+
+    // Troca de Telas de Exemplo
+    viewTabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        viewTabs.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const viewId = btn.getAttribute('data-view');
+        document.querySelectorAll('.view-section').forEach(sec => {
+          sec.style.display = 'none';
+        });
+
+        const targetSec = document.getElementById(viewId);
+        if (targetSec) {
+          targetSec.style.display = 'block';
+        }
+      });
+    });
+
+    // Toggle do Menu Dropdown Interativo
+    btnToggleMenu.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isVisible = dropdownMenu.style.display === 'block';
+      dropdownMenu.style.display = isVisible ? 'none' : 'block';
+    });
+
+    document.addEventListener('click', () => {
+      if (dropdownMenu.style.display === 'block') {
+        dropdownMenu.style.display = 'none';
+      }
+    });
+  </script>
+
+</body>
+</html>
