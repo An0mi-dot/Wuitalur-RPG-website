@@ -125,14 +125,42 @@
       <aside class="showcase-right-blade" id="showcase-right-blade">
         <div class="showcase-blade-inner">
           <div class="showcase-blade-hud">
-            <div class="showcase-hud-tag">Wuitalur RPG</div>
-            <div class="showcase-hud-row">
-              <span class="hud-label">Dificuldade</span>
-              <span class="hud-val" id="showcase-blade-nd">Oficial</span>
-            </div>
-            <div class="showcase-hud-row">
-              <span class="hud-label">Perfil</span>
-              <span class="hud-val" id="showcase-blade-role">Linhagem Principal</span>
+            <div class="showcase-hud-card">
+              <div class="showcase-hud-card-top">
+                <span class="showcase-hud-bracket">[</span>
+                <span class="showcase-hud-tag">Dossiê de Raça</span>
+                <span class="showcase-hud-bracket">]</span>
+              </div>
+
+              <!-- Nível de Dificuldade (ND) -->
+              <div class="showcase-nd-block">
+                <div class="showcase-nd-header">
+                  <span class="hud-label">Dificuldade</span>
+                  <span class="showcase-nd-tier" id="showcase-nd-tier">Iniciante</span>
+                </div>
+                <div class="showcase-nd-display">
+                  <span class="showcase-nd-large" id="showcase-blade-nd">ND 1</span>
+                  <div class="showcase-nd-gauge" id="showcase-nd-gauge" aria-label="Nível de ameaça">
+                    <span class="gauge-pip active"></span>
+                    <span class="gauge-pip"></span>
+                    <span class="gauge-pip"></span>
+                    <span class="gauge-pip"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="showcase-hud-divider"></div>
+
+              <!-- Metadados da Linhagem -->
+              <div class="showcase-hud-row">
+                <span class="hud-label">Linhagem</span>
+                <span class="hud-val" id="showcase-blade-role">Principal</span>
+              </div>
+
+              <div class="showcase-hud-row">
+                <span class="hud-label">Registro</span>
+                <span class="hud-pill-badge" id="showcase-blade-status">Oficial</span>
+              </div>
             </div>
           </div>
 

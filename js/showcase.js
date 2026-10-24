@@ -247,6 +247,9 @@ const ShowcaseEngine = {
     this.elements.hamburgerLabel = document.getElementById('showcase-hamburger-label');
     this.elements.bladeNd = document.getElementById('showcase-blade-nd');
     this.elements.bladeRole = document.getElementById('showcase-blade-role');
+    this.elements.ndTier = document.getElementById('showcase-nd-tier');
+    this.elements.ndGauge = document.getElementById('showcase-nd-gauge');
+    this.elements.bladeStatus = document.getElementById('showcase-blade-status');
     this.elements.canvas = document.getElementById('showcase-dots-canvas');
 
     if (this.elements.drawerHeading) {
@@ -396,9 +399,52 @@ const ShowcaseEngine = {
     // Metadados no Painel Direito
     const badgeText = item.badge || (this.mode === 'classes' ? 'ND 1' : 'Oficial');
     if (this.elements.ndBadge) this.elements.ndBadge.textContent = badgeText;
-    if (this.elements.bladeNd) this.elements.bladeNd.textContent = badgeText;
+
+    // Análise e Destaque Tático de ND (1 a 4)
+    let ndNum = 1;
+    let tierText = 'Iniciante';
+    const ndMatch = badgeText.match(/ND\s*(\d+)/i);
+    if (ndMatch) {
+      ndNum = parseInt(ndMatch[1], 10);
+      if (ndNum === 1) tierText = 'Iniciante';
+      else if (ndNum === 2) tierText = 'Intermediário';
+      else if (ndNum === 3) tierText = 'Avançado';
+      else if (ndNum >= 4) tierText = 'Extremo';
+    } else if (this.mode === 'races') {
+      tierText = 'Padrão';
+    }
+
+    if (this.elements.bladeNd) {
+      this.elements.bladeNd.textContent = ndMatch ? `ND ${ndNum}` : badgeText;
+    }
+    if (this.elements.ndTier) {
+      this.elements.ndTier.textContent = tierText;
+    }
+
+    // Atualiza Gauge de Pips (Nível de Ameaça)
+    if (this.elements.ndGauge) {
+      const pips = this.elements.ndGauge.querySelectorAll('.gauge-pip');
+      pips.forEach((pip, idx) => {
+        if (idx < ndNum) pip.classList.add('active');
+        else pip.classList.remove('active');
+      });
+    }
+
+    // Identificação de Arquétipo / Função
+    let roleText = this.mode === 'classes' ? 'Combatente Astral' : 'Linhagem Principal';
+    const idLower = item.id.toLowerCase();
+    if (idLower.includes('compactador')) roleText = 'Manipulador Astral';
+    else if (idLower.includes('consagrado')) roleText = 'Devoto / Suporte Divino';
+    else if (idLower.includes('bestial')) roleText = 'Transmutação Feroz';
+    else if (idLower.includes('cavaleiro') || idLower.includes('paladium')) roleText = 'Guardião Couraçado';
+    else if (idLower.includes('eterno')) roleText = 'Espiritual / Vanguarda';
+    else if (idLower.includes('esper')) roleText = 'Poder Mental / Controle';
+    else if (idLower.includes('lamina') || idLower.includes('lâmina')) roleText = 'Duelista / Dano Ágil';
+    else if (idLower.includes('mago') || idLower.includes('astral')) roleText = 'Conjurador Primordial';
+    else if (idLower.includes('atirador') || idLower.includes('cacador')) roleText = 'Atirador de Precisão';
+
     if (this.elements.bladeRole) {
-      this.elements.bladeRole.textContent = this.mode === 'classes' ? 'Combatente / Astral' : 'Linhagem Principal';
+      this.elements.bladeRole.textContent = roleText;
     }
 
     // Renderiza Lista Vertical de Tópicos na Esquerda
