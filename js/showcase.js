@@ -1,8 +1,11 @@
 /* ============================================================
-   WUITALUR RPG — CONTROLADOR SHOWCASE DE CLASSES E RAÇAS (V4)
-   Canvas de Pontos da Mesa + Centro Dinâmico (Ilustração / Conteúdo)
-   Painel Diagonal na Direita com Menu Hambúrguer e Nome Gigante
-   Zero Emojis — Chinese Rocks sem Negrito
+   WUITALUR RPG — CONTROLADOR SHOWCASE DE CLASSES E RAÇAS (V5)
+   - Menu Hambúrguer no Topo Esquerdo
+   - Navegação por Tópicos na Esquerda
+   - Centro Dinâmico (Alterna entre Ilustração e Conteúdo com fade)
+   - Painel Direito em Azul Cobalto com Corte Diagonal e Listras ///
+   - Nome Gigante Sobreposto na Divisa
+   - Zero Emojis — Chinese Rocks sem Negrito
    ============================================================ */
 
 const ShowcaseEngine = {
@@ -29,8 +32,8 @@ const ShowcaseEngine = {
     drawerHeading: null,
     hamburgerBtn: null,
     hamburgerLabel: null,
-    metaStatus: null,
-    metaRole: null,
+    bladeNd: null,
+    bladeRole: null,
     canvas: null
   },
 
@@ -62,14 +65,14 @@ const ShowcaseEngine = {
 
     spawnMotes() {
       this.motes = [];
-      const count = 45;
+      const count = 48;
       for (let i = 0; i < count; i++) {
         this.motes.push({
           x: Math.random() * this.width,
           y: Math.random() * this.height,
-          size: Math.random() * 3.8 + 1.2,
-          speedY: Math.random() * 0.95 + 0.35,
-          speedX: (Math.random() - 0.5) * 0.45,
+          size: Math.random() * 3.6 + 1.2,
+          speedY: Math.random() * 0.9 + 0.35,
+          speedX: (Math.random() - 0.5) * 0.4,
           opacity: Math.random() * 0.45 + 0.25,
           pulse: Math.random() * Math.PI * 2,
           // Roxo Astral (#7c3aed) ou Azul Cósmico (#38bdf8)
@@ -143,7 +146,7 @@ const ShowcaseEngine = {
       // Tópicos da classe/raça
       const topics = [];
 
-      // Tópico 0: Ilustração (mostra a arte no centro)
+      // Tópico 0: Ilustração (exibe a arte no centro)
       topics.push({
         isIllustration: true,
         title: '✦ Ilustração',
@@ -179,8 +182,8 @@ const ShowcaseEngine = {
                              .replace(/\s{2,}/g, ' ');
 
           let title = rawTitle;
-          if (title.length > 28) {
-            title = title.split(' - ')[0] || title.slice(0, 26) + '...';
+          if (title.length > 26) {
+            title = title.split(' - ')[0] || title.slice(0, 24) + '...';
           }
           const wrapper = document.createElement('div');
           let next = h4.nextElementSibling;
@@ -201,7 +204,6 @@ const ShowcaseEngine = {
         });
       }
 
-      // Se nenhum tópico foi extraído além da ilustração, adiciona o conteúdo bruto
       if (topics.length === 1) {
         topics.push({
           isIllustration: false,
@@ -243,8 +245,8 @@ const ShowcaseEngine = {
     this.elements.drawerHeading = document.getElementById('showcase-drawer-heading');
     this.elements.hamburgerBtn = document.getElementById('showcase-hamburger-btn');
     this.elements.hamburgerLabel = document.getElementById('showcase-hamburger-label');
-    this.elements.metaStatus = document.getElementById('showcase-meta-status');
-    this.elements.metaRole = document.getElementById('showcase-meta-role');
+    this.elements.bladeNd = document.getElementById('showcase-blade-nd');
+    this.elements.bladeRole = document.getElementById('showcase-blade-role');
     this.elements.canvas = document.getElementById('showcase-dots-canvas');
 
     if (this.elements.drawerHeading) {
@@ -257,7 +259,7 @@ const ShowcaseEngine = {
   },
 
   bindEvents() {
-    // Abrir gaveta pelo botão hambúrguer no canto superior direito
+    // Abrir gaveta pelo botão hambúrguer no topo da esquerda
     if (this.elements.hamburgerBtn) {
       this.elements.hamburgerBtn.addEventListener('click', () => this.openDrawer());
     }
@@ -277,7 +279,7 @@ const ShowcaseEngine = {
     // Botão "Ver Arte" no cabeçalho do conteúdo
     if (this.elements.btnViewArt) {
       this.elements.btnViewArt.addEventListener('click', () => {
-        this.selectTopic(0); // Tópico 0 é sempre a Ilustração
+        this.selectTopic(0); // Tópico 0 é a Ilustração
       });
     }
 
@@ -357,15 +359,15 @@ const ShowcaseEngine = {
     if (!item) return;
 
     this.currentId = id;
-    this.activeTopicIndex = 0; // Inicia sempre mostrando a Ilustração
+    this.activeTopicIndex = 0; // Começa sempre com a Ilustração
 
     if (updateHash) {
       window.location.hash = id;
     }
 
-    // Label do botão hambúrguer no canto superior direito
+    // Label do botão hambúrguer no topo da esquerda
     if (this.elements.hamburgerLabel) {
-      this.elements.hamburgerLabel.textContent = this.mode === 'classes' ? 'Trocar Classe' : 'Trocar Raça';
+      this.elements.hamburgerLabel.textContent = this.mode === 'classes' ? 'Classes' : 'Raças';
     }
 
     // Atualiza imagem central
@@ -383,7 +385,7 @@ const ShowcaseEngine = {
       }, 140);
     }
 
-    // Nome Gigante na Base do Painel Direito em Chinese Rocks
+    // Nome Gigante na Divisa em Chinese Rocks
     if (this.elements.bigName) {
       this.elements.bigName.textContent = item.name;
       this.elements.bigName.classList.remove('name-slam');
@@ -391,15 +393,12 @@ const ShowcaseEngine = {
       this.elements.bigName.classList.add('name-slam');
     }
 
-    // Metadados
-    if (this.elements.ndBadge) {
-      this.elements.ndBadge.textContent = item.badge || (this.mode === 'classes' ? 'ND 1' : 'Oficial');
-    }
-    if (this.elements.metaStatus) {
-      this.elements.metaStatus.textContent = item.badge || 'Oficial';
-    }
-    if (this.elements.metaRole) {
-      this.elements.metaRole.textContent = this.mode === 'classes' ? 'Combatente / Astral' : 'Linhagem Principal';
+    // Metadados no Painel Direito
+    const badgeText = item.badge || (this.mode === 'classes' ? 'ND 1' : 'Oficial');
+    if (this.elements.ndBadge) this.elements.ndBadge.textContent = badgeText;
+    if (this.elements.bladeNd) this.elements.bladeNd.textContent = badgeText;
+    if (this.elements.bladeRole) {
+      this.elements.bladeRole.textContent = this.mode === 'classes' ? 'Combatente / Astral' : 'Linhagem Principal';
     }
 
     // Renderiza Lista Vertical de Tópicos na Esquerda
@@ -483,7 +482,7 @@ const ShowcaseEngine = {
           this.elements.topicContent.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
           this.elements.topicContent.style.opacity = '1';
           this.elements.topicContent.style.transform = 'translateY(0)';
-        }, 60);
+        }, 50);
       }
     }
   }
