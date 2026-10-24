@@ -237,7 +237,8 @@ body.has-showcase .quick-jump-float {
 }
 
 /* ============================================================
-   2. PALCO CENTRAL (CANVAS DE PONTOS DA MESA + ARTE OU LEITURA)
+   2. PALCO CENTRAL (ARTE OU LEITURA LIMPA E ELEGANTE)
+   Sem brilhos na imagem e sem bolinhas grossas no fundo
    ============================================================ */
 .showcase-center-stage {
   position: relative;
@@ -247,7 +248,7 @@ body.has-showcase .quick-jump-float {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.15) 0%, rgba(6, 5, 9, 0.98) 75%);
+  background: radial-gradient(circle at 50% 50%, #12101c 0%, #06050a 80%);
 }
 
 @media (max-width: 860px) {
@@ -256,49 +257,25 @@ body.has-showcase .quick-jump-float {
   }
 }
 
-/* Canvas de Partículas / Pontos Ascendentes da Mesa Virtual */
+/* Bolinhas grossas removidas conforme pedido do usuário */
 .showcase-dots-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
+  display: none !important;
 }
 
-/* Halftone Pontilhado com Animação Ascendente */
+/* Textura de fundo sutil e estática (sem poluição visual) */
 .showcase-dots-overlay {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle, rgba(124, 58, 237, 0.24) 1.2px, transparent 1.3px);
-  background-size: 14px 14px;
-  opacity: 0.3;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 16px 16px;
+  opacity: 0.15;
   pointer-events: none;
   z-index: 2;
-  animation: showcaseDotsRise 6s linear infinite;
 }
 
-@keyframes showcaseDotsRise {
-  0% { background-position: 0 0; }
-  100% { background-position: 0 -84px; }
-}
-
-/* Brilho Astral Central */
+/* Brilho da arte removido conforme pedido do usuário */
 .showcase-hero-glow {
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.22) 0%, transparent 70%);
-  filter: blur(50px);
-  pointer-events: none;
-  z-index: 2;
-  animation: glowPulse 4.5s ease-in-out infinite alternate;
-}
-
-@keyframes glowPulse {
-  0% { opacity: 0.5; transform: scale(0.95); }
-  100% { opacity: 0.85; transform: scale(1.08); }
+  display: none !important;
 }
 
 /* --- MODO ILUSTRAÇÃO --- */
@@ -319,11 +296,12 @@ body.has-showcase .quick-jump-float {
   display: none !important;
 }
 
+/* Arte limpa sem halos ou brilhos coloridos */
 .showcase-hero-art {
   max-width: 82%;
   max-height: 84vh;
   object-fit: contain;
-  filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 45px rgba(124, 58, 237, 0.3));
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.9));
   transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.15);
   animation: heroBreathe 5.5s ease-in-out infinite alternate;
   user-select: none;

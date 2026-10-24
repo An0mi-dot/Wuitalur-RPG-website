@@ -113,7 +113,7 @@ const ShowcaseEngine = {
     this.mode = mode;
     this.parseContent();
     this.bindElements();
-    this.particles.init(this.elements.canvas);
+    // Partículas/bolinhas no fundo desativadas conforme pedido do usuário
     this.bindEvents();
 
     // Determina o item inicial pelo hash da URL ou pega o primeiro
