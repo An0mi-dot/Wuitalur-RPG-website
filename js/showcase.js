@@ -130,7 +130,7 @@ const ShowcaseEngine = {
     const sections = document.querySelectorAll('section.subsection');
     
     sections.forEach(sec => {
-      if (sec.id === 'intro') return;
+      if (sec.id === 'intro' || sec.id === 'hibridos') return;
 
       const id = sec.id;
       const card = sec.querySelector('.race-card, .hud-card') || sec;
