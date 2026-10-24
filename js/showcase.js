@@ -341,11 +341,12 @@ const ShowcaseEngine = {
     }
 
     filtered.forEach(it => {
+      const ndMeta = this.getNDMeta(it.badge);
       const itemEl = document.createElement('div');
       itemEl.className = `showcase-drawer-item ${it.id === this.currentId ? 'active' : ''}`;
       itemEl.innerHTML = `
         <span class="showcase-drawer-name">${it.name}</span>
-        ${it.badge ? `<span class="showcase-drawer-badge">${it.badge}</span>` : ''}
+        ${it.badge ? `<span class="showcase-drawer-badge" style="color: ${ndMeta.color}; border: 1px solid ${ndMeta.color}60; background: ${ndMeta.color}18;">${it.badge}</span>` : ''}
       `;
       itemEl.addEventListener('click', () => {
         this.selectItem(it.id);
@@ -353,6 +354,37 @@ const ShowcaseEngine = {
       });
       this.elements.drawerList.appendChild(itemEl);
     });
+  },
+
+  // Escala de cores do ND: Verde (ND1) -> Amarelo (ND2) -> Laranja (ND3) -> Vermelho (ND4+)
+  getNDMeta(badgeText) {
+    let ndNum = 1;
+    const match = (badgeText || '').match(/ND\s*(\d+)/i);
+    if (match) {
+      ndNum = parseInt(match[1], 10);
+    }
+
+    let color = '#4ade80'; // Verde
+    let tier = 'Iniciante';
+    let glow = 'rgba(74, 222, 128, 0.7)';
+
+    if (ndNum === 2) {
+      color = '#facc15'; // Amarelo / Dourado
+      tier = 'Intermediário';
+      glow = 'rgba(250, 204, 21, 0.7)';
+    } else if (ndNum === 3) {
+      color = '#fb923c'; // Laranja
+      tier = 'Avançado';
+      glow = 'rgba(251, 146, 60, 0.7)';
+    } else if (ndNum >= 4) {
+      color = '#ef4444'; // Vermelho
+      tier = 'Extremo';
+      glow = 'rgba(239, 68, 68, 0.8)';
+    } else if (this.mode === 'races' && !match) {
+      tier = 'Padrão';
+    }
+
+    return { ndNum, color, tier, glow };
   },
 
   selectItem(id, updateHash = true) {
@@ -394,38 +426,57 @@ const ShowcaseEngine = {
       this.elements.bigName.classList.add('name-slam');
     }
 
-    // Metadados no Painel Direito
+    // Metadados e Cores do ND (Escala de Verde a Vermelho)
     const badgeText = item.badge || (this.mode === 'classes' ? 'ND 1' : 'Oficial');
-    if (this.elements.ndBadge) this.elements.ndBadge.textContent = badgeText;
+    const ndMeta = this.getNDMeta(badgeText);
 
-    // Análise e Destaque Tático de ND (1 a 4)
-    let ndNum = 1;
-    let tierText = 'Iniciante';
-    const ndMatch = badgeText.match(/ND\s*(\d+)/i);
-    if (ndMatch) {
-      ndNum = parseInt(ndMatch[1], 10);
-      if (ndNum === 1) tierText = 'Iniciante';
-      else if (ndNum === 2) tierText = 'Intermediário';
-      else if (ndNum === 3) tierText = 'Avançado';
-      else if (ndNum >= 4) tierText = 'Extremo';
-    } else if (this.mode === 'races') {
-      tierText = 'Padrão';
-    }
-
+    // ND Grande na lâmina direita
     if (this.elements.bladeNd) {
-      this.elements.bladeNd.textContent = ndMatch ? `ND ${ndNum}` : badgeText;
-    }
-    if (this.elements.ndTier) {
-      this.elements.ndTier.textContent = tierText;
+      this.elements.bladeNd.textContent = `ND ${ndMeta.ndNum}`;
+      this.elements.bladeNd.style.color = ndMeta.color;
+      this.elements.bladeNd.style.textShadow = `0 0 18px ${ndMeta.glow}, 2px 2px 0 #000000`;
     }
 
-    // Atualiza Gauge de Pips (Nível de Ameaça)
+    // Tier de Dificuldade
+    if (this.elements.ndTier) {
+      this.elements.ndTier.textContent = ndMeta.tier;
+      this.elements.ndTier.style.color = ndMeta.color;
+      this.elements.ndTier.style.borderColor = ndMeta.color;
+      this.elements.ndTier.style.background = `${ndMeta.color}25`;
+      this.elements.ndTier.style.boxShadow = `0 0 12px ${ndMeta.glow}`;
+    }
+
+    // Borda do bloco de ND
+    const ndBlock = document.querySelector('.showcase-nd-block');
+    if (ndBlock) {
+      ndBlock.style.borderLeftColor = ndMeta.color;
+    }
+
+    // Atualiza Gauge de Pips (Nível de Ameaça com cores)
     if (this.elements.ndGauge) {
       const pips = this.elements.ndGauge.querySelectorAll('.gauge-pip');
       pips.forEach((pip, idx) => {
-        if (idx < ndNum) pip.classList.add('active');
-        else pip.classList.remove('active');
+        if (idx < ndMeta.ndNum) {
+          pip.classList.add('active');
+          pip.style.background = ndMeta.color;
+          pip.style.borderColor = ndMeta.color;
+          pip.style.boxShadow = `0 0 10px ${ndMeta.glow}`;
+        } else {
+          pip.classList.remove('active');
+          pip.style.background = '';
+          pip.style.borderColor = '';
+          pip.style.boxShadow = '';
+        }
       });
+    }
+
+    // Atualiza badge de ND no cabeçalho do conteúdo
+    if (this.elements.ndBadge) {
+      this.elements.ndBadge.textContent = `ND ${ndMeta.ndNum}`;
+      this.elements.ndBadge.style.color = ndMeta.color;
+      this.elements.ndBadge.style.borderColor = ndMeta.color;
+      this.elements.ndBadge.style.background = `${ndMeta.color}20`;
+      this.elements.ndBadge.style.boxShadow = `0 0 8px ${ndMeta.glow}`;
     }
 
     // Renderiza Lista Vertical de Tópicos na Esquerda
