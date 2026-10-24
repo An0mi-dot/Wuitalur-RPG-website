@@ -10,9 +10,10 @@
   <style>
     .home-hero-v2 {
       padding: var(--space-2xl) var(--space-xl) var(--space-xl);
-      background: radial-gradient(circle at 50% 20%, rgba(124, 58, 237, 0.12), transparent 70%);
-      border-bottom: 2px solid #000000;
+      background: #0D0D12;
+      border-bottom: 1px solid var(--border-subtle);
       position: relative;
+      z-index: 2;
     }
     .home-hero-title {
       font-family: var(--font-heading);
@@ -23,7 +24,7 @@
       text-transform: uppercase;
       margin: 10px 0 6px;
       line-height: 1.05;
-      text-shadow: 4px 4px 0 #000000, 0 0 40px rgba(124, 58, 237, 0.4);
+      text-shadow: 3px 3px 0 #000000;
     }
     .home-hero-lead {
       font-size: 1.05rem;
@@ -47,34 +48,62 @@
       letter-spacing: 0.08em;
       border-radius: 0;
       border: 2px solid #000000;
-      box-shadow: 4px 4px 0 #000000;
+      box-shadow: 3px 3px 0px #000000;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.15s ease;
+      user-select: none;
     }
     .home-cta-btn.primary {
-      background: var(--accent);
-      color: #ffffff;
+      background: #7c3aed !important;
+      color: #ffffff !important;
+      border-color: #7c3aed !important;
+    }
+    .home-cta-btn.primary:hover {
+      background: #ffffff !important;
+      color: #0D0D12 !important;
+      border-color: #ffffff !important;
+      box-shadow: 5px 5px 0px #7c3aed !important;
     }
     .home-cta-btn.secondary {
-      background: #181724;
-      color: var(--text-primary);
-      border-color: var(--border-medium);
+      background: var(--bg-surface) !important;
+      color: #ffffff !important;
+      border: 2px solid #2e2e3e !important;
+    }
+    .home-cta-btn.secondary:hover {
+      border-color: #ffffff !important;
+      box-shadow: 5px 5px 0px #000000 !important;
+      background: var(--bg-elevated) !important;
+    }
+    .home-cta-btn.mesa-outline {
+      background: transparent !important;
+      color: #f59e0b !important;
+      border: 2px solid #f59e0b !important;
+    }
+    .home-cta-btn.mesa-outline:hover {
+      background: #f59e0b !important;
+      color: #000000 !important;
+      box-shadow: 5px 5px 0px #000000 !important;
     }
     .home-cta-btn.amber {
-      background: #f59e0b;
-      color: #000000;
-      border-color: #000000;
+      background: #f59e0b !important;
+      color: #000000 !important;
+      border-color: #f59e0b !important;
+    }
+    .home-cta-btn.amber:hover {
+      background: #ffffff !important;
+      color: #000000 !important;
+      border-color: #ffffff !important;
+      box-shadow: 5px 5px 0px #000000 !important;
     }
     .home-cta-btn:hover {
       transform: translate(-2px, -2px);
-      box-shadow: 6px 6px 0 #000000;
     }
     .home-cta-btn:active {
       transform: translate(2px, 2px);
-      box-shadow: 2px 2px 0 #000000;
+      box-shadow: 1px 1px 0 #000000 !important;
     }
 
     .hub-section {
@@ -95,21 +124,23 @@
       gap: 18px;
     }
     .compendium-card {
-      background: #13121c;
+      background: var(--bg-surface);
       border: 2px solid #000000;
-      border-top: 4px solid var(--card-accent, var(--accent));
+      border-top: 4px solid var(--card-accent, var(--purple-main));
       padding: var(--space-lg);
       text-decoration: none;
       display: flex;
       flex-direction: column;
       box-shadow: 4px 4px 0 #000000;
       position: relative;
-      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
     }
     .compendium-card:hover {
-      transform: translateY(-4px);
+      transform: translate(-3px, -3px);
       box-shadow: 6px 6px 0 #000000;
-      border-color: var(--card-accent, var(--accent));
+      border-color: #000000;
+      border-top-color: var(--card-accent, var(--purple-main));
+      background: var(--bg-elevated);
     }
     .compendium-card:active {
       transform: translate(2px, 2px);
@@ -211,7 +242,7 @@
       <div class="home-cta-row" style="margin-top: var(--space-md);">
         <a href="#pilares-section" class="home-cta-btn primary">Ver Regras</a>
         <a href="criacao-personagem.html" class="home-cta-btn secondary">Criar Ficha</a>
-        <a href="mesa.html" class="home-cta-btn secondary" style="border-color: #ff7700; color: #ff9933;">Mesa Virtual</a>
+        <a href="mesa.html" class="home-cta-btn mesa-outline">Mesa Virtual</a>
         <a href="boletim.html" class="home-cta-btn amber">Boletim</a>
       </div>
     </section>
@@ -248,13 +279,13 @@
 
       <!-- DESTAQUE DO BOLETIM -->
       <div class="home-feature-card">
-        <span class="home-feature-badge">NOVO BOLETIM</span>
-        <h2 class="home-feature-title" style="color: #fbbf24;">O Sistema Antigo vs. A Nova Edição 2.0</h2>
+        <span class="home-feature-badge">NOVO BOLETIM #4</span>
+        <h2 class="home-feature-title" style="color: #f59e0b;">A Grande Reformulação das Raças 2.0</h2>
         <p class="home-feature-desc">
-          Fiz um comparativo explicando as mudanças que estou preparando: a DEF agora é uma só para qualquer tipo de dano direto (sem precisar de calculadora na mesa!), como funciona arriscar a esquiva na Destreza ou defender no escudo, e o equilíbrio pros personagens.
+          Passei uma limpa geral nas raças do sistema: chega de ficha com 10 habilidades ativas competindo com classe. Agora toda raça segue a regra dos 3 Pilares com mecânica própria e foco imediato.
         </p>
         <div class="home-feature-footer">
-          <a href="boletim.html#boletim-003" class="home-cta-btn amber" style="font-size: 0.85rem; padding: 8px 18px;">Ver Boletim #3</a>
+          <a href="boletim.html#edicao-04" class="home-cta-btn amber" style="font-size: 0.85rem; padding: 8px 18px;">Ver Boletim #4</a>
         </div>
       </div>
 
@@ -266,7 +297,7 @@
         </div>
         <div class="home-cards-grid">
 
-          <a href="atributos.html" class="compendium-card" style="--card-accent: #7c3aed;">
+          <a href="atributos.html" class="compendium-card" style="--card-accent: var(--purple-main);">
             <div class="compendium-card-tag">Atributos</div>
             <h3>Atributos</h3>
             <p>Saúde, RF, RE, Destreza, Força, Intelecto e Fama. Os pilares que sustentam todos os testes e defesas.</p>
@@ -354,7 +385,7 @@
             <p>Solar, Electro, Nulídrico, Praga, Podridão, Sagrado, Estase e Pesadelo. As forças do universo.</p>
           </a>
 
-          <a href="selos.html" class="compendium-card" style="--card-accent: #7c3aed;">
+          <a href="selos.html" class="compendium-card" style="--card-accent: var(--purple-main);">
             <div class="compendium-card-tag">Selos</div>
             <h3>Selos Mágicos</h3>
             <p>Rituais e encantamentos elementais com custos de EA, efeitos táticos e áreas de impacto.</p>

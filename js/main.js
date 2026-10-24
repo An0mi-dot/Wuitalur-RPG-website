@@ -51,9 +51,58 @@ function highlightPV() {
   });
 }
 
+function autoHighlightDice() {
+  const diceRe = /\b[1-9]\d*d(?:4|6|8|10|12|20|100)(?:\s*[+-]\s*(?:\d+|(?:(?:Mod(?:ificador)?(?:\s+de)?\s+)?(?:FR|FOR|DES|DEX|SAU|INT|SEN|COS|FAMA|RF|RE|PV|EA|SAN|Força|Destreza|Saúde|Intelecto|Sentidos|Cosmo))|Mod(?:ificador)?))?\b/gi;
+
+  const walker = document.createTreeWalker(
+    document.body,
+    NodeFilter.SHOW_TEXT,
+    {
+      acceptNode: function(node) {
+        if (!node.textContent || !node.textContent.match(diceRe)) return NodeFilter.FILTER_REJECT;
+        const parent = node.parentElement;
+        if (!parent || ['SCRIPT', 'STYLE', 'TEXTAREA', 'INPUT', 'CODE', 'PRE', 'BUTTON'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        if (parent.closest('.dice, .attr-dice-badge, .dice-roller, .dice-btn, .dice-result, h1, h2, h3, .topic-crooked, .page-brand-title')) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    }
+  );
+
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+
+  nodes.forEach(function(node) {
+    const text = node.textContent;
+    const frag = document.createDocumentFragment();
+    let lastIdx = 0;
+    let match;
+    diceRe.lastIndex = 0;
+
+    while ((match = diceRe.exec(text)) !== null) {
+      if (match.index > lastIdx) {
+        frag.appendChild(document.createTextNode(text.slice(lastIdx, match.index)));
+      }
+      const span = document.createElement('span');
+      span.className = 'dice';
+      span.textContent = match[0];
+      frag.appendChild(span);
+      lastIdx = diceRe.lastIndex;
+    }
+
+    if (lastIdx < text.length) {
+      frag.appendChild(document.createTextNode(text.slice(lastIdx)));
+    }
+    if (node.parentNode) {
+      node.parentNode.replaceChild(frag, node);
+    }
+  });
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
   initUmbraTremble();
   highlightPV();
+  autoHighlightDice();
   const sidebar = document.getElementById('sidebar');
   const toggle = document.getElementById('sidebar-toggle');
 
@@ -135,12 +184,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const btn = document.createElement('button');
     btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><polyline points="18 15 12 9 6 15"/></svg>Índice';
     btn.id = 'floating-index-btn';
-    btn.style.cssText = 'position:fixed;bottom:32px;right:32px;z-index:998;padding:12px 22px;border-radius:100px;border:1px solid rgba(124,58,237,0.3);background:rgba(18,18,24,0.9);color:#e4e4e7;font-size:0.8rem;font-weight:500;letter-spacing:0.3px;cursor:pointer;box-shadow:0 8px 28px rgba(0,0,0,0.4);display:none;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:all 0.25s ease;';
+    btn.style.cssText = 'position:fixed;bottom:32px;right:32px;z-index:998;padding:12px 22px;border-radius:100px;border:1.5px solid var(--border-accent, #604a8b);background:rgba(21,15,30,0.95);box-shadow:3px 3px 0px #0c0812;color:#e4e4e7;font-size:0.8rem;font-weight:500;letter-spacing:0.3px;cursor:pointer;box-shadow:0 8px 28px rgba(0,0,0,0.4);display:none;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:all 0.25s ease;';
     btn.addEventListener('click', () => {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
-    btn.addEventListener('mouseenter', () => { btn.style.borderColor = '#7C3AED'; btn.style.background = 'rgba(30,30,40,0.95)'; btn.style.boxShadow = '0 8px 28px rgba(124,58,237,0.25)'; });
-    btn.addEventListener('mouseleave', () => { btn.style.borderColor = 'rgba(124,58,237,0.3)'; btn.style.background = 'rgba(18,18,24,0.9)'; btn.style.boxShadow = '0 8px 28px rgba(0,0,0,0.4)'; });
+    btn.addEventListener('mouseenter', () => { btn.style.borderColor = '#8267b5'; btn.style.background = 'rgba(34,24,46,0.98)'; btn.style.boxShadow = '4px 4px 0px #8267b5'; });
+    btn.addEventListener('mouseleave', () => { btn.style.borderColor = '#604a8b'; btn.style.background = 'rgba(21,15,30,0.95)'; btn.style.boxShadow = '3px 3px 0px #0c0812'; });
     document.body.appendChild(btn);
 
     let ticking = false;

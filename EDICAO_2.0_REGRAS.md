@@ -9,7 +9,7 @@
 - [Capítulo 1: Atributos e o Motor de Rolagem Base](#capítulo-1-atributos-e-o-motor-de-rolagem-base) — **APROVADO**
 - [Capítulo 2: Perícias e Resolução de Testes](#capítulo-2-perícias-e-resolução-de-testes) — **APROVADO**
 - [Capítulo 3: Sistema de Combate e Defesa](#capítulo-3-sistema-de-combate-e-defesa) — **APROVADO**
-- [Capítulo 4: Raças de Wuitalur](#capítulo-4-raças-de-wuitalur) — *Pendente de Registro*
+- [Capítulo 4: Raças de Wuitalur](#capítulo-4-raças-de-wuitalur) — **APROVADO**
 - [Capítulo 5: Elementos e Energia Astral](#capítulo-5-elementos-e-energia-astral) — *Pendente*
 - [Capítulo 6: Classes, Arquétipos e Progressão](#capítulo-6-classes-arquétipos-e-progressão) — *Pendente*
 - [Capítulo 7: O Cosmo e Mecânicas Especiais](#capítulo-7-o-cosmo-e-mecânicas-especiais) — *Pendente*
@@ -18,13 +18,13 @@
 
 # CAPÍTULO 1: ATRIBUTOS E O MOTOR DE ROLAGEM BASE
 
-A Edição 2.0 de Wuitalur abandona a fórmula tradicional do $1d20$ e o acúmulo infinito de modificadores matemáticos. O sistema adota o **d12** como seu dado fundamental e transforma a ficha em algo limpo e imediato de resolver na mesa.
+A Edição 2.0 de Wuitalur adota o **d20** com uma escala numérica limpa, contida e sem inflação matemática. Acabaram os bônus de dois dígitos, as tabelas burocráticas e as somas complexas.
 
 ---
 
 ### 1.1. A Matriz dos 5 Atributos
 
-Todos os personagens possuem cinco atributos fundamentais, que cobrem todas as facetas de ação, sobrevivência, cognição e interação social no mundo de Wuitalur:
+Todos os personagens possuem cinco atributos fundamentais, cobrindo todas as facetas de ação, sobrevivência, cognição e interação social no mundo de Wuitalur:
 
 | Atributo | Abreviação | O que Governa no Jogo |
 | :--- | :---: | :--- |
@@ -38,50 +38,24 @@ Todos os personagens possuem cinco atributos fundamentais, que cobrem todas as f
 
 ---
 
-### 1.2. O Motor de Testes: Teste Comum vs. Teste Especializado
+### 1.2. Distribuição de Bônus de Atributos
 
-Em vez de fichas cheias de bônus estáticos somados, a rolagem é direta:
+Na criação do personagem, o jogador recebe um conjunto fixo de bônus prontos e decide livremente onde alocar cada um entre os seus 5 atributos:
 
-1. **Criação do Personagem**:
-   * O jogador escolhe **2 Atributos** nos quais o seu personagem é **Especializado**.
-   * Os outros **3 Atributos** são considerados **Comuns**.
+$$\mathbf{[+3,\ +2,\ +1,\ +1,\ 0]}$$
 
-2. **Tipos de Testes**:
-   * **Teste Comum (Atributo Comum)**: Rola-se **1d12 seco** (resultado de 1 a 12).
-   * **Teste Especializado (Atributo Especializado)**: Rola-se **1d12 + 2** (resultado de 3 a 14).
-
-```
-Exemplo de Ficha Inicial:
-[ ] FORÇA      — Comum: 1d12
-[*] DESTREZA   — ESPECIALIZADO: 1d12 + 2
-[ ] VIGOR      — Comum: 1d12
-[*] MENTE      — ESPECIALIZADO: 1d12 + 2
-[ ] EXPRESSÃO  — Comum: 1d12
-```
+* **+3**: O foco absoluto e principal competência do personagem.
+* **+2**: O talento secundário de destaque.
+* **+1 / +1**: Competências médias e equilibradas.
+* **0**: A área comum do personagem (sem bônus adicional).
 
 ---
 
-### 1.3. Escala de Metas e Dificuldades
+### 1.3. O Motor de Testes
 
-Com o d12 variando de **1 a 12** no Comum e de **3 a 14** no Especializado, a matemática do jogo fica perfeitamente calibrada:
-
-| Dificuldade | Meta | Descrição da Situação | Quem Alcança? |
-| :---: | :---: | :--- | :--- |
-| **Rotineira** | **6** | Desafio padrão sob pressão moderada. | Qualquer personagem tem boa chance no 1d12 (58% de chance). |
-| **Desafiadora** | **8** | O padrão para a maioria dos testes em combate ou perigo ativo. | Exige 8+ no 1d12 (41%); o Especializado precisa apenas de 6+ (58%). |
-| **Difícil** | **10** | Exige competência real, precisão ou técnica apurada. | Difícil para comuns (25%); perfeitamente viável para Especialistas (41%). |
-| **Heroica** | **12** | O ápice do que um indivíduo comum consegue alcançar. | Apenas um 12 cravado no 1d12 comum (8%); Especialista atinge com 10+ (25%). |
-| **Lendária** | **13 ou 14** | Proezas sobre-humanas, quebrar limites da realidade. | **Exclusiva para quem realiza Teste Especializado** (precisa tirar 11 ou 12 no d12). |
-
----
-
-### 1.4. Resolução de Críticos
-
-* **Sucesso Crítico (12 natural no d12)**:
-  * Tirar **12** na face do dado é sempre um Sucesso Crítico, não importa a Meta. Em combate causa dano máximo e efeitos decisivos; fora de combate descobre segredos ocultos e impressiona a cena.
-  * No Teste Especializado, um 12 natural atinge a marca máxima de **14**, configurando um feito lendário.
-* **Falha Crítica (1 natural no d12)**:
-  * Tirar a face **1** no dado base representa complicação ou reviravolta negativa no ambiente.
+* **Teste Comum (Sem Perícia)**: Rola-se **1d20 + Atributo**.
+* **Sucesso Crítico**: Tirar **20 natural** no d20 é sempre um sucesso espetacular com efeitos decisivos.
+* **Falha Crítica**: Tirar **1 natural** no d20 gera uma complicação ou reviravolta negativa no ambiente.
 
 ---
 
@@ -91,20 +65,15 @@ A Edição 2.0 substitui a antiga lista de 36 perícias hiperfragmentadas por um
 
 ---
 
-### 2.1. Como Funciona o Treino em Perícia
+### 2.1. Como Funciona o Treino em Perícia (A Mecânica de Vantagem)
 
-O treino em uma perícia representa instrução, prática e competência confiável. Ele atua diretamente na consistência dos dados, sem adicionar bônus numéricos inflados:
+O treino em uma perícia representa instrução, prática e competência confiável. Ele atua diretamente na consistência dos dados, sem adicionar pilhas de bônus numéricos chatos:
 
-* **Sem Treino**: O jogador rola o teste normal do atributo exigido (**1d12** ou **1d12 + 2** se o atributo for Especializado).
-* **Com Treino (Vantagem de Maestria)**: O jogador rola **2d12 e escolhe o maior valor** (+2 se o atributo utilizado for Especializado).
+* **Sem Treino**: O jogador rola **1d20 + Atributo**.
+* **Com Treino (Vantagem de Maestria)**: O jogador rola **2d20 e escolhe o maior resultado**, somando o Atributo correspondente.
+  * *Exemplo*: Um personagem com Mente `+3` e treino em Investigação joga dois d20s: saem `6` e `15`. Ele escolhe o `15` e soma `+3` = **Total 18**.
 
-#### A Matriz de Resolução de Perícias:
-| Situação da Ficha | Rolagem | Efeito Prático na Mesa |
-| :--- | :---: | :--- |
-| **Leigo** *(Sem Treino + Atributo Comum)* | **1d12** | Teste comum. Depende da sorte ou do acaso. |
-| **Talento Nato** *(Sem Treino + Atributo Especializado)* | **1d12 + 2** | Sem técnica formal, mas com aptidão natural superior. |
-| **Técnico** *(Treinado + Atributo Comum)* | **2d12 (maior)** | Competência técnica sólida. Dificilmente falha em tarefas básicas. |
-| **Mestre** *(Treinado + Atributo Especializado)* | **2d12 (maior) + 2** | **O ápice da build.** Enorme confiabilidade, alta chance de crítico e alcance de Metas Lendárias. |
+Essa mecânica reduz drasticamente a frustração em testes vitais de investigação e exploração, garantindo que personagens competentes quase nunca falhem no que são especialistas.
 
 ---
 
@@ -161,16 +130,16 @@ O combate em Wuitalur 2.0 elimina o atrito de fórmulas matemáticas complexas e
 
 ---
 
-### 3.1. As Duas Reações Defensivas
+### 3.1. Como Lidar com Ataques: Desviar (Reação) vs. Defender (Passivo)
 
-Quando um personagem é alvo de um ataque corpo a corpo ou à distância, ele gasta sua **Reação** naquele turno e escolhe imediatamente uma entre duas posturas táticas:
+Quando um personagem é alvo de um ataque, ele decide como seu corpo responde:
 
-| Reação | Resolução Mecânica | Resultado |
-| :--- | :--- | :--- |
-| **DESVIAR** | Rola um teste de **Destreza** (ou da perícia **Acrobacia**). | **Sucesso** (resultado superior ao acerto do inimigo): Evita o golpe completamente e sofre **0 de dano**.<br>**Falha**: É atingido em cheio e sofre o **dano total**. |
-| **DEFENDER** | **Sem rolagem de dados.** O personagem planta os pés, ergue a guarda ou o escudo e absorve o impacto com seu preparo e armadura. | O personagem aceita o golpe e **reduz o dano recebido diretamente pelo seu valor de DEF**.<br>*(Dano Sofrido = Dano do Inimigo − DEF)*. |
+| Opção | Tipo de Ação | Resolução Mecânica | Resultado |
+| :--- | :---: | :--- | :--- |
+| **DESVIAR** | **Reação Ativa**<br>*(Gasta a Reação da rodada)* | O personagem tenta ativamente sair do caminho do golpe. Rola **Destreza** (ou a perícia **Acrobacia**). | **Sucesso** (superou o ataque inimigo): Evita o golpe e sofre **0 de dano**.<br>**Falha**: É atingido em cheio e sofre o **dano total**. |
+| **DEFENDER** | **Ação Passiva / Natural**<br>*(NÃO gasta Reação)* | O personagem "apenas aceita o tapa", confiando na sua couraça, placas e resistência corporal. | **Sem rolagem e sem gastar reação.** O dano sofrido é reduzido diretamente pelo valor total da sua **DEF**.<br>*(Dano Sofrido = Dano do Inimigo − DEF)*. |
 
-> **Filosofia da Escolha**: Personagens ágeis assumem o risco da rolagem para tentar sair ilesos; combatentes pesados e blindados contam com a certeza matemática de sua armadura para diminuir o dano recebido a cada golpe.
+> **Vantagem Tática**: Como Defender **não consome Reação**, um guerreiro blindado consegue reduzir o dano de múltiplos inimigos na mesma rodada (sua armadura está sempre protegendo) e ainda mantém sua Reação livre para contra-ataques, habilidades de classe ou proteger aliados!
 
 ---
 
@@ -179,7 +148,7 @@ Quando um personagem é alvo de um ataque corpo a corpo ou à distância, ele ga
 A Edição 2.0 abole por completo as antigas fórmulas algébricas fracionárias (`PVs^0.6`) e a duplicidade entre "DEF e DEFe". Existe agora apenas uma estatística na ficha: **DEF**.
 
 * **A DEF reduz qualquer dano cru recebido** (cortante, perfurante, contundente ou elemental comum como fogo, gelo, choques de *Electro* ou lodo de *Podridão*).
-* Apenas ataques específicos que declararem explicitamente a propriedade de *"ignorar defesas"* conseguem atravessar a DEF sem redução.
+* Apenas ataques específicos que causarem **Dano Real** ou declararem a propriedade de *"ignorar defesas"* conseguem atravessar a DEF sem redução.
 
 ---
 
@@ -193,6 +162,198 @@ A DEF de um personagem é calculada pela soma imediata de suas proteções e do 
 | **Armadura Leve** | **DEF 2** | Gibões de couro, tecidos reforçados com malha fina. |
 | **Armadura Média** | **DEF 4** | Cotas de malha completas, peitorais de aço e couro rígido. |
 | **Armadura Pesada** | **DEF 6** | Placas de liga metálica de Paladium, couraças forjadas. |
-| **Escudo** | **+2 DEF** | Bônus adicional ativado ao escolher a reação **Defender**. |
+| **Escudo** | **+2 DEF** | Bônus adicional constante enquanto empunhado. |
 
-* **Bônus de Vigor**: Um personagem com o atributo **Vigor Especializado** adiciona **+2 na sua DEF** ao escolher a reação **Defender**, refletindo a capacidade corporal de amortecer impactos pesados.
+* **Bônus de Vigor**: Um personagem soma seu atributo **Vigor** diretamente na sua DEF ao escolher Defender, refletindo a capacidade corporal de amortecer impactos pesados.
+
+---
+
+# CAPÍTULO 4: AS RAÇAS DE WUITALUR
+
+Todas as raças de Wuitalur seguem uma estrutura padronizada de três blocos: **Status de Raça**, **Mecânica de Raça** (regras profundas e exclusivas) e **Característica de Raça** (habilidade marcante).
+
+---
+
+### Raça 1: Akivus
+*Seres silvestres de pele parda e chifres longos de alce ornados com flores e vinhas, profundamente conectados à terra e à flora.*
+
+* **Status de Raça**:
+  * Treino nativo na perícia Sobrevivência.
+  * Resistência natural contra dano Sagrado e Gélido.
+  * Fraqueza contra dano de Podridão.
+* **Mecânica de Raça — Manifestação de Vinhas**:
+  * Em locais com vegetação favorável, pode criar e manipular vinhas em até 5B de distância para realizar:
+    * Interações de objetos à distância.
+    * Agarrar um alvo em alcance.
+    * Atacar à distância causando 1d6 de dano.
+* **Característica de Raça — Passos Silenciosos**:
+  * Move-se sem emitir som ao caminhar sobre solo ou vegetação. Recebe vantagem em testes de Furtividade ao se deslocar por ambientes naturais.
+
+---
+
+### Raça 2: Animalescos
+*Híbridos antropomórficos ou indivíduos com traços e herança ferais marcantes.*
+
+* **Status de Raça**:
+  * Treino nativo na perícia Percepção.
+  * Fraqueza contra dano Sonoro.
+* **Mecânica de Raça — Postura Animalesca**:
+  * Altera sua postura física para a locomoção instintiva de sua espécie animal.
+  * Seu deslocamento aumenta em +3B e recebe vantagem ao Desviar enquanto se desloca nessa postura.
+  * Seus membros motores ficam totalmente dedicados à locomoção, impedindo empunhar armas, usar escudos ou manipular itens até retornar à postura padrão.
+* **Característica de Raça — Ataque Predatório**:
+  * Seus ataques desarmados utilizam garras, presas ou chifres, causando +1d6 de dano adicional ao dano base de ataque desarmado.
+
+---
+
+### Raça 3: Plantíferos
+*Seres de fisionomia vegetal e botânica, cobertos por folhagens, cascas e brotos.*
+
+* **Status de Raça**:
+  * Treino nativo na perícia Medicina.
+  * Fraqueza contra dano Solar e dano de Podridão.
+* **Mecânica de Raça — Comunicação Botânica**:
+  * Pode se comunicar e sentir estímulos através de plantas e árvores próximas.
+  * Tocar a vegetação local permite coletar informações simples sobre criaturas que passaram pela área recentemente ou alterações no ambiente.
+* **Característica de Raça — Bulbo de Pólen**:
+  * Arremessa um bulbo floral em um ponto a até 6B que explode em uma nuvem de pólen de 4B de raio.
+  * Alvos dentro da área devem passar em um teste de Vigor ou sofrem desvantagem em suas ações até o final do próximo turno deles.
+
+---
+
+### Raça 4: Humanos
+*A espécie mais adaptável e abundante, marcada por ambição e resistência psicológica.*
+
+* **Status de Raça**:
+  * Escolhe +1 perícia treinada extra na criação do personagem.
+  * Fraqueza contra dano de Pesadelo.
+* **Mecânica de Raça — Adrenalina Sob Pressão**:
+  * Quando sua Vida estiver abaixo de 25% do valor total, o Humano recebe vantagem em todos os testes de Força e Destreza até o final da cena.
+* **Característica de Raça — Determinação Implacável**:
+  * Ao chegar a 0 PV por um ataque, pode realizar um teste de Vigor. Se tiver sucesso, não cai inconsciente e permanece de pé com 1 PV. Pode ser usado uma vez por cena de combate.
+
+---
+
+### Raça 5: Vampiros
+*Nobres predadores noturnos movidos pela sede de sangue e força sobrenatural.*
+
+* **Status de Raça**:
+  * Visão no escuro em até 18B.
+  * Resistência contra dano de Pesadelo.
+  * Fraqueza contra dano de Praga e dano Solar.
+* **Mecânica de Raça — Reserva de Sangue**:
+  * Ao causar dano cortante ou perfurante em um alvo com sangue, acumula até 3 Cargas de Sangue. Pode gastar 1 Carga para:
+    * Restaurar 1d6 + Vigor em PV.
+    * Fazer com que seu próximo golpe cause Dano Real (ignora armadura e qualquer resistência do inimigo).
+    * Receber vantagem ao Desviar de um ataque nesta rodada.
+* **Característica de Raça — Mordida Vampírica**:
+  * Desfere um ataque com presas contra um alvo agarrado, caído ou desprevenido. Causa o dano base de ataque desarmado + 1d6 de perfuração, recupera PV igual ao dano causado e gera automaticamente 1 Carga de Sangue.
+
+---
+
+### Raça 6: Dragão Anão
+*Híbridos dracônicos de baixa estatura de Tragnor, com escamas coloridas, cauda ágil e vocação ladina.*
+
+* **Status de Raça**:
+  * Vantagem em testes de Mente para resistir a efeitos mentais e confusão.
+  * Resistência contra o elemento escolhido para o seu sopro na criação: Solar, Estase ou Podridão.
+* **Mecânica de Raça — Mimetismo de Escamas**:
+  * As escamas mudam de tom e textura conforme a superfície onde se apoia. Pode tentar se ocultar com Furtividade mesmo sem cobertura total caso esteja encostado em paredes ou superfícies sólidas.
+  * Após desferir um ataque corpo a corpo ou usar o sopro, pode se deslocar até 3B imediatamente.
+* **Característica de Raça — Sopro Ancestral**:
+  * Na criação do personagem, escolhe o tipo elemental do sopro: Solar, Estase ou Podridão.
+  * Expele um cone frontal de 3B de energia elemental do tipo escolhido. Alvos na área sofrem 2d8 de dano elemental do tipo correspondente.
+
+---
+
+### Raça 7: Insectóides
+*Humanos modificados nos experimentos de Paladium, portadores de carapaça de quitina e mente fria e calculista.*
+
+* **Status de Raça**:
+  * Treino nativo na perícia Intimidação.
+  * Fraqueza contra dano Solar e dano Gélido.
+  * Sensibilidade a luzes ofuscantes diretas.
+* **Mecânica de Raça — Vínculo de Mutação**:
+  * Na criação, escolhe um elemento de vínculo: Podridão, Nulídrico ou Pesadelo.
+  * Ao acertar um ataque em combate, acumula até 3 Cargas de Peçonha. Pode gastar 1 Carga para aplicar o efeito do elemento no próximo golpe:
+    * *Podridão*: Corrói a proteção do alvo, reduzindo a DEF dele em 2 pontos até o final da rodada.
+    * *Nulídrico*: Drena a mobilidade do alvo, reduzindo o deslocamento dele pela metade até o final da rodada.
+    * *Pesadelo*: Causa 1d6 de dano mental direto e impede o alvo de usar reações nesta rodada.
+* **Característica de Raça — Fisiologia Quitinosa**:
+  * Concede +2 de DEF natural permanente.
+  * Consegue escalar superfícies verticais e tetos com velocidade normal de deslocamento sem necessidade de testes.
+
+---
+
+### Raça 8: Praguentos
+*Seres cobertos de lodo viscoso negro e múltiplos olhos, zombarias vivas forjadas pela Podridão.*
+
+* **Status de Raça**:
+  * Imunidade contra dano de Podridão.
+  * Resistência contra dano de Praga.
+  * Fraqueza contra dano Solar e dano Gélido.
+* **Mecânica de Raça — Biomassa de Lodo**:
+  * Possui 3 Cargas de Lodo (recuperadas ao final de cada cena ou descanso). Pode gastar 1 Carga para:
+    * Moldar instantaneamente uma ferramenta simples ou arma corpo a corpo de lodo na sua mão.
+    * Esticar seus membros para desferir um ataque corpo a corpo ou agarrar um alvo a até 3B de distância.
+    * Destacar uma gota de lodo do próprio corpo e controlá-la para atravessar frestas estreitas e fechaduras a até 10B. A gota não enxerga nem ouve, mas transmite sensações de tato e vibrações do ambiente diretamente ao Praguento.
+* **Característica de Raça — Ejeção Cáustica**:
+  * Dispara uma golfada de lodo viscoso e fervente em um alvo a até 5B. Causa 2d6 de dano de Podridão e o alvo tem seu deslocamento reduzido pela metade até o início do seu próximo turno.
+
+---
+
+### Raça 9: Abissais
+*Vigilantes pálidos das fendas subterrâneas, com veias tomadas pela Praga e antenas bioluminescentes.*
+
+* **Status de Raça**:
+  * Visão no escuro total em ambientes subterrâneos.
+  * Imunidade contra dano de Praga.
+  * Resistência contra dano Solar, Gélido e Pesadelo.
+  * Fraqueza contra dano de Podridão e desvantagem em Percepção sob luz solar direta.
+* **Mecânica de Raça — Fome de Vinhas**:
+  * Consome filamentos de Praga para alterar seu organismo em combate. Possui 3 Vinhas de Praga por cena. Ao engolir 1 vinha com uma ação rápida, rola 1d6 para definir a mutação até o fim da cena:
+    * *1 (Negativo) — Rejeição Biológica*: Sofre 1d6 de dano e perde 2B de deslocamento.
+    * *2 (Negativo) — Sobrecarga Sensorial*: Sofre desvantagem em testes de Mente e Percepção.
+    * *3 (Positivo) — Carapaça Espinhosa*: O tecido corporal endurece, concedendo +2 de DEF.
+    * *4 (Positivo) — Surto Motor*: Concede +3B de deslocamento e vantagem em testes de Destreza.
+    * *5 (Positivo) — Secreção Tóxica*: Seus ataques corpo a corpo causam +1d6 adicional de dano de Praga.
+    * *6 (Positivo) — Bioluminescência Máxima*: As antenas pulsam luz ofuscante em 6B, concedendo vantagem para ataques de aliados nessa área e curando 1d8 de PV do Abissal.
+* **Característica de Raça — Frequência Perturbadora**:
+  * Projeta ruídos ensurdecedores e sussurros telepáticos na mente de um alvo a até 6B. O alvo deve passar em um teste de Mente ou fica atordoado, incapaz de agir no próximo turno dele.
+
+---
+
+### Raça 10: E.X.O.s
+*Autômatos avançados de metal especial forjados pelos artífices de Paladium, movidos pelo minério Everact.*
+
+* **Status de Raça**:
+  * Imunidade contra dano de Fogo, Praga, Sangramento e Envenenamento.
+  * Fraqueza contra dano de Podridão e dano Nulídrico.
+* **Mecânica de Raça — Fisiologia Mecânica & Núcleo Everact**:
+  * **Pontos de Chassi (PC)**: Não possui Vida comum. Poções medicinais, primeiros socorros e a perícia Medicina falham automaticamente nele. Para repará-lo ou estabilizá-lo ao cair para 0 PCs, é obrigatório utilizar o teste da perícia Ofício (Mente).
+  * **Autorreparo de Campo**: Uma vez por cena de combate, gasta uma ação rápida para canalizar solda interna, restaurando 2d8 + Mente em PCs. Além disso, a cada rodada, recupera 1d6 + Vigor em PCs.
+  * **Sobrecarga de Overclock**: Sempre que estiver com menos de 25% de seus PCs totais, o núcleo entra em sobreaquecimento contínuo. Concede +2 de DEF e +1d8 de dano adicional em todos os seus ataques até o final do combate.
+* **Característica de Raça — Prensa Hidráulica**:
+  * Avança contra um alvo adjacente travando os atuadores de alta pressão de seus braços. Rola um teste de Força contra a Força ou Destreza do alvo. Se vencer, o alvo fica Imobilizado e sofre automaticamente 2d6 + Força de dano de esmagamento no início de cada um dos turnos dele enquanto estiver preso.
+
+---
+
+### Raça 11: Espect@&%s
+*Glitches sencientes no tecido do espaço-tempo, presos no carregamento da morte e distorcendo a realidade física.*
+
+* **Status de Raça**:
+  * Fraqueza contra dano Sagrado e dano Solar.
+  * Desvantagem permanente em testes de Expressão com seres biológicos.
+* **Mecânica de Raça — Estabilidade Cósmica & Vínculo de Anomalia**:
+  * **Definição da Estabilidade**: Sua vitalidade inicial é calculada como **10 + Mente**. A cada nível, recebe +4 + Mente em Estabilidade. Não possui teto máximo de Estabilidade.
+  * **Ausência de Cura Externa**: Não recebe cura de descanso, poções, itens médicos ou magias comuns. Sua Estabilidade só é recuperada através de suas próprias mecânicas de anomalia.
+  * **Instabilidade Crítica (Salvaguarda da Morte)**: Ao chegar a 0 de Estabilidade, entra em colapso existencial. Nenhum aliado pode estabilizá-lo. O Espectro realiza seus próprios testes de salvaguarda no início de cada turno:
+    * É apagado da realidade apenas se acumular **4 falhas** (em vez das 3 comuns).
+    * Tirar 19 ou 20 natural no d20 estabiliza sua existência imediatamente, retornando com 1 de Estabilidade.
+  * **Vínculo de Anomalia**: Na criação, escolhe o tipo de erro cósmico de sua anomalia:
+    * *Blink*: Ao finalizar um ataque, pode realizar imediatamente um disparo de energia negativa contra um alvo a até 3B, causando Mented6 de dano.
+    * *Desbordamento*: Suas ações que causam dano emitem ruído estático que sobrecarrega a mente do alvo, causando 1d6 de dano mental adicional.
+    * *Corrupção*: Ao acertar um golpe corpo a corpo, drena energia do alvo e recupera 1d4 de Estabilidade própria.
+    * *Tela Azul*: Uma vez por combate, ao sofrer um ataque, força o atacante a travar em pane motora, fazendo-o perder o restante do turno dele.
+* **Característica de Raça — Deslocamento de Quadros (Frame Drop)**:
+  * O Espectro perde quadros de animação na realidade e se teletransporta instantaneamente para um espaço visível desocupado a até 4B de distância. Pode atravessar grades, frestas e obstáculos físicos, sem provocar contra-ataques ao se deslocar dessa forma.

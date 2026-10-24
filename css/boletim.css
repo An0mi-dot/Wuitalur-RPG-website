@@ -803,23 +803,30 @@
 }
 
 .boletim-nav-arrow-btn {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-subtle);
-  border-radius: 0;
-  padding: var(--space-md) var(--space-lg);
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  cursor: pointer;
-  text-align: left;
-  transition: all var(--transition-base);
+  background: #1e1e2a !important;
+  border: 2px solid #000000 !important;
+  box-shadow: 3px 3px 0px #000000 !important;
+  border-radius: 0 !important;
+  padding: 12px 18px !important;
+  color: #ffffff !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  cursor: pointer !important;
+  text-align: left !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  transition: all 0.15s ease !important;
+  transform: none !important;
+  user-select: none !important;
 }
 
 .boletim-nav-arrow-btn:hover {
-  border-color: #f59e0b;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15);
+  background: #2a2a38 !important;
+  border-color: #f59e0b !important;
+  box-shadow: 5px 5px 0px #000000 !important;
+  transform: translateY(-2px) !important;
+  color: #ffffff !important;
 }
 
 .boletim-nav-arrow-btn.next {
@@ -848,20 +855,28 @@
 }
 
 .arrow-sub {
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
+  font-family: var(--font-body) !important;
+  font-size: 0.72rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  color: #9898a8 !important;
+  font-weight: 600 !important;
 }
 
 .arrow-title {
-  font-family: var(--font-heading);
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-family: var(--font-heading) !important;
+  font-size: 0.95rem !important;
+  font-weight: normal !important;
+  color: #ffffff !important;
+  letter-spacing: 0.04em !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  transition: color 0.15s ease !important;
+}
+
+.boletim-nav-arrow-btn:hover .arrow-title {
+  color: #fbbf24 !important;
 }
 
 /* ============================================================
@@ -922,4 +937,173 @@
     grid-template-columns: 1fr;
     gap: var(--space-xs);
   }
+}
+
+
+/* ============================================================
+   ESTILOS EXCLUSIVOS DO BOLETIM 2.0 (PILARES E RACAS)
+   ============================================================ */
+
+/* Grid dos 3 Pilares */
+.boletim-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-md);
+  margin: var(--space-lg) 0 var(--space-xl);
+}
+
+.boletim-pillar-card {
+  background: var(--bg-elevated);
+  border: 2px solid #000000;
+  box-shadow: 3px 3px 0px #000000;
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.boletim-pillar-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0px #000000;
+}
+
+.boletim-pillar-card.pilar-status {
+  border-top: 4px solid #38bdf8;
+}
+
+.boletim-pillar-card.pilar-mecanica {
+  border-top: 4px solid #f59e0b;
+}
+
+.boletim-pillar-card.pilar-caracteristica {
+  border-top: 4px solid #ec4899;
+}
+
+.boletim-pillar-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.boletim-pillar-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  color: #ffffff;
+  margin: 0 0 8px;
+  line-height: 1.25;
+}
+
+.boletim-pillar-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+
+/* Cards Táticos de Raça no Boletim */
+.boletim-race-card {
+  background: var(--bg-surface);
+  border: 2px solid #000000;
+  border-left: 5px solid #f59e0b;
+  box-shadow: 3px 3px 0px #000000;
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.boletim-race-card:hover {
+  transform: translateY(-2px);
+  border-color: #000000;
+  border-left-color: #f59e0b;
+  box-shadow: 5px 5px 0px #000000;
+}
+
+.boletim-race-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.boletim-race-name {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+.boletim-race-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  text-transform: uppercase;
+}
+
+.boletim-race-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.boletim-race-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.boletim-race-row p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+.boletim-race-pill {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+  border: 1px solid #000000;
+  box-shadow: 1px 1px 0px #000000;
+}
+
+.boletim-race-pill.p-status {
+  background: rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.boletim-race-pill.p-mecanica {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.boletim-race-pill.p-habilidade {
+  background: rgba(236, 72, 153, 0.2);
+  color: #f472b6;
+  border-color: rgba(236, 72, 153, 0.4);
 }

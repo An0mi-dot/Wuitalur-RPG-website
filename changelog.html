@@ -44,9 +44,9 @@
       width: 12px;
       height: 12px;
       border-radius: 50%;
-      background: var(--accent, #7C3AED);
+      background: var(--accent, var(--purple-main, #7C3AED));
       border: 2px solid var(--bg-primary);
-      box-shadow: 0 0 0 2px var(--accent, #7C3AED);
+      box-shadow: 0 0 0 2px var(--accent, var(--purple-main, #7C3AED));
     }
     .changelog-header {
       display: flex;
@@ -70,7 +70,7 @@
       padding: 2px 8px;
       border-radius: 20px;
       background: rgba(124, 58, 237, 0.15);
-      color: #7C3AED;
+      color: var(--purple-main, #7C3AED);
       border: 1px solid rgba(124, 58, 237, 0.25);
       letter-spacing: 0.05em;
       text-transform: uppercase;
@@ -110,7 +110,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--accent, #7C3AED);
+      color: var(--accent, var(--purple-main, #7C3AED));
       margin-bottom: var(--space-xs);
     }
     .changelog-section p {

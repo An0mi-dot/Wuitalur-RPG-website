@@ -11,129 +11,181 @@
   
   <style>
     /* ============================================================
-       DEFINICAO DAS PALETAS (FEMTANYL / STREET / BREAKCORE)
-       Zero Emojis, Alto Contraste, Neo-Brutalismo
+       FONTE CHINESE ROCKS (OFICIAL WUITALUR)
+       ============================================================ */
+    @font-face {
+      font-family: 'Chinese Rocks';
+      src: local('Chinese Rocks Regular'),
+           local('Chinese Rocks'),
+           url('assets/fonts/chinese-rocks.ttf') format('truetype');
+      font-display: swap;
+    }
+
+    /* ============================================================
+       DEFINICAO DAS PALETAS: VARIACOES ORTHO (ROXO SEM O CREME)
+       Zero Emojis, Alto Contraste, Estetica Risograph & Manga
        ============================================================ */
     
-    /* PALETA PADRAO: 3. TOKYO PUNK (Roxo Profundo + Hot Pink / Magenta) */
+    /* PALETA 1 (PADRAO): DARK ORIGINAL // NEO-BRUTALISTA (Preto Grafite + Roxo Vibrante) */
     :root,
-    body[data-palette="punk"] {
-      --bg-canvas: #090710;
-      --bg-surface: #140f1f;
-      --bg-surface-elevated: #201732;
-      --bg-header: #0d0a15;
+    body[data-palette="dark-original"],
+    body[data-palette="ortho-white"] {
+      --bg-canvas: #0D0D12;
+      --bg-surface: #16161E;
+      --bg-surface-elevated: #1E1E2A;
+      --bg-header: #12121A;
       
-      --purple-main: #6b21a8;
-      --purple-glow: #9333ea;
-      --purple-dark: #3b0764;
+      --purple-main: #7C3AED;
+      --purple-glow: #8B5CF6;
+      --purple-dark: #4C1D95;
       
-      --accent-contrast: #ff007f; /* Hot Pink / Magenta Puro */
-      --accent-contrast-hover: #ff3399;
-      --accent-contrast-bg: rgba(255, 0, 127, 0.16);
+      --accent-contrast: #ffffff;
+      --accent-contrast-hover: #e2e8f0;
+      --accent-contrast-bg: rgba(255, 255, 255, 0.12);
       
-      --glitch-cyan: #00ffff;
+      --dot-color: rgba(255, 255, 255, 0.055);
+      
+      --glitch-cyan: #8B5CF6;
       --danger-pop: #ffffff;
       --text-high: #ffffff;
-      --text-muted: #b5a5db;
+      --text-muted: #9898A8;
       
-      --border-solid: #ff007f;
+      --border-solid: #7C3AED;
       --shadow-color: #000000;
-      --sticker-bg: #ff007f;
-      --sticker-text: #ffffff;
-      --hazard-1: #ff007f;
-      --hazard-2: #090710;
+      --sticker-bg: #ffffff;
+      --sticker-text: #0D0D12;
+      --hazard-1: #ffffff;
+      --hazard-2: #16161E;
       
-      --palette-name: "3. TOKYO PUNK (Roxo Profundo + Hot Pink)";
+      --palette-name: "DARK ORIGINAL (Preto Grafite #0D0D12 + Roxo #7C3AED)";
     }
 
-    /* PALETA 1: TOXIC BREAKCORE (Roxo Eletrico + Verde Acido) */
-    body[data-palette="toxic"] {
-      --bg-canvas: #09070f;
-      --bg-surface: #130f1e;
-      --bg-surface-elevated: #1c162c;
-      --bg-header: #0e0b17;
+    /* PALETA 2: ORTHO + LILAS ELETRICO (Monocromatico Sofisticado) */
+    body[data-palette="ortho-lilac"] {
+      --bg-canvas: #150f1e;
+      --bg-surface: #22182e;
+      --bg-surface-elevated: #2e203e;
+      --bg-header: #1a1224;
       
-      --purple-main: #8b24f5;
-      --purple-glow: #a855f7;
-      --purple-dark: #3b0764;
+      --purple-main: #604a8b;
+      --purple-glow: #9d7bd9;
+      --purple-dark: #0f0a15;
       
-      --accent-contrast: #4ade80; /* Verde Lima Acido */
-      --accent-contrast-hover: #22c55e;
-      --accent-contrast-bg: rgba(74, 222, 128, 0.12);
+      --accent-contrast: #d8b4fe; /* Lilas suave / lavanda eletrica */
+      --accent-contrast-hover: #ffffff;
+      --accent-contrast-bg: rgba(216, 180, 254, 0.14);
       
-      --glitch-cyan: #ff204e;
-      --danger-pop: #ff204e;
-      --text-high: #f8fafc;
-      --text-muted: #94a3b8;
+      --dot-color: rgba(216, 180, 254, 0.08); /* Bolinhas em lilas suave */
       
-      --border-solid: #8b24f5;
-      --shadow-color: #000000;
-      --sticker-bg: #4ade80;
-      --sticker-text: #09070f;
-      --hazard-1: #4ade80;
-      --hazard-2: #09070f;
-      
-      --palette-name: "1. TOXIC BREAKCORE (Roxo Eletrico + Verde Acido)";
-    }
-
-    /* PALETA 2: STREET Y2K (Roxo Noturno + Laranja Neon + Ciano) */
-    body[data-palette="street"] {
-      --bg-canvas: #0c0b11;
-      --bg-surface: #15141e;
-      --bg-surface-elevated: #201e2e;
-      --bg-header: #111018;
-      
-      --purple-main: #7c3aed;
-      --purple-glow: #9061f9;
-      --purple-dark: #2e1065;
-      
-      --accent-contrast: #ff6600; /* Laranja Streetwear */
-      --accent-contrast-hover: #ff781f;
-      --accent-contrast-bg: rgba(255, 102, 0, 0.15);
-      
-      --glitch-cyan: #00e5ff;
-      --danger-pop: #00e5ff;
+      --glitch-cyan: #ffffff;
+      --danger-pop: #d8b4fe;
       --text-high: #ffffff;
-      --text-muted: #a3a3b2;
+      --text-muted: #c7bcdb;
       
-      --border-solid: #ff6600;
-      --shadow-color: #000000;
-      --sticker-bg: #ff6600;
-      --sticker-text: #000000;
-      --hazard-1: #ff6600;
-      --hazard-2: #0c0b11;
+      --border-solid: #8267b5;
+      --shadow-color: #0c0812;
+      --sticker-bg: #d8b4fe;
+      --sticker-text: #150f1e;
+      --hazard-1: #d8b4fe;
+      --hazard-2: #22182e;
       
-      --palette-name: "2. STREET Y2K (Roxo Noturno + Laranja Neon)";
+      --palette-name: "ORTHO + LILAS (Roxo Uva + Lavanda)";
     }
 
-    /* PALETA 4: GLITCH TERMINAL (Roxo Cibernetico + Amarelo Alerta) */
-    body[data-palette="terminal"] {
-      --bg-canvas: #0e0a16;
-      --bg-surface: #181224;
-      --bg-surface-elevated: #241c35;
-      --bg-header: #120d1c;
+    /* PALETA 3: ORTHO + ROSA STILZA (Roxo Ortho + Rosa Manga) */
+    body[data-palette="ortho-pink"] {
+      --bg-canvas: #150f1e;
+      --bg-surface: #22182e;
+      --bg-surface-elevated: #2e203e;
+      --bg-header: #1a1224;
       
-      --purple-main: #9333ea;
-      --purple-glow: #c084fc;
-      --purple-dark: #4c1d95;
+      --purple-main: #604a8b;
+      --purple-glow: #8267b5;
+      --purple-dark: #0f0a15;
       
-      --accent-contrast: #ffe600; /* Amarelo Sinalizacao */
-      --accent-contrast-hover: #facc15;
-      --accent-contrast-bg: rgba(255, 230, 0, 0.14);
+      --accent-contrast: #f092c7; /* Rosa Stilza */
+      --accent-contrast-hover: #ffffff;
+      --accent-contrast-bg: rgba(240, 146, 199, 0.14);
       
-      --glitch-cyan: #00ffff;
-      --danger-pop: #ff3b30;
+      --dot-color: rgba(240, 146, 199, 0.07);
+      
+      --glitch-cyan: #ffffff;
+      --danger-pop: #f092c7;
       --text-high: #ffffff;
-      --text-muted: #cbd5e1;
+      --text-muted: #c7bcdb;
       
-      --border-solid: #ffe600;
-      --shadow-color: #000000;
-      --sticker-bg: #ffe600;
-      --sticker-text: #0e0a16;
-      --hazard-1: #ffe600;
-      --hazard-2: #0e0a16;
+      --border-solid: #604a8b;
+      --shadow-color: #0c0812;
+      --sticker-bg: #f092c7;
+      --sticker-text: #150f1e;
+      --hazard-1: #f092c7;
+      --hazard-2: #604a8b;
       
-      --palette-name: "4. GLITCH TERMINAL (Roxo + Amarelo Alerta)";
+      --palette-name: "ORTHO + ROSA STILZA (Roxo Uva + Rosa Manga)";
+    }
+
+    /* PALETA 4: ORTHO + CIANO GELO (Roxo Noturno + Gelo) */
+    body[data-palette="ortho-cyan"] {
+      --bg-canvas: #150f1e;
+      --bg-surface: #22182e;
+      --bg-surface-elevated: #2e203e;
+      --bg-header: #1a1224;
+      
+      --purple-main: #604a8b;
+      --purple-glow: #8267b5;
+      --purple-dark: #0f0a15;
+      
+      --accent-contrast: #7dd3fc; /* Azul Gelo / Ciano Suave */
+      --accent-contrast-hover: #ffffff;
+      --accent-contrast-bg: rgba(125, 211, 252, 0.14);
+      
+      --dot-color: rgba(125, 211, 252, 0.07);
+      
+      --glitch-cyan: #ffffff;
+      --danger-pop: #7dd3fc;
+      --text-high: #ffffff;
+      --text-muted: #c7bcdb;
+      
+      --border-solid: #604a8b;
+      --shadow-color: #0c0812;
+      --sticker-bg: #7dd3fc;
+      --sticker-text: #150f1e;
+      --hazard-1: #7dd3fc;
+      --hazard-2: #22182e;
+      
+      --palette-name: "ORTHO + CIANO GELO (Roxo Uva + Azul Gelo)";
+    }
+
+    /* PALETA 5: ORTHO + CREME (Versao Anterior para comparacao) */
+    body[data-palette="ortho-cream"] {
+      --bg-canvas: #160f1e;
+      --bg-surface: #231830;
+      --bg-surface-elevated: #302043;
+      --bg-header: #1c1326;
+      
+      --purple-main: #604a8b;
+      --purple-glow: #7f64b1;
+      --purple-dark: #110b17;
+      
+      --accent-contrast: #fffbcc;
+      --accent-contrast-hover: #ffffff;
+      --accent-contrast-bg: rgba(255, 251, 204, 0.12);
+      
+      --dot-color: rgba(255, 251, 204, 0.08);
+      
+      --glitch-cyan: #7f64b1;
+      --danger-pop: #fffbcc;
+      --text-high: #ffffff;
+      --text-muted: #c7bcdb;
+      
+      --border-solid: #604a8b;
+      --shadow-color: #0c0812;
+      --sticker-bg: #fffbcc;
+      --sticker-text: #160f1e;
+      --hazard-1: #fffbcc;
+      --hazard-2: #231830;
+      
+      --palette-name: "ORTHO + CREME (Versao Anterior)";
     }
 
     /* ESTILOS GERAIS */
@@ -153,33 +205,22 @@
       position: relative;
     }
 
-    /* CANVAS DE BOLINHAS DINAMICAS EM FLUXO DIAGONAL (IDENTICO AO DA MESA) */
-    .bg-particles-canvas {
+    /* GRID DE BOLINHAS EM MOVIMENTO PARA CIMA (IDENTICO AO DA MESA VIRTUAL) */
+    .mesa-dots-backdrop {
       position: fixed;
-      top: 0;
-      left: 0;
+      inset: 0;
       width: 100vw;
       height: 100vh;
       pointer-events: none;
       z-index: 0;
+      background-image: radial-gradient(circle, var(--dot-color) 1px, transparent 1.2px);
+      background-size: 8px 8px;
+      animation: mesaDotsRise 4.5s linear infinite;
     }
 
-    /* OVERLAY CRT SCANLINES SUTIL */
-    .crt-scanlines {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(255,255,255,0),
-        rgba(255,255,255,0) 50%,
-        rgba(0, 0, 0, 0.2) 50%,
-        rgba(0, 0, 0, 0.2)
-      );
-      background-size: 100% 4px;
-      pointer-events: none;
-      z-index: 999;
-      opacity: 0.6;
-      display: block;
+    @keyframes mesaDotsRise {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 -56px; }
     }
 
     /* ============================================================
@@ -223,9 +264,7 @@
 
     /* O glitch atua RIGOROSAMENTE apenas em botoes no clique */
     button:active,
-    button.is-glitching,
-    .os-btn-dot:active,
-    .os-btn-dot.is-glitching {
+    button.is-glitching {
       animation: btnGlitchImpact 0.18s steps(2, start) forwards !important;
       position: relative;
     }
@@ -253,25 +292,23 @@
     }
 
     .palette-dock-badge {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 800;
-      padding: 4px 8px;
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
       background: var(--sticker-bg);
       color: var(--sticker-text);
       text-transform: uppercase;
-      letter-spacing: 0.08em;
       border: 1px solid #000;
       box-shadow: 2px 2px 0px #fff;
     }
 
     .palette-dock-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.88rem;
-      font-weight: 800;
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: 1.15rem;
       color: #ffffff;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
     }
 
     .palette-buttons-group {
@@ -281,10 +318,10 @@
     }
 
     .btn-palette-switch {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      font-weight: 800;
-      padding: 7px 13px;
+      font-family: 'Chinese Rocks', 'Space Grotesk', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      padding: 6px 14px;
       background: #111116;
       color: #ffffff;
       border: 2px solid #333340;
@@ -294,7 +331,7 @@
       box-shadow: 2px 2px 0px #000;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       user-select: none;
     }
 
@@ -343,7 +380,7 @@
       margin-bottom: 24px;
     }
 
-    /* HERO DA PAGINA - TITULO LIMPO E SOLIDO SEM GLITCH */
+    /* HERO DA PAGINA */
     .hero-banner {
       display: flex;
       flex-direction: column;
@@ -358,56 +395,30 @@
       gap: 10px;
     }
 
+    /* TAPE BADGE LIMPO COM FONTE CHINESE ROCKS: SEMPRE APENAS WUITALUR */
     .sticker-tape {
       display: inline-block;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.92rem;
-      font-weight: 900;
-      padding: 6px 14px;
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: 1.25rem;
+      letter-spacing: 0.08em;
+      padding: 5px 16px;
       background: var(--sticker-bg);
       color: var(--sticker-text);
       text-transform: uppercase;
-      letter-spacing: 0.1em;
       border: 2px solid #000000;
       box-shadow: 4px 4px 0px var(--shadow-color);
       transform: rotate(-1.5deg);
     }
 
-    .barcode-badge {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 700;
-      background: #000;
-      color: #fff;
-      border: 1px solid var(--accent-contrast);
-      padding: 4px 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 2px 2px 0px var(--accent-contrast);
-    }
-
-    .barcode-graphic {
-      letter-spacing: 2px;
-      font-weight: 900;
-      color: var(--accent-contrast);
-    }
-
-    /* TITULO MATRIZ DE ATRIBUTOS: LIMPO, SOLIDO, FORTE (SEM EFEITO DE GLITCH) */
+    /* TITULO LIMPO: APENAS "ATRIBUTOS" COM CHINESE ROCKS */
     .hero-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.4rem, 6vw, 4.4rem);
-      font-weight: 900;
-      line-height: 0.95;
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: clamp(3.5rem, 8vw, 6rem);
+      line-height: 0.9;
       text-transform: uppercase;
-      letter-spacing: -0.03em;
-      color: #ffffff;
-      text-shadow: 4px 4px 0px var(--purple-main);
-    }
-
-    .hero-title span {
+      letter-spacing: 0.05em;
       color: var(--accent-contrast);
-      text-shadow: 4px 4px 0px #000000;
+      text-shadow: 4px 4px 0px var(--purple-dark);
     }
 
     .hero-description {
@@ -421,10 +432,10 @@
       box-shadow: 3px 3px 0px #000000;
     }
 
-    /* PAINEL DE TESTE DE BOTOES (EXCLUSIVO PARA TESTAR GLITCH NOS BOTOES) */
+    /* PAINEL DE TESTE DE BOTOES */
     .glitch-lab-card {
-      background: #000000;
-      border: 3px solid var(--accent-contrast);
+      background: var(--bg-surface);
+      border: 3px solid var(--border-solid);
       box-shadow: 6px 6px 0px var(--shadow-color);
       padding: 20px;
       margin-bottom: 34px;
@@ -435,21 +446,21 @@
       position: absolute;
       top: -12px;
       left: 18px;
-      background: var(--accent-contrast);
-      color: #000000;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 900;
-      padding: 3px 10px;
+      background: var(--sticker-bg);
+      color: var(--sticker-text);
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      padding: 2px 12px;
       text-transform: uppercase;
-      border: 1px solid #fff;
+      border: 1px solid #000;
       box-shadow: 2px 2px 0px #000;
     }
 
     .glitch-lab-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.25rem;
-      font-weight: 900;
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.05em;
       color: #ffffff;
       text-transform: uppercase;
       margin-bottom: 8px;
@@ -470,39 +481,40 @@
     }
 
     .btn-glitch-action {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.82rem;
-      font-weight: 900;
-      padding: 10px 18px;
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.06em;
+      padding: 8px 20px;
       background: var(--purple-main);
       color: #ffffff;
       border: 2px solid var(--accent-contrast);
-      box-shadow: 4px 4px 0px #000000;
+      box-shadow: 4px 4px 0px var(--shadow-color);
       cursor: pointer;
       text-transform: uppercase;
-      transition: background 0.15s, border-color 0.15s;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
       user-select: none;
     }
 
     .btn-glitch-action:hover {
       background: var(--accent-contrast);
-      color: #000000;
+      color: var(--sticker-text);
       box-shadow: 4px 4px 0px #ffffff;
     }
 
     .btn-glitch-action.secondary {
-      background: #181126;
-      border-color: #554477;
+      background: var(--bg-surface-elevated);
+      border-color: var(--purple-main);
+      color: var(--text-high);
     }
 
     .btn-glitch-action.secondary:hover {
-      border-color: var(--glitch-cyan);
-      color: var(--glitch-cyan);
-      box-shadow: 4px 4px 0px var(--glitch-cyan);
+      border-color: var(--accent-contrast);
+      color: var(--accent-contrast);
+      box-shadow: 4px 4px 0px var(--accent-contrast);
     }
 
-    /* CARD DE JANELA NEO-BRUTALISTA (SEM GLITCH - TOTALMENTE SOLIDO) */
-    .os-window {
+    /* CARD DE DISTRIBUIÇÃO LIMPO */
+    .section-card {
       background: var(--bg-surface);
       border: 3px solid var(--border-solid);
       box-shadow: 6px 6px 0px var(--shadow-color);
@@ -510,54 +522,36 @@
       position: relative;
     }
 
-    .os-window-header {
+    .section-card-header {
       background: var(--bg-header);
       border-bottom: 2px solid var(--border-solid);
-      padding: 8px 14px;
+      padding: 12px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       user-select: none;
     }
 
-    .os-window-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      font-weight: 800;
+    .section-card-title {
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
       color: var(--accent-contrast);
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
 
-    .os-window-actions {
-      display: flex;
-      gap: 5px;
-    }
-
-    .os-btn-dot {
-      width: 14px;
-      height: 14px;
+    .section-card-badge {
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
+      background: var(--purple-main);
+      color: #ffffff;
+      text-transform: uppercase;
       border: 1px solid #000;
-      background: #2a253a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: monospace;
-      font-size: 9px;
-      font-weight: 800;
-      color: #fff;
-      cursor: pointer;
     }
 
-    .os-btn-dot.close {
-      background: var(--danger-pop);
-      color: #000;
-    }
-
-    .os-window-content {
+    .section-card-content {
       padding: 22px;
     }
 
@@ -570,10 +564,10 @@
 
     .dist-card {
       background: var(--bg-surface-elevated);
-      border: 2px solid #2d2640;
+      border: 2px solid rgba(255, 255, 255, 0.08);
       border-left: 4px solid var(--accent-contrast);
       padding: 14px;
-      box-shadow: 3px 3px 0px #000;
+      box-shadow: 3px 3px 0px var(--shadow-color);
       transition: transform 0.15s ease, border-color 0.15s ease;
     }
 
@@ -584,19 +578,18 @@
     }
 
     .dist-card-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 800;
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.06em;
       color: var(--accent-contrast);
       text-transform: uppercase;
-      letter-spacing: 0.08em;
       margin-bottom: 4px;
     }
 
     .dist-card-value {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.35rem;
-      font-weight: 900;
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.05em;
       color: #ffffff;
       margin-bottom: 6px;
     }
@@ -618,7 +611,7 @@
     .calc-card {
       background: var(--bg-surface);
       border: 2px solid var(--purple-main);
-      box-shadow: 5px 5px 0px #000;
+      box-shadow: 5px 5px 0px var(--shadow-color);
       padding: 20px;
       position: relative;
     }
@@ -632,10 +625,10 @@
       position: absolute;
       top: -12px;
       right: 14px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      font-weight: 800;
-      padding: 3px 9px;
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      padding: 2px 10px;
       background: var(--sticker-bg);
       color: var(--sticker-text);
       border: 2px solid #000;
@@ -644,9 +637,9 @@
     }
 
     .calc-card-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.4rem;
-      font-weight: 900;
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: 1.55rem;
+      letter-spacing: 0.05em;
       color: #ffffff;
       margin-bottom: 8px;
       text-transform: uppercase;
@@ -655,12 +648,12 @@
     .calc-formula-display {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.88rem;
-      background: #000000;
+      background: var(--bg-header);
       border: 1px solid var(--purple-main);
       padding: 10px 14px;
       margin: 12px 0;
       color: var(--accent-contrast);
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
       border-left: 4px solid var(--accent-contrast);
     }
 
@@ -676,9 +669,9 @@
 
     .calc-field-box label {
       display: block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      font-weight: 700;
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
       color: var(--text-muted);
       text-transform: uppercase;
       margin-bottom: 4px;
@@ -686,8 +679,8 @@
 
     .calc-field-box input {
       width: 100%;
-      background: #000000;
-      border: 2px solid #333045;
+      background: var(--bg-canvas);
+      border: 2px solid var(--purple-main);
       color: #ffffff;
       font-family: 'JetBrains Mono', monospace;
       font-size: 1.1rem;
@@ -703,7 +696,7 @@
 
     .calc-result-box {
       margin-top: 14px;
-      background: var(--purple-dark);
+      background: var(--bg-surface-elevated);
       border: 2px solid var(--purple-main);
       padding: 12px 16px;
       display: flex;
@@ -712,17 +705,17 @@
     }
 
     .calc-result-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      font-weight: 700;
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.06em;
       color: #ffffff;
       text-transform: uppercase;
     }
 
     .calc-result-val {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.6rem;
-      font-weight: 900;
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: 1.85rem;
+      letter-spacing: 0.05em;
       color: var(--accent-contrast);
     }
 
@@ -735,14 +728,13 @@
     }
 
     .section-title-tape {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.15rem;
-      font-weight: 900;
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: 1.35rem;
+      letter-spacing: 0.06em;
       background: var(--purple-main);
       color: #ffffff;
-      padding: 6px 16px;
+      padding: 6px 18px;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
       box-shadow: 4px 4px 0px #000000;
       transform: rotate(-1deg);
     }
@@ -761,8 +753,8 @@
 
     .attr-card-street {
       background: var(--bg-surface);
-      border: 2px solid #2a223a;
-      box-shadow: 5px 5px 0px #000000;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 5px 5px 0px var(--shadow-color);
       padding: 18px;
       position: relative;
       transition: all 0.2s ease;
@@ -787,31 +779,103 @@
     }
 
     .attr-sigla {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 800;
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
       color: var(--accent-contrast);
-      letter-spacing: 0.1em;
     }
 
     .attr-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.45rem;
-      font-weight: 900;
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: 1.7rem;
+      letter-spacing: 0.05em;
       color: #ffffff;
       text-transform: uppercase;
-      letter-spacing: -0.01em;
     }
 
     .attr-dice-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      font-weight: 800;
-      background: #000000;
-      color: var(--accent-contrast);
-      border: 1px solid var(--accent-contrast);
-      padding: 4px 10px;
-      box-shadow: 2px 2px 0px #000000;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #ffffff;
+      background: var(--bg-surface-elevated);
+      padding: 2px 10px 2px 28px;
+      border: 1.5px solid var(--purple-main);
+      box-shadow: 2px 2px 0px var(--shadow-color);
+      position: relative;
+      white-space: nowrap;
+      cursor: default;
+      transition: all 0.15s ease;
+      letter-spacing: 0.02em;
+      vertical-align: middle;
+    }
+    .attr-dice-badge::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 15px;
+      height: 15px;
+      background: url("assets/d20.svg") no-repeat center;
+      background-size: contain;
+      filter: brightness(1.2) drop-shadow(0 0 3px rgba(216, 180, 254, 0.6));
+      pointer-events: none;
+      transition: transform 0.15s ease;
+    }
+    .attr-dice-badge:hover {
+      border-color: #ffffff;
+      background: var(--bg-surface-elevated);
+      box-shadow: 3px 3px 0px var(--purple-glow);
+      transform: translateY(-1px);
+    }
+    .attr-dice-badge:hover::before {
+      transform: translateY(-50%) rotate(15deg) scale(1.1);
+      filter: brightness(1.4) drop-shadow(0 0 6px rgba(216, 180, 254, 0.9));
+    }
+
+    /* CORES DE ATRIBUTOS (CALIBRADAS PARA CONTRASTE ORTHO) */
+    .attr-saude, .attr-pv { color: #4ade80; font-weight: 700; text-shadow: 0 0 8px rgba(74, 222, 128, 0.22); }
+    .attr-re, .attr-rm { color: #38bdf8; font-weight: 700; text-shadow: 0 0 8px rgba(56, 189, 248, 0.22); }
+    .attr-rf, .attr-def { color: #ff5252; font-weight: 700; text-shadow: 0 0 8px rgba(255, 82, 82, 0.22); }
+    .attr-des, .attr-dex { color: #fb923c; font-weight: 700; text-shadow: 0 0 8px rgba(251, 146, 60, 0.22); }
+    .attr-fr { color: #f43f5e; font-weight: 700; text-shadow: 0 0 8px rgba(244, 63, 94, 0.22); }
+    .attr-int, .attr-intelecto { color: #c084fc; font-weight: 700; text-shadow: 0 0 8px rgba(192, 132, 252, 0.22); }
+    .attr-fama { color: #f472b6; font-weight: 700; text-shadow: 0 0 8px rgba(244, 114, 182, 0.22); }
+    .attr-sen { color: #facc15; font-weight: 700; text-shadow: 0 0 8px rgba(250, 204, 21, 0.22); }
+    .attr-ea { color: #22d3ee; font-weight: 700; text-shadow: 0 0 8px rgba(34, 211, 238, 0.22); }
+    .attr-san { color: #a78bfa; font-weight: 700; text-shadow: 0 0 8px rgba(167, 139, 250, 0.22); }
+
+    /* ELEMENTOS */
+    .elem-solar { color: #fbbf24; font-weight: 700; text-shadow: 0 0 8px rgba(251, 191, 36, 0.28); }
+    .elem-podridao { color: #ef4444; font-weight: 700; text-shadow: 0 0 8px rgba(239, 68, 68, 0.28); }
+    .elem-praga { color: #a855f7; font-weight: 700; text-shadow: 0 0 8px rgba(168, 85, 247, 0.28); }
+    .elem-sagrado { color: #fde047; font-weight: 700; text-shadow: 0 0 8px rgba(253, 224, 71, 0.28); }
+    .elem-electro { color: #00f0ff; font-weight: 700; text-shadow: 0 0 8px rgba(0, 240, 255, 0.32); }
+    .elem-nulidrico { color: #fb7185; font-weight: 700; text-shadow: 0 0 8px rgba(251, 113, 133, 0.28); }
+    .elem-pesadelo { color: #ea580c; font-weight: 700; text-shadow: 0 0 8px rgba(234, 88, 12, 0.28); }
+    .elem-estase { color: #60a5fa; font-weight: 700; text-shadow: 0 0 8px rgba(96, 165, 250, 0.28); }
+
+    /* COSMO GLITCH SHIFT */
+    .attr-cosmo {
+      background: linear-gradient(90deg, #d946ef, #818cf8, #d946ef);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      animation: cosmoShift 3s infinite linear;
+      position: relative;
+    }
+    @keyframes cosmoShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .attr-card-body {
@@ -830,13 +894,13 @@
     }
 
     .p-chip {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.75rem;
       font-weight: 700;
-      background: #000000;
+      background: var(--bg-surface-elevated);
       color: #e2e8f0;
       padding: 3px 8px;
-      border: 1px solid #332d48;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .p-chip.accent {
@@ -847,7 +911,7 @@
     /* FOOTER DE FEEDBACK */
     .feedback-box {
       margin-top: 48px;
-      background: #000000;
+      background: var(--bg-surface);
       border: 3px dashed var(--accent-contrast);
       padding: 24px;
       box-shadow: 6px 6px 0px var(--shadow-color);
@@ -857,9 +921,9 @@
     }
 
     .feedback-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.3rem;
-      font-weight: 900;
+      font-family: 'Chinese Rocks', sans-serif;
+      font-size: 1.55rem;
+      letter-spacing: 0.05em;
       color: var(--accent-contrast);
       text-transform: uppercase;
     }
@@ -871,40 +935,42 @@
     }
   </style>
 </head>
-<body data-palette="punk">
+<body data-palette="ortho-white">
 
-  <!-- CANVAS DE BOLINHAS EM FLUXO DIAGONAL (IDENTICO A MESA VIRTUAL) -->
-  <canvas id="bg-particles-canvas" class="bg-particles-canvas"></canvas>
-
-  <!-- OVERLAY CRT SCANLINES SUTIL -->
-  <div class="crt-scanlines" id="scanlines-layer"></div>
+  <!-- GRID DE BOLINHAS EM MOVIMENTO PARA CIMA (IDENTICO AO DA MESA VIRTUAL) -->
+  <div class="mesa-dots-backdrop"></div>
 
   <!-- BARRA DE TROCA DE PALETAS INTERATIVA NO TOPO -->
   <header class="palette-dock">
     <div class="palette-dock-info">
-      <span class="palette-dock-badge">Tokyo Punk</span>
-      <span class="palette-dock-title" id="active-palette-title">3. TOKYO PUNK (Roxo Profundo + Hot Pink)</span>
+      <span class="palette-dock-badge">WUITALUR</span>
+      <span class="palette-dock-title" id="active-palette-title">ORTHO + BRANCO PURO (Roxo Uva + Branco Gelo)</span>
     </div>
 
     <div class="palette-buttons-group">
-      <button class="btn-palette-switch active" onclick="setPalette('punk', this)">
-        <span class="color-indicator" style="background: #ff007f;"></span>
-        Tokyo Punk (Ativo)
+      <button class="btn-palette-switch active" onclick="setPalette('ortho-white', this)">
+        <span class="color-indicator" style="background: #ffffff; border-color: #604a8b;"></span>
+        Ortho + Branco Puro
       </button>
 
-      <button class="btn-palette-switch" onclick="setPalette('toxic', this)">
-        <span class="color-indicator" style="background: #4ade80;"></span>
-        Toxic Breakcore
+      <button class="btn-palette-switch" onclick="setPalette('ortho-lilac', this)">
+        <span class="color-indicator" style="background: #d8b4fe; border-color: #604a8b;"></span>
+        Ortho + Lilas
       </button>
 
-      <button class="btn-palette-switch" onclick="setPalette('street', this)">
-        <span class="color-indicator" style="background: #ff6600;"></span>
-        Street Y2K
+      <button class="btn-palette-switch" onclick="setPalette('ortho-pink', this)">
+        <span class="color-indicator" style="background: #f092c7; border-color: #604a8b;"></span>
+        Ortho + Rosa
       </button>
 
-      <button class="btn-palette-switch" onclick="setPalette('terminal', this)">
-        <span class="color-indicator" style="background: #ffe600;"></span>
-        Glitch Terminal
+      <button class="btn-palette-switch" onclick="setPalette('ortho-cyan', this)">
+        <span class="color-indicator" style="background: #7dd3fc; border-color: #604a8b;"></span>
+        Ortho + Ciano Gelo
+      </button>
+
+      <button class="btn-palette-switch" onclick="setPalette('ortho-cream', this)">
+        <span class="color-indicator" style="background: #fffbcc; border-color: #604a8b;"></span>
+        Ortho + Creme (Anterior)
       </button>
     </div>
   </header>
@@ -914,20 +980,15 @@
     <!-- FAIXA ZEBRADA DE AVISO (HAZARD TAPE) -->
     <div class="hazard-stripe"></div>
 
-    <!-- HERO INTRODUTÓRIO (TITULO SOLIDO, LIMPO, SEM GLITCH) -->
+    <!-- HERO INTRODUTÓRIO -->
     <section class="hero-banner">
       <div class="hero-stickers-row">
-        <div class="sticker-tape">WUITALUR // TOKYO PUNK</div>
-        <div class="barcode-badge">
-          <span class="barcode-graphic">||||| ||| |||||||</span>
-          <span>REG: ATTR_MATRIX</span>
-        </div>
+        <!-- SEMPRE APENAS WUITALUR -->
+        <div class="sticker-tape">WUITALUR</div>
       </div>
 
-      <!-- TITULO SOLIDO E LIMPO -->
-      <h1 class="hero-title">
-        MATRIZ DE <span>ATRIBUTOS</span>
-      </h1>
+      <!-- TITULO LIMPO: APENAS "ATRIBUTOS" -->
+      <h1 class="hero-title">ATRIBUTOS</h1>
 
       <p class="hero-description">
         Os atributos governam tudo o que seu personagem é e faz no mundo: rolagens de acerto, sobrevivência visceral, velocidade de esquiva, poder de impacto e estabilidade cósmica. Zero fórmulas burocráticas, alto contraste na mesa.
@@ -936,19 +997,15 @@
 
     <!-- PAINEL DE TESTE DE BOTOES (EXCLUSIVO PARA TESTAR GLITCH NOS BOTOES) -->
     <section class="glitch-lab-card">
-      <div class="glitch-lab-badge">TESTE DE GLITCH</div>
-      <h2 class="glitch-lab-title">Efeito Glitch Estritamente nos Botões</h2>
+      <div class="glitch-lab-badge">TESTE DE BOTÃO</div>
+      <h2 class="glitch-lab-title">Efeito Glitch Exclusivo nos Botões</h2>
       <p class="glitch-lab-desc">
-        O efeito de corte e deslocamento RGB agora ocorre <strong>exclusivamente ao clicar em botões</strong>. Os cards, textos, títulos e caixas permanecem 100% sólidos, firmes e legíveis.
+        O efeito de corte e deslocamento ocorre estritamente ao clicar em botões. Todos os títulos, caixas e textos permanecem sólidos, limpos e sem interferência.
       </p>
 
       <div class="glitch-lab-actions">
         <button type="button" class="btn-glitch-action" onclick="triggerBtnGlitch(this)">
-          Disparar Glitch no Botão
-        </button>
-
-        <button type="button" class="btn-glitch-action secondary" onclick="toggleScanlines(this)">
-          Alternar Scanlines CRT
+          Testar Glitch no Botão
         </button>
 
         <button type="button" class="btn-glitch-action secondary" onclick="triggerBtnGlitch(this)">
@@ -957,21 +1014,14 @@
       </div>
     </section>
 
-    <!-- JANELA DE SISTEMA: REGRAS DE DISTRIBUIÇÃO (CARDS SOLIDOS) -->
-    <section class="os-window">
-      <div class="os-window-header">
-        <div class="os-window-title">
-          <span>[SYS_CONFIG]</span>
-          <span>DISTRIBUICAO_PONTOS.EXE</span>
-        </div>
-        <div class="os-window-actions">
-          <button type="button" class="os-btn-dot">-</button>
-          <button type="button" class="os-btn-dot">[ ]</button>
-          <button type="button" class="os-btn-dot close">X</button>
-        </div>
+    <!-- DISTRIBUIÇÃO DE ATRIBUTOS -->
+    <section class="section-card">
+      <div class="section-card-header">
+        <h2 class="section-card-title">Distribuição de Atributos</h2>
+        <span class="section-card-badge">Regras de Criação</span>
       </div>
 
-      <div class="os-window-content">
+      <div class="section-card-content">
         <div class="dist-grid">
           <div class="dist-card">
             <div class="dist-card-label">Nível Base</div>
@@ -1006,18 +1056,18 @@
       </div>
     </section>
 
-    <!-- CALCULADORAS TÁTICAS: RF E RE (SOLIDAS) -->
+    <!-- CALCULADORAS TÁTICAS: RF E RE -->
     <section class="split-two-cols">
       <!-- RESISTÊNCIA FÍSICA -->
-      <div class="calc-card highlight">
+      <div class="calc-card highlight" style="border-left: 5px solid #ff5252;">
         <div class="calc-card-badge">DEFESA FÍSICA</div>
-        <h3 class="calc-card-title">Resistência Física (RF)</h3>
+        <h3 class="calc-card-title"><span class="attr-rf">Resistência Física (RF)</span></h3>
         <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.5;">
-          Define a robustez corporal contra pancadas e perfurações. Teste ativo: <strong>1d20 + RF</strong>.
+          Define a robustez corporal contra pancadas e perfurações. Teste ativo: <span class="attr-dice-badge">1d20 + RF</span>.
         </p>
 
         <div class="calc-formula-display">
-          DEF = (RF × (PVs^0.6)) / 6
+          DEF = (<span class="attr-rf">RF</span> · (<span class="attr-pv">PVs</span><sup>0.6</sup>)) / 6
         </div>
 
         <div class="calc-inputs-row">
@@ -1038,15 +1088,15 @@
       </div>
 
       <!-- RESISTÊNCIA ELEMENTAL -->
-      <div class="calc-card">
-        <div class="calc-card-badge">DEFESA EXTRA</div>
-        <h3 class="calc-card-title">Resistência Elemental (RE)</h3>
+      <div class="calc-card" style="border-left: 5px solid #38bdf8;">
+        <div class="calc-card-badge">DEFESA ELEMENTAL</div>
+        <h3 class="calc-card-title"><span class="attr-re">Resistência Elemental (RE)</span></h3>
         <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.5;">
-          Força da Energia Astral contra Electro, Praga, Solar e Nulídrico. Teste: <strong>1d20 + RE</strong>.
+          Força da <span class="attr-ea">Energia Astral</span> contra <span class="elem-electro">Electro</span>, <span class="elem-praga">Praga</span>, <span class="elem-solar">Solar</span> e <span class="elem-nulidrico">Nulídrico</span>. Teste ativo: <span class="attr-dice-badge">1d20 + RE</span>.
         </p>
 
         <div class="calc-formula-display">
-          DEFe = (RE × (PVs^0.5)) / 8 + DEF
+          DEFe = (<span class="attr-re">RE</span> · (<span class="attr-pv">PVs</span><sup>0.5</sup>)) / 8 + DEF
         </div>
 
         <div class="calc-inputs-row">
@@ -1067,25 +1117,25 @@
       </div>
     </section>
 
-    <!-- GRADE DOS DEMAIS ATRIBUTOS (SOLIDAS) -->
+    <!-- GRADE DOS DEMAIS ATRIBUTOS -->
     <div class="section-headline">
       <div class="section-title-tape">ESPECIFICAÇÕES DOS ATRIBUTOS</div>
       <div class="section-title-line"></div>
     </div>
 
-    <section class="attributes-grid">
+        <section class="attributes-grid">
       
       <!-- FORÇA -->
-      <article class="attr-card-street">
+      <article class="attr-card-street" style="border-left: 4px solid #f43f5e;">
         <div class="attr-card-top">
           <div class="attr-card-name-group">
             <span class="attr-sigla">ATTR // 01</span>
-            <h4 class="attr-name">Força (FOR)</h4>
+            <h4 class="attr-name"><span class="attr-fr">Força (FOR)</span></h4>
           </div>
           <span class="attr-dice-badge">1d20 + FOR</span>
         </div>
         <p class="attr-card-body">
-          Potência muscular pura, capacidade de carga e dano em ataques corpo a corpo com armas pesadas de impacto ou corte.
+          Potência muscular pura, capacidade de carga bruta e dano físico corporal. Utilizado para testes de <span class="attr-fr">Força</span> e cálculo de <span class="attr-rf">RF</span>.
         </p>
         <div class="attr-pericias-tag">
           <span class="p-chip accent">Atletismo</span>
@@ -1095,16 +1145,16 @@
       </article>
 
       <!-- DESTREZA -->
-      <article class="attr-card-street">
+      <article class="attr-card-street" style="border-left: 4px solid #fb923c;">
         <div class="attr-card-top">
           <div class="attr-card-name-group">
             <span class="attr-sigla">ATTR // 02</span>
-            <h4 class="attr-name">Destreza (DES)</h4>
+            <h4 class="attr-name"><span class="attr-des">Destreza (DES)</span></h4>
           </div>
           <span class="attr-dice-badge">1d20 + DES</span>
         </div>
         <p class="attr-card-body">
-          Reflexos, agilidade de fuga, precisão em disparos de projéteis e capacidade tática de desviar de ataques recebidos.
+          Reflexos rápidos, agilidade de fuga, precisão em disparos e capacidade tática de realizar testes de esquiva (<span class="attr-des">DES</span>).
         </p>
         <div class="attr-pericias-tag">
           <span class="p-chip accent">Acrobacia</span>
@@ -1114,16 +1164,16 @@
       </article>
 
       <!-- SAÚDE -->
-      <article class="attr-card-street">
+      <article class="attr-card-street" style="border-left: 4px solid #4ade80;">
         <div class="attr-card-top">
           <div class="attr-card-name-group">
             <span class="attr-sigla">ATTR // 03</span>
-            <h4 class="attr-name">Saúde (SAU)</h4>
+            <h4 class="attr-name"><span class="attr-saude">Saúde (SAU)</span></h4>
           </div>
           <span class="attr-dice-badge">1d20 + SAU</span>
         </div>
         <p class="attr-card-body">
-          Vitalidade biológica do organismo. Define os Pontos de Vida (PVs) iniciais, recuperação de ferimentos e resistência a venenos.
+          Vitalidade biológica do organismo. Define a reserva de <span class="attr-pv">Pontos de Vida (PVs)</span> iniciais, recuperação celular e resistência a toxinas.
         </p>
         <div class="attr-pericias-tag">
           <span class="p-chip accent">Fortitude</span>
@@ -1133,16 +1183,16 @@
       </article>
 
       <!-- INTELECTO -->
-      <article class="attr-card-street">
+      <article class="attr-card-street" style="border-left: 4px solid #c084fc;">
         <div class="attr-card-top">
           <div class="attr-card-name-group">
             <span class="attr-sigla">ATTR // 04</span>
-            <h4 class="attr-name">Intelecto (INT)</h4>
+            <h4 class="attr-name"><span class="attr-int">Intelecto (INT)</span></h4>
           </div>
           <span class="attr-dice-badge">1d20 + INT</span>
         </div>
         <p class="attr-card-body">
-          Capacidade analítica, conhecimentos arcanos, compreensão da tecnologia e decifração de mistérios de Paladium.
+          Capacidade analítica, conhecimentos arcanos de <span class="attr-ea">Energia Astral</span>, decifração de mistérios e perícia científica em Paladium.
         </p>
         <div class="attr-pericias-tag">
           <span class="p-chip accent">Investigação</span>
@@ -1152,16 +1202,16 @@
       </article>
 
       <!-- SENTIDOS -->
-      <article class="attr-card-street">
+      <article class="attr-card-street" style="border-left: 4px solid #facc15;">
         <div class="attr-card-top">
           <div class="attr-card-name-group">
             <span class="attr-sigla">ATTR // 05</span>
-            <h4 class="attr-name">Sentidos (SEN)</h4>
+            <h4 class="attr-name"><span class="attr-sen">Sentidos (SEN)</span></h4>
           </div>
           <span class="attr-dice-badge">1d20 + SEN</span>
         </div>
         <p class="attr-card-body">
-          Acuidade visual e auditiva, instinto para notar emboscadas, leitura de intenções em criaturas e intuição pura.
+          Acuidade visual e auditiva, percepção ambiental, notar emboscadas e intuição. <strong>Inicia com bônus permanente de +3.</strong>
         </p>
         <div class="attr-pericias-tag">
           <span class="p-chip accent">Percepção</span>
@@ -1171,16 +1221,16 @@
       </article>
 
       <!-- COSMO -->
-      <article class="attr-card-street">
+      <article class="attr-card-street" style="border-left: 4px solid #d946ef; grid-column: 1 / -1;">
         <div class="attr-card-top">
           <div class="attr-card-name-group">
             <span class="attr-sigla">ATTR // 06</span>
-            <h4 class="attr-name">Cosmo (COS)</h4>
+            <h4 class="attr-name"><span class="attr-cosmo" data-text="Cosmo (COS)">Cosmo (COS)</span></h4>
           </div>
           <span class="attr-dice-badge">1d20 + COS</span>
         </div>
         <p class="attr-card-body">
-          Sintonia com a Energia Astral primordial, manipulação de selos sagrados e manifestação de anomalias dimensionais.
+          Sintonia com a <span class="attr-ea">Energia Astral</span> primordial, manipulação de selos sagrados e estabilidade de <span class="attr-san">Sanidade (SAN)</span>. Valor exclusivo do Mestre medido em %.
         </p>
         <div class="attr-pericias-tag">
           <span class="p-chip accent">Canalização</span>
@@ -1193,131 +1243,20 @@
 
     <!-- BOX DE CONTROLE DE DECISÃO -->
     <div class="feedback-box">
-      <div class="feedback-title">Ajustes Aplicados</div>
+      <div class="feedback-title">Variações da Paleta Ortho (Sem o Creme)</div>
       <p class="feedback-desc">
-        1. Fundo com partículas/bolinhas dinâmicas em fluxo diagonal idêntico ao motor da Mesa Virtual, com cores ajustadas para Tokyo Punk (magenta e roxo vivo).<br>
-        2. Título "MATRIZ DE ATRIBUTOS" totalmente limpo, sólido e sem efeito de glitch.<br>
-        3. Efeito glitch ativo estritamente no clique de botões. Os cards e caixas mantêm estabilidade total.
+        1. <strong>Ortho + Branco Puro</strong>: Mantém a profundidade do roxo Ortho (#604a8b / #150f1e), trocando o tom amarelado pelo branco puro (#ffffff). Contraste cirúrgico e nítido.<br>
+        2. <strong>Ortho + Lilás / Lavanda</strong>: Substitui o creme por um lilás claro elétrico (#d8b4fe). Estética monocromática sem cansar a visão.<br>
+        3. <strong>Ortho + Rosa Stilza</strong>: A base roxa do Ortho com o rosa mangá (#f092c7) e textos em branco.<br>
+        4. <strong>Ortho + Ciano Gelo</strong>: Roxo uva profundo com azul gelo suave (#7dd3fc).<br>
+        5. <strong>Ortho + Creme (Anterior)</strong>: Mantido para você comparar diretamente com o creme amarelado anterior.<br>
+        6. Nenhum commit realizado (tudo estritamente local).
       </p>
     </div>
 
   </div>
 
   <script>
-    // ============================================================
-    // MOTOR DE BOLINHAS DINAMICAS EM FLUXO DIAGONAL (MOTOR DA MESA)
-    // ============================================================
-    const BgParticlesEngine = {
-      canvas: null,
-      ctx: null,
-      width: 0,
-      height: 0,
-      particles: [],
-      active: false,
-      palette: 'punk',
-
-      colors: {
-        punk: ['255, 0, 127', '147, 51, 234', '217, 70, 239'],
-        toxic: ['74, 222, 128', '139, 36, 245', '168, 85, 247'],
-        street: ['255, 102, 0', '124, 58, 237', '0, 229, 255'],
-        terminal: ['255, 230, 0', '147, 51, 234', '234, 88, 12']
-      },
-
-      init() {
-        this.canvas = document.getElementById('bg-particles-canvas');
-        if (!this.canvas) return;
-        this.ctx = this.canvas.getContext('2d');
-        this.resize();
-        window.addEventListener('resize', () => this.resize());
-        this.spawnParticles();
-        this.start();
-      },
-
-      resize() {
-        this.width = this.canvas.width = window.innerWidth;
-        this.height = this.canvas.height = window.innerHeight;
-      },
-
-      setPalette(name) {
-        this.palette = name;
-        const currentColors = this.colors[name] || this.colors.punk;
-        this.particles.forEach(p => {
-          p.color = currentColors[Math.floor(Math.random() * currentColors.length)];
-        });
-      },
-
-      createParticle(initial = false) {
-        let x, y;
-        if (initial) {
-          x = Math.random() * (this.width * 0.7);
-          y = this.height - (Math.random() * (this.height * 0.8));
-        } else {
-          if (Math.random() > 0.5) {
-            x = Math.random() * (this.width * 0.5);
-            y = this.height + 15;
-          } else {
-            x = -15;
-            y = this.height - (Math.random() * (this.height * 0.65));
-          }
-        }
-
-        const speed = Math.random() * 1.4 + 0.8;
-        const currentColors = this.colors[this.palette] || this.colors.punk;
-        const color = currentColors[Math.floor(Math.random() * currentColors.length)];
-
-        return {
-          x,
-          y,
-          radius: Math.random() * 6.5 + 2.5,
-          vx: speed,
-          vy: -speed * (Math.random() * 0.35 + 0.8),
-          baseAlpha: Math.random() * 0.35 + 0.15,
-          color
-        };
-      },
-
-      spawnParticles() {
-        this.particles = [];
-        const count = 55;
-        for (let i = 0; i < count; i++) {
-          this.particles.push(this.createParticle(true));
-        }
-      },
-
-      start() {
-        this.active = true;
-        this.loop();
-      },
-
-      loop() {
-        if (!this.active) return;
-        this.ctx.clearRect(0, 0, this.width, this.height);
-
-        for (let i = 0; i < this.particles.length; i++) {
-          let p = this.particles[i];
-          p.x += p.vx;
-          p.y += p.vy;
-
-          const distFromOrigin = Math.sqrt(p.x * p.x + (this.height - p.y) * (this.height - p.y));
-          const maxDist = Math.max(this.width, this.height) * 0.8;
-          let fade = 1 - Math.min(distFromOrigin / maxDist, 1);
-
-          if (fade > 0.05) {
-            this.ctx.beginPath();
-            this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            this.ctx.fillStyle = `rgba(${p.color}, ${p.baseAlpha * fade})`;
-            this.ctx.fill();
-          }
-
-          if (p.x > this.width * 0.85 || p.y < -20 || fade <= 0.05) {
-            this.particles[i] = this.createParticle(false);
-          }
-        }
-
-        requestAnimationFrame(() => this.loop());
-      }
-    };
-
     // ============================================================
     // CONTROLES DE PALETA E CALCULADORAS
     // ============================================================
@@ -1330,15 +1269,13 @@
 
       const titleEl = document.getElementById('active-palette-title');
       const paletteTitles = {
-        'punk': '3. TOKYO PUNK (Roxo Profundo + Hot Pink)',
-        'toxic': '1. TOXIC BREAKCORE (Roxo Eletrico + Verde Acido)',
-        'street': '2. STREET Y2K (Roxo Noturno + Laranja Neon)',
-        'terminal': '4. GLITCH TERMINAL (Roxo + Amarelo Alerta)'
+        'ortho-white': 'DARK ORIGINAL (Preto Grafite #0D0D12 + Roxo #7C3AED)',
+        'ortho-lilac': 'ORTHO + LILÁS (Roxo Uva + Lavanda)',
+        'ortho-pink': 'ORTHO + ROSA (Roxo Uva + Rosa Manga)',
+        'ortho-cyan': 'ORTHO + CIANO GELO (Roxo Uva + Azul Gelo)',
+        'ortho-cream': 'ORTHO + CREME (Versão Anterior com Amarelado)'
       };
       if (titleEl) titleEl.textContent = paletteTitles[name] || name;
-
-      // Sincroniza cores das particulas de fundo
-      BgParticlesEngine.setPalette(name);
     }
 
     function updateCalculators() {
@@ -1361,21 +1298,9 @@
       setTimeout(() => btn.classList.remove('is-glitching'), 200);
     }
 
-    function toggleScanlines(btn) {
-      const scanlines = document.getElementById('scanlines-layer');
-      if (!scanlines) return;
-      if (scanlines.style.display === 'none') {
-        scanlines.style.display = 'block';
-        btn.textContent = 'Scanlines: Ativadas';
-      } else {
-        scanlines.style.display = 'none';
-        btn.textContent = 'Scanlines: Desativadas';
-      }
-    }
-
-    // LISTENER GLOBAL EXCLUSIVO PARA O CLIQUE EM ELEMENTOS <button> OU .os-btn-dot
+    // LISTENER GLOBAL EXCLUSIVO PARA O CLIQUE EM ELEMENTOS <button>
     document.addEventListener('click', (e) => {
-      const btn = e.target.closest('button, .os-btn-dot');
+      const btn = e.target.closest('button');
       if (btn) {
         btn.classList.remove('is-glitching');
         void btn.offsetWidth; // Reinicia reflow da animacao
@@ -1387,7 +1312,6 @@
     });
 
     document.addEventListener('DOMContentLoaded', () => {
-      BgParticlesEngine.init();
       updateCalculators();
     });
   </script>

@@ -119,7 +119,7 @@ body.has-showcase .quick-jump-float {
 .showcase-hamburger-btn {
   background: #1e153a;
   border: 2px solid #000000;
-  border-left: 4px solid var(--accent, #7c3aed);
+  border-left: 4px solid var(--accent, #7C3AED);
   color: #ffffff;
   font-family: var(--font-heading);
   font-size: 0.92rem;
@@ -197,7 +197,7 @@ body.has-showcase .quick-jump-float {
   width: 3px;
 }
 .showcase-topic-tabs::-webkit-scrollbar-thumb {
-  background: var(--accent, #7c3aed);
+  background: var(--accent, #7C3AED);
 }
 
 .showcase-tab-btn {
@@ -229,7 +229,7 @@ body.has-showcase .quick-jump-float {
 .showcase-tab-btn.active {
   background: rgba(124, 58, 237, 0.22);
   color: #ffffff;
-  border-left-color: var(--accent, #7c3aed);
+  border-left-color: var(--accent, #7C3AED);
   border-color: rgba(124, 58, 237, 0.45);
   font-weight: 600;
   box-shadow: 2px 2px 0 #000000;
@@ -471,7 +471,7 @@ body.has-showcase .quick-jump-float {
   background: rgba(0, 0, 0, 0.35);
 }
 .showcase-topic-content::-webkit-scrollbar-thumb {
-  background: var(--accent, #7c3aed);
+  background: var(--accent, #7C3AED);
   box-shadow: 1px 1px 0 #000000;
 }
 
@@ -778,7 +778,7 @@ body.has-showcase .quick-jump-float {
   width: 380px;
   max-width: 90vw;
   background: #0d0c16;
-  border-right: 2px solid var(--accent, #7c3aed);
+  border-right: 2px solid var(--accent, #7C3AED);
   box-shadow: 12px 0 45px rgba(0, 0, 0, 0.95);
   z-index: 210;
   display: flex;
@@ -841,7 +841,7 @@ body.has-showcase .quick-jump-float {
   outline: none;
 }
 .showcase-drawer-input:focus {
-  border-color: var(--accent, #7c3aed);
+  border-color: var(--accent, #7C3AED);
 }
 
 .showcase-drawer-list {
@@ -868,15 +868,15 @@ body.has-showcase .quick-jump-float {
 
 .showcase-drawer-item:hover {
   background: var(--bg-hover);
-  border-left-color: var(--accent, #7c3aed);
+  border-left-color: var(--accent, #7C3AED);
   transform: translateX(4px);
   box-shadow: 2px 2px 0 #000000;
 }
 
 .showcase-drawer-item.active {
   background: rgba(124, 58, 237, 0.18);
-  border-left-color: var(--accent, #7c3aed);
-  border-color: var(--accent, #7c3aed);
+  border-left-color: var(--accent, #7C3AED);
+  border-color: var(--accent, #7C3AED);
 }
 
 .showcase-drawer-name {

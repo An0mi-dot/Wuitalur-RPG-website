@@ -6,6 +6,433 @@
 
 const BOLETINS_DATA = [
   {
+    id: "edicao-04",
+    numero: 4,
+    edicao: "Edição #4",
+    epoca: "Outubro 2026",
+    data: "24 de Outubro de 2026",
+    dataIso: "2026-10-24",
+    titulo: "A Grande Reformulação das Raças 2.0",
+    subtitulo: "Fim do inchaço de habilidades na ficha, os 3 Pilares das raças e a volta oficial do d20.",
+    autor: "Mestre",
+    tempoLeitura: "6 min",
+    resumo: "Passei uma limpa geral nas raças do sistema. Chega de ficha com 10 habilidades ativas competindo com classe: agora toda raça segue a regra de 3 Pilares com mecânica própria e foco imediato.",
+    tags: ["Sistema 2.0", "Raças", "Dados"],
+    conteudoHtml: `<section class="boletim-section">
+        <h3 class="boletim-section-title">A limpa geral nas raças</h3>
+        <p class="boletim-lead">
+          Seguindo as atualizações da Edição 2.0, decidi mexer num ponto que tava me incomodando bastante: o excesso de coisa acumulada nas raças.
+        </p>
+        <p>
+          Na versão 1.5, você pegava uma raça e vinha aquele monte de 8 a 10 habilidades ativas e passivas na ficha. Na hora do combate ninguém lembrava de tudo, ficava um tempão relendo texto pequeno e a raça acabava chamando mais atenção do que a própria classe do personagem.
+        </p>
+        <p>
+          Pra 2.0 resolvi enxugar tudo e padronizar as raças em <strong>3 pilares simples</strong>:
+        </p>
+
+        <!-- OS 3 PILARES SIMPLIFICADOS -->
+        <div class="boletim-pillars-grid">
+          <div class="boletim-pillar-card pilar-status">
+            <span class="boletim-pillar-num">PILAR 1</span>
+            <h4 class="boletim-pillar-title">Status de Raça</h4>
+            <p class="boletim-pillar-desc">
+              Resistências, fraquezas elementais, tipo de visão e perícias nativas. Coisas passivas que você só anota e não precisa ficar gerenciando em combate.
+            </p>
+          </div>
+
+          <div class="boletim-pillar-card pilar-mecanica">
+            <span class="boletim-pillar-num">PILAR 2</span>
+            <h4 class="boletim-pillar-title">Mecânica de Raça</h4>
+            <p class="boletim-pillar-desc">
+              A regra própria que muda como o personagem joga e sobrevive no combate (o chassi dos E.X.O.s, a estabilidade dos Espectros, as vinhas dos Abissais, o sangue dos Vampiros).
+            </p>
+          </div>
+
+          <div class="boletim-pillar-card pilar-caracteristica">
+            <span class="boletim-pillar-num">PILAR 3</span>
+            <h4 class="boletim-pillar-title">Característica de Raça</h4>
+            <p class="boletim-pillar-desc">
+              Só uma habilidade marcante pro personagem usar na mesa e pronto, sem dez regrinhas pra decorar.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">A volta do d20 (desisti do d12)</h3>
+        <p class="boletim-lead">
+          Outra coisa que mudei de ideia: quem lembra que eu tava querendo testar o sistema em 1d12 pode esquecer, desisti dessa ideia.
+        </p>
+        <p>
+          Testando na mesa deu pra ver que o d12 dava uma sensação estranha de número quebrado e tirava aquele peso dramático que a gente gosta na hora de rolar o dado. Então voltamos oficialmente pro clássico d20.
+        </p>
+        <p>
+          A diferença é que agora o d20 tá limpo daquela maionese matemática de antes:
+        </p>
+        <ul class="boletim-list">
+          <li><strong>Sem bônus gigantescos:</strong> Sem umas soma meio grande dms de dois dígitos tipo +8 ou valores grandes na ficha. Os atributos agora operam numa escala bem mais contida: [+3, +2, +1, +1, 0].</li>
+          <li><strong>Sem conta chata:</strong> Teste comum é só <span class="dice">1d20 + Atributo</span> e fechou.</li>
+          <li><strong>Perícia com vantagem:</strong> Quem é treinado numa perícia agora joga <span class="dice">2d20</span> e escolhe o maior.</li>
+        </ul>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">Nova interface do site e ilustrações</h3>
+        <div class="boletim-callout highlight-gold">
+          <p>
+            Aproveitando o embalo, dei uma polida geral na interface aqui do site. Eu não tava curtindo muito o visual de antes, tava meio poluído, então voltei pra uma base escura mais limpa e direta.
+          </p>
+          <p>
+            As páginas de <strong>Classes</strong> e <strong>Raças</strong> já tão com essa interface nova rodando. Além disso, pretendo criar ilustrações novas tanto pras raças quanto pras classes pra combinar certinho com o estilo do site. Vai levar um tempo, mas vou fazer com calma.
+          </p>
+        </div>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">As 11 Raças da Edição 2.0</h3>
+        <p>
+          Deixei tudo detalhado aqui raça por raça pra vocês darem uma olhada:
+        </p>
+
+        <!-- 1. AKIVUS -->
+        <div class="boletim-race-card">
+          <div class="boletim-race-header">
+            <h4 class="boletim-race-name">1. Akivus</h4>
+          </div>
+          <div class="boletim-race-content">
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-status">Status</span>
+              <p>Treino nativo na perícia Sobrevivência. Resistência natural contra dano <span class="elem-sagrado">Sagrado</span> e Gélido. Fraqueza contra dano de <span class="elem-podridao">Podridão</span>.</p>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-mecanica">Mecânica</span>
+              <div>
+                <p><strong>Manifestação de Vinhas:</strong> Em locais com vegetação favorável, cria e manipula vinhas em até 5B de alcance para:</p>
+                <ul class="boletim-list" style="margin: 6px 0 0 16px;">
+                  <li>Interagir com objetos à distância.</li>
+                  <li>Agarrar um alvo em alcance.</li>
+                  <li>Desferir ataques à distância causando <span class="dice">1d6</span> de dano.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-habilidade">Característica</span>
+              <p><strong>Passos Silenciosos:</strong> Move-se sem emitir som ao caminhar sobre solo ou vegetação. Recebe vantagem em testes de Furtividade ao se deslocar por ambientes naturais.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. ANIMALESCOS -->
+        <div class="boletim-race-card">
+          <div class="boletim-race-header">
+            <h4 class="boletim-race-name">2. Animalescos</h4>
+          </div>
+          <div class="boletim-race-content">
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-status">Status</span>
+              <p>Treino nativo na perícia Percepção. Fraqueza contra dano Sonoro.</p>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-mecanica">Mecânica</span>
+              <p><strong>Postura Animalesca:</strong> Altera sua postura física para a locomoção instintiva de sua espécie animal. Seu deslocamento aumenta em +3B e recebe vantagem ao Desviar enquanto se desloca nessa postura. Seus membros motores ficam totalmente dedicados à locomoção, impedindo empunhar armas, usar escudos ou manipular itens até retornar à postura padrão.</p>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-habilidade">Característica</span>
+              <p><strong>Ataque Predatório:</strong> Seus ataques desarmados utilizam garras, presas ou chifres, causando <span class="dice">+1d6</span> de dano adicional ao dano base de ataque desarmado.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. PLANTÍFEROS -->
+        <div class="boletim-race-card">
+          <div class="boletim-race-header">
+            <h4 class="boletim-race-name">3. Plantíferos</h4>
+          </div>
+          <div class="boletim-race-content">
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-status">Status</span>
+              <p>Treino nativo na perícia Medicina. Fraqueza contra dano <span class="elem-solar">Solar</span> e dano de <span class="elem-podridao">Podridão</span>.</p>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-mecanica">Mecânica</span>
+              <p><strong>Comunicação Botânica:</strong> Pode se comunicar e sentir estímulos através de plantas e árvores próximas. Tocar a vegetação local permite coletar informações simples sobre criaturas que passaram pela área recentemente ou alterações no ambiente.</p>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-habilidade">Característica</span>
+              <p><strong>Bulbo de Pólen:</strong> Arremessa um bulbo floral em um ponto a até 6B que explode em uma nuvem de pólen de 4B de raio. Alvos dentro da área devem passar em um teste de Vigor ou sofrem desvantagem em suas ações até o final do próximo turno deles.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. HUMANOS -->
+        <div class="boletim-race-card">
+          <div class="boletim-race-header">
+            <h4 class="boletim-race-name">4. Humanos</h4>
+          </div>
+          <div class="boletim-race-content">
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-status">Status</span>
+              <p>Escolhe +1 perícia treinada extra na criação do personagem. Fraqueza contra dano de <span class="elem-pesadelo">Pesadelo</span>.</p>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-mecanica">Mecânica</span>
+              <p><strong>Adrenalina Sob Pressão:</strong> Quando sua Vida estiver abaixo de 25% do valor total, o Humano recebe vantagem em todos os testes de Força e Destreza até o final da cena.</p>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-habilidade">Característica</span>
+              <p><strong>Determinação Implacável:</strong> Ao chegar a 0 PV por um ataque, pode realizar um teste de Vigor. Se tiver sucesso, não cai inconsciente e permanece de pé com 1 PV. Pode ser usado uma vez por cena de combate.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. VAMPIROS -->
+        <div class="boletim-race-card">
+          <div class="boletim-race-header">
+            <h4 class="boletim-race-name">5. Vampiros</h4>
+          </div>
+          <div class="boletim-race-content">
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-status">Status</span>
+              <p>Visão no escuro em até 18B. Resistência contra dano de <span class="elem-pesadelo">Pesadelo</span>. Fraqueza contra dano de <span class="elem-praga">Praga</span> e dano <span class="elem-solar">Solar</span>.</p>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-mecanica">Mecânica</span>
+              <div>
+                <p><strong>Reserva de Sangue:</strong> Ao causar dano cortante ou perfurante em um alvo com sangue, acumula até 3 Cargas de Sangue. Pode gastar 1 Carga para:</p>
+                <ul class="boletim-list" style="margin: 6px 0 0 16px;">
+                  <li>Restaurar <span class="dice">1d6 + Vigor</span> em PV.</li>
+                  <li>Fazer com que o próximo ataque cause <em>Dano Real</em> (ignora armadura e qualquer resistência do inimigo).</li>
+                  <li>Receber vantagem ao Desviar de um ataque nesta rodada.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-habilidade">Característica</span>
+              <p><strong>Mordida Vampírica:</strong> Desfere um ataque com presas contra um alvo agarrado, caído ou desprevenido. Causa dano base de ataque desarmado + <span class="dice">1d6</span> de perfuração, recupera PV igual ao dano causado e gera automaticamente 1 Carga de Sangue.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. DRAGÃO ANÃO -->
+        <div class="boletim-race-card">
+          <div class="boletim-race-header">
+            <h4 class="boletim-race-name">6. Dragão Anão</h4>
+          </div>
+          <div class="boletim-race-content">
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-status">Status</span>
+              <p>Vantagem em testes de Mente para resistir a efeitos mentais e confusão. Resistência contra o elemento escolhido para o sopro na criação: <span class="elem-solar">Solar</span>, <span class="elem-estase">Estase</span> ou <span class="elem-podridao">Podridão</span>.</p>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-mecanica">Mecânica</span>
+              <p><strong>Mimetismo de Escamas:</strong> As escamas mudam de tom e textura conforme a superfície onde se apoia. Pode tentar se ocultar com Furtividade mesmo sem cobertura total caso esteja encostado em paredes ou superfícies sólidas. Após desferir um ataque corpo a corpo ou usar o sopro, pode se deslocar até 3B imediatamente.</p>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-habilidade">Característica</span>
+              <p><strong>Sopro Ancestral:</strong> Na criação do personagem, escolhe o tipo elemental do sopro: Solar, Estase ou Podridão. Expele um cone frontal de 3B de energia elemental do tipo escolhido. Alvos na área sofrem <span class="dice">2d8</span> de dano elemental direto do tipo correspondente.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. INSECTÓIDES -->
+        <div class="boletim-race-card">
+          <div class="boletim-race-header">
+            <h4 class="boletim-race-name">7. Insectóides</h4>
+          </div>
+          <div class="boletim-race-content">
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-status">Status</span>
+              <p>Treino nativo na perícia Intimidação. Fraqueza contra dano <span class="elem-solar">Solar</span> e dano Gélido. Sensibilidade a luzes ofuscantes diretas.</p>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-mecanica">Mecânica</span>
+              <div>
+                <p><strong>Vínculo de Mutação:</strong> Na criação, escolhe um elemento de vínculo: <span class="elem-podridao">Podridão</span>, <span class="elem-nulidrico">Nulídrico</span> ou <span class="elem-pesadelo">Pesadelo</span>. Ao acertar um ataque em combate, acumula até 3 Cargas de Peçonha. Pode gastar 1 Carga para aplicar o efeito do elemento no próximo golpe:</p>
+                <ul class="boletim-list" style="margin: 6px 0 0 16px;">
+                  <li><em>Podridão:</em> Reduz a DEF do alvo em 2 pontos até o final da rodada.</li>
+                  <li><em>Nulídrico:</em> Reduz o deslocamento do alvo pela metade até o final da rodada.</li>
+                  <li><em>Pesadelo:</em> Causa <span class="dice">1d6</span> de dano mental direto e impede o alvo de usar reações nesta rodada.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-habilidade">Característica</span>
+              <p><strong>Fisiologia Quitinosa:</strong> Concede +2 de DEF natural permanente. Consegue escalar superfícies verticais e tetos com velocidade normal de deslocamento sem necessidade de testes.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8. PRAGUENTOS -->
+        <div class="boletim-race-card">
+          <div class="boletim-race-header">
+            <h4 class="boletim-race-name">8. Praguentos</h4>
+          </div>
+          <div class="boletim-race-content">
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-status">Status</span>
+              <p>Imunidade contra dano de <span class="elem-podridao">Podridão</span>. Resistência contra dano de <span class="elem-praga">Praga</span>. Fraqueza contra dano <span class="elem-solar">Solar</span> e dano Gélido.</p>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-mecanica">Mecânica</span>
+              <div>
+                <p><strong>Biomassa de Lodo:</strong> Possui 3 Cargas de Lodo por cena ou descanso. Pode gastar 1 Carga para:</p>
+                <ul class="boletim-list" style="margin: 6px 0 0 16px;">
+                  <li>Moldar instantaneamente uma ferramenta simples ou arma corpo a corpo de lodo na sua mão.</li>
+                  <li>Esticar seus membros para desferir um ataque corpo a corpo ou agarrar um alvo a até 3B de distância.</li>
+                  <li>Destacar uma gota de lodo do próprio corpo e controlá-la para atravessar frestas estreitas e fechaduras a até 10B. A gota não enxerga nem ouve, mas transmite sensações de tato e vibrações do ambiente diretamente ao Praguento.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-habilidade">Característica</span>
+              <p><strong>Ejeção Cáustica:</strong> Dispara uma golfada de lodo viscoso e fervente em um alvo a até 5B. Causa <span class="dice">2d6</span> de dano de Podridão e o alvo tem seu deslocamento reduzido pela metade até o início do seu próximo turno.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 9. ABISSAIS -->
+        <div class="boletim-race-card">
+          <div class="boletim-race-header">
+            <h4 class="boletim-race-name">9. Abissais</h4>
+          </div>
+          <div class="boletim-race-content">
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-status">Status</span>
+              <p>Visão no escuro total em ambientes subterrâneos. Imunidade contra dano de <span class="elem-praga">Praga</span>. Resistência contra dano Solar, Gélido e Pesadelo. Fraqueza contra dano de <span class="elem-podridao">Podridão</span> e desvantagem em Percepção sob luz solar direta.</p>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-mecanica">Mecânica</span>
+              <div>
+                <p><strong>Fome de Vinhas (Gamble de 1d6):</strong> Consome filamentos de Praga para alterar seu organismo em combate. Possui 3 Vinhas de Praga por cena. Ao engolir 1 vinha com uma ação rápida, rola 1d6 para definir a mutação até o fim da cena:</p>
+                
+                <div class="boletim-table-wrapper" style="margin: 10px 0 4px;">
+                  <table class="boletim-table" style="min-width: 100%;">
+                    <thead>
+                      <tr>
+                        <th style="width: 15%;">Dado</th>
+                        <th style="width: 35%;">Mutação</th>
+                        <th style="width: 50%;">Efeito</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><span class="dice">1</span></td>
+                        <td><strong style="color: #ef4444;">1 (Negativo) — Rejeição Biológica</strong></td>
+                        <td>Sofre <span class="dice">1d6</span> de dano e perde 2B de deslocamento.</td>
+                      </tr>
+                      <tr>
+                        <td><span class="dice">2</span></td>
+                        <td><strong style="color: #ef4444;">2 (Negativo) — Sobrecarga Sensorial</strong></td>
+                        <td>Sofre desvantagem em testes de Mente e Percepção.</td>
+                      </tr>
+                      <tr>
+                        <td><span class="dice">3</span></td>
+                        <td><strong style="color: #4ade80;">3 (Positivo) — Carapaça Espinhosa</strong></td>
+                        <td>O tecido corporal endurece, concedendo +2 de DEF.</td>
+                      </tr>
+                      <tr>
+                        <td><span class="dice">4</span></td>
+                        <td><strong style="color: #4ade80;">4 (Positivo) — Surto Motor</strong></td>
+                        <td>Concede +3B de deslocamento e vantagem em testes de Destreza.</td>
+                      </tr>
+                      <tr>
+                        <td><span class="dice">5</span></td>
+                        <td><strong style="color: #4ade80;">5 (Positivo) — Secreção Tóxica</strong></td>
+                        <td>Seus ataques corpo a corpo causam <span class="dice">+1d6</span> adicional de dano de Praga.</td>
+                      </tr>
+                      <tr>
+                        <td><span class="dice">6</span></td>
+                        <td><strong style="color: #38bdf8;">6 (Positivo) — Bioluminescência Máxima</strong></td>
+                        <td>Antenas pulsam luz em 6B, concedendo vantagem para ataques de aliados nessa área e curando <span class="dice">1d8</span> de PV do Abissal.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-habilidade">Característica</span>
+              <p><strong>Frequência Perturbadora:</strong> Projeta ruídos ensurdecedores e sussurros telepáticos na mente de um alvo a até 6B. O alvo deve passar em um teste de Mente ou fica atordoado, incapaz de agir no próximo turno dele.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 10. E.X.O.s -->
+        <div class="boletim-race-card">
+          <div class="boletim-race-header">
+            <h4 class="boletim-race-name">10. E.X.O.s</h4>
+          </div>
+          <div class="boletim-race-content">
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-status">Status</span>
+              <p>Imunidade contra dano de Fogo, <span class="elem-praga">Praga</span>, Sangramento e Envenenamento. Fraqueza contra dano de <span class="elem-podridao">Podridão</span> e dano <span class="elem-nulidrico">Nulídrico</span>.</p>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-mecanica">Mecânica</span>
+              <div>
+                <p><strong>Fisiologia Mecânica & Núcleo Everact:</strong></p>
+                <ul class="boletim-list" style="margin: 6px 0 0 16px;">
+                  <li><strong>Pontos de Chassi (PC):</strong> Não possui Vida comum. Poções medicinais, primeiros socorros e a perícia Medicina falham automaticamente nele. Para repará-lo ou estabilizá-lo ao cair para 0 PCs, é obrigatório utilizar o teste da perícia <em>Ofício (Mente)</em>.</li>
+                  <li><strong>Autorreparo de Campo:</strong> Uma vez por cena de combate, gasta uma ação rápida para canalizar solda interna, restaurando <span class="dice">2d8 + Mente</span> em PCs. Além disso, a cada rodada, recupera <span class="dice">2d6 + Vigor</span> em PCs.</li>
+                  <li><strong>Sobrecarga de Overclock:</strong> Sempre que estiver com menos de 25% de seus PCs totais, o núcleo entra em sobreaquecimento contínuo. Concede +2 de DEF e <span class="dice">+1d8</span> de dano adicional em todos os seus ataques até o final do combate.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-habilidade">Característica</span>
+              <p><strong>Prensa Hidráulica:</strong> Avança contra um alvo adjacente travando os atuadores de alta pressão de seus braços. Rola um teste de Força contra a Força ou Destreza do alvo. Se vencer, o alvo fica Imobilizado e sofre automaticamente <span class="dice">2d6 + Força</span> de dano de esmagamento no início de cada um dos turnos dele enquanto estiver preso.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 11. ESPECTROS -->
+        <div class="boletim-race-card">
+          <div class="boletim-race-header">
+            <h4 class="boletim-race-name">11. Espect@&%s</h4>
+          </div>
+          <div class="boletim-race-content">
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-status">Status</span>
+              <p>Fraqueza contra dano <span class="elem-sagrado">Sagrado</span> e dano <span class="elem-solar">Solar</span>. Desvantagem permanente em testes de Expressão com seres biológicos.</p>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-mecanica">Mecânica</span>
+              <div>
+                <p><strong>Estabilidade Cósmica & Vínculo de Anomalia:</strong></p>
+                <ul class="boletim-list" style="margin: 6px 0 0 16px;">
+                  <li><strong>Definição da Estabilidade:</strong> Sua vitalidade inicial é calculada como 10 + Mente (ganha +4 + Mente por nível subsequente). Não possui teto máximo de Estabilidade e não recebe cura biológica externa comum.</li>
+                  <li><strong>Instabilidade Crítica (Salvaguarda da Morte):</strong> Ao chegar a 0 de Estabilidade, entra em colapso existencial. Nenhum aliado pode estabilizá-lo. O Espectro realiza seus próprios testes de salvaguarda no início de cada turno: É apagado da realidade apenas se acumular <strong>4 falhas</strong> (em vez das 3 comuns). Tirar 19 ou 20 natural no d20 estabiliza sua existência imediatamente, retornando com 1 de Estabilidade.</li>
+                  <li><strong>Vínculo de Anomalia:</strong> Na criação, escolhe o tipo de erro cósmico de sua anomalia:
+                    <ul style="margin-top: 4px; padding-left: 18px;">
+                      <li><em>Blink:</em> Ao finalizar um ataque, pode realizar imediatamente um disparo de energia negativa contra um alvo a até 3B, causando Mented6 de dano.</li>
+                      <li><em>Desbordamento:</em> Suas ações que causam dano emitem ruído estático que sobrecarrega a mente do alvo, causando <span class="dice">1d6</span> de dano mental adicional.</li>
+                      <li><em>Corrupção:</em> Ao acertar um golpe corpo a corpo, drena energia do alvo e recupera <span class="dice">1d4</span> de Estabilidade própria.</li>
+                      <li><em>Tela Azul:</em> Uma vez por combate, ao sofrer um ataque, força o atacante a travar em pane motora, fazendo-o perder o restante do turno dele.</li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="boletim-race-row">
+              <span class="boletim-race-pill p-habilidade">Característica</span>
+              <p><strong>Deslocamento de Quadros (Frame Drop):</strong> O Espectro perde quadros de animação na realidade e se teletransporta instantaneamente para um espaço visível desocupado a até 4B de distância, atravessando grades e obstáculos físicos sem provocar contra-ataques.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">Considerações</h3>
+        <p>
+          A ideia central foi essa: tirar a gordura das fichas e deixar cada espécie com uma pegada bem própria. Agora quando você escolhe uma raça, já sabe exatamente o que ela faz na mesa sem precisar de um manual do lado.
+        </p>
+        <p>
+          Deem uma olhada aí e qualquer coisa comentem no grupo o que acharam. Depois eu trago mais novidades das classes.
+        </p>
+      </section>`
+  },
+
+  {
     id: "edicao-03",
     numero: 3,
     edicao: "Edição #3",

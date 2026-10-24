@@ -29,7 +29,7 @@
       display: block;
     }
     .char-select-card:hover {
-      border-color: var(--accent, #7C3AED);
+      border-color: var(--accent, var(--purple-main, #7C3AED));
       box-shadow: 0 8px 32px rgba(124, 58, 237, 0.15);
       transform: translateY(-3px);
     }
@@ -40,7 +40,7 @@
       left: 0;
       right: 0;
       height: 4px;
-      background: var(--accent, #7C3AED);
+      background: var(--accent, var(--purple-main, #7C3AED));
       opacity: 0;
       transition: opacity var(--transition-base);
     }
@@ -72,7 +72,7 @@
     .char-select-avatar svg {
       width: 32px;
       height: 32px;
-      color: var(--accent, #7C3AED);
+      color: var(--accent, var(--purple-main, #7C3AED));
       opacity: 0.6;
     }
     .char-select-info {

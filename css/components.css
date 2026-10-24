@@ -577,7 +577,7 @@
 .difficulty-3 { background: rgba(255, 149, 0, 0.15); color: #ff9500; border: 1px solid rgba(255, 149, 0, 0.3); }
 .difficulty-4 { background: rgba(255, 31, 31, 0.15); color: #ff1f1f; border: 1px solid rgba(255, 31, 31, 0.3); }
 .difficulty-5 { background: rgba(180, 0, 0, 0.2); color: #e60000; border: 1px solid rgba(180, 0, 0, 0.4); }
-.difficulty-6 { background: rgba(180, 0, 200, 0.2); color: #cc00ff; border: 1px solid rgba(180, 0, 200, 0.4); text-shadow: 0 0 12px #cc00ff; }
+.difficulty-6 { background: rgba(180, 0, 200, 0.2); color: #cc00ff; border: 1px solid rgba(180, 0, 200, 0.4); }
 .difficulty-locked { background: rgba(107, 107, 123, 0.15); color: var(--text-muted); border: 1px solid rgba(107, 107, 123, 0.3); }
 
 /* === WIKI PAGE === */
@@ -1567,51 +1567,120 @@
 /* ============================================================
    ESTILOS GROSSEIROS V2: CARDS, BOTÕES E ANIMAÇÕES
    ============================================================ */
-.per-card, .attr-card, .race-card, .class-card, .home-card, .cond-card, .equip-card, .selo-card, .conclave-card {
+/* CARDS BRUTALISTAS ORTHO */
+body:not(.mesa-body) .per-card,
+body:not(.mesa-body) .attr-card,
+body:not(.mesa-body) .race-card,
+body:not(.mesa-body) .class-card,
+body:not(.mesa-body) .home-card,
+body:not(.mesa-body) .cond-card,
+body:not(.mesa-body) .equip-card,
+body:not(.mesa-body) .selo-card,
+body:not(.mesa-body) .conclave-card {
   border-radius: 0 !important;
-  background: #13121c !important;
+  background: var(--bg-surface) !important;
   border: 2px solid #000000 !important;
   box-shadow: 4px 4px 0px #000000 !important;
   transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.18s ease, border-color 0.18s ease !important;
 }
 
-.per-card:hover, .attr-card:hover, .race-card:hover, .class-card:hover, .home-card:hover, .equip-card:hover, .selo-card:hover, .cond-card:hover, .conclave-card:hover {
+body:not(.mesa-body) .per-card:hover,
+body:not(.mesa-body) .attr-card:hover,
+body:not(.mesa-body) .race-card:hover,
+body:not(.mesa-body) .class-card:hover,
+body:not(.mesa-body) .home-card:hover,
+body:not(.mesa-body) .equip-card:hover,
+body:not(.mesa-body) .selo-card:hover,
+body:not(.mesa-body) .cond-card:hover,
+body:not(.mesa-body) .conclave-card:hover {
   transform: translate(-3px, -3px) !important;
-  box-shadow: 7px 7px 0px #000000 !important;
-  border-color: var(--accent) !important;
-  background: #1a1926 !important;
+  box-shadow: 6px 6px 0px #000000 !important;
+  border-color: #000000 !important;
+  background: var(--bg-elevated) !important;
 }
 
-button, .btn, .wiki-btn, .home-card-btn, input[type="submit"], input[type="button"] {
+/* MOTOR DE GLITCH EXCLUSIVO PARA O CLIQUE DE BOTOES */
+@keyframes btnGlitchImpact {
+  0% {
+    transform: translate(0, 0) skewX(0);
+    filter: none;
+    clip-path: none;
+  }
+  18% {
+    transform: translate(-4px, 2px) skewX(-7deg);
+    box-shadow: -5px 0px 0px var(--purple-glow, #8B5CF6), 5px 0px 0px var(--accent-contrast, #ffffff);
+    filter: contrast(1.7) hue-rotate(40deg);
+    clip-path: polygon(0 15%, 100% 15%, 100% 45%, 0 45%);
+  }
+  38% {
+    transform: translate(4px, -2px) skewX(6deg);
+    box-shadow: 4px -2px 0px var(--purple-glow, #8B5CF6), -4px 2px 0px var(--accent-contrast, #ffffff);
+    clip-path: polygon(0 60%, 100% 60%, 100% 85%, 0 85%);
+  }
+  60% {
+    transform: translate(-2px, -1px) skewX(-3deg);
+    box-shadow: -3px 2px 0px #ffffff, 3px -1px 0px var(--accent-contrast, #ffffff);
+    clip-path: polygon(0 25%, 100% 25%, 100% 55%, 0 55%);
+  }
+  80% {
+    transform: translate(2px, 1px) skewX(1deg);
+    box-shadow: 2px 0px 0px var(--purple-glow, #8B5CF6);
+    clip-path: none;
+  }
+  100% {
+    transform: translate(0, 0) skewX(0);
+    filter: none;
+    clip-path: none;
+  }
+}
+
+body:not(.mesa-body) button:not(.boletim-nav-arrow-btn):not(.boletim-mobile-toggle-btn),
+body:not(.mesa-body) .btn:not(.boletim-nav-arrow-btn),
+body:not(.mesa-body) .wiki-btn,
+body:not(.mesa-body) .home-card-btn,
+body:not(.mesa-body) input[type="submit"],
+body:not(.mesa-body) input[type="button"] {
   border-radius: 0 !important;
   font-family: var(--font-heading) !important;
-  font-size: 0.92rem;
-  font-weight: 700;
+  font-size: 0.95rem;
+  font-weight: normal !important;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  border: 2px solid #000000 !important;
-  box-shadow: 4px 4px 0px #000000 !important;
-  transform: rotate(-0.8deg);
+  background: var(--purple-main) !important;
+  color: #ffffff !important;
+  border: 2px solid var(--accent-contrast) !important;
+  box-shadow: 4px 4px 0px var(--shadow-color) !important;
   cursor: pointer;
-  transition: all 0.14s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: all 0.15s ease;
+  user-select: none;
 }
 
-button:hover, .btn:hover, .wiki-btn:hover {
-  transform: rotate(1deg) translate(-2px, -2px);
-  box-shadow: 6px 6px 0px #000000, 0 0 14px rgba(124, 58, 237, 0.5) !important;
-  border-color: #000000 !important;
+body:not(.mesa-body) button:not(.boletim-nav-arrow-btn):not(.boletim-mobile-toggle-btn):hover,
+body:not(.mesa-body) .btn:not(.boletim-nav-arrow-btn):hover,
+body:not(.mesa-body) .wiki-btn:hover,
+body:not(.mesa-body) .home-card-btn:hover {
+  background: var(--accent-contrast) !important;
+  color: var(--sticker-text) !important;
+  box-shadow: 5px 5px 0px var(--purple-glow) !important;
+  border-color: #ffffff !important;
 }
 
-button:active, .btn:active, .wiki-btn:active {
-  transform: translate(4px, 4px) rotate(0deg);
-  box-shadow: 0px 0px 0px #000000 !important;
+body:not(.mesa-body) button:not(.boletim-nav-arrow-btn):not(.boletim-mobile-toggle-btn):active,
+body:not(.mesa-body) .btn:not(.boletim-nav-arrow-btn):active,
+body:not(.mesa-body) .wiki-btn:active,
+body:not(.mesa-body) .home-card-btn:active,
+body:not(.mesa-body) .home-cta-btn:active,
+body:not(.mesa-body) input[type="submit"]:active,
+body:not(.mesa-body) input[type="button"]:active {
+  animation: btnGlitchImpact 0.18s steps(2, start) forwards !important;
+  position: relative;
 }
 
 .wiki-dropdown {
   border-radius: 0 !important;
   border: 2px solid #000000 !important;
   box-shadow: 6px 6px 0px #000000 !important;
-  background: #13121c !important;
+  background: var(--bg-surface) !important;
   animation: nanquimTearUnfold 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
@@ -1637,7 +1706,7 @@ button:active, .btn:active, .wiki-btn:active {
 }
 
 .per-search-input {
-  background: #09080d;
+  background: var(--bg-primary); border: 2px solid var(--border-accent);
   border: 2px solid var(--border-subtle);
   color: #ffffff;
   font-family: var(--font-heading);
@@ -1699,20 +1768,30 @@ h1, h2, h3, h4, h5, h6,
 .sidebar-link,
 .v2-topic-banner,
 .ribbon-topic,
-button, .btn, .wiki-btn, .home-card h3 {
+body:not(.mesa-body) button,
+body:not(.mesa-body) .btn,
+body:not(.mesa-body) .wiki-btn,
+body:not(.mesa-body) .home-card h3 {
   font-family: var(--font-heading) !important;
   font-weight: normal !important;
   letter-spacing: 0.05em;
 }
 
-body, p, li, td, th, label, input, textarea,
-.per-card p,
-.attr-card-body p,
-.race-card-body p,
-.class-desc,
-.callout p,
-.v2-skill-desc,
-.v2-lead-box p {
+body:not(.mesa-body),
+body:not(.mesa-body) p,
+body:not(.mesa-body) li,
+body:not(.mesa-body) td,
+body:not(.mesa-body) th,
+body:not(.mesa-body) label,
+body:not(.mesa-body) input,
+body:not(.mesa-body) textarea,
+body:not(.mesa-body) .per-card p,
+body:not(.mesa-body) .attr-card-body p,
+body:not(.mesa-body) .race-card-body p,
+body:not(.mesa-body) .class-desc,
+body:not(.mesa-body) .callout p,
+body:not(.mesa-body) .v2-skill-desc,
+body:not(.mesa-body) .v2-lead-box p {
   font-family: var(--font-body) !important;
   font-weight: 400 !important;
   letter-spacing: normal !important;
@@ -1727,7 +1806,7 @@ body, p, li, td, th, label, input, textarea,
 /* Tópico Torto Universal */
 .topic-crooked, .v2-topic-banner {
   display: inline-block;
-  background: var(--accent, #7c3aed);
+  background: var(--accent, #7C3AED);
   color: #ffffff !important;
   font-family: var(--font-heading) !important;
   font-size: 1.35rem;
@@ -1737,7 +1816,8 @@ body, p, li, td, th, label, input, textarea,
   padding: 8px 22px;
   transform: rotate(-1.6deg);
   clip-path: polygon(2% 0%, 98% 2%, 100% 97%, 0% 100%);
-  box-shadow: 4px 4px 0px #000000;
+  box-shadow: 4px 4px 0px var(--shadow-color);
+  border: 2px solid var(--accent-contrast);
   border-radius: 0;
   margin-bottom: 20px;
   position: relative;
@@ -1746,7 +1826,7 @@ body, p, li, td, th, label, input, textarea,
 }
 .topic-crooked:hover, .v2-topic-banner:hover {
   transform: rotate(0deg) scale(1.02);
-  box-shadow: 6px 6px 0px #000000;
+  box-shadow: 6px 6px 0px var(--accent-contrast);
 }
 .topic-crooked.yellow, .v2-topic-banner.yellow {
   background: #f59e0b;
@@ -1762,10 +1842,10 @@ body, p, li, td, th, label, input, textarea,
   position: sticky;
   top: 0;
   z-index: 40;
-  background: rgba(13, 12, 19, 0.95);
+  background: rgba(18, 18, 26, 0.95);
   backdrop-filter: blur(10px);
-  border: 2px solid #000000;
-  border-bottom: 3px solid var(--accent, #7c3aed);
+  border: 2px solid var(--border-accent);
+  border-bottom: 3px solid var(--border-accent);
   padding: 10px 14px;
   margin-bottom: var(--space-xl);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
@@ -1793,7 +1873,7 @@ body, p, li, td, th, label, input, textarea,
 }
 
 .tactical-chip {
-  background: #181724;
+  background: var(--bg-surface-elevated);
   border: 1px solid var(--border-medium);
   color: var(--text-secondary);
   font-family: var(--font-heading);
@@ -1821,14 +1901,14 @@ body, p, li, td, th, label, input, textarea,
   box-shadow: 0 0 0 #000000;
 }
 .tactical-chip.active {
-  background: var(--accent, #7c3aed);
+  background: var(--accent, #7C3AED);
   color: #ffffff !important;
   border-color: #ffffff;
   box-shadow: 2px 2px 0 #000;
 }
 
 .tactical-search {
-  background: #09080d;
+  background: var(--bg-primary); border: 2px solid var(--border-accent);
   border: 1px solid var(--border-medium);
   color: #ffffff;
   font-family: var(--font-body);
@@ -1850,8 +1930,8 @@ body, p, li, td, th, label, input, textarea,
   bottom: 24px;
   right: 24px;
   z-index: 90;
-  background: #13121c;
-  border: 2px solid var(--accent, #7c3aed);
+  background: var(--bg-surface);
+  border: 2px solid var(--accent, #7C3AED);
   color: #ffffff;
   font-family: var(--font-heading);
   font-size: 0.78rem;
@@ -1867,7 +1947,7 @@ body, p, li, td, th, label, input, textarea,
   gap: 6px;
 }
 .quick-jump-float:hover {
-  background: var(--accent, #7c3aed);
+  background: var(--accent, #7C3AED);
   transform: translateY(-3px);
   box-shadow: 6px 6px 0 #000000;
 }
@@ -1880,9 +1960,9 @@ body, p, li, td, th, label, input, textarea,
   margin: var(--space-xl) 0 var(--space-2xl);
 }
 .hud-stat-item {
-  background: #13121c;
+  background: var(--bg-surface);
   border: 2px solid #000000;
-  border-top: 3px solid var(--accent, #7c3aed);
+  border-top: 3px solid var(--purple-glow);
   padding: 12px 14px;
   text-align: center;
   box-shadow: 3px 3px 0 #000000;
@@ -1909,7 +1989,7 @@ body, p, li, td, th, label, input, textarea,
 
 /* Home Feature Card (Boletim / Destaques) */
 .home-feature-card {
-  background: #111018;
+  background: #16161E;
   border: 2px solid #000000;
   border-left: 6px solid #f59e0b;
   padding: var(--space-xl);
@@ -1924,6 +2004,8 @@ body, p, li, td, th, label, input, textarea,
 }
 .home-feature-card:hover {
   transform: translateY(-3px);
+  border-color: #000000;
+  border-left-color: #f59e0b;
   box-shadow: 6px 6px 0 #000000;
 }
 .home-feature-badge {
@@ -1960,15 +2042,16 @@ body, p, li, td, th, label, input, textarea,
 
 /* Tactical HUD Cards (Raças, Origens, Classes) */
 .hud-card {
-  background: #13121c;
+  background: var(--bg-surface);
   border: 2px solid #000000;
   padding: var(--space-xl);
   margin-bottom: var(--space-xl);
-  box-shadow: 4px 4px 0 #000000;
+  box-shadow: 4px 4px 0px var(--shadow-color);
   position: relative;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .hud-card:hover {
+  border-color: #000000;
   box-shadow: 6px 6px 0 #000000;
 }
 .hud-card-header {
@@ -2030,7 +2113,7 @@ body, p, li, td, th, label, input, textarea,
   }
 }
 .race-frame {
-  background: #09080d;
+  background: var(--bg-primary); border: 2px solid var(--border-accent);
   border: 2px solid #000000;
   padding: 8px;
   box-shadow: 3px 3px 0 #000000;
@@ -2066,7 +2149,7 @@ body, p, li, td, th, label, input, textarea,
 .race-ability-item {
   background: #181724;
   border: 1px solid var(--border-subtle);
-  border-left: 3px solid var(--accent, #7c3aed);
+  border-left: 3px solid var(--accent, #7C3AED);
   padding: 10px 14px;
 }
 .race-ability-item h5 {
@@ -2090,10 +2173,10 @@ body, p, li, td, th, label, input, textarea,
   margin-bottom: var(--space-2xl);
 }
 .attr-card-unified {
-  background: #13121c;
+  background: var(--bg-surface);
   border: 2px solid #000000;
   border-left: 5px solid var(--card-accent, var(--accent));
-  box-shadow: 4px 4px 0 #000000;
+  box-shadow: 4px 4px 0px var(--shadow-color);
   padding: var(--space-lg);
   display: flex;
   flex-direction: column;
@@ -2102,6 +2185,8 @@ body, p, li, td, th, label, input, textarea,
 }
 .attr-card-unified:hover {
   transform: translateY(-2px);
+  border-color: #000000;
+  border-left-color: var(--card-accent, var(--accent));
   box-shadow: 6px 6px 0 #000000;
 }
 .attr-card-unified .attr-card-header {
@@ -2118,7 +2203,7 @@ body, p, li, td, th, label, input, textarea,
   margin: 0;
 }
 .attr-formula-pill {
-  background: #09080d;
+  background: var(--bg-primary); border: 2px solid var(--border-accent);
   border: 1px solid var(--border-subtle);
   padding: 8px 12px;
   font-family: 'JetBrains Mono', monospace;
@@ -2131,10 +2216,10 @@ body, p, li, td, th, label, input, textarea,
    ESTILOS DE ORIGENS // BRUTALISTA V1.5
    ============================================================ */
 .origin-card {
-  background: #13121c;
+  background: var(--bg-surface);
   border: 2px solid #000000;
-  border-left: 5px solid var(--accent, #7c3aed);
-  box-shadow: 4px 4px 0 #000000;
+  border-left: 5px solid var(--border-accent);
+  box-shadow: 4px 4px 0px var(--shadow-color);
   padding: var(--space-xl);
   margin-bottom: var(--space-2xl);
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;

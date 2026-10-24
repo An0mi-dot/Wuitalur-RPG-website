@@ -11,34 +11,48 @@
     .dist-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
+      gap: 14px;
       margin-top: var(--space-md);
     }
     .dist-card-item {
-      background: #0d0c13;
-      border: 1px solid var(--border-medium);
-      border-left: 3px solid var(--accent);
-      padding: 12px 14px;
+      background: var(--bg-surface-elevated);
+      border: 2px solid var(--border-subtle);
+      border-left: 4px solid var(--accent-contrast);
+      box-shadow: 3px 3px 0px var(--shadow-color);
+      padding: 14px;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .dist-card-item:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0px #000000;
+      border-color: #000000;
+      border-left-color: var(--accent-contrast);
     }
     .dist-card-num {
       font-family: var(--font-heading);
-      font-size: 0.85rem;
-      color: var(--accent);
-      margin-bottom: 2px;
+      font-size: 0.95rem;
+      color: var(--accent-contrast);
+      margin-bottom: 4px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
     .dist-card-text {
-      font-size: 0.86rem;
+      font-size: 0.88rem;
       color: var(--text-secondary);
       line-height: 1.5;
       margin: 0;
     }
     .calc-box-unified {
-      background: #0d0c13;
-      border: 1px solid var(--border-medium);
-      padding: 14px;
-      margin: 12px 0;
+      background: var(--bg-surface);
+      border: 2px solid #000000;
+      box-shadow: 4px 4px 0px var(--shadow-color);
+      padding: 16px;
+      margin: 14px 0;
+    }
+    .calc-box-unified .attr-formula-pill {
+      background: var(--bg-header);
+      border: 1px solid var(--border-accent);
+      color: var(--accent-contrast);
     }
   </style>
 </head>
