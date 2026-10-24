@@ -73,8 +73,8 @@
 
   --accent:         #7C3AED;
 
-  --font-heading:   'Cinzel', serif;
-  --font-body:      'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Chinese Rocks', 'Cinzel', serif;
+  --font-body: 'Chinese Rocks', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono:      'JetBrains Mono', 'Fira Code', monospace;
 
   --space-xs:  0.25rem;
@@ -752,4 +752,50 @@ code, .mono {
   color: transparent;
   animation: frenesiRGB 3s linear infinite;
   display: inline-block;
+}
+
+/* ============================================================
+   ANIMAÇÕES GLOBAIS DE INTERFACE
+   ============================================================ */
+@keyframes topicSlamDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) rotate(-4deg) scale(0.92);
+  }
+  65% {
+    opacity: 1;
+    transform: translateY(2px) rotate(-1.5deg) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(-1.8deg) scale(1);
+  }
+}
+
+@keyframes skillPopIn {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.94) rotate(-0.5deg);
+  }
+  65% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.01) rotate(0.3deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes nanquimTearUnfold {
+  0% {
+    opacity: 0;
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+    transform: translateY(-12px);
+  }
+  100% {
+    opacity: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transform: translateY(0);
+  }
 }
