@@ -1,7 +1,7 @@
 /* ============================================================
-   WUITALUR RPG — CONTROLADOR SHOWCASE DE CLASSES E RAÇAS (V3)
-   Canvas de Pontos da Mesa + Navegação por Tópicos Sem Scroll
-   Fidelidade ao Esboço: Menu na Esquerda + Painel Azul Cobalto
+   WUITALUR RPG — CONTROLADOR SHOWCASE DE CLASSES E RAÇAS (V4)
+   Canvas de Pontos da Mesa + Centro Dinâmico (Ilustração / Conteúdo)
+   Painel Diagonal na Direita com Menu Hambúrguer e Nome Gigante
    Zero Emojis — Chinese Rocks sem Negrito
    ============================================================ */
 
@@ -13,18 +13,24 @@ const ShowcaseEngine = {
   
   // Elementos do DOM
   elements: {
+    artView: null,
+    contentView: null,
     heroArt: null,
     bigName: null,
     ndBadge: null,
     topicActiveTitle: null,
+    topicCategory: null,
     topicTabs: null,
     topicContent: null,
+    btnViewArt: null,
     drawerBackdrop: null,
     drawerList: null,
     drawerInput: null,
     drawerHeading: null,
     hamburgerBtn: null,
     hamburgerLabel: null,
+    metaStatus: null,
+    metaRole: null,
     canvas: null
   },
 
@@ -56,13 +62,13 @@ const ShowcaseEngine = {
 
     spawnMotes() {
       this.motes = [];
-      const count = 42;
+      const count = 45;
       for (let i = 0; i < count; i++) {
         this.motes.push({
           x: Math.random() * this.width,
           y: Math.random() * this.height,
           size: Math.random() * 3.8 + 1.2,
-          speedY: Math.random() * 0.9 + 0.35,
+          speedY: Math.random() * 0.95 + 0.35,
           speedX: (Math.random() - 0.5) * 0.45,
           opacity: Math.random() * 0.45 + 0.25,
           pulse: Math.random() * Math.PI * 2,
@@ -134,8 +140,17 @@ const ShowcaseEngine = {
       const badgeEl = sec.querySelector('.difficulty-badge, .badge');
       const badge = badgeEl ? badgeEl.textContent.trim() : '';
 
-      // Extrai tópicos internos (Visão Geral, Habilidades, Mecânicas, etc)
+      // Tópicos da classe/raça
       const topics = [];
+
+      // Tópico 0: Ilustração (mostra a arte no centro)
+      topics.push({
+        isIllustration: true,
+        title: '✦ Ilustração',
+        fullTitle: 'Ilustração Oficial',
+        contentHtml: ''
+      });
+
       const body = sec.querySelector('.race-card-body') || card;
 
       if (body) {
@@ -147,7 +162,9 @@ const ShowcaseEngine = {
           const wrapper = document.createElement('div');
           descParagraphs.forEach(p => wrapper.appendChild(p.cloneNode(true)));
           topics.push({
+            isIllustration: false,
             title: 'Visão Geral',
+            fullTitle: 'Visão Geral',
             contentHtml: wrapper.innerHTML
           });
         }
@@ -156,14 +173,12 @@ const ShowcaseEngine = {
         const h4Elements = body.querySelectorAll('h4');
         h4Elements.forEach(h4 => {
           let rawTitle = h4.textContent.trim();
-          // Sanitização rigorosa contra caracteres corrompidos
           rawTitle = rawTitle.replace(/[\uFFFD\x97\x96\?]/g, ' - ')
                              .replace(/^[—–-\s]+|[—–-\s]+$/g, '')
                              .replace(/\s*[—–]\s*/g, ' - ')
                              .replace(/\s{2,}/g, ' ');
 
           let title = rawTitle;
-          // Encurta para o menu da esquerda se for muito longo
           if (title.length > 28) {
             title = title.split(' - ')[0] || title.slice(0, 26) + '...';
           }
@@ -177,6 +192,7 @@ const ShowcaseEngine = {
 
           if (wrapper.children.length > 0) {
             topics.push({
+              isIllustration: false,
               title: title,
               fullTitle: rawTitle,
               contentHtml: wrapper.innerHTML
@@ -185,9 +201,10 @@ const ShowcaseEngine = {
         });
       }
 
-      // Se nenhum tópico específico foi extraído, usa o conteúdo completo
-      if (topics.length === 0) {
+      // Se nenhum tópico foi extraído além da ilustração, adiciona o conteúdo bruto
+      if (topics.length === 1) {
         topics.push({
+          isIllustration: false,
           title: 'Visão Geral',
           fullTitle: 'Visão Geral',
           contentHtml: body ? body.innerHTML : sec.innerHTML
@@ -203,34 +220,44 @@ const ShowcaseEngine = {
       });
     });
 
-    // Oculta as seções brutas originais para dar lugar ao palco interativo
+    // Oculta as seções brutas originais para dar lugar ao showcase
     sections.forEach(sec => sec.style.display = 'none');
     const intro = document.getElementById('intro');
     if (intro) intro.style.display = 'none';
   },
 
   bindElements() {
+    this.elements.artView = document.getElementById('showcase-art-view');
+    this.elements.contentView = document.getElementById('showcase-content-view');
     this.elements.heroArt = document.getElementById('showcase-hero-art');
     this.elements.bigName = document.getElementById('showcase-big-name');
     this.elements.ndBadge = document.getElementById('showcase-nd-badge');
     this.elements.topicActiveTitle = document.getElementById('showcase-topic-active-title');
+    this.elements.topicCategory = document.getElementById('showcase-content-category');
     this.elements.topicTabs = document.getElementById('showcase-topic-tabs');
     this.elements.topicContent = document.getElementById('showcase-topic-content');
+    this.elements.btnViewArt = document.getElementById('showcase-btn-view-art');
     this.elements.drawerBackdrop = document.getElementById('showcase-drawer-backdrop');
     this.elements.drawerList = document.getElementById('showcase-drawer-list');
     this.elements.drawerInput = document.getElementById('showcase-drawer-input');
     this.elements.drawerHeading = document.getElementById('showcase-drawer-heading');
     this.elements.hamburgerBtn = document.getElementById('showcase-hamburger-btn');
     this.elements.hamburgerLabel = document.getElementById('showcase-hamburger-label');
+    this.elements.metaStatus = document.getElementById('showcase-meta-status');
+    this.elements.metaRole = document.getElementById('showcase-meta-role');
     this.elements.canvas = document.getElementById('showcase-dots-canvas');
 
     if (this.elements.drawerHeading) {
       this.elements.drawerHeading.textContent = this.mode === 'classes' ? 'Todas as Classes' : 'Todas as Raças';
     }
+
+    if (this.elements.topicCategory) {
+      this.elements.topicCategory.textContent = this.mode === 'classes' ? 'Classe' : 'Raça';
+    }
   },
 
   bindEvents() {
-    // Abrir gaveta
+    // Abrir gaveta pelo botão hambúrguer no canto superior direito
     if (this.elements.hamburgerBtn) {
       this.elements.hamburgerBtn.addEventListener('click', () => this.openDrawer());
     }
@@ -247,6 +274,13 @@ const ShowcaseEngine = {
       });
     }
 
+    // Botão "Ver Arte" no cabeçalho do conteúdo
+    if (this.elements.btnViewArt) {
+      this.elements.btnViewArt.addEventListener('click', () => {
+        this.selectTopic(0); // Tópico 0 é sempre a Ilustração
+      });
+    }
+
     // Filtro de busca na gaveta
     if (this.elements.drawerInput) {
       this.elements.drawerInput.addEventListener('input', (e) => {
@@ -255,9 +289,15 @@ const ShowcaseEngine = {
       });
     }
 
-    // Listener de tecla ESC para fechar gaveta
+    // Tecla ESC para fechar gaveta ou voltar para a arte
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') this.closeDrawer();
+      if (e.key === 'Escape') {
+        if (this.elements.drawerBackdrop && this.elements.drawerBackdrop.classList.contains('is-open')) {
+          this.closeDrawer();
+        } else if (this.activeTopicIndex !== 0) {
+          this.selectTopic(0);
+        }
+      }
     });
 
     // Hash change na URL
@@ -317,18 +357,18 @@ const ShowcaseEngine = {
     if (!item) return;
 
     this.currentId = id;
-    this.activeTopicIndex = 0;
+    this.activeTopicIndex = 0; // Inicia sempre mostrando a Ilustração
 
     if (updateHash) {
       window.location.hash = id;
     }
 
-    // Atualiza label do botão hambúrguer
+    // Label do botão hambúrguer no canto superior direito
     if (this.elements.hamburgerLabel) {
-      this.elements.hamburgerLabel.textContent = this.mode === 'classes' ? `Classes (${item.name})` : `Raças (${item.name})`;
+      this.elements.hamburgerLabel.textContent = this.mode === 'classes' ? 'Trocar Classe' : 'Trocar Raça';
     }
 
-    // Animação de troca da imagem central
+    // Atualiza imagem central
     if (this.elements.heroArt) {
       this.elements.heroArt.classList.add('is-switching');
       setTimeout(() => {
@@ -343,7 +383,7 @@ const ShowcaseEngine = {
       }, 140);
     }
 
-    // Nome Gigante Sobreposto com Impacto
+    // Nome Gigante na Base do Painel Direito em Chinese Rocks
     if (this.elements.bigName) {
       this.elements.bigName.textContent = item.name;
       this.elements.bigName.classList.remove('name-slam');
@@ -351,13 +391,22 @@ const ShowcaseEngine = {
       this.elements.bigName.classList.add('name-slam');
     }
 
-    // Badge de Dificuldade / ND
+    // Metadados
     if (this.elements.ndBadge) {
       this.elements.ndBadge.textContent = item.badge || (this.mode === 'classes' ? 'ND 1' : 'Oficial');
+    }
+    if (this.elements.metaStatus) {
+      this.elements.metaStatus.textContent = item.badge || 'Oficial';
+    }
+    if (this.elements.metaRole) {
+      this.elements.metaRole.textContent = this.mode === 'classes' ? 'Combatente / Astral' : 'Linhagem Principal';
     }
 
     // Renderiza Lista Vertical de Tópicos na Esquerda
     this.renderTopicTabs(item);
+
+    // Exibe a visualização inicial (Ilustração)
+    this.applyTopicView(item);
   },
 
   renderTopicTabs(item) {
@@ -371,37 +420,71 @@ const ShowcaseEngine = {
       btn.textContent = topic.title;
       btn.title = topic.fullTitle || topic.title;
       btn.addEventListener('click', () => {
-        this.activeTopicIndex = index;
-        this.renderTopicTabs(item);
+        this.selectTopic(index);
       });
       this.elements.topicTabs.appendChild(btn);
     });
-
-    // Renderiza o conteúdo do tópico ativo no painel azul cobalto da direita
-    this.renderActiveTopicContent(item);
   },
 
-  renderActiveTopicContent(item) {
+  selectTopic(index) {
+    const item = this.items.find(it => it.id === this.currentId);
+    if (!item) return;
+
+    this.activeTopicIndex = index;
+
+    // Atualiza classes ativas dos botões
+    const buttons = this.elements.topicTabs.querySelectorAll('.showcase-tab-btn');
+    buttons.forEach((b, idx) => {
+      if (idx === index) b.classList.add('active');
+      else b.classList.remove('active');
+    });
+
+    this.applyTopicView(item);
+  },
+
+  applyTopicView(item) {
     const activeTopic = item.topics[this.activeTopicIndex] || item.topics[0];
     if (!activeTopic) return;
 
-    // Atualiza o Título do Tópico Ativo no Cabeçalho do Painel da Direita
-    if (this.elements.topicActiveTitle) {
-      this.elements.topicActiveTitle.textContent = activeTopic.fullTitle || activeTopic.title;
+    // Se for o Tópico 0 (Ilustração), sai do conteúdo e mostra a arte no centro
+    if (activeTopic.isIllustration) {
+      if (this.elements.contentView) {
+        this.elements.contentView.style.display = 'none';
+      }
+      if (this.elements.artView) {
+        this.elements.artView.classList.remove('is-hidden');
+        this.elements.artView.style.display = 'flex';
+      }
+      return;
     }
 
-    // Atualiza o Conteúdo de Leitura com Fade Suave
-    if (this.elements.topicContent) {
-      this.elements.topicContent.style.opacity = '0';
-      this.elements.topicContent.style.transform = 'translateY(8px)';
+    // Se for qualquer outro tópico, SAI DA ILUSTRAÇÃO e MOSTRA O CONTEÚDO no centro!
+    if (this.elements.artView) {
+      this.elements.artView.classList.add('is-hidden');
+      this.elements.artView.style.display = 'none';
+    }
+
+    if (this.elements.contentView) {
+      this.elements.contentView.style.display = 'flex';
       
-      setTimeout(() => {
-        this.elements.topicContent.innerHTML = activeTopic.contentHtml;
-        this.elements.topicContent.scrollTop = 0;
-        this.elements.topicContent.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
-        this.elements.topicContent.style.opacity = '1';
-        this.elements.topicContent.style.transform = 'translateY(0)';
-      }, 70);
+      // Atualiza título do tópico ativo no cabeçalho do card central
+      if (this.elements.topicActiveTitle) {
+        this.elements.topicActiveTitle.textContent = activeTopic.fullTitle || activeTopic.title;
+      }
+
+      // Renderiza o conteúdo textual com fade suave
+      if (this.elements.topicContent) {
+        this.elements.topicContent.style.opacity = '0';
+        this.elements.topicContent.style.transform = 'translateY(10px)';
+
+        setTimeout(() => {
+          this.elements.topicContent.innerHTML = activeTopic.contentHtml;
+          this.elements.topicContent.scrollTop = 0;
+          this.elements.topicContent.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
+          this.elements.topicContent.style.opacity = '1';
+          this.elements.topicContent.style.transform = 'translateY(0)';
+        }, 60);
+      }
     }
   }
 };

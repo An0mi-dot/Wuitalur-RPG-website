@@ -1,7 +1,7 @@
 /* ============================================================
-   WUITALUR RPG — INTERFACE SHOWCASE DE CLASSES E RAÇAS (V3)
+   WUITALUR RPG — INTERFACE SHOWCASE DE CLASSES E RAÇAS (V4)
    Layout Hero 100vh Sem Scroll Geral + Painel Diagonal Azul Cobalto
-   Menu Hambúrguer + Tópicos na Esquerda + Canvas de Pontos
+   Menu Hambúrguer na Direita + Tópicos na Esquerda + Centro Dinâmico
    Zero Emojis — Chinese Rocks sem Negrito — Alta Fidelidade ao Esboço
    ============================================================ */
 
@@ -18,7 +18,7 @@ body.has-showcase .app-layout {
   overflow: hidden !important;
 }
 
-/* O main-wrapper DEVE respeitar a sidebar de 260px no desktop para não sobrepor o hambúrguer */
+/* O main-wrapper respeita a sidebar de 260px no desktop */
 body.has-showcase .main-wrapper {
   height: 100vh !important;
   max-height: 100vh !important;
@@ -45,19 +45,19 @@ body.has-showcase .quick-jump-float {
   max-height: 100vh !important;
   overflow: hidden;
   display: grid;
-  grid-template-columns: 1fr 520px;
-  background: #07060a;
+  grid-template-columns: 1fr 360px;
+  background: #060509;
 }
 
 @media (min-width: 1500px) {
   .showcase-viewport {
-    grid-template-columns: 1fr 580px;
+    grid-template-columns: 1fr 400px;
   }
 }
 
-@media (max-width: 1180px) {
+@media (max-width: 1100px) {
   .showcase-viewport {
-    grid-template-columns: 1fr 440px;
+    grid-template-columns: 1fr 320px;
   }
 }
 
@@ -86,7 +86,8 @@ body.has-showcase .quick-jump-float {
 }
 
 /* ============================================================
-   PALCO CENTRAL (ILUSTRAÇÃO + CANVAS DE PONTOS DA MESA)
+   PALCO CENTRAL (CANVAS DE PONTOS + ARTE / CONTEÚDO DINÂMICO)
+   Quando seleciona um tópico, sai da ilustração e mostra o conteúdo!
    ============================================================ */
 .showcase-center-stage {
   position: relative;
@@ -96,13 +97,12 @@ body.has-showcase .quick-jump-float {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.16) 0%, rgba(7, 6, 10, 0.98) 75%);
+  background: radial-gradient(circle at 45% 50%, rgba(124, 58, 237, 0.18) 0%, rgba(6, 5, 9, 0.98) 75%);
 }
 
 @media (max-width: 860px) {
   .showcase-center-stage {
-    min-height: 480px;
-    height: 60vh;
+    min-height: 520px;
   }
 }
 
@@ -139,8 +139,8 @@ body.has-showcase .quick-jump-float {
   width: 520px;
   height: 520px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.22) 0%, transparent 70%);
-  filter: blur(45px);
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.24) 0%, transparent 70%);
+  filter: blur(48px);
   pointer-events: none;
   z-index: 2;
   animation: glowPulse 4.5s ease-in-out infinite alternate;
@@ -152,18 +152,17 @@ body.has-showcase .quick-jump-float {
 }
 
 /* ============================================================
-   COLUNA DE NAVEGAÇÃO NA ESQUERDA (HAMBÚRGUER + TÓPICOS)
-   Fiel ao Esboço: Hambúrguer no topo e lista vertical de tópicos
+   MENU LATERAL ESQUERDO: TÓPICOS DA CLASSE / RAÇA
    ============================================================ */
 .showcase-left-nav {
   position: absolute;
   top: 24px;
   left: 24px;
-  z-index: 35;
+  z-index: 30;
+  max-width: 220px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  max-width: 240px;
+  gap: 8px;
 }
 
 @media (max-width: 860px) {
@@ -173,96 +172,47 @@ body.has-showcase .quick-jump-float {
     left: 0;
     max-width: 100%;
     padding: 16px;
-    z-index: 40;
+    z-index: 35;
   }
 }
 
-/* Botão Hambúrguer Superior Esquerdo (Abre gaveta de classes/raças) */
-.showcase-hamburger-btn {
-  background: #11101b;
-  border: 2px solid #000000;
-  border-left: 4px solid var(--accent, #7c3aed);
-  color: #ffffff;
-  font-family: var(--font-heading);
-  font-size: 0.88rem;
-  font-weight: normal !important;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 10px 16px;
-  box-shadow: 4px 4px 0 #000000;
-  cursor: pointer;
-  border-radius: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
-  user-select: none;
-  width: fit-content;
-}
-
-.showcase-hamburger-btn:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 #000000;
-  background: #1a172c;
-  border-left-color: #a78bfa;
-}
-
-.showcase-hamburger-btn:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0 #000000;
-}
-
-.showcase-hamburger-btn .hamburger-icon {
-  font-size: 1.15rem;
-  line-height: 1;
-  color: #a78bfa;
-}
-
-.showcase-hamburger-btn .hamburger-label {
-  font-family: var(--font-heading);
-  font-weight: normal !important;
-  color: #ffffff;
-}
-
-/* Painel de Tópicos na Esquerda (Vertical, brutalista e translúcido) */
 .showcase-topics-wrapper {
-  background: rgba(10, 9, 18, 0.78);
-  backdrop-filter: blur(8px);
+  background: rgba(10, 9, 18, 0.82);
+  backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-left: 2px solid var(--accent, #7c3aed);
+  border-left: 3px solid var(--accent, #7c3aed);
   box-shadow: 4px 4px 0 #000000;
   padding: 12px 10px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  max-height: calc(100vh - 120px);
+  max-height: calc(100vh - 60px);
 }
 
 @media (max-width: 860px) {
   .showcase-topics-wrapper {
-    max-height: 220px;
+    max-height: 240px;
   }
 }
 
 .showcase-topics-title {
   font-family: var(--font-heading);
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   font-weight: normal !important;
   color: #a78bfa;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   padding: 2px 6px 6px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   margin-bottom: 4px;
 }
 
-/* Lista vertical de tópicos */
 .showcase-topic-tabs {
   display: flex;
   flex-direction: column;
   gap: 4px;
   overflow-y: auto;
-  max-height: calc(100vh - 180px);
+  max-height: calc(100vh - 120px);
   padding-right: 4px;
 }
 
@@ -310,15 +260,31 @@ body.has-showcase .quick-jump-float {
 }
 
 /* ============================================================
-   ILUSTRAÇÃO DA CLASSE / RAÇA NO CENTRO
+   VISUALIZAÇÃO 1: ILUSTRAÇÃO DA CLASSE / RAÇA NO CENTRO
    ============================================================ */
-.showcase-hero-art {
+.showcase-art-view {
   position: relative;
-  z-index: 3;
-  max-width: 80%;
-  max-height: 82vh;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.showcase-art-view.is-hidden {
+  opacity: 0;
+  transform: scale(0.94);
+  pointer-events: none;
+  display: none !important;
+}
+
+.showcase-hero-art {
+  max-width: 82%;
+  max-height: 84vh;
   object-fit: contain;
-  filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 45px rgba(124, 58, 237, 0.28));
+  filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 45px rgba(124, 58, 237, 0.3));
   transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.15);
   animation: heroBreathe 5.5s ease-in-out infinite alternate;
   user-select: none;
@@ -336,44 +302,72 @@ body.has-showcase .quick-jump-float {
 }
 
 /* ============================================================
-   PAINEL DA DIREITA: AZUL COBALTO DIAGONAL FIEL AO ESBOÇO
+   VISUALIZAÇÃO 2: PAINEL CENTRAL DE CONTEÚDO DO TÓPICO
+   (Surge no centro quando um tópico é selecionado)
    ============================================================ */
-.showcase-right-panel {
+.showcase-content-view {
   position: relative;
-  z-index: 20;
-  height: 100%;
-  /* Gradiente vibrante em azul cobalto/elétrico conforme desenhado à mão */
-  background: linear-gradient(155deg, #102a71 0%, #0a1b4d 50%, #061133 100%);
-  border-left: 2px solid #38bdf8;
+  z-index: 10;
+  width: 90%;
+  max-width: 820px;
+  height: calc(100vh - 64px);
+  max-height: calc(100vh - 64px);
   display: flex;
   flex-direction: column;
-  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.9), inset 1px 0 0 rgba(56, 189, 248, 0.3);
-  overflow: hidden;
-}
-
-/* Corte Diagonal Superior Esquerdo do Painel (Conforme Desenho) */
-@media (min-width: 861px) {
-  .showcase-right-panel {
-    clip-path: polygon(52px 0%, 100% 0%, 100% 100%, 0% 100%);
-  }
-}
-
-/* Cabeçalho do Painel: Título do Tópico Ativo + Badge */
-.showcase-panel-header {
-  padding: 24px 28px 16px 64px;
-  border-bottom: 1px solid rgba(56, 189, 248, 0.22);
-  background: rgba(4, 11, 32, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-shrink: 0;
+  animation: contentModalIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @media (max-width: 860px) {
-  .showcase-panel-header {
-    padding: 16px 20px;
+  .showcase-content-view {
+    width: 96%;
+    max-height: none;
+    height: auto;
+    margin-bottom: 24px;
   }
+}
+
+@keyframes contentModalIn {
+  0% { opacity: 0; transform: translateY(16px) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.showcase-content-card {
+  width: 100%;
+  height: 100%;
+  background: rgba(8, 10, 24, 0.88);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(56, 189, 248, 0.32);
+  border-top: 3px solid #38bdf8;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(56, 189, 248, 0.12);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.showcase-content-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.22);
+  background: rgba(4, 11, 32, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.showcase-content-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.showcase-content-category {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: normal !important;
+  color: #38bdf8;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
 }
 
 .showcase-topic-active-title {
@@ -388,13 +382,50 @@ body.has-showcase .quick-jump-float {
   line-height: 1.1;
 }
 
+.showcase-content-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.showcase-btn-view-art {
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  color: #7dd3fc;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: normal !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 2px 2px 0 #000000;
+  transition: all 0.16s ease;
+  user-select: none;
+}
+
+.showcase-btn-view-art:hover {
+  background: #38bdf8;
+  color: #000000;
+  border-color: #38bdf8;
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0 #000000;
+}
+
+.showcase-btn-view-art:active {
+  transform: translateY(1px);
+}
+
 .showcase-nd-badge {
   font-family: var(--font-heading);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: normal !important;
-  background: rgba(56, 189, 248, 0.15);
-  color: #7dd3fc;
-  border: 1px solid rgba(56, 189, 248, 0.45);
+  background: rgba(124, 58, 237, 0.2);
+  color: #c084fc;
+  border: 1px solid rgba(124, 58, 237, 0.5);
   padding: 4px 10px;
   box-shadow: 2px 2px 0 #000000;
   text-transform: uppercase;
@@ -402,26 +433,17 @@ body.has-showcase .quick-jump-float {
   white-space: nowrap;
 }
 
-/* Área de Leitura do Tópico Selecionado (Com Scroll Interno Fino) */
+/* Área de Texto Central (Com Scroll Interno Fino e Alta Legibilidade) */
 .showcase-topic-content {
   flex: 1;
-  padding: 24px 28px 70px 64px;
+  padding: 24px 28px 40px;
   overflow-y: auto;
   font-family: var(--font-body, system-ui, -apple-system, sans-serif);
-  font-size: 0.94rem;
-  line-height: 1.7;
+  font-size: 0.95rem;
+  line-height: 1.75;
   color: #f1f5f9;
 }
 
-@media (max-width: 860px) {
-  .showcase-topic-content {
-    padding: 20px;
-    padding-bottom: 40px;
-    max-height: 60vh;
-  }
-}
-
-/* Custom Scrollbar Fina e Elegante no Painel */
 .showcase-topic-content::-webkit-scrollbar {
   width: 6px;
 }
@@ -433,7 +455,6 @@ body.has-showcase .quick-jump-float {
   box-shadow: 1px 1px 0 #000000;
 }
 
-/* Tipografia Interna para Máxima Legibilidade */
 .showcase-topic-content h3,
 .showcase-topic-content h4,
 .showcase-topic-content h5 {
@@ -445,7 +466,7 @@ body.has-showcase .quick-jump-float {
 }
 
 .showcase-topic-content h4 {
-  font-size: 1.18rem;
+  font-size: 1.2rem;
   color: #7dd3fc;
   border-bottom: 1px solid rgba(56, 189, 248, 0.2);
   padding-bottom: 4px;
@@ -478,7 +499,6 @@ body.has-showcase .quick-jump-float {
   font-weight: 600;
 }
 
-/* Caixas de Habilidade / Regras dentro do Painel Azul */
 .showcase-ability-box,
 .showcase-topic-content .origin-card,
 .showcase-topic-content .class-rank,
@@ -492,43 +512,148 @@ body.has-showcase .quick-jump-float {
   box-shadow: 2px 2px 0 #000000;
 }
 
-/* Detalhe de Listras Diagonais // do Esboço no Canto Inferior */
+/* ============================================================
+   PAINEL DA DIREITA: AZUL COBALTO DIAGONAL COM MENU HAMBÚRGUER E NOME GIGANTE
+   Fiel ao Esboço: Apenas a linha diagonal, menu hamburger no topo e nome na base
+   ============================================================ */
+.showcase-right-panel {
+  position: relative;
+  z-index: 20;
+  height: 100%;
+  background: linear-gradient(155deg, #102a71 0%, #0a1b4d 50%, #061133 100%);
+  border-left: 2px solid #38bdf8;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px 20px 24px 50px;
+  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.9), inset 1px 0 0 rgba(56, 189, 248, 0.3);
+  overflow: hidden;
+}
+
+@media (min-width: 861px) {
+  .showcase-right-panel {
+    clip-path: polygon(48px 0%, 100% 0%, 100% 100%, 0% 100%);
+  }
+}
+
+@media (max-width: 860px) {
+  .showcase-right-panel {
+    padding: 20px;
+    height: auto;
+    min-height: 220px;
+  }
+}
+
+/* Topo do Painel Direito: Botão Hambúrguer para Trocar de Classe/Raça */
+.showcase-right-header {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.showcase-hamburger-btn {
+  background: #08173d;
+  border: 2px solid #38bdf8;
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  font-weight: normal !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px 18px;
+  box-shadow: 4px 4px 0 #000000;
+  cursor: pointer;
+  border-radius: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  user-select: none;
+}
+
+.showcase-hamburger-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #000000;
+  background: #102a71;
+  border-color: #7dd3fc;
+}
+
+.showcase-hamburger-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 #000000;
+}
+
+.showcase-hamburger-btn .hamburger-icon {
+  font-size: 1.2rem;
+  line-height: 1;
+  color: #38bdf8;
+}
+
+.showcase-hamburger-btn .hamburger-label {
+  font-family: var(--font-heading);
+  font-weight: normal !important;
+  color: #ffffff;
+}
+
+/* Corpo do Painel Direito: Metadados HUD discretos */
+.showcase-right-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 0;
+  opacity: 0.9;
+}
+
+.showcase-right-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-left: 2px solid rgba(56, 189, 248, 0.4);
+  padding-left: 10px;
+}
+
+.meta-item-label {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: normal !important;
+  color: #7dd3fc;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.meta-item-value {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: #f1f5f9;
+  font-weight: 500;
+}
+
+/* Detalhe de Listras Diagonais // do Esboço */
 .showcase-tech-stripes {
-  position: absolute;
-  bottom: 18px;
-  left: 28px;
   display: flex;
   gap: 5px;
   pointer-events: none;
-  z-index: 25;
+  margin-bottom: 12px;
 }
 
 .showcase-tech-stripes span {
   display: block;
   width: 4px;
-  height: 20px;
+  height: 22px;
   background: #38bdf8;
   transform: skewX(-25deg);
-  opacity: 0.65;
-  box-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
+  opacity: 0.75;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
 }
 
-/* ============================================================
-   NOME GIGANTE DA CLASSE/RAÇA NO CANTO INFERIOR
-   (Sobreposto entre o palco e o painel diagonal da direita)
-   Chinese Rocks SEM NEGRITO conforme regra do usuário
-   ============================================================ */
+/* Nome Gigante da Classe/Raça na Base do Painel Direito em Chinese Rocks */
 .showcase-big-name {
-  position: absolute;
-  bottom: -4px;
-  right: 16px;
-  z-index: 25;
   font-family: var(--font-heading);
-  font-size: clamp(3.4rem, 7vw, 6.4rem);
+  font-size: clamp(3.2rem, 6.2vw, 5.8rem);
   font-weight: normal !important;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.95);
+  color: rgba(255, 255, 255, 0.98);
   line-height: 0.85;
   pointer-events: none;
   user-select: none;
@@ -540,6 +665,8 @@ body.has-showcase .quick-jump-float {
     -2px 2px 0 #000000,
     0 10px 30px rgba(0, 0, 0, 0.95);
   transition: transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.15), opacity 0.3s ease;
+  margin-top: 10px;
+  margin-bottom: -6px;
 }
 
 .showcase-big-name.name-slam {
@@ -573,17 +700,17 @@ body.has-showcase .quick-jump-float {
 .showcase-drawer {
   position: fixed;
   top: 0;
-  left: 0;
+  right: 0;
   bottom: 0;
   width: 380px;
   max-width: 90vw;
   background: #0d0c16;
-  border-right: 2px solid #000000;
-  box-shadow: 12px 0 45px rgba(0, 0, 0, 0.95);
+  border-left: 2px solid #38bdf8;
+  box-shadow: -12px 0 45px rgba(0, 0, 0, 0.95);
   z-index: 210;
   display: flex;
   flex-direction: column;
-  transform: translateX(-100%);
+  transform: translateX(100%);
   transition: transform 0.26s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -641,7 +768,7 @@ body.has-showcase .quick-jump-float {
   outline: none;
 }
 .showcase-drawer-input:focus {
-  border-color: var(--accent, #7c3aed);
+  border-color: #38bdf8;
 }
 
 .showcase-drawer-list {
@@ -668,15 +795,15 @@ body.has-showcase .quick-jump-float {
 
 .showcase-drawer-item:hover {
   background: var(--bg-hover);
-  border-left-color: var(--accent, #7c3aed);
-  transform: translateX(4px);
+  border-left-color: #38bdf8;
+  transform: translateX(-4px);
   box-shadow: 2px 2px 0 #000000;
 }
 
 .showcase-drawer-item.active {
-  background: rgba(124, 58, 237, 0.18);
-  border-left-color: var(--accent, #7c3aed);
-  border-color: var(--accent, #7c3aed);
+  background: rgba(56, 189, 248, 0.18);
+  border-left-color: #38bdf8;
+  border-color: #38bdf8;
 }
 
 .showcase-drawer-name {

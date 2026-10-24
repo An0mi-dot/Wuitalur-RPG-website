@@ -88,52 +88,81 @@
     <!-- STAGE SHOWCASE 100VH (SEM SCROLL GERAL) -->
     <div class="showcase-viewport" id="showcase-viewport">
 
-      <!-- PALCO CENTRAL (ARTE + CANVAS DE PONTOS DA MESA + NAVEGAÇÃO ESQUERDA) -->
-      <div class="showcase-center-stage">
-        <!-- Canvas de Partículas / Pontos da Mesa -->
+      <!-- PALCO CENTRAL (ARTE / CONTEÚDO DINÂMICO + CANVAS DE PONTOS DA MESA) -->
+      <div class="showcase-center-stage" id="showcase-center-stage">
+        <!-- Canvas de Partículas / Pontos da Mesa Virtual -->
         <canvas class="showcase-dots-canvas" id="showcase-dots-canvas"></canvas>
         <div class="showcase-dots-overlay"></div>
         <div class="showcase-hero-glow"></div>
 
-        <!-- COLUNA DE NAVEGAÇÃO NA ESQUERDA (HAMBÚRGUER + TÓPICOS) -->
-        <div class="showcase-left-nav">
-          <button type="button" class="showcase-hamburger-btn" id="showcase-hamburger-btn" aria-label="Abrir lista de classes">
-            <span class="hamburger-icon">&#x2630;</span>
-            <span class="hamburger-label" id="showcase-hamburger-label">Classes</span>
-          </button>
-
+        <!-- MENU LATERAL ESQUERDO: TÓPICOS DA CLASSE -->
+        <aside class="showcase-left-nav" aria-label="Navegação de Tópicos">
           <div class="showcase-topics-wrapper">
             <div class="showcase-topics-title">Tópicos</div>
             <div class="showcase-topic-tabs" id="showcase-topic-tabs">
               <!-- Gerado dinamicamente via JS -->
             </div>
           </div>
+        </aside>
+
+        <!-- VISUALIZAÇÃO 1: ILUSTRAÇÃO DA CLASSE -->
+        <div class="showcase-art-view" id="showcase-art-view">
+          <img src="" alt="" class="showcase-hero-art" id="showcase-hero-art">
         </div>
 
-        <!-- Ilustração Central da Classe/Raça -->
-        <img src="" alt="" class="showcase-hero-art" id="showcase-hero-art">
-
-        <!-- Nome Gigante Sobreposto no Canto Inferior Direito -->
-        <div class="showcase-big-name" id="showcase-big-name">Carregando...</div>
-      </div>
-
-      <!-- PAINEL DA DIREITA: AZUL COBALTO DIAGONAL FIEL AO ESBOÇO -->
-      <aside class="showcase-right-panel" id="showcase-right-panel">
-        <div class="showcase-panel-header">
-          <h3 class="showcase-topic-active-title" id="showcase-topic-active-title">Visão Geral</h3>
-          <div class="showcase-panel-meta">
-            <span class="showcase-nd-badge" id="showcase-nd-badge">ND 1</span>
+        <!-- VISUALIZAÇÃO 2: PAINEL CENTRAL DE CONTEÚDO DO TÓPICO -->
+        <div class="showcase-content-view" id="showcase-content-view" style="display: none;">
+          <div class="showcase-content-card">
+            <div class="showcase-content-header">
+              <div class="showcase-content-title-group">
+                <span class="showcase-content-category" id="showcase-content-category">Classe</span>
+                <h3 class="showcase-topic-active-title" id="showcase-topic-active-title">Visão Geral</h3>
+              </div>
+              <div class="showcase-content-actions">
+                <span class="showcase-nd-badge" id="showcase-nd-badge">ND 1</span>
+                <button type="button" class="showcase-btn-view-art" id="showcase-btn-view-art" title="Ver Ilustração">
+                  <span>&#x25C0;</span> Ver Arte
+                </button>
+              </div>
+            </div>
+            <div class="showcase-topic-content" id="showcase-topic-content">
+              <!-- Conteúdo injetado dinamicamente via JS -->
+            </div>
           </div>
         </div>
 
-        <!-- Conteúdo do Tópico Selecionado (Com Scroll Interno Fino) -->
-        <div class="showcase-topic-content" id="showcase-topic-content">
-          <!-- Gerado dinamicamente -->
+      </div>
+
+      <!-- PAINEL DA DIREITA: AZUL COBALTO DIAGONAL COM MENU HAMBÚRGUER E NOME GIGANTE -->
+      <aside class="showcase-right-panel" id="showcase-right-panel">
+        <!-- Topo da Direita: Botão Hambúrguer para Trocar de Classe -->
+        <div class="showcase-right-header">
+          <button type="button" class="showcase-hamburger-btn" id="showcase-hamburger-btn" aria-label="Abrir lista de classes">
+            <span class="hamburger-icon">&#x2630;</span>
+            <span class="hamburger-label" id="showcase-hamburger-label">Trocar Classe</span>
+          </button>
         </div>
 
-        <!-- Detalhe Decorativo de Listras Diagonais // do Esboço -->
-        <div class="showcase-tech-stripes" aria-hidden="true">
-          <span></span><span></span><span></span>
+        <!-- Área Central da Coluna Direita: Metadados HUD -->
+        <div class="showcase-right-body">
+          <div class="showcase-right-meta">
+            <span class="meta-item-label">Status</span>
+            <span class="meta-item-value" id="showcase-meta-status">Oficial</span>
+          </div>
+          <div class="showcase-right-meta">
+            <span class="meta-item-label">Perfil</span>
+            <span class="meta-item-value" id="showcase-meta-role">Combatente / Astral</span>
+          </div>
+        </div>
+
+        <div>
+          <!-- Detalhe Decorativo de Listras Diagonais // do Esboço -->
+          <div class="showcase-tech-stripes" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+
+          <!-- Nome Gigante da Classe no Canto Inferior Direito em Chinese Rocks -->
+          <div class="showcase-big-name" id="showcase-big-name">Carregando...</div>
         </div>
       </aside>
 
