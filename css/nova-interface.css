@@ -1,0 +1,668 @@
+/* ============================================================
+   WUITALUR RPG — NOVA INTERFACE V2 (RECRIAÇÃO FULLSCREEN)
+   Sidebar na total esquerda + Conteúdo expandido em 100% da tela
+   Tópicos em quadrados tortos (estilo PERÍCIAS) + Chinese Rocks
+   Cores Oficiais: Obsidian (#0b0a0f), Violeta (#7c3aed), Vermelho Nanquim (#b30000)
+   Zero Emojis — Pontas Finas — Animações Exclusivas
+   ============================================================ */
+
+@font-face {
+  font-family: 'Chinese Rocks';
+  src: url('../assets/fonts/chinese-rocks.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-main: 'Chinese Rocks', 'Cinzel', 'Impact', sans-serif;
+  --font-body: 'Chinese Rocks', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  /* Cores Oficiais Alinhadas ao Sistema */
+  --bg-deep: #08070b;
+  --bg-sidebar: #0d0c13;
+  --bg-surface: #13121c;
+  --bg-surface-elevated: #1a1926;
+  --bg-surface-hover: #222033;
+  
+  --border-subtle: #242233;
+  --border-medium: #35324d;
+  --border-active: #7c3aed;
+  
+  --accent-purple: #7c3aed;
+  --accent-purple-glow: rgba(124, 58, 237, 0.45);
+  --accent-purple-bg: rgba(124, 58, 237, 0.18);
+  
+  --accent-red-nanquim: #b30000;
+  --accent-red-bright: #e61919;
+  
+  --text-primary: #ffffff;
+  --text-secondary: #a2a0b8;
+  --text-muted: #64617a;
+  
+  --sidebar-w: 260px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  letter-spacing: 0.04em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Fundo com Textura Pontilhada (Igual à imagem da tarja de Perícias) */
+body {
+  background-image: radial-gradient(rgba(179, 0, 0, 0.18) 1.2px, transparent 1.2px);
+  background-size: 16px 16px;
+  background-attachment: fixed;
+}
+
+/* ============================================================
+   ESTRUTURA GERAL: SIDEBAR NA ESQUERDA TOTAL + DIREITA FULLSCREEN
+   ============================================================ */
+.v2-app-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+/* ============================================================
+   SIDEBAR LATERAL (ESQUERDA TOTAL, ALINHADA AO SCREENSHOT)
+   ============================================================ */
+.v2-sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  background: var(--bg-sidebar);
+  border-right: 2px solid #000000;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.v2-sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+.v2-sidebar::-webkit-scrollbar-thumb {
+  background: var(--border-medium);
+}
+
+/* Logo da Sidebar */
+.v2-sidebar-header {
+  padding: 20px 18px 16px;
+  border-bottom: 2px solid #000000;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.v2-logo-box {
+  display: inline-block;
+  background: var(--accent-red-nanquim);
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 900;
+  padding: 5px 14px;
+  transform: rotate(-1.5deg);
+  clip-path: polygon(2% 0%, 98% 3%, 100% 96%, 0% 100%);
+  letter-spacing: 0.08em;
+  box-shadow: 2px 2px 0px #000;
+}
+
+.v2-logo-version {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Menu de Navegação na Sidebar */
+.v2-sidebar-nav {
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Título de Seção na Sidebar (Igual ao "PRINCIPAL" da imagem) */
+.v2-nav-section-title {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #7a7794;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 14px 20px 6px;
+  user-select: none;
+}
+
+/* Links da Sidebar */
+.v2-nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  position: relative;
+  transition: all 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  border-left: 4px solid transparent;
+}
+
+.v2-nav-link:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+  padding-left: 24px;
+}
+
+/* Item Ativo (Exatamente igual ao "Início" roxo da foto do usuário) */
+.v2-nav-link.active {
+  background: var(--accent-purple-bg);
+  color: #ffffff;
+  font-weight: 700;
+  border-left: 4px solid var(--accent-purple);
+  box-shadow: inset 4px 0 10px rgba(124, 58, 237, 0.35);
+}
+
+.v2-nav-link.active::after {
+  content: '';
+  position: absolute;
+  right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--accent-purple);
+  box-shadow: 0 0 8px var(--accent-purple);
+}
+
+.v2-nav-badge {
+  font-size: 0.68rem;
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0;
+}
+
+.v2-nav-link.active .v2-nav-badge {
+  background: var(--accent-purple);
+  color: #ffffff;
+  border-color: var(--accent-purple);
+}
+
+/* ============================================================
+   CONTEÚDO PRINCIPAL (DIREITA COMPLETA, TOMANDO 100% DA TELA)
+   ============================================================ */
+.v2-main-content {
+  flex: 1;
+  width: calc(100vw - var(--sidebar-w));
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header Superior Fixo de Ferramentas / Propostas */
+.v2-top-header {
+  background: rgba(13, 12, 19, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 2px solid #000000;
+  padding: 12px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+}
+
+.v2-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.v2-model-switcher-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.v2-switcher-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.v2-anim-btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  color: var(--text-secondary);
+  font-family: var(--font-main);
+  font-size: 0.82rem;
+  padding: 6px 14px;
+  cursor: pointer;
+  border-radius: 0;
+  transition: all 0.15s ease;
+  text-transform: uppercase;
+}
+
+.v2-anim-btn:hover {
+  border-color: var(--accent-red-nanquim);
+  color: #ffffff;
+}
+
+.v2-anim-btn.active {
+  background: var(--accent-red-nanquim);
+  color: #ffffff;
+  border-color: #000000;
+  box-shadow: 2px 2px 0 #000000;
+}
+
+/* Área de Leitura e Conteúdo Expansivo (100% Full Width) */
+.v2-page-viewport {
+  padding: 32px 36px 60px;
+  flex: 1;
+  width: 100%;
+}
+
+/* ============================================================
+   O "TÓPICO TORTO" OFICIAL (CÓPIA EXATA DA PRIMEIRA IMAGEM)
+   ============================================================ */
+.v2-topic-banner {
+  display: inline-block;
+  background: var(--accent-red-nanquim);
+  color: #ffffff;
+  font-family: var(--font-main);
+  font-size: 1.45rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 24px;
+  transform: rotate(-1.8deg);
+  clip-path: polygon(2% 0%, 98% 3%, 100% 96%, 0% 100%);
+  box-shadow: 4px 4px 0px #000000, 0 6px 20px rgba(0, 0, 0, 0.7);
+  border-radius: 0;
+  margin-bottom: 24px;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  user-select: none;
+}
+
+.v2-topic-banner:hover {
+  transform: rotate(0deg) scale(1.02);
+  box-shadow: 6px 6px 0px #000000;
+}
+
+.v2-topic-banner.subtitle-style {
+  font-size: 1.05rem;
+  padding: 5px 16px;
+  transform: rotate(1.2deg);
+  background: #1e1d2b;
+  border-left: 4px solid var(--accent-red-nanquim);
+  clip-path: polygon(0% 4%, 98% 0%, 100% 96%, 2% 100%);
+}
+
+.v2-topic-banner.purple-style {
+  background: var(--accent-purple);
+  clip-path: polygon(3% 0%, 97% 2%, 100% 97%, 0% 100%);
+  transform: rotate(-1.2deg);
+}
+
+/* ============================================================
+   OS BOTÕES QUADRADOS COM PONTAS FINAS E ANIMAÇÕES EXCLUSIVAS
+   ============================================================ */
+.v2-btn {
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 10px 22px;
+  border-radius: 0;
+  cursor: pointer;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  user-select: none;
+}
+
+/* Variação 1: Botão Carimbo Nanquim (Impacto e Recuo Seco) */
+.anim-carimbo .v2-btn-primary {
+  background: var(--accent-red-nanquim);
+  color: #ffffff;
+  border: 2px solid #000000;
+  box-shadow: 4px 4px 0px #000000;
+  transform: rotate(-0.8deg);
+  transition: all 0.14s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.anim-carimbo .v2-btn-primary:hover {
+  transform: rotate(1deg) translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #000000, 0 0 14px rgba(179, 0, 0, 0.45);
+  background: var(--accent-red-bright);
+}
+.anim-carimbo .v2-btn-primary:active {
+  transform: translate(4px, 4px) rotate(0deg);
+  box-shadow: 0px 0px 0px #000000;
+  background: #800000;
+}
+
+/* Variação 2: Botão Lâmina de Sangue (Corte com Traço) */
+.anim-lamina .v2-btn-primary {
+  background: #14131d;
+  color: #ffffff;
+  border: 1px solid #38344d;
+  border-left: 5px solid var(--accent-red-nanquim);
+  box-shadow: 3px 3px 0px #000000;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.anim-lamina .v2-btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 0%;
+  height: 100%;
+  background: var(--accent-red-nanquim);
+  z-index: 0;
+  transition: width 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.anim-lamina .v2-btn-primary span {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.18s ease;
+}
+.anim-lamina .v2-btn-primary:hover {
+  border-color: var(--accent-red-bright);
+  box-shadow: 0 0 16px rgba(230, 25, 25, 0.45);
+}
+.anim-lamina .v2-btn-primary:hover::before {
+  width: 100%;
+}
+.anim-lamina .v2-btn-primary:hover span {
+  transform: translateX(4px);
+}
+.anim-lamina .v2-btn-primary:active {
+  transform: scaleX(0.96);
+}
+
+/* Variação 3: Botão Sísmico / Rúnico (Glitch de Nanquim) */
+.anim-sismico .v2-btn-primary {
+  background: #171522;
+  color: #ffffff;
+  border: 1px dashed var(--accent-red-nanquim);
+  box-shadow: 0 0 10px rgba(179, 0, 0, 0.2);
+  transition: all 0.18s ease;
+}
+.anim-sismico .v2-btn-primary:hover {
+  background: var(--accent-red-nanquim);
+  color: #ffffff;
+  border-style: solid;
+  border-color: #ffffff;
+  animation: sismicoShake 0.28s infinite;
+  box-shadow: 0 0 18px rgba(230, 25, 25, 0.6);
+}
+@keyframes sismicoShake {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-1.5px, 1px); }
+  50% { transform: translate(1px, -1.5px); }
+  75% { transform: translate(-1px, -1px); }
+  100% { transform: translate(0, 0); }
+}
+.anim-sismico .v2-btn-primary:active {
+  transform: scale(0.95);
+}
+
+/* Variação 4: Botão Chapa Brutalista (Snap 3D Pesado) */
+.anim-chapa .v2-btn-primary {
+  background: #1a1926;
+  color: #ffaa66;
+  border: 2px solid #ffaa66;
+  box-shadow: 5px 5px 0px #000000;
+  transform: rotate(-1deg);
+  transition: all 0.15s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+.anim-chapa .v2-btn-primary:hover {
+  background: #ffaa66;
+  color: #000000;
+  box-shadow: 7px 7px 0px #000000;
+  transform: rotate(1deg) translateY(-2px);
+}
+.anim-chapa .v2-btn-primary:active {
+  transform: translate(5px, 5px) rotate(0deg);
+  box-shadow: 0px 0px 0px #000000;
+}
+
+/* Botão Secundário Padronizado */
+.v2-btn-secondary {
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  border: 2px solid #000000;
+  box-shadow: 3px 3px 0px #000000;
+  transition: all 0.15s ease;
+}
+.v2-btn-secondary:hover {
+  background: var(--bg-surface-elevated);
+  color: #ffffff;
+  border-color: var(--border-medium);
+  box-shadow: 4px 4px 0px #000000;
+}
+.v2-btn-secondary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #000000;
+}
+
+/* ============================================================
+   GRID DE PERÍCIAS COMPLETO (RECRIAÇÃO DA PÁGINA PERÍCIAS)
+   ============================================================ */
+.v2-pericias-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  background: var(--bg-surface);
+  border: 2px solid #000000;
+  box-shadow: 4px 4px 0px #000000;
+  padding: 14px 20px;
+}
+
+.v2-search-input {
+  background: #09080d;
+  border: 2px solid var(--border-subtle);
+  color: #ffffff;
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  padding: 8px 14px;
+  border-radius: 0;
+  min-width: 260px;
+  outline: none;
+  letter-spacing: 0.05em;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.v2-search-input:focus {
+  border-color: var(--accent-red-nanquim);
+  box-shadow: 0 0 10px rgba(179, 0, 0, 0.4);
+}
+
+.v2-filter-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.v2-filter-chip {
+  background: #181724;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: var(--font-main);
+  font-size: 0.78rem;
+  padding: 4px 10px;
+  cursor: pointer;
+  border-radius: 0;
+  text-transform: uppercase;
+  transition: all 0.15s ease;
+}
+.v2-filter-chip:hover, .v2-filter-chip.active {
+  background: var(--accent-purple);
+  color: #ffffff;
+  border-color: var(--accent-purple);
+}
+
+/* Grid de Cards de Perícias Expandido para a Tela Inteira */
+.v2-skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+/* Card Individual de Perícia: Quadrado com Pontas Finas */
+.v2-skill-card {
+  background: var(--bg-surface);
+  border: 2px solid #000000;
+  box-shadow: 4px 4px 0px #000000;
+  padding: 18px 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.v2-skill-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #000000;
+  border-color: var(--border-medium);
+  background: var(--bg-surface-elevated);
+}
+
+.v2-skill-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.v2-skill-name {
+  font-size: 1.15rem;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 0;
+  letter-spacing: 0.06em;
+}
+
+.v2-skill-attr-tag {
+  font-size: 0.74rem;
+  padding: 3px 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  color: #ffaa66;
+  text-transform: uppercase;
+  border-radius: 0;
+  font-weight: 700;
+}
+
+.v2-skill-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-top: 6px;
+  margin-bottom: 14px;
+}
+
+.v2-skill-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.v2-skill-stat {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.v2-skill-btn-roll {
+  background: #1a1826;
+  border: 1px solid #33304a;
+  color: #ffffff;
+  font-family: var(--font-main);
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  cursor: pointer;
+  border-radius: 0;
+  text-transform: uppercase;
+  transition: all 0.15s ease;
+}
+.v2-skill-btn-roll:hover {
+  background: var(--accent-red-nanquim);
+  border-color: #000;
+}
+
+/* ============================================================
+   CARD INFORMATIVO GERAL (TOP OF PAGE)
+   ============================================================ */
+.v2-lead-box {
+  background: var(--bg-surface);
+  border: 2px solid #000000;
+  border-left: 6px solid var(--accent-red-nanquim);
+  box-shadow: 4px 4px 0px #000000;
+  padding: 20px 24px;
+  margin-bottom: 28px;
+}
+
+.v2-lead-box p {
+  color: var(--text-secondary);
+  font-size: 0.98rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.v2-lead-box strong {
+  color: #ffffff;
+}
+
+/* Responsividade Mobile */
+@media (max-width: 900px) {
+  .v2-app-container {
+    flex-direction: column;
+  }
+  .v2-sidebar {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .v2-main-content {
+    width: 100%;
+  }
+  .v2-page-viewport {
+    padding: 20px 16px;
+  }
+}
