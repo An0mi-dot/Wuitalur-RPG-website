@@ -686,50 +686,6 @@ body.has-showcase .quick-jump-float {
   box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
 }
 
-/* Divisor tático */
-.showcase-hud-divider {
-  height: 1px;
-  background: linear-gradient(90deg, rgba(56, 189, 248, 0.45) 0%, transparent 100%);
-  margin: 2px 0;
-}
-
-/* Linha com valores */
-.showcase-hud-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.showcase-hud-row .hud-label {
-  font-family: var(--font-heading);
-  font-size: 0.68rem;
-  font-weight: normal !important;
-  color: #94a3b8;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-}
-
-.showcase-hud-row .hud-val {
-  font-family: var(--font-body);
-  font-size: 0.82rem;
-  color: #f1f5f9;
-  font-weight: 500;
-  text-align: right;
-}
-
-.hud-pill-badge {
-  font-family: var(--font-heading);
-  font-size: 0.68rem;
-  font-weight: normal !important;
-  color: #4ade80;
-  background: rgba(74, 222, 128, 0.12);
-  border: 1px solid rgba(74, 222, 128, 0.35);
-  padding: 2px 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
 /* Detalhe de Listras Diagonais /// do Esboço no Canto Inferior */
 .showcase-tech-stripes {
   display: flex;

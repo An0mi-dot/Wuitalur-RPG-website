@@ -246,10 +246,8 @@ const ShowcaseEngine = {
     this.elements.hamburgerBtn = document.getElementById('showcase-hamburger-btn');
     this.elements.hamburgerLabel = document.getElementById('showcase-hamburger-label');
     this.elements.bladeNd = document.getElementById('showcase-blade-nd');
-    this.elements.bladeRole = document.getElementById('showcase-blade-role');
     this.elements.ndTier = document.getElementById('showcase-nd-tier');
     this.elements.ndGauge = document.getElementById('showcase-nd-gauge');
-    this.elements.bladeStatus = document.getElementById('showcase-blade-status');
     this.elements.canvas = document.getElementById('showcase-dots-canvas');
 
     if (this.elements.drawerHeading) {
@@ -428,23 +426,6 @@ const ShowcaseEngine = {
         if (idx < ndNum) pip.classList.add('active');
         else pip.classList.remove('active');
       });
-    }
-
-    // Identificação de Arquétipo / Função
-    let roleText = this.mode === 'classes' ? 'Combatente Astral' : 'Linhagem Principal';
-    const idLower = item.id.toLowerCase();
-    if (idLower.includes('compactador')) roleText = 'Manipulador Astral';
-    else if (idLower.includes('consagrado')) roleText = 'Devoto / Suporte Divino';
-    else if (idLower.includes('bestial')) roleText = 'Transmutação Feroz';
-    else if (idLower.includes('cavaleiro') || idLower.includes('paladium')) roleText = 'Guardião Couraçado';
-    else if (idLower.includes('eterno')) roleText = 'Espiritual / Vanguarda';
-    else if (idLower.includes('esper')) roleText = 'Poder Mental / Controle';
-    else if (idLower.includes('lamina') || idLower.includes('lâmina')) roleText = 'Duelista / Dano Ágil';
-    else if (idLower.includes('mago') || idLower.includes('astral')) roleText = 'Conjurador Primordial';
-    else if (idLower.includes('atirador') || idLower.includes('cacador')) roleText = 'Atirador de Precisão';
-
-    if (this.elements.bladeRole) {
-      this.elements.bladeRole.textContent = roleText;
     }
 
     // Renderiza Lista Vertical de Tópicos na Esquerda
