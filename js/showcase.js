@@ -1,6 +1,8 @@
 /* ============================================================
-   WUITALUR RPG — CONTROLADOR SHOWCASE DE CLASSES E RAÇAS
+   WUITALUR RPG — CONTROLADOR SHOWCASE DE CLASSES E RAÇAS (V3)
    Canvas de Pontos da Mesa + Navegação por Tópicos Sem Scroll
+   Fidelidade ao Esboço: Menu na Esquerda + Painel Azul Cobalto
+   Zero Emojis — Chinese Rocks sem Negrito
    ============================================================ */
 
 const ShowcaseEngine = {
@@ -14,16 +16,19 @@ const ShowcaseEngine = {
     heroArt: null,
     bigName: null,
     ndBadge: null,
+    topicActiveTitle: null,
     topicTabs: null,
     topicContent: null,
     drawerBackdrop: null,
     drawerList: null,
     drawerInput: null,
+    drawerHeading: null,
     hamburgerBtn: null,
+    hamburgerLabel: null,
     canvas: null
   },
 
-  // Motor de Partículas (Canvas de Pontos)
+  // Motor de Partículas (Canvas de Pontos Ascendentes estilo Mesa Virtual)
   particles: {
     canvas: null,
     ctx: null,
@@ -51,17 +56,18 @@ const ShowcaseEngine = {
 
     spawnMotes() {
       this.motes = [];
-      const count = 35;
+      const count = 42;
       for (let i = 0; i < count; i++) {
         this.motes.push({
           x: Math.random() * this.width,
           y: Math.random() * this.height,
-          size: Math.random() * 3.5 + 1.2,
-          speedY: Math.random() * 0.8 + 0.3,
-          speedX: (Math.random() - 0.5) * 0.4,
-          opacity: Math.random() * 0.5 + 0.2,
+          size: Math.random() * 3.8 + 1.2,
+          speedY: Math.random() * 0.9 + 0.35,
+          speedX: (Math.random() - 0.5) * 0.45,
+          opacity: Math.random() * 0.45 + 0.25,
           pulse: Math.random() * Math.PI * 2,
-          color: Math.random() > 0.4 ? '124, 58, 237' : '56, 189, 248' // Roxo Astral ou Azul Espiritual
+          // Roxo Astral (#7c3aed) ou Azul Cósmico (#38bdf8)
+          color: Math.random() > 0.45 ? '124, 58, 237' : '56, 189, 248'
         });
       }
     },
@@ -74,15 +80,15 @@ const ShowcaseEngine = {
         const m = this.motes[i];
         m.y -= m.speedY;
         m.x += m.speedX;
-        m.pulse += 0.03;
+        m.pulse += 0.025;
 
-        // Reposiciona quando sai da tela
-        if (m.y < -10) {
-          m.y = this.height + 10;
+        // Reposiciona na base quando sai pelo topo
+        if (m.y < -12) {
+          m.y = this.height + 12;
           m.x = Math.random() * this.width;
         }
 
-        const alpha = Math.max(0, m.opacity + Math.sin(m.pulse) * 0.15);
+        const alpha = Math.max(0.08, m.opacity + Math.sin(m.pulse) * 0.18);
         this.ctx.fillStyle = `rgba(${m.color}, ${alpha})`;
         this.ctx.beginPath();
         this.ctx.arc(m.x, m.y, m.size, 0, Math.PI * 2);
@@ -149,10 +155,17 @@ const ShowcaseEngine = {
         // Tópicos subsequentes agrupados por cabeçalhos (H4)
         const h4Elements = body.querySelectorAll('h4');
         h4Elements.forEach(h4 => {
-          let title = h4.textContent.trim().replace(/^[—–-\s]+|[—–-\s]+$/g, '').replace(/\s*[—–]\s*/g, ' - ');
-          // Encurta nomes muito longos para caber na aba
-          if (title.length > 25) {
-            title = title.split(' - ')[0] || title.slice(0, 22) + '...';
+          let rawTitle = h4.textContent.trim();
+          // Sanitização rigorosa contra caracteres corrompidos
+          rawTitle = rawTitle.replace(/[\uFFFD\x97\x96\?]/g, ' - ')
+                             .replace(/^[—–-\s]+|[—–-\s]+$/g, '')
+                             .replace(/\s*[—–]\s*/g, ' - ')
+                             .replace(/\s{2,}/g, ' ');
+
+          let title = rawTitle;
+          // Encurta para o menu da esquerda se for muito longo
+          if (title.length > 28) {
+            title = title.split(' - ')[0] || title.slice(0, 26) + '...';
           }
           const wrapper = document.createElement('div');
           let next = h4.nextElementSibling;
@@ -165,6 +178,7 @@ const ShowcaseEngine = {
           if (wrapper.children.length > 0) {
             topics.push({
               title: title,
+              fullTitle: rawTitle,
               contentHtml: wrapper.innerHTML
             });
           }
@@ -174,7 +188,8 @@ const ShowcaseEngine = {
       // Se nenhum tópico específico foi extraído, usa o conteúdo completo
       if (topics.length === 0) {
         topics.push({
-          title: 'Conteúdo',
+          title: 'Visão Geral',
+          fullTitle: 'Visão Geral',
           contentHtml: body ? body.innerHTML : sec.innerHTML
         });
       }
@@ -198,13 +213,20 @@ const ShowcaseEngine = {
     this.elements.heroArt = document.getElementById('showcase-hero-art');
     this.elements.bigName = document.getElementById('showcase-big-name');
     this.elements.ndBadge = document.getElementById('showcase-nd-badge');
+    this.elements.topicActiveTitle = document.getElementById('showcase-topic-active-title');
     this.elements.topicTabs = document.getElementById('showcase-topic-tabs');
     this.elements.topicContent = document.getElementById('showcase-topic-content');
     this.elements.drawerBackdrop = document.getElementById('showcase-drawer-backdrop');
     this.elements.drawerList = document.getElementById('showcase-drawer-list');
     this.elements.drawerInput = document.getElementById('showcase-drawer-input');
+    this.elements.drawerHeading = document.getElementById('showcase-drawer-heading');
     this.elements.hamburgerBtn = document.getElementById('showcase-hamburger-btn');
+    this.elements.hamburgerLabel = document.getElementById('showcase-hamburger-label');
     this.elements.canvas = document.getElementById('showcase-dots-canvas');
+
+    if (this.elements.drawerHeading) {
+      this.elements.drawerHeading.textContent = this.mode === 'classes' ? 'Todas as Classes' : 'Todas as Raças';
+    }
   },
 
   bindEvents() {
@@ -252,6 +274,7 @@ const ShowcaseEngine = {
     this.renderDrawerList();
     this.elements.drawerBackdrop.classList.add('is-open');
     if (this.elements.drawerInput) {
+      this.elements.drawerInput.value = '';
       setTimeout(() => this.elements.drawerInput.focus(), 100);
     }
   },
@@ -270,7 +293,7 @@ const ShowcaseEngine = {
     );
 
     if (filtered.length === 0) {
-      this.elements.drawerList.innerHTML = `<div style="padding: 16px; color: var(--text-muted); text-align: center;">Nenhum item encontrado.</div>`;
+      this.elements.drawerList.innerHTML = `<div style="padding: 18px; color: var(--text-muted); text-align: center; font-size: 0.88rem;">Nenhum resultado encontrado.</div>`;
       return;
     }
 
@@ -300,6 +323,11 @@ const ShowcaseEngine = {
       window.location.hash = id;
     }
 
+    // Atualiza label do botão hambúrguer
+    if (this.elements.hamburgerLabel) {
+      this.elements.hamburgerLabel.textContent = this.mode === 'classes' ? `Classes (${item.name})` : `Raças (${item.name})`;
+    }
+
     // Animação de troca da imagem central
     if (this.elements.heroArt) {
       this.elements.heroArt.classList.add('is-switching');
@@ -312,23 +340,23 @@ const ShowcaseEngine = {
           this.elements.heroArt.style.display = 'none';
         }
         this.elements.heroArt.classList.remove('is-switching');
-      }, 150);
+      }, 140);
     }
 
     // Nome Gigante Sobreposto com Impacto
     if (this.elements.bigName) {
       this.elements.bigName.textContent = item.name;
       this.elements.bigName.classList.remove('name-slam');
-      void this.elements.bigName.offsetWidth; // Força reflow para re-animar
+      void this.elements.bigName.offsetWidth; // Força reflow
       this.elements.bigName.classList.add('name-slam');
     }
 
-    // Badge
+    // Badge de Dificuldade / ND
     if (this.elements.ndBadge) {
-      this.elements.ndBadge.textContent = item.badge || 'Oficial';
+      this.elements.ndBadge.textContent = item.badge || (this.mode === 'classes' ? 'ND 1' : 'Oficial');
     }
 
-    // Renderiza Abas de Tópicos
+    // Renderiza Lista Vertical de Tópicos na Esquerda
     this.renderTopicTabs(item);
   },
 
@@ -341,6 +369,7 @@ const ShowcaseEngine = {
       btn.type = 'button';
       btn.className = `showcase-tab-btn ${index === this.activeTopicIndex ? 'active' : ''}`;
       btn.textContent = topic.title;
+      btn.title = topic.fullTitle || topic.title;
       btn.addEventListener('click', () => {
         this.activeTopicIndex = index;
         this.renderTopicTabs(item);
@@ -348,17 +377,23 @@ const ShowcaseEngine = {
       this.elements.topicTabs.appendChild(btn);
     });
 
-    // Renderiza o conteúdo do tópico ativo
+    // Renderiza o conteúdo do tópico ativo no painel azul cobalto da direita
     this.renderActiveTopicContent(item);
   },
 
   renderActiveTopicContent(item) {
-    if (!this.elements.topicContent) return;
     const activeTopic = item.topics[this.activeTopicIndex] || item.topics[0];
-    
-    if (activeTopic) {
+    if (!activeTopic) return;
+
+    // Atualiza o Título do Tópico Ativo no Cabeçalho do Painel da Direita
+    if (this.elements.topicActiveTitle) {
+      this.elements.topicActiveTitle.textContent = activeTopic.fullTitle || activeTopic.title;
+    }
+
+    // Atualiza o Conteúdo de Leitura com Fade Suave
+    if (this.elements.topicContent) {
       this.elements.topicContent.style.opacity = '0';
-      this.elements.topicContent.style.transform = 'translateY(6px)';
+      this.elements.topicContent.style.transform = 'translateY(8px)';
       
       setTimeout(() => {
         this.elements.topicContent.innerHTML = activeTopic.contentHtml;
@@ -366,7 +401,7 @@ const ShowcaseEngine = {
         this.elements.topicContent.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
         this.elements.topicContent.style.opacity = '1';
         this.elements.topicContent.style.transform = 'translateY(0)';
-      }, 80);
+      }, 70);
     }
   }
 };

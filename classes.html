@@ -88,17 +88,27 @@
     <!-- STAGE SHOWCASE 100VH (SEM SCROLL GERAL) -->
     <div class="showcase-viewport" id="showcase-viewport">
 
-      <!-- PALCO CENTRAL (ARTE + CANVAS DE PONTOS DA MESA) -->
+      <!-- PALCO CENTRAL (ARTE + CANVAS DE PONTOS DA MESA + NAVEGAÇÃO ESQUERDA) -->
       <div class="showcase-center-stage">
-        <!-- Botão Hambúrguer Superior Esquerdo -->
-        <button type="button" class="showcase-hamburger-btn" id="showcase-hamburger-btn" aria-label="Abrir lista">
-          <span>&#x2630;</span> <span id="showcase-hamburger-label">Classes</span>
-        </button>
-
         <!-- Canvas de Partículas / Pontos da Mesa -->
         <canvas class="showcase-dots-canvas" id="showcase-dots-canvas"></canvas>
         <div class="showcase-dots-overlay"></div>
         <div class="showcase-hero-glow"></div>
+
+        <!-- COLUNA DE NAVEGAÇÃO NA ESQUERDA (HAMBÚRGUER + TÓPICOS) -->
+        <div class="showcase-left-nav">
+          <button type="button" class="showcase-hamburger-btn" id="showcase-hamburger-btn" aria-label="Abrir lista de classes">
+            <span class="hamburger-icon">&#x2630;</span>
+            <span class="hamburger-label" id="showcase-hamburger-label">Classes</span>
+          </button>
+
+          <div class="showcase-topics-wrapper">
+            <div class="showcase-topics-title">Tópicos</div>
+            <div class="showcase-topic-tabs" id="showcase-topic-tabs">
+              <!-- Gerado dinamicamente via JS -->
+            </div>
+          </div>
+        </div>
 
         <!-- Ilustração Central da Classe/Raça -->
         <img src="" alt="" class="showcase-hero-art" id="showcase-hero-art">
@@ -107,21 +117,23 @@
         <div class="showcase-big-name" id="showcase-big-name">Carregando...</div>
       </div>
 
-      <!-- PAINEL DA DIREITA COM CORTE DIAGONAL -->
+      <!-- PAINEL DA DIREITA: AZUL COBALTO DIAGONAL FIEL AO ESBOÇO -->
       <aside class="showcase-right-panel" id="showcase-right-panel">
         <div class="showcase-panel-header">
+          <h3 class="showcase-topic-active-title" id="showcase-topic-active-title">Visão Geral</h3>
           <div class="showcase-panel-meta">
             <span class="showcase-nd-badge" id="showcase-nd-badge">ND 1</span>
           </div>
-          <!-- Menu de Tópicos (SEM SCROLL: Navegação na Mesma Tela) -->
-          <div class="showcase-topic-tabs" id="showcase-topic-tabs">
-            <!-- Gerado dinamicamente -->
-          </div>
         </div>
 
-        <!-- Conteúdo do Tópico Selecionado -->
+        <!-- Conteúdo do Tópico Selecionado (Com Scroll Interno Fino) -->
         <div class="showcase-topic-content" id="showcase-topic-content">
           <!-- Gerado dinamicamente -->
+        </div>
+
+        <!-- Detalhe Decorativo de Listras Diagonais // do Esboço -->
+        <div class="showcase-tech-stripes" aria-hidden="true">
+          <span></span><span></span><span></span>
         </div>
       </aside>
 
