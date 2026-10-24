@@ -21,11 +21,12 @@ const DISCORD_CONFIG = {
 
 function buildPayload(boletim) {
   const titleText = boletim.titulo || 'Novo Boletim';
+  const url = 'https://an0mi-dot.github.io/Wuitalur-RPG-website/boletim.html';
 
   return {
     username: 'WuB - Utilities',
     avatar_url: DISCORD_CONFIG.botAvatar,
-    content: '@everyone [Novo Boletim]\nSOBRE: ' + titleText,
+    content: '@everyone [Novo Boletim]\nSOBRE: ' + titleText + '\n' + url,
     allowed_mentions: {
       parse: ['everyone']
     }
