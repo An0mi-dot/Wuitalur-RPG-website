@@ -1,0 +1,251 @@
+/* ============================================================
+   WUITALUR RPG — INTERFACE MODERNA DE ORIGENS (EDICAO 2.0)
+   Tema: Dark Fantasy Neo-Brutalista com Acento Esmeralda (#10b981)
+   ============================================================ */
+
+/* Hero / Header da Página */
+.origins-header-banner {
+  background: #16161E;
+  border: 2px solid #000000;
+  border-left: 6px solid #10b981;
+  box-shadow: 4px 4px 0 #000000;
+  padding: 22px 26px;
+  margin-bottom: 24px;
+}
+.origins-header-title {
+  font-family: var(--font-heading);
+  font-size: 1.85rem;
+  color: #ffffff;
+  margin: 0 0 8px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.origins-header-desc {
+  font-size: 0.92rem;
+  color: #94a3b8;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Barra Tática de Busca e Controles */
+.origins-control-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  background: #13121e;
+  border: 2px solid #000000;
+  box-shadow: 4px 4px 0 #000000;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  position: sticky;
+  top: 10px;
+  z-index: 25;
+}
+.origins-search-wrap {
+  flex: 1;
+  min-width: 240px;
+  position: relative;
+}
+.origins-search-input {
+  width: 100%;
+  background: #0d0d14;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 3px solid #10b981;
+  color: #ffffff;
+  padding: 9px 12px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.15s ease;
+}
+.origins-search-input:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+}
+.origins-count-badge {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  padding: 7px 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Container de Chips de Pulo Rápido */
+.origins-quick-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+.origin-chip {
+  background: #16161E;
+  border: 1px solid #000000;
+  border-left: 2px solid #10b981;
+  color: #cbd5e1;
+  padding: 5px 11px;
+  font-size: 0.78rem;
+  text-decoration: none;
+  font-family: var(--font-heading);
+  letter-spacing: 0.04em;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+.origin-chip:hover {
+  background: #10b981;
+  color: #000000;
+  border-color: #000000;
+  transform: translateY(-1px);
+}
+
+/* Grid de Cards de Origens */
+.origins-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(460px, 1fr));
+  gap: 22px;
+  margin-bottom: 40px;
+}
+@media (max-width: 768px) {
+  .origins-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* O Card Individual de Origem */
+.origin-card {
+  background: #16161E;
+  border: 2px solid #000000;
+  border-top: 4px solid #10b981;
+  box-shadow: 4px 4px 0 #000000;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  overflow: hidden;
+}
+.origin-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 6px 6px 0 #000000;
+}
+
+/* Header do Card */
+.origin-card-header {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  background: #12121a;
+}
+.origin-name {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.origin-badge {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  padding: 2px 8px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+/* Corpo do Card */
+.origin-card-body {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 14px;
+}
+.origin-description {
+  font-size: 0.88rem;
+  color: #cbd5e1;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Aviso de Restrição */
+.origin-notice {
+  background: #23160a;
+  border: 1px solid #f59e0b;
+  border-left: 4px solid #f59e0b;
+  padding: 8px 12px;
+  font-size: 0.82rem;
+  color: #fbbf24;
+  font-weight: 500;
+}
+
+/* Grid de Especificações (Perícias, Ferramentas, etc) */
+.origin-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  background: #0d0c14;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 12px;
+}
+@media (max-width: 500px) {
+  .origin-specs-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.origin-spec-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.origin-spec-item.full-width {
+  grid-column: 1 / -1;
+}
+.origin-spec-label {
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  color: #10b981;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.origin-spec-value {
+  font-size: 0.84rem;
+  color: #ffffff;
+  line-height: 1.45;
+}
+
+/* Bloco de Poderes */
+.origin-powers-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+}
+.origin-poder-box {
+  background: #141320;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-left: 3px solid #10b981;
+  padding: 10px 12px;
+}
+.origin-poder-title {
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  color: #34d399;
+  margin: 0 0 4px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.origin-poder-desc {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin: 0;
+}

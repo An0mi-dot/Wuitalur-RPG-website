@@ -1599,44 +1599,31 @@ body:not(.mesa-body) .conclave-card:hover {
   background: var(--bg-elevated) !important;
 }
 
-/* MOTOR DE GLITCH EXCLUSIVO PARA O CLIQUE DE BOTOES */
+/* MOTOR DE IMPACTO / GLITCH SEM DESTRUIR A HITBOX DO MOUSE */
 @keyframes btnGlitchImpact {
   0% {
-    transform: translate(0, 0) skewX(0);
+    transform: translate(1px, 1px);
     filter: none;
-    clip-path: none;
   }
-  18% {
-    transform: translate(-4px, 2px) skewX(-7deg);
-    box-shadow: -5px 0px 0px var(--purple-glow, #8B5CF6), 5px 0px 0px var(--accent-contrast, #ffffff);
-    filter: contrast(1.7) hue-rotate(40deg);
-    clip-path: polygon(0 15%, 100% 15%, 100% 45%, 0 45%);
+  30% {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 #000000, -2px 0 0 #00ffff, 2px 0 0 #ff0055;
+    filter: contrast(1.4);
   }
-  38% {
-    transform: translate(4px, -2px) skewX(6deg);
-    box-shadow: 4px -2px 0px var(--purple-glow, #8B5CF6), -4px 2px 0px var(--accent-contrast, #ffffff);
-    clip-path: polygon(0 60%, 100% 60%, 100% 85%, 0 85%);
-  }
-  60% {
-    transform: translate(-2px, -1px) skewX(-3deg);
-    box-shadow: -3px 2px 0px #ffffff, 3px -1px 0px var(--accent-contrast, #ffffff);
-    clip-path: polygon(0 25%, 100% 25%, 100% 55%, 0 55%);
-  }
-  80% {
-    transform: translate(2px, 1px) skewX(1deg);
-    box-shadow: 2px 0px 0px var(--purple-glow, #8B5CF6);
-    clip-path: none;
+  70% {
+    transform: translate(1px, 2px);
+    box-shadow: 1px 1px 0 #000000, 2px -1px 0 #00ffff, -2px 1px 0 #ff0055;
   }
   100% {
-    transform: translate(0, 0) skewX(0);
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 #000000;
     filter: none;
-    clip-path: none;
   }
 }
 
-body:not(.mesa-body) button:not(.boletim-nav-arrow-btn):not(.boletim-mobile-toggle-btn),
-body:not(.mesa-body) .btn:not(.boletim-nav-arrow-btn),
-body:not(.mesa-body) .wiki-btn,
+body:not(.mesa-body) button:not([class*="showcase-"]):not(.sidebar-toggle):not(.boletim-nav-arrow-btn):not(.boletim-mobile-toggle-btn),
+body:not(.mesa-body) .btn:not(.boletim-nav-arrow-btn):not([class*="showcase-"]),
+body:not(.mesa-body) .wiki-btn:not([class*="showcase-"]),
 body:not(.mesa-body) .home-card-btn,
 body:not(.mesa-body) input[type="submit"],
 body:not(.mesa-body) input[type="button"] {
@@ -1655,9 +1642,9 @@ body:not(.mesa-body) input[type="button"] {
   user-select: none;
 }
 
-body:not(.mesa-body) button:not(.boletim-nav-arrow-btn):not(.boletim-mobile-toggle-btn):hover,
-body:not(.mesa-body) .btn:not(.boletim-nav-arrow-btn):hover,
-body:not(.mesa-body) .wiki-btn:hover,
+body:not(.mesa-body) button:not([class*="showcase-"]):not(.sidebar-toggle):not(.boletim-nav-arrow-btn):not(.boletim-mobile-toggle-btn):hover,
+body:not(.mesa-body) .btn:not(.boletim-nav-arrow-btn):not([class*="showcase-"]):hover,
+body:not(.mesa-body) .wiki-btn:not([class*="showcase-"]):hover,
 body:not(.mesa-body) .home-card-btn:hover {
   background: var(--accent-contrast) !important;
   color: var(--sticker-text) !important;
@@ -1665,9 +1652,9 @@ body:not(.mesa-body) .home-card-btn:hover {
   border-color: #ffffff !important;
 }
 
-body:not(.mesa-body) button:not(.boletim-nav-arrow-btn):not(.boletim-mobile-toggle-btn):active,
-body:not(.mesa-body) .btn:not(.boletim-nav-arrow-btn):active,
-body:not(.mesa-body) .wiki-btn:active,
+body:not(.mesa-body) button:not([class*="showcase-"]):not(.sidebar-toggle):not(.boletim-nav-arrow-btn):not(.boletim-mobile-toggle-btn):active,
+body:not(.mesa-body) .btn:not(.boletim-nav-arrow-btn):not([class*="showcase-"]):active,
+body:not(.mesa-body) .wiki-btn:not([class*="showcase-"]):active,
 body:not(.mesa-body) .home-card-btn:active,
 body:not(.mesa-body) .home-cta-btn:active,
 body:not(.mesa-body) input[type="submit"]:active,
@@ -1768,8 +1755,8 @@ h1, h2, h3, h4, h5, h6,
 .sidebar-link,
 .v2-topic-banner,
 .ribbon-topic,
-body:not(.mesa-body) button,
-body:not(.mesa-body) .btn,
+body:not(.mesa-body) button:not(.showcase-tab-btn),
+body:not(.mesa-body) .btn:not(.showcase-tab-btn),
 body:not(.mesa-body) .wiki-btn,
 body:not(.mesa-body) .home-card h3 {
   font-family: var(--font-heading) !important;
@@ -1803,10 +1790,11 @@ body:not(.mesa-body) .v2-lead-box p {
    Atributos, Raças, Origens, Perícias, Classes e Home
    ============================================================ */
 
-/* Tópico Torto Universal */
+/* Tópico Torto Universal — Sem borda branca, borda com a cor dele e sombra preta indo pra direita */
 .topic-crooked, .v2-topic-banner {
+  --topic-bg: #7C3AED;
   display: inline-block;
-  background: var(--accent, #7C3AED);
+  background: var(--topic-bg);
   color: #ffffff !important;
   font-family: var(--font-heading) !important;
   font-size: 1.35rem;
@@ -1815,9 +1803,8 @@ body:not(.mesa-body) .v2-lead-box p {
   text-transform: uppercase;
   padding: 8px 22px;
   transform: rotate(-1.6deg);
-  clip-path: polygon(2% 0%, 98% 2%, 100% 97%, 0% 100%);
-  box-shadow: 4px 4px 0px var(--shadow-color);
-  border: 2px solid var(--accent-contrast);
+  border: 2px solid var(--topic-bg);
+  box-shadow: 4px 4px 0px #000000;
   border-radius: 0;
   margin-bottom: 20px;
   position: relative;
@@ -1826,11 +1813,38 @@ body:not(.mesa-body) .v2-lead-box p {
 }
 .topic-crooked:hover, .v2-topic-banner:hover {
   transform: rotate(0deg) scale(1.02);
-  box-shadow: 6px 6px 0px var(--accent-contrast);
+  box-shadow: 6px 6px 0px #000000;
+  border-color: var(--topic-bg);
 }
-.topic-crooked.yellow, .v2-topic-banner.yellow {
-  background: #f59e0b;
+.topic-crooked.purple, .v2-topic-banner.purple {
+  --topic-bg: #7C3AED;
+  background: #7C3AED;
+  border-color: #7C3AED;
+  color: #ffffff !important;
+}
+.topic-crooked.pink, .v2-topic-banner.pink {
+  --topic-bg: #ec4899;
+  background: #ec4899;
+  border-color: #ec4899;
+  color: #ffffff !important;
+}
+.topic-crooked.cyan, .v2-topic-banner.cyan {
+  --topic-bg: #06b6d4;
+  background: #06b6d4;
+  border-color: #06b6d4;
   color: #000000 !important;
+}
+.topic-crooked.amber, .v2-topic-banner.amber, .topic-crooked.yellow, .v2-topic-banner.yellow {
+  --topic-bg: #f59e0b;
+  background: #f59e0b;
+  border-color: #f59e0b;
+  color: #000000 !important;
+}
+.topic-crooked.green, .v2-topic-banner.green {
+  --topic-bg: #10b981;
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff !important;
 }
 .topic-crooked.small, .v2-topic-banner.small {
   font-size: 0.95rem;
@@ -2289,4 +2303,23 @@ body:not(.mesa-body) .v2-lead-box p {
   color: var(--text-secondary);
   line-height: 1.55;
   margin: 0;
+}
+
+/* GARANTIA DE HITBOX E CLIQUE IMEDIATO EM BOTOES E CARDS */
+body:not(.mesa-body) button,
+body:not(.mesa-body) .btn,
+body:not(.mesa-body) .home-cta-btn,
+body:not(.mesa-body) .sidebar-link,
+body:not(.mesa-body) .compendium-card,
+body:not(.mesa-body) .tactical-chip {
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+body:not(.mesa-body) button *,
+body:not(.mesa-body) .btn *,
+body:not(.mesa-body) .home-cta-btn *,
+body:not(.mesa-body) .sidebar-link *,
+body:not(.mesa-body) .tactical-chip * {
+  pointer-events: none;
 }

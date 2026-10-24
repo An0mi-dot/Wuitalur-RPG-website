@@ -165,7 +165,7 @@ body:not(.mesa-body)::before {
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg-primary); }
 ::-webkit-scrollbar-thumb { background: var(--border-medium); border-radius: 0; }
-::-webkit-scrollbar-thumb:hover { background: var(--border-accent); }
+::-webkit-scrollbar-thumb:hover { background: #47475a; }
 ::selection { background: rgba(124, 58, 237, 0.4); color: #fff; }
 
 h1, h2, h3, h4, h5, h6 {
@@ -407,7 +407,8 @@ code, .mono {
 .sidebar {
   width: var(--sidebar-width);
   background: var(--bg-surface);
-  border-right: 2px solid var(--border-accent); box-shadow: 4px 0px 0px var(--shadow-color);
+  border-right: 2px solid #000000;
+  box-shadow: 4px 0px 0px #000000;
   position: fixed;
   top: 0; left: 0;
   height: 100vh;
@@ -416,6 +417,22 @@ code, .mono {
   display: flex;
   flex-direction: column;
   transition: transform var(--transition-base);
+  scrollbar-color: var(--border-medium, #2E2E3E) var(--bg-surface, #16161E);
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 7px;
+}
+.sidebar::-webkit-scrollbar-track {
+  background: var(--bg-surface, #16161E);
+  border-right: 1px solid #000000;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--border-medium, #2E2E3E);
+  border-radius: 0;
+}
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #47475a;
 }
 
 .sidebar-header {
@@ -876,8 +893,8 @@ body:not(.mesa-body) .sidebar-section-title,
 body:not(.mesa-body) .sidebar-link,
 body:not(.mesa-body) .v2-topic-banner,
 body:not(.mesa-body) .ribbon-topic,
-body:not(.mesa-body) button,
-body:not(.mesa-body) .btn,
+body:not(.mesa-body) button:not(.showcase-tab-btn),
+body:not(.mesa-body) .btn:not(.showcase-tab-btn),
 body:not(.mesa-body) .wiki-btn,
 body:not(.mesa-body) .home-card h3 {
   font-family: var(--font-heading) !important;
@@ -904,4 +921,49 @@ body:not(.mesa-body) .v2-lead-box p {
   font-weight: 400 !important;
   letter-spacing: normal !important;
   line-height: 1.65;
+}
+
+
+/* === SIDEBAR SEARCH BAR === */
+.sidebar-search-wrap {
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid var(--border-subtle, #1f1f2e);
+  background: var(--bg-surface, #16161E);
+}
+
+.sidebar-search-input {
+  width: 100%;
+  background: #0D0D12;
+  border: 1px solid var(--border-medium, #2E2E3E);
+  border-radius: 0;
+  color: #ffffff;
+  padding: 7px 10px;
+  font-family: var(--font-body, system-ui, -apple-system, sans-serif);
+  font-size: 0.82rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.sidebar-search-input:focus {
+  border-color: #a78bfa;
+}
+
+.sidebar-search-input::placeholder {
+  color: var(--text-muted, #71717a);
+  font-size: 0.8rem;
+}
+
+.sidebar-empty-msg {
+  padding: 16px 14px;
+  font-size: 0.82rem;
+  color: var(--text-muted, #71717a);
+  text-align: center;
+  font-style: italic;
+}
+
+/* Remocao permanente do menu hamburger superior direito */
+.page-header .wiki-btn,
+#wiki-menu-btn,
+.wiki-dropdown {
+  display: none !important;
 }

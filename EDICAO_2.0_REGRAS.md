@@ -10,8 +10,8 @@
 - [Capítulo 2: Perícias e Resolução de Testes](#capítulo-2-perícias-e-resolução-de-testes) — **APROVADO**
 - [Capítulo 3: Sistema de Combate e Defesa](#capítulo-3-sistema-de-combate-e-defesa) — **APROVADO**
 - [Capítulo 4: Raças de Wuitalur](#capítulo-4-raças-de-wuitalur) — **APROVADO**
-- [Capítulo 5: Elementos e Energia Astral](#capítulo-5-elementos-e-energia-astral) — *Pendente*
-- [Capítulo 6: Classes, Arquétipos e Progressão](#capítulo-6-classes-arquétipos-e-progressão) — *Pendente*
+- [Capítulo 5: Classes e Papéis Táticos](#capítulo-5-classes-e-papéis-táticos) — **EM ANDAMENTO**
+- [Capítulo 6: Elementos e Energia Astral](#capítulo-6-elementos-e-energia-astral) — *Pendente*
 - [Capítulo 7: O Cosmo e Mecânicas Especiais](#capítulo-7-o-cosmo-e-mecânicas-especiais) — *Pendente*
 
 ---
@@ -357,3 +357,32 @@ Todas as raças de Wuitalur seguem uma estrutura padronizada de três blocos: **
     * *Tela Azul*: Uma vez por combate, ao sofrer um ataque, força o atacante a travar em pane motora, fazendo-o perder o restante do turno dele.
 * **Característica de Raça — Deslocamento de Quadros (Frame Drop)**:
   * O Espectro perde quadros de animação na realidade e se teletransporta instantaneamente para um espaço visível desocupado a até 4B de distância. Pode atravessar grades, frestas e obstáculos físicos, sem provocar contra-ataques ao se deslocar dessa forma.
+
+---
+
+# CAPÍTULO 5: CLASSES E PAPÉIS TÁTICOS
+
+Em Wuitalur 2.0, toda classe possui um Papel Tático Composto logo abaixo do seu nome, formado por sua Função Primária e seu Subtítulo. Essas tags indicam como a classe se posiciona, atua e colabora com o grupo em combate e exploração.
+
+---
+
+### 5.1. As 3 Funções Primárias
+Representam a postura geral e o posicionamento da classe no campo de batalha:
+
+* **Atacante**: Classes focadas na ofensiva direta, pressão constante e eliminação rápida de ameaças.
+* **Defensor**: Classes voltadas para absorção de impacto, retenção de inimigos, sobrevivência e proteção de aliados.
+* **Estrategista**: Classes dedicadas ao controle do campo, manipulação de terreno, concessão de vantagens e liderança rítmica da luta.
+
+---
+
+### 5.2. Os 8 Subtítulos Táticos
+Completam a função primária, definindo o estilo exato de gameplay da classe:
+
+1. **Canhão de Vidro**: Dano explosivo massivo, capaz de aniquilar alvos rapidamente, mas com baixa resistência e armadura frágil.
+2. **Tanque**: Focado em retenção pura de dano, escudos pesados, atração de ameaças e sustentação da linha de frente.
+3. **Colosso**: Combatente implacável de curta distância que une corpo resistente a dano pesado e contínuo.
+4. **Duelista**: Especialista em combate ágil, movimentação de bate e sai, esquiva apurada e precisão cirúrgica.
+5. **Controlador**: Focado em manipular o espaço, restringir movimentação, empurrar, imobilizar e negar ações aos inimigos.
+6. **Suporte**: Especialista em sustentação de aliados, restauração de recursos vitais e remoção de condições negativas.
+7. **Tático**: Focado em ditar o ritmo da cena, explorar fraquezas de inimigos e abrir brechas para o grupo agir.
+8. **Utilitário**: Altamente adaptável a qualquer ambiente, mestre em ferramentas, improviso e sobrevivência extrema.

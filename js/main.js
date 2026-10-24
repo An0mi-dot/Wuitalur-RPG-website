@@ -104,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
   highlightPV();
   autoHighlightDice();
   const sidebar = document.getElementById('sidebar');
+  initSidebarSearch(sidebar);
   const toggle = document.getElementById('sidebar-toggle');
 
   // Create overlay
@@ -370,3 +371,75 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 
 
+
+
+function initSidebarSearch(sidebar) {
+  if (!sidebar) return;
+  const sidebarNav = sidebar.querySelector('.sidebar-nav');
+  if (!sidebarNav) return;
+
+  let searchWrap = sidebar.querySelector('.sidebar-search-wrap');
+  if (!searchWrap) {
+    searchWrap = document.createElement('div');
+    searchWrap.className = 'sidebar-search-wrap';
+    searchWrap.innerHTML = '<input type="text" class="sidebar-search-input" id="sidebar-search-input" placeholder="Buscar página..." aria-label="Buscar página">';
+    sidebar.insertBefore(searchWrap, sidebarNav);
+  }
+
+  const searchInput = searchWrap.querySelector('#sidebar-search-input');
+  if (!searchInput) return;
+
+  let emptyMsg = sidebarNav.querySelector('.sidebar-empty-msg');
+  if (!emptyMsg) {
+    emptyMsg = document.createElement('div');
+    emptyMsg.className = 'sidebar-empty-msg';
+    emptyMsg.textContent = 'Nenhuma página encontrada';
+    emptyMsg.style.display = 'none';
+    sidebarNav.appendChild(emptyMsg);
+  }
+
+  function normalize(str) {
+    return (str || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim();
+  }
+
+  searchInput.addEventListener('input', (e) => {
+    const query = normalize(e.target.value);
+    const links = sidebarNav.querySelectorAll('.sidebar-link');
+    let visibleCount = 0;
+
+    links.forEach(link => {
+      const linkText = normalize(link.textContent);
+      const linkHref = normalize(link.getAttribute('href') || '');
+      const match = !query || linkText.includes(query) || linkHref.includes(query);
+
+      link.style.display = match ? 'flex' : 'none';
+      if (match) visibleCount++;
+    });
+
+    const sections = sidebarNav.querySelectorAll('.sidebar-section-title');
+    sections.forEach(title => {
+      if (!query) {
+        title.style.display = 'block';
+        return;
+      }
+      let next = title.nextElementSibling;
+      let hasVisible = false;
+      while (next && !next.classList.contains('sidebar-section-title')) {
+        if (next.classList.contains('sidebar-link') && next.style.display !== 'none') {
+          hasVisible = true;
+          break;
+        }
+        next = next.nextElementSibling;
+      }
+      title.style.display = hasVisible ? 'block' : 'none';
+    });
+
+    if (emptyMsg) {
+      emptyMsg.style.display = (visibleCount === 0 && query) ? 'block' : 'none';
+    }
+  });
+}

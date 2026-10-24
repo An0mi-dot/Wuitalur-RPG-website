@@ -3,24 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Origens  Wuitalur RPG</title>
+  <title>Origens — Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/components.css">
-  <style>
-    .origin-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-2xl); }
-    .origin-card-header { padding: var(--space-lg) var(--space-xl); border-bottom: 1px solid var(--border-subtle); background: rgba(0,0,0,0.15); }
-    .origin-name { font-family: var(--font-heading); font-size: 1.6rem; font-weight: 900; margin: 0; color: var(--text-primary); }
-    .origin-card-body { padding: var(--space-xl); }
-    .origin-description { font-style: italic; color: var(--text-secondary); line-height: 1.8; margin-bottom: var(--space-xl); }
-    .origin-field { background: rgba(0,0,0,0.15); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-md); }
-    .origin-field-label { font-family: var(--font-heading); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--attr-ea); margin-bottom: var(--space-xs); }
-    .origin-field-value { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; }
-    .origin-poder { background: rgba(0,0,0,0.15); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-lg); margin-bottom: var(--space-md); }
-    .origin-poder h5 { font-family: var(--font-heading); font-size: 1rem; color: var(--text-primary); margin-bottom: var(--space-sm); }
-    .origin-poder p { font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary); margin-bottom: 0; }
-    .origin-notice { background: rgba(245, 183, 0, 0.1); border: 1px solid rgba(245, 183, 0, 0.3); border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-lg); font-size: 0.85rem; color: #f5b700; }
-  </style>
+  <link rel="stylesheet" href="css/origins.css">
 </head>
 <body>
 
@@ -34,7 +21,7 @@
       </div>
     </div>
     <nav class="sidebar-nav">
-            <div class="sidebar-section-title">Extras</div>
+      <div class="sidebar-section-title">Extras</div>
       <a href="suplementos.html" class="sidebar-link"><span class="icon"></span> Suplementos</a>
       <a href="boletim.html" class="sidebar-link" style="color: #f59e0b;"><span class="icon"></span> Boletim</a>
       <a href="mesa.html" class="sidebar-link" style="color: #ff7700;"><span class="icon"></span> Mesa Virtual</a>
@@ -48,7 +35,6 @@
       <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
 
       <div class="sidebar-section-title">Regras</div>
-
       <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
       <a href="sanidade.html" class="sidebar-link"><span class="icon"></span> Sanidade</a>
       <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
@@ -73,396 +59,831 @@
 
     <header class="page-header">
       <h1>Origens</h1>
-      <div style="position:relative">
-        <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
-        <div class="wiki-dropdown" id="wiki-menu-dropdown">
-          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
-          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
-          <a href="criador.html" class="wiki-dropdown-item"><span class="icon">&#x270E;</span> Criador de Ficha</a>
-        </div>
-      </div>
     </header>
-
-    <!-- BARRA FIXA DE NAVEGAÇÃO TÁTICA -->
-    <nav class="tactical-subnav" id="origin-subnav" aria-label="Navegação de origens">
-      <input type="text" id="origin-search" class="tactical-search" placeholder="Filtrar por nome ou perícia..." aria-label="Buscar origem">
-      <span class="tactical-subnav-label">Saltar:</span>
-      <div class="tactical-chips-wrap">
-        <a href="#filho-do-abismo" class="tactical-chip">Filho do Abismo</a>
-        <a href="#guardiao-da-floresta" class="tactical-chip">Guardião da Floresta</a>
-        <a href="#herdeiro-de-paladium" class="tactical-chip">Herdeiro de Paladium</a>
-        <a href="#experimento-falho" class="tactical-chip">Experimento falho da Era Dourada</a>
-        <a href="#descendente-croma" class="tactical-chip">Descendente Croma</a>
-        <a href="#descendente-floralis" class="tactical-chip">Descendente Floralis</a>
-        <a href="#mercenario" class="tactical-chip">Mercenário</a>
-        <a href="#campones" class="tactical-chip">Camponês</a>
-        <a href="#nerd" class="tactical-chip">Nerd</a>
-        <a href="#herdeiro-da-forja" class="tactical-chip">Herdeiro da Forja</a>
-        <a href="#morador-cidade-inexistente" class="tactical-chip">Morador da Cidade Inexistente</a>
-        <a href="#medico" class="tactical-chip">Médico</a>
-        <a href="#guaraciense" class="tactical-chip">Guaraciense</a>
-        <a href="#realeza-vampirica" class="tactical-chip">Realeza Vampírica</a>
-        <a href="#medroso" class="tactical-chip">Medroso</a>
-        <a href="#celebridade" class="tactical-chip">Celebridade</a>
-        <a href="#ciborgue" class="tactical-chip">Ciborgue</a>
-        <a href="#monstro-do-mar" class="tactical-chip">Monstro do Mar</a>
-        <a href="#insano" class="tactical-chip">INSANO</a>
-      </div>
-    </nav>
 
     <main class="page-content">
 
-      <div class="topic-crooked" style="margin-bottom: 20px;">ORIGENS</div>
+      <!-- BANNER DE INTRODUÇÃO -->
+      <div class="origins-header-banner">
+        <div class="topic-crooked" style="margin-bottom: 8px;">COMPÊNDIO // RAÍZES</div>
+        <h2 class="origins-header-title">Origens do Personagem</h2>
+        <p class="origins-header-desc">
+          Ao criar um personagem em Wuitalur, você escolhe uma origem que representa a base das suas vivências: o lugar onde cresceu, como sobreviveu e o que aprendeu antes de se tornar um aventureiro. Cada origem concede perícias treinadas, idiomas, itens iniciais e dois poderes exclusivos.
+        </p>
+      </div>
 
-      <section class="subsection" id="intro">
-        <div class="section-heading">
-          <h2>Origens</h2>
-          <p>Ao criar um personagem para o RPG Wuitalur, os jogadores podem escolher uma origem que representa a base de suas experiências, influenciando suas perícias, habilidades e história pessoal. Cada origem concede perícias adicionais, itens únicos e poderes específicos.</p>
+      <!-- BARRA DE CONTROLE TÁTICA E BUSCA -->
+      <div class="origins-control-bar">
+        <div class="origins-search-wrap">
+          <input type="text" id="origin-search" class="origins-search-input" placeholder="Filtrar por nome, perícia, idioma ou poder..." aria-label="Buscar origem">
         </div>
-      </section>
+        <div class="origins-count-badge" id="origin-count">19 Origens Registradas</div>
+      </div>
 
-      <!-- FILHO DO ABISMO -->
-      <section class="subsection" id="filho-do-abismo">
-        <div class="origin-card">
-          <div class="origin-card-header"><h2 class="origin-name">Filho do Abismo</h2></div>
+      <!-- CHIPS DE NAVEGAÇÃO RÁPIDA -->
+      <nav class="origins-quick-chips" aria-label="Pulo rápido de origens">
+        <a href="#filho-do-abismo" class="origin-chip">Filho do Abismo</a>
+        <a href="#guardiao-da-floresta" class="origin-chip">Guardião da Floresta</a>
+        <a href="#herdeiro-de-paladium" class="origin-chip">Herdeiro de Paladium</a>
+        <a href="#experimento-falho" class="origin-chip">Experimento falho da Era Dourada</a>
+        <a href="#descendente-croma" class="origin-chip">Descendente Croma</a>
+        <a href="#descendente-floralis" class="origin-chip">Descendente Floralis</a>
+        <a href="#mercenario" class="origin-chip">Mercenário</a>
+        <a href="#campones" class="origin-chip">Camponês</a>
+        <a href="#nerd" class="origin-chip">Nerd</a>
+        <a href="#herdeiro-da-forja" class="origin-chip">Herdeiro da Forja</a>
+        <a href="#morador-cidade-inexistente" class="origin-chip">Morador da Cidade Inexistente</a>
+        <a href="#medico" class="origin-chip">Médico</a>
+        <a href="#guaraciense" class="origin-chip">Guaraciense</a>
+        <a href="#realeza-vampirica" class="origin-chip">Realeza Vampírica</a>
+        <a href="#medroso" class="origin-chip">Medroso</a>
+        <a href="#celebridade" class="origin-chip">Celebridade</a>
+        <a href="#ciborgue" class="origin-chip">Ciborgue</a>
+        <a href="#monstro-do-mar" class="origin-chip">Monstro do Mar</a>
+        <a href="#insano" class="origin-chip">INSANO</a>
+      </nav>
+
+      <!-- GRID MODERNO DE CARDS DE ORIGENS -->
+      <div class="origins-grid" id="origins-grid">
+        <!-- #01 FILHO DO ABISMO -->
+        <article class="origin-card" id="filho-do-abismo" data-origin-search="filho do abismo percepção, intimidação padrão e abissal nenhuma um colar bioluminescente, um manto preto resistente e uma bolsa com 10 moedas de prata">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Filho do Abismo</h2>
+            <span class="origin-badge">ORIGEM #01</span>
+          </div>
           <div class="origin-card-body">
             <p class="origin-description">Crescido nas profundezas ocultas abaixo da superfície, você sobreviveu em ambientes hostis onde a escuridão e a corrupção dominam. Sua afinidade com as sombras moldou suas habilidades.</p>
-            <div class="origin-grid">
-              <div class="origin-field"><div class="origin-field-label">Perícias</div><div class="origin-field-value">Percepção, Intimidação</div></div>
-              <div class="origin-field"><div class="origin-field-label">Ferramentas</div><div class="origin-field-value">Nenhuma</div></div>
-              <div class="origin-field"><div class="origin-field-label">Idiomas</div><div class="origin-field-value">Padrão e Abissal</div></div>
-              <div class="origin-field"><div class="origin-field-label">Equipamento</div><div class="origin-field-value">Um colar bioluminescente, um manto preto resistente e uma bolsa com 10 Moedas de Prata</div></div>
+            
+            <div class="origin-specs-grid">
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Perícias</span>
+                <span class="origin-spec-value">Percepção, Intimidação</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Idiomas</span>
+                <span class="origin-spec-value">Padrão e Abissal</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Nenhuma</span>
+              </div>
+              <div class="origin-spec-item full-width">
+                <span class="origin-spec-label">Equipamento</span>
+                <span class="origin-spec-value">Um colar bioluminescente, um manto preto resistente e uma bolsa com 10 Moedas de Prata</span>
+              </div>
             </div>
-            <div class="origin-poder"><h5>Olhos do Abismo</h5><p>Você enxerga perfeitamente em escuridão total (até 18B).</p></div>
-            <div class="origin-poder"><h5>Intuição Sombria</h5><p>Sempre que estiver em um ambiente hostil ou desconhecido, você tem vantagem em testes de Sentidos para detectar emboscadas.</p></div>
-          </div>
-        </div>
-      </section>
 
-      <!-- GUARDIÃO DA FLORESTA -->
-      <section class="subsection" id="guardiao-da-floresta">
-        <div class="origin-card">
-          <div class="origin-card-header"><h2 class="origin-name">Guardião da Floresta</h2></div>
+            <div class="origin-powers-wrap">
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Olhos do Abismo</div>
+                <p class="origin-poder-desc">Você enxerga perfeitamente em escuridão total (até 18B).</p>
+              </div>
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Intuição Sombria</div>
+                <p class="origin-poder-desc">Sempre que estiver em um ambiente hostil ou desconhecido, você tem vantagem em testes de Sentidos para detectar emboscadas.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- #02 GUARDIÃO DA FLORESTA -->
+        <article class="origin-card" id="guardiao-da-floresta" data-origin-search="guardião da floresta furtividade, sobrevivência florestal e padrão kit de herbalismo um amuleto feito de madeira antiga, uma pequena bolsa com sementes raras e 15 moedas de prata">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Guardião da Floresta</h2>
+            <span class="origin-badge">ORIGEM #02</span>
+          </div>
           <div class="origin-card-body">
             <p class="origin-description">Habituado à vida entre árvores e criaturas selvagens, você é um com a natureza.</p>
-            <div class="origin-grid">
-              <div class="origin-field"><div class="origin-field-label">Perícias</div><div class="origin-field-value">Furtividade, Sobrevivência</div></div>
-              <div class="origin-field"><div class="origin-field-label">Ferramentas</div><div class="origin-field-value">Kit de Herbalismo</div></div>
-              <div class="origin-field"><div class="origin-field-label">Idiomas</div><div class="origin-field-value">Florestal e Padrão</div></div>
-              <div class="origin-field"><div class="origin-field-label">Equipamento</div><div class="origin-field-value">Um amuleto feito de madeira antiga, uma pequena bolsa com sementes raras e 15 Moedas de Prata</div></div>
+            
+            <div class="origin-specs-grid">
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Perícias</span>
+                <span class="origin-spec-value">Furtividade, Sobrevivência</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Idiomas</span>
+                <span class="origin-spec-value">Florestal e Padrão</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Kit de Herbalismo</span>
+              </div>
+              <div class="origin-spec-item full-width">
+                <span class="origin-spec-label">Equipamento</span>
+                <span class="origin-spec-value">Um amuleto feito de madeira antiga, uma pequena bolsa com sementes raras e 15 Moedas de Prata</span>
+              </div>
             </div>
-            <div class="origin-poder"><h5>Vinhas Protetoras</h5><p>Como ação bônus, pode criar vinhas que impedem o movimento de um inimigo por 1 turno.</p></div>
-            <div class="origin-poder"><h5>Conexão Verdejante</h5><p>Você pode detectar perigos naturais, como terrenos instáveis ou criaturas camufladas.</p></div>
-          </div>
-        </div>
-      </section>
 
-      <!-- HERDEIRO DE PALADIUM -->
-      <section class="subsection" id="herdeiro-de-paladium">
-        <div class="origin-card">
-          <div class="origin-card-header"><h2 class="origin-name">Herdeiro de Paladium</h2></div>
+            <div class="origin-powers-wrap">
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Vinhas Protetoras</div>
+                <p class="origin-poder-desc">Como ação bônus, pode criar vinhas que impedem o movimento de um inimigo por 1 turno.</p>
+              </div>
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Conexão Verdejante</div>
+                <p class="origin-poder-desc">Você pode detectar perigos naturais, como terrenos instáveis ou criaturas camufladas.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- #03 HERDEIRO DE PALADIUM -->
+        <article class="origin-card" id="herdeiro-de-paladium" data-origin-search="herdeiro de paladium persuasão, história padrão e um idioma a sua escolha uma ferramenta de escolha (arma branca ou instrumento musical) um símbolo familiar, uma roupa nobre simples, uma bolsa com 5 moedas negras">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Herdeiro de Paladium</h2>
+            <span class="origin-badge">ORIGEM #03</span>
+          </div>
           <div class="origin-card-body">
             <p class="origin-description">Você vem de uma linhagem influente em Paladium, onde a disciplina, o treinamento militar e a liderança são valores fundamentais.</p>
-            <div class="origin-grid">
-              <div class="origin-field"><div class="origin-field-label">Perícias</div><div class="origin-field-value">Persuasão, História</div></div>
-              <div class="origin-field"><div class="origin-field-label">Ferramentas</div><div class="origin-field-value">Uma ferramenta de escolha (arma branca ou instrumento musical)</div></div>
-              <div class="origin-field"><div class="origin-field-label">Idiomas</div><div class="origin-field-value">Padrão e um idioma a sua escolha</div></div>
-              <div class="origin-field"><div class="origin-field-label">Equipamento</div><div class="origin-field-value">Um símbolo familiar, uma roupa nobre simples, uma bolsa com 5 Moedas Negras</div></div>
+            
+            <div class="origin-specs-grid">
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Perícias</span>
+                <span class="origin-spec-value">Persuasão, História</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Idiomas</span>
+                <span class="origin-spec-value">Padrão e um idioma a sua escolha</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Uma ferramenta de escolha (arma branca ou instrumento musical)</span>
+              </div>
+              <div class="origin-spec-item full-width">
+                <span class="origin-spec-label">Equipamento</span>
+                <span class="origin-spec-value">Um símbolo familiar, uma roupa nobre simples, uma bolsa com 5 Moedas Negras</span>
+              </div>
             </div>
-            <div class="origin-poder"><h5>Voz Inspiradora</h5><p>Como ação bônus, você pode conceder +1 em um teste a sua escolha de um aliado.</p></div>
-            <div class="origin-poder"><h5>Nobre Presença</h5><p>Quando falar com figuras de autoridade, você tem vantagem em testes de Persuasão.</p></div>
-          </div>
-        </div>
-      </section>
 
-      <!-- EXPERIMENTO FALHO DA ERA DOURADA -->
-      <section class="subsection" id="experimento-falho">
-        <div class="origin-card">
-          <div class="origin-card-header"><h2 class="origin-name">Experimento falho da Era Dourada</h2></div>
+            <div class="origin-powers-wrap">
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Voz Inspiradora</div>
+                <p class="origin-poder-desc">Como ação bônus, você pode conceder +1 em um teste a sua escolha de um aliado.</p>
+              </div>
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Nobre Presença</div>
+                <p class="origin-poder-desc">Quando falar com figuras de autoridade, você tem vantagem em testes de Persuasão.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- #04 EXPERIMENTO FALHO DA ERA DOURADA -->
+        <article class="origin-card" id="experimento-falho" data-origin-search="experimento falho da era dourada cosmo, furtividade padrão kit de ferramentas médicas um símbolo gravado com um código de identificação em seu corpo, um frasco de medicamento experimental">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Experimento falho da Era Dourada</h2>
+            <span class="origin-badge">ORIGEM #04</span>
+          </div>
           <div class="origin-card-body">
             <p class="origin-description">Você é um descendente direto ou uma das cobaias sobreviventes dos experimentos secretos conduzidos em Paladium durante a Era Dourada. Mesmo após a fuga e adaptação dessas raças à sociedade, vestígios dessa época sombria ainda moldam sua existência.</p>
             <div class="origin-notice">Não é possível usar essa origem com a raça: Híbridos</div>
-            <div class="origin-grid">
-              <div class="origin-field"><div class="origin-field-label">Perícias</div><div class="origin-field-value">Cosmo, Furtividade</div></div>
-              <div class="origin-field"><div class="origin-field-label">Ferramentas</div><div class="origin-field-value">Kit de Ferramentas Médicas</div></div>
-              <div class="origin-field"><div class="origin-field-label">Idiomas</div><div class="origin-field-value">Padrão</div></div>
-              <div class="origin-field"><div class="origin-field-label">Equipamento</div><div class="origin-field-value">Um símbolo gravado com um código de identificação em seu corpo, um frasco de medicamento experimental</div></div>
+            <div class="origin-specs-grid">
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Perícias</span>
+                <span class="origin-spec-value">Cosmo, Furtividade</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Idiomas</span>
+                <span class="origin-spec-value">Padrão</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Kit de Ferramentas Médicas</span>
+              </div>
+              <div class="origin-spec-item full-width">
+                <span class="origin-spec-label">Equipamento</span>
+                <span class="origin-spec-value">Um símbolo gravado com um código de identificação em seu corpo, um frasco de medicamento experimental</span>
+              </div>
             </div>
-            <div class="origin-poder"><h5>Instinto de Sobrevivência</h5><p>Quando reduzido a 5 PV ou menos, você ganha +4 PV e +2 RF até o fim da cena (uma vez por descanso longo).</p></div>
-            <div class="origin-poder"><h5>Marca da Fuga</h5><p>Você tem vantagem em testes de resistência contra condições que causem paralisia ou efeitos mentais.</p></div>
-          </div>
-        </div>
-      </section>
 
-      <!-- DESCENDENTE CROMA -->
-      <section class="subsection" id="descendente-croma">
-        <div class="origin-card">
-          <div class="origin-card-header"><h2 class="origin-name">Descendente Croma</h2></div>
+            <div class="origin-powers-wrap">
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Instinto de Sobrevivência</div>
+                <p class="origin-poder-desc">Quando reduzido a 5 PV ou menos, você ganha +4 PV e +2 RF até o fim da cena (uma vez por descanso longo).</p>
+              </div>
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Marca da Fuga</div>
+                <p class="origin-poder-desc">Você tem vantagem em testes de resistência contra condições que causem paralisia ou efeitos mentais.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- #05 DESCENDENTE CROMA -->
+        <article class="origin-card" id="descendente-croma" data-origin-search="descendente croma intimidação, sobrevivência padrão e prisma nenhuma arma branca a sua escolha, um manto marcado com símbolos antigos do clã, um pingente cristalino e 5 moedas de prata">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Descendente Croma</h2>
+            <span class="origin-badge">ORIGEM #05</span>
+          </div>
           <div class="origin-card-body">
             <p class="origin-description">Os membros desse clã raro da Floresta Negra possuem olhos com reflexos prismáticos em vermelho e azul que intensificam suas capacidades à beira da morte.</p>
-            <div class="origin-grid">
-              <div class="origin-field"><div class="origin-field-label">Perícias</div><div class="origin-field-value">Intimidação, Sobrevivência</div></div>
-              <div class="origin-field"><div class="origin-field-label">Ferramentas</div><div class="origin-field-value">Nenhuma</div></div>
-              <div class="origin-field"><div class="origin-field-label">Idiomas</div><div class="origin-field-value">Padrão e Prisma</div></div>
-              <div class="origin-field"><div class="origin-field-label">Equipamento</div><div class="origin-field-value">Arma branca a sua escolha, um manto marcado com símbolos antigos do clã, um pingente cristalino e 5 Moedas de Prata</div></div>
+            
+            <div class="origin-specs-grid">
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Perícias</span>
+                <span class="origin-spec-value">Intimidação, Sobrevivência</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Idiomas</span>
+                <span class="origin-spec-value">Padrão e Prisma</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Nenhuma</span>
+              </div>
+              <div class="origin-spec-item full-width">
+                <span class="origin-spec-label">Equipamento</span>
+                <span class="origin-spec-value">Arma branca a sua escolha, um manto marcado com símbolos antigos do clã, um pingente cristalino e 5 Moedas de Prata</span>
+              </div>
             </div>
-            <div class="origin-poder"><h5>Último Reflexo</h5><p>Quando seus PV caem abaixo de 25%, você ganha +1 em Força, Destreza e Resistência Física até o fim da cena.</p></div>
-            <div class="origin-poder"><h5>Instinto Prismático</h5><p>Vantagem em testes de resistência contra efeitos de medo enquanto estiver com 25% dos PV.</p></div>
-          </div>
-        </div>
-      </section>
 
-      <!-- DESCENDENTE FLORALIS -->
-      <section class="subsection" id="descendente-floralis">
-        <div class="origin-card">
-          <div class="origin-card-header"><h2 class="origin-name">Descendente Floralis</h2></div>
+            <div class="origin-powers-wrap">
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Último Reflexo</div>
+                <p class="origin-poder-desc">Quando seus PV caem abaixo de 25%, você ganha +1 em Força, Destreza e Resistência Física até o fim da cena.</p>
+              </div>
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Instinto Prismático</div>
+                <p class="origin-poder-desc">Vantagem em testes de resistência contra efeitos de medo enquanto estiver com 25% dos PV.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- #06 DESCENDENTE FLORALIS -->
+        <article class="origin-card" id="descendente-floralis" data-origin-search="descendente floralis atletismo, acrobacia padrão e floralis kit de escalada um cinto de couro reforçado com marcas do clã, um cantil floral especial e 8 moedas de prata">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Descendente Floralis</h2>
+            <span class="origin-badge">ORIGEM #06</span>
+          </div>
           <div class="origin-card-body">
             <p class="origin-description">Este clã misterioso da Floresta Negra é marcado por olhos heterocromáticos (rosa e verde), que concedem aos seus membros capacidades físicas superiores. Eles são famosos por sua agilidade e vitalidade excepcionais.</p>
-            <div class="origin-grid">
-              <div class="origin-field"><div class="origin-field-label">Perícias</div><div class="origin-field-value">Atletismo, Acrobacia</div></div>
-              <div class="origin-field"><div class="origin-field-label">Ferramentas</div><div class="origin-field-value">Kit de escalada</div></div>
-              <div class="origin-field"><div class="origin-field-label">Idiomas</div><div class="origin-field-value">Padrão e Floralis</div></div>
-              <div class="origin-field"><div class="origin-field-label">Equipamento</div><div class="origin-field-value">Um cinto de couro reforçado com marcas do clã, um cantil floral especial e 8 Moedas de Prata</div></div>
+            
+            <div class="origin-specs-grid">
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Perícias</span>
+                <span class="origin-spec-value">Atletismo, Acrobacia</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Idiomas</span>
+                <span class="origin-spec-value">Padrão e Floralis</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Kit de escalada</span>
+              </div>
+              <div class="origin-spec-item full-width">
+                <span class="origin-spec-label">Equipamento</span>
+                <span class="origin-spec-value">Um cinto de couro reforçado com marcas do clã, um cantil floral especial e 8 Moedas de Prata</span>
+              </div>
             </div>
-            <div class="origin-poder"><h5>Surto Corporal</h5><p>Uma vez por cena, você pode ganhar +1 em Destreza e dobrar seu deslocamento por 1 turno.</p></div>
-            <div class="origin-poder"><h5>Vitalidade Eterna</h5><p>Vantagem em testes de resistência contra exaustão.</p></div>
-          </div>
-        </div>
-      </section>
 
-      <!-- MERCENÁRIO -->
-      <section class="subsection" id="mercenario">
-        <div class="origin-card">
-          <div class="origin-card-header"><h2 class="origin-name">Mercenário</h2></div>
+            <div class="origin-powers-wrap">
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Surto Corporal</div>
+                <p class="origin-poder-desc">Uma vez por cena, você pode ganhar +1 em Destreza e dobrar seu deslocamento por 1 turno.</p>
+              </div>
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Vitalidade Eterna</div>
+                <p class="origin-poder-desc">Vantagem em testes de resistência contra exaustão.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- #07 MERCENÁRIO -->
+        <article class="origin-card" id="mercenario" data-origin-search="mercenário intimidação, atletismo padrão kit a sua escolha uma arma branca a sua escolha, um escudo pequeno, um saco de dormir e 3 moedas de ouro">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Mercenário</h2>
+            <span class="origin-badge">ORIGEM #07</span>
+          </div>
           <div class="origin-card-body">
             <p class="origin-description">Você trabalhou como mercenário, aceitando trabalhos de todos os tipos, desde caçar monstros até proteger caravanas. Sua experiência em combate e negociação o tornou um prático e pragmático.</p>
-            <div class="origin-grid">
-              <div class="origin-field"><div class="origin-field-label">Perícias</div><div class="origin-field-value">Intimidação, Atletismo</div></div>
-              <div class="origin-field"><div class="origin-field-label">Ferramentas</div><div class="origin-field-value">Kit a sua escolha</div></div>
-              <div class="origin-field"><div class="origin-field-label">Idiomas</div><div class="origin-field-value">Padrão</div></div>
-              <div class="origin-field"><div class="origin-field-label">Equipamento</div><div class="origin-field-value">Uma arma branca a sua escolha, um escudo pequeno, um saco de dormir e 3 Moedas de Ouro</div></div>
+            
+            <div class="origin-specs-grid">
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Perícias</span>
+                <span class="origin-spec-value">Intimidação, Atletismo</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Idiomas</span>
+                <span class="origin-spec-value">Padrão</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Kit a sua escolha</span>
+              </div>
+              <div class="origin-spec-item full-width">
+                <span class="origin-spec-label">Equipamento</span>
+                <span class="origin-spec-value">Uma arma branca a sua escolha, um escudo pequeno, um saco de dormir e 3 Moedas de Ouro</span>
+              </div>
             </div>
-            <div class="origin-poder"><h5>Adaptabilidade em Combate</h5><p>Você pode transformar sua Ação Bônus em uma segunda Ação Padrão para atacar.</p></div>
-            <div class="origin-poder"><h5>Líder de Batalha</h5><p>Você pode conceder vantagem em um teste de ataque de um aliado uma vez por descanso curto.</p></div>
-          </div>
-        </div>
-      </section>
 
-      <!-- CAMPONÊS -->
-      <section class="subsection" id="campones">
-        <div class="origin-card">
-          <div class="origin-card-header"><h2 class="origin-name">Camponês</h2></div>
+            <div class="origin-powers-wrap">
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Adaptabilidade em Combate</div>
+                <p class="origin-poder-desc">Você pode transformar sua Ação Bônus em uma segunda Ação Padrão para atacar.</p>
+              </div>
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Líder de Batalha</div>
+                <p class="origin-poder-desc">Você pode conceder vantagem em um teste de ataque de um aliado uma vez por descanso curto.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- #08 CAMPONÊS -->
+        <article class="origin-card" id="campones" data-origin-search="camponês sobrevivência, história padrão e o idioma da sua aldeia (caso tenha um) nenhum uma enxada, um saco com sementes e 5 moedas de prata">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Camponês</h2>
+            <span class="origin-badge">ORIGEM #08</span>
+          </div>
           <div class="origin-card-body">
             <p class="origin-description">Crescendo em uma pequena aldeia, você sempre trabalhou na terra e cuidou dos animais. Sua vida simples o ensinou a valorizar o esforço físico e a natureza ao seu redor.</p>
-            <div class="origin-grid">
-              <div class="origin-field"><div class="origin-field-label">Perícias</div><div class="origin-field-value">Sobrevivência, História</div></div>
-              <div class="origin-field"><div class="origin-field-label">Ferramentas</div><div class="origin-field-value">Nenhum</div></div>
-              <div class="origin-field"><div class="origin-field-label">Idiomas</div><div class="origin-field-value">Padrão e o idioma da sua aldeia (caso tenha um)</div></div>
-              <div class="origin-field"><div class="origin-field-label">Equipamento</div><div class="origin-field-value">Uma enxada, um saco com sementes e 5 Moedas de Prata</div></div>
+            
+            <div class="origin-specs-grid">
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Perícias</span>
+                <span class="origin-spec-value">Sobrevivência, História</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Idiomas</span>
+                <span class="origin-spec-value">Padrão e o idioma da sua aldeia (caso tenha um)</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Nenhum</span>
+              </div>
+              <div class="origin-spec-item full-width">
+                <span class="origin-spec-label">Equipamento</span>
+                <span class="origin-spec-value">Uma enxada, um saco com sementes e 5 Moedas de Prata</span>
+              </div>
             </div>
-            <div class="origin-poder"><h5>Mestre da Terra</h5><p>Em um descanso você pode realizar uma colheita de plantas ou caçar por alimentos de forma mais eficiente, garantindo o dobro de recursos que podem conceder bônus.</p></div>
-            <div class="origin-poder"><h5>Força Natural</h5><p>Você consegue carregar +3 da sua carga normal.</p></div>
-          </div>
-        </div>
-      </section>
 
-      <!-- NERD -->
-      <section class="subsection" id="nerd">
-        <div class="origin-card">
-          <div class="origin-card-header"><h2 class="origin-name">Nerd</h2></div>
+            <div class="origin-powers-wrap">
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Mestre da Terra</div>
+                <p class="origin-poder-desc">Em um descanso você pode realizar uma colheita de plantas ou caçar por alimentos de forma mais eficiente, garantindo o dobro de recursos que podem conceder bônus.</p>
+              </div>
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Força Natural</div>
+                <p class="origin-poder-desc">Você consegue carregar +3 da sua carga normal.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- #09 NERD -->
+        <article class="origin-card" id="nerd" data-origin-search="nerd cosmo, investigação padrão nenhum um cristal de everact carregado, um dispositivo de interação com pedras de everact e 10 moedas de prata">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Nerd</h2>
+            <span class="origin-badge">ORIGEM #09</span>
+          </div>
           <div class="origin-card-body">
             <p class="origin-description">Crescendo em uma época onde a magia e a tecnologia primitiva se entrelaçam, você dedicou sua vida a estudar os computadores feitos de pedra de Everact, artefatos que combinam magia antiga com a engenharia rudimentar. Esses sistemas, embora arcaicos, têm uma complexidade que desafia até as mentes mais brilhantes. Sua habilidade em manipular e entender esses dispositivos mágicos o torna um verdadeiro prodígio.</p>
-            <div class="origin-grid">
-              <div class="origin-field"><div class="origin-field-label">Perícias</div><div class="origin-field-value">Cosmo, Investigação</div></div>
-              <div class="origin-field"><div class="origin-field-label">Ferramentas</div><div class="origin-field-value">Nenhum</div></div>
-              <div class="origin-field"><div class="origin-field-label">Idiomas</div><div class="origin-field-value">Padrão</div></div>
-              <div class="origin-field"><div class="origin-field-label">Equipamento</div><div class="origin-field-value">Um cristal de Everact carregado, um dispositivo de interação com pedras de Everact e 10 Moedas de Prata</div></div>
+            
+            <div class="origin-specs-grid">
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Perícias</span>
+                <span class="origin-spec-value">Cosmo, Investigação</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Idiomas</span>
+                <span class="origin-spec-value">Padrão</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Nenhum</span>
+              </div>
+              <div class="origin-spec-item full-width">
+                <span class="origin-spec-label">Equipamento</span>
+                <span class="origin-spec-value">Um cristal de Everact carregado, um dispositivo de interação com pedras de Everact e 10 Moedas de Prata</span>
+              </div>
             </div>
-            <div class="origin-poder"><h5>Manipulação de Runas</h5><p>Você pode ativar ou desativar sistemas de pedra de Everact com facilidade, tendo vantagem em testes para explorar, consertar ou reprogramar esses dispositivos.</p></div>
-            <div class="origin-poder"><h5>Conexão Arcana com a Pedra</h5><p>Você tem vantagem em testes de Cosmo e Investigação relacionados a máquinas feitas de Everact, sendo capaz de discernir seus padrões e operações Elementals com precisão.</p></div>
-          </div>
-        </div>
-      </section>
 
-      <!-- HERDEIRO DA FORJA -->
-      <section class="subsection" id="herdeiro-da-forja">
-        <div class="origin-card">
-          <div class="origin-card-header"><h2 class="origin-name">Herdeiro da Forja</h2></div>
+            <div class="origin-powers-wrap">
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Manipulação de Runas</div>
+                <p class="origin-poder-desc">Você pode ativar ou desativar sistemas de pedra de Everact com facilidade, tendo vantagem em testes para explorar, consertar ou reprogramar esses dispositivos.</p>
+              </div>
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Conexão Arcana com a Pedra</div>
+                <p class="origin-poder-desc">Você tem vantagem em testes de Cosmo e Investigação relacionados a máquinas feitas de Everact, sendo capaz de discernir seus padrões e operações Elementals com precisão.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- #10 HERDEIRO DA FORJA -->
+        <article class="origin-card" id="herdeiro-da-forja" data-origin-search="herdeiro da forja história, forja e engenharia padrão e um a sua escolha kit de ferreiro um martelo de ferreiro, uma espada simples e 15 peças de prata">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Herdeiro da Forja</h2>
+            <span class="origin-badge">ORIGEM #10</span>
+          </div>
           <div class="origin-card-body">
             <p class="origin-description">Você nasceu em uma família de ferreiros, artesãos ou engenheiros, e sua vida sempre esteve entre martelos, fornalhas e metal. A habilidade de moldar materiais e criar armas e armaduras excepcionais faz parte de quem você é. Mesmo quando não está forjando, você sente a necessidade de transformar e melhorar o mundo ao seu redor, seja com ferros ou invenções criativas.</p>
-            <div class="origin-grid">
-              <div class="origin-field"><div class="origin-field-label">Perícias</div><div class="origin-field-value">História, Forja e Engenharia</div></div>
-              <div class="origin-field"><div class="origin-field-label">Ferramentas</div><div class="origin-field-value">Kit de ferreiro</div></div>
-              <div class="origin-field"><div class="origin-field-label">Idiomas</div><div class="origin-field-value">Padrão e um a sua escolha</div></div>
-              <div class="origin-field"><div class="origin-field-label">Equipamento</div><div class="origin-field-value">Um martelo de ferreiro, uma espada simples e 15 peças de prata</div></div>
+            
+            <div class="origin-specs-grid">
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Perícias</span>
+                <span class="origin-spec-value">História, Forja e Engenharia</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Idiomas</span>
+                <span class="origin-spec-value">Padrão e um a sua escolha</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Kit de ferreiro</span>
+              </div>
+              <div class="origin-spec-item full-width">
+                <span class="origin-spec-label">Equipamento</span>
+                <span class="origin-spec-value">Um martelo de ferreiro, uma espada simples e 15 peças de prata</span>
+              </div>
             </div>
-            <div class="origin-poder"><h5>Forja Rápida</h5><p>Você pode forjar ou reparar um item simples, economizando tempo e recursos.</p></div>
-            <div class="origin-poder"><h5>Toque de Ferro</h5><p>Você tem vantagem em testes de forja para criar ou modificar qualquer item, mudando seus atributos e efeitos.</p></div>
-          </div>
-        </div>
-      </section>
 
-      <!-- MORADOR DA CIDADE INEXISTENTE -->
-      <section class="subsection" id="morador-cidade-inexistente">
-        <div class="origin-card">
-          <div class="origin-card-header"><h2 class="origin-name">Morador da Cidade Inexistente</h2></div>
+            <div class="origin-powers-wrap">
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Forja Rápida</div>
+                <p class="origin-poder-desc">Você pode forjar ou reparar um item simples, economizando tempo e recursos.</p>
+              </div>
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Toque de Ferro</div>
+                <p class="origin-poder-desc">Você tem vantagem em testes de forja para criar ou modificar qualquer item, mudando seus atributos e efeitos.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- #11 MORADOR DA CIDADE INEXISTENTE -->
+        <article class="origin-card" id="morador-cidade-inexistente" data-origin-search="morador da cidade inexistente cosmo, percepção e história padrão, idioma de cirus (uma língua codificada) um dispositivo tecnológico de cirus (como um gerador de energia ou uma pequena tela holográfica) um fragmento v3re3x, e um equipamento antigo a sua escolha">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Morador da Cidade Inexistente</h2>
+            <span class="origin-badge">ORIGEM #11</span>
+          </div>
           <div class="origin-card-body">
             <p class="origin-description">Você nasceu e cresceu em Cirus, uma cidade que existiu fora do tempo e da lógica, onde a tecnologia superava qualquer outra, deixando o resto do mundo em um ponto remoto no passado. Cirus foi guardada por um portão que, um dia, simplesmente desapareceu, deixando para trás apenas fragmentos daquilo que foi. Aqueles que conseguiram sair de Cirus não se lembram de como nem o porquê, e as memórias desta cidade se tornaram nebulosas, como um sonho esquecido. Você é um dos poucos que ainda carrega vestígios daquela cidade perdida, mas seus próprios pensamentos podem estar sendo apagados com o tempo.</p>
-            <div class="origin-grid">
-              <div class="origin-field"><div class="origin-field-label">Perícias</div><div class="origin-field-value">Cosmo, Percepção e História</div></div>
-              <div class="origin-field"><div class="origin-field-label">Ferramentas</div><div class="origin-field-value">Um dispositivo tecnológico de Cirus (como um gerador de energia ou uma pequena tela holográfica)</div></div>
-              <div class="origin-field"><div class="origin-field-label">Idiomas</div><div class="origin-field-value">Padrão, Idioma de Cirus (uma língua codificada)</div></div>
-              <div class="origin-field"><div class="origin-field-label">Equipamento</div><div class="origin-field-value">Um fragmento V3RE3X, e um Equipamento Antigo a sua escolha</div></div>
+            
+            <div class="origin-specs-grid">
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Perícias</span>
+                <span class="origin-spec-value">Cosmo, Percepção e História</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Idiomas</span>
+                <span class="origin-spec-value">Padrão, Idioma de Cirus (uma língua codificada)</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Um dispositivo tecnológico de Cirus (como um gerador de energia ou uma pequena tela holográfica)</span>
+              </div>
+              <div class="origin-spec-item full-width">
+                <span class="origin-spec-label">Equipamento</span>
+                <span class="origin-spec-value">Um fragmento V3RE3X, e um Equipamento Antigo a sua escolha</span>
+              </div>
             </div>
-            <div class="origin-poder"><h5>Memória Desvanecente</h5><p>Você pode compreender e manipular tecnologias incomuns usando um teste de Cosmo, Percepção ou História com vantagem.</p></div>
-            <div class="origin-poder"><h5>Voz do Vazio</h5><p>Você tem vantagem em testes de resistência contra dano mental.</p></div>
-          </div>
-        </div>
-      </section>
 
-      <!-- MÉDICO -->
-      <section class="subsection" id="medico">
-        <div class="origin-card">
-          <div class="origin-card-header"><h2 class="origin-name">Médico</h2></div>
+            <div class="origin-powers-wrap">
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Memória Desvanecente</div>
+                <p class="origin-poder-desc">Você pode compreender e manipular tecnologias incomuns usando um teste de Cosmo, Percepção ou História com vantagem.</p>
+              </div>
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Voz do Vazio</div>
+                <p class="origin-poder-desc">Você tem vantagem em testes de resistência contra dano mental.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- #12 MÉDICO -->
+        <article class="origin-card" id="medico" data-origin-search="médico medicina e alquimia padrão, porém entende jargões médicos kit de medicina e kit de alquimia kit médico, ervas medicinais e um kit de alquimia, incluindo 2 poções iniciais a escolha do médico.">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Médico</h2>
+            <span class="origin-badge">ORIGEM #12</span>
+          </div>
           <div class="origin-card-body">
             <p class="origin-description">Você dedicou grande parte da sua vida à medicina, lutando sempre para salvar seus pacientes da vida e da morte.</p>
-            <div class="origin-grid">
-              <div class="origin-field"><div class="origin-field-label">Perícias</div><div class="origin-field-value">Medicina e Alquimia</div></div>
-              <div class="origin-field"><div class="origin-field-label">Ferramentas</div><div class="origin-field-value">Kit de medicina e kit de alquimia</div></div>
-              <div class="origin-field"><div class="origin-field-label">Idiomas</div><div class="origin-field-value">Padrão, porém entende jargões médicos</div></div>
-              <div class="origin-field"><div class="origin-field-label">Equipamento</div><div class="origin-field-value">Kit médico, ervas medicinais e um kit de alquimia, incluindo 2 poções iniciais a escolha do médico.</div></div>
+            
+            <div class="origin-specs-grid">
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Perícias</span>
+                <span class="origin-spec-value">Medicina e Alquimia</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Idiomas</span>
+                <span class="origin-spec-value">Padrão, porém entende jargões médicos</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Kit de medicina e kit de alquimia</span>
+              </div>
+              <div class="origin-spec-item full-width">
+                <span class="origin-spec-label">Equipamento</span>
+                <span class="origin-spec-value">Kit médico, ervas medicinais e um kit de alquimia, incluindo 2 poções iniciais a escolha do médico.</span>
+              </div>
             </div>
-            <div class="origin-poder"><h5>O Salvador</h5><p>Você pode, quando um aliado cair, fazer todos os testes de medicina com vantagem, além dos testes de morte terem a CT reduzida em <span class="dice">1d6</span> quando você estiver cuidando do seu paciente.</p></div>
-            <div class="origin-poder"><h5>Socorrista Nato</h5><p>Pode gastar o dobro do seu deslocamento para chegar a um personagem que acabou de ser ferido, além disso pode rolar um teste de medicina CT 18 uma vez por turno pra curar 25 de vida instantânea do alvo ferido.</p></div>
-          </div>
-        </div>
-      </section>
 
-      <!-- GUARACIENSE -->
-      <section class="subsection" id="guaraciense">
-        <div class="origin-card">
-          <div class="origin-card-header"><h2 class="origin-name">Guaraciense</h2></div>
+            <div class="origin-powers-wrap">
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">O Salvador</div>
+                <p class="origin-poder-desc">Você pode, quando um aliado cair, fazer todos os testes de medicina com vantagem, além dos testes de morte terem a CT reduzida em <span class="dice">1d6</span> quando você estiver cuidando do seu paciente.</p>
+              </div>
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Socorrista Nato</div>
+                <p class="origin-poder-desc">Pode gastar o dobro do seu deslocamento para chegar a um personagem que acabou de ser ferido, além disso pode rolar um teste de medicina CT 18 uma vez por turno pra curar 25 de vida instantânea do alvo ferido.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- #13 GUARACIENSE -->
+        <article class="origin-card" id="guaraciense" data-origin-search="guaraciense intimidação, diplomacia e engenharia guaracês, padrão e +2 a sua escolha kit de ferramentas à sua escolha e 5 plantas à sua escolha. casaco feito de folhas, arma a sua escolha e uma máscara.">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Guaraciense</h2>
+            <span class="origin-badge">ORIGEM #13</span>
+          </div>
           <div class="origin-card-body">
             <p class="origin-description">Você nasceu no arquipélago de Monã, mais especificamente na ilha de Guaraci, você viveu toda sua vida em um mundo totalmente diferente, com outros valores, invenções e moralidade totalmente diferente.</p>
-            <div class="origin-grid">
-              <div class="origin-field"><div class="origin-field-label">Perícias</div><div class="origin-field-value">Intimidação, Diplomacia e Engenharia</div></div>
-              <div class="origin-field"><div class="origin-field-label">Ferramentas</div><div class="origin-field-value">Kit de ferramentas à sua escolha e 5 plantas à sua escolha.</div></div>
-              <div class="origin-field"><div class="origin-field-label">Idiomas</div><div class="origin-field-value">Guaracês, Padrão e +2 a sua escolha</div></div>
-              <div class="origin-field"><div class="origin-field-label">Equipamento</div><div class="origin-field-value">Casaco feito de folhas, arma a sua escolha e uma máscara.</div></div>
+            
+            <div class="origin-specs-grid">
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Perícias</span>
+                <span class="origin-spec-value">Intimidação, Diplomacia e Engenharia</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Idiomas</span>
+                <span class="origin-spec-value">Guaracês, Padrão e +2 a sua escolha</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Kit de ferramentas à sua escolha e 5 plantas à sua escolha.</span>
+              </div>
+              <div class="origin-spec-item full-width">
+                <span class="origin-spec-label">Equipamento</span>
+                <span class="origin-spec-value">Casaco feito de folhas, arma a sua escolha e uma máscara.</span>
+              </div>
             </div>
-            <div class="origin-poder"><h5>Guerreiro da Natureza</h5><p>Ao estar perto de qualquer tipo de planta, recebe apoio da natureza, ganhando +2 em testes durante o combate.</p></div>
-            <div class="origin-poder"><h5>Ciência Sustentável</h5><p>Você aprendeu a combinar tecnologia com elementos naturais. Pode modificar temporariamente armas e itens usando plantas, resinas e minerais simples. Gasta 1 rodada para fazer uma modificação. Só pode manter 1 mod ativa por vez. Os efeitos duram até o próximo descanso curto. Sempre que encontrar plantas úteis, o Mestre descreve o que elas podem fazer e com base na planta, cria uma modificação para o item do jogador.</p></div>
-          </div>
-        </div>
-      </section>
 
-      <!-- REALEZA VAMPÍRICA -->
-      <section class="subsection" id="realeza-vampirica">
-        <div class="origin-card">
-          <div class="origin-card-header"><h2 class="origin-name">Realeza Vampírica</h2></div>
+            <div class="origin-powers-wrap">
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Guerreiro da Natureza</div>
+                <p class="origin-poder-desc">Ao estar perto de qualquer tipo de planta, recebe apoio da natureza, ganhando +2 em testes durante o combate.</p>
+              </div>
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Ciência Sustentável</div>
+                <p class="origin-poder-desc">Você aprendeu a combinar tecnologia com elementos naturais. Pode modificar temporariamente armas e itens usando plantas, resinas e minerais simples. Gasta 1 rodada para fazer uma modificação. Só pode manter 1 mod ativa por vez. Os efeitos duram até o próximo descanso curto. Sempre que encontrar plantas úteis, o Mestre descreve o que elas podem fazer e com base na planta, cria uma modificação para o item do jogador.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- #14 REALEZA VAMPÍRICA -->
+        <article class="origin-card" id="realeza-vampirica" data-origin-search="realeza vampírica persuasão, história e intimidação padrão, vampírico real e +1 idioma à sua escolha kit de alquimia e colar de sua família vestes nobres refinadas, uma arma elegante (armas de peso i) e um anel simbólico de sua linhagem">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Realeza Vampírica</h2>
+            <span class="origin-badge">ORIGEM #14</span>
+          </div>
           <div class="origin-card-body">
             <p class="origin-description">Você nasceu em uma antiga dinastia vampírica, descendente direto de nobres vampiros antigos. A política e o sangue moldaram sua existência, e você aprendeu desde cedo a manipular o poder com sutileza e imponência.</p>
-            <div class="origin-grid">
-              <div class="origin-field"><div class="origin-field-label">Perícias</div><div class="origin-field-value">Persuasão, História e Intimidação</div></div>
-              <div class="origin-field"><div class="origin-field-label">Ferramentas</div><div class="origin-field-value">Kit de alquimia e colar de sua família</div></div>
-              <div class="origin-field"><div class="origin-field-label">Idiomas</div><div class="origin-field-value">Padrão, Vampírico Real e +1 idioma à sua escolha</div></div>
-              <div class="origin-field"><div class="origin-field-label">Equipamento</div><div class="origin-field-value">Vestes nobres refinadas, uma arma elegante (Armas de Peso I) e um anel simbólico de sua linhagem</div></div>
+            
+            <div class="origin-specs-grid">
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Perícias</span>
+                <span class="origin-spec-value">Persuasão, História e Intimidação</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Idiomas</span>
+                <span class="origin-spec-value">Padrão, Vampírico Real e +1 idioma à sua escolha</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Kit de alquimia e colar de sua família</span>
+              </div>
+              <div class="origin-spec-item full-width">
+                <span class="origin-spec-label">Equipamento</span>
+                <span class="origin-spec-value">Vestes nobres refinadas, uma arma elegante (Armas de Peso I) e um anel simbólico de sua linhagem</span>
+              </div>
             </div>
-            <div class="origin-poder"><h5>Sangue Ancestral</h5><p>Uma vez por combate, ao sofrer dano, você pode absorver a força vital do inimigo, recuperando PV igual a metade do dano infligido do seu próximo ataque.</p></div>
-            <div class="origin-poder"><h5>Nobreza Sombria</h5><p>Você tem vantagens em testes de Persuasão, Atuação e Intimidação.</p></div>
-          </div>
-        </div>
-      </section>
 
-      <!-- MEDROSO -->
-      <section class="subsection" id="medroso">
-        <div class="origin-card">
-          <div class="origin-card-header"><h2 class="origin-name">Medroso</h2></div>
+            <div class="origin-powers-wrap">
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Sangue Ancestral</div>
+                <p class="origin-poder-desc">Uma vez por combate, ao sofrer dano, você pode absorver a força vital do inimigo, recuperando PV igual a metade do dano infligido do seu próximo ataque.</p>
+              </div>
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Nobreza Sombria</div>
+                <p class="origin-poder-desc">Você tem vantagens em testes de Persuasão, Atuação e Intimidação.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- #15 MEDROSO -->
+        <article class="origin-card" id="medroso" data-origin-search="medroso disparada e furtividade padrão nenhuma itens adequados às suas ocupações">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Medroso</h2>
+            <span class="origin-badge">ORIGEM #15</span>
+          </div>
           <div class="origin-card-body">
             <p class="origin-description">Você ainda é uma pessoa comum, você ainda tem medo do desconhecido e das monstruosidades que este mundo mágico tem a oferecer.</p>
-            <div class="origin-grid">
-              <div class="origin-field"><div class="origin-field-label">Perícias</div><div class="origin-field-value">Disparada e Furtividade</div></div>
-              <div class="origin-field"><div class="origin-field-label">Ferramentas</div><div class="origin-field-value">Nenhuma</div></div>
-              <div class="origin-field"><div class="origin-field-label">Idiomas</div><div class="origin-field-value">Padrão</div></div>
-              <div class="origin-field"><div class="origin-field-label">Equipamento</div><div class="origin-field-value">Itens adequados às suas ocupações</div></div>
+            
+            <div class="origin-specs-grid">
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Perícias</span>
+                <span class="origin-spec-value">Disparada e Furtividade</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Idiomas</span>
+                <span class="origin-spec-value">Padrão</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Nenhuma</span>
+              </div>
+              <div class="origin-spec-item full-width">
+                <span class="origin-spec-label">Equipamento</span>
+                <span class="origin-spec-value">Itens adequados às suas ocupações</span>
+              </div>
             </div>
-            <div class="origin-poder"><h5>CORRA!</h5><p>Durante uma cena de perseguição ou combate, ao sofrer dano pode gastar sua reação para dobrar seu movimento para longe do oponente, não ficando suscetível a golpes de oportunidade.</p></div>
-            <div class="origin-poder"><h5>Adaptação</h5><p>A cada dano de sanidade que você sofre, você fica mais forte, você começa a aprender e se acostumar, quando sofrer dano de sanidade você recebe resistência de 1, no próximo dano resistência de 2 e assim sucessivamente.</p></div>
-          </div>
-        </div>
-      </section>
 
-      <!-- CELEBRIDADE -->
-      <section class="subsection" id="celebridade">
-        <div class="origin-card">
-          <div class="origin-card-header"><h2 class="origin-name">Celebridade</h2></div>
+            <div class="origin-powers-wrap">
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">CORRA!</div>
+                <p class="origin-poder-desc">Durante uma cena de perseguição ou combate, ao sofrer dano pode gastar sua reação para dobrar seu movimento para longe do oponente, não ficando suscetível a golpes de oportunidade.</p>
+              </div>
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Adaptação</div>
+                <p class="origin-poder-desc">A cada dano de sanidade que você sofre, você fica mais forte, você começa a aprender e se acostumar, quando sofrer dano de sanidade você recebe resistência de 1, no próximo dano resistência de 2 e assim sucessivamente.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- #16 CELEBRIDADE -->
+        <article class="origin-card" id="celebridade" data-origin-search="celebridade liderança, barganha, mais uma relacionada ao motivo de sua fama padrão nenhuma itens adequados às suas ocupações e 1 moeda negra">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Celebridade</h2>
+            <span class="origin-badge">ORIGEM #16</span>
+          </div>
           <div class="origin-card-body">
             <p class="origin-description">Você é uma pessoa muito famosa e reconhecida socialmente, sendo bastante convincente e amada pelas pessoas ao seu redor.</p>
-            <div class="origin-grid">
-              <div class="origin-field"><div class="origin-field-label">Perícias</div><div class="origin-field-value">Liderança, Barganha, mais uma relacionada ao motivo de sua fama</div></div>
-              <div class="origin-field"><div class="origin-field-label">Ferramentas</div><div class="origin-field-value">Nenhuma</div></div>
-              <div class="origin-field"><div class="origin-field-label">Idiomas</div><div class="origin-field-value">Padrão</div></div>
-              <div class="origin-field"><div class="origin-field-label">Equipamento</div><div class="origin-field-value">Itens adequados às suas ocupações e 1 Moeda Negra</div></div>
+            
+            <div class="origin-specs-grid">
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Perícias</span>
+                <span class="origin-spec-value">Liderança, Barganha, mais uma relacionada ao motivo de sua fama</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Idiomas</span>
+                <span class="origin-spec-value">Padrão</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Nenhuma</span>
+              </div>
+              <div class="origin-spec-item full-width">
+                <span class="origin-spec-label">Equipamento</span>
+                <span class="origin-spec-value">Itens adequados às suas ocupações e 1 Moeda Negra</span>
+              </div>
             </div>
-            <div class="origin-poder"><h5>Personalidade Inspiradora</h5><p>Pode em situações difíceis inspirar seus aliados, os fazendo receber um bônus igual ao seu modificador de proficiência em seus testes.</p></div>
-            <div class="origin-poder"><h5>Carteirada</h5><p>Pode dar uma Carteirada com sua fama nas pessoas, recebendo vantagem em testes de barganha, intimidação e testes que envolvam roubo.</p></div>
-          </div>
-        </div>
-      </section>
 
-      <!-- CIBORGUE -->
-      <section class="subsection" id="ciborgue">
-        <div class="origin-card">
-          <div class="origin-card-header"><h2 class="origin-name">Ciborgue</h2></div>
+            <div class="origin-powers-wrap">
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Personalidade Inspiradora</div>
+                <p class="origin-poder-desc">Pode em situações difíceis inspirar seus aliados, os fazendo receber um bônus igual ao seu modificador de proficiência em seus testes.</p>
+              </div>
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Carteirada</div>
+                <p class="origin-poder-desc">Pode dar uma Carteirada com sua fama nas pessoas, recebendo vantagem em testes de barganha, intimidação e testes que envolvam roubo.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- #17 CIBORGUE -->
+        <article class="origin-card" id="ciborgue" data-origin-search="ciborgue engenharia e forja padrão e +1 a sua escolha ferramentas de forja e engenharia partes de metal e um martelo de forja">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Ciborgue</h2>
+            <span class="origin-badge">ORIGEM #17</span>
+          </div>
           <div class="origin-card-body">
             <p class="origin-description">Seu corpo é modificado mecanicamente, te concedendo habilidades devida suas partes robóticas.</p>
-            <div class="origin-grid">
-              <div class="origin-field"><div class="origin-field-label">Perícias</div><div class="origin-field-value">Engenharia e Forja</div></div>
-              <div class="origin-field"><div class="origin-field-label">Ferramentas</div><div class="origin-field-value">Ferramentas de forja e engenharia</div></div>
-              <div class="origin-field"><div class="origin-field-label">Idiomas</div><div class="origin-field-value">Padrão e +1 a sua escolha</div></div>
-              <div class="origin-field"><div class="origin-field-label">Equipamento</div><div class="origin-field-value">Partes de metal e um martelo de forja</div></div>
+            
+            <div class="origin-specs-grid">
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Perícias</span>
+                <span class="origin-spec-value">Engenharia e Forja</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Idiomas</span>
+                <span class="origin-spec-value">Padrão e +1 a sua escolha</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Ferramentas de forja e engenharia</span>
+              </div>
+              <div class="origin-spec-item full-width">
+                <span class="origin-spec-label">Equipamento</span>
+                <span class="origin-spec-value">Partes de metal e um martelo de forja</span>
+              </div>
             </div>
-            <div class="origin-poder"><h5>Homem de Ferro</h5><p>Pode modificar alguma parte do seu corpo para transformá-lo em metálico ou armas, acertando com o mestre as modificações, inicialmente pode ter duas.</p></div>
-            <div class="origin-poder"><h5>Homem Bomba</h5><p>Pode se desfazer das suas partes tecnológicas, explodindo elas em cima dos seus alvos ao estarem danificadas ou para se salvar, elas causam o dado de dano da subclasse + <span class="dice">6d6</span> de dano.</p></div>
-          </div>
-        </div>
-      </section>
 
-      <!-- MONSTRO DO MAR -->
-      <section class="subsection" id="monstro-do-mar">
-        <div class="origin-card">
-          <div class="origin-card-header"><h2 class="origin-name">Monstro do Mar</h2></div>
+            <div class="origin-powers-wrap">
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Homem de Ferro</div>
+                <p class="origin-poder-desc">Pode modificar alguma parte do seu corpo para transformá-lo em metálico ou armas, acertando com o mestre as modificações, inicialmente pode ter duas.</p>
+              </div>
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Homem Bomba</div>
+                <p class="origin-poder-desc">Pode se desfazer das suas partes tecnológicas, explodindo elas em cima dos seus alvos ao estarem danificadas ou para se salvar, elas causam o dado de dano da subclasse + <span class="dice">6d6</span> de dano.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- #18 MONSTRO DO MAR -->
+        <article class="origin-card" id="monstro-do-mar" data-origin-search="monstro do mar navegação, astronomia e natação padrão e +2 a sua escolha de suas viagens pelo mundo ferramentas de localização ferramentas de localização, arma de sua escolha, podendo ser de fogo também">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Monstro do Mar</h2>
+            <span class="origin-badge">ORIGEM #18</span>
+          </div>
           <div class="origin-card-body">
             <p class="origin-description">Você viveu anos e anos no mar, lutando, vivendo e guerreando nele, tendo já visto inúmeras bizarrices e sendo afetado por parte delas.</p>
-            <div class="origin-grid">
-              <div class="origin-field"><div class="origin-field-label">Perícias</div><div class="origin-field-value">Navegação, Astronomia e Natação</div></div>
-              <div class="origin-field"><div class="origin-field-label">Ferramentas</div><div class="origin-field-value">Ferramentas de Localização</div></div>
-              <div class="origin-field"><div class="origin-field-label">Idiomas</div><div class="origin-field-value">Padrão e +2 a sua escolha de suas viagens pelo mundo</div></div>
-              <div class="origin-field"><div class="origin-field-label">Equipamento</div><div class="origin-field-value">Ferramentas de localização, arma de sua escolha, podendo ser de fogo também</div></div>
+            
+            <div class="origin-specs-grid">
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Perícias</span>
+                <span class="origin-spec-value">Navegação, Astronomia e Natação</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Idiomas</span>
+                <span class="origin-spec-value">Padrão e +2 a sua escolha de suas viagens pelo mundo</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Ferramentas de Localização</span>
+              </div>
+              <div class="origin-spec-item full-width">
+                <span class="origin-spec-label">Equipamento</span>
+                <span class="origin-spec-value">Ferramentas de localização, arma de sua escolha, podendo ser de fogo também</span>
+              </div>
             </div>
-            <div class="origin-poder"><h5>Senhor das Águas</h5><p>Pode controlar água a vontade, como ataques e etc, os ataques causam dano igual ao dano de subclasse. Pode também fazer ondas e etc.</p></div>
-            <div class="origin-poder"><h5>Bombeamento</h5><p>Pode usar a água para aumentar o nível de sangue e bombear com mais força seus músculos, recebendo proficiência a mais de força em cenas de combate.</p></div>
-          </div>
-        </div>
-      </section>
 
-      <!-- INSANO -->
-      <section class="subsection" id="insano">
-        <div class="origin-card">
-          <div class="origin-card-header"><h2 class="origin-name">INSANO</h2></div>
+            <div class="origin-powers-wrap">
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Senhor das Águas</div>
+                <p class="origin-poder-desc">Pode controlar água a vontade, como ataques e etc, os ataques causam dano igual ao dano de subclasse. Pode também fazer ondas e etc.</p>
+              </div>
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Bombeamento</div>
+                <p class="origin-poder-desc">Pode usar a água para aumentar o nível de sangue e bombear com mais força seus músculos, recebendo proficiência a mais de força em cenas de combate.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- #19 INSANO -->
+        <article class="origin-card" id="insano" data-origin-search="insano 2 a sua escolha não fala nem sequer 1 idioma perfeitamente. nenhuma nenhum">
+          <div class="origin-card-header">
+            <h2 class="origin-name">INSANO</h2>
+            <span class="origin-badge">ORIGEM #19</span>
+          </div>
           <div class="origin-card-body">
             <p class="origin-description">Você sempre teve seus problemas mentais e desde então você tem ficado cada vez mais insano, porém essa loucura e desapego te deixam mais fortes do que nunca, como se fosse uma maldição te consumindo.</p>
-            <div class="origin-grid">
-              <div class="origin-field"><div class="origin-field-label">Perícias</div><div class="origin-field-value">2 a sua escolha</div></div>
-              <div class="origin-field"><div class="origin-field-label">Ferramentas</div><div class="origin-field-value">Nenhuma</div></div>
-              <div class="origin-field"><div class="origin-field-label">Idiomas</div><div class="origin-field-value">Não fala nem sequer 1 idioma perfeitamente.</div></div>
-              <div class="origin-field"><div class="origin-field-label">Equipamento</div><div class="origin-field-value">Nenhum</div></div>
+            
+            <div class="origin-specs-grid">
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Perícias</span>
+                <span class="origin-spec-value">2 a sua escolha</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Idiomas</span>
+                <span class="origin-spec-value">Não fala nem sequer 1 idioma perfeitamente.</span>
+              </div>
+              <div class="origin-spec-item">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Nenhuma</span>
+              </div>
+              <div class="origin-spec-item full-width">
+                <span class="origin-spec-label">Equipamento</span>
+                <span class="origin-spec-value">Nenhum</span>
+              </div>
             </div>
-            <div class="origin-poder"><h5>Doente Mental</h5><p>Você já começa o RPG com 0 de sanidade e um traço de loucura, a cada dano de sanidade que você sofre você adquire mais um problema mental, porém ganha também +2 em acertos e 1 ação adicional.</p></div>
-            <div class="origin-poder"><h5>Insanidade</h5><p>Você é um caso de estudo, uma aberração. Quando você cai a 0 pontos de vida é como se nada fizesse sentido e você fosse trazido de volta pela loucura, você volta com metade dos seus Hp na primeira queda, na segunda com metade da metade e não existe uma terceira, além disso cada vez que você retornar você causa um dano de sanidade a todo mundo.</p></div>
+
+            <div class="origin-powers-wrap">
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Doente Mental</div>
+                <p class="origin-poder-desc">Você já começa o RPG com 0 de sanidade e um traço de loucura, a cada dano de sanidade que você sofre você adquire mais um problema mental, porém ganha também +2 em acertos e 1 ação adicional.</p>
+              </div>
+              <div class="origin-poder-box">
+                <div class="origin-poder-title">Insanidade</div>
+                <p class="origin-poder-desc">Você é um caso de estudo, uma aberração. Quando você cai a 0 pontos de vida é como se nada fizesse sentido e você fosse trazido de volta pela loucura, você volta com metade dos seus Hp na primeira queda, na segunda com metade da metade e não existe uma terceira, além disso cada vez que você retornar você causa um dano de sanidade a todo mundo.</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </article>
+      </div>
 
     </main>
   </div>
@@ -473,23 +894,38 @@
 <script src="js/conditions.js"></script>
 <script src="js/main.js"></script>
 
-<a href="#origin-subnav" class="quick-jump-float" title="Voltar ao topo da navegação">&uarr; Topo</a>
+<a href="#origin-search" class="quick-jump-float" title="Voltar ao topo da busca">&uarr; Topo</a>
+
 <script>
-  // Filtro interativo em tempo real para origens
-  const originSearch = document.getElementById('origin-search');
-  if (originSearch) {
-    originSearch.addEventListener('input', (e) => {
-      const q = (e.target.value || '').toLowerCase().trim();
-      document.querySelectorAll('.origin-card').forEach(card => {
-        const text = card.textContent.toLowerCase();
-        const section = card.closest('.subsection');
-        if (section) {
-          section.style.display = text.includes(q) ? '' : 'none';
-        }
+  // Filtro interativo com contador em tempo real
+  const searchInput = document.getElementById('origin-search');
+  const countBadge = document.getElementById('origin-count');
+  const originCards = document.querySelectorAll('.origin-card');
+  const totalOrigens = originCards.length;
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const query = (e.target.value || '').toLowerCase().trim();
+      let visibleCount = 0;
+
+      originCards.forEach(card => {
+        const searchKey = card.getAttribute('data-origin-search') || '';
+        const cardText = card.textContent.toLowerCase();
+        const matches = !query || searchKey.includes(query) || cardText.includes(query);
+
+        card.style.display = matches ? 'flex' : 'none';
+        if (matches) visibleCount++;
       });
+
+      if (countBadge) {
+        if (!query) {
+          countBadge.textContent = `${totalOrigens} Origens Registradas`;
+        } else {
+          countBadge.textContent = `${visibleCount} de ${totalOrigens} Encontradas`;
+        }
+      }
     });
   }
 </script>
 </body>
 </html>
-
