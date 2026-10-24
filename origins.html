@@ -36,7 +36,7 @@
     <nav class="sidebar-nav">
             <div class="sidebar-section-title">Extras</div>
       <a href="suplementos.html" class="sidebar-link"><span class="icon"></span> Suplementos</a>
-      <a href="boletim.html" class="sidebar-link" style="color: #f43f5e;"><span class="icon"></span> Boletim</a>
+      <a href="boletim.html" class="sidebar-link" style="color: #f59e0b;"><span class="icon"></span> Boletim</a>
       <a href="mesa.html" class="sidebar-link" style="color: #ff7700;"><span class="icon"></span> Mesa Virtual</a>
       <a href="wuitter.html" class="sidebar-link" style="color: #1d9bf0;"><span class="icon"></span> Wuitter</a>
 
@@ -83,7 +83,36 @@
       </div>
     </header>
 
+    <!-- BARRA FIXA DE NAVEGAÇÃO TÁTICA -->
+    <nav class="tactical-subnav" id="origin-subnav" aria-label="Navegação de origens">
+      <input type="text" id="origin-search" class="tactical-search" placeholder="Filtrar por nome ou perícia..." aria-label="Buscar origem">
+      <span class="tactical-subnav-label">Saltar:</span>
+      <div class="tactical-chips-wrap">
+        <a href="#filho-do-abismo" class="tactical-chip">Filho do Abismo</a>
+        <a href="#guardiao-da-floresta" class="tactical-chip">Guardião da Floresta</a>
+        <a href="#herdeiro-de-paladium" class="tactical-chip">Herdeiro de Paladium</a>
+        <a href="#experimento-falho" class="tactical-chip">Experimento falho da Era Dourada</a>
+        <a href="#descendente-croma" class="tactical-chip">Descendente Croma</a>
+        <a href="#descendente-floralis" class="tactical-chip">Descendente Floralis</a>
+        <a href="#mercenario" class="tactical-chip">Mercenário</a>
+        <a href="#campones" class="tactical-chip">Camponês</a>
+        <a href="#nerd" class="tactical-chip">Nerd</a>
+        <a href="#herdeiro-da-forja" class="tactical-chip">Herdeiro da Forja</a>
+        <a href="#morador-cidade-inexistente" class="tactical-chip">Morador da Cidade Inexistente</a>
+        <a href="#medico" class="tactical-chip">Médico</a>
+        <a href="#guaraciense" class="tactical-chip">Guaraciense</a>
+        <a href="#realeza-vampirica" class="tactical-chip">Realeza Vampírica</a>
+        <a href="#medroso" class="tactical-chip">Medroso</a>
+        <a href="#celebridade" class="tactical-chip">Celebridade</a>
+        <a href="#ciborgue" class="tactical-chip">Ciborgue</a>
+        <a href="#monstro-do-mar" class="tactical-chip">Monstro do Mar</a>
+        <a href="#insano" class="tactical-chip">INSANO</a>
+      </div>
+    </nav>
+
     <main class="page-content">
+
+      <div class="topic-crooked" style="margin-bottom: 20px;">ORIGENS DO PERSONAGEM // 19 CAMINHOS DO PASSADO</div>
 
       <section class="subsection" id="intro">
         <div class="section-heading">
@@ -443,6 +472,24 @@
 
 <script src="js/conditions.js"></script>
 <script src="js/main.js"></script>
+
+<a href="#origin-subnav" class="quick-jump-float" title="Voltar ao topo da navegação">&uarr; Topo</a>
+<script>
+  // Filtro interativo em tempo real para origens
+  const originSearch = document.getElementById('origin-search');
+  if (originSearch) {
+    originSearch.addEventListener('input', (e) => {
+      const q = (e.target.value || '').toLowerCase().trim();
+      document.querySelectorAll('.origin-card').forEach(card => {
+        const text = card.textContent.toLowerCase();
+        const section = card.closest('.subsection');
+        if (section) {
+          section.style.display = text.includes(q) ? '' : 'none';
+        }
+      });
+    });
+  }
+</script>
 </body>
 </html>
 

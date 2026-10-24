@@ -8,97 +8,134 @@
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/components.css">
   <style>
-    .home-hero {
-      text-align: center;
-      padding: var(--space-3xl) var(--space-xl) var(--space-2xl);
+    .home-hero-v2 {
+      padding: var(--space-2xl) var(--space-xl) var(--space-xl);
+      background: radial-gradient(circle at 50% 20%, rgba(124, 58, 237, 0.12), transparent 70%);
+      border-bottom: 2px solid #000000;
       position: relative;
     }
-    .home-hero h1 {
+    .home-hero-title {
       font-family: var(--font-heading);
-      font-size: 3rem;
-      font-weight: 900;
-      letter-spacing: 0.15em;
-      color: var(--text-primary);
+      font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+      font-weight: normal !important;
+      letter-spacing: 0.12em;
+      color: #ffffff;
       text-transform: uppercase;
-      margin-bottom: var(--space-xs);
-      text-shadow: 0 0 40px rgba(124, 58, 237, 0.3);
+      margin: 10px 0 6px;
+      line-height: 1.05;
+      text-shadow: 4px 4px 0 #000000, 0 0 40px rgba(124, 58, 237, 0.4);
     }
-    .home-hero h1 small {
+    .home-hero-lead {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 820px;
+      line-height: 1.7;
+      margin: 0 0 var(--space-lg);
+    }
+    .home-cta-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .home-cta-btn {
+      font-family: var(--font-heading);
       font-size: 0.95rem;
-      font-weight: 400;
-      letter-spacing: 0.25em;
-      color: var(--attr-ea);
-      display: block;
-      margin-top: var(--space-xs);
+      padding: 10px 22px;
+      text-decoration: none;
       text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-radius: 0;
+      border: 2px solid #000000;
+      box-shadow: 4px 4px 0 #000000;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    .home-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 28px;
+    .home-cta-btn.primary {
+      background: var(--accent);
+      color: #ffffff;
+    }
+    .home-cta-btn.secondary {
+      background: #181724;
+      color: var(--text-primary);
+      border-color: var(--border-medium);
+    }
+    .home-cta-btn.amber {
+      background: #f59e0b;
+      color: #000000;
+      border-color: #000000;
+    }
+    .home-cta-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 #000000;
+    }
+    .home-cta-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 #000000;
+    }
+
+    .hub-section {
       margin-bottom: var(--space-3xl);
     }
-    .home-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: var(--space-xl);
+    .hub-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-md);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .home-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 18px;
+    }
+    .compendium-card {
+      background: #13121c;
+      border: 2px solid #000000;
+      border-top: 4px solid var(--card-accent, var(--accent));
+      padding: var(--space-lg);
       text-decoration: none;
-      transition: all var(--transition-base);
       display: flex;
       flex-direction: column;
+      box-shadow: 4px 4px 0 #000000;
       position: relative;
-      overflow: hidden;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, border-color 0.2s ease;
     }
-    .home-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: var(--card-accent, var(--attr-ea));
-      opacity: 0;
-      transition: opacity var(--transition-base);
-    }
-    .home-card:hover {
-      border-color: var(--card-accent, var(--attr-ea));
+    .compendium-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(124, 58, 237, 0.1);
+      box-shadow: 6px 6px 0 #000000;
+      border-color: var(--card-accent, var(--accent));
     }
-    .home-card:hover::before {
-      opacity: 1;
+    .compendium-card:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 #000000;
     }
-    .home-card h3 {
+    .compendium-card-tag {
       font-family: var(--font-heading);
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: var(--space-xs);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--card-accent, var(--accent));
+      margin-bottom: 6px;
     }
-    .home-card p {
-      font-size: 0.85rem;
+    .compendium-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      color: #ffffff;
+      margin: 0 0 6px;
+      line-height: 1.2;
+    }
+    .compendium-card p {
+      font-size: 0.86rem;
       color: var(--text-secondary);
       line-height: 1.6;
       margin: 0;
-    }
-    .home-card .badge {
-      align-self: flex-start;
-      margin-bottom: var(--space-sm);
-    }
-    .home-divider {
-      border-top: 1px solid var(--border-subtle);
-      margin: var(--space-2xl) 0;
-    }
-    .home-section-title {
-      font-family: var(--font-heading);
-      font-size: 1.2rem;
-      color: var(--text-primary);
-      text-align: center;
-      margin-bottom: var(--space-lg);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-    .home-section-title span {
-      color: var(--attr-ea);
+      flex: 1;
     }
   </style>
 </head>
@@ -115,9 +152,9 @@
       </div>
     </div>
     <nav class="sidebar-nav">
-            <div class="sidebar-section-title">Extras</div>
+      <div class="sidebar-section-title">Extras</div>
       <a href="suplementos.html" class="sidebar-link"><span class="icon"></span> Suplementos</a>
-      <a href="boletim.html" class="sidebar-link" style="color: #f43f5e;"><span class="icon"></span> Boletim</a>
+      <a href="boletim.html" class="sidebar-link" style="color: #f59e0b;"><span class="icon"></span> Boletim</a>
       <a href="mesa.html" class="sidebar-link" style="color: #ff7700;"><span class="icon"></span> Mesa Virtual</a>
       <a href="wuitter.html" class="sidebar-link" style="color: #1d9bf0;"><span class="icon"></span> Wuitter</a>
 
@@ -153,7 +190,10 @@
   <div class="main-wrapper">
 
     <header class="page-header">
-      <h1>Wuitalur - Sistema de RPG</h1>
+      <div style="display: flex; align-items: center; gap: var(--space-md);">
+        <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+        <h1>Compêndio Wuitalur</h1>
+      </div>
       <div style="position:relative">
         <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
         <div class="wiki-dropdown" id="wiki-menu-dropdown">
@@ -164,142 +204,227 @@
       </div>
     </header>
 
-    <section class="home-hero">
-      <h1>Wuitalur <small>— Sistema de RPG</small></h1>
+    <!-- HERO IMPACTANTE BRUTALISTA -->
+    <section class="home-hero-v2">
+      <div class="topic-crooked" style="margin-bottom: 10px;">COMPÊNDIO OFICIAL // REGRAS & UNIVERSO V1.5</div>
+      <h1 class="home-hero-title">WUITALUR RPG</h1>
+      <p class="home-hero-lead">
+        Sistema autoral de Dark Fantasy e Horror Cósmico. Um mundo em ruínas onde energia astral, tecnologia esquecida, ordens secretas e dilemas morais irreversíveis colidem a cada rolagem de dados.
+      </p>
+      <div class="home-cta-row">
+        <a href="#pilares-section" class="home-cta-btn primary">Explorar Compêndio</a>
+        <a href="criacao-personagem.html" class="home-cta-btn secondary">Criar Personagem</a>
+        <a href="mesa.html" class="home-cta-btn secondary" style="border-color: #ff7700; color: #ff9933;">Mesa Virtual</a>
+        <a href="boletim.html" class="home-cta-btn amber">Boletim Oficial</a>
+      </div>
     </section>
 
     <main class="page-content">
 
-      <!-- EXTRAS -->
-      <div class="home-section-title"><span>Extras</span></div>
-
-      <div class="home-grid">
-
-        <a href="suplementos.html" class="home-card" style="--card-accent: #ef4444; border-color: rgba(239, 68, 68, 0.3);">
-          <span class="badge" style="background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-color: rgba(239, 68, 68, 0.3);">Expansões Oficiais</span>
-          <h3 style="color: #f87171;">Suplementos</h3>
-          <p>Catálogo de sistemas filhos, expansões de gênero e suplementos oficiais como Fios do Medo.</p>
-        </a>
-
-        <a href="boletim.html" class="home-card" style="--card-accent: #f43f5e; border-color: rgba(244, 63, 94, 0.3);">
-          <span class="badge" style="background: rgba(244, 63, 94, 0.15); color: #fda4af; border-color: rgba(244, 63, 94, 0.3);">Novidades do RPG</span>
-          <h3 style="color: #fb7185;">Boletim</h3>
-          <p>Novidades do sistema, coisas sobre a história, curiosidades e atualizações do projeto.</p>
-        </a>
-
+      <!-- BARRA DE MÉTRICAS DO SISTEMA (HUD STATS) -->
+      <div class="hud-stats-bar">
+        <div class="hud-stat-item" style="border-top-color: #7c3aed;">
+          <div class="hud-stat-number">6</div>
+          <div class="hud-stat-label">Atributos</div>
+        </div>
+        <div class="hud-stat-item" style="border-top-color: #ec4899;">
+          <div class="hud-stat-number">36</div>
+          <div class="hud-stat-label">Perícias</div>
+        </div>
+        <div class="hud-stat-item" style="border-top-color: #ef4444;">
+          <div class="hud-stat-number">11</div>
+          <div class="hud-stat-label">Raças</div>
+        </div>
+        <div class="hud-stat-item" style="border-top-color: #f59e0b;">
+          <div class="hud-stat-number">13</div>
+          <div class="hud-stat-label">Classes</div>
+        </div>
+        <div class="hud-stat-item" style="border-top-color: #10b981;">
+          <div class="hud-stat-number">12</div>
+          <div class="hud-stat-label">Origens</div>
+        </div>
+        <div class="hud-stat-item" style="border-top-color: #06b6d4;">
+          <div class="hud-stat-number">8</div>
+          <div class="hud-stat-label">Elementos</div>
+        </div>
       </div>
 
-      <!-- PRINCIPAL -->
-      <div class="home-divider"></div>
-      <div class="home-section-title"><span>Principal</span></div>
-
-      <div class="home-grid">
-
-        <a href="atributos.html" class="home-card" style="--card-accent: #7c3aed;">
-          <h3>Atributos</h3>
-          <p>For&ccedil;a, Destreza, Intelig&ecirc;ncia e os demais pilares do seu personagem.</p>
-        </a>
-
-        <a href="races.html" class="home-card" style="--card-accent: #ef4444;">
-          <h3>Ra&ccedil;as</h3>
-          <p>Das ru&iacute;nas abissais aos altos p&iacute;ncaros &eacute;teros &mdash; 11 ra&ccedil;as jog&aacute;veis.</p>
-        </a>
-
-        <a href="origins.html" class="home-card" style="--card-accent: #10b981;">
-          <h3>Origens</h3>
-          <p>De onde seu personagem veio e o que carrega do passado &mdash; em 12 origens.</p>
-        </a>
-
-        <a href="classes.html" class="home-card" style="--card-accent: #f59e0b;">
-          <h3>Classes</h3>
-          <p>Cavaleiros, Consagrados, O Eterno, Lampin&aacute;rio e mais. Cada uma com seu prop&oacute;sito.</p>
-        </a>
-
-        <a href="criacao-personagem.html" class="home-card" style="--card-accent: #a78bfa;">
-          <h3>Cria&ccedil;&atilde;o de Personagem</h3>
-          <p>Guia passo a passo para criar seu personagem do zero.</p>
-        </a>
-
+      <!-- DESTAQUE DO BOLETIM // ARQUIVO CLASSIFICADO -->
+      <div class="home-feature-card">
+        <span class="home-feature-badge">TRANSMISSÃO RECENTE // BOLETIM OFICIAL #3</span>
+        <h2 class="home-feature-title" style="color: #fbbf24;">Comparativo do Sistema: Edição Antiga (v1.5) vs. Nova Edição 2.0</h2>
+        <p class="home-feature-desc">
+          Entenda as grandes mudanças mecânicas em desenvolvimento: unificação da DEF física e elemental, o fim definitivo da calculadora durante as sessões e o equilíbrio tático refinado entre esquivar na Destreza ou absorver o impacto na couraça.
+        </p>
+        <div class="home-feature-footer">
+          <a href="boletim.html#boletim-003" class="home-cta-btn amber" style="font-size: 0.85rem; padding: 8px 18px;">Ler Boletim Completo</a>
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">DESPACHO BLT-003 // 23 DE OUTUBRO DE 2026</span>
+        </div>
       </div>
 
-      <!-- REGRAS -->
-      <div class="home-divider"></div>
-      <div class="home-section-title"><span>Regras</span></div>
+      <!-- HUB 1: CRIAÇÃO & PILARES -->
+      <section class="hub-section" id="pilares-section">
+        <div class="hub-header">
+          <div class="topic-crooked">CRIAÇÃO DE PERSONAGEM & PILARES</div>
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-heading);">05 MÓDULOS ESSENCIAIS</span>
+        </div>
+        <div class="home-cards-grid">
 
-      <div class="home-grid">
+          <a href="atributos.html" class="compendium-card" style="--card-accent: #7c3aed;">
+            <div class="compendium-card-tag">Bases Mecânicas</div>
+            <h3>Atributos</h3>
+            <p>Saúde, RF, RE, Destreza, Força, Intelecto e Fama. Os pilares que sustentam todos os testes e defesas.</p>
+          </a>
 
-        <a href="condicoes.html" class="home-card" style="--card-accent: #ec4899;">
-          <h3>Condi&ccedil;&otilde;es</h3>
-          <p>Estados que afetam os personagens &mdash; de Agarrado a Sangramento.</p>
-        </a>
+          <a href="races.html" class="compendium-card" style="--card-accent: #ef4444;">
+            <div class="compendium-card-tag">11 Espécies</div>
+            <h3>Raças</h3>
+            <p>De Akivus das florestas a E.X.O.s mecanizados e horrores Abissais. Bônus, fraquezas e poderes raciais.</p>
+          </a>
 
-        <a href="sanidade.html" class="home-card" style="--card-accent: #8b5cf6;">
-          <h3>Sanidade</h3>
-          <p>Loucura, traumas e o peso de encarar o desconhecido.</p>
-        </a>
+          <a href="origins.html" class="compendium-card" style="--card-accent: #10b981;">
+            <div class="compendium-card-tag">12 Caminhos</div>
+            <h3>Origens</h3>
+            <p>De onde seu personagem surgiu e o que herdou: perícias treinadas, idiomas e equipamentos iniciais.</p>
+          </a>
 
-        <a href="pericias.html" class="home-card" style="--card-accent: #ec4899;">
-          <h3>Per&iacute;cias</h3>
-          <p>O que seu personagem sabe fazer &mdash; do combate &agrave; diplomacia.</p>
-        </a>
+          <a href="classes.html" class="compendium-card" style="--card-accent: #f59e0b;">
+            <div class="compendium-card-tag">13 Arquétipos</div>
+            <h3>Classes</h3>
+            <p>Cavaleiros, Consagrados, O Eterno, Lampinário, Pistoleiro e mais. Habilidades com escolhas únicas por nível.</p>
+          </a>
 
-        <a href="mecanicas.html" class="home-card" style="--card-accent: #06b6d4;">
-          <h3>Mec&acirc;nicas</h3>
-          <p>Turnos, defesa, esquiva e as regras que regem o jogo.</p>
-        </a>
+          <a href="criacao-personagem.html" class="compendium-card" style="--card-accent: #a78bfa;">
+            <div class="compendium-card-tag">Manual Guiado</div>
+            <h3>Criação Passo a Passo</h3>
+            <p>Roteiro prático com regras de distribuição de pontos, cálculos derivados e ficha pronta.</p>
+          </a>
 
-        <a href="glossario.html" class="home-card" style="--card-accent: #f59e0b;">
-          <h3>Gloss&aacute;rio</h3>
-          <p>DEF, PV, EA, CD/CT e todos os termos do sistema explicados.</p>
-        </a>
+        </div>
+      </section>
 
-      </div>
+      <!-- HUB 2: REGRAS & COMBATE -->
+      <section class="hub-section" id="regras-section">
+        <div class="hub-header">
+          <div class="topic-crooked">REGRAS FUNDAMENTAIS & COMBATE</div>
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-heading);">05 SISTEMAS DE JOGO</span>
+        </div>
+        <div class="home-cards-grid">
 
-      <!-- CONTEÚDO -->
-      <div class="home-divider"></div>
-      <div class="home-section-title"><span>Conte&uacute;do</span></div>
+          <a href="pericias.html" class="compendium-card" style="--card-accent: #ec4899;">
+            <div class="compendium-card-tag">36 Especializações</div>
+            <h3>Perícias</h3>
+            <p>Do combate desarmado à dedução investigativa. Escolha as 6 perícias treinadas do seu personagem.</p>
+          </a>
 
-      <div class="home-grid">
+          <a href="mecanicas.html" class="compendium-card" style="--card-accent: #06b6d4;">
+            <div class="compendium-card-tag">Regras Centrais</div>
+            <h3>Mecânicas de Combate</h3>
+            <p>Fluxo de turnos, tipos de ações, testes opostos, cálculo de acerto, dano e reações táticas.</p>
+          </a>
 
-        <a href="elementos.html" class="home-card" style="--card-accent: #06b6d4;">
-          <h3>Elementos</h3>
-          <p>Solar, Electro, Nul&iacute;drico, Praga &mdash; os elementos que moldam o mundo.</p>
-        </a>
+          <a href="condicoes.html" class="compendium-card" style="--card-accent: #f43f5e;">
+            <div class="compendium-card-tag">Estados & Penalidades</div>
+            <h3>Condições</h3>
+            <p>Agarrado, Cegueira, Paralisia, Sangramento e todos os efeitos debilitantes do combate.</p>
+          </a>
 
-        <a href="selos.html" class="home-card" style="--card-accent: #7c3aed;">
-          <h3>Selos</h3>
-          <p>S&iacute;mbolos que manifestam os Elementos em sua forma mais pura.</p>
-        </a>
+          <a href="sanidade.html" class="compendium-card" style="--card-accent: #8b5cf6;">
+            <div class="compendium-card-tag">Horror Psicológico</div>
+            <h3>Sanidade & Loucura</h3>
+            <p>O impacto do horror cósmico na mente humana: traumas, colapsos temporários e marcas permanentes.</p>
+          </a>
 
-        <a href="equipamentos.html" class="home-card" style="--card-accent: #6b7280;">
-          <h3>Equipamentos</h3>
-          <p>Armas, armaduras e itens para sua jornada.</p>
-        </a>
+          <a href="glossario.html" class="compendium-card" style="--card-accent: #f59e0b;">
+            <div class="compendium-card-tag">Dicionário do Sistema</div>
+            <h3>Glossário Técnico</h3>
+            <p>Significado de siglas, termos táticos: DEF, DEFe, PV, EA, CD, CT e conceitos do sistema.</p>
+          </a>
 
-        <a href="conclave.html" class="home-card" style="--card-accent: #ef4444;">
-          <h3>O Conclave</h3>
-          <p>Ordem secreta que protege o equil&iacute;brio entre os mundos.</p>
-        </a>
+        </div>
+      </section>
 
-      </div>
+      <!-- HUB 3: UNIVERSO & CONTEÚDO -->
+      <section class="hub-section">
+        <div class="hub-header">
+          <div class="topic-crooked">UNIVERSO, MAGIA & ARSENAL</div>
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-heading);">05 COMPÊNDIOS DE MUNDO</span>
+        </div>
+        <div class="home-cards-grid">
 
-      <!-- FERRAMENTAS -->
-      <div class="home-divider"></div>
-      <div class="home-section-title"><span>Ferramentas</span></div>
+          <a href="elementos.html" class="compendium-card" style="--card-accent: #06b6d4;">
+            <div class="compendium-card-tag">Energias Astrais</div>
+            <h3>Elementos</h3>
+            <p>Solar, Electro, Nulídrico, Praga, Podridão, Sagrado, Estase e Pesadelo. As forças do universo.</p>
+          </a>
 
-      <div class="home-grid">
+          <a href="selos.html" class="compendium-card" style="--card-accent: #7c3aed;">
+            <div class="compendium-card-tag">Grimório</div>
+            <h3>Selos Mágicos</h3>
+            <p>Rituais e encantamentos elementais com custos de EA, efeitos táticos e áreas de impacto.</p>
+          </a>
 
-        <a href="criador.html" class="home-card" style="--card-accent: #f97316;">
-          <h3>Criador de Ficha</h3>
-          <p>Monte seu personagem passo a passo com c&aacute;lculos autom&aacute;ticos.</p>
-        </a>
+          <a href="equipamentos.html" class="compendium-card" style="--card-accent: #6b7280;">
+            <div class="compendium-card-tag">Armas & Blindagens</div>
+            <h3>Equipamentos</h3>
+            <p>Lâminas, armas de fogo, armaduras pesadas, escudos, kits de sobrevivência e preços em moedas.</p>
+          </a>
 
-        <a href="changelog.html" class="home-card" style="--card-accent: #a78bfa;">
-          <h3>Changelog</h3>
-          <p>Hist&oacute;rico de atualiza&ccedil;&otilde;es e novidades do sistema.</p>
-        </a>
+          <a href="conclave.html" class="compendium-card" style="--card-accent: #ef4444;">
+            <div class="compendium-card-tag">Sociedade Secreta</div>
+            <h3>O Conclave</h3>
+            <p>A organização milenar de caçadores que patrulha as fendas e vigia o equilíbrio das realidades.</p>
+          </a>
 
-      </div>
+          <a href="bestiario.html" class="compendium-card" style="--card-accent: #b45f06;">
+            <div class="compendium-card-tag">Catálogo de Criaturas</div>
+            <h3>Bestiário Oficial</h3>
+            <p>Criaturas corrompidas classificadas por afinidade elemental com fichas completas de combate.</p>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- HUB 4: FERRAMENTAS & EXPANSÕES -->
+      <section class="hub-section">
+        <div class="hub-header">
+          <div class="topic-crooked">FERRAMENTAS, MESAS & EXPANSÕES</div>
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-heading);">RECURSOS DE MESA</span>
+        </div>
+        <div class="home-cards-grid">
+
+          <a href="suplementos.html" class="compendium-card" style="--card-accent: #ef4444;">
+            <div class="compendium-card-tag">Sistemas Filhos</div>
+            <h3>Suplementos Oficiais</h3>
+            <p>Acesse expansões temáticas, como <strong>Fios do Medo</strong> (investigação urbana e horror).</p>
+          </a>
+
+          <a href="mesa.html" class="compendium-card" style="--card-accent: #ff7700;">
+            <div class="compendium-card-tag">VTT Integrado</div>
+            <h3>Mesa Virtual (VTT)</h3>
+            <p>Tabuleiros de batalha, rolagem de dados sonoros, trilhas e gerenciamento de combate ao vivo.</p>
+          </a>
+
+          <a href="criador.html" class="compendium-card" style="--card-accent: #f97316;">
+            <div class="compendium-card-tag">Automação</div>
+            <h3>Criador de Ficha</h3>
+            <p>Monte sua ficha digital com preenchimento assistido e cálculo automático de defesas e pontos.</p>
+          </a>
+
+          <a href="changelog.html" class="compendium-card" style="--card-accent: #a78bfa;">
+            <div class="compendium-card-tag">Histórico</div>
+            <h3>Changelog do Sistema</h3>
+            <p>Registro minucioso de cada atualização, balanceamento de regras e novas adições ao compêndio.</p>
+          </a>
+
+          <a href="wuitter.html" class="compendium-card" style="--card-accent: #1d9bf0;">
+            <div class="compendium-card-tag">Feed da Comunidade</div>
+            <h3>Wuitter</h3>
+            <p>Rede de transmissão intra-universo para novidades, avisos de jogadores e crônicas de campanha.</p>
+          </a>
+
+        </div>
+      </section>
 
     </main>
   </div>

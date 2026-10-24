@@ -1718,3 +1718,490 @@ body, p, li, td, th, label, input, textarea,
   letter-spacing: normal !important;
   line-height: 1.65;
 }
+
+/* ============================================================
+   SUITE DE HARMONIZAÇÃO E NAVEGAÇÃO BRUTALISTA // V1.5
+   Atributos, Raças, Origens, Perícias, Classes e Home
+   ============================================================ */
+
+/* Tópico Torto Universal */
+.topic-crooked, .v2-topic-banner {
+  display: inline-block;
+  background: var(--accent, #7c3aed);
+  color: #ffffff !important;
+  font-family: var(--font-heading) !important;
+  font-size: 1.35rem;
+  font-weight: normal !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 22px;
+  transform: rotate(-1.6deg);
+  clip-path: polygon(2% 0%, 98% 2%, 100% 97%, 0% 100%);
+  box-shadow: 4px 4px 0px #000000;
+  border-radius: 0;
+  margin-bottom: 20px;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  user-select: none;
+}
+.topic-crooked:hover, .v2-topic-banner:hover {
+  transform: rotate(0deg) scale(1.02);
+  box-shadow: 6px 6px 0px #000000;
+}
+.topic-crooked.yellow, .v2-topic-banner.yellow {
+  background: #f59e0b;
+  color: #000000 !important;
+}
+.topic-crooked.small, .v2-topic-banner.small {
+  font-size: 0.95rem;
+  padding: 5px 14px;
+}
+
+/* Barra de Navegação Tática Fixa / Sticky */
+.tactical-subnav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(13, 12, 19, 0.95);
+  backdrop-filter: blur(10px);
+  border: 2px solid #000000;
+  border-bottom: 3px solid var(--accent, #7c3aed);
+  padding: 10px 14px;
+  margin-bottom: var(--space-xl);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tactical-subnav-label {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.tactical-chips-wrap {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+  flex: 1;
+}
+
+.tactical-chip {
+  background: #181724;
+  border: 1px solid var(--border-medium);
+  color: var(--text-secondary);
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  padding: 5px 12px;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  border-radius: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.tactical-chip:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 2px 2px 0 #000000;
+}
+.tactical-chip:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 #000000;
+}
+.tactical-chip.active {
+  background: var(--accent, #7c3aed);
+  color: #ffffff !important;
+  border-color: #ffffff;
+  box-shadow: 2px 2px 0 #000;
+}
+
+.tactical-search {
+  background: #09080d;
+  border: 1px solid var(--border-medium);
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  padding: 6px 12px;
+  border-radius: 0;
+  outline: none;
+  min-width: 200px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.tactical-search:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(124, 58, 237, 0.35);
+}
+
+/* Floating Jump Button */
+.quick-jump-float {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 90;
+  background: #13121c;
+  border: 2px solid var(--accent, #7c3aed);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  padding: 8px 14px;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  box-shadow: 4px 4px 0 #000000;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.quick-jump-float:hover {
+  background: var(--accent, #7c3aed);
+  transform: translateY(-3px);
+  box-shadow: 6px 6px 0 #000000;
+}
+
+/* Home HUD Quick Stats */
+.hud-stats-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin: var(--space-xl) 0 var(--space-2xl);
+}
+.hud-stat-item {
+  background: #13121c;
+  border: 2px solid #000000;
+  border-top: 3px solid var(--accent, #7c3aed);
+  padding: 12px 14px;
+  text-align: center;
+  box-shadow: 3px 3px 0 #000000;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hud-stat-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 5px 5px 0 #000000;
+  border-top-color: #9055ff;
+}
+.hud-stat-number {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  color: #ffffff;
+  line-height: 1.1;
+  margin-bottom: 2px;
+}
+.hud-stat-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+/* Home Feature Card (Boletim / Destaques) */
+.home-feature-card {
+  background: #111018;
+  border: 2px solid #000000;
+  border-left: 6px solid #f59e0b;
+  padding: var(--space-xl);
+  margin-bottom: var(--space-2xl);
+  box-shadow: 4px 4px 0 #000000;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.home-feature-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 6px 6px 0 #000000;
+}
+.home-feature-badge {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  padding: 3px 10px;
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  box-shadow: 2px 2px 0 #000000;
+  align-self: flex-start;
+}
+.home-feature-title {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: #ffffff;
+  line-height: 1.25;
+  margin: 0;
+}
+.home-feature-desc {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin: 0;
+}
+.home-feature-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-top: var(--space-xs);
+}
+
+/* Tactical HUD Cards (Raças, Origens, Classes) */
+.hud-card {
+  background: #13121c;
+  border: 2px solid #000000;
+  padding: var(--space-xl);
+  margin-bottom: var(--space-xl);
+  box-shadow: 4px 4px 0 #000000;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hud-card:hover {
+  box-shadow: 6px 6px 0 #000000;
+}
+.hud-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: var(--space-sm);
+  flex-wrap: wrap;
+}
+.hud-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Grade 4 Slots para Origens */
+.origin-hud-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  background: #0d0c13;
+  border: 1px solid var(--border-subtle);
+  padding: 14px;
+  margin: var(--space-md) 0 var(--space-lg);
+}
+.origin-hud-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.origin-slot-label {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.origin-slot-value {
+  font-size: 0.86rem;
+  color: var(--text-primary);
+  line-height: 1.45;
+}
+
+/* Layout 2 Colunas para Raças */
+.race-layout-split {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .race-layout-split {
+    grid-template-columns: 1fr;
+  }
+}
+.race-frame {
+  background: #09080d;
+  border: 2px solid #000000;
+  padding: 8px;
+  box-shadow: 3px 3px 0 #000000;
+}
+.race-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+.race-hud-tactical {
+  background: #0d0c13;
+  border: 1px solid var(--border-subtle);
+  padding: 12px;
+  margin-top: 10px;
+}
+.race-hud-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+.race-hud-row:last-child {
+  border-bottom: none;
+}
+.race-abilities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: var(--space-md);
+}
+.race-ability-item {
+  background: #181724;
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--accent, #7c3aed);
+  padding: 10px 14px;
+}
+.race-ability-item h5 {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+.race-ability-item p {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Layout Atributos */
+.attr-grid-balanced {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-2xl);
+}
+.attr-card-unified {
+  background: #13121c;
+  border: 2px solid #000000;
+  border-left: 5px solid var(--card-accent, var(--accent));
+  box-shadow: 4px 4px 0 #000000;
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.attr-card-unified:hover {
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0 #000000;
+}
+.attr-card-unified .attr-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 8px;
+}
+.attr-card-unified .attr-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: #ffffff;
+  margin: 0;
+}
+.attr-formula-pill {
+  background: #09080d;
+  border: 1px solid var(--border-subtle);
+  padding: 8px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: #fde047;
+  margin: 6px 0;
+}
+
+/* ============================================================
+   ESTILOS DE ORIGENS // BRUTALISTA V1.5
+   ============================================================ */
+.origin-card {
+  background: #13121c;
+  border: 2px solid #000000;
+  border-left: 5px solid var(--accent, #7c3aed);
+  box-shadow: 4px 4px 0 #000000;
+  padding: var(--space-xl);
+  margin-bottom: var(--space-2xl);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+}
+.origin-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0 #000000;
+}
+.origin-card-header {
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+.origin-name {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  color: #ffffff;
+  margin: 0;
+}
+.origin-description {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: var(--space-md);
+}
+.origin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  gap: 12px;
+  background: #0d0c13;
+  border: 1px solid var(--border-subtle);
+  padding: 14px;
+  margin-bottom: var(--space-md);
+}
+.origin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.origin-field-label {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.origin-field-value {
+  font-size: 0.86rem;
+  color: #ffffff;
+  line-height: 1.45;
+}
+.origin-poder {
+  background: #181724;
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid #10b981;
+  padding: 10px 14px;
+  margin-top: 8px;
+}
+.origin-poder h5 {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  color: #34d399;
+  margin: 0 0 4px;
+}
+.origin-poder p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin: 0;
+}

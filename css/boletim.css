@@ -4,44 +4,46 @@
    Dark Fantasy / Nanquim / Cinzel / Zero Emojis
    ============================================================ */
 
-/* Hero do Boletim */
+/* Hero do Boletim - Estilo Dossiê / Arquivo Classificado */
 .boletim-hero {
-  background: linear-gradient(180deg, rgba(26, 12, 18, 0.9) 0%, rgba(13, 13, 18, 0.95) 100%);
-  border: 1px solid rgba(244, 63, 94, 0.25);
-  border-radius: var(--radius-lg);
-  padding: var(--space-2xl) var(--space-xl);
+  background: #0d0c13;
+  border: 2px solid #000000;
+  border-left: 6px solid #f59e0b;
+  border-radius: 0;
+  padding: var(--space-xl) var(--space-xl);
   margin-bottom: var(--space-2xl);
-  text-align: center;
+  text-align: left;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), inset 0 0 40px rgba(244, 63, 94, 0.05);
+  box-shadow: 4px 4px 0px #000000;
 }
 
 .boletim-hero::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, #f43f5e, #fb7185, transparent);
+  height: 2px;
+  background: linear-gradient(90deg, #f59e0b, transparent);
 }
 
 .boletim-hero-badge {
   display: inline-block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.72rem;
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: normal;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   padding: 4px 12px;
-  border-radius: 20px;
-  background: rgba(244, 63, 94, 0.12);
-  color: #fb7185;
-  border: 1px solid rgba(244, 63, 94, 0.35);
+  border-radius: 0;
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  box-shadow: 2px 2px 0px #000;
   margin-bottom: var(--space-sm);
 }
 
 .boletim-hero h1 {
-  font-family: var(--font-heading, 'Cinzel', serif);
+  font-family: var(--font-heading);
   font-size: clamp(1.8rem, 4vw, 2.6rem);
   font-weight: 800;
   color: var(--text-primary);
@@ -52,7 +54,7 @@
 }
 
 .boletim-hero h1 span {
-  color: #f43f5e;
+  color: #f59e0b;
 }
 
 .boletim-hero p.tagline {
@@ -68,7 +70,7 @@
   display: none;
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   padding: var(--space-sm) var(--space-md);
   margin-bottom: var(--space-md);
   align-items: center;
@@ -92,28 +94,28 @@
 .boletim-mobile-title {
   font-size: 0.82rem;
   font-weight: 700;
-  color: #fb7185;
+  color: #fbbf24;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .boletim-mobile-toggle-btn {
-  background: rgba(244, 63, 94, 0.15);
-  border: 1px solid rgba(244, 63, 94, 0.35);
-  color: #fb7185;
-  font-family: var(--font-heading, 'Cinzel', serif);
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #fbbf24;
+  font-family: var(--font-heading);
   font-size: 0.75rem;
   font-weight: 700;
   padding: 6px 12px;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   cursor: pointer;
   white-space: nowrap;
   transition: all var(--transition-base);
 }
 
 .boletim-mobile-toggle-btn:hover {
-  background: #f43f5e;
+  background: #f59e0b;
   color: #000;
 }
 
@@ -131,7 +133,7 @@
 .boletim-archive-pane {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  border-radius: 0; box-shadow: 4px 4px 0 #000000;
   padding: var(--space-lg);
   position: sticky;
   top: 24px;
@@ -155,7 +157,7 @@
 }
 
 .boletim-archive-title {
-  font-family: var(--font-heading, 'Cinzel', serif);
+  font-family: var(--font-heading);
   font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -170,7 +172,7 @@
   color: var(--text-muted);
   background: var(--bg-elevated);
   padding: 2px 8px;
-  border-radius: 12px;
+  border-radius: 0;
   border: 1px solid var(--border-subtle);
 }
 
@@ -183,7 +185,7 @@
   width: 100%;
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   padding: 8px 12px;
   font-size: 0.82rem;
   color: var(--text-primary);
@@ -193,8 +195,8 @@
 
 .boletim-search-input:focus {
   outline: none;
-  border-color: #f43f5e;
-  box-shadow: 0 0 10px rgba(244, 63, 94, 0.2);
+  border-color: #f59e0b;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
 }
 
 .boletim-search-input::placeholder {
@@ -222,7 +224,7 @@
 .boletim-nav-card {
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   padding: var(--space-md);
   cursor: pointer;
   text-align: left;
@@ -242,19 +244,20 @@
 }
 
 .boletim-nav-card:hover {
-  border-color: rgba(244, 63, 94, 0.4);
+  border-color: rgba(245, 158, 11, 0.4);
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 .boletim-nav-card.active {
-  background: rgba(244, 63, 94, 0.08);
-  border-color: #f43f5e;
-  box-shadow: 0 4px 20px rgba(244, 63, 94, 0.15);
+  background: rgba(245, 158, 11, 0.1);
+  border-color: #f59e0b;
+  box-shadow: 3px 3px 0 #000;
+  transform: translateX(4px);
 }
 
 .boletim-nav-card.active::before {
-  background: #f43f5e;
+  background: #f59e0b;
 }
 
 .boletim-nav-card-header {
@@ -270,9 +273,9 @@
   font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
-  color: #fb7185;
-  background: rgba(244, 63, 94, 0.15);
-  border: 1px solid rgba(244, 63, 94, 0.3);
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.3);
   padding: 1px 6px;
   border-radius: 4px;
 }
@@ -296,7 +299,7 @@
 }
 
 .boletim-nav-card-title {
-  font-family: var(--font-heading, 'Cinzel', serif);
+  font-family: var(--font-heading);
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -305,7 +308,7 @@
 }
 
 .boletim-nav-card.active .boletim-nav-card-title {
-  color: #fb7185;
+  color: #fbbf24;
 }
 
 .boletim-nav-card-resumo {
@@ -364,7 +367,7 @@
 .boletim-reader-article {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  border-radius: 0; box-shadow: 4px 4px 0 #000000;
   padding: var(--space-2xl) var(--space-2xl);
   box-shadow: var(--shadow-md);
   position: relative;
@@ -376,7 +379,7 @@
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #f43f5e, #fb7185, #f59e0b);
+  background: linear-gradient(90deg, #f59e0b, #fbbf24, #f59e0b);
 }
 
 /* Cabeçalho do Artigo */
@@ -403,9 +406,9 @@
 }
 
 .boletim-badge-pill.edition {
-  background: rgba(244, 63, 94, 0.15);
-  color: #fb7185;
-  border: 1px solid rgba(244, 63, 94, 0.35);
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
 }
 
 .boletim-badge-pill.season {
@@ -421,7 +424,7 @@
 }
 
 .boletim-article-title {
-  font-family: var(--font-heading, 'Cinzel', serif);
+  font-family: var(--font-heading);
   font-size: clamp(1.6rem, 3.2vw, 2.3rem);
   font-weight: 800;
   color: var(--text-primary);
@@ -444,7 +447,7 @@
   gap: var(--space-md);
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   padding: var(--space-md) var(--space-lg);
   margin-bottom: var(--space-md);
 }
@@ -504,7 +507,7 @@
 
 .boletim-divider-glyph {
   padding: 0 var(--space-md);
-  color: #f43f5e;
+  color: #f59e0b;
   font-size: 0.9rem;
 }
 
@@ -522,7 +525,7 @@
 }
 
 .boletim-section-title {
-  font-family: var(--font-heading, 'Cinzel', serif);
+  font-family: var(--font-heading);
   font-size: 1.35rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -552,7 +555,7 @@
 }
 
 .boletim-article-body em {
-  color: #fda4af;
+  color: #fde047;
   font-style: italic;
 }
 
@@ -573,7 +576,7 @@
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   background: var(--bg-elevated);
 }
 
@@ -587,9 +590,9 @@
 }
 
 .boletim-table th {
-  background: rgba(244, 63, 94, 0.08);
-  color: #fb7185;
-  font-family: var(--font-heading, 'Cinzel', serif);
+  background: rgba(245, 158, 11, 0.08);
+  color: #fbbf24;
+  font-family: var(--font-heading);
   font-size: 0.76rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -620,7 +623,7 @@
 .boletim-callout {
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   padding: var(--space-lg);
   margin: var(--space-xl) 0;
   position: relative;
@@ -632,13 +635,13 @@
 }
 
 .boletim-callout.highlight-crimson {
-  border-left: 4px solid #ef4444;
-  background: linear-gradient(90deg, rgba(239, 68, 68, 0.06) 0%, var(--bg-elevated) 100%);
+  border-left: 4px solid #f59e0b;
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.06) 0%, var(--bg-elevated) 100%);
 }
 
 .boletim-callout.highlight-rose {
-  border-left: 4px solid #f43f5e;
-  background: linear-gradient(90deg, rgba(244, 63, 94, 0.06) 0%, var(--bg-elevated) 100%);
+  border-left: 4px solid #f59e0b;
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.06) 0%, var(--bg-elevated) 100%);
 }
 
 .boletim-callout-header {
@@ -662,17 +665,17 @@
 }
 
 .boletim-callout.highlight-crimson .boletim-callout-tag {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
 }
 
 .boletim-callout.highlight-rose .boletim-callout-tag {
-  background: rgba(244, 63, 94, 0.15);
-  color: #f43f5e;
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
 }
 
 .boletim-callout-title {
-  font-family: var(--font-heading, 'Cinzel', serif);
+  font-family: var(--font-heading);
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -686,15 +689,15 @@
 
 /* Caixa de Citação / Pull Quote */
 .boletim-box-quote {
-  border-left: 3px solid #f43f5e;
-  background: rgba(244, 63, 94, 0.04);
+  border-left: 3px solid #f59e0b;
+  background: rgba(245, 158, 11, 0.04);
   padding: var(--space-lg);
   margin: var(--space-xl) 0;
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
 }
 
 .boletim-box-quote p {
-  font-family: var(--font-heading, 'Cinzel', serif);
+  font-family: var(--font-heading);
   font-size: 1.05rem;
   font-weight: 600;
   color: var(--text-primary);
@@ -722,7 +725,7 @@
 .boletim-qa-item {
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   padding: var(--space-lg);
 }
 
@@ -752,7 +755,7 @@
 }
 
 .boletim-answer strong {
-  color: #fb7185;
+  color: #fbbf24;
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -777,8 +780,8 @@
 }
 
 .boletim-signoff-text strong {
-  color: #fb7185;
-  font-family: var(--font-heading, 'Cinzel', serif);
+  color: #fbbf24;
+  font-family: var(--font-heading);
   letter-spacing: 0.05em;
 }
 
@@ -802,7 +805,7 @@
 .boletim-nav-arrow-btn {
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   padding: var(--space-md) var(--space-lg);
   color: var(--text-primary);
   display: flex;
@@ -814,9 +817,9 @@
 }
 
 .boletim-nav-arrow-btn:hover {
-  border-color: #f43f5e;
+  border-color: #f59e0b;
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(244, 63, 94, 0.15);
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15);
 }
 
 .boletim-nav-arrow-btn.next {
@@ -826,7 +829,7 @@
 
 .arrow-icon {
   font-size: 1.2rem;
-  color: #f43f5e;
+  color: #f59e0b;
   transition: transform var(--transition-base);
 }
 
@@ -852,7 +855,7 @@
 }
 
 .arrow-title {
-  font-family: var(--font-heading, 'Cinzel', serif);
+  font-family: var(--font-heading);
   font-size: 0.85rem;
   font-weight: 700;
   color: var(--text-primary);

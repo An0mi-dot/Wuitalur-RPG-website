@@ -37,7 +37,7 @@
     <nav class="sidebar-nav">
             <div class="sidebar-section-title">Extras</div>
       <a href="suplementos.html" class="sidebar-link"><span class="icon"></span> Suplementos</a>
-      <a href="boletim.html" class="sidebar-link" style="color: #f43f5e;"><span class="icon"></span> Boletim</a>
+      <a href="boletim.html" class="sidebar-link" style="color: #f59e0b;"><span class="icon"></span> Boletim</a>
       <a href="mesa.html" class="sidebar-link" style="color: #ff7700;"><span class="icon"></span> Mesa Virtual</a>
       <a href="wuitter.html" class="sidebar-link" style="color: #1d9bf0;"><span class="icon"></span> Wuitter</a>
 
@@ -84,7 +84,30 @@
       </div>
     </header>
 
+    <!-- BARRA FIXA DE NAVEGAÇÃO TÁTICA -->
+    <nav class="tactical-subnav" id="class-subnav" aria-label="Navegação rápida de classes">
+      <input type="text" id="class-search" class="tactical-search" placeholder="Filtrar classes..." aria-label="Buscar classe">
+      <span class="tactical-subnav-label">Classes:</span>
+      <div class="tactical-chips-wrap">
+        <a href="#compactador" class="tactical-chip">Compactador</a>
+        <a href="#consagrados" class="tactical-chip">Consagrados</a>
+        <a href="#bestial" class="tactical-chip">Bestial</a>
+        <a href="#cavaleiros-paladium" class="tactical-chip">Cavaleiros de Paladium</a>
+        <a href="#eterno" class="tactical-chip">O Eterno</a>
+        <a href="#furtassaltantes" class="tactical-chip">Furtassaltante</a>
+        <a href="#pistoleiro" class="tactical-chip">Pistoleiro</a>
+        <a href="#rastejantes" class="tactical-chip">Rastejantes</a>
+        <a href="#anomalo" class="tactical-chip">Anômalo</a>
+        <a href="#atirador-espectral" class="tactical-chip">Atirador Espectral</a>
+        <a href="#lampinario" class="tactical-chip">Lampinário</a>
+        <a href="#protegidos" class="tactical-chip">Protegidos</a>
+        <a href="#sobrevivente" class="tactical-chip">Sobrevivente</a>
+      </div>
+    </nav>
+
     <main class="page-content">
+
+      <div class="topic-crooked" style="margin-bottom: 20px;">CLASSES DE COMBATE // 13 ARQUÉTIPOS DO DESTINO</div>
 
       <!-- INTRO -->
       <section class="subsection" id="intro">
@@ -92,7 +115,7 @@
           <h2>Classes</h2>
           <p>Em Wuitalur, as classes representam diferentes tipos de habilidades e estilos de combate que os jogadores podem escolher ao criar seu personagem. Cada classe oferece uma abordagem única para o jogo, permitindo que o jogador experimente diversas formas de interagir com o mundo. Algumas classes são mais focadas em ataques rápidos e furtivos, enquanto outras podem ser especialistas em resistir a danos ou em habilidades mágicas. A classe escolhida determinará como o personagem evolui, que habilidades ele desbloqueia, e como ele se comporta nas batalhas e nas situações do jogo.</p>
         </div>
-        <div class="race-card" style="max-width: 800px; margin: 0 auto var(--space-2xl);">
+        <div class="hud-card" style="border-left: 5px solid var(--accent); margin-bottom: var(--space-xl);">
           <div class="race-card-body">
             <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;"><strong style="color: var(--text-primary);">Importante:</strong> À medida que uma classe sobe de nível, o jogador tem a oportunidade de aprimorar suas habilidades. A cada novo nível em que uma classe desbloqueia habilidades, o jogador deve escolher UMA entre duas opções diferentes, cada uma oferecendo um caminho único para o desenvolvimento do personagem. (Essa mecânica não está aplicada para todas as classes ainda). Essa mecânica de escolha permite que cada jornada seja personalizada, proporcionando uma experiência única e estratégica para o jogador, já que a escolha de uma habilidade pode impactar diretamente a forma como o personagem interage com o mundo e enfrenta os desafios do jogo.</p>
           </div>
@@ -120,7 +143,7 @@
       </div>
 
 <section class="subsection" id="compactador">
-        <div class="race-card" style="max-width: 900px; margin: 0 auto;">
+        <div class="race-card">
           <div class="race-card-image">
             <img src="assets/classes/compactador.webp" alt="Compactador" loading="lazy" decoding="async">
           </div>
@@ -340,7 +363,7 @@
       
 
 <section class="subsection" id="consagrados">
-        <div class="race-card" style="max-width: 900px; margin: 0 auto;">
+        <div class="race-card">
           <div class="race-card-image">
             <img src="assets/classes/consagrados.webp" alt="Consagrados" loading="lazy" decoding="async">
           </div>
@@ -574,7 +597,7 @@
       
 
 <section class="subsection" id="bestial">
-        <div class="race-card" style="max-width: 900px; margin: 0 auto;">
+        <div class="race-card">
           <div class="race-card-header">
             <div>
               <h2 class="race-name">Bestial</h2>
@@ -1115,7 +1138,7 @@
       
 
 <section class="subsection" id="cavaleiros-paladium">
-        <div class="race-card" style="max-width: 900px; margin: 0 auto;">
+        <div class="race-card">
           <div class="race-card-image">
             <img src="assets/classes/cavaleiros_paladium.webp" alt="Cavaleiros de Paladium" loading="lazy" decoding="async">
           </div>
@@ -1325,7 +1348,7 @@
       
 
 <section class="subsection" id="eterno">
-        <div class="race-card" style="max-width: 900px; margin: 0 auto;">
+        <div class="race-card">
           <div class="race-card-image">
             <img src="assets/classes/eterno.webp" alt="O Eterno" loading="lazy" decoding="async">
           </div>
@@ -1707,7 +1730,7 @@
       
 
 <section class="subsection" id="furtassaltantes">
-        <div class="race-card" style="max-width: 900px; margin: 0 auto;">
+        <div class="race-card">
           <div class="race-card-image">
             <img src="assets/classes/furtassaltante.webp" alt="Furtassaltante" loading="lazy" decoding="async">
           </div>
@@ -1898,7 +1921,7 @@
       
 
 <section class="subsection" id="pistoleiro">
-        <div class="race-card" style="max-width: 900px; margin: 0 auto;">
+        <div class="race-card">
           <div class="race-card-image">
             <img src="assets/classes/pistoleiro.webp" alt="Pistoleiro" loading="lazy" decoding="async">
           </div>
@@ -2158,7 +2181,7 @@
       
 
 <section class="subsection" id="rastejantes">
-        <div class="race-card" style="max-width: 900px; margin: 0 auto;">
+        <div class="race-card">
           <div class="race-card-image">
             <img src="assets/classes/rastejantes.webp" alt="Rastejantes" loading="lazy" decoding="async">
           </div>
@@ -2537,7 +2560,7 @@
       
 
 <section class="subsection" id="anomalo">
-        <div class="race-card" style="max-width: 900px; margin: 0 auto;">
+        <div class="race-card">
           <div class="race-card-header">
             <div>
               <h2 class="race-name">Anômalo</h2>
@@ -2840,7 +2863,7 @@
       
 
 <section class="subsection" id="atirador-espectral">
-        <div class="race-card" style="max-width: 900px; margin: 0 auto;">
+        <div class="race-card">
           <div class="race-card-header">
             <div>
               <h2 class="race-name">Atirador Espectral</h2>
@@ -3086,7 +3109,7 @@
       
 
 <section class="subsection" id="lampinario">
-        <div class="race-card" style="max-width: 900px; margin: 0 auto;">
+        <div class="race-card">
           <div class="race-card-image">
             <img src="assets/classes/lampinario.webp" alt="Lampin&aacute;rio" loading="lazy" decoding="async">
           </div>
@@ -3572,12 +3595,28 @@
 
 <script src="js/conditions.js"></script>
 <script src="js/main.js"></script>
+
+<a href="#class-subnav" class="quick-jump-float" title="Voltar ao índice de classes">&uarr; Classes</a>
+<script>
+  // Filtro interativo em tempo real para classes
+  const classSearch = document.getElementById('class-search');
+  if (classSearch) {
+    classSearch.addEventListener('input', (e) => {
+      const q = (e.target.value || '').toLowerCase().trim();
+      document.querySelectorAll('section.subsection').forEach(sec => {
+        if (sec.id === 'intro') return;
+        const text = sec.textContent.toLowerCase();
+        sec.style.display = text.includes(q) ? '' : 'none';
+      });
+    });
+  }
+</script>
 </body>
 </html>
 
 
 <section class="subsection" id="protegidos">
-        <div class="race-card" style="max-width: 900px; margin: 0 auto;">
+        <div class="race-card">
           <div class="race-card-image">
             <img src="assets/classes/protegidos.webp" alt="Protegidos" loading="lazy" decoding="async">
           </div>
@@ -4159,7 +4198,7 @@
       
 
 <section class="subsection" id="sobrevivente">
-        <div class="race-card" style="max-width: 900px; margin: 0 auto;">
+        <div class="race-card">
           <div class="race-card-header">
             <div>
               <h2 class="race-name">Sobrevivente</h2>
