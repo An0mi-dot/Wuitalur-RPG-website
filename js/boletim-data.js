@@ -282,3 +282,6 @@ const BOLETINS_DATA = [
 if (typeof window !== 'undefined') {
   window.BOLETINS_DATA = BOLETINS_DATA;
 }
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { BOLETINS_DATA };
+}

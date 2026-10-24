@@ -1,13 +1,26 @@
 /* ============================================================
    WUITALUR RPG — CONTROLADOR DO BOLETIM INFORMATIVO
    Interface de Leitura e Arquivo de Boletins
+   Integracao Discord & Supabase (Canal: 1060717983921610842)
    (Zero Emojis, Transições Limpas, Suporte a Deep-linking)
    ============================================================ */
+
+const BOLETIM_SUPABASE_CONFIG = {
+  url: 'https://qkupdpgcjusbedaoahwi.supabase.co',
+  key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFrdXBkcGdjanVzYmVkYW9haHdpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgxNzk1ODAsImV4cCI6MjEwMzc1NTU4MH0.UDc5nE7ZwUyWmwNZKpq7bGrty1N6Uh0bjq2PJtBkVrk'
+};
+
+const BOLETIM_DISCORD_CONFIG = {
+  channelId: '1060717983921610842',
+  webhookUrl: 'https://discord.com/api/webhooks/1563629491639812101/1mWmJgJbuiO4rIndhPrgSZThWX1D6LANhGlKNrgRJutzhQMuZ86jKgwFD41eclL07teZ',
+  botAvatar: 'https://cdn.discordapp.com/avatars/1288806072328650818/c32978a4fd5a5aff0a77df81d29e28dd.png?size=256'
+};
 
 const BoletimApp = {
   data: [],
   currentId: null,
   searchQuery: '',
+  supabase: null,
 
   init() {
     if (!window.BOLETINS_DATA || !Array.isArray(window.BOLETINS_DATA)) {
@@ -28,6 +41,10 @@ const BoletimApp = {
 
     this.bindEvents();
     this.render();
+
+    // Inicializa comunicacao em nuvem e checa novidades para notificacao
+    this.initSupabaseClient();
+    this.checkAndNotifyNewBoletim();
 
     // Listener de mudanca de hash para permitir historico de navegacao
     window.addEventListener('hashchange', () => {
@@ -257,6 +274,152 @@ const BoletimApp = {
         ` : ''}
       </article>
     `;
+  },
+
+  // ---- INTEGRACAO SUPABASE E NOTIFICACOES DISCORD (CANAL: 1060717983921610842) ----
+  initSupabaseClient() {
+    try {
+      if (typeof window !== 'undefined' && window.supabase && BOLETIM_SUPABASE_CONFIG.url && BOLETIM_SUPABASE_CONFIG.key) {
+        this.supabase = window.supabase.createClient(BOLETIM_SUPABASE_CONFIG.url, BOLETIM_SUPABASE_CONFIG.key);
+      }
+    } catch(err) {
+      console.warn('Erro ao inicializar Supabase client no Boletim:', err);
+    }
+  },
+
+  buildDiscordPayload(item) {
+    if (!item) return null;
+    const siteUrl = 'https://an0mi-dot.github.io/Wuitalur-RPG-website/boletim.html#' + encodeURIComponent(item.id);
+    const titleText = item.titulo || 'Novo Boletim';
+    const editionText = item.edicao || 'Boletim Informativo';
+    const summaryText = item.resumo || item.subtitulo || 'Confira as novidades e atualizacoes no site.';
+
+    return {
+      username: 'WuB - Utilities',
+      avatar_url: BOLETIM_DISCORD_CONFIG.botAvatar,
+      content: '@everyone [Novo Boletim] ' + titleText,
+      allowed_mentions: {
+        parse: ['everyone']
+      },
+      embeds: [
+        {
+          color: 16096779, // Ambar dourado (#f59e0b) oficial do Boletim
+          author: {
+            name: 'BOLETIM WUITALUR • NOVIDADES',
+            icon_url: BOLETIM_DISCORD_CONFIG.botAvatar
+          },
+          title: editionText + ': ' + titleText,
+          url: siteUrl,
+          description: '[NOVO BOLETIM PUBLICADO]\n**' + titleText + '**\n\n' + summaryText + '\n\nAcesse para ler as novidades no site:\n' + siteUrl,
+          footer: {
+            text: 'Wuitalur RPG • Atualizacoes e Novidades'
+          },
+          timestamp: new Date().toISOString()
+        }
+      ]
+    };
+  },
+
+  async sendDiscordNotification(item) {
+    if (!item) return false;
+    const payload = this.buildDiscordPayload(item);
+    if (!payload) return false;
+
+    try {
+      const response = await fetch(BOLETIM_DISCORD_CONFIG.webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload),
+        keepalive: true
+      });
+      return response.ok || response.status === 204;
+    } catch(err) {
+      console.warn('Erro ao notificar Discord sobre novo boletim:', err);
+      return false;
+    }
+  },
+
+  async checkAndNotifyNewBoletim() {
+    if (!this.supabase || !this.data || this.data.length === 0) return;
+
+    try {
+      const latest = this.data[0];
+      if (!latest || !latest.id) return;
+
+      const { data, error } = await this.supabase
+        .from('personagens')
+        .select('atributos')
+        .eq('id', 3)
+        .single();
+
+      if (error || !data) return;
+
+      const rawAtributos = typeof data.atributos === 'string' ? JSON.parse(data.atributos) : (data.atributos || {});
+      const boletimMeta = rawAtributos._boletim || {};
+      const lastNotifiedId = boletimMeta.lastNotifiedId;
+
+      // Se ja foi notificado para esta edicao, nao repete
+      if (lastNotifiedId === latest.id) {
+        return;
+      }
+
+      // Se e a primeira vez que o sistema roda e nao havia metadados anteriores
+      if (!lastNotifiedId) {
+        rawAtributos._boletim = {
+          lastNotifiedId: latest.id,
+          lastNotifiedAt: new Date().toISOString(),
+          lastNotifiedTitle: latest.titulo
+        };
+        await this.supabase
+          .from('personagens')
+          .update({ atributos: rawAtributos })
+          .eq('id', 3);
+        return;
+      }
+
+      // Nova edicao detectada: envia para o canal do Discord
+      const sent = await this.sendDiscordNotification(latest);
+      if (sent) {
+        rawAtributos._boletim = {
+          lastNotifiedId: latest.id,
+          lastNotifiedAt: new Date().toISOString(),
+          lastNotifiedTitle: latest.titulo
+        };
+
+        await this.supabase
+          .from('personagens')
+          .update({ atributos: rawAtributos })
+          .eq('id', 3);
+      }
+    } catch(err) {
+      console.warn('Erro ao verificar novo boletim:', err);
+    }
+  },
+
+  async forceNotifyDiscord(editionId) {
+    const item = editionId ? this.data.find(b => b.id === editionId) : this.data[0];
+    if (!item) {
+      console.warn('Edicao nao encontrada:', editionId);
+      return false;
+    }
+    const sent = await this.sendDiscordNotification(item);
+    if (sent && this.supabase) {
+      try {
+        const { data } = await this.supabase.from('personagens').select('atributos').eq('id', 3).single();
+        if (data) {
+          const raw = typeof data.atributos === 'string' ? JSON.parse(data.atributos) : (data.atributos || {});
+          raw._boletim = {
+            lastNotifiedId: item.id,
+            lastNotifiedAt: new Date().toISOString(),
+            lastNotifiedTitle: item.titulo
+          };
+          await this.supabase.from('personagens').update({ atributos: raw }).eq('id', 3);
+        }
+      } catch(e) {}
+    }
+    return sent;
   }
 };
 

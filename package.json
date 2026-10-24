@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "notify:boletim": "node scripts/notify-boletim.js"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.3"
   }
