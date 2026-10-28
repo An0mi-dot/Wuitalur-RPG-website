@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Combate &mdash; Wuitalur RPG 2.0</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    .mech-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-2xl); }
+    .mech-card-header { display: flex; align-items: center; gap: var(--space-lg); padding: var(--space-lg) var(--space-xl); border-bottom: 1px solid var(--border-subtle); background: rgba(0,0,0,0.15); }
+    .mech-card-header h2 { font-size: 1.2rem; margin: 0; }
+    .mech-card-body { padding: var(--space-xl); }
+    .mech-card-body h3 { font-family: var(--font-heading); font-size: 1rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--attr-ea); margin: var(--space-xl) 0 var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--border-subtle); }
+    .mech-card-body h3:first-child { margin-top: 0; }
+    .mech-card-body p, .mech-card-body li { font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary); }
+    .mech-card-body ul, .mech-card-body ol { padding-left: var(--space-lg); margin-bottom: var(--space-lg); }
+    .mech-card-body li { margin-bottom: var(--space-xs); }
+    .mech-stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-md); margin: var(--space-lg) 0; }
+    .mech-stat { background: rgba(0,0,0,0.15); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-md); text-align: center; }
+    .mech-stat-label { font-family: var(--font-heading); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--attr-ea); margin-bottom: var(--space-xs); }
+    .mech-stat-value { font-size: 1rem; color: var(--text-primary); font-weight: 600; }
+    .mech-table { width: 100%; border-collapse: collapse; margin: var(--space-md) 0 var(--space-lg); }
+    .mech-table th, .mech-table td { padding: var(--space-sm) var(--space-md); border: 1px solid var(--border-subtle); font-size: 0.88rem; text-align: left; }
+    .mech-table th { background: rgba(0,0,0,0.3); font-family: var(--font-heading); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-primary); }
+    .mech-table td { color: var(--text-secondary); }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema Base 2.0 (Alpha)</span>
+      </div>
+    </div>
+
+    <!-- BOTÃO VOLTAR AO CATÁLOGO DE SUPLEMENTOS -->
+    <a href="../suplementos.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar aos Suplementos</span>
+    </a>
+
+    <nav class="sidebar-nav">
+
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="vocacoes.html" class="sidebar-link"><span class="icon"></span> Vocações</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="combate.html" class="sidebar-link active"><span class="icon"></span> Combate</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Combate &amp; Defesa</h1>
+    </header>
+
+    <main class="page-content">
+
+      <div class="topic-crooked" style="margin-bottom: 20px;">SISTEMA T&Aacute;TICO // REGRAS DE COMBATE</div>
+
+      <!-- DESVIAR VS DEFENDER -->
+      <div class="mech-card">
+        <div class="mech-card-header">
+          <h2>Como Lidar com Ataques: Desviar vs. Defender</h2>
+        </div>
+        <div class="mech-card-body">
+          <p>Quando um personagem &eacute; alvo de um ataque, ele decide como seu corpo responde:</p>
+
+          <table class="mech-table">
+            <thead>
+              <tr>
+                <th style="width: 130px;">Op&ccedil;&atilde;o</th>
+                <th style="width: 170px;">Tipo de A&ccedil;&atilde;o</th>
+                <th>Resolu&ccedil;&atilde;o Mec&acirc;nica</th>
+                <th>Resultado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong style="color: var(--accent);">Desviar</strong></td>
+                <td><strong>Rea&ccedil;&atilde;o Ativa</strong><br><small style="color: var(--text-muted);">(Gasta a Rea&ccedil;&atilde;o da rodada)</small></td>
+                <td>O personagem tenta ativamente sair do caminho do golpe. Rola <strong>Destreza</strong> (ou a per&iacute;cia <strong>Acrobacia</strong>).</td>
+                <td><strong>Sucesso:</strong> Evita o golpe e sofre <strong>0 de dano</strong>.<br><strong>Falha:</strong> &Eacute; atingido em cheio e sofre o dano total.</td>
+              </tr>
+              <tr>
+                <td><strong style="color: #4ade80;">Defender</strong></td>
+                <td><strong>A&ccedil;&atilde;o Passiva / Natural</strong><br><small style="color: var(--text-muted);">(N&Atilde;O gasta Rea&ccedil;&atilde;o)</small></td>
+                <td>O personagem aceita o impacto confiando na sua coura&ccedil;a, placas e resist&ecirc;ncia corporal.</td>
+                <td><strong>Sem rolagem e sem gastar rea&ccedil;&atilde;o.</strong> O dano sofrido &eacute; reduzido diretamente pelo valor total da sua <strong>DEF</strong>.<br><em>(Dano Sofrido = Dano do Inimigo &minus; DEF)</em>.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="hud-card" style="border-left: 4px solid var(--accent); margin-top: var(--space-md);">
+            <div class="race-card-body">
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0;">
+                <strong style="color: var(--text-primary);">Vantagem T&aacute;tica:</strong> Como Defender n&atilde;o consome Rea&ccedil;&atilde;o, um combatente blindado consegue reduzir o dano de m&uacute;ltiplos inimigos na mesma rodada (sua armadura est&aacute; sempre protegendo) e mant&eacute;m sua Rea&ccedil;&atilde;o livre para contra-ataques, habilidades de classe ou manobras defensivas para proteger aliados.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- A DEF UNIFICADA -->
+      <div class="mech-card">
+        <div class="mech-card-header">
+          <h2>A Defesa (DEF)</h2>
+        </div>
+        <div class="mech-card-body">
+          <p>
+            A prote&ccedil;&atilde;o de um personagem &eacute; representada diretamente pela sua estat&iacute;stica de <strong>DEF</strong> na ficha.
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 8px; margin: var(--space-md) 0;">
+            <div style="background: rgba(255, 255, 255, 0.02); border-left: 3px solid #4ade80; padding: 10px 14px;">
+              <strong style="color: var(--text-primary);">Redu&ccedil;&atilde;o Direta:</strong> A DEF reduz qualquer dano cru recebido (cortante, perfurante, contundente ou elemental comum como fogo, gelo, choques de Electro ou lodo de Podrid&atilde;o).
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.02); border-left: 3px solid #ef4444; padding: 10px 14px;">
+              <strong style="color: var(--text-primary);">Dano Real:</strong> Apenas ataques espec&iacute;ficos que causarem Dano Real ou declararem a propriedade de ignorar defesas conseguem atravessar a DEF sem redu&ccedil;&atilde;o.
+            </div>
+          </div>
+
+          <h3>C&aacute;lculo da DEF (Prote&ccedil;&otilde;es e Vigor)</h3>
+          <table class="mech-table">
+            <thead>
+              <tr>
+                <th>Fonte de Prote&ccedil;&atilde;o</th>
+                <th style="width: 140px; text-align: center;">Valor de DEF</th>
+                <th>Caracter&iacute;sticas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Sem Armadura</td>
+                <td style="text-align: center;"><strong>DEF 0</strong></td>
+                <td>Roupas civis comuns.</td>
+              </tr>
+              <tr>
+                <td>Armadura Leve</td>
+                <td style="text-align: center;"><strong>DEF 2</strong></td>
+                <td>Gib&otilde;es de couro, tecidos refor&ccedil;ados com malha fina.</td>
+              </tr>
+              <tr>
+                <td>Armadura M&eacute;dia</td>
+                <td style="text-align: center;"><strong>DEF 4</strong></td>
+                <td>Cotas de malha completas, peitorais de a&ccedil;o e couro r&iacute;gido.</td>
+              </tr>
+              <tr>
+                <td>Armadura Pesada</td>
+                <td style="text-align: center;"><strong>DEF 6</strong></td>
+                <td>Placas de liga met&aacute;lica de Paladium, coura&ccedil;as forjadas.</td>
+              </tr>
+              <tr>
+                <td>Escudo</td>
+                <td style="text-align: center;"><strong>+2 DEF</strong></td>
+                <td>B&ocirc;nus adicional constante enquanto empunhado.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            <strong>B&ocirc;nus de Vigor:</strong> Um personagem soma seu atributo <strong>Vigor</strong> diretamente na sua DEF ao escolher Defender, refletindo a capacidade biol&oacute;gica de amortecer impactos pesados.
+          </p>
+        </div>
+      </div>
+
+      <!-- TURNO E ECONOMIA DE AÇÕES -->
+      <div class="mech-card">
+        <div class="mech-card-header">
+          <h2>Estrutura do Turno e Economia de A&ccedil;&otilde;es</h2>
+        </div>
+        <div class="mech-card-body">
+          <p>
+            O combate &eacute; din&acirc;mico e organizado em rodadas. No in&iacute;cio do confronto, todos os participantes realizam teste de Iniciativa rolando <strong>1d20 + Destreza</strong>; a ordem das a&ccedil;&otilde;es segue do maior para o menor resultado, com empates decididos pela maior Destreza.
+          </p>
+
+          <div class="mech-stat-grid">
+            <div class="mech-stat">
+              <div class="mech-stat-label">Deslocamento Base</div>
+              <div class="mech-stat-value">6 Blocos (6B)</div>
+            </div>
+            <div class="mech-stat">
+              <div class="mech-stat-label">A&ccedil;&atilde;o Padr&atilde;o</div>
+              <div class="mech-stat-value">1 por Turno</div>
+            </div>
+            <div class="mech-stat">
+              <div class="mech-stat-label">A&ccedil;&atilde;o B&ocirc;nus</div>
+              <div class="mech-stat-value">1 por Turno</div>
+            </div>
+            <div class="mech-stat">
+              <div class="mech-stat-label">Rea&ccedil;&atilde;o</div>
+              <div class="mech-stat-value">1 por Rodada</div>
+            </div>
+          </div>
+
+          <div style="font-family: var(--font-heading); font-size: 1.05rem; color: var(--text-primary); margin: var(--space-lg) 0 var(--space-sm); letter-spacing: 0.05em; text-transform: uppercase;">
+            Recursos Dispon&iacute;veis por Turno
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div class="ability-slot" style="margin-bottom: 0; border-left: 3px solid #22d3ee;">
+              <div class="ability-header">
+                <h4 class="ability-title">Deslocamento Base</h4>
+                <div style="display: flex; gap: 6px;">
+                  <span class="badge" style="background: rgba(34, 211, 238, 0.15); color: #22d3ee; border: 1px solid rgba(34, 211, 238, 0.3);">6 Blocos</span>
+                  <span class="badge badge-tag">Fracion&aacute;vel</span>
+                </div>
+              </div>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.6;">
+                Pode ser fracionado livremente antes e depois das a&ccedil;&otilde;es do seu turno, permitindo mover, interagir e continuar o deslocamento restante.
+              </p>
+            </div>
+
+            <div class="ability-slot" style="margin-bottom: 0; border-left: 3px solid #7c3aed;">
+              <div class="ability-header">
+                <h4 class="ability-title">A&ccedil;&atilde;o Padr&atilde;o</h4>
+                <span class="badge" style="background: rgba(124, 58, 237, 0.2); color: #c4b5fd; border: 1px solid rgba(124, 58, 237, 0.4);">1 por Turno</span>
+              </div>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.6;">
+                Recurso principal do turno, utilizado para desferir ataques, ativar habilidades maiores de classe, usar itens complexos ou realizar Disparada.
+              </p>
+            </div>
+
+            <div class="ability-slot" style="margin-bottom: 0; border-left: 3px solid #fb923c;">
+              <div class="ability-header">
+                <h4 class="ability-title">A&ccedil;&atilde;o B&ocirc;nus</h4>
+                <span class="badge" style="background: rgba(251, 146, 60, 0.15); color: #fb923c; border: 1px solid rgba(251, 146, 60, 0.3);">1 por Turno</span>
+              </div>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.6;">
+                A&ccedil;&atilde;o &aacute;gil complementar, utilizada para ativar poderes secund&aacute;rios, recargas r&aacute;pidas de armas leves ou manobras t&aacute;ticas com essa tag.
+              </p>
+            </div>
+
+            <div class="ability-slot" style="margin-bottom: 0; border-left: 3px solid #f43f5e;">
+              <div class="ability-header">
+                <h4 class="ability-title">Rea&ccedil;&atilde;o</h4>
+                <span class="badge" style="background: rgba(244, 63, 94, 0.15); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.3);">1 por Rodada</span>
+              </div>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.6;">
+                Executada fora do seu turno em resposta a um gatilho imediato, como Desviar de um golpe ou aplicar o Escudo Vivo para proteger aliados.
+              </p>
+            </div>
+
+            <div class="ability-slot" style="margin-bottom: 0; border-left: 3px solid #6b7280;">
+              <div class="ability-header">
+                <h4 class="ability-title">A&ccedil;&otilde;es Livres</h4>
+                <span class="badge badge-tag">Sem Custo</span>
+              </div>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.6;">
+                Intera&ccedil;&otilde;es r&aacute;pidas e sem esfor&ccedil;o, como falar frases curtas, soltar um item das m&atilde;os ou empurrar uma porta entreaberta.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOVIMENTAÇÃO E DISPARADA -->
+      <div class="mech-card">
+        <div class="mech-card-header">
+          <h2>Movimenta&ccedil;&atilde;o e Disparada</h2>
+        </div>
+        <div class="mech-card-body">
+          <p>
+            O posicionamento no campo de batalha &eacute; fundamental para o controle de alcance, cobertura e linhas de vis&atilde;o t&aacute;ticas:
+          </p>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+            <div class="ability-slot" style="margin-bottom: 0; border-left: 3px solid #22d3ee;">
+              <div class="ability-header">
+                <h4 class="ability-title">Disparada Padr&atilde;o</h4>
+                <span class="badge" style="background: rgba(34, 211, 238, 0.15); color: #22d3ee; border: 1px solid rgba(34, 211, 238, 0.3);">A&ccedil;&atilde;o Padr&atilde;o</span>
+              </div>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.6;">
+                O personagem consome sua A&ccedil;&atilde;o Padr&atilde;o para dobrar o Deslocamento total na rodada sem a necessidade de testes.
+              </p>
+            </div>
+
+            <div class="ability-slot" style="margin-bottom: 0; border-left: 3px solid #fb923c;">
+              <div class="ability-header">
+                <h4 class="ability-title">Arrancada R&aacute;pida</h4>
+                <div style="display: flex; gap: 6px;">
+                  <span class="badge" style="background: rgba(251, 146, 60, 0.15); color: #fb923c; border: 1px solid rgba(251, 146, 60, 0.3);">A&ccedil;&atilde;o B&ocirc;nus</span>
+                  <span class="badge badge-tag">Atletismo</span>
+                </div>
+              </div>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.6;">
+                O personagem gasta sua A&ccedil;&atilde;o B&ocirc;nus e realiza um teste de Atletismo contra desafio moderado para ganhar +2B de deslocamento imediato naquele movimento.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MANOBRAS E REGRAS ESPECIAIS -->
+      <div class="mech-card">
+        <div class="mech-card-header">
+          <h2>Manobras e Regras Especiais de Combate</h2>
+        </div>
+        <div class="mech-card-body">
+          <p>
+            Diretrizes mec&acirc;nicas para situa&ccedil;&otilde;es t&aacute;ticas de combate corporal, alcance m&iacute;nimo e rea&ccedil;&otilde;es defensivas:
+          </p>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+            <div class="ability-slot" style="margin-bottom: 0; border-left: 3px solid #f43f5e;">
+              <div class="ability-header">
+                <h4 class="ability-title">Combate &agrave; Queima-Roupa</h4>
+                <span class="badge" style="background: rgba(244, 63, 94, 0.15); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.3);">Alcance 1B</span>
+              </div>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.6;">
+                Disparar armas de longo alcance volumosas (rifles, fuzis e arcos) contra inimigos adjacentes a 1B imp&otilde;e <strong>Desvantagem</strong> no ataque. Armas curtas como rev&oacute;lveres e pistolas operam normalmente.
+              </p>
+            </div>
+
+            <div class="ability-slot" style="margin-bottom: 0; border-left: 3px solid #7c3aed;">
+              <div class="ability-header">
+                <h4 class="ability-title">Ataque Desarmado</h4>
+                <div style="display: flex; gap: 6px;">
+                  <span class="badge" style="background: rgba(124, 58, 237, 0.2); color: #c4b5fd; border: 1px solid rgba(124, 58, 237, 0.4);">Arma Leve</span>
+                </div>
+              </div>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.6;">
+                Golpes com o pr&oacute;prio corpo causam <strong>1d4 + For&ccedil;a</strong> em dano contundente e contam como armas leves para fins de combate.
+              </p>
+            </div>
+
+            <div class="ability-slot" style="margin-bottom: 0; border-left: 3px solid #38bdf8;">
+              <div class="ability-header">
+                <h4 class="ability-title">Escudo Vivo</h4>
+                <div style="display: flex; gap: 6px;">
+                  <span class="badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);">Rea&ccedil;&atilde;o</span>
+                  <span class="badge badge-tag">At&eacute; 2B</span>
+                </div>
+              </div>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.6;">
+                Como Rea&ccedil;&atilde;o, quando aliado vis&iacute;vel a at&eacute; 2B for alvo de ataque, voc&ecirc; se lan&ccedil;a no caminho tornando-se o novo alvo. Voc&ecirc; n&atilde;o pode Desviar; o impacto deve ser absorvido pela sua DEF.
+              </p>
+            </div>
+
+            <div class="ability-slot" style="margin-bottom: 0; border-left: 3px solid #facc15;">
+              <div class="ability-header">
+                <h4 class="ability-title">Recarga de Armas de Fogo</h4>
+                <span class="badge" style="background: rgba(250, 204, 21, 0.15); color: #facc15; border: 1px solid rgba(250, 204, 21, 0.3);">A&ccedil;&atilde;o B&ocirc;nus / Padr&atilde;o</span>
+              </div>
+              <p style="margin: 0; font-size: 0.9rem; line-height: 1.6;">
+                Armas de disparo leve recarregam com A&ccedil;&atilde;o B&ocirc;nus; armas pesadas ou de grosso calibre exigem A&ccedil;&atilde;o Padr&atilde;o completa.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

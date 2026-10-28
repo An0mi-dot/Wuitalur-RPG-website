@@ -101,9 +101,58 @@
       <main class="showcase-center-stage" id="showcase-center-stage">
         <div class="showcase-dots-overlay"></div>
 
-        <!-- MODO ILUSTRAÇÃO -->
+                <!-- COMPONENTE HERO SPOTLIGHT 2.5D (ESTILO POSTER DEADLOCK) -->
         <div class="showcase-art-view" id="showcase-art-view">
-          <img src="" alt="" class="showcase-hero-art" id="showcase-hero-art">
+          <div class="spotlight-viewport" id="spotlight-viewport">
+            <div class="spotlight-stage" id="spotlight-stage">
+
+              <!-- CAMADA 1: FUNDO GEOMÉTRICO LARGO E TÉCNICO (Back Layer) -->
+              <div class="spotlight-layer spotlight-layer-back" data-depth="12" aria-hidden="true">
+                <div class="spotlight-geo-backdrop">
+                  <div class="spotlight-halftone-pattern"></div>
+                  <div class="spotlight-grid-pattern"></div>
+                  <div class="spotlight-diagonal-slash slash-1"></div>
+                  <div class="spotlight-diagonal-slash slash-2"></div>
+                  <div class="spotlight-accent-poly"></div>
+
+                  <!-- Marcadores de canto estilo mira/HUD nos 4 vértices extremos -->
+                  <div class="spotlight-crosshair corner-tl"></div>
+                  <div class="spotlight-crosshair corner-tr"></div>
+                  <div class="spotlight-crosshair corner-bl"></div>
+                  <div class="spotlight-crosshair corner-br"></div>
+
+                  <!-- Detalhes técnicos Street / HUD -->
+                  <div class="spotlight-tech-hud">
+                    <span class="tech-tag">W_SYS // HERO SPOTLIGHT</span>
+                    <span class="tech-coords" id="spotlight-coords">X:00 Y:00</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CAMADA 2: ILUSTRAÇÃO DA CLASSE PROTAGONISTA (Character Layer) -->
+              <div class="spotlight-layer spotlight-layer-character" data-depth="28">
+                <div class="spotlight-char-wrap">
+                  <img src="" alt="" class="showcase-hero-art" id="showcase-hero-art">
+                </div>
+              </div>
+
+              <!-- GATILHO ESTACIONÁRIO DO PARALLAX (HITBOX SOBRE A ARTE) -->
+              <div class="spotlight-hitbox" id="spotlight-hitbox" aria-hidden="true"></div>
+
+              <!-- CAMADA 3: TIPOGRAFIA NO TOPO E BADGES (Foreground Layer) -->
+              <div class="spotlight-layer spotlight-layer-foreground" data-depth="46">
+                <div class="spotlight-header-block">
+                  <h2 class="spotlight-class-title" id="showcase-spotlight-title">Carregando...</h2>
+                  <div class="spotlight-concept-tags" id="showcase-spotlight-tags">
+                    <span class="spotlight-tag tag-tape-purple">ESTRATEGISTA</span>
+                    <span class="spotlight-tag tag-tape-dark">SUPORTE</span>
+                    <span class="spotlight-tag tag-tape-hazard">CONTROLADOR</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
         </div>
 
         <!-- MODO CONTEÚDO (AO SELECIONAR UM TÓPICO NA ESQUERDA) -->
@@ -186,31 +235,7 @@
       </div>
     </div>
 
-
-    <!-- BARRA FIXA DE NAVEGAÇÃO TÁTICA -->
-    <nav class="tactical-subnav" id="class-subnav" aria-label="Navegação rápida de classes">
-      <input type="text" id="class-search" class="tactical-search" placeholder="Filtrar classes..." aria-label="Buscar classe">
-      <span class="tactical-subnav-label">Classes:</span>
-      <div class="tactical-chips-wrap">
-        <a href="#compactador" class="tactical-chip">Compactador</a>
-        <a href="#consagrados" class="tactical-chip">Consagrados</a>
-        <a href="#bestial" class="tactical-chip">Bestial</a>
-        <a href="#cavaleiros-paladium" class="tactical-chip">Cavaleiros de Paladium</a>
-        <a href="#eterno" class="tactical-chip">O Eterno</a>
-        <a href="#furtassaltantes" class="tactical-chip">Furtassaltante</a>
-        <a href="#pistoleiro" class="tactical-chip">Pistoleiro</a>
-        <a href="#rastejantes" class="tactical-chip">Rastejantes</a>
-        <a href="#anomalo" class="tactical-chip">Anômalo</a>
-        <a href="#atirador-espectral" class="tactical-chip">Atirador Espectral</a>
-        <a href="#lampinario" class="tactical-chip">Lampinário</a>
-        <a href="#protegidos" class="tactical-chip">Protegidos</a>
-        <a href="#sobrevivente" class="tactical-chip">Sobrevivente</a>
-      </div>
-    </nav>
-
-    <main class="page-content">
-
-      <div class="topic-crooked" style="margin-bottom: 20px;">CLASSES</div>
+    <main class="page-content" style="display: none !important;">
 
       <!-- INTRO -->
       <section class="subsection" id="intro">
@@ -468,7 +493,7 @@
 <section class="subsection" id="consagrados">
         <div class="race-card">
           <div class="race-card-image">
-            <img src="assets/classes/consagrados.webp" alt="Consagrados" loading="lazy" decoding="async">
+            <img src="assets/classes/consagrados.png?v=2" alt="Consagrados" loading="lazy" decoding="async">
           </div>
           <div class="race-card-header">
             <div>
@@ -4519,7 +4544,19 @@
         </div>
       </section>
 
-      <!-- CONSAGRADOS -->
+      <!-- FILTRO SVG DE PAPEL AMASSADO / POSTER VIVO (ESTILO DEADLOCK - ESTATICO) -->
+      <svg class="sr-only" style="position: absolute; width: 0; height: 0; pointer-events: none;" aria-hidden="true">
+        <filter id="paper-warp" x="-10%" y="-10%" width="120%" height="120%" filterUnits="objectBoundingBox">
+          <feTurbulence type="fractalNoise" baseFrequency="0.025 0.025" numOctaves="3" result="noise" seed="2" />
+          <feDisplacementMap id="paper-warp-map" in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <filter id="paper-texture">
+          <feTurbulence type="fractalNoise" baseFrequency="0.04 0.04" numOctaves="4" result="noise" />
+          <feColorMatrix type="matrix" values="0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0 0 0 0.15 0" result="glitch" />
+          <feComposite in2="SourceGraphic" in="glitch" operator="in" />
+        </filter>
+      </svg>
+
 <script src="js/showcase.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", () => {

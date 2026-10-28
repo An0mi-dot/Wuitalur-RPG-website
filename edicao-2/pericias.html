@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Per&iacute;cias &mdash; Wuitalur RPG 2.0</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    .per-card { background: rgba(0,0,0,0.2); border: 1px solid var(--border-subtle); border-radius: var(--radius); padding: var(--space-md); display: flex; flex-direction: column; }
+    .per-card h4 { font-family: var(--font-heading); font-size: 0.95rem; color: var(--text-primary); margin-bottom: var(--space-xs); }
+    .per-attr { font-size: 0.75rem; padding: 2px 8px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.06); display: inline-block; margin-bottom: var(--space-sm); color: var(--text-muted); }
+    .per-card p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+    .attr-section-title { font-family: var(--font-heading); font-size: 1rem; color: var(--text-primary); margin-top: var(--space-xl); margin-bottom: var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--border-subtle); }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--space-md); }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema Base 2.0 (Alpha)</span>
+      </div>
+    </div>
+
+    <!-- BOTÃO VOLTAR AO CATÁLOGO DE SUPLEMENTOS -->
+    <a href="../suplementos.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar aos Suplementos</span>
+    </a>
+
+    <nav class="sidebar-nav">
+
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="vocacoes.html" class="sidebar-link"><span class="icon"></span> Vocações</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link active"><span class="icon"></span> Perícias</a>
+      <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Per&iacute;cias</h1>
+    </header>
+
+    <main class="page-content">
+
+      <div class="topic-crooked" style="margin-bottom: 20px;">RESOLU&Ccedil;&Atilde;O // VANTAGEM DE MAESTRIA</div>
+
+      <div class="section-heading">
+        <h2>Como Funciona o Treino em Per&iacute;cia</h2>
+        <p>
+          O sistema conta com um conjunto de 12 per&iacute;cias abrangentes. O treino representa instru&ccedil;&atilde;o, pr&aacute;tica e compet&ecirc;ncia confi&aacute;vel.
+        </p>
+      </div>
+
+      <div class="hud-card" style="margin-bottom: var(--space-xl);">
+        <div class="race-card-body">
+          <ul class="race-list">
+            <li><strong>Sem Treino:</strong> O jogador rola <strong>1d20 + Atributo</strong>.</li>
+            <li><strong>Com Treino (Vantagem de Maestria):</strong> O jogador rola <strong>2d20 e escolhe o maior resultado</strong>, somando o Atributo correspondente.</li>
+            <li><em>Exemplo:</em> Um personagem com Mente +3 e treino em Investiga&ccedil;&atilde;o joga dois d20s: saem 6 e 15. Ele escolhe o 15 e soma +3 = <strong>Total 18</strong>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="hud-card" style="border-left: 4px solid var(--accent); margin-bottom: var(--space-2xl);">
+        <div class="race-card-body">
+          <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
+            <strong style="color: var(--text-primary);">Quantidade de Per&iacute;cias Iniciais:</strong> Na cria&ccedil;&atilde;o do personagem, cada her&oacute;i escolhe exatamente <strong>4 Per&iacute;cias Treinadas</strong> para a sua ficha (obtidas pela soma de sua Classe e Voca&ccedil;&atilde;o/Hist&oacute;rico).
+          </p>
+        </div>
+      </div>
+
+      <div class="attr-section-title">Per&iacute;cias com Atributo-Chave Natural</div>
+
+      <div class="skills-grid">
+        <div class="per-card">
+          <h4>Acrobacia</h4>
+          <span class="per-attr"><span class="attr-dex">Destreza</span></span>
+          <p>Equil&iacute;brio corporal, amortecer quedas de alturas perigosas, contorcionismo, escapar de amarras e manobras evasivas.</p>
+        </div>
+
+        <div class="per-card">
+          <h4>Furtividade</h4>
+          <span class="per-attr"><span class="attr-dex">Destreza</span></span>
+          <p>Mover-se sem emitir som, ocultar-se em sombras ou coberturas, passar despercebido por patrulhas e vigias.</p>
+        </div>
+
+        <div class="per-card">
+          <h4>Investiga&ccedil;&atilde;o</h4>
+          <span class="per-attr"><span class="attr-int">Mente</span></span>
+          <p>Racioc&iacute;nio dedutivo, encontrar pistas ocultas, analisar cenas de crime, cruzar dados em documentos e decifrar enigmas.</p>
+        </div>
+
+        <div class="per-card">
+          <h4>Medicina</h4>
+          <span class="per-attr"><span class="attr-int">Mente</span></span>
+          <p>Diagnosticar enfermidades e toxinas, estabilizar aliados agonizantes em combate, sintetizar ant&iacute;dotos e cirurgias de campo.</p>
+        </div>
+
+        <div class="per-card">
+          <h4>Of&iacute;cio</h4>
+          <span class="per-attr"><span class="attr-int">Mente</span></span>
+          <p>Ferraria, carpintaria, conserto de armas e armaduras, montagem de maquin&aacute;rios, alquimia pr&aacute;tica e cria&ccedil;&atilde;o de ferramentas &uacute;teis.</p>
+        </div>
+
+        <div class="per-card">
+          <h4>Astral</h4>
+          <span class="per-attr"><span class="attr-int">Mente</span></span>
+          <p>Conhecimento sobre as for&ccedil;as c&oacute;smicas, lendas antigas, decifrar s&iacute;mbolos e rituais arcanos e sintoniza&ccedil;&atilde;o te&oacute;rica com a Energia Astral.</p>
+        </div>
+
+        <div class="per-card">
+          <h4>Persuas&atilde;o</h4>
+          <span class="per-attr"><span class="attr-fama">Express&atilde;o</span></span>
+          <p>Diplomacia formal, l&aacute;bia de rua, negocia&ccedil;&atilde;o de pre&ccedil;os e favores, apelos emocionais e convencimento pela palavra.</p>
+        </div>
+
+        <div class="per-card">
+          <h4>Engana&ccedil;&atilde;o</h4>
+          <span class="per-attr"><span class="attr-fama">Express&atilde;o</span></span>
+          <p>Mentir com firmeza, sustentar disfarces sociais, atua&ccedil;&atilde;o c&ecirc;nica, blefes convincentes e forjar express&otilde;es faciais.</p>
+        </div>
+      </div>
+
+      <div class="attr-section-title">Per&iacute;cias com Escolha de 2 Atributos</div>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: var(--space-md);">
+        Nestes casos, o jogador escolhe entre dois atributos de acordo com o m&eacute;todo pr&aacute;tico narrado em cena.
+      </p>
+
+      <div class="skills-grid">
+        <div class="per-card">
+          <h4>Atletismo</h4>
+          <span class="per-attr"><span class="attr-for">For&ccedil;a</span> ou <span class="attr-dex">Destreza</span></span>
+          <p><strong>Com FOR:</strong> Arrombar portas blindadas, erguer escombros, nadar contra correntes fortes e escalar muros &iacute;ngremes.<br><strong>Com DES:</strong> Corridas em disparada em persegui&ccedil;&otilde;es e saltar v&atilde;os entre telhados.</p>
+        </div>
+
+        <div class="per-card">
+          <h4>Intimida&ccedil;&atilde;o</h4>
+          <span class="per-attr"><span class="attr-fama">Express&atilde;o</span> ou <span class="attr-for">For&ccedil;a</span></span>
+          <p><strong>Com EXP:</strong> Imposi&ccedil;&atilde;o de autoridade, olhares penetrantes, amea&ccedil;as veladas e postura dominadora.<br><strong>Com FOR:</strong> Demonstra&ccedil;&atilde;o f&iacute;sica de for&ccedil;a, erguer o alvo pela gola, quebrar mob&iacute;lia e viol&ecirc;ncia iminente.</p>
+        </div>
+
+        <div class="per-card">
+          <h4>Percep&ccedil;&atilde;o</h4>
+          <span class="per-attr"><span class="attr-int">Mente</span> ou <span class="attr-fama">Express&atilde;o</span></span>
+          <p><strong>Com MEN:</strong> Notar detalhes visuais escondidos, ouvir ru&iacute;dos distantes e perceber anomalias no ambiente.<br><strong>Com EXP:</strong> Sentir o nervosismo de um interlocutor, notar inten&ccedil;&otilde;es ocultas e ler linguagem corporal.</p>
+        </div>
+
+        <div class="per-card">
+          <h4>Sobreviv&ecirc;ncia</h4>
+          <span class="per-attr"><span class="attr-int">Mente</span> ou <span class="attr-saude">Vigor</span></span>
+          <p><strong>Com MEN:</strong> Rastrear pegadas na mata, cartografia, orienta&ccedil;&atilde;o pelas estrelas e prever tempestades.<br><strong>Com VIG:</strong> Suportar a marcha for&ccedil;ada em desertos ou nevascas extremas e tolerar escassez de &aacute;gua e comida.</p>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

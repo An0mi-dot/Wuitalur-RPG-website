@@ -10,8 +10,8 @@
   <style>
     .home-hero-v2 {
       padding: var(--space-2xl) var(--space-xl) var(--space-xl);
-      background: #0D0D12;
-      border-bottom: 1px solid var(--border-subtle);
+      background: #121114 !important;
+      border-bottom: 1px solid #2C2833 !important;
       position: relative;
       z-index: 2;
     }
@@ -20,7 +20,7 @@
       font-size: clamp(2.6rem, 5.5vw, 4.2rem);
       font-weight: normal !important;
       letter-spacing: 0.12em;
-      color: #ffffff;
+      color: #EDEDED;
       text-transform: uppercase;
       margin: 10px 0 6px;
       line-height: 1.05;
@@ -57,22 +57,27 @@
       user-select: none;
     }
     .home-cta-btn.primary {
-      background: #7c3aed !important;
-      color: #ffffff !important;
-      border-color: #7c3aed !important;
+      background: #9B51E0 !important;
+      color: #000000 !important;
+      border-color: #000000 !important;
+      font-weight: 700;
     }
     .home-cta-btn.primary:hover {
-      background: #ffffff !important;
-      color: #0D0D12 !important;
-      border-color: #ffffff !important;
-      box-shadow: 5px 5px 0px #7c3aed !important;
+      background: #EDEDED !important;
+      color: #000000 !important;
+      border-color: #000000 !important;
+      box-shadow: 5px 5px 0px #9B51E0 !important;
     }
     .home-cta-btn.secondary {
-      background: var(--bg-surface) !important;
-      color: #ffffff !important;
-      border: 2px solid #2e2e3e !important;
+      background: #1B191F !important;
+      color: #EDEDED !important;
+      border: 2px solid #2C2833 !important;
     }
     .home-cta-btn.secondary:hover {
+      border-color: #9B51E0 !important;
+      box-shadow: 5px 5px 0px #000000 !important;
+      background: #201D26 !important;
+    }
       border-color: #ffffff !important;
       box-shadow: 5px 5px 0px #000000 !important;
       background: var(--bg-elevated) !important;
@@ -123,50 +128,124 @@
       grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
       gap: 18px;
     }
-    .compendium-card {
-      background: var(--bg-surface);
-      border: 2px solid #000000;
-      border-top: 4px solid var(--card-accent, var(--purple-main));
-      padding: var(--space-lg);
+        .compendium-card {
+      background: #1B191F !important;
+      border: 1px solid #2C2833 !important;
+      padding: 24px 22px 18px;
       text-decoration: none;
       display: flex;
       flex-direction: column;
-      box-shadow: 4px 4px 0 #000000;
       position: relative;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.2s ease,
+                  box-shadow 0.2s ease,
+                  background-color 0.2s ease;
+      clip-path: polygon(
+        0 0,
+        calc(100% - 14px) 0,
+        100% 14px,
+        100% 100%,
+        14px 100%,
+        0 calc(100% - 14px)
+      );
+      overflow: hidden;
+    }
+    /* Mini-faixa decorativa no topo estilo sinalização industrial */
+    .compendium-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 14px;
+      width: 54px;
+      height: 5px;
+      background: repeating-linear-gradient(45deg, #9B51E0 0px, #9B51E0 6px, transparent 6px, transparent 12px);
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: 2;
+    }
+    /* Marcadores de canto estilo mangá / HUD */
+    .compendium-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 14px;
+      height: 14px;
+      border-left: 2px solid #9B51E0;
+      border-bottom: 2px solid #9B51E0;
+      pointer-events: none;
+      opacity: 0.7;
+      transition: opacity 0.2s ease, border-color 0.2s ease;
     }
     .compendium-card:hover {
-      transform: translate(-3px, -3px);
-      box-shadow: 6px 6px 0 #000000;
-      border-color: #000000;
-      border-top-color: var(--card-accent, var(--purple-main));
-      background: var(--bg-elevated);
+      transform: translateY(-4px);
+      border-color: #9B51E0 !important;
+      background-color: #201D26 !important;
+      box-shadow: 0 8px 24px rgba(155, 81, 224, 0.15) !important;
+    }
+    .compendium-card:hover::after {
+      opacity: 1;
+      border-color: #C084FC;
     }
     .compendium-card:active {
-      transform: translate(2px, 2px);
-      box-shadow: 2px 2px 0 #000000;
+      transform: translateY(1px);
+      box-shadow: 0 4px 12px rgba(155, 81, 224, 0.18);
     }
     .compendium-card-tag {
-      font-family: var(--font-heading);
-      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--card-accent, var(--accent));
-      margin-bottom: 6px;
+      letter-spacing: 0.14em;
+      color: #C084FC;
+      background: rgba(155, 81, 224, 0.12);
+      border: 1px solid rgba(155, 81, 224, 0.4);
+      padding: 3px 8px;
+      margin-bottom: 10px;
+      align-self: flex-start;
+      box-shadow: 1px 1px 0 #000000;
     }
     .compendium-card h3 {
       font-family: var(--font-heading);
       font-size: 1.25rem;
-      color: #ffffff;
-      margin: 0 0 6px;
+      color: #EDEDED;
+      margin: 0 0 8px;
       line-height: 1.2;
+      letter-spacing: 0.04em;
     }
     .compendium-card p {
       font-size: 0.86rem;
-      color: var(--text-secondary);
+      color: #9E9AA6;
       line-height: 1.6;
       margin: 0;
       flex: 1;
+    }
+    .compendium-card-action {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px dashed #2C2833;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #9E9AA6;
+      transition: color 0.18s ease;
+    }
+    .compendium-card-action .card-arrow {
+      display: inline-block;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.18s ease;
+      font-size: 0.95rem;
+    }
+    .compendium-card:hover .compendium-card-action {
+      color: #A855F7;
+    }
+    .compendium-card:hover .compendium-card-action .card-arrow {
+      transform: translateX(4px);
+      color: #C084FC;
     }
   </style>
 </head>
@@ -243,13 +322,13 @@
 
       <!-- DESTAQUE DO BOLETIM -->
       <div class="home-feature-card">
-        <span class="home-feature-badge">NOVO BOLETIM #4</span>
-        <h2 class="home-feature-title" style="color: #f59e0b;">A Grande Reformulação das Raças 2.0</h2>
+        <span class="home-feature-badge">NOVO BOLETIM #5</span>
+        <h2 class="home-feature-title" style="color: #9B51E0;">Prévia da Nova Interface de Classes & Arte dos Consagrados</h2>
         <p class="home-feature-desc">
-          Passei uma limpa geral nas raças do sistema: chega de ficha com 10 habilidades ativas competindo com classe. Agora toda raça segue a regra dos 3 Pilares com mecânica própria e foco imediato.
+          Uma prévia da nova aba de classes com estética urbana e a nova ilustração dos Consagrados. Tudo em fase de testes e aberto para feedbacks da mesa.
         </p>
         <div class="home-feature-footer">
-          <a href="boletim.html#edicao-04" class="home-cta-btn amber" style="font-size: 0.85rem; padding: 8px 18px;">Ver Boletim #4</a>
+          <a href="boletim.html#edicao-05" class="home-cta-btn purple" style="font-size: 0.85rem; padding: 8px 18px;">Ver Boletim #5</a>
         </div>
       </div>
 
@@ -265,30 +344,50 @@
             <div class="compendium-card-tag">Atributos</div>
             <h3>Atributos</h3>
             <p>Saúde, RF, RE, Destreza, Força, Intelecto e Fama. Os pilares que sustentam todos os testes e defesas.</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
           <a href="races.html" class="compendium-card" style="--card-accent: #ef4444;">
             <div class="compendium-card-tag">Raças</div>
             <h3>Raças</h3>
             <p>De Akivus das florestas a E.X.O.s mecanizados e horrores Abissais. Bônus, fraquezas e poderes raciais.</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
           <a href="origins.html" class="compendium-card" style="--card-accent: #10b981;">
             <div class="compendium-card-tag">Origens</div>
             <h3>Origens</h3>
             <p>De onde seu personagem surgiu e o que herdou: perícias treinadas, idiomas e equipamentos iniciais.</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
           <a href="classes.html" class="compendium-card" style="--card-accent: #f59e0b;">
             <div class="compendium-card-tag">Classes</div>
             <h3>Classes</h3>
             <p>Cavaleiros, Consagrados, O Eterno, Lampinário, Pistoleiro e mais. Habilidades com escolhas únicas por nível.</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
           <a href="criacao-personagem.html" class="compendium-card" style="--card-accent: #a78bfa;">
             <div class="compendium-card-tag">Criação</div>
             <h3>Criação Passo a Passo</h3>
             <p>Roteiro prático com regras de distribuição de pontos, cálculos derivados e ficha pronta.</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
         </div>
@@ -306,30 +405,50 @@
             <div class="compendium-card-tag">Perícias</div>
             <h3>Perícias</h3>
             <p>Do combate desarmado à dedução investigativa. Escolha as 6 perícias treinadas do seu personagem.</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
           <a href="mecanicas.html" class="compendium-card" style="--card-accent: #06b6d4;">
             <div class="compendium-card-tag">Combate</div>
             <h3>Mecânicas de Combate</h3>
             <p>Fluxo de turnos, tipos de ações, testes opostos, cálculo de acerto, dano e reações táticas.</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
           <a href="condicoes.html" class="compendium-card" style="--card-accent: #f43f5e;">
             <div class="compendium-card-tag">Condições</div>
             <h3>Condições</h3>
             <p>Agarrado, Cegueira, Paralisia, Sangramento e todos os efeitos debilitantes do combate.</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
           <a href="sanidade.html" class="compendium-card" style="--card-accent: #8b5cf6;">
             <div class="compendium-card-tag">Sanidade</div>
             <h3>Sanidade & Loucura</h3>
             <p>O impacto do horror cósmico na mente humana: traumas, colapsos temporários e marcas permanentes.</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
           <a href="glossario.html" class="compendium-card" style="--card-accent: #f59e0b;">
             <div class="compendium-card-tag">Glossário</div>
             <h3>Glossário Técnico</h3>
             <p>Significado de siglas, termos táticos: DEF, DEFe, PV, EA, CD, CT e conceitos do sistema.</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
         </div>
@@ -347,30 +466,50 @@
             <div class="compendium-card-tag">Elementos</div>
             <h3>Elementos</h3>
             <p>Solar, Electro, Nulídrico, Praga, Podridão, Sagrado, Estase e Pesadelo. As forças do universo.</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
           <a href="selos.html" class="compendium-card" style="--card-accent: var(--purple-main);">
             <div class="compendium-card-tag">Selos</div>
             <h3>Selos Mágicos</h3>
             <p>Rituais e encantamentos elementais com custos de EA, efeitos táticos e áreas de impacto.</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
           <a href="equipamentos.html" class="compendium-card" style="--card-accent: #6b7280;">
             <div class="compendium-card-tag">Equipamentos</div>
             <h3>Equipamentos</h3>
             <p>Lâminas, armas de fogo, armaduras pesadas, escudos, kits de sobrevivência e preços em moedas.</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
           <a href="conclave.html" class="compendium-card" style="--card-accent: #ef4444;">
             <div class="compendium-card-tag">Ordem Secreta</div>
             <h3>O Conclave</h3>
             <p>A organização milenar de caçadores que patrulha as fendas e vigia o equilíbrio das realidades.</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
           <a href="bestiario.html" class="compendium-card" style="--card-accent: #b45f06;">
             <div class="compendium-card-tag">Monstros</div>
-            <h3>Bestiário Oficial</h3>
+            <h3>Bestiário</h3>
             <p>Criaturas corrompidas classificadas por afinidade elemental com fichas completas de combate.</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
         </div>
@@ -386,32 +525,52 @@
 
           <a href="suplementos.html" class="compendium-card" style="--card-accent: #ef4444;">
             <div class="compendium-card-tag">Suplementos</div>
-            <h3>Suplementos Oficiais</h3>
+            <h3>Suplementos</h3>
             <p>Acesse expansões temáticas, como <strong>Fios do Medo</strong> (investigação urbana e horror).</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
           <a href="mesa.html" class="compendium-card" style="--card-accent: #ff7700;">
             <div class="compendium-card-tag">Mesa Virtual</div>
             <h3>Mesa Virtual (VTT)</h3>
             <p>Tabuleiros de batalha, rolagem de dados sonoros, trilhas e gerenciamento de combate ao vivo.</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
           <a href="criador.html" class="compendium-card" style="--card-accent: #f97316;">
             <div class="compendium-card-tag">Ficha Online</div>
             <h3>Criador de Ficha</h3>
             <p>Monte sua ficha digital com preenchimento assistido e cálculo automático de defesas e pontos.</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
           <a href="changelog.html" class="compendium-card" style="--card-accent: #a78bfa;">
             <div class="compendium-card-tag">Atualizações</div>
             <h3>Changelog do Sistema</h3>
             <p>Registro minucioso de cada atualização, balanceamento de regras e novas adições ao compêndio.</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
           <a href="wuitter.html" class="compendium-card" style="--card-accent: #1d9bf0;">
             <div class="compendium-card-tag">Feed do RPG</div>
             <h3>Wuitter</h3>
             <p>Rede de transmissão intra-universo para novidades, avisos de jogadores e crônicas de campanha.</p>
+            <div class="compendium-card-action">
+              <span>Acessar Módulo</span>
+              <span class="card-arrow">&rarr;</span>
+            </div>
           </a>
 
         </div>

@@ -1752,7 +1752,6 @@ h1, h2, h3, h4, h5, h6,
 .section-heading h2,
 .sidebar-logo,
 .sidebar-section-title,
-.sidebar-link,
 .v2-topic-banner,
 .ribbon-topic,
 body:not(.mesa-body) button:not(.showcase-tab-btn),
@@ -1792,35 +1791,39 @@ body:not(.mesa-body) .v2-lead-box p {
 
 /* Tópico Torto Universal — Sem borda branca, borda com a cor dele e sombra preta indo pra direita */
 .topic-crooked, .v2-topic-banner {
-  --topic-bg: #7C3AED;
+  --topic-bg: #9B51E0;
   display: inline-block;
-  background: var(--topic-bg);
-  color: #ffffff !important;
+  background: #9B51E0 !important;
+  color: #000000 !important;
   font-family: var(--font-heading) !important;
   font-size: 1.35rem;
-  font-weight: normal !important;
-  letter-spacing: 0.08em;
+  font-weight: 900 !important;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 8px 22px;
   transform: rotate(-1.6deg);
-  border: 2px solid var(--topic-bg);
-  box-shadow: 4px 4px 0px #000000;
+  border: 2px solid #000000 !important;
+  box-shadow: 4px 4px 0px #000000 !important;
   border-radius: 0;
   margin-bottom: 20px;
   position: relative;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   user-select: none;
+  text-shadow: none !important;
 }
 .topic-crooked:hover, .v2-topic-banner:hover {
   transform: rotate(0deg) scale(1.02);
-  box-shadow: 6px 6px 0px #000000;
-  border-color: var(--topic-bg);
+  box-shadow: 6px 6px 0px #000000 !important;
+  background: #9B51E0 !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
 }
 .topic-crooked.purple, .v2-topic-banner.purple {
-  --topic-bg: #7C3AED;
-  background: #7C3AED;
-  border-color: #7C3AED;
-  color: #ffffff !important;
+  --topic-bg: #9B51E0;
+  background: #9B51E0 !important;
+  border-color: #000000 !important;
+  color: #000000 !important;
+  font-weight: 900 !important;
 }
 .topic-crooked.pink, .v2-topic-banner.pink {
   --topic-bg: #ec4899;
@@ -2001,48 +2004,137 @@ body:not(.mesa-body) .v2-lead-box p {
   color: var(--text-muted);
 }
 
-/* Home Feature Card (Boletim / Destaques) */
-.home-feature-card {
-  background: #16161E;
-  border: 2px solid #000000;
-  border-left: 6px solid #f59e0b;
-  padding: var(--space-xl);
-  margin-bottom: var(--space-2xl);
-  box-shadow: 4px 4px 0 #000000;
+/* ============================================================
+   CARDS DOS MÓDULOS (URBANO / STREETWEAR / GACHIAKUTA)
+   ============================================================ */
+.compendium-card,
+.nav-card-item,
+.home-feature-card,
+.suplemento-card,
+.module-card {
+  background: #1B191F !important;
+  border: 1px solid #2C2833 !important;
+  border-radius: 0 !important;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 14px) 0,
+    100% 14px,
+    100% 100%,
+    14px 100%,
+    0 calc(100% - 14px)
+  ) !important;
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s ease,
+              background-color 0.2s ease,
+              box-shadow 0.2s ease;
 }
-.home-feature-card:hover {
+
+/* Faixa de Sinalização / Stencil no Topo (Direita) */
+.compendium-card::before,
+.nav-card-item::before,
+.home-feature-card::before,
+.suplemento-card::before,
+.module-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 14px;
+  width: 54px;
+  height: 5px;
+  background: repeating-linear-gradient(45deg, #9B51E0 0px, #9B51E0 6px, transparent 6px, transparent 12px);
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Estado :hover dos Cards */
+.compendium-card:hover,
+.nav-card-item:hover,
+.home-feature-card:hover,
+.suplemento-card:hover,
+.module-card:hover {
+  border-color: #9B51E0 !important;
+  background-color: #201D26 !important;
+  box-shadow: 0 8px 24px rgba(155, 81, 224, 0.15) !important;
   transform: translateY(-3px);
-  border-color: #000000;
-  border-left-color: #f59e0b;
-  box-shadow: 6px 6px 0 #000000;
+}
+
+/* Links e Ações ("ACESSAR ... →") */
+.compendium-card-action,
+.compendium-card-action span,
+.nav-card-action,
+.suplemento-card-action,
+.card-action-text {
+  color: #9E9AA6 !important;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.18s ease;
+}
+
+.compendium-card-action .card-arrow,
+.nav-card-action .card-arrow,
+.suplemento-card-action .card-arrow,
+.card-arrow {
+  display: inline-block;
+  color: inherit;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.18s ease;
+}
+
+.compendium-card:hover .compendium-card-action,
+.compendium-card:hover .compendium-card-action span,
+.nav-card-item:hover .nav-card-action,
+.suplemento-card:hover .suplemento-card-action,
+.module-card:hover .card-action-text {
+  color: #A855F7 !important;
+}
+
+.compendium-card:hover .compendium-card-action .card-arrow,
+.nav-card-item:hover .nav-card-action .card-arrow,
+.compendium-card:hover .card-arrow,
+.nav-card-item:hover .card-arrow,
+.suplemento-card:hover .card-arrow,
+.module-card:hover .card-arrow {
+  transform: translateX(4px);
+  color: #A855F7 !important;
+}
+
+/* Detalhes específicos de Home Feature Card */
+.home-feature-card {
+  padding: var(--space-xl);
+  margin-bottom: var(--space-2xl);
+  gap: var(--space-md);
 }
 .home-feature-badge {
   display: inline-block;
-  font-family: var(--font-heading);
-  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   padding: 3px 10px;
-  background: rgba(245, 158, 11, 0.15);
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.4);
+  background: rgba(155, 81, 224, 0.15);
+  color: #C084FC;
+  border: 1px solid rgba(155, 81, 224, 0.4);
   box-shadow: 2px 2px 0 #000000;
   align-self: flex-start;
+  text-transform: uppercase;
 }
 .home-feature-title {
   font-family: var(--font-heading);
   font-size: 1.5rem;
-  color: #ffffff;
+  color: #EDEDED;
   line-height: 1.25;
   margin: 0;
 }
 .home-feature-desc {
   font-size: 0.92rem;
-  color: var(--text-secondary);
+  color: #9E9AA6;
   line-height: 1.65;
   margin: 0;
 }

@@ -52,7 +52,7 @@ function highlightPV() {
 }
 
 function autoHighlightDice() {
-  const diceRe = /\b[1-9]\d*d(?:4|6|8|10|12|20|100)(?:\s*[+-]\s*(?:\d+|(?:(?:Mod(?:ificador)?(?:\s+de)?\s+)?(?:FR|FOR|DES|DEX|SAU|INT|SEN|COS|FAMA|RF|RE|PV|EA|SAN|Força|Destreza|Saúde|Intelecto|Sentidos|Cosmo))|Mod(?:ificador)?))?\b/gi;
+  const diceRe = /\b[1-9]\d*d(?:100|20|12|10|8|6|4)(?:\s*[+-]\s*(?:\d+|(?:(?:Mod(?:ificador)?(?:\s+de)?\s+)?(?:Força|Destreza|Saúde|Intelecto|Sentidos|Cosmo|FOR|DES|DEX|SAU|INT|SEN|COS|FAMA|RF|RE|PV|EA|SAN|FR)(?![a-zA-Z\u00C0-\u017F])|Mod(?:ificador)?(?![a-zA-Z\u00C0-\u017F]))))?(?![a-zA-Z0-9\u00C0-\u017F])/gi;
 
   const walker = document.createTreeWalker(
     document.body,

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ra&ccedil;as &mdash; Wuitalur RPG 2.0</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/showcase.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema Base 2.0 (Alpha)</span>
+      </div>
+    </div>
+
+    <!-- BOTÃO VOLTAR AO CATÁLOGO DE SUPLEMENTOS -->
+    <a href="../suplementos.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar aos Suplementos</span>
+    </a>
+
+    <nav class="sidebar-nav">
+
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link active"><span class="icon"></span> Raças</a>
+      <a href="vocacoes.html" class="sidebar-link"><span class="icon"></span> Vocações</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Ra&ccedil;as</h1>
+    </header>
+
+    <!-- STAGE SHOWCASE 100VH -->
+    <div class="showcase-viewport" id="showcase-viewport">
+
+      <!-- COLUNA LATERAL ESQUERDA -->
+      <aside class="showcase-left-dock" id="showcase-left-dock" aria-label="Navega&ccedil;&atilde;o da Ra&ccedil;a">
+        <button type="button" class="showcase-hamburger-btn" id="showcase-hamburger-btn" aria-label="Abrir lista de ra&ccedil;as">
+          <span class="hamburger-icon">&#x2630;</span>
+          <span class="hamburger-label" id="showcase-hamburger-label">Ra&ccedil;as</span>
+        </button>
+
+        <div class="showcase-topics-nav">
+          <div class="showcase-topics-heading">T&oacute;picos da Ra&ccedil;a</div>
+          <div class="showcase-topic-tabs" id="showcase-topic-tabs">
+          </div>
+        </div>
+      </aside>
+
+      <!-- PALCO CENTRAL -->
+      <main class="showcase-center-stage" id="showcase-center-stage">
+        <div class="showcase-dots-overlay"></div>
+
+        <div class="showcase-art-view" id="showcase-art-view">
+          <img src="" alt="" class="showcase-hero-art" id="showcase-hero-art">
+        </div>
+
+        <div class="showcase-content-view" id="showcase-content-view" style="display: none;">
+          <div class="showcase-content-card">
+            <div class="showcase-content-header">
+              <div class="showcase-content-title-group">
+                <span class="showcase-content-category" id="showcase-content-category">Ra&ccedil;a</span>
+                <h3 class="showcase-topic-active-title" id="showcase-topic-active-title">Vis&atilde;o Geral</h3>
+              </div>
+              <div class="showcase-content-actions">
+                <span class="showcase-nd-badge" id="showcase-nd-badge">Raça</span>
+                <button type="button" class="showcase-btn-view-art" id="showcase-btn-view-art" title="Ver Ilustra&ccedil;&atilde;o">
+                  <span>&#x25C0;</span> Ver Arte
+                </button>
+              </div>
+            </div>
+            <div class="showcase-topic-content" id="showcase-topic-content">
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- PAINEL DA DIREITA: BLADE HUD -->
+      <aside class="showcase-right-blade" id="showcase-right-blade">
+        <div class="showcase-blade-inner">
+          <div class="showcase-blade-hud">
+            <div class="showcase-hud-card">
+              <div class="showcase-hud-card-top">
+                <span class="showcase-hud-bracket">[</span>
+                <span class="showcase-hud-tag">Dossi&ecirc; de Ra&ccedil;a</span>
+                <span class="showcase-hud-bracket">]</span>
+              </div>
+              <div class="showcase-nd-block">
+                <div class="showcase-nd-header">
+                  <span class="hud-label">Dificuldade</span>
+                  <span class="showcase-nd-tier" id="showcase-nd-tier">Iniciante</span>
+                </div>
+                <div class="showcase-nd-display">
+                  <span class="showcase-nd-large" id="showcase-blade-nd">ND 1</span>
+                  <div class="showcase-nd-gauge" id="showcase-nd-gauge" aria-label="N&iacute;vel de amea&ccedil;a">
+                    <span class="gauge-pip active"></span>
+                    <span class="gauge-pip"></span>
+                    <span class="gauge-pip"></span>
+                    <span class="gauge-pip"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="showcase-tech-stripes" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- NOME GIGANTE -->
+      <div class="showcase-big-name" id="showcase-big-name">Carregando...</div>
+
+    </div>
+
+    <!-- GAVETA MODAL LATERAL -->
+    <div class="showcase-drawer-backdrop" id="showcase-drawer-backdrop">
+      <div class="showcase-drawer">
+        <div class="showcase-drawer-header">
+          <h3 class="showcase-drawer-title" id="showcase-drawer-heading">Todas as Ra&ccedil;as</h3>
+          <button type="button" class="showcase-drawer-close" id="showcase-drawer-close">&times;</button>
+        </div>
+        <div class="showcase-drawer-search">
+          <input type="text" class="showcase-drawer-input" id="showcase-drawer-input" placeholder="Buscar por nome...">
+        </div>
+        <div class="showcase-drawer-list" id="showcase-drawer-list">
+        </div>
+      </div>
+    </div>
+
+    <main class="page-content">
+
+      <nav class="tactical-subnav" id="race-subnav" aria-label="Navega&ccedil;&atilde;o r&aacute;pida de ra&ccedil;as">
+        <span class="tactical-subnav-label">Ra&ccedil;as:</span>
+        <div class="tactical-chips-wrap">
+        <a href="#akivus" class="tactical-chip">Akivus <small style="color: var(--accent); font-weight: bold;">ND1</small></a>
+        <a href="#animalescos" class="tactical-chip">Animalescos <small style="color: var(--accent); font-weight: bold;">ND1</small></a>
+        <a href="#plantiferos" class="tactical-chip">Plant&iacute;feros <small style="color: var(--accent); font-weight: bold;">ND1</small></a>
+        <a href="#humanos" class="tactical-chip">Humanos <small style="color: var(--accent); font-weight: bold;">ND1</small></a>
+        <a href="#vampiros" class="tactical-chip">Vampiros <small style="color: var(--accent); font-weight: bold;">ND2</small></a>
+        <a href="#dragao-anao" class="tactical-chip">Drag&atilde;o An&atilde;o <small style="color: var(--accent); font-weight: bold;">ND2</small></a>
+        <a href="#insectoides" class="tactical-chip">Insect&oacute;ides <small style="color: var(--accent); font-weight: bold;">ND2</small></a>
+        <a href="#praguentos" class="tactical-chip">Praguentos <small style="color: var(--accent); font-weight: bold;">ND3</small></a>
+        <a href="#abissais" class="tactical-chip">Abissais <small style="color: var(--accent); font-weight: bold;">ND3</small></a>
+        <a href="#exos" class="tactical-chip">E.X.O.s <small style="color: var(--accent); font-weight: bold;">ND2</small></a>
+        <a href="#espectros" class="tactical-chip">Espect@&amp;%s <small style="color: var(--accent); font-weight: bold;">ND4</small></a>
+        </div>
+      </nav>
+
+      <div class="topic-crooked" style="margin-bottom: 24px;">RA&Ccedil;AS</div>
+
+
+      <section class="subsection" id="akivus">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="../assets/akivus.webp" alt="Akivus" loading="lazy" decoding="async">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Akivus</h2>
+            </div>
+            <div class="difficulty-badge difficulty-1"><small>ND</small>1</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">Seres silvestres de pele parda e chifres longos de alce ornados com flores e vinhas, profundamente conectados &agrave; terra e &agrave; flora.</p>
+
+            <h4>Status de Ra&ccedil;a</h4>
+            <ul class="race-list">
+              <li>Treino nativo na per&iacute;cia <strong>Sobreviv&ecirc;ncia</strong></li><li>Resist&ecirc;ncia natural contra dano Sagrado e G&eacute;lido</li><li>Fraqueza contra dano de Podrid&atilde;o</li>
+            </ul>
+
+            <h4>Mec&acirc;nica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Manifesta&ccedil;&atilde;o de Vinhas</h5>
+              <p>Em locais com vegeta&ccedil;&atilde;o favor&aacute;vel, pode criar e manipular vinhas em at&eacute; 5B de dist&acirc;ncia para realizar intera&ccedil;&otilde;es de objetos &agrave; dist&acirc;ncia, agarrar um alvo em alcance ou atacar &agrave; dist&acirc;ncia causando 1d6 de dano.</p>
+            </div>
+
+            <h4>Caracter&iacute;stica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Passos Silenciosos</h5>
+              <p>Move-se sem emitir som ao caminhar sobre solo ou vegeta&ccedil;&atilde;o. Recebe vantagem em testes de Furtividade ao se deslocar por ambientes naturais.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="subsection" id="animalescos">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="../assets/animalescos.webp" alt="Animalescos" loading="lazy" decoding="async">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Animalescos</h2>
+            </div>
+            <div class="difficulty-badge difficulty-1"><small>ND</small>1</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">H&iacute;bridos antropom&oacute;rficos ou indiv&iacute;duos com tra&ccedil;os e heran&ccedil;a ferais marcantes, dotados de instintos agudos e agilidade corporal.</p>
+
+            <h4>Status de Ra&ccedil;a</h4>
+            <ul class="race-list">
+              <li>Treino nativo na per&iacute;cia <strong>Percep&ccedil;&atilde;o</strong></li><li>Fraqueza contra dano Sonoro</li>
+            </ul>
+
+            <h4>Mec&acirc;nica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Postura Animalesca</h5>
+              <p>Altera sua postura f&iacute;sica para a locomo&ccedil;&atilde;o instintiva de sua esp&eacute;cie animal. Seu deslocamento aumenta em +3B e recebe vantagem ao Desviar enquanto se desloca nessa postura. Seus membros motores ficam totalmente dedicados &agrave; locomo&ccedil;&atilde;o, impedindo empunhar armas, usar escudos ou manipular itens at&eacute; retornar &agrave; postura padr&atilde;o.</p>
+            </div>
+
+            <h4>Caracter&iacute;stica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Ataque Predat&oacute;rio</h5>
+              <p>Seus ataques desarmados utilizam garras, presas ou chifres, causando +1d6 de dano adicional ao dano base de ataque desarmado.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="subsection" id="plantiferos">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="../assets/plantiferos.webp" alt="Plant&iacute;feros" loading="lazy" decoding="async">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Plant&iacute;feros</h2>
+            </div>
+            <div class="difficulty-badge difficulty-1"><small>ND</small>1</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">Seres de fisionomia vegetal e bot&acirc;nica, cobertos por folhagens densas, cascas protetoras e brotos vivos.</p>
+
+            <h4>Status de Ra&ccedil;a</h4>
+            <ul class="race-list">
+              <li>Treino nativo na per&iacute;cia <strong>Medicina</strong></li><li>Fraqueza contra dano Solar e dano de Podrid&atilde;o</li>
+            </ul>
+
+            <h4>Mec&acirc;nica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Comunica&ccedil;&atilde;o Bot&acirc;nica</h5>
+              <p>Pode se comunicar e sentir est&iacute;mulos atrav&eacute;s de plantas e &aacute;rvores pr&oacute;ximas. Tocar a vegeta&ccedil;&atilde;o local permite coletar informa&ccedil;&otilde;es simples sobre criaturas que passaram pela &aacute;rea recentemente ou altera&ccedil;&otilde;es ocorridas no ambiente.</p>
+            </div>
+
+            <h4>Caracter&iacute;stica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Bulbo de P&oacute;len</h5>
+              <p>Arremessa um bulbo floral em um ponto a at&eacute; 6B que explode em uma nuvem de p&oacute;len de 4B de raio. Alvos dentro da &aacute;rea devem passar em um teste de Vigor ou sofrem desvantagem em suas a&ccedil;&otilde;es at&eacute; o final do pr&oacute;ximo turno deles.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="subsection" id="humanos">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="../assets/humanos.webp" alt="Humanos" loading="lazy" decoding="async">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Humanos</h2>
+            </div>
+            <div class="difficulty-badge difficulty-1"><small>ND</small>1</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">A esp&eacute;cie mais adapt&aacute;vel e abundante de Wuitalur, marcada por ambi&ccedil;&atilde;o implac&aacute;vel e resist&ecirc;ncia psicol&oacute;gica sob press&atilde;o extrema.</p>
+
+            <h4>Status de Ra&ccedil;a</h4>
+            <ul class="race-list">
+              <li>Escolhe <strong>+1 per&iacute;cia treinada extra</strong> na cria&ccedil;&atilde;o do personagem</li><li>Fraqueza contra dano de Pesadelo</li>
+            </ul>
+
+            <h4>Mec&acirc;nica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Adrenalina Sob Press&atilde;o</h5>
+              <p>Quando sua Vida estiver abaixo de 25% do valor total, o Humano recebe vantagem em todos os testes de For&ccedil;a e Destreza at&eacute; o final da cena.</p>
+            </div>
+
+            <h4>Caracter&iacute;stica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Determina&ccedil;&atilde;o Implac&aacute;vel</h5>
+              <p>Ao chegar a 0 PV por um ataque, pode realizar um teste de Vigor. Se tiver sucesso, n&atilde;o cai inconsciente e permanece de p&eacute; com 1 PV. Pode ser usado uma vez por cena de combate.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="subsection" id="vampiros">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="../assets/vampiros.webp" alt="Vampiros" loading="lazy" decoding="async">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Vampiros</h2>
+            </div>
+            <div class="difficulty-badge difficulty-2"><small>ND</small>2</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">Nobres predadores noturnos movidos pela sede de sangue, sentidos apurados e for&ccedil;a sobrenatural herdada das linhagens sombrias.</p>
+
+            <h4>Status de Ra&ccedil;a</h4>
+            <ul class="race-list">
+              <li>Vis&atilde;o no escuro em at&eacute; 18B</li><li>Resist&ecirc;ncia contra dano de Pesadelo</li><li>Fraqueza contra dano de Praga e dano Solar</li>
+            </ul>
+
+            <h4>Mec&acirc;nica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Reserva de Sangue</h5>
+              <p>Ao causar dano cortante ou perfurante em um alvo com sangue, acumula at&eacute; 3 Cargas de Sangue. Pode gastar 1 Carga para: restaurar 1d6 + Vigor em PV; fazer com que seu pr&oacute;ximo golpe cause Dano Real (ignora armadura e qualquer resist&ecirc;ncia do inimigo); ou receber vantagem ao Desviar de um ataque nesta rodada.</p>
+            </div>
+
+            <h4>Caracter&iacute;stica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Mordida Vamp&iacute;rica</h5>
+              <p>Desfere um ataque com presas contra um alvo agarrado, ca&iacute;do ou desprevenido. Causa o dano base de ataque desarmado + 1d6 de perfura&ccedil;&atilde;o, recupera PV igual ao dano causado e gera automaticamente 1 Carga de Sangue.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="subsection" id="dragao-anao">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="../assets/dragaoanao.webp" alt="Drag&atilde;o An&atilde;o" loading="lazy" decoding="async">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Drag&atilde;o An&atilde;o</h2>
+            </div>
+            <div class="difficulty-badge difficulty-2"><small>ND</small>2</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">H&iacute;bridos drac&ocirc;nicos de baixa estatura origin&aacute;rios de Tragnor, com escamas coloridas mimetizantes, cauda &aacute;gil e voca&ccedil;&atilde;o ladina.</p>
+
+            <h4>Status de Ra&ccedil;a</h4>
+            <ul class="race-list">
+              <li>Vantagem em testes de Mente para resistir a efeitos mentais e confus&atilde;o</li><li>Resist&ecirc;ncia contra o elemento escolhido para o sopro na cria&ccedil;&atilde;o: Solar, &Eacute;stase ou Podrid&atilde;o</li>
+            </ul>
+
+            <h4>Mec&acirc;nica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Mimetismo de Escamas</h5>
+              <p>As escamas mudam de tom e textura conforme a superf&iacute;cie onde se apoia. Pode tentar se ocultar com Furtividade mesmo sem cobertura total caso esteja encostado em paredes ou superf&iacute;cies s&oacute;lidas. Ap&oacute;s desferir um ataque corpo a corpo ou usar o sopro, pode se deslocar at&eacute; 3B imediatamente.</p>
+            </div>
+
+            <h4>Caracter&iacute;stica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Sopro Ancestral</h5>
+              <p>Na cria&ccedil;&atilde;o do personagem, escolhe o tipo elemental do sopro: Solar, &Eacute;stase ou Podrid&atilde;o. Expele um cone frontal de 3B de energia elemental do tipo escolhido. Alvos na &aacute;rea sofrem 2d8 de dano elemental do tipo correspondente.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="subsection" id="insectoides">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="../assets/insectoides.webp" alt="Insect&oacute;ides" loading="lazy" decoding="async">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Insect&oacute;ides</h2>
+            </div>
+            <div class="difficulty-badge difficulty-2"><small>ND</small>2</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">Humanos geneticamente modificados nos experimentos de Paladium, portadores de carapa&ccedil;a de quitina e mente fria e calculista.</p>
+
+            <h4>Status de Ra&ccedil;a</h4>
+            <ul class="race-list">
+              <li>Treino nativo na per&iacute;cia <strong>Intimida&ccedil;&atilde;o</strong></li><li>Fraqueza contra dano Solar e dano G&eacute;lido</li><li>Sensibilidade a luzes ofuscantes diretas</li>
+            </ul>
+
+            <h4>Mec&acirc;nica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>V&iacute;nculo de Muta&ccedil;&atilde;o</h5>
+              <p>Na cria&ccedil;&atilde;o, escolhe um elemento de v&iacute;nculo: Podrid&atilde;o, Nul&iacute;drico ou Pesadelo. Ao acertar um ataque em combate, acumula at&eacute; 3 Cargas de Pe&ccedil;onha. Pode gastar 1 Carga para aplicar o efeito do elemento no pr&oacute;ximo golpe: Podrid&atilde;o (reduz DEF do alvo em 2 at&eacute; o fim da rodada); Nul&iacute;drico (reduz deslocamento do alvo pela metade); ou Pesadelo (1d6 dano mental e anula rea&ccedil;&otilde;es nesta rodada).</p>
+            </div>
+
+            <h4>Caracter&iacute;stica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Fisiologia Quitinosa</h5>
+              <p>Concede +2 de DEF natural permanente. Consegue escalar superf&iacute;cies verticais e tetos com velocidade normal de deslocamento sem necessidade de testes.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="subsection" id="praguentos">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="../assets/praguentos.webp" alt="Praguentos" loading="lazy" decoding="async">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Praguentos</h2>
+            </div>
+            <div class="difficulty-badge difficulty-3"><small>ND</small>3</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">Seres cobertos de lodo viscoso negro e m&uacute;ltiplos olhos, zombarias vivas forjadas nas profundezas pela Podrid&atilde;o.</p>
+
+            <h4>Status de Ra&ccedil;a</h4>
+            <ul class="race-list">
+              <li>Imunidade contra dano de Podrid&atilde;o</li><li>Resist&ecirc;ncia contra dano de Praga</li><li>Fraqueza contra dano Solar e dano G&eacute;lido</li>
+            </ul>
+
+            <h4>Mec&acirc;nica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Biomassa de Lodo</h5>
+              <p>Possui 3 Cargas de Lodo (recuperadas ao final de cada cena ou descanso). Pode gastar 1 Carga para: moldar instantaneamente uma ferramenta simples ou arma corpo a corpo de lodo na sua m&atilde;o; esticar seus membros para desferir um ataque corpo a corpo ou agarrar um alvo a at&eacute; 3B de dist&acirc;ncia; ou destacar uma gota de lodo control&aacute;vel para atravessar frestas e fechaduras a at&eacute; 10B transmitindo sensa&ccedil;&otilde;es t&aacute;teis.</p>
+            </div>
+
+            <h4>Caracter&iacute;stica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Eje&ccedil;&atilde;o C&aacute;ustica</h5>
+              <p>Dispara uma golfada de lodo viscoso e fervente em um alvo a at&eacute; 5B. Causa 2d6 de dano de Podrid&atilde;o e o alvo tem seu deslocamento reduzido pela metade at&eacute; o in&iacute;cio do pr&oacute;ximo turno dele.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="subsection" id="abissais">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="../assets/abissais.webp" alt="Abissais" loading="lazy" decoding="async">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Abissais</h2>
+            </div>
+            <div class="difficulty-badge difficulty-3"><small>ND</small>3</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">Vigilantes p&aacute;lidos das fendas subterr&acirc;neas, com veias tomadas pela Praga e antenas bioluminescentes adaptadas &agrave; escurid&atilde;o.</p>
+
+            <h4>Status de Ra&ccedil;a</h4>
+            <ul class="race-list">
+              <li>Vis&atilde;o no escuro total em ambientes subterr&acirc;neos</li><li>Imunidade contra dano de Praga</li><li>Resist&ecirc;ncia contra dano Solar, G&eacute;lido e Pesadelo</li><li>Fraqueza contra dano de Podrid&atilde;o e desvantagem em Percep&ccedil;&atilde;o sob luz solar direta</li>
+            </ul>
+
+            <h4>Mec&acirc;nica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Fome de Vinhas</h5>
+              <p>Consome filamentos de Praga para alterar seu organismo em combate. Possui 3 Vinhas de Praga por cena. Ao engolir 1 vinha com a&ccedil;&atilde;o r&aacute;pida, rola 1d6 para definir a muta&ccedil;&atilde;o at&eacute; o fim da cena: 1 (Rejei&ccedil;&atilde;o: sofre 1d6 dano e -2B deslocamento); 2 (Sobrecarga: desvantagem em Mente e Percep&ccedil;&atilde;o); 3 (Carapa&ccedil;a: +2 DEF); 4 (Surto Motor: +3B deslocamento e vantagem em Destreza); 5 (Secre&ccedil;&atilde;o T&oacute;xica: +1d6 dano Praga); 6 (Bioluminesc&ecirc;ncia: vantagem para ataques de aliados em 6B e cura 1d8 PV).</p>
+            </div>
+
+            <h4>Caracter&iacute;stica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Frequ&ecirc;ncia Perturbadora</h5>
+              <p>Projeta ru&iacute;dos ensurdecedores e sussurros telep&aacute;ticos na mente de um alvo a at&eacute; 6B. O alvo deve passar em um teste de Mente ou fica atordoado, incapaz de agir no pr&oacute;ximo turno dele.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="subsection" id="exos">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="../assets/exo.webp" alt="E.X.O.s" loading="lazy" decoding="async">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">E.X.O.s</h2>
+            </div>
+            <div class="difficulty-badge difficulty-2"><small>ND</small>2</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">Aut&ocirc;matos avan&ccedil;ados de metal especial forjados pelos art&iacute;fices de Paladium, movidos pelo lend&aacute;rio min&eacute;rio Everact.</p>
+
+            <h4>Status de Ra&ccedil;a</h4>
+            <ul class="race-list">
+              <li>Imunidade contra dano de Fogo, Praga, Sangramento e Envenenamento</li><li>Fraqueza contra dano de Podrid&atilde;o e dano Nul&iacute;drico</li>
+            </ul>
+
+            <h4>Mec&acirc;nica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Fisiologia Mec&acirc;nica &amp; N&uacute;cleo Everact</h5>
+              <p><strong>Pontos de Chassi (PC):</strong> N&atilde;o possui Vida comum. Medicina e primeiros socorros falham automaticamente; estabiliza&ccedil;&atilde;o e reparos exigem teste de Of&iacute;cio (Mente).<br><strong>Autorreparo de Campo:</strong> Uma vez por cena, restaura 2d8 + Mente em PCs. A cada rodada, regenera 1d6 + Vigor em PCs.<br><strong>Sobrecarga de Overclock:</strong> Sob 25% de seus PCs totais, ganha +2 de DEF e +1d8 de dano em todos os ataques at&eacute; o fim da cena.</p>
+            </div>
+
+            <h4>Caracter&iacute;stica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Prensa Hidr&aacute;ulica</h5>
+              <p>Avan&ccedil;a contra alvo adjacente travando atuadores em teste de For&ccedil;a. Se vencer, alvo fica Imobilizado e sofre 2d6 + For&ccedil;a de dano de esmagamento no in&iacute;cio de cada um dos turnos dele enquanto estiver preso.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="subsection" id="espectros">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="../assets/espectros2.webp" alt="Espect@&amp;%s" loading="lazy" decoding="async">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Espect@&amp;%s</h2>
+            </div>
+            <div class="difficulty-badge difficulty-4"><small>ND</small>4</div>
+          </div>
+          <div class="race-card-body">
+            <p class="race-description">Glitches sencientes no tecido do espa&ccedil;o-tempo, presos no carregamento da morte e distorcendo a realidade f&iacute;sica ao redor.</p>
+
+            <h4>Status de Ra&ccedil;a</h4>
+            <ul class="race-list">
+              <li>Fraqueza contra dano Sagrado e dano Solar</li><li>Desvantagem permanente em testes de Express&atilde;o com seres biol&oacute;gicos</li>
+            </ul>
+
+            <h4>Mec&acirc;nica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Estabilidade C&oacute;smica &amp; V&iacute;nculo de Anomalia</h5>
+              <p><strong>Defini&ccedil;&atilde;o da Estabilidade:</strong> Vitalidade inicial &eacute; 10 + Mente (+4 + Mente por n&iacute;vel). N&atilde;o possui teto m&aacute;ximo. N&atilde;o recebe cura externa de descanso, po&ccedil;&otilde;es ou magias comuns.<br><strong>Instabilidade Cr&iacute;tica:</strong> Ao chegar a 0, colapsa; realiza pr&oacute;prias salvaguardas (exige 4 falhas para ser apagado; 19 ou 20 natural estabiliza imediatamente com 1 PV).<br><strong>V&iacute;nculo de Anomalia:</strong> Escolhe na cria&ccedil;&atilde;o: <em>Blink</em> (disparo Mented6 a 3B), <em>Desbordamento</em> (+1d6 mental), <em>Corrup&ccedil;&atilde;o</em> (recupera 1d4 Estabilidade em ataque), ou <em>Tela Azul</em> (atacante trava em pane e perde o turno).</p>
+            </div>
+
+            <h4>Caracter&iacute;stica de Ra&ccedil;a</h4>
+            <div class="race-ability">
+              <h5>Deslocamento de Quadros</h5>
+              <p>Perde quadros de anima&ccedil;&atilde;o na realidade e se teletransporta instantaneamente para espa&ccedil;o desocupado a at&eacute; 4B, atravessando grades e frestas sem provocar contra-ataques ou rea&ccedil;&otilde;es.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/showcase.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    ShowcaseEngine.init("races");
+  });
+</script>
+</body>
+</html>

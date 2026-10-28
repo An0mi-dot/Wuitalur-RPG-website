@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equipamentos &mdash; Wuitalur RPG 2.0</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    .equip-card { background: rgba(0,0,0,0.2); border: 1px solid var(--border-subtle); border-radius: var(--radius); padding: var(--space-md); display: flex; flex-direction: column; }
+    .equip-card h4 { font-family: var(--font-heading); font-size: 0.95rem; color: var(--text-primary); margin-bottom: var(--space-xs); }
+    .equip-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-sm); }
+    .equip-tag { font-size: 0.7rem; padding: 2px 8px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: var(--text-muted); white-space: nowrap; }
+    .equip-stats { display: flex; flex-wrap: wrap; gap: var(--space-xs); margin-bottom: var(--space-sm); }
+    .equip-stat { font-size: 0.8rem; padding: 2px 8px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.04); color: var(--text-secondary); }
+    .equip-stat strong { color: var(--text-primary); }
+    .equip-effect { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: var(--space-xs); }
+    .equip-desc { font-size: 0.78rem; color: var(--text-muted); font-style: italic; line-height: 1.5; margin-top: auto; }
+    .equip-section-title { font-family: var(--font-heading); font-size: 1.1rem; color: var(--text-primary); margin-top: var(--space-xl); margin-bottom: var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--border-subtle); }
+    .callout-box { background: rgba(0,0,0,0.15); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-lg); }
+    .callout-box h4 { font-family: var(--font-heading); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--attr-ea); margin-bottom: var(--space-sm); }
+    .callout-box p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+    .callout-box ul { margin: var(--space-sm) 0 0; padding-left: var(--space-lg); }
+    .callout-box li { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+    .mech-table { width: 100%; border-collapse: collapse; margin: var(--space-md) 0 var(--space-lg); }
+    .mech-table th, .mech-table td { padding: var(--space-sm) var(--space-md); border: 1px solid var(--border-subtle); font-size: 0.85rem; text-align: left; }
+    .mech-table th { background: rgba(0,0,0,0.3); font-family: var(--font-heading); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-primary); }
+    .mech-table td { color: var(--text-secondary); }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema Base 2.0 (Alpha)</span>
+      </div>
+    </div>
+
+    <!-- BOTÃO VOLTAR AO CATÁLOGO DE SUPLEMENTOS -->
+    <a href="../suplementos.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar aos Suplementos</span>
+    </a>
+
+    <nav class="sidebar-nav">
+
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="vocacoes.html" class="sidebar-link"><span class="icon"></span> Vocações</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="equipamentos.html" class="sidebar-link active"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Equipamentos &amp; Carga</h1>
+    </header>
+
+    <main class="page-content">
+
+      <div class="topic-crooked" style="margin-bottom: 20px;">LOG&Iacute;STICA // ARSENAL</div>
+
+      <!-- SISTEMA DE CARGA -->
+      <div class="section-heading">
+        <h2>Sistema de Carga</h2>
+        <p>
+          O invent&aacute;rio &eacute; regido por espa&ccedil;os de carga objetivos calculados a partir da For&ccedil;a do personagem.
+        </p>
+      </div>
+
+      <div class="hud-card" style="margin-bottom: var(--space-xl);">
+        <div class="race-card-body">
+          <div style="font-family: var(--font-heading); font-size: 1.25rem; color: var(--accent); letter-spacing: 0.08em; text-align: center; margin-bottom: 8px;">
+            Espa&ccedil;os de Carga = (FOR &times; 3) + 5
+          </div>
+          <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin: 0;">
+            FOR 0 = 5 espa&ccedil;os &bull; FOR 1 = 8 espa&ccedil;os &bull; FOR 2 = 11 espa&ccedil;os &bull; FOR 3 = 14 espa&ccedil;os
+          </p>
+        </div>
+      </div>
+
+      <table class="mech-table">
+        <thead>
+          <tr>
+            <th style="width: 110px; text-align: center;">Categoria</th>
+            <th style="width: 220px;">Descri&ccedil;&atilde;o do Porte</th>
+            <th>Exemplos T&iacute;picos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align: center;"><strong>Peso I</strong></td>
+            <td>Muito leves e compactos</td>
+            <td>Po&ccedil;&otilde;es, facas pequenas, punhais, pistolas leves, muni&ccedil;&otilde;es e gazuas.</td>
+          </tr>
+          <tr>
+            <td style="text-align: center;"><strong>Peso II</strong></td>
+            <td>Leves e de manuseio r&aacute;pido</td>
+            <td>Espadas curtas, lan&ccedil;as, manguais, submetralhadoras e arcos.</td>
+          </tr>
+          <tr>
+            <td style="text-align: center;"><strong>Peso III</strong></td>
+            <td>M&eacute;dios e volumosos</td>
+            <td>Espadas longas, martelos de guerra, escopetas, rifles e kits m&eacute;dicos grandes.</td>
+          </tr>
+          <tr>
+            <td style="text-align: center;"><strong>Peso IV</strong></td>
+            <td>Pesados e massivos</td>
+            <td>Clavas de ferro, fuzis de precis&atilde;o, lan&ccedil;a-chamas, lan&ccedil;adores de granadas e mochilas cheias.</td>
+          </tr>
+          <tr>
+            <td style="text-align: center;"><strong>Peso V</strong></td>
+            <td>Extremos e ultra-pesados</td>
+            <td>Metralhadoras pesadas de suporte, armaduras maci&ccedil;as completas e barris.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout-box">
+        <h4>Regras de Sobrecarga e Itens Ativos</h4>
+        <ul>
+          <li><strong>Dentro do Limite:</strong> O personagem opera sem penalidades.</li>
+          <li><strong>1 a 3 Espa&ccedil;os al&eacute;m do Limite:</strong> -2 em testes de Destreza e deslocamento reduzido pela metade.</li>
+          <li><strong>4 ou mais Espa&ccedil;os al&eacute;m do Limite:</strong> Desvantagem em testes f&iacute;sicos de FOR, DES e VIG, e impossibilidade de realizar rea&ccedil;&otilde;es &aacute;geis de esquiva.</li>
+          <li><strong>Itens em Uso Ativo:</strong> At&eacute; duas m&atilde;os ocupadas por armas/escudos e uma armadura vestida no corpo n&atilde;o ocupam espa&ccedil;os da mochila.</li>
+        </ul>
+      </div>
+
+      <!-- ARMAS BRANCAS -->
+      <div class="equip-section-title">Armas Brancas</div>
+
+      <table class="mech-table">
+        <thead>
+          <tr>
+            <th>Arma</th>
+            <th style="width: 70px; text-align: center;">Peso</th>
+            <th>Dano</th>
+            <th style="width: 90px;">Cr&iacute;tico</th>
+            <th style="width: 100px;">Alcance</th>
+            <th>Propriedades &amp; Efeitos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Martelo de Guerra</strong></td>
+            <td style="text-align: center;">Peso III</td>
+            <td>2d8 + FOR</td>
+            <td>20 / x3</td>
+            <td>Corpo a corpo</td>
+            <td>Pesada. Reduz deslocamento do inimigo pela metade at&eacute; o fim do pr&oacute;ximo turno dele.</td>
+          </tr>
+          <tr>
+            <td><strong>Faca de Ca&ccedil;a</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>1d8 + DES</td>
+            <td>19-20 / x2</td>
+            <td>Corpo a corpo</td>
+            <td>&Aacute;gil, Leve. Ao acertar, aplica Sangramento (1d4 dano no in&iacute;cio do turno por 2 rodadas).</td>
+          </tr>
+          <tr>
+            <td><strong>Espada Curta</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>1d8 + FOR/DES</td>
+            <td>20 / x2</td>
+            <td>Corpo a corpo</td>
+            <td>&Aacute;gil, Vers&aacute;til. Ao Defender/Desviar com sucesso, use Rea&ccedil;&atilde;o para contra-ataque causando metade do dano.</td>
+          </tr>
+          <tr>
+            <td><strong>Lan&ccedil;a</strong></td>
+            <td style="text-align: center;">Peso II</td>
+            <td>1d10 + FOR/DES</td>
+            <td>20 / x2</td>
+            <td>2B</td>
+            <td>Haste, Vers&aacute;til. Alcance de 2B sem penalidade. Pode ser usada com 1 ou 2 m&atilde;os.</td>
+          </tr>
+          <tr>
+            <td><strong>Machadinha</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>1d8 + FOR</td>
+            <td>20 / x3</td>
+            <td>Corpo / 3B</td>
+            <td>Arremess&aacute;vel, Leve. Pode ser arremessada a at&eacute; 3B causando dano normal.</td>
+          </tr>
+          <tr>
+            <td><strong>Bast&atilde;o de Madeira</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>1d6 + FOR/DES</td>
+            <td>20 / x2</td>
+            <td>Corpo a corpo</td>
+            <td>&Aacute;gil, Defensivo. Concede +1 na DEF do usu&aacute;rio enquanto empunhado.</td>
+          </tr>
+          <tr>
+            <td><strong>Adaga Dupla</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>1d6 + DES</td>
+            <td>19-20 / x2</td>
+            <td>Corpo a corpo</td>
+            <td>&Aacute;gil, Par. Ao atacar com a&ccedil;&atilde;o padr&atilde;o, permite a&ccedil;&atilde;o b&ocirc;nus para segundo golpe com l&acirc;mina secund&aacute;ria.</td>
+          </tr>
+          <tr>
+            <td><strong>Clava de Ferro</strong></td>
+            <td style="text-align: center;">Peso IV</td>
+            <td>2d8 + FOR</td>
+            <td>20 / x2</td>
+            <td>Corpo a corpo</td>
+            <td>Pesada, Brutal. Alvo faz teste de Vigor; se falhar, fica Atordoado at&eacute; o pr&oacute;ximo turno.</td>
+          </tr>
+          <tr>
+            <td><strong>Foice de Guerra</strong></td>
+            <td style="text-align: center;">Peso III</td>
+            <td>2d8 + FOR/DES</td>
+            <td>20 / x3</td>
+            <td>Corpo a corpo</td>
+            <td>Duas M&atilde;os, Varredura. Atinge alvo e causa metade do dano a inimigo adjacente em 1B.</td>
+          </tr>
+          <tr>
+            <td><strong>Espada Longa</strong></td>
+            <td style="text-align: center;">Peso II</td>
+            <td>1d10 + FOR</td>
+            <td>19-20 / x2</td>
+            <td>Corpo a corpo</td>
+            <td>Vers&aacute;til. Causa 1d10 com uma m&atilde;o, ou 2d8 + FOR quando empunhada com ambas as m&atilde;os.</td>
+          </tr>
+          <tr>
+            <td><strong>Mangual</strong></td>
+            <td style="text-align: center;">Peso II</td>
+            <td>2d6 + FOR</td>
+            <td>20 / x3</td>
+            <td>Corpo a corpo</td>
+            <td>Articulada. Ignora qualquer b&ocirc;nus concedido por escudos na DEF do alvo.</td>
+          </tr>
+          <tr>
+            <td><strong>L&acirc;mina Curva</strong></td>
+            <td style="text-align: center;">Peso II</td>
+            <td>1d10 + DES</td>
+            <td>18-20 / x2</td>
+            <td>Corpo a corpo</td>
+            <td>&Aacute;gil, Precisa. Margem cr&iacute;tica ampliada. Golpes cr&iacute;ticos causam Sangramento.</td>
+          </tr>
+          <tr>
+            <td><strong>Pique</strong></td>
+            <td style="text-align: center;">Peso III</td>
+            <td>2d10 + FOR</td>
+            <td>20 / x2</td>
+            <td>3B</td>
+            <td>Haste Longa, Duas M&atilde;os. Alcance de 3B. Acertos cr&iacute;ticos em criaturas m&eacute;dias derrubam o alvo no ch&atilde;o.</td>
+          </tr>
+          <tr>
+            <td><strong>Punhal Serrilhado</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>1d8 + DES</td>
+            <td>19-20 / x3</td>
+            <td>Corpo a corpo</td>
+            <td>&Aacute;gil, Cruel. Aplica Sangramento severo (1d6 dano cont&iacute;nuo por 3 rodadas).</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- ARMAS DE FOGO E LONGO ALCANCE -->
+      <div class="equip-section-title">Armas de Fogo e Longo Alcance</div>
+
+      <table class="mech-table">
+        <thead>
+          <tr>
+            <th>Arma</th>
+            <th style="width: 70px; text-align: center;">Peso</th>
+            <th>Dano</th>
+            <th style="width: 85px;">Cr&iacute;tico</th>
+            <th style="width: 75px;">Alcance</th>
+            <th style="width: 140px;">Muni&ccedil;&atilde;o / Recarga</th>
+            <th>Propriedades &amp; Efeitos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Rev&oacute;lver Paladium M6</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>2d6 + DES</td>
+            <td>19-20 / x3</td>
+            <td>8B</td>
+            <td>6 tiros / B&ocirc;nus</td>
+            <td>Disparo Concentrado: a&ccedil;&atilde;o b&ocirc;nus para mirar ignora Armadura e causa +1d6 de dano.</td>
+          </tr>
+          <tr>
+            <td><strong>Pistola PM-12</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>2d4 + DES</td>
+            <td>19-20 / x2</td>
+            <td>10B</td>
+            <td>12 tiros / B&ocirc;nus</td>
+            <td>Disparo R&aacute;pido: ap&oacute;s a&ccedil;&atilde;o padr&atilde;o, a&ccedil;&atilde;o b&ocirc;nus para disparar segundo tiro no alvo ou a 2B.</td>
+          </tr>
+          <tr>
+            <td><strong>Escopeta C-32</strong></td>
+            <td style="text-align: center;">Peso III</td>
+            <td>3d8 + FOR/DES</td>
+            <td>20 / x2</td>
+            <td>4B</td>
+            <td>2 tiros / Padr&atilde;o</td>
+            <td>Dispers&atilde;o: cone de 2B &agrave; frente. Inimigos a at&eacute; 1B do cano sofrem dano dobrado.</td>
+          </tr>
+          <tr>
+            <td><strong>Rifle PA-15 Sentinela</strong></td>
+            <td style="text-align: center;">Peso III</td>
+            <td>2d8 + DES</td>
+            <td>20 / x2</td>
+            <td>15B</td>
+            <td>30 tiros / B&ocirc;nus</td>
+            <td>Rajada T&aacute;tica: gaste 3 tiros para alvejar at&eacute; 2 inimigos distantes at&eacute; 2B entre si com mesmo teste.</td>
+          </tr>
+          <tr>
+            <td><strong>Fuzil de Precis&atilde;o LR-9</strong></td>
+            <td style="text-align: center;">Peso IV</td>
+            <td>3d10 + DES</td>
+            <td>18-20 / x3</td>
+            <td>25B</td>
+            <td>5 tiros / Padr&atilde;o</td>
+            <td>Perfurante, Duas M&atilde;os: ignora cobertura e anula Armadura. Exige apoio para disparar sem desvantagem.</td>
+          </tr>
+          <tr>
+            <td><strong>Submetralhadora SMT-25</strong></td>
+            <td style="text-align: center;">Peso II</td>
+            <td>2d6 + DES</td>
+            <td>19-20 / x2</td>
+            <td>6B</td>
+            <td>25 tiros / B&ocirc;nus</td>
+            <td>Fogo Supressivo: linha de 2B por 6B; todos na &aacute;rea fazem teste de Desviar ou sofrem o dano.</td>
+          </tr>
+          <tr>
+            <td><strong>Lan&ccedil;a-Combust&iacute;vel LT-4</strong></td>
+            <td style="text-align: center;">Peso IV</td>
+            <td>3d6 fogo</td>
+            <td>20 / x2</td>
+            <td>Cone 6B</td>
+            <td>5 cargas / Complexa</td>
+            <td>Incendi&aacute;ria, Pesada: atinge cone de 6B e aplica Queimando (1d6 de dano por turno).</td>
+          </tr>
+          <tr>
+            <td><strong>Lan&ccedil;ador de Granadas G-01</strong></td>
+            <td style="text-align: center;">Peso IV</td>
+            <td>4d8 impacto</td>
+            <td>20 / x2</td>
+            <td>12B</td>
+            <td>3 granadas / Padr&atilde;o</td>
+            <td>Explosiva: explos&atilde;o de 2B de raio. Dano total a todos e derruba alvos m&eacute;dios no ch&atilde;o.</td>
+          </tr>
+          <tr>
+            <td><strong>Arco Refor&ccedil;ado R-12</strong></td>
+            <td style="text-align: center;">Peso II</td>
+            <td>2d8 + DES</td>
+            <td>19-20 / x3</td>
+            <td>14B</td>
+            <td>1 flecha / Instant</td>
+            <td>Silencioso, Duas M&atilde;os: errar disparo em Furtividade n&atilde;o revela posi&ccedil;&atilde;o. Flechas especiais.</td>
+          </tr>
+          <tr>
+            <td><strong>Metralhadora Pesada MG-88</strong></td>
+            <td style="text-align: center;">Peso V</td>
+            <td>3d8 + FOR</td>
+            <td>20 / x2</td>
+            <td>20B</td>
+            <td>100 tiros / 1 Turno</td>
+            <td>Fogo Pesado: 1 a 5 disparos no mesmo turno (-1 cumulativo por tiro ap&oacute;s o primeiro). Exige FOR 3+.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- KITS DE EQUIPAMENTO -->
+      <div class="equip-section-title">Kits e Pacotes de Equipamento</div>
+
+      <div class="callout-box">
+        <h4>Regra Especial de Armazenamento do Kit</h4>
+        <p>
+          O kit funciona como um compartimento de carga dedicado exclusivamente para os seus pr&oacute;prios itens. Enquanto os itens estiverem guardados dentro dele, o peso individual n&atilde;o &eacute; somado &agrave; carga; apenas o peso do kit fechado &eacute; contabilizado. Caso qualquer item seja retirado para uso solto ou repassado a outro aventureiro, passa a ocupar seu espa&ccedil;o individual.
+        </p>
+      </div>
+
+      <!-- OS 7 KITS -->
+      <div class="equip-card" style="margin-bottom: var(--space-lg);">
+        <div class="equip-card-header">
+          <h4>Kit 1: Kit M&eacute;dico de Emerg&ecirc;ncia</h4>
+          <span class="equip-tag">Peso III Fechado</span>
+        </div>
+        <p class="equip-desc">Maleta r&iacute;gida imperme&aacute;vel contendo instrumentos cir&uacute;rgicos b&aacute;sicos, faixas esterilizadas e compostos medicinais.</p>
+        <table class="mech-table" style="margin-top: 8px;">
+          <thead><tr><th>Item</th><th style="width: 70px;">Peso</th><th style="width: 90px;">Usos</th><th>Efeito &amp; Regras</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Estojo de Sutura e Bandagens</strong></td><td>Peso I</td><td>3 usos</td><td>A&ccedil;&atilde;o padr&atilde;o para estabilizar aliado com 0 PVs ou estancar Sangramento.</td></tr>
+            <tr><td><strong>Injetor de Estimulante</strong></td><td>Peso I</td><td>1 uso</td><td>A&ccedil;&atilde;o b&ocirc;nus em si ou aliado; vantagem em testes de FOR e VIG por 1 rodada.</td></tr>
+            <tr><td><strong>B&aacute;lsamo Cicatrizante</strong></td><td>Peso I</td><td>2 usos</td><td>A&ccedil;&atilde;o padr&atilde;o em criatura consciente; restaura 2d6 + Mente em Pontos de Vida.</td></tr>
+            <tr><td><strong>Frasco de Antiss&eacute;ptico Purificador</strong></td><td>Peso I</td><td>2 usos</td><td>Limpa feridas; encerra infec&ccedil;&otilde;es e concede vantagem contra venenos.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="equip-card" style="margin-bottom: var(--space-lg);">
+        <div class="equip-card-header">
+          <h4>Kit 2: Kit de Explora&ccedil;&atilde;o e Desbravamento</h4>
+          <span class="equip-tag">Peso III Fechado</span>
+        </div>
+        <p class="equip-desc">Mochila compacta de lona encerada para travessias em cavernas, ru&iacute;nas e ambientes in&oacute;spitos.</p>
+        <table class="mech-table" style="margin-top: 8px;">
+          <thead><tr><th>Item</th><th style="width: 70px;">Peso</th><th style="width: 90px;">Usos</th><th>Efeito &amp; Regras</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Corda Refor&ccedil;ada de C&acirc;nhamo</strong></td><td>Peso II</td><td>Permanente</td><td>15m com gancho de ferro; vantagem em Atletismo para escaladas e amarra&ccedil;&otilde;es.</td></tr>
+            <tr><td><strong>Pederneira de Centelha R&aacute;pida</strong></td><td>Peso I</td><td>Permanente</td><td>Produz fagulhas de alta temperatura acendendo fogo sob chuva moderada.</td></tr>
+            <tr><td><strong>Tochas de Piche Estanque</strong></td><td>Peso I</td><td>4 tochas</td><td>Queima por 1h com luz brilhante em raio de 4B; pode causar 1d6 dano de fogo.</td></tr>
+            <tr><td><strong>Cantil com Filtro de Carv&atilde;o</strong></td><td>Peso I</td><td>Permanente</td><td>Ret&eacute;m impurezas tornando &aacute;gua de po&ccedil;os e c&oacute;rregos segura para beber.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="equip-card" style="margin-bottom: var(--space-lg);">
+        <div class="equip-card-header">
+          <h4>Kit 3: Kit de Infiltra&ccedil;&atilde;o e Arrombamento</h4>
+          <span class="equip-tag">Peso II Fechado</span>
+        </div>
+        <p class="equip-desc">Estojo de couro enrol&aacute;vel com bolsos acolchoados para intrus&atilde;o e observa&ccedil;&atilde;o oculta.</p>
+        <table class="mech-table" style="margin-top: 8px;">
+          <thead><tr><th>Item</th><th style="width: 70px;">Peso</th><th style="width: 90px;">Usos</th><th>Efeito &amp; Regras</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Conjunto de Gazuas Finas</strong></td><td>Peso I</td><td>Permanente</td><td>Permite for&ccedil;ar trancas mec&acirc;nicas sem penalidade em Of&iacute;cio ou Destreza.</td></tr>
+            <tr><td><strong>Espelho Articulado de Espionagem</strong></td><td>Peso I</td><td>Permanente</td><td>Inspeciona frestas e esquinas cegas sem expor o corpo &agrave; vis&atilde;o inimiga.</td></tr>
+            <tr><td><strong>Frasco de &Oacute;leo Desengripante</strong></td><td>Peso I</td><td>3 usos</td><td>A&ccedil;&atilde;o r&aacute;pida em dobradi&ccedil;as; vantagem em Furtividade para portas barulhentas.</td></tr>
+            <tr><td><strong>P&eacute; de Cabra Compacto</strong></td><td>Peso I</td><td>Permanente</td><td>Vantagem em testes de For&ccedil;a para for&ccedil;ar ba&uacute;s, tampas de bueiro ou grades.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="equip-card" style="margin-bottom: var(--space-lg);">
+        <div class="equip-card-header">
+          <h4>Kit 4: Kit de Manuten&ccedil;&atilde;o e Forja de Campo</h4>
+          <span class="equip-tag">Peso III Fechado</span>
+        </div>
+        <p class="equip-desc">Maleta refor&ccedil;ada com ferramentas para reparo de armaduras, afia&ccedil;&atilde;o de l&acirc;minas e ajustes bal&iacute;sticos.</p>
+        <table class="mech-table" style="margin-top: 8px;">
+          <thead><tr><th>Item</th><th style="width: 70px;">Peso</th><th style="width: 90px;">Usos</th><th>Efeito &amp; Regras</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Martelo de Ajuste e Pun&ccedil;&otilde;es</strong></td><td>Peso I</td><td>Permanente</td><td>Ferramentas para desamassar placas, fixar rebites e ajustar escudos.</td></tr>
+            <tr><td><strong>Pedra de Amolar Diamantada</strong></td><td>Peso I</td><td>Permanente</td><td>No descanso curto, afia l&acirc;mina; o pr&oacute;ximo golpe bem-sucedido causa +2 de dano.</td></tr>
+            <tr><td><strong>Chaves e Alicate Multifuncional</strong></td><td>Peso I</td><td>Permanente</td><td>Desmontagem de armas emperradas e conserto de mecanismos mec&acirc;nicos.</td></tr>
+            <tr><td><strong>&Oacute;leo Protetor Anticorrosivo</strong></td><td>Peso I</td><td>3 usos</td><td>Remove ferrugem e concede imunidade a corros&atilde;o de &aacute;cido/podrid&atilde;o por 24h.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="equip-card" style="margin-bottom: var(--space-lg);">
+        <div class="equip-card-header">
+          <h4>Kit 5: Kit T&aacute;tico de Assalto e Brecha</h4>
+          <span class="equip-tag">Peso III Fechado</span>
+        </div>
+        <p class="equip-desc">Colete r&iacute;gido contendo proj&eacute;teis de dispers&atilde;o, granadas e artif&iacute;cios para quebra de defesas.</p>
+        <table class="mech-table" style="margin-top: 8px;">
+          <thead><tr><th>Item</th><th style="width: 70px;">Peso</th><th style="width: 90px;">Usos</th><th>Efeito &amp; Regras</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Granada de Fuma&ccedil;a</strong></td><td>Peso I</td><td>1 uso</td><td>Arremesso a 6B; n&eacute;voa em 3B de raio obscurece totalmente vis&atilde;o por 3 rodadas.</td></tr>
+            <tr><td><strong>Granada de Clar&atilde;o Cegante</strong></td><td>Peso I</td><td>1 uso</td><td>Arremesso a 6B; explode em luz for&ccedil;ando Vigor, aplicando Cego e Atordoado.</td></tr>
+            <tr><td><strong>Frasco Incendi&aacute;rio</strong></td><td>Peso I</td><td>1 uso</td><td>Arremesso a 6B; explos&atilde;o de fogo em 2B de raio causando 2d6 e Queimando.</td></tr>
+            <tr><td><strong>Arame Farpado de Conten&ccedil;&atilde;o</strong></td><td>Peso I</td><td>2 usos</td><td>Ocupa 2B tornando terreno dif&iacute;cil e causando 1d6 de dano a quem cruzar correndo.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="equip-card" style="margin-bottom: var(--space-lg);">
+        <div class="equip-card-header">
+          <h4>Kit 6: Kit do Erudito e Investigador</h4>
+          <span class="equip-tag">Peso II Fechado</span>
+        </div>
+        <p class="equip-desc">Caixa de madeira nobre acolchoada com instrumentos &oacute;pticos e an&aacute;lise met&oacute;dica de vest&iacute;gios.</p>
+        <table class="mech-table" style="margin-top: 8px;">
+          <thead><tr><th>Item</th><th style="width: 70px;">Peso</th><th style="width: 90px;">Usos</th><th>Efeito &amp; Regras</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Lupa de Cristal Polido</strong></td><td>Peso I</td><td>Permanente</td><td>Vantagem em Investiga&ccedil;&atilde;o para pistas min&uacute;sculas, fibras e marcas.</td></tr>
+            <tr><td><strong>Di&aacute;rio Imperme&aacute;vel e Tinta</strong></td><td>Peso I</td><td>Permanente</td><td>Papel resistente; copia mapas, runas e s&iacute;mbolos arcanos sem borr&otilde;es.</td></tr>
+            <tr><td><strong>B&uacute;ssola de Resson&acirc;ncia Astral</strong></td><td>Peso I</td><td>Permanente</td><td>Agulha de vidro que aponta para anomalias astrais ativas a at&eacute; 20B.</td></tr>
+            <tr><td><strong>Bast&otilde;es de Giz Fosforescente</strong></td><td>Peso I</td><td>10 usos</td><td>Marca&ccedil;&otilde;es vis&iacute;veis no escuro que brilham por 12 horas para mapear labirintos.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="equip-card" style="margin-bottom: var(--space-lg);">
+        <div class="equip-card-header">
+          <h4>Kit 7: Kit do Botic&aacute;rio e Herborista</h4>
+          <span class="equip-tag">Peso II Fechado</span>
+        </div>
+        <p class="equip-desc">Bolsa transversal de couro com compartimentos est&eacute;reis para ervas, solventes e destila&ccedil;&otilde;es.</p>
+        <table class="mech-table" style="margin-top: 8px;">
+          <thead><tr><th>Item</th><th style="width: 70px;">Peso</th><th style="width: 90px;">Usos</th><th>Efeito &amp; Regras</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Almofariz e Pil&atilde;o de Porcelana</strong></td><td>Peso I</td><td>Permanente</td><td>Tritura folhas secas e minerais preservando princ&iacute;pios ativos.</td></tr>
+            <tr><td><strong>Frascos de Vidro com Rolha</strong></td><td>Peso I</td><td>4 frascos</td><td>Recipientes est&eacute;reis para armazenar seivas t&oacute;xicas ou secre&ccedil;&otilde;es.</td></tr>
+            <tr><td><strong>L&acirc;mina de Desbaste Bot&acirc;nico</strong></td><td>Peso I</td><td>Permanente</td><td>Pequena foice de precis&atilde;o para colheita cir&uacute;rgica sem estragar plantas.</td></tr>
+            <tr><td><strong>Frasco de Solvente Neutralizador</strong></td><td>Peso I</td><td>2 usos</td><td>Dissolve resinas aderentes, teias densas e lodo de praga em 1B.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,11 +1,11 @@
 /* ============================================================
-   WUITALUR RPG — CONTROLADOR SHOWCASE DE CLASSES E RAÇAS (V5)
+   WUITALUR RPG — CONTROLADOR SHOWCASE DE CLASSES E RAÇAS (V6)
    - Menu Hambúrguer no Topo Esquerdo
    - Navegação por Tópicos na Esquerda
-   - Centro Dinâmico (Alterna entre Ilustração e Conteúdo com fade)
-   - Painel Direito em Azul Cobalto com Corte Diagonal e Listras ///
-   - Nome Gigante Sobreposto na Divisa
-   - Zero Emojis — Chinese Rocks sem Negrito
+   - Palco Central com Hero Spotlight 2.5D Parallax (Estilo Deadlock)
+   - 3 Camadas 3D: Fundo Geométrico / Personagem / Tipografia e Badges
+   - Sombra Suave Direcional e Rotação Dinâmica via mousemove (rAF)
+   - Paleta Urbana Streetwear: #121114, #1B191F, #9B51E0
    ============================================================ */
 
 const ShowcaseEngine = {
@@ -14,12 +14,56 @@ const ShowcaseEngine = {
   currentId: null,
   activeTopicIndex: 0,
   
+  // Dicionário de Conceitos / Tags para cada Classe
+  classConcepts: {
+    consagrados: ['ESTRATEGISTA', 'SUPORTE', 'CONTROLADOR'],
+    compactador: ['IMPACTO', 'DANO BRUTO', 'CONTROLE'],
+    bestial: ['FERAL', 'SOBREVIVÊNCIA', 'DANO'],
+    'cavaleiros-paladium': ['BLINDAGEM', 'DEFESA', 'LIDERANÇA'],
+    eterno: ['RESISTÊNCIA', 'IMORTAL', 'VITALIDADE'],
+    furtassaltantes: ['FURTIVO', 'AGILIDADE', 'CRÍTICO'],
+    pistoleiro: ['DISTÂNCIA', 'PRECISÃO', 'CADÊNCIA'],
+    rastejantes: ['SOMBRAS', 'DEBUFF', 'ASSUSTADOR'],
+    anomalo: ['MUTÁVEL', 'CAOS', 'CONTROLE'],
+    'atirador-espectral': ['DISTÂNCIA', 'ESPÍRITO', 'PERFURAÇÃO'],
+    lampinario: ['ILUMINAÇÃO', 'SUPORTE', 'CANALIZADOR'],
+    protegidos: ['DEFESA', 'ESCUDO', 'GUARDIÃO'],
+    sobrevivente: ['TENACIDADE', 'VERSÁTIL', 'IMPROVISO']
+  },
+
+  // Funções Táticas / Dossiês de cada Classe
+  classRoles: {
+    consagrados: 'ESTRATEGISTA SUPORTE',
+    compactador: 'FORÇA BRUTA & IMPACTO',
+    bestial: 'PREDADOR FERAL',
+    'cavaleiros-paladium': 'DEFENSOR BLINDADO',
+    eterno: 'SOBREVIVENTE IMORTAL',
+    furtassaltantes: 'ESPECIALISTA EM EMBOSCADA',
+    pistoleiro: 'ATIRADOR DE PRECISÃO',
+    rastejantes: 'HORROR DAS SOMBRAS',
+    anomalo: 'CANALIZADOR DO CAOS',
+    'atirador-espectral': 'FRANCO-ATIRADOR ASTRAL',
+    lampinario: 'CONJURADOR SOLAR',
+    protegidos: 'GUARDIÃO RELICÁRIO',
+    sobrevivente: 'TENACIDADE URBANA'
+  },
+
   // Elementos do DOM
   elements: {
     artView: null,
     contentView: null,
     heroArt: null,
     bigName: null,
+    spotlightViewport: null,
+    spotlightStage: null,
+    spotlightTitle: null,
+    spotlightTags: null,
+    spotlightCoords: null,
+    spotlightNdIndicator: null,
+    spotlightRoleIndicator: null,
+    spotlightBack: null,
+    spotlightChar: null,
+    spotlightFg: null,
     ndBadge: null,
     topicActiveTitle: null,
     topicCategory: null,
@@ -33,88 +77,158 @@ const ShowcaseEngine = {
     hamburgerBtn: null,
     hamburgerLabel: null,
     bladeNd: null,
-    bladeRole: null,
-    canvas: null
+    ndTier: null,
+    ndGauge: null
   },
 
-  // Motor de Partículas (Canvas de Pontos Ascendentes estilo Mesa Virtual)
-  particles: {
-    canvas: null,
-    ctx: null,
-    width: 0,
-    height: 0,
-    motes: [],
-    animId: null,
-    
-    init(canvasEl) {
-      if (!canvasEl) return;
-      this.canvas = canvasEl;
-      this.ctx = canvasEl.getContext('2d');
-      this.resize();
-      window.addEventListener('resize', () => this.resize());
-      this.spawnMotes();
-      this.loop();
-    },
+  // Controlador Parallax 2.5D baseado no mousemove
+  parallax: {
+    engine: null,
+    targetX: 0,
+    targetY: 0,
+    currentX: 0,
+    currentY: 0,
+    rafId: null,
+    isHovered: false,
 
-    resize() {
-      const parent = this.canvas.parentElement;
-      if (!parent) return;
-      this.width = this.canvas.width = parent.clientWidth;
-      this.height = this.canvas.height = parent.clientHeight;
-    },
+    init(engine) {
+      this.engine = engine;
+      const stage = engine.elements.spotlightStage;
+      let trigger = document.getElementById('spotlight-hitbox');
 
-    spawnMotes() {
-      this.motes = [];
-      const count = 48;
-      for (let i = 0; i < count; i++) {
-        this.motes.push({
-          x: Math.random() * this.width,
-          y: Math.random() * this.height,
-          size: Math.random() * 3.6 + 1.2,
-          speedY: Math.random() * 0.9 + 0.35,
-          speedX: (Math.random() - 0.5) * 0.4,
-          opacity: Math.random() * 0.45 + 0.25,
-          pulse: Math.random() * Math.PI * 2,
-          // Roxo Astral (#7c3aed) ou Azul Cósmico (#38bdf8)
-          color: Math.random() > 0.45 ? '124, 58, 237' : '56, 189, 248'
-        });
+      // Se o hitbox não existir no HTML, cria automaticamente sobre a área da arte
+      if (!trigger && stage) {
+        trigger = document.createElement('div');
+        trigger.id = 'spotlight-hitbox';
+        trigger.className = 'spotlight-hitbox';
+        trigger.setAttribute('aria-hidden', 'true');
+        stage.appendChild(trigger);
       }
-    },
 
-    loop() {
-      if (!this.ctx) return;
-      this.ctx.clearRect(0, 0, this.width, this.height);
+      if (!stage || !trigger) return;
 
-      for (let i = 0; i < this.motes.length; i++) {
-        const m = this.motes[i];
-        m.y -= m.speedY;
-        m.x += m.speedX;
-        m.pulse += 0.025;
+      trigger.addEventListener('mousemove', (e) => {
+        const rect = trigger.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) return;
 
-        // Reposiciona na base quando sai pelo topo
-        if (m.y < -12) {
-          m.y = this.height + 12;
-          m.x = Math.random() * this.width;
+        // Offset normalizado relativo à área da imagem (-1 a 1)
+        const px = (e.clientX - rect.left) / rect.width;
+        const py = (e.clientY - rect.top) / rect.height;
+        this.targetX = Math.max(-1, Math.min(1, px * 2 - 1));
+        this.targetY = Math.max(-1, Math.min(1, py * 2 - 1));
+        this.isHovered = true;
+
+        if (engine.elements.spotlightCoords) {
+          const cx = Math.round(this.targetX * 50);
+          const cy = Math.round(this.targetY * 50);
+          engine.elements.spotlightCoords.textContent = `X:${cx >= 0 ? '+' : ''}${cx} Y:${cy >= 0 ? '+' : ''}${cy}`;
         }
 
-        const alpha = Math.max(0.08, m.opacity + Math.sin(m.pulse) * 0.18);
-        this.ctx.fillStyle = `rgba(${m.color}, ${alpha})`;
-        this.ctx.beginPath();
-        this.ctx.arc(m.x, m.y, m.size, 0, Math.PI * 2);
-        this.ctx.fill();
+        if (!this.rafId) {
+          this.rafId = requestAnimationFrame(() => this.tick());
+        }
+      });
+
+      trigger.addEventListener('mouseleave', () => {
+        this.isHovered = false;
+        this.targetX = 0;
+        this.targetY = 0;
+        if (engine.elements.spotlightCoords) {
+          engine.elements.spotlightCoords.textContent = 'X:00 Y:00';
+        }
+        if (!this.rafId) {
+          this.rafId = requestAnimationFrame(() => this.tick());
+        }
+      });
+
+      this.tick();
+    },
+
+    tick() {
+      const el = this.engine.elements;
+      if (!el.spotlightStage) return;
+
+      // Interpolação suave (lerp) com ease-out
+      const factor = this.isHovered ? 0.085 : 0.06;
+      this.currentX += (this.targetX - this.currentX) * factor;
+      this.currentY += (this.targetY - this.currentY) * factor;
+
+      const diffX = Math.abs(this.targetX - this.currentX);
+      const diffY = Math.abs(this.targetY - this.currentY);
+
+      // O container principal permanece estático para garantir estabilidade e legibilidade absoluta do texto
+      el.spotlightStage.style.transform = '';
+
+      // Camada 1: Fundo Geométrico e Técnico (profundidade sutil mínima)
+      if (el.spotlightBack) {
+        const bx = (this.currentX * 6).toFixed(2);
+        const by = (this.currentY * 5).toFixed(2);
+        el.spotlightBack.style.transform = `translate3d(${bx}px, ${by}px, 0px)`;
       }
 
-      this.animId = requestAnimationFrame(() => this.loop());
+      // Camada 2: Personagem (O PARALLAX E INCLINAÇÃO 3D OCORREM EXCLUSIVAMENTE NO CONTAINER EXTERNO)
+      if (el.spotlightChar) {
+        const rotX = (-this.currentY * 3.5).toFixed(2);
+        const rotY = (this.currentX * 4.5).toFixed(2);
+        const cx = (this.currentX * 16).toFixed(2);
+        const cy = (this.currentY * 14).toFixed(2);
+        el.spotlightChar.style.transform = `perspective(1800px) translate3d(${cx}px, ${cy}px, 0px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      }
+
+      // Reação física dos vincos do papel à inclinação 3D pelo cursor
+      const dispMap = document.getElementById('paper-warp-map') || document.querySelector('#paper-warp feDisplacementMap');
+      if (dispMap) {
+        const tiltIntensity = Math.abs(this.currentX) + Math.abs(this.currentY);
+        const foldScale = (2.2 + tiltIntensity * 2.0).toFixed(1);
+        dispMap.setAttribute('scale', foldScale);
+      }
+
+      // Camada 3: Foreground Tipografia e Badges 100% fixas (sem movimento de cursor)
+      if (el.spotlightFg) {
+        el.spotlightFg.style.transform = 'none';
+      }
+
+      if (this.isHovered || diffX > 0.001 || diffY > 0.001) {
+        this.rafId = requestAnimationFrame(() => this.tick());
+      } else {
+        this.rafId = null;
+        el.spotlightStage.style.transform = '';
+        if (el.spotlightBack) el.spotlightBack.style.transform = '';
+        if (el.spotlightChar) el.spotlightChar.style.transform = '';
+        if (el.spotlightFg) el.spotlightFg.style.transform = 'none';
+        if (dispMap) dispMap.setAttribute('scale', '2.2');
+      }
     }
   },
 
   init(mode = 'classes') {
     document.body.classList.add('has-showcase');
     this.mode = mode;
+
+    // Garante que os filtros SVG de papel amassado / textura existam na página
+    if (!document.getElementById('paper-warp')) {
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('class', 'sr-only');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.style.cssText = 'position:absolute;width:0;height:0;pointer-events:none;';
+      svg.innerHTML = `
+        <filter id="paper-warp" x="-10%" y="-10%" width="120%" height="120%" filterUnits="objectBoundingBox">
+          <feTurbulence type="fractalNoise" baseFrequency="0.025 0.025" numOctaves="3" result="noise" seed="2" />
+          <feDisplacementMap id="paper-warp-map" in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <filter id="paper-texture">
+          <feTurbulence type="fractalNoise" baseFrequency="0.04 0.04" numOctaves="4" result="noise" />
+          <feColorMatrix type="matrix" values="0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0 0 0 0.15 0" result="glitch" />
+          <feComposite in2="SourceGraphic" in="glitch" operator="in" />
+        </filter>
+      `;
+      document.body.appendChild(svg);
+    }
+
     this.parseContent();
     this.bindElements();
-    // Partículas/bolinhas no fundo desativadas conforme pedido do usuário
     this.bindEvents();
+    this.parallax.init(this);
 
     // Determina o item inicial pelo hash da URL ou pega o primeiro
     const hash = window.location.hash.replace('#', '').trim();
@@ -150,7 +264,7 @@ const ShowcaseEngine = {
       topics.push({
         isIllustration: true,
         title: '✦ Ilustração',
-        fullTitle: 'Ilustração Oficial',
+        fullTitle: 'Ilustração',
         contentHtml: ''
       });
 
@@ -233,6 +347,17 @@ const ShowcaseEngine = {
     this.elements.contentView = document.getElementById('showcase-content-view');
     this.elements.heroArt = document.getElementById('showcase-hero-art');
     this.elements.bigName = document.getElementById('showcase-big-name');
+    this.elements.spotlightViewport = document.getElementById('spotlight-viewport');
+    this.elements.spotlightStage = document.getElementById('spotlight-stage');
+    this.elements.spotlightTitle = document.getElementById('showcase-spotlight-title');
+    this.elements.spotlightTags = document.getElementById('showcase-spotlight-tags');
+    this.elements.spotlightCoords = document.getElementById('spotlight-coords');
+    this.elements.spotlightNdIndicator = document.getElementById('spotlight-nd-indicator');
+    this.elements.spotlightRoleIndicator = document.getElementById('spotlight-role-indicator');
+    this.elements.spotlightBack = document.querySelector('.spotlight-layer-back');
+    this.elements.spotlightChar = document.querySelector('.spotlight-layer-character');
+    this.elements.spotlightFg = document.querySelector('.spotlight-layer-foreground');
+
     this.elements.ndBadge = document.getElementById('showcase-nd-badge');
     this.elements.topicActiveTitle = document.getElementById('showcase-topic-active-title');
     this.elements.topicCategory = document.getElementById('showcase-content-category');
@@ -248,7 +373,6 @@ const ShowcaseEngine = {
     this.elements.bladeNd = document.getElementById('showcase-blade-nd');
     this.elements.ndTier = document.getElementById('showcase-nd-tier');
     this.elements.ndGauge = document.getElementById('showcase-nd-gauge');
-    this.elements.canvas = document.getElementById('showcase-dots-canvas');
 
     if (this.elements.drawerHeading) {
       this.elements.drawerHeading.textContent = this.mode === 'classes' ? 'Todas as Classes' : 'Todas as Raças';
@@ -303,11 +427,11 @@ const ShowcaseEngine = {
       }
     });
 
-    // Hash change na URL
+    // Hash change na URL (navegação pelo histórico do navegador)
     window.addEventListener('hashchange', () => {
-      const h = window.location.hash.replace('#', '').trim();
-      if (h && h !== this.currentId) {
-        this.selectItem(h, false);
+      const hash = window.location.hash.replace('#', '').trim();
+      if (hash && hash !== this.currentId) {
+        this.selectItem(hash, false);
       }
     });
   },
@@ -318,7 +442,7 @@ const ShowcaseEngine = {
     this.elements.drawerBackdrop.classList.add('is-open');
     if (this.elements.drawerInput) {
       this.elements.drawerInput.value = '';
-      setTimeout(() => this.elements.drawerInput.focus(), 100);
+      setTimeout(() => this.elements.drawerInput.focus(), 120);
     }
   },
 
@@ -327,49 +451,50 @@ const ShowcaseEngine = {
     this.elements.drawerBackdrop.classList.remove('is-open');
   },
 
-  renderDrawerList(filter = '') {
+  renderDrawerList(query = '') {
     if (!this.elements.drawerList) return;
     this.elements.drawerList.innerHTML = '';
 
     const filtered = this.items.filter(it => 
-      !filter || it.name.toLowerCase().includes(filter)
+      it.name.toLowerCase().includes(query) || it.id.toLowerCase().includes(query)
     );
 
     if (filtered.length === 0) {
-      this.elements.drawerList.innerHTML = `<div style="padding: 18px; color: var(--text-muted); text-align: center; font-size: 0.88rem;">Nenhum resultado encontrado.</div>`;
+      this.elements.drawerList.innerHTML = `
+        <div style="padding: 18px; text-align: center; color: #9E9AA6; font-size: 0.88rem;">
+          Nenhum resultado encontrado
+        </div>
+      `;
       return;
     }
 
     filtered.forEach(it => {
-      const ndMeta = this.getNDMeta(it.badge);
-      const itemEl = document.createElement('div');
-      itemEl.className = `showcase-drawer-item ${it.id === this.currentId ? 'active' : ''}`;
-      itemEl.innerHTML = `
-        <span class="showcase-drawer-name">${it.name}</span>
-        ${it.badge ? `<span class="showcase-drawer-badge" style="color: ${ndMeta.color}; border: 1px solid ${ndMeta.color}60; background: ${ndMeta.color}18;">${it.badge}</span>` : ''}
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'showcase-drawer-item' + (it.id === this.currentId ? ' active' : '');
+      btn.innerHTML = `
+        <span class="showcase-drawer-item-name">${it.name}</span>
+        ${it.badge ? `<span class="showcase-drawer-item-badge">${it.badge}</span>` : ''}
       `;
-      itemEl.addEventListener('click', () => {
+      btn.addEventListener('click', () => {
         this.selectItem(it.id);
         this.closeDrawer();
       });
-      this.elements.drawerList.appendChild(itemEl);
+      this.elements.drawerList.appendChild(btn);
     });
   },
 
-  // Escala de cores do ND: Verde (ND1) -> Amarelo (ND2) -> Laranja (ND3) -> Vermelho (ND4+)
   getNDMeta(badgeText) {
     let ndNum = 1;
-    const match = (badgeText || '').match(/ND\s*(\d+)/i);
-    if (match) {
-      ndNum = parseInt(match[1], 10);
-    }
+    const match = (badgeText || '').match(/(\d+)/);
+    if (match) ndNum = parseInt(match[1], 10);
 
-    let color = '#4ade80'; // Verde
+    let color = '#4ade80'; // Verde (ND 1)
     let tier = 'Iniciante';
     let glow = 'rgba(74, 222, 128, 0.7)';
 
     if (ndNum === 2) {
-      color = '#facc15'; // Amarelo / Dourado
+      color = '#facc15'; // Amarelo
       tier = 'Intermediário';
       glow = 'rgba(250, 204, 21, 0.7)';
     } else if (ndNum === 3) {
@@ -403,7 +528,7 @@ const ShowcaseEngine = {
       this.elements.hamburgerLabel.textContent = this.mode === 'classes' ? 'Classes' : 'Raças';
     }
 
-    // Atualiza imagem central
+    // Atualiza imagem central recortada
     if (this.elements.heroArt) {
       this.elements.heroArt.classList.add('is-switching');
       setTimeout(() => {
@@ -418,19 +543,44 @@ const ShowcaseEngine = {
       }, 140);
     }
 
-    // Nome Gigante na Divisa em Chinese Rocks
-    if (this.elements.bigName) {
-      this.elements.bigName.textContent = item.name;
-      this.elements.bigName.classList.remove('name-slam');
-      void this.elements.bigName.offsetWidth; // Força reflow
-      this.elements.bigName.classList.add('name-slam');
+    // Nome na Camada 3 do Hero Spotlight (suporta fonte especial para Consagrados)
+    if (this.elements.spotlightTitle) {
+      this.elements.spotlightTitle.textContent = item.name;
+      this.elements.spotlightTitle.setAttribute('data-class', item.id);
+      this.elements.spotlightTitle.className = 'spotlight-class-title font-class-' + item.id;
     }
 
-    // Metadados e Cores do ND (Escala de Verde a Vermelho)
-    const badgeText = item.badge || (this.mode === 'classes' ? 'ND 1' : 'Oficial');
+    // Tags de Conceito na Camada 3 (Badges estilo fita adesiva com tilt)
+    if (this.elements.spotlightTags) {
+      const tags = this.classConcepts[item.id] || ['COMBATE', 'TÁTICA', 'MESTRIA'];
+      const styles = ['tag-tape-purple', 'tag-tape-dark', 'tag-tape-hazard'];
+      this.elements.spotlightTags.innerHTML = tags.map((t, idx) => `
+        <span class="spotlight-tag ${styles[idx % styles.length]}">${t}</span>
+      `).join('');
+    }
+
+    // Sincroniza bigName legado se presente no DOM
+    if (this.elements.bigName) {
+      this.elements.bigName.textContent = item.name;
+      this.elements.bigName.setAttribute('data-class', item.id);
+      this.elements.bigName.className = 'showcase-big-name font-class-' + item.id;
+    }
+
+    // Metadados e Cores do ND
+    const badgeText = item.badge || (this.mode === 'classes' ? 'ND 1' : 'Base');
     const ndMeta = this.getNDMeta(badgeText);
 
-    // ND Grande na lâmina direita
+    // Indicador técnico de ND e Função Tática no TOPO do Hero Spotlight
+    if (this.elements.spotlightNdIndicator) {
+      this.elements.spotlightNdIndicator.textContent = `ND ${ndMeta.ndNum} // ${ndMeta.tier.toUpperCase()}`;
+      this.elements.spotlightNdIndicator.style.color = ndMeta.color;
+    }
+    if (this.elements.spotlightRoleIndicator) {
+      const role = this.classRoles[item.id] || (this.mode === 'classes' ? 'DOSSIÊ TÁTICO' : 'HERANÇA RACIAL');
+      this.elements.spotlightRoleIndicator.textContent = role;
+    }
+
+    // ND na lâmina direita
     if (this.elements.bladeNd) {
       this.elements.bladeNd.textContent = `ND ${ndMeta.ndNum}`;
       this.elements.bladeNd.style.color = ndMeta.color;
@@ -446,59 +596,51 @@ const ShowcaseEngine = {
       this.elements.ndTier.style.boxShadow = `0 0 12px ${ndMeta.glow}`;
     }
 
-    // Borda do bloco de ND
-    const ndBlock = document.querySelector('.showcase-nd-block');
-    if (ndBlock) {
-      ndBlock.style.borderLeftColor = ndMeta.color;
-    }
-
-    // Atualiza Gauge de Pips (Nível de Ameaça com cores)
+    // Marcadores da régua (gauge pips)
     if (this.elements.ndGauge) {
       const pips = this.elements.ndGauge.querySelectorAll('.gauge-pip');
       pips.forEach((pip, idx) => {
         if (idx < ndMeta.ndNum) {
           pip.classList.add('active');
           pip.style.background = ndMeta.color;
-          pip.style.borderColor = ndMeta.color;
           pip.style.boxShadow = `0 0 10px ${ndMeta.glow}`;
         } else {
           pip.classList.remove('active');
-          pip.style.background = '';
-          pip.style.borderColor = '';
-          pip.style.boxShadow = '';
+          pip.style.background = '#2C2833';
+          pip.style.boxShadow = 'none';
         }
       });
     }
 
-    // Atualiza badge de ND no cabeçalho do conteúdo
+    // Atualiza badge no modal de conteúdo
     if (this.elements.ndBadge) {
-      this.elements.ndBadge.textContent = `ND ${ndMeta.ndNum}`;
-      this.elements.ndBadge.style.color = ndMeta.color;
+      this.elements.ndBadge.textContent = badgeText;
       this.elements.ndBadge.style.borderColor = ndMeta.color;
-      this.elements.ndBadge.style.background = `${ndMeta.color}20`;
-      this.elements.ndBadge.style.boxShadow = `0 0 8px ${ndMeta.glow}`;
+      this.elements.ndBadge.style.color = ndMeta.color;
     }
 
-    // Renderiza Lista Vertical de Tópicos na Esquerda
-    this.renderTopicTabs(item);
+    // Reconstrói a lista de tópicos na coluna esquerda
+    this.renderTopicsNav(item);
 
-    // Exibe a visualização inicial (Ilustração)
+    // Exibe o tópico inicial (Ilustração no Spotlight 2.5D)
     this.applyTopicView(item);
   },
 
-  renderTopicTabs(item) {
+  renderTopicsNav(item) {
     if (!this.elements.topicTabs) return;
     this.elements.topicTabs.innerHTML = '';
 
-    item.topics.forEach((topic, index) => {
+    item.topics.forEach((topic, idx) => {
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = `showcase-tab-btn ${index === this.activeTopicIndex ? 'active' : ''}`;
+      btn.className = 'showcase-tab-btn' + (idx === this.activeTopicIndex ? ' active' : '');
       btn.textContent = topic.title;
       btn.title = topic.fullTitle || topic.title;
+
       btn.addEventListener('click', () => {
-        this.selectTopic(index);
+        this.selectTopic(idx);
       });
+
       this.elements.topicTabs.appendChild(btn);
     });
   },
@@ -509,12 +651,13 @@ const ShowcaseEngine = {
 
     this.activeTopicIndex = index;
 
-    // Atualiza classes ativas dos botões
-    const buttons = this.elements.topicTabs.querySelectorAll('.showcase-tab-btn');
-    buttons.forEach((b, idx) => {
-      if (idx === index) b.classList.add('active');
-      else b.classList.remove('active');
-    });
+    // Atualiza estado ativo nos botões da coluna esquerda
+    if (this.elements.topicTabs) {
+      const btns = this.elements.topicTabs.querySelectorAll('.showcase-tab-btn');
+      btns.forEach((btn, idx) => {
+        btn.classList.toggle('active', idx === index);
+      });
+    }
 
     this.applyTopicView(item);
   },
@@ -523,7 +666,7 @@ const ShowcaseEngine = {
     const activeTopic = item.topics[this.activeTopicIndex] || item.topics[0];
     if (!activeTopic) return;
 
-    // Se for o Tópico 0 (Ilustração), sai do conteúdo e mostra a arte no centro
+    // Se for o Tópico 0 (Ilustração), mostra o Hero Spotlight 2.5D no centro
     if (activeTopic.isIllustration) {
       if (this.elements.contentView) {
         this.elements.contentView.style.display = 'none';
@@ -535,7 +678,7 @@ const ShowcaseEngine = {
       return;
     }
 
-    // Se for qualquer outro tópico, SAI DA ILUSTRAÇÃO e MOSTRA O CONTEÚDO no centro!
+    // Se for qualquer outro tópico, SAI DA ILUSTRAÇÃO e MOSTRA O CONTEÚDO no centro
     if (this.elements.artView) {
       this.elements.artView.classList.add('is-hidden');
       this.elements.artView.style.display = 'none';

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classes &mdash; Wuitalur RPG 2.0</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    .class-stat { background: rgba(0,0,0,0.15); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-md); }
+    .class-stat-label { font-family: var(--font-heading); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--attr-ea); margin-bottom: var(--space-xs); }
+    .class-stat-value { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; }
+    .class-prog { background: rgba(0,0,0,0.15); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-lg); }
+    .class-prog-row { display: flex; justify-content: space-between; padding: var(--space-xs) var(--space-sm); border-bottom: 1px solid rgba(46,46,62,0.3); font-size: 0.85rem; color: var(--text-secondary); }
+    .class-prog-row:last-child { border-bottom: none; }
+    .class-prog-label { color: var(--text-primary); font-weight: 600; }
+  </style>
+  <link rel="stylesheet" href="../css/showcase.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema Base 2.0 (Alpha)</span>
+      </div>
+    </div>
+
+    <!-- BOTÃO VOLTAR AO CATÁLOGO DE SUPLEMENTOS -->
+    <a href="../suplementos.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar aos Suplementos</span>
+    </a>
+
+    <nav class="sidebar-nav">
+
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="vocacoes.html" class="sidebar-link"><span class="icon"></span> Vocações</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link active"><span class="icon"></span> Classes</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Classes</h1>
+    </header>
+
+    <!-- STAGE SHOWCASE 100VH -->
+    <div class="showcase-viewport" id="showcase-viewport">
+
+      <!-- COLUNA LATERAL ESQUERDA -->
+      <aside class="showcase-left-dock" id="showcase-left-dock" aria-label="Navega&ccedil;&atilde;o da Classe">
+        <button type="button" class="showcase-hamburger-btn" id="showcase-hamburger-btn" aria-label="Abrir lista de classes">
+          <span class="hamburger-icon">&#x2630;</span>
+          <span class="hamburger-label" id="showcase-hamburger-label">Classes</span>
+        </button>
+
+        <div class="showcase-topics-nav">
+          <div class="showcase-topics-heading">T&oacute;picos da Classe</div>
+          <div class="showcase-topic-tabs" id="showcase-topic-tabs">
+          </div>
+        </div>
+      </aside>
+
+      <!-- PALCO CENTRAL -->
+      <main class="showcase-center-stage" id="showcase-center-stage">
+        <div class="showcase-dots-overlay"></div>
+
+                <!-- COMPONENTE HERO SPOTLIGHT 2.5D (ESTILO POSTER DEADLOCK) -->
+        <div class="showcase-art-view" id="showcase-art-view">
+          <div class="spotlight-viewport" id="spotlight-viewport">
+            <div class="spotlight-stage" id="spotlight-stage">
+
+              <!-- CAMADA 1: FUNDO GEOMÉTRICO LARGO E TÉCNICO (Back Layer) -->
+              <div class="spotlight-layer spotlight-layer-back" data-depth="12" aria-hidden="true">
+                <div class="spotlight-geo-backdrop">
+                  <div class="spotlight-halftone-pattern"></div>
+                  <div class="spotlight-grid-pattern"></div>
+                  <div class="spotlight-diagonal-slash slash-1"></div>
+                  <div class="spotlight-diagonal-slash slash-2"></div>
+                  <div class="spotlight-accent-poly"></div>
+
+                  <!-- Marcadores de canto estilo mira/HUD nos 4 vértices extremos -->
+                  <div class="spotlight-crosshair corner-tl"></div>
+                  <div class="spotlight-crosshair corner-tr"></div>
+                  <div class="spotlight-crosshair corner-bl"></div>
+                  <div class="spotlight-crosshair corner-br"></div>
+
+                  <!-- Detalhes técnicos Street / HUD -->
+                  <div class="spotlight-tech-hud">
+                    <span class="tech-tag">W_SYS // HERO SPOTLIGHT</span>
+                    <span class="tech-coords" id="spotlight-coords">X:00 Y:00</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CAMADA 2: ILUSTRAÇÃO DA CLASSE PROTAGONISTA (Character Layer) -->
+              <div class="spotlight-layer spotlight-layer-character" data-depth="28">
+                <div class="spotlight-char-wrap">
+                  <img src="" alt="" class="showcase-hero-art" id="showcase-hero-art">
+                </div>
+              </div>
+
+              <!-- GATILHO ESTACIONÁRIO DO PARALLAX (HITBOX SOBRE A ARTE) -->
+              <div class="spotlight-hitbox" id="spotlight-hitbox" aria-hidden="true"></div>
+
+              <!-- CAMADA 3: TIPOGRAFIA NO TOPO E BADGES (Foreground Layer) -->
+              <div class="spotlight-layer spotlight-layer-foreground" data-depth="46">
+                <div class="spotlight-header-block">
+                  <h2 class="spotlight-class-title" id="showcase-spotlight-title">Carregando...</h2>
+                  <div class="spotlight-concept-tags" id="showcase-spotlight-tags">
+                    <span class="spotlight-tag tag-tape-purple">ESTRATEGISTA</span>
+                    <span class="spotlight-tag tag-tape-dark">SUPORTE</span>
+                    <span class="spotlight-tag tag-tape-hazard">CONTROLADOR</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- MODO CONTEÚDO (AO SELECIONAR UM TÓPICO NA ESQUERDA) -->
+        <div class="showcase-content-view" id="showcase-content-view" style="display: none;">
+          <div class="showcase-content-card">
+            <div class="showcase-content-header">
+              <div class="showcase-content-title-group">
+                <span class="showcase-content-category" id="showcase-content-category">Classe</span>
+                <h3 class="showcase-topic-active-title" id="showcase-topic-active-title">Vis&atilde;o Geral</h3>
+              </div>
+              <div class="showcase-content-actions">
+                <span class="showcase-nd-badge" id="showcase-nd-badge">Classe</span>
+                <button type="button" class="showcase-btn-view-art" id="showcase-btn-view-art" title="Ver Ilustra&ccedil;&atilde;o">
+                  <span>&#x25C0;</span> Ver Arte
+                </button>
+              </div>
+            </div>
+            <div class="showcase-topic-content" id="showcase-topic-content">
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- PAINEL DA DIREITA: BLADE HUD -->
+      <aside class="showcase-right-blade" id="showcase-right-blade">
+        <div class="showcase-blade-inner">
+          <div class="showcase-blade-hud">
+            <div class="showcase-hud-card">
+              <div class="showcase-hud-card-top">
+                <span class="showcase-hud-bracket">[</span>
+                <span class="showcase-hud-tag">Dossi&ecirc; de Classe</span>
+                <span class="showcase-hud-bracket">]</span>
+              </div>
+              <div class="showcase-nd-block">
+                <div class="showcase-nd-header">
+                  <span class="hud-label">Fun&ccedil;&atilde;o T&aacute;tica</span>
+                  <span class="showcase-nd-tier" id="showcase-blade-role">Estrategista Suporte</span>
+                </div>
+                <div class="showcase-nd-display">
+                  <span class="showcase-nd-large" id="showcase-blade-nd">Tier 1</span>
+                  <div class="showcase-nd-gauge" id="showcase-nd-gauge" aria-label="N&iacute;vel de amea&ccedil;a">
+                    <span class="gauge-pip active"></span>
+                    <span class="gauge-pip active"></span>
+                    <span class="gauge-pip"></span>
+                    <span class="gauge-pip"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="showcase-tech-stripes" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- NOME GIGANTE -->
+      <div class="showcase-big-name" id="showcase-big-name">Carregando...</div>
+
+    </div>
+
+    <!-- GAVETA MODAL LATERAL -->
+    <div class="showcase-drawer-backdrop" id="showcase-drawer-backdrop">
+      <div class="showcase-drawer">
+        <div class="showcase-drawer-header">
+          <h3 class="showcase-drawer-title" id="showcase-drawer-heading">Todas as Classes</h3>
+          <button type="button" class="showcase-drawer-close" id="showcase-drawer-close">&times;</button>
+        </div>
+        <div class="showcase-drawer-search">
+          <input type="text" class="showcase-drawer-input" id="showcase-drawer-input" placeholder="Buscar por nome...">
+        </div>
+        <div class="showcase-drawer-list" id="showcase-drawer-list">
+        </div>
+      </div>
+    </div>
+
+    <main class="page-content" style="display: none !important;">
+
+      <!-- PAPÉIS TÁTICOS -->
+      <section class="subsection" id="intro">
+        <div class="section-heading">
+          <h2>Pap&eacute;is T&aacute;ticos Compostos</h2>
+          <p>
+            Em Wuitalur, toda classe possui um Papel T&aacute;tico Composto formado por sua Fun&ccedil;&atilde;o Prim&aacute;ria e seu Subt&iacute;tulo. Essas tags indicam como ela se posiciona, atua e colabora com o grupo em combate e explora&ccedil;&atilde;o.
+          </p>
+        </div>
+
+        <div class="hud-card" style="margin-bottom: var(--space-xl);">
+          <div class="race-card-body">
+            <h4>As 3 Fun&ccedil;&otilde;es Prim&aacute;rias</h4>
+            <ul class="race-list">
+              <li><strong>Atacante:</strong> Classes focadas na ofensiva direta, press&atilde;o constante e elimina&ccedil;&atilde;o r&aacute;pida de amea&ccedil;as.</li>
+              <li><strong>Defensor:</strong> Classes voltadas para absor&ccedil;&atilde;o de impacto, reten&ccedil;&atilde;o de inimigos, sobreviv&ecirc;ncia e prote&ccedil;&atilde;o de aliados.</li>
+              <li><strong>Estrategista:</strong> Classes dedicadas ao controle do campo, manipula&ccedil;&atilde;o de terreno, concess&atilde;o de vantagens e lideran&ccedil;a r&iacute;tmica.</li>
+            </ul>
+
+            <h4 style="margin-top: var(--space-lg);">Os 8 Subt&iacute;tulos T&aacute;ticos</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: var(--space-sm);">
+              <div class="class-stat"><strong>Canh&atilde;o de Vidro</strong><p style="margin: 4px 0 0; font-size: 0.8rem; color: var(--text-secondary);">Dano explosivo massivo, armadura fr&aacute;gil.</p></div>
+              <div class="class-stat"><strong>Tanque</strong><p style="margin: 4px 0 0; font-size: 0.8rem; color: var(--text-secondary);">Reten&ccedil;&atilde;o pura de dano e sustenta&ccedil;&atilde;o frontal.</p></div>
+              <div class="class-stat"><strong>Colosso</strong><p style="margin: 4px 0 0; font-size: 0.8rem; color: var(--text-secondary);">Combatente pesado de curta dist&acirc;ncia.</p></div>
+              <div class="class-stat"><strong>Duelista</strong><p style="margin: 4px 0 0; font-size: 0.8rem; color: var(--text-secondary);">Movimenta&ccedil;&atilde;o &aacute;gil, esquiva e precis&atilde;o.</p></div>
+              <div class="class-stat"><strong>Controlador</strong><p style="margin: 4px 0 0; font-size: 0.8rem; color: var(--text-secondary);">Manipula&ccedil;&atilde;o de espa&ccedil;o e nega&ccedil;&atilde;o de a&ccedil;&otilde;es.</p></div>
+              <div class="class-stat"><strong>Suporte</strong><p style="margin: 4px 0 0; font-size: 0.8rem; color: var(--text-secondary);">Sustenta&ccedil;&atilde;o de aliados e remo&ccedil;&atilde;o de condi&ccedil;&otilde;es.</p></div>
+              <div class="class-stat"><strong>T&aacute;tico</strong><p style="margin: 4px 0 0; font-size: 0.8rem; color: var(--text-secondary);">Ritmo de combate e explora&ccedil;&atilde;o de brechas.</p></div>
+              <div class="class-stat"><strong>Utilit&aacute;rio</strong><p style="margin: 4px 0 0; font-size: 0.8rem; color: var(--text-secondary);">Adaptabilidade, ferramentas e sobreviv&ecirc;ncia.</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CLASSE: CONSAGRADOS -->
+      <section class="subsection" id="consagrados">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="../assets/classes/consagrados.png?v=2" alt="Consagrados" loading="lazy" decoding="async">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Consagrados</h2>
+              <p class="race-illustration"><em>Papel T&aacute;tico: Estrategista Suporte</em></p>
+            </div>
+            <div class="difficulty-badge difficulty-1"><small>Papel</small>Suporte</div>
+          </div>
+          <div class="race-card-body">
+
+            <p class="race-description">
+              Os Consagrados s&atilde;o devotos escolhidos que canalizam a energia primordial das divindades e das for&ccedil;as c&oacute;smicas de Wuitalur. Cada Consagrado porta o v&iacute;nculo com uma divindade e manifesta um elemento condizente: Solar, Podrid&atilde;o, Praga, Sagrado, &Eacute;stase, Electro ou Nul&iacute;drico. No campo de batalha, combinam suporte milagroso, imposi&ccedil;&atilde;o de barreiras e interven&ccedil;&otilde;es de artilharia elemental.
+            </p>
+
+            <h4>Caracter&iacute;sticas da Classe</h4>
+            <div class="class-stat-grid">
+              <div class="class-stat"><div class="class-stat-label">Vida Inicial</div><div class="class-stat-value">10 + <span class="attr-saude">Vigor</span></div></div>
+              <div class="class-stat"><div class="class-stat-label">Vida por N&iacute;vel</div><div class="class-stat-value">6 + <span class="attr-saude">Vigor</span></div></div>
+              <div class="class-stat"><div class="class-stat-label">Energia Astral Inicial</div><div class="class-stat-value">30 <span class="attr-ea">EA</span></div></div>
+              <div class="class-stat"><div class="class-stat-label">Energia Astral por N&iacute;vel</div><div class="class-stat-value">10 <span class="attr-ea">EA</span></div></div>
+            </div>
+
+            <h4>Profici&ecirc;ncias</h4>
+            <div class="class-stat-grid">
+              <div class="class-stat"><div class="class-stat-label">Armas</div><div class="class-stat-value">Espadas curtas, lan&ccedil;as, ma&ccedil;as, martelos leves, foices, arcos leves e bestas</div></div>
+              <div class="class-stat"><div class="class-stat-label">Testes de Resist&ecirc;ncia</div><div class="class-stat-value"><span class="attr-fama">Express&atilde;o</span> e <span class="attr-int">Mente</span></div></div>
+            </div>
+
+            <h4>Evolu&ccedil;&atilde;o de Maestria e Dano Base</h4>
+            <div class="class-prog">
+              <div class="class-prog-row"><span class="class-prog-label">N&iacute;veis 1 ao 4</span> <span>Maestria 2 &bull; Dano Base 1d8</span></div>
+              <div class="class-prog-row"><span class="class-prog-label">N&iacute;veis 5 ao 8</span> <span>Maestria 4 &bull; Dano Base 2d8</span></div>
+              <div class="class-prog-row"><span class="class-prog-label">N&iacute;veis 9 ao 12</span> <span>Maestria 8 &bull; Dano Base 3d8</span></div>
+              <div class="class-prog-row"><span class="class-prog-label">N&iacute;veis 13 ao 15</span> <span>Maestria 16 &bull; Dano Base 4d8</span></div>
+            </div>
+
+            <h4>Mec&acirc;nica de Classe &mdash; Fervor Elemental</h4>
+            <div class="hud-card" style="border-left: 4px solid var(--accent); margin-bottom: var(--space-lg);">
+              <div class="race-card-body">
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
+                  O Consagrado acumula fervor divino atrav&eacute;s do gasto de sua energia m&iacute;stica.<br>
+                  <strong>Ac&uacute;mulo:</strong> Ganha 1 ponto de Fervor sempre que gasta Energia Astral em uma habilidade de classe (m&aacute;x 5 pontos).<br>
+                  <strong>Libera&ccedil;&atilde;o:</strong> Gastar pontos de Fervor n&atilde;o consome EA e n&atilde;o consome nenhuma a&ccedil;&atilde;o:
+                </p>
+                <ul class="race-list" style="margin-top: 8px;">
+                  <li><strong>1 Fervor &mdash; Toque de Alento:</strong> Concede +2B de deslocamento a si ou a um aliado em at&eacute; 4B e vantagem no pr&oacute;ximo teste realizado nesta rodada.</li>
+                  <li><strong>2 Fervor &mdash; Imbuir Arma:</strong> Adiciona +1d6 de dano elemental ao pr&oacute;ximo ataque realizado por voc&ecirc; ou por um aliado em at&eacute; 4B.</li>
+                  <li><strong>3 Fervor &mdash; Manto Protetor:</strong> Concede +2 de DEF a voc&ecirc; e a at&eacute; dois aliados em at&eacute; 4B durante 1 rodada.</li>
+                  <li><strong>4 Fervor &mdash; Milagre Restaurador:</strong> Restaura PVs iguais ao seu Dano Base + Express&atilde;o a voc&ecirc; e a todos os aliados em at&eacute; 4B.</li>
+                  <li><strong>5 Fervor &mdash; Dispers&atilde;o Elemental:</strong> Dispara um raio elemental em cone de 2B at&eacute; 8B de dist&acirc;ncia &agrave; sua frente. Causa o Dano Base + 2d4 de dano elemental a todas as criaturas na &aacute;rea.</li>
+                </ul>
+              </div>
+            </div>
+
+            <h4>Habilidades de Classe</h4>
+
+            <!-- NV 1 -->
+            <div class="race-ability">
+              <h5>N&iacute;vel 1 &mdash; Escolha 1 Habilidade</h5>
+              <div class="race-subability">
+                <h6>Golpe Consagrado <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-5 EA</span></h6>
+                <p>Imbui sua arma com a ess&ecirc;ncia do seu elemento. Ao desferir um ataque corpo a corpo ou &agrave; dist&acirc;ncia, adiciona o Dano Base em dano do elemento escolhido ao dano da arma. Gera 1 ponto de Fervor.</p>
+              </div>
+              <div class="race-subability">
+                <h6>Guarda Devota <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-5 EA</span></h6>
+                <p>Ergue uma barreira espiritual protetora em voc&ecirc; e em um aliado em at&eacute; 4B. A barreira tem 6 + Maestria de PVs e dura at&eacute; ser destru&iacute;da. Gera 1 ponto de Fervor.</p>
+              </div>
+            </div>
+
+            <!-- NV 4 -->
+            <div class="race-ability">
+              <h5>N&iacute;vel 4 &mdash; Escolha 1 Habilidade</h5>
+              <div class="race-subability">
+                <h6>Lan&ccedil;a Elemental <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-10 EA</span></h6>
+                <p>Dispara um proj&eacute;til moldado &agrave; sua prefer&ecirc;ncia do seu elemento em linha reta contra um alvo a at&eacute; 10B de dist&acirc;ncia. O ataque causa o Dano Base + Express&atilde;o em dano elemental e ignora resist&ecirc;ncias. Gera 1 ponto de Fervor.</p>
+              </div>
+              <div class="race-subability">
+                <h6>Prece Restauradora <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-10 EA</span></h6>
+                <p>Canaliza a energia do seu patrono para restaurar a vitalidade de um aliado a at&eacute; 6B. O alvo recupera PVs iguais a 2d4 + Maestria + Express&atilde;o e encerra uma condi&ccedil;&atilde;o que esteja sofrendo. Gera 1 ponto de Fervor.</p>
+              </div>
+            </div>
+
+            <!-- NV 7 -->
+            <div class="race-ability">
+              <h5>N&iacute;vel 7 &mdash; Escolha 1 Habilidade</h5>
+              <div class="race-subability">
+                <h6>V&oacute;rtice Elemental <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-15 EA</span></h6>
+                <p>Condensa a for&ccedil;a do seu elemento em um ponto a at&eacute; 8B, criando uma &aacute;rea de impacto de 3B de raio. Inimigos na &aacute;rea sofrem Dano Base + Express&atilde;o em dano elemental e s&atilde;o puxados 2B em dire&ccedil;&atilde;o ao centro do v&oacute;rtice. Gera 1 ponto de Fervor.</p>
+              </div>
+              <div class="race-subability">
+                <h6>Elo de Resguarde <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-15 EA</span></h6>
+                <p>Cria um v&iacute;nculo radiante entre voc&ecirc; e at&eacute; dois aliados em at&eacute; 6B que dura at&eacute; o fim da cena. Os alvos vinculados recebem b&ocirc;nus de DEF igual &agrave; metade da sua Maestria e recuperam 2d6 PVs no in&iacute;cio de cada um dos seus turnos enquanto mantiverem a dist&acirc;ncia. Sair do v&iacute;nculo rompe o efeito. Gera 1 ponto de Fervor.</p>
+              </div>
+            </div>
+
+            <!-- NV 10 -->
+            <div class="race-ability">
+              <h5>N&iacute;vel 10 &mdash; Escolha 1 Habilidade</h5>
+              <div class="race-subability">
+                <h6>Feixe do Patrono <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-20 EA</span></h6>
+                <p>Ergue uma pilastra concentrada de energia elemental e a derruba em linha reta de at&eacute; 12B com 2B de largura. Todas as criaturas na trajet&oacute;ria sofrem Dano Base + Maestria em dano elemental. Alvos atingidos t&ecirc;m sua Armadura reduzida pela metade e sofrem a condi&ccedil;&atilde;o Cego e Atordoado at&eacute; o in&iacute;cio do seu pr&oacute;ximo turno. Gera 1 ponto de Fervor.</p>
+              </div>
+              <div class="race-subability">
+                <h6>Gra&ccedil;a Imut&aacute;vel <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-20 EA</span></h6>
+                <p>Estende uma aura de interven&ccedil;&atilde;o a voc&ecirc; e a todos os aliados em at&eacute; 6B. Cada alvo afetado encerra todas as condi&ccedil;&otilde;es negativas que estiver sofrendo, recupera PVs iguais a Dano Base + Express&atilde;o e ignora a pr&oacute;xima inst&acirc;ncia de dano que sofrer at&eacute; o in&iacute;cio do seu pr&oacute;ximo turno. Gera 1 ponto de Fervor.</p>
+              </div>
+            </div>
+
+            <!-- NV 13 -->
+            <div class="race-ability">
+              <h5>N&iacute;vel 13 &mdash; Escolha 1 Habilidade</h5>
+              <div class="race-subability">
+                <h6>Apoteose Elemental <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-25 EA</span></h6>
+                <p>Voc&ecirc; manifesta plenamente o poder do seu patrono em uma explos&atilde;o de 6B de raio ao seu redor. Todos os inimigos na &aacute;rea sofrem Dano Base + Maestria em dano elemental, perdem toda a Armadura temporariamente por 1 rodada e recebem at&eacute; duas condi&ccedil;&otilde;es da tabela de condi&ccedil;&otilde;es &agrave; escolha do Consagrado. Gera 1 ponto de Fervor.</p>
+              </div>
+              <div class="race-subability">
+                <h6>Milagre da Ressurg&ecirc;ncia <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-25 EA</span></h6>
+                <p>Canaliza a vontade divina para reverter a derrota. Voc&ecirc; e at&eacute; tr&ecirc;s aliados em at&eacute; 8B recuperam PVs iguais a Dano Base + Maestria + Express&atilde;o. Aliados que estejam &agrave; beira da morte ou ca&iacute;dos levantam-se imediatamente com essa quantidade de PVs e recebem uma a&ccedil;&atilde;o padr&atilde;o extra no pr&oacute;ximo turno deles. Gera 1 ponto de Fervor.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+
+<!-- FILTRO SVG DE PAPEL AMASSADO / POSTER VIVO (ESTILO DEADLOCK - ESTATICO) -->
+<svg class="sr-only" style="position: absolute; width: 0; height: 0; pointer-events: none;" aria-hidden="true">
+  <filter id="paper-warp" x="-10%" y="-10%" width="120%" height="120%" filterUnits="objectBoundingBox">
+    <feTurbulence type="fractalNoise" baseFrequency="0.025 0.025" numOctaves="3" result="noise" seed="2" />
+    <feDisplacementMap id="paper-warp-map" in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+  <filter id="paper-texture">
+    <feTurbulence type="fractalNoise" baseFrequency="0.04 0.04" numOctaves="4" result="noise" />
+    <feColorMatrix type="matrix" values="0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0 0 0 0.15 0" result="glitch" />
+    <feComposite in2="SourceGraphic" in="glitch" operator="in" />
+  </filter>
+</svg>
+
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/showcase.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    ShowcaseEngine.init("classes");
+  });
+</script>
+</body>
+</html>

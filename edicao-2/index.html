@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>In&iacute;cio &mdash; Wuitalur RPG 2.0</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    .alpha-warning-box {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-2xl);
+    }
+    .alpha-warning-title {
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #fca5a5;
+      margin-bottom: var(--space-xs);
+      font-weight: 700;
+    }
+    .alpha-warning-text {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: 0;
+    }
+    .hero-banner-wrap {
+      text-align: center;
+      margin-bottom: var(--space-2xl);
+    }
+    .hero-banner-img {
+      max-width: 420px;
+      width: 100%;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+    }
+    .nav-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: var(--space-lg);
+      margin-top: var(--space-xl);
+    }
+    .nav-card-item {
+      background: #1B191F !important;
+      border: 1px solid #2C2833 !important;
+      border-radius: 0 !important;
+      clip-path: polygon(
+        0 0,
+        calc(100% - 14px) 0,
+        100% 14px,
+        100% 100%,
+        14px 100%,
+        0 calc(100% - 14px)
+      ) !important;
+      padding: var(--space-lg);
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.2s ease,
+                  background-color 0.2s ease,
+                  box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-card-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 14px;
+      width: 54px;
+      height: 5px;
+      background: repeating-linear-gradient(45deg, #9B51E0 0px, #9B51E0 6px, transparent 6px, transparent 12px);
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .nav-card-item:hover {
+      transform: translateY(-3px);
+      border-color: #9B51E0 !important;
+      background-color: #201D26 !important;
+      box-shadow: 0 8px 24px rgba(155, 81, 224, 0.15) !important;
+    }
+    .nav-card-item h3 {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      color: #EDEDED;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .nav-card-item p {
+      font-size: 0.85rem;
+      color: #9E9AA6;
+      line-height: 1.6;
+      margin: 0;
+    }
+    .nav-card-action {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: #9E9AA6 !important;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-top: var(--space-xs);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.18s ease;
+    }
+    .nav-card-item:hover .nav-card-action {
+      color: #A855F7 !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema Base 2.0 (Alpha)</span>
+      </div>
+    </div>
+
+    <!-- BOTÃO VOLTAR AO CATÁLOGO DE SUPLEMENTOS -->
+    <a href="../suplementos.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar aos Suplementos</span>
+    </a>
+
+    <nav class="sidebar-nav">
+
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link active"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="vocacoes.html" class="sidebar-link"><span class="icon"></span> Vocações</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Wuitalur RPG &mdash; Edi&ccedil;&atilde;o 2.0</h1>
+    </header>
+
+    <main class="page-content">
+
+      <!-- AVISO VERSÃO ALPHA NO INÍCIO -->
+      <div class="alpha-warning-box">
+        <div class="alpha-warning-title">Vers&atilde;o Alpha em Desenvolvimento</div>
+        <p class="alpha-warning-text">
+          Tudo o que est&aacute; presente neste sistema &eacute; uma vers&atilde;o alpha e tudo aqui est&aacute; sujeito a altera&ccedil;&otilde;es, rebalanceamentos e amplia&ccedil;&otilde;es no futuro.
+        </p>
+      </div>
+
+      <!-- BANNER DA CAPA -->
+      <div class="hero-banner-wrap">
+        <img src="../assets/suplementos/wuitalur-2-cover.png" alt="Wuitalur RPG 2.0 Banner" class="hero-banner-img">
+      </div>
+
+      <div class="topic-crooked" style="margin-bottom: 20px;">SISTEMA BASE // EDI&Ccedil;&Atilde;O 2.0</div>
+
+      <div class="section-heading">
+        <h2>M&oacute;dulos do Sistema</h2>
+      </div>
+
+      <div class="nav-cards-grid">
+        <a href="atributos.html" class="nav-card-item">
+          <div>
+            <h3>Atributos</h3>
+            <p>A matriz dos 5 atributos b&aacute;sicos, a distribui&ccedil;&atilde;o fixa de b&ocirc;nus e o motor de rolagens com d20.</p>
+          </div>
+          <span class="nav-card-action">Acessar Atributos &rarr;</span>
+        </a>
+
+        <a href="races.html" class="nav-card-item">
+          <div>
+            <h3>Ra&ccedil;as</h3>
+            <p>11 esp&eacute;cies com status, mec&acirc;nicas exclusivas e caracter&iacute;sticas marcantes no showcase interativo.</p>
+          </div>
+          <span class="nav-card-action">Acessar Ra&ccedil;as &rarr;</span>
+        </a>
+
+        <a href="vocacoes.html" class="nav-card-item">
+          <div>
+            <h3>Voca&ccedil;&otilde;es</h3>
+            <p>Hist&oacute;rico pr&aacute;tico e fun&ccedil;&atilde;o social do her&oacute;i, concedendo per&iacute;cias, ferramentas e poderes &uacute;nicos.</p>
+          </div>
+          <span class="nav-card-action">Acessar Voca&ccedil;&otilde;es &rarr;</span>
+        </a>
+
+        <a href="pericias.html" class="nav-card-item">
+          <div>
+            <h3>Per&iacute;cias</h3>
+            <p>12 per&iacute;cias abrangentes com mec&acirc;nica de maestria por vantagem (2d20 maior) e atributos-chave.</p>
+          </div>
+          <span class="nav-card-action">Acessar Per&iacute;cias &rarr;</span>
+        </a>
+
+        <a href="combate.html" class="nav-card-item">
+          <div>
+            <h3>Combate &amp; Defesa</h3>
+            <p>Desviar versus Defender, DEF unificada, economia de a&ccedil;&otilde;es por rodada e manobras especiais.</p>
+          </div>
+          <span class="nav-card-action">Acessar Combate &rarr;</span>
+        </a>
+
+        <a href="classes.html" class="nav-card-item">
+          <div>
+            <h3>Classes</h3>
+            <p>Pap&eacute;is t&aacute;ticos compostos e a classe Consagrados detalhada com Fervor Elemental do n&iacute;vel 1 ao 15.</p>
+          </div>
+          <span class="nav-card-action">Acessar Classes &rarr;</span>
+        </a>
+
+        <a href="equipamentos.html" class="nav-card-item">
+          <div>
+            <h3>Equipamentos</h3>
+            <p>Sistema de carga por For&ccedil;a, tabelas de armas brancas, armas de fogo e os 7 kits t&aacute;ticos fechados.</p>
+          </div>
+          <span class="nav-card-action">Acessar Equipamentos &rarr;</span>
+        </a>
+
+        <a href="conclave.html" class="nav-card-item">
+          <div>
+            <h3>O Conclave</h3>
+            <p>A presen&ccedil;a invis&iacute;vel na economia, regras de sele&ccedil;&atilde;o inicial e o cat&aacute;logo de suprimentos de partida.</p>
+          </div>
+          <span class="nav-card-action">Acessar O Conclave &rarr;</span>
+        </a>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

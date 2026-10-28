@@ -29,7 +29,7 @@
     }
 
     .suplementos-hero h1 span {
-      color: var(--attr-ea);
+      color: #9B51E0;
     }
 
     .suplementos-hero p.tagline {
@@ -49,22 +49,30 @@
     }
 
     .suplemento-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
+      background: #1B191F !important;
+      border: 1px solid #2C2833 !important;
+      border-radius: 0 !important;
+      clip-path: polygon(
+        0 0,
+        calc(100% - 14px) 0,
+        100% 14px,
+        100% 100%,
+        14px 100%,
+        0 calc(100% - 14px)
+      ) !important;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       text-decoration: none;
       transition: all var(--transition-base);
       position: relative;
-      box-shadow: var(--shadow-sm);
     }
 
     .suplemento-card:hover {
-      transform: translateY(-6px);
-      border-color: var(--card-hover-border, var(--attr-ea));
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(239, 68, 68, 0.2);
+      transform: translateY(-4px);
+      border-color: #9B51E0 !important;
+      background-color: #201D26 !important;
+      box-shadow: 0 8px 24px rgba(155, 81, 224, 0.15) !important;
     }
 
     .suplemento-poster-wrapper {
@@ -159,8 +167,8 @@
     }
 
     .suplemento-card:hover .suplemento-btn-action {
-      background: #ef4444;
-      border-color: #ef4444;
+      background: var(--card-hover-border, #ef4444);
+      border-color: var(--card-hover-border, #ef4444);
       color: #fff;
     }
 
@@ -249,7 +257,7 @@
   <div class="main-wrapper">
 
     <header class="page-header">
-      <h1>Suplementos Oficiais</h1>
+      <h1>Suplementos</h1>
     </header>
 
     <main class="page-content">
@@ -263,6 +271,33 @@
 
       <!-- GRADE DE CARDS VERTICAIS (POSTERS 1300x1920) -->
       <section class="suplementos-grid">
+
+        <!-- CARD: SISTEMA BASE 2.0 -->
+        <a href="edicao-2/index.html" class="suplemento-card" style="--card-hover-border: #a855f7;">
+          <div class="suplemento-poster-wrapper">
+            <img src="assets/suplementos/wuitalur-2-cover.png" alt="Capa Sistema Base 2.0">
+            <span class="suplemento-badge-floating" style="border-color: rgba(168, 85, 247, 0.4); color: #d8b4fe;">Alpha // Edi&ccedil;&atilde;o 2.0</span>
+          </div>
+          <div class="suplemento-card-content">
+            <div>
+              <h2 class="suplemento-card-title">Sistema Base 2.0</h2>
+              <p class="suplemento-card-desc">
+                Nova edi&ccedil;&atilde;o do sistema constru&iacute;da do zero sobre o d20 com escala contida, 5 atributos, combate t&aacute;tico unificado, 11 ra&ccedil;as retrabalhadas, novas classes e voca&ccedil;&otilde;es.
+              </p>
+            </div>
+
+            <div class="suplemento-tags">
+              <span class="suplemento-tag">Edi&ccedil;&atilde;o 2.0</span>
+              <span class="suplemento-tag">Vers&atilde;o Alpha</span>
+              <span class="suplemento-tag">Sistema Base</span>
+            </div>
+
+            <div class="suplemento-btn-action" style="background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.4); color: #d8b4fe;">
+              <span>Acessar Edi&ccedil;&atilde;o 2.0</span>
+              <span>&rarr;</span>
+            </div>
+          </div>
+        </a>
 
         <!-- CARD 1: FIOS DO MEDO -->
         <a href="fios-do-medo/index.html" class="suplemento-card" style="--card-hover-border: #ef4444;">

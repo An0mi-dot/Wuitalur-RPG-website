@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voca&ccedil;&otilde;es &mdash; Wuitalur RPG 2.0</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/origins.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema Base 2.0 (Alpha)</span>
+      </div>
+    </div>
+
+    <!-- BOTÃO VOLTAR AO CATÁLOGO DE SUPLEMENTOS -->
+    <a href="../suplementos.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar aos Suplementos</span>
+    </a>
+
+    <nav class="sidebar-nav">
+
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="vocacoes.html" class="sidebar-link active"><span class="icon"></span> Vocações</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Voca&ccedil;&otilde;es</h1>
+    </header>
+
+    <main class="page-content">
+
+      <div class="origins-header-banner">
+        <div class="topic-crooked" style="margin-bottom: 12px;">Voca&ccedil;&otilde;es do Personagem</div>
+        <p class="origins-header-desc">
+          Ao criar um personagem em Wuitalur, voc&ecirc; escolhe uma Voca&ccedil;&atilde;o que representa o seu hist&oacute;rico pr&aacute;tico, fun&ccedil;&atilde;o social e modo de sobreviv&ecirc;ncia antes de se tornar um aventureiro. A Voca&ccedil;&atilde;o concede duas per&iacute;cias treinadas, ferramentas de of&iacute;cio, equipamentos essenciais para o seu papel e dois poderes exclusivos.
+        </p>
+      </div>
+
+      <div class="origins-control-bar">
+        <div class="origins-search-wrap">
+          <input type="text" id="origin-search" class="origins-search-input" placeholder="Filtrar por nome, per&iacute;cia ou poder..." aria-label="Buscar voca&ccedil;&atilde;o">
+        </div>
+        <div class="origins-count-badge" id="origin-count">10 Voca&ccedil;&otilde;es Registradas</div>
+      </div>
+
+      <nav class="origins-quick-chips" aria-label="Pulo r&aacute;pido de voca&ccedil;&otilde;es">
+        <a href="#guarda" class="origin-chip">Guarda</a>
+        <a href="#pesquisador" class="origin-chip">Pesquisador</a>
+        <a href="#renegado" class="origin-chip">Renegado</a>
+        <a href="#mercenario" class="origin-chip">Mercen&aacute;rio</a>
+        <a href="#curandeiro" class="origin-chip">Curandeiro</a>
+        <a href="#artesao" class="origin-chip">Artes&atilde;o</a>
+        <a href="#nomade" class="origin-chip">N&ocirc;made</a>
+        <a href="#devoto" class="origin-chip">Devoto</a>
+        <a href="#aristocrata" class="origin-chip">Aristocrata</a>
+        <a href="#charlatao" class="origin-chip">Charlat&atilde;o</a>
+      </nav>
+
+      <section class="origins-grid" id="origins-grid" style="gap: 28px;">
+
+        <article class="origin-card" id="guarda">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Guarda</h2>
+            <span class="origin-badge">Vigilância</span>
+          </div>
+          <div class="origin-card-body" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 20px;">
+            <p class="origin-description" style="line-height: 1.65; margin: 0;">Patrulheiro de muralhas, sentinela de guarni&ccedil;&otilde;es ou oficial da mil&iacute;cia urbana, moldado pela disciplina r&iacute;gida, vig&iacute;lia constante e manuten&ccedil;&atilde;o da ordem sob tens&atilde;o.</p>
+
+            <div class="origin-specs-grid" style="gap: 14px; padding: 16px; margin: 0; background: #0c0b12; border: 1px solid rgba(255,255,255,0.08);">
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Per&iacute;cias Treinadas</span>
+                <span class="origin-spec-value">Atletismo e Percep&ccedil;&atilde;o</span>
+              </div>
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Algemas de ferro e apito de patrulha</span>
+              </div>
+              <div class="origin-spec-item full-width" style="gap: 6px; margin-top: 4px;">
+                <span class="origin-spec-label">Equipamento Inicial</span>
+                <span class="origin-spec-value">Farda da guarni&ccedil;&atilde;o com ins&iacute;gnia da guarda, conjunto de algemas de ferro e uma Lan&ccedil;a Comum ou Bast&atilde;o de Madeira</span>
+              </div>
+            </div>
+
+            <div class="origin-powers-wrap" style="gap: 14px; margin-top: 6px;">
+              <div style="font-family: var(--font-heading); font-size: 0.85rem; color: #10b981; letter-spacing: 0.1em; text-transform: uppercase;">Poderes de Voca&ccedil;&atilde;o</div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">Olhar de Sentinela</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Recebe vantagem permanente em testes de Percep&ccedil;&atilde;o para identificar criaturas escondidas, emboscadas ou sinais visuais de amea&ccedil;a iminente.</p>
+              </div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">Postura de Conten&ccedil;&atilde;o</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Uma vez por combate, ao acertar um ataque corpo a corpo, voc&ecirc; pode gastar uma a&ccedil;&atilde;o b&ocirc;nus para deixar o alvo Imobilizado at&eacute; o in&iacute;cio do seu pr&oacute;ximo turno.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="origin-card" id="pesquisador">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Pesquisador</h2>
+            <span class="origin-badge">Erudição</span>
+          </div>
+          <div class="origin-card-body" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 20px;">
+            <p class="origin-description" style="line-height: 1.65; margin: 0;">Acad&ecirc;mico, historiador ou estudioso dedicado &agrave; cataloga&ccedil;&atilde;o de ru&iacute;nas antigas, fen&ocirc;menos astrais e segredos esquecidos da Era Dourada.</p>
+
+            <div class="origin-specs-grid" style="gap: 14px; padding: 16px; margin: 0; background: #0c0b12; border: 1px solid rgba(255,255,255,0.08);">
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Per&iacute;cias Treinadas</span>
+                <span class="origin-spec-value">Investiga&ccedil;&atilde;o e Astral</span>
+              </div>
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Lupa de cristal polido e estojo de escrita</span>
+              </div>
+              <div class="origin-spec-item full-width" style="gap: 6px; margin-top: 4px;">
+                <span class="origin-spec-label">Equipamento Inicial</span>
+                <span class="origin-spec-value">Kit do Erudito e Investigador contendo lupa, di&aacute;rio imperme&aacute;vel, b&uacute;ssola astral e bast&otilde;es de giz fosforescente</span>
+              </div>
+            </div>
+
+            <div class="origin-powers-wrap" style="gap: 14px; margin-top: 6px;">
+              <div style="font-family: var(--font-heading); font-size: 0.85rem; color: #10b981; letter-spacing: 0.1em; text-transform: uppercase;">Poderes de Voca&ccedil;&atilde;o</div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">Dedu&ccedil;&atilde;o Met&oacute;dica</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Ao analisar um objeto, s&iacute;mbolo arcano, armadilha ou mecanismo durante 1 minuto, recebe vantagem no teste de Investiga&ccedil;&atilde;o ou Astral correspondente.</p>
+              </div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">An&aacute;lise de Amea&ccedil;a</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Uma vez por combate, com uma a&ccedil;&atilde;o b&ocirc;nus, voc&ecirc; analisa um inimigo em at&eacute; 6B. O pr&oacute;ximo ataque realizado contra esse alvo ganha vantagem.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="origin-card" id="renegado">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Renegado</h2>
+            <span class="origin-badge">Infiltração</span>
+          </div>
+          <div class="origin-card-body" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 20px;">
+            <p class="origin-description" style="line-height: 1.65; margin: 0;">Foragido da justi&ccedil;a, marginalizado ou sobrevivente de becos escuros que aprendeu a confiar apenas nos pr&oacute;prios reflexos para escapar de correntes e patrulhas.</p>
+
+            <div class="origin-specs-grid" style="gap: 14px; padding: 16px; margin: 0; background: #0c0b12; border: 1px solid rgba(255,255,255,0.08);">
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Per&iacute;cias Treinadas</span>
+                <span class="origin-spec-value">Furtividade e Engana&ccedil;&atilde;o</span>
+              </div>
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Ferramentas de arrombamento</span>
+              </div>
+              <div class="origin-spec-item full-width" style="gap: 6px; margin-top: 4px;">
+                <span class="origin-spec-label">Equipamento Inicial</span>
+                <span class="origin-spec-value">Kit de Infiltra&ccedil;&atilde;o e Arrombamento contendo gazuas finas, espelho articulado, &oacute;leo desengripante e p&eacute; de cabra compacto, acompanhado de manto escuro com capuz e Faca de Ca&ccedil;a</span>
+              </div>
+            </div>
+
+            <div class="origin-powers-wrap" style="gap: 14px; margin-top: 6px;">
+              <div style="font-family: var(--font-heading); font-size: 0.85rem; color: #10b981; letter-spacing: 0.1em; text-transform: uppercase;">Poderes de Voca&ccedil;&atilde;o</div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">Passo Invis&iacute;vel</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Recebe vantagem em testes de Furtividade realizados em ambientes urbanos densos, vielas estreitas ou locais com pouca ilumina&ccedil;&atilde;o.</p>
+              </div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">Fuga Desesperada</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Uma vez por cena, ao sofrer dano, voc&ecirc; pode usar uma rea&ccedil;&atilde;o para se deslocar at&eacute; 3B imediatamente sem provocar ataques de oportunidade ou rea&ccedil;&otilde;es inimigas.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="origin-card" id="mercenario">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Mercen&aacute;rio</h2>
+            <span class="origin-badge">Combate</span>
+          </div>
+          <div class="origin-card-body" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 20px;">
+            <p class="origin-description" style="line-height: 1.65; margin: 0;">Combatente contratado que sobreviveu a guerras civis, escoltas armadas e contratos sangrentos onde o cumprimento do dever se mede pelo pagamento acordado.</p>
+
+            <div class="origin-specs-grid" style="gap: 14px; padding: 16px; margin: 0; background: #0c0b12; border: 1px solid rgba(255,255,255,0.08);">
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Per&iacute;cias Treinadas</span>
+                <span class="origin-spec-value">Atletismo e Intimida&ccedil;&atilde;o</span>
+              </div>
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Nenhuma</span>
+              </div>
+              <div class="origin-spec-item full-width" style="gap: 6px; margin-top: 4px;">
+                <span class="origin-spec-label">Equipamento Inicial</span>
+                <span class="origin-spec-value">Ins&iacute;gnia de uma companhia mercen&aacute;ria, contrato militar antigo carimbado e uma Adaga Dupla ou Machadinha</span>
+              </div>
+            </div>
+
+            <div class="origin-powers-wrap" style="gap: 14px; margin-top: 6px;">
+              <div style="font-family: var(--font-heading); font-size: 0.85rem; color: #10b981; letter-spacing: 0.1em; text-transform: uppercase;">Poderes de Voca&ccedil;&atilde;o</div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">&Iacute;mpeto de Choque</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Na primeira rodada de combate, voc&ecirc; recebe vantagem no teste de iniciativa e ganha +2B de deslocamento no seu primeiro turno.</p>
+              </div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">Pre&ccedil;o de Sangue</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Uma vez por combate, ao derrotar um inimigo, recupera uma quantidade de Pontos de Vida tempor&aacute;rios igual ao seu Vigor + N&iacute;vel de Maestria.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="origin-card" id="curandeiro">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Curandeiro</h2>
+            <span class="origin-badge">Medicina</span>
+          </div>
+          <div class="origin-card-body" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 20px;">
+            <p class="origin-description" style="line-height: 1.65; margin: 0;">Socorrista de povoados, botic&aacute;rio itinerante ou m&eacute;dico de campanha habituado a estancar sangue, combater infec&ccedil;&otilde;es e sustentar vidas em situa&ccedil;&otilde;es extremas.</p>
+
+            <div class="origin-specs-grid" style="gap: 14px; padding: 16px; margin: 0; background: #0c0b12; border: 1px solid rgba(255,255,255,0.08);">
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Per&iacute;cias Treinadas</span>
+                <span class="origin-spec-value">Medicina e Sobreviv&ecirc;ncia</span>
+              </div>
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Instrumentos cir&uacute;rgicos de campo</span>
+              </div>
+              <div class="origin-spec-item full-width" style="gap: 6px; margin-top: 4px;">
+                <span class="origin-spec-label">Equipamento Inicial</span>
+                <span class="origin-spec-value">Kit M&eacute;dico de Emerg&ecirc;ncia contendo estojo de sutura, injetor de estimulante, b&aacute;lsamos cicatrizantes e antiss&eacute;ptico purificador</span>
+              </div>
+            </div>
+
+            <div class="origin-powers-wrap" style="gap: 14px; margin-top: 6px;">
+              <div style="font-family: var(--font-heading); font-size: 0.85rem; color: #10b981; letter-spacing: 0.1em; text-transform: uppercase;">Poderes de Voca&ccedil;&atilde;o</div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">Primeiros Socorros &Aacute;geis</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Voc&ecirc; pode estabilizar uma criatura ca&iacute;da com 0 PVs usando uma a&ccedil;&atilde;o b&ocirc;nus em vez de uma a&ccedil;&atilde;o padr&atilde;o.</p>
+              </div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">Tratamento Emergencial</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Uma vez por descanso curto, ao tratar aliados feridos, cada criatura cuidada por voc&ecirc; recupera 1d6 + sua Mente em Pontos de Vida adicionais.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="origin-card" id="artesao">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Artes&atilde;o</h2>
+            <span class="origin-badge">Ofício</span>
+          </div>
+          <div class="origin-card-body" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 20px;">
+            <p class="origin-description" style="line-height: 1.65; margin: 0;">Ferreiro, construtor, marceneiro ou mec&acirc;nico de engrenagens que domina a transforma&ccedil;&atilde;o de mat&eacute;ria-prima, o reparo de armaduras e a precis&atilde;o do trabalho manual.</p>
+
+            <div class="origin-specs-grid" style="gap: 14px; padding: 16px; margin: 0; background: #0c0b12; border: 1px solid rgba(255,255,255,0.08);">
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Per&iacute;cias Treinadas</span>
+                <span class="origin-spec-value">Of&iacute;cio e Atletismo</span>
+              </div>
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Conjunto de ferramentas de bancada para forja e mec&acirc;nica</span>
+              </div>
+              <div class="origin-spec-item full-width" style="gap: 6px; margin-top: 4px;">
+                <span class="origin-spec-label">Equipamento Inicial</span>
+                <span class="origin-spec-value">Kit de Manuten&ccedil;&atilde;o e Forja de Campo contendo martelo de ajuste, pedra de amolar diamantada, alicate multifuncional e &oacute;leo anticorrosivo, acompanhado de avental de couro grosso</span>
+              </div>
+            </div>
+
+            <div class="origin-powers-wrap" style="gap: 14px; margin-top: 6px;">
+              <div style="font-family: var(--font-heading); font-size: 0.85rem; color: #10b981; letter-spacing: 0.1em; text-transform: uppercase;">Poderes de Voca&ccedil;&atilde;o</div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">Olhar Estrutural</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Recebe vantagem em testes de Of&iacute;cio ou Investiga&ccedil;&atilde;o para identificar defeitos, fragilidades ou o funcionamento interno de mecanismos, portas refor&ccedil;adas e armas.</p>
+              </div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">Refor&ccedil;o de Campo</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Durante um descanso curto, pode aprimorar um item do grupo. O equipamento escolhido recebe +1 no teste de ataque ou +1 na DEF at&eacute; o pr&oacute;ximo descanso longo.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="origin-card" id="nomade">
+          <div class="origin-card-header">
+            <h2 class="origin-name">N&ocirc;made</h2>
+            <span class="origin-badge">Sobrevivência</span>
+          </div>
+          <div class="origin-card-body" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 20px;">
+            <p class="origin-description" style="line-height: 1.65; margin: 0;">Andarilho de terras ermas, desbravador de florestas densas, estepes &aacute;ridas e cordilheiras, mestre em ler os ventos e encontrar rotas seguras onde outros perecem.</p>
+
+            <div class="origin-specs-grid" style="gap: 14px; padding: 16px; margin: 0; background: #0c0b12; border: 1px solid rgba(255,255,255,0.08);">
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Per&iacute;cias Treinadas</span>
+                <span class="origin-spec-value">Sobreviv&ecirc;ncia e Acrobacia</span>
+              </div>
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Nenhuma</span>
+              </div>
+              <div class="origin-spec-item full-width" style="gap: 6px; margin-top: 4px;">
+                <span class="origin-spec-label">Equipamento Inicial</span>
+                <span class="origin-spec-value">Kit de Explora&ccedil;&atilde;o e Desbravamento contendo corda com gancho, pederneira r&aacute;pida, tochas de piche e cantil com filtro, acompanhado de cajado de caminhada e cobertor de viagem</span>
+              </div>
+            </div>
+
+            <div class="origin-powers-wrap" style="gap: 14px; margin-top: 6px;">
+              <div style="font-family: var(--font-heading); font-size: 0.85rem; color: #10b981; letter-spacing: 0.1em; text-transform: uppercase;">Poderes de Voca&ccedil;&atilde;o</div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">Rastreador Nato</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Recebe vantagem permanente em testes de Sobreviv&ecirc;ncia para seguir rastros, prever altera&ccedil;&otilde;es clim&aacute;ticas severas e encontrar ref&uacute;gio natural.</p>
+              </div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">Passo Desimpedido</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Terrenos dif&iacute;ceis naturais n&atilde;o reduzem o seu deslocamento e voc&ecirc; n&atilde;o pode ser derrubado por solo inst&aacute;vel ou lama&ccedil;al.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="origin-card" id="devoto">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Devoto</h2>
+            <span class="origin-badge">Fé</span>
+          </div>
+          <div class="origin-card-body" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 20px;">
+            <p class="origin-description" style="line-height: 1.65; margin: 0;">Servidor mon&aacute;stico, ac&oacute;lito de templo ou peregrino devotado que dedicou seus primeiros anos a ora&ccedil;&otilde;es di&aacute;rias, votos sagrados e servi&ccedil;o comunit&aacute;rio &agrave;s for&ccedil;as divinas.</p>
+
+            <div class="origin-specs-grid" style="gap: 14px; padding: 16px; margin: 0; background: #0c0b12; border: 1px solid rgba(255,255,255,0.08);">
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Per&iacute;cias Treinadas</span>
+                <span class="origin-spec-value">Astral e Persuas&atilde;o</span>
+              </div>
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Nenhuma</span>
+              </div>
+              <div class="origin-spec-item full-width" style="gap: 6px; margin-top: 4px;">
+                <span class="origin-spec-label">Equipamento Inicial</span>
+                <span class="origin-spec-value">T&uacute;nica cerimonial simples, s&iacute;mbolo sagrado entalhado em madeira de lei ou osso e livro de escrituras antigas</span>
+              </div>
+            </div>
+
+            <div class="origin-powers-wrap" style="gap: 14px; margin-top: 6px;">
+              <div style="font-family: var(--font-heading); font-size: 0.85rem; color: #10b981; letter-spacing: 0.1em; text-transform: uppercase;">Poderes de Voca&ccedil;&atilde;o</div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">F&eacute; Inabal&aacute;vel</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Recebe vantagem permanente em testes de resist&ecirc;ncia de Mente contra efeitos mentais que causem Medo, Confus&atilde;o ou a condi&ccedil;&atilde;o Abalado.</p>
+              </div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">B&ecirc;n&ccedil;&atilde;o Compartilhada</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Uma vez por combate, com uma a&ccedil;&atilde;o b&ocirc;nus, concede vantagem no pr&oacute;ximo teste de d20 realizado por um aliado vis&iacute;vel em at&eacute; 6B.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="origin-card" id="aristocrata">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Aristocrata</h2>
+            <span class="origin-badge">Nobreza</span>
+          </div>
+          <div class="origin-card-body" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 20px;">
+            <p class="origin-description" style="line-height: 1.65; margin: 0;">Nascido nos c&iacute;rculos de influ&ecirc;ncia da alta nobreza ou de guildas comerciais poderosas, habituado &agrave; etiqueta diplom&aacute;tica, conspira&ccedil;&otilde;es de sal&atilde;o e barganha pol&iacute;tica.</p>
+
+            <div class="origin-specs-grid" style="gap: 14px; padding: 16px; margin: 0; background: #0c0b12; border: 1px solid rgba(255,255,255,0.08);">
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Per&iacute;cias Treinadas</span>
+                <span class="origin-spec-value">Persuas&atilde;o e Engana&ccedil;&atilde;o</span>
+              </div>
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Selo com bras&atilde;o de fam&iacute;lia e kit de caligrafia nobre</span>
+              </div>
+              <div class="origin-spec-item full-width" style="gap: 6px; margin-top: 4px;">
+                <span class="origin-spec-label">Equipamento Inicial</span>
+                <span class="origin-spec-value">Conjunto de roupas finas de alta costura, anel com sinete her&aacute;ldico gravado e carta de recomenda&ccedil;&atilde;o de uma linhagem influente</span>
+              </div>
+            </div>
+
+            <div class="origin-powers-wrap" style="gap: 14px; margin-top: 6px;">
+              <div style="font-family: var(--font-heading); font-size: 0.85rem; color: #10b981; letter-spacing: 0.1em; text-transform: uppercase;">Poderes de Voca&ccedil;&atilde;o</div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">Voz de Autoridade</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Recebe vantagem em testes de Express&atilde;o voltados a diplomacia, negocia&ccedil;&atilde;o formal ou ordens dirigidas a autoridades civis e guardas urbanos.</p>
+              </div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">Comando T&aacute;tico</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Uma vez por combate, como uma a&ccedil;&atilde;o b&ocirc;nus, voc&ecirc; d&aacute; uma ordem direta a um aliado em at&eacute; 6B, permitindo que ele se desloque at&eacute; 2B imediatamente.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="origin-card" id="charlatao">
+          <div class="origin-card-header">
+            <h2 class="origin-name">Charlat&atilde;o</h2>
+            <span class="origin-badge">Blefe</span>
+          </div>
+          <div class="origin-card-body" style="padding: 22px 24px; display: flex; flex-direction: column; gap: 20px;">
+            <p class="origin-description" style="line-height: 1.65; margin: 0;">Mestre dos truques de sal&atilde;o, ilusionista de feira ou vigarista talentoso que sobreviveu vestindo personas fict&iacute;cias, vendendo promessas vazias e enganando incautos.</p>
+
+            <div class="origin-specs-grid" style="gap: 14px; padding: 16px; margin: 0; background: #0c0b12; border: 1px solid rgba(255,255,255,0.08);">
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Per&iacute;cias Treinadas</span>
+                <span class="origin-spec-value">Engana&ccedil;&atilde;o e Acrobacia</span>
+              </div>
+              <div class="origin-spec-item" style="gap: 6px;">
+                <span class="origin-spec-label">Ferramentas</span>
+                <span class="origin-spec-value">Kit de disfarce e dados ou cartas adulteradas</span>
+              </div>
+              <div class="origin-spec-item full-width" style="gap: 6px; margin-top: 4px;">
+                <span class="origin-spec-label">Equipamento Inicial</span>
+                <span class="origin-spec-value">Roupas comuns com compartimentos secretos, cosm&eacute;ticos e perucas para disfarce r&aacute;pido, espelho de bolso e baralho marcado</span>
+              </div>
+            </div>
+
+            <div class="origin-powers-wrap" style="gap: 14px; margin-top: 6px;">
+              <div style="font-family: var(--font-heading); font-size: 0.85rem; color: #10b981; letter-spacing: 0.1em; text-transform: uppercase;">Poderes de Voca&ccedil;&atilde;o</div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">Falsa Identidade</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Voc&ecirc; possui uma identidade forjada completa com hist&oacute;rico cr&iacute;vel e disfarces, recebendo vantagem em testes de Engana&ccedil;&atilde;o para sustentar a farsa.</p>
+              </div>
+              <div class="origin-poder-box" style="padding: 14px 16px; background: #13121d; border-left: 3px solid #10b981;">
+                <div class="origin-poder-title" style="margin-bottom: 6px;">Truque Desconcertante</div>
+                <p class="origin-poder-desc" style="line-height: 1.6;">Uma vez por combate, com uma a&ccedil;&atilde;o b&ocirc;nus, voc&ecirc; lan&ccedil;a uma distra&ccedil;&atilde;o chamativa contra um inimigo em at&eacute; 4B; o pr&oacute;ximo ataque desse alvo contra voc&ecirc; sofre desvantagem.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+<script>
+  const searchInput = document.getElementById('origin-search');
+  const cards = document.querySelectorAll('.origin-card');
+  const countBadge = document.getElementById('origin-count');
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      let visible = 0;
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        const matches = text.includes(query);
+        card.style.display = matches ? '' : 'none';
+        if (matches) visible++;
+      });
+      if (countBadge) {
+        countBadge.textContent = `${visible} Voca&ccedil;&otilde;es Encontradas`;
+      }
+    });
+  }
+</script>
+</body>
+</html>

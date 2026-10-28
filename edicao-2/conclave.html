@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O Conclave &mdash; Wuitalur RPG 2.0</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    .conclave-flavor { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: var(--space-xl); }
+    .mech-table { width: 100%; border-collapse: collapse; margin: var(--space-md) 0 var(--space-xl); }
+    .mech-table th, .mech-table td { padding: var(--space-sm) var(--space-md); border: 1px solid var(--border-subtle); font-size: 0.85rem; text-align: left; }
+    .mech-table th { background: rgba(0,0,0,0.3); font-family: var(--font-heading); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-primary); }
+    .mech-table td { color: var(--text-secondary); }
+    .conclave-sec-title { font-family: var(--font-heading); font-size: 1.1rem; color: var(--text-primary); margin-top: var(--space-xl); margin-bottom: var(--space-md); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--border-subtle); }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema Base 2.0 (Alpha)</span>
+      </div>
+    </div>
+
+    <!-- BOTÃO VOLTAR AO CATÁLOGO DE SUPLEMENTOS -->
+    <a href="../suplementos.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar aos Suplementos</span>
+    </a>
+
+    <nav class="sidebar-nav">
+
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="vocacoes.html" class="sidebar-link"><span class="icon"></span> Vocações</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link active"><span class="icon"></span> O Conclave</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>O Conclave</h1>
+    </header>
+
+    <main class="page-content">
+
+      <div class="topic-crooked" style="margin-bottom: 20px;">MERCANTES INVIS&Iacute;VEIS // ITENS INICIAIS</div>
+
+      <div class="section-heading">
+        <h2>A Natureza do Conclave</h2>
+      </div>
+
+      <div class="hud-card" style="margin-bottom: var(--space-xl);">
+        <div class="race-card-body">
+          <p class="conclave-flavor">
+            O mundo &eacute; movido por trocas que ningu&eacute;m v&ecirc;. Nas sombras das capitais ou no sil&ecirc;ncio das ru&iacute;nas esquecidas, os Mercantes do Conclave operam uma economia invis&iacute;vel. Para a maioria das pessoas comuns, s&atilde;o apenas uma lenda urbana sobre moedas que desaparecem dos bolsos e pacotes lacrados que surgem do nada. Para quem empunha armas e trilha estradas perigosas, eles s&atilde;o o &uacute;nico ponto de apoio nos momentos de maior necessidade.
+          </p>
+          <p class="conclave-flavor" style="margin-bottom: 0;">
+            O Conclave n&atilde;o possui balc&otilde;es de madeira, lojas f&iacute;sicas ou rostos conhecidos. Seus contratos operam inteiramente sobre conveni&ecirc;ncia e sil&ecirc;ncio. Os itens passam a existir na posse do personagem: um peso desconhecido no fundo da mochila, um estojo lacrado ao lado de onde dormiu, uma ferramenta em um beco estreito pelo qual acabou de cruzar. A assinatura do Conclave &eacute; sentida na precis&atilde;o das costuras, no polimento frio do a&ccedil;o e no peso perfeitamente equilibrado das pe&ccedil;as.
+          </p>
+        </div>
+      </div>
+
+      <div class="section-heading">
+        <h2>Regra de Escolha dos Itens Iniciais</h2>
+        <p>
+          Ao iniciar sua trajet&oacute;ria em Wuitalur, o Conclave manifesta os primeiros recursos necess&aacute;rios para a sobreviv&ecirc;ncia do aventureiro.
+        </p>
+      </div>
+
+      <div class="hud-card" style="border-left: 4px solid var(--accent); margin-bottom: var(--space-xl);">
+        <div class="race-card-body">
+          <div style="font-family: var(--font-heading); font-size: 1.25rem; color: var(--accent); letter-spacing: 0.08em; text-align: center; margin-bottom: 8px;">
+            Itens Iniciais = FOR + 1
+          </div>
+          <p style="text-align: center; font-size: 0.88rem; color: var(--text-secondary); margin: 0;">
+            <strong>Garantia M&iacute;nima:</strong> Personagens com For&ccedil;a 0 escolhem obrigatoriamente 1 item inicial. For&ccedil;a 1 escolhe 2 itens, For&ccedil;a 2 escolhe 3 itens e For&ccedil;a 3 escolhe 4 itens iniciais.<br>
+            Os itens selecionados ocupam seus espa&ccedil;os de carga normais, exceto quando equipados em uso ativo no corpo.
+          </p>
+        </div>
+      </div>
+
+      <!-- ARMAS BRANCAS INICIAIS -->
+      <div class="conclave-sec-title">Armas Brancas Iniciais</div>
+      <table class="mech-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th style="width: 70px; text-align: center;">Peso</th>
+            <th>Dano</th>
+            <th style="width: 90px;">Cr&iacute;tico</th>
+            <th style="width: 100px;">Alcance</th>
+            <th>Propriedades &amp; Efeitos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Espada Curta</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>1d8 + FOR/DES</td>
+            <td>20 / x2</td>
+            <td>Corpo a corpo</td>
+            <td>&Aacute;gil, Vers&aacute;til. Contra-ataque de rea&ccedil;&atilde;o ao Defender/Desviar com sucesso.</td>
+          </tr>
+          <tr>
+            <td><strong>Faca de Ca&ccedil;a</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>1d8 + DES</td>
+            <td>19-20 / x2</td>
+            <td>Corpo a corpo</td>
+            <td>&Aacute;gil, Leve. Ao acertar, aplica Sangramento (1d4 por 2 rodadas).</td>
+          </tr>
+          <tr>
+            <td><strong>Machadinha</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>1d8 + FOR</td>
+            <td>20 / x3</td>
+            <td>Corpo / 3B</td>
+            <td>Arremess&aacute;vel, Leve. Arremessada a at&eacute; 3B causando dano normal.</td>
+          </tr>
+          <tr>
+            <td><strong>Bast&atilde;o de Madeira</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>1d6 + FOR/DES</td>
+            <td>20 / x2</td>
+            <td>Corpo a corpo</td>
+            <td>&Aacute;gil, Defensivo. Concede +1 na DEF do usu&aacute;rio enquanto empunhado.</td>
+          </tr>
+          <tr>
+            <td><strong>Lan&ccedil;a Comum</strong></td>
+            <td style="text-align: center;">Peso II</td>
+            <td>1d10 + FOR/DES</td>
+            <td>20 / x2</td>
+            <td>2B</td>
+            <td>Haste, Vers&aacute;til. Alcance estendido de 2B sem penalidade.</td>
+          </tr>
+          <tr>
+            <td><strong>Espada Longa</strong></td>
+            <td style="text-align: center;">Peso II</td>
+            <td>1d10 + FOR</td>
+            <td>19-20 / x2</td>
+            <td>Corpo a corpo</td>
+            <td>Vers&aacute;til. Causa 1d10 com uma m&atilde;o, ou 2d8 + FOR quando com ambas as m&atilde;os.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- ARMAS DE FOGO INICIAIS -->
+      <div class="conclave-sec-title">Armas de Fogo e Longo Alcance Iniciais</div>
+      <table class="mech-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th style="width: 70px; text-align: center;">Peso</th>
+            <th>Dano</th>
+            <th style="width: 85px;">Cr&iacute;tico</th>
+            <th style="width: 75px;">Alcance</th>
+            <th style="width: 140px;">Muni&ccedil;&atilde;o / Recarga</th>
+            <th>Propriedades &amp; Efeitos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Rev&oacute;lver Paladium M6</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>2d6 + DES</td>
+            <td>19-20 / x3</td>
+            <td>8B</td>
+            <td>6 tiros / B&ocirc;nus</td>
+            <td>Disparo Concentrado: mirar com a&ccedil;&atilde;o b&ocirc;nus ignora Armadura e causa +1d6 dano.</td>
+          </tr>
+          <tr>
+            <td><strong>Pistola PM-12</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>2d4 + DES</td>
+            <td>19-20 / x2</td>
+            <td>10B</td>
+            <td>12 tiros / B&ocirc;nus</td>
+            <td>Disparo R&aacute;pido: permite segundo tiro com a&ccedil;&atilde;o b&ocirc;nus ap&oacute;s a&ccedil;&atilde;o padr&atilde;o.</td>
+          </tr>
+          <tr>
+            <td><strong>Arco Refor&ccedil;ado R-12</strong></td>
+            <td style="text-align: center;">Peso II</td>
+            <td>2d8 + DES</td>
+            <td>19-20 / x3</td>
+            <td>14B</td>
+            <td>1 flecha / Instant</td>
+            <td>Silencioso, Duas M&atilde;os: errar disparo em Furtividade n&atilde;o revela posi&ccedil;&atilde;o.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- PROTEÇÕES INICIAIS -->
+      <div class="conclave-sec-title">Prote&ccedil;&otilde;es Iniciais</div>
+      <table class="mech-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th style="width: 70px; text-align: center;">Peso</th>
+            <th style="width: 100px;">Tipo</th>
+            <th style="width: 120px;">B&ocirc;nus Concedido</th>
+            <th>Propriedades &amp; Efeitos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Escudo Compacto</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>Escudo</td>
+            <td><strong>+2 na DEF</strong></td>
+            <td>Empunhado em uma das m&atilde;os livres. Reutiliz&aacute;vel em combate.</td>
+          </tr>
+          <tr>
+            <td><strong>Gib&atilde;o de Couro Refor&ccedil;ado</strong></td>
+            <td style="text-align: center;">Peso II</td>
+            <td>Armadura</td>
+            <td><strong>+2 na Armadura</strong></td>
+            <td>Armadura corporal leve. N&atilde;o imp&otilde;e penalidades em Furtividade ou Acrobacia.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- UTILITÁRIOS E CONSUMÍVEIS -->
+      <div class="conclave-sec-title">Utilit&aacute;rios, Ferramentas e Consum&iacute;veis Iniciais</div>
+      <table class="mech-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th style="width: 70px; text-align: center;">Peso</th>
+            <th style="width: 100px;">Tipo</th>
+            <th style="width: 120px;">Usos / Dura&ccedil;&atilde;o</th>
+            <th>Efeito &amp; Regras</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Kit de Primeiros Socorros</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>Utilit&aacute;rio</td>
+            <td>3 usos</td>
+            <td>Permite testes de Medicina para estabilizar aliados ou curar 1d6 + MEN em PVs.</td>
+          </tr>
+          <tr>
+            <td><strong>Estojo de Gazuas</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>Ferramenta</td>
+            <td>Permanente</td>
+            <td>Ferramentas finas para arrombar trancas sem sofrer penalidade em Of&iacute;cio ou Destreza.</td>
+          </tr>
+          <tr>
+            <td><strong>Bolsa de Muni&ccedil;&atilde;o Sobressalente</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>Suprimento</td>
+            <td>3 recargas</td>
+            <td>Proj&eacute;teis suficientes para recarregar arma de fogo por at&eacute; tr&ecirc;s vezes completas.</td>
+          </tr>
+          <tr>
+            <td><strong>Aljava com 20 Flechas</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>Suprimento</td>
+            <td>20 disparos</td>
+            <td>Estojo r&iacute;gido de transporte com 20 flechas padr&atilde;o balanceadas para arcos.</td>
+          </tr>
+          <tr>
+            <td><strong>Kit de Ferramentas de Of&iacute;cio</strong></td>
+            <td style="text-align: center;">Peso II</td>
+            <td>Ferramenta</td>
+            <td>Permanente</td>
+            <td>Martelo manual, alicates, lima e fios de cobre para manuten&ccedil;&atilde;o de armas e engenhocas.</td>
+          </tr>
+          <tr>
+            <td><strong>Pacote de Explora&ccedil;&atilde;o</strong></td>
+            <td style="text-align: center;">Peso II</td>
+            <td>Suprimento</td>
+            <td>Permanente</td>
+            <td>15m corda de c&acirc;nhamo, pederneira fa&iacute;sca, 4 tochas e cantil resistente.</td>
+          </tr>
+          <tr>
+            <td><strong>Lanterna a &Oacute;leo com Refletor</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>Utilit&aacute;rio</td>
+            <td>6 horas / frasco</td>
+            <td>Projeta facho de luz em cone de 6B eliminando penumbra sem fogo aberto constante.</td>
+          </tr>
+          <tr>
+            <td><strong>Frasco de Ant&iacute;doto Universal</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>Consum&iacute;vel</td>
+            <td>Uso &uacute;nico</td>
+            <td>Ingerido ou aplicado com a&ccedil;&atilde;o b&ocirc;nus; encerra Envenenado e neutraliza toxinas.</td>
+          </tr>
+          <tr>
+            <td><strong>Po&ccedil;&atilde;o de Vigor</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>Consum&iacute;vel</td>
+            <td>Uso &uacute;nico</td>
+            <td>Ingerida com a&ccedil;&atilde;o b&ocirc;nus; regenera imediatamente 2d4 + VIG em Pontos de Vida.</td>
+          </tr>
+          <tr>
+            <td><strong>Saco de Dormir T&eacute;rmico</strong></td>
+            <td style="text-align: center;">Peso I</td>
+            <td>Suprimento</td>
+            <td>Permanente</td>
+            <td>Manta imperme&aacute;vel que garante descanso tranquilo sob chuva, frio e lama&ccedil;al.</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

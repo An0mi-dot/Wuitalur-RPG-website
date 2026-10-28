@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atributos &mdash; Wuitalur RPG 2.0</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    .calc-box-unified {
+      background: var(--bg-surface);
+      border: 2px solid #000000;
+      box-shadow: 4px 4px 0px var(--shadow-color);
+      padding: 16px;
+      margin: 14px 0 24px;
+    }
+    .attr-grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin: var(--space-lg) 0;
+    }
+    .attr-detail-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    .attr-detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xs);
+    }
+    .attr-detail-name {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .attr-detail-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+    }
+    .attr-detail-body {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema Base 2.0 (Alpha)</span>
+      </div>
+    </div>
+
+    <!-- BOTÃO VOLTAR AO CATÁLOGO DE SUPLEMENTOS -->
+    <a href="../suplementos.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar aos Suplementos</span>
+    </a>
+
+    <nav class="sidebar-nav">
+
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link active"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="vocacoes.html" class="sidebar-link"><span class="icon"></span> Vocações</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Atributos</h1>
+    </header>
+
+    <main class="page-content">
+
+      <div class="topic-crooked" style="margin-bottom: 20px;">MATRIZ // REGRAS BASE</div>
+
+      <div class="section-heading">
+        <h2>Motor de Rolagem e Escala Contida</h2>
+        <p>
+          Wuitalur adota o d20 com uma escala num&eacute;rica contida e intuitiva, mantendo resolu&ccedil;&otilde;es r&aacute;pidas na mesa de jogo.
+        </p>
+      </div>
+
+      <div class="section-heading">
+        <h2>Os 5 Atributos Fundamentais</h2>
+        <p>
+          Todos os personagens possuem cinco atributos fundamentais, cobrindo a&ccedil;&atilde;o, sobreviv&ecirc;ncia, cogni&ccedil;&atilde;o e intera&ccedil;&atilde;o social.
+        </p>
+      </div>
+
+      <div class="attr-grid-cards">
+        <div class="attr-detail-card">
+          <div class="attr-detail-header">
+            <span class="attr-detail-name" style="color: #ef4444;">For&ccedil;a</span>
+            <span class="attr-detail-tag">FOR</span>
+          </div>
+          <p class="attr-detail-body">
+            Pot&ecirc;ncia muscular, impacto f&iacute;sico com armas pesadas, capacidade de carga e esfor&ccedil;o f&iacute;sico bruto.
+          </p>
+        </div>
+
+        <div class="attr-detail-card">
+          <div class="attr-detail-header">
+            <span class="attr-detail-name" style="color: #3b82f6;">Destreza</span>
+            <span class="attr-detail-tag">DES</span>
+          </div>
+          <p class="attr-detail-body">
+            Coordena&ccedil;&atilde;o motora fina, velocidade de rea&ccedil;&atilde;o, reflexos corporais, equil&iacute;brio, esquiva e armas de precis&atilde;o e dist&acirc;ncia.
+          </p>
+        </div>
+
+        <div class="attr-detail-card">
+          <div class="attr-detail-header">
+            <span class="attr-detail-name" style="color: #22c55e;">Vigor</span>
+            <span class="attr-detail-tag">VIG</span>
+          </div>
+          <p class="attr-detail-body">
+            Constitui&ccedil;&atilde;o biol&oacute;gica, toler&acirc;ncia a ferimentos e dor, f&ocirc;lego e resist&ecirc;ncia a venenos, toxinas, fadiga e clima extremo.
+          </p>
+        </div>
+
+        <div class="attr-detail-card">
+          <div class="attr-detail-header">
+            <span class="attr-detail-name" style="color: #a855f7;">Mente</span>
+            <span class="attr-detail-tag">MEN</span>
+          </div>
+          <p class="attr-detail-body">
+            Racioc&iacute;nio anal&iacute;tico, l&oacute;gica dedutiva, mem&oacute;ria, investiga&ccedil;&atilde;o de mist&eacute;rios, alquimia e conhecimentos arcanos e c&oacute;smicos.
+          </p>
+        </div>
+
+        <div class="attr-detail-card">
+          <div class="attr-detail-header">
+            <span class="attr-detail-name" style="color: #eab308;">Express&atilde;o</span>
+            <span class="attr-detail-tag">EXP</span>
+          </div>
+          <p class="attr-detail-body">
+            Comunica&ccedil;&atilde;o e proje&ccedil;&atilde;o social, l&aacute;bia, persuas&atilde;o diplom&aacute;tica, intimida&ccedil;&atilde;o, lideran&ccedil;a, presen&ccedil;a c&ecirc;nica e magnetismo interpessoal.
+          </p>
+        </div>
+      </div>
+
+      <div class="section-heading">
+        <h2>Distribui&ccedil;&atilde;o de B&ocirc;nus de Atributos</h2>
+        <p>
+          Na cria&ccedil;&atilde;o do personagem, o jogador recebe um conjunto fixo de b&ocirc;nus prontos e decide livremente onde alocar cada um entre os seus 5 atributos:
+        </p>
+      </div>
+
+      <div class="calc-box-unified" style="text-align: center;">
+        <span style="font-family: var(--font-heading); font-size: 1.4rem; color: var(--accent); letter-spacing: 0.12em;">
+          [ +3 , +2 , +1 , +1 , 0 ]
+        </span>
+      </div>
+
+      <div class="section-heading" style="margin-top: var(--space-xl);">
+        <h2>O Motor de Testes</h2>
+      </div>
+
+      <div class="hud-card" style="margin-bottom: var(--space-2xl);">
+        <div class="race-card-body">
+          <ul class="race-list">
+            <li><strong>Teste Comum (Sem Per&iacute;cia):</strong> Rola-se <strong>1d20 + Atributo</strong> contra a Classe de Dificuldade da tarefa.</li>
+            <li><strong>Sucesso Cr&iacute;tico:</strong> Tirar <strong>20 natural</strong> no d20 &eacute; sempre um sucesso espetacular com efeitos decisivos.</li>
+            <li><strong>Falha Cr&iacute;tica:</strong> Tirar <strong>1 natural</strong> no d20 gera uma complica&ccedil;&atilde;o ou reviravolta negativa no ambiente.</li>
+          </ul>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

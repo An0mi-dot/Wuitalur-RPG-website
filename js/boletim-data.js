@@ -6,6 +6,47 @@
 
 const BOLETINS_DATA = [
   {
+    id: "edicao-05",
+    numero: 5,
+    edicao: "Edição #5",
+    epoca: "Outubro 2026",
+    data: "27 de Outubro de 2026",
+    dataIso: "2026-10-27",
+    titulo: "Prévia da Nova Interface de Classes & Arte dos Consagrados",
+    subtitulo: "Disponibilizei uma nova aba de visualização com estética urbana para testes e a nova ilustração dos Consagrados.",
+    autor: "Mestre",
+    tempoLeitura: "4 min",
+    resumo: "Subi uma prévia da nova aba de Classes para o pessoal dar uma olhada. Tudo o que está ali é experimental e feito para termos uma ideia de como serão os visuais e a navegação, acompanhado da nova arte dos Consagrados.",
+    tags: ["Interface", "Classes", "Ilustrações", "Prévia"],
+    conteudoHtml: `<section class="boletim-section">
+        <h3 class="boletim-section-title">Prévia da nova aba de Classes</h3>
+        <p class="boletim-lead">
+          Coloquei no ar uma nova aba de visualização das classes para quem quiser dar uma olhada e sentir a proposta de navegação.
+        </p>
+        <p>
+          Vale destacar desde já: tudo o que está ali é puro teste e pode sofrer alterações ao longo do desenvolvimento. Fiz essa versão principalmente para termos uma referência visual de como algumas coisas vão funcionar daqui pra frente, com uma pegada urbana e apresentação mais marcante.
+        </p>
+        <div class="boletim-callout highlight-purple">
+          <p>
+            <strong>Aviso de testes:</strong> A interface ainda está em construção ativa. Elementos de layout, proporções e interações estão sendo calibrados para encontrar o melhor equilíbrio entre estilo visual e leitura rápida durante as sessões.
+          </p>
+        </div>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">Nova arte dos Consagrados</h3>
+        <p class="boletim-lead">
+          Junto com essa nova tela, já incluí a nova ilustração dos Consagrados para inaugurar a galeria visual das classes.
+        </p>
+        <p>
+          A ideia é que cada classe tenha sua própria arte em destaque, trazendo presença e identidade pro personagem assim que você abre o dossiê. Os Consagrados já estão com essa nova silhueta e paleta implementadas na página.
+        </p>
+        <p>
+          Dêem uma passada lá na aba de Classes para ver como ficou, testar a navegação e me avisem o que acharam da direção visual.
+        </p>
+      </section>`
+  },
+  {
     id: "edicao-04",
     numero: 4,
     edicao: "Edição #4",
@@ -13,7 +54,7 @@ const BOLETINS_DATA = [
     data: "24 de Outubro de 2026",
     dataIso: "2026-10-24",
     titulo: "A Grande Reformulação das Raças 2.0",
-    subtitulo: "Fim do inchaço de habilidades na ficha, os 3 Pilares das raças e a volta oficial do d20.",
+    subtitulo: "Fim do inchaço de habilidades na ficha, os 3 Pilares das raças e o retorno do d20.",
     autor: "Mestre",
     tempoLeitura: "6 min",
     resumo: "Passei uma limpa geral nas raças do sistema. Chega de ficha com 10 habilidades ativas competindo com classe: agora toda raça segue a regra de 3 Pilares com mecânica própria e foco imediato.",
