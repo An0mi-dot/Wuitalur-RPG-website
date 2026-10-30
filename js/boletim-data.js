@@ -6,9 +6,135 @@
 
 const BOLETINS_DATA = [
   {
+    id: "edicao-06",
+    numero: 6,
+    edicao: "Edição 6",
+    epoca: "Outubro 2026",
+    data: "30 de Outubro de 2026",
+    dataIso: "2026-10-30",
+    titulo: "O Rework do Compactador, Novo Inventário e as Vocações",
+    subtitulo: "Fechamento do Compactador no motor 2.0, transição de origens para Vocações, regras de carga e revisão de condições.",
+    autor: "Mestre",
+    tempoLeitura: "5 min",
+    resumo: "Depois de mostrar a prévia visual dos Consagrados, dei uma avançada boa nas regras: fechei o Compactador no motor 2.0, troquei as origens antigas por Vocações, arrumei o peso dos itens e limpei a tabela de condições.",
+    tags: ["Sistema 2.0", "Compactador", "Vocações", "Equipamentos", "Condições"],
+    conteudoHtml: `<section class="boletim-section">
+        <p class="boletim-lead">
+          Depois de mostrar a prévia visual dos Consagrados, dei uma avançada boa nas regras: fechei o Compactador no motor 2.0, troquei as origens antigas por Vocações, arrumei o peso dos itens e limpei a tabela de condições.
+        </p>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">As 3 tags de papel tático</h3>
+        <p>
+          Depois que coloquei a nova arte dos Consagrados no ar, aproveitei pra fechar como as classes vão ser catalogadas. Em vez de botar aquele monte de texto solto explicando o que cada classe faz, agora toda classe vai carregar 3 tags logo embaixo do nome:
+        </p>
+        <ul class="boletim-list">
+          <li><strong>Função principal:</strong> Atacante, Defensor ou Estrategista.</li>
+          <li><strong>Foco de gameplay:</strong> Coisas como Tanque, Colosso, Suporte, Canhão de Vidro.</li>
+          <li><strong>Papel secundário:</strong> Coisas como Controlador, Duelista, Tático ou Utilitário.</li>
+        </ul>
+        <p>
+          Nos Consagrados ficou <strong>ESTRATEGISTA | SUPORTE | CONTROLADOR</strong>, e pro Compactador que terminei agora ficou <strong>DEFENSOR | COLOSSO | TANQUE</strong>. Bateu o olho na ficha, já dá pra saber na hora como o personagem se porta no combate e o que ele entrega pro grupo.
+        </p>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">O novo Compactador: pressão, gravidade e dano na própria vida</h3>
+        <p>
+          O Compactador na versão 1.5 tava bem quebrado. O cara conseguia anular ataque do nada, ficava com 900 de mana acumulada e um monte de cálculo de porcentagem que travava a mesa. Mantive a identidade dele de ser um colosso pesado de linha de frente, mas passei a régua nos excessos:
+        </p>
+        <ul class="boletim-list">
+          <li>
+            <strong>Os 3 Estados de Compactação:</strong> Ele gasta ação bônus e 5 EA pra botar um estado em campo (máximo de 2 ativos ao mesmo tempo):
+            <ul>
+              <li><em>Compressão:</em> Pra bater pesado. Soma o Dano Base nos próprios ataques corpo a corpo ou corta a armadura do bicho.</li>
+              <li><em>Estabilização:</em> Pra segurar o tranco. Dá bônus de DEF direto pra ele ou gera uma barreira de vida temporária num aliado.</li>
+              <li><em>Distorção:</em> Essa aqui é a mais perigosa. Desalinha o espaço pra fazer os inimigos errarem golpe e andarem devagar. Só que agora tem um freio sério: qualquer habilidade que use Distorção consome a vida do próprio Compactador. Se quiser dobrar o espaço na marra, vai ter que sangrar por isso.</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Colapso de Estado:</strong> É o gatilho de combo da classe. Se o bicho já tá com um estado aplicado, você pode estourar esse estado pra causar um efeito bruto na hora: mandar o alvo pro chão com impacto sísmico, segurar um golpe pesado num aliado com barreira cinética ou quebrar a continuidade do ataque inimigo gastando vida.
+          </li>
+          <li>
+            <strong>Sem árvore inchada:</strong> Assim como fiz nos Consagrados, agora o jogador escolhe 1 entre 2 habilidades nos níveis 1, 4, 7, 10 e 13. Menos texto pra decorar e mais espaço pra montar build diferente.
+          </li>
+        </ul>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">Inventário, peso e os 7 kits fechados</h3>
+        <p>
+          A parte de carga do 1.5 tava meio confusa e com fórmula desnecessária. Arrumei isso deixando tudo atrelado direto à Força do personagem:
+        </p>
+        <div class="boletim-callout highlight-purple">
+          <p style="font-family: var(--font-mono); font-size: 0.95rem; margin: 0; color: #FFFFFF;">
+            <strong>Espaços de Carga = (FOR × 3) + 5</strong>
+          </p>
+        </div>
+        <p>
+          Se você tem Força 0, carrega 5 espaços de boa. Se tem Força 3, já leva 14. Passou disso, entra sobrecarga: perde 2 de Destreza, anda pela metade e se abusar muito toma desvantagem em teste físico.
+        </p>
+        <p>
+          Além de converter as 24 armas antigas pro d20, montei 7 kits prontos (médico, infiltração, forja, exploração, assalto, erudito e boticário). A regra boa aqui é que o kit funciona como uma mochila própria pros itens dele. Enquanto as ferramentas tiverem guardadas dentro da maleta do kit, você só conta o peso do kit fechado na ficha, sem precisar ficar somando peso de atadura, frasquinho e gazua um por um.
+        </p>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">O Conclave e os itens iniciais</h3>
+        <p>
+          Em vez de cada um começar escolhendo item avulso de uma lista gigante sem critério, amarrei isso com a lore do Conclave. A ideia é que o Conclave opera aquela troca invisível nas sombras e entrega o que você precisa pra começar a andar pelo mundo:
+        </p>
+        <ul class="boletim-list">
+          <li>Cada personagem começa escolhendo <strong>FOR + 1</strong> itens da lista inicial (quem tem Força 0 garante pelo menos 1 item).</li>
+          <li>Todas as armas, escudos e utilitários da lista inicial já tão com dano, alcance, peso e propriedades fechadas, sem precisar ficar inventando na hora.</li>
+        </ul>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">Chega de &quot;Origens&quot;, agora são Vocações</h3>
+        <p>
+          As antigas 19 origens tinham muita coisa desbalanceada e com nomes que quebravam o clima do jogo. Limpei tudo e transformei em 10 Vocações:
+        </p>
+        <p>
+          <strong>Guarda, Pesquisador, Renegado, Mercenário, Curandeiro, Artesão, Nômade, Devoto, Aristocrata e Charlatão.</strong>
+        </p>
+        <p>
+          Cada vocação representa como você se virava no mundo antes de sair se arriscando por aí. Elas dão 2 perícias treinadas, ferramentas de ofício, equipamentos que já conversam com as regras de carga e 2 poderes práticos pra usar no jogo, sem dinheiro sobrando do nada e sem aquela lista infinita de idiomas.
+        </p>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">Teto de nível: do 20 pro 15</h3>
+        <p>
+          Caso alguém não tenha reparado nas tabelas novas, o nível máximo do sistema foi alterado de 20 pra 15.
+        </p>
+        <p>
+          Tomei essa decisão porque na real, na maioria das campanhas que a gente jogou, nunca dava tempo nem sessão suficiente pra alguém bater nível 20 de verdade. Ficava aquele monte de nível fantasma no fim do livro que ninguém usava. Além disso, encurtar a escala pra 15 níveis justifica ter menos habilidades acumuladas na ficha, que é justamente um dos meus focos principais pro 2.0: menos bagunça pra gerenciar e cada nível conquistado pesando muito mais no personagem.
+        </p>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">Faxina na tabela de condições</h3>
+        <p>
+          Por fim, dei uma limpada geral nas condições. A gente tinha mais de 30 condições na 1.5, sendo que metade fazia quase a mesma coisa ou tinha regra que ninguém lembrava no meio do combate.
+        </p>
+        <p>
+          Deixei só as condições que realmente importam pro jogo rodar liso (agarrado, caído, imobilizado, atordoado, cego, etc.), e fechei as regras das 5 condições elementais próprias de Wuitalur:
+        </p>
+        <ul class="boletim-list">
+          <li><strong>Fragmentado (Nulídrico):</strong> Corta a DEF do alvo e abre margem de crítico pra 19-20.</li>
+          <li><strong>Assombrado (Pesadelo):</strong> Dano mental por turno e desvantagem por alucinação.</li>
+          <li><strong>Infectado (Praga):</strong> Não cura vida em descanso e corre o risco do corpo virar bicho se morrer infectado.</li>
+          <li><strong>Congelado (Estase):</strong> Perde o turno inteiro congelado e ainda volta com lentidão pelo choque térmico.</li>
+          <li><strong>Amalgamado (Podridão):</strong> Parasita vivo no corpo que dá dano real todo turno e te joga no chão se não tirar logo.</li>
+        </ul>
+      </section>`
+  },
+  {
     id: "edicao-05",
     numero: 5,
-    edicao: "Edição #5",
+    edicao: "Edição 5",
     epoca: "Outubro 2026",
     data: "27 de Outubro de 2026",
     dataIso: "2026-10-27",
@@ -49,7 +175,7 @@ const BOLETINS_DATA = [
   {
     id: "edicao-04",
     numero: 4,
-    edicao: "Edição #4",
+    edicao: "Edição 4",
     epoca: "Outubro 2026",
     data: "24 de Outubro de 2026",
     dataIso: "2026-10-24",
@@ -476,7 +602,7 @@ const BOLETINS_DATA = [
   {
     id: "edicao-03",
     numero: 3,
-    edicao: "Edição #3",
+    edicao: "Edição 3",
     epoca: "Outubro 2026",
     data: "20 de Outubro de 2026",
     dataIso: "2026-10-20",
@@ -582,7 +708,7 @@ const BOLETINS_DATA = [
   {
     id: "edicao-02",
     numero: 2,
-    edicao: "Edição #2",
+    edicao: "Edição 2",
     epoca: "Outubro 2026",
     data: "19 de Outubro de 2026",
     dataIso: "2026-10-19",
@@ -680,7 +806,7 @@ const BOLETINS_DATA = [
   {
     id: "edicao-01",
     numero: 1,
-    edicao: "Edição #1",
+    edicao: "Edição 1",
     epoca: "Outubro 2026",
     data: "18 de Outubro de 2026",
     dataIso: "2026-10-18",

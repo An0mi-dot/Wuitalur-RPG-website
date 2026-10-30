@@ -232,7 +232,7 @@ const BoletimApp = {
           </div>
 
           <div class="boletim-tags-row">
-            ${(item.tags || []).map(t => `<span class="boletim-tag-chip">#${t}</span>`).join('')}
+            ${(item.tags || []).map(t => `<span class="boletim-tag-chip">${t.replace(/^#/, '')}</span>`).join('')}
           </div>
         </header>
 
@@ -325,6 +325,14 @@ const BoletimApp = {
 
   async checkAndNotifyNewBoletim() {
     if (!this.supabase || !this.data || this.data.length === 0) return;
+
+    // Dispara apenas quando estiver rodando no GitHub Pages remoto oficial
+    if (typeof window !== 'undefined') {
+      const host = window.location.hostname;
+      if (host !== 'an0mi-dot.github.io') {
+        return;
+      }
+    }
 
     try {
       const latest = this.data[0];

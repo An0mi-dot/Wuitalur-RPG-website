@@ -423,7 +423,7 @@ Completam a função primária, definindo o estilo exato de gameplay da classe:
 ## 5.3. Lista de Classes
 
 ### Classe 1: Consagrados
-**Papel Tático**: Estrategista Suporte
+**Papel Tático**: `ESTRATEGISTA` | `SUPORTE` | `CONTROLADOR`
 
 #### 1. Visão Geral
 Os Consagrados são devotos escolhidos que canalizam a energia primordial das divindades e das forças cósmicas de Wuitalur. Cada Consagrado porta o vínculo com uma divindade e manifesta um elemento condizente: Solar, Podridão, Praga, Sagrado, Estase, Electro ou Nulídrico. No campo de batalha, combinam suporte milagroso, imposição de barreiras e intervenções de artilharia elemental.
@@ -526,6 +526,142 @@ O Consagrado acumula fervor divino através do gasto de sua energia mística.
   * **Custo**: 25 EA
   * **Ação**: Ação Bônus
   * Canaliza a vontade dos deuses para reverter a derrota. Você e até três aliados em até 8B recuperam PVs iguais a Dano Base + Maestria + Expressão. Aliados que estejam à beira da morte ou caídos levantam-se imediatamente com essa quantidade de PVs e recebem uma ação padrão extra no próximo turno deles. Gera 1 ponto de Fervor.
+
+---
+
+### Classe 2: Compactador
+**Papel Tático**: `DEFENSOR` | `COLOSSO` | `TANQUE`
+
+#### 1. Visão Geral
+Conhecidos como Dobradores da Vida, os Compactadores são guerreiros devotados à manipulação da densidade da Energia Astral e da matéria física. Ao invés de apenas projetar energia para fora, eles alteram a coesão espiritual e a massa de seus próprios corpos ou de seus alvos, agindo como colossos inabaláveis na linha de frente que esmagam oponentes e absorvem impactos brutais.
+
+#### 2. Características da Classe
+* **Pontos de Vida Iniciais**: 14 + Vigor
+* **Pontos de Vida por Nível**: 8 + Vigor
+* **Energia Astral Inicial**: 25
+* **Energia Astral por Nível**: 10
+
+#### 3. Proficiências
+* **Armas**: Armas simples, martelos, clavas pesadas, espadas longas, machados e ataques desarmados.
+* **Armaduras**: Todas as armaduras leves, médias, pesadas e todos os escudos.
+* **Testes de Resistência**: Força e Vigor.
+* **Nível de Maestria**:
+  * Níveis 1 ao 4: 2
+  * Níveis 5 ao 8: 4
+  * Níveis 9 ao 12: 8
+  * Níveis 13 ao 15: 16
+
+#### 4. Dano Base
+O Dano Base da classe escala conforme a evolução de níveis:
+* **Níveis 1 ao 4**: 1d10
+* **Níveis 5 ao 8**: 2d10
+* **Níveis 9 ao 12**: 3d10
+* **Níveis 13 ao 15**: 4d10
+
+#### 5. Mecânica de Classe — Estados de Compactação
+Com uma Ação Bônus e gastando 5 EA, o Compactador manifesta um Estado de Compactação em si mesmo ou em uma criatura a até 4B. 
+* **Regras de Sustentação**: Pode manter no máximo 2 Estados ativos simultaneamente no campo de batalha. Um mesmo alvo só pode carregar um Estado por vez.
+* **Regra Especial de Distorção**: Toda manifestação, habilidade ou efeito que envolver o Estado de Distorção exige um sacrifício físico, consumindo Pontos de Vida do próprio Compactador.
+
+##### Os 3 Estados de Compactação
+
+* **Compressão**
+  * **Em si mesmo**: Seus ataques corporais causam o seu Dano Base adicional em dano físico, mas seu deslocamento é reduzido em -2B enquanto estiver comprimido.
+  * **Em um inimigo**: Condensa a massa do alvo. O inimigo tem sua Armadura reduzida pelo seu Nível de Maestria e sofre desvantagem em testes de Atletismo e Acrobacia.
+
+* **Estabilização**
+  * **Em si mesmo**: Concede um bônus de DEF igual ao seu Nível de Maestria e você se torna imune a ser derrubado, empurrado ou movido à força.
+  * **Em um aliado**: Estende uma barreira de ancoragem ao aliado. O alvo recebe um escudo com PVs temporários iguais a 6 + seu Nível de Maestria.
+
+* **Distorção**
+  * **Custo Adicional de Ativação**: Perda de Pontos de Vida igual ao seu Nível de Maestria.
+  * **Em si mesmo**: Desalinha sua silhueta no espaço. Ataques à distância disparados contra você sofrem desvantagem.
+  * **Em um inimigo**: Rompe a precisão motora do oponente. O alvo sofre desvantagem em testes de ataque e seu deslocamento é reduzido pela metade.
+
+##### Colapso de Estado
+O Compactador pode detonar a energia mantida em um Estado de Compactação ativo para gerar um efeito imediato e decisivo. Realizar um Colapso encerra imediatamente o Estado naquele alvo e consome recursos da seguinte forma:
+
+* **Colapso de Compressão: Impacto Sísmico**
+  * **Gatilho**: Ao acertar um ataque corpo a corpo contra um alvo sob efeito de Compressão.
+  * **Custo**: Ação Livre + 5 EA.
+  * **Efeito**: A energia comprimida explode no ponto de contato. O ataque causa o Dano Base da classe adicional em dano contundente e o alvo é arremessado 2B para trás, ficando Caído no chão caso seja de tamanho grande ou menor.
+
+* **Colapso de Estabilização: Barreira Cinética**
+  * **Gatilho**: Como uma Reação, no momento exato em que você ou o aliado protegido por Estabilização sofrer um ataque.
+  * **Custo**: 1 Reação + 5 EA.
+  * **Efeito**: A ancoragem endurece instantaneamente. O dano recebido pelo ataque é reduzido diretamente pelo dobro do valor da sua DEF.
+
+* **Colapso de Distorção: Quebra de Continuidade**
+  * **Gatilho**: Como uma Reação, quando um inimigo sob efeito de Distorção declarar um ataque contra você ou um aliado adjacente.
+  * **Custo**: 1 Reação + perda de Pontos de Vida igual ao dobro do seu Nível de Maestria.
+  * **Efeito**: A fratura dimensional dobra o espaço ao redor do oponente. O ataque do inimigo é totalmente anulado e ele é forçado a recuar 2B em linha reta, desengajando do combate.
+
+#### 6. Habilidades de Classe
+
+##### Nível 1 — Escolha
+*O jogador escolhe 1 entre as duas opções abaixo:*
+
+* **Punho de Inércia**
+  * **Custo**: 5 EA
+  * **Ação**: Ação Padrão
+  * Concentra massa extrema no braço ou na arma ao desferir um golpe corpo a corpo. O ataque causa o dano da arma somado ao seu Dano Base em dano contundente e aplica o Estado de **Compressão** no alvo atingido sem consumir sua Ação Bônus.
+
+* **Revestimento de Densidade**
+  * **Custo**: 5 EA
+  * **Ação**: Ação Bônus
+  * Condensa a camada externa do seu corpo em uma couraça impenetrável. Você recebe uma barreira protetora com 6 + seu Nível de Maestria em PVs temporários e ativa o Estado de **Estabilização** em si mesmo sem consumir ações adicionais.
+
+##### Nível 4 — Escolha
+*O jogador escolhe 1 entre as duas opções abaixo:*
+
+* **Quebra de Ritmo**
+  * **Custo**: 10 EA + perda de Pontos de Vida igual ao seu Nível de Maestria
+  * **Ação**: Ação Bônus
+  * Fratura sua própria matéria para distorcer o fluxo de tempo e espaço ao redor de um inimigo a até 4B. O alvo sofre desvantagem em todos os testes de ataque até o início do seu próximo turno e recebe o Estado de **Distorção** sem consumir ações adicionais.
+
+* **Ancoragem Titânica**
+  * **Custo**: 10 EA
+  * **Ação**: Ação Padrão
+  * O Compactador bate no solo e cria uma atração gravitacional em uma área de 3B de raio ao seu redor. Todas as criaturas hostis na área realizam um teste de Força; em caso de falha, são puxadas 2B em direção ao Compactador e sofrem a condição **Imobilizado** até o final do próximo turno delas.
+
+##### Nível 7 — Escolha
+*O jogador escolhe 1 entre as duas opções abaixo:*
+
+* **Fratura de Impacto**
+  * **Custo**: 15 EA
+  * **Ação**: Ação Padrão
+  * Desfere um golpe de massa esmagadora com a arma ou os punhos contra um inimigo adjacente. O ataque causa o dano da arma somado ao dobro do seu Dano Base em dano contundente, reduz a Armadura do alvo a zero por 1 rodada e aplica a condição **Caído** caso o alvo seja de tamanho médio ou pequeno. Se o alvo já estiver sob o Estado de **Compressão**, sofre também a condição **Atordoado** até o início do seu próximo turno.
+
+* **Bastião Inquebrável**
+  * **Custo**: 15 EA
+  * **Ação**: Ação Bônus
+  * Estabiliza a matéria e a gravidade ao redor do grupo. Concede uma barreira protetora com 12 + seu Nível de Maestria em PVs temporários para você e para até dois aliados em até 4B. Enquanto essa barreira estiver ativa, os alvos protegidos são imunes a serem empurrados, agarrados ou sofrerem a condição **Caído**.
+
+##### Nível 10 — Escolha
+*O jogador escolhe 1 entre as duas opções abaixo:*
+
+* **Campo de Assimetria**
+  * **Custo**: 20 EA + perda de Pontos de Vida igual ao seu Nível de Maestria
+  * **Ação**: Ação Padrão
+  * O Compactador fratura o próprio corpo para projetar uma cúpula de distorção gravitacional de 4B de raio centrada em si mesmo, que dura até o início do seu próximo turno. Todas as criaturas hostis dentro da área sofrem a condição **Lentidão**, sofrem desvantagem em testes de ataque e recebem o Estado de **Distorção** imediatamente.
+
+* **Esmagamento Vetorial**
+  * **Custo**: 20 EA
+  * **Ação**: Ação Padrão
+  * Comprime brutalmente as forças gravitacionais sobre uma criatura a até 6B. O alvo sofre o seu Dano Base + Força em dano contundente e realiza um teste de Vigor. Em caso de falha, sofre a condição **Paralisado** até o início do seu próximo turno; se tiver sucesso, sofre a condição **Imobilizado**. Caso o alvo possua qualquer Estado de Compactação ativo, o estado é consumido no impacto para causar 2d10 de dano contundente adicional.
+
+##### Nível 13 — Escolha
+*O jogador escolhe 1 entre as duas opções abaixo:*
+
+* **Forma Inabalável**
+  * **Custo**: 25 EA
+  * **Ação**: Ação Bônus
+  * O Compactador ancora sua massa física e astral diretamente ao núcleo do mundo, tornando-se uma fortaleza viva por 3 rodadas. Você recebe uma barreira com 40 PVs temporários, torna-se imune a qualquer condição negativa enquanto a barreira durar e aplica o Estado de **Estabilização** em si mesmo e em todos os aliados a até 6B. Além disso, qualquer aliado a até 2B de você pode usar o seu valor de DEF no lugar do dele ao Defender.
+
+* **Singularidade Astral**
+  * **Custo**: 25 EA
+  * **Ação**: Ação Padrão
+  * Colapsa a gravidade em um ponto visível a até 8B, gerando um poço gravitacional devastador em 6B de raio. Todas as criaturas na área são puxadas com violência para o centro da singularidade, sofrem o seu Dano Base + Nível de Maestria em dano contundente e têm sua Armadura anulada por 1 rodada. Criaturas de tamanho grande ou menor realizam um teste de Força; em caso de falha, sofrem a condição **Paralisado** até o início do seu próximo turno.
 
 
 ---
@@ -949,3 +1085,153 @@ Ao criar um personagem em Wuitalur 2.0, você escolhe uma Vocação que represen
 * **Poderes de Vocação**:
   * **Falsa Identidade**: Você possui uma identidade forjada completa com histórico crível e disfarces, recebendo vantagem em testes de Enganação para sustentar a farsa.
   * **Truque Desconcertante**: Uma vez por combate, com uma ação bônus, você lança uma distração chamativa contra um inimigo em até 4B; o próximo ataque desse alvo contra você sofre desvantagem.
+
+
+---
+
+# CAPÍTULO 9: TABELA DE CONDIÇÕES
+
+Condições são estados temporários ou contínuos que alteram o desempenho físico, sensorial ou mental de uma criatura no campo de batalha e na exploração. Uma criatura pode sofrer múltiplas condições diferentes simultaneamente, aplicando os efeitos de cada uma. Efeitos idênticos que aplicam a mesma condição não acumulam seus efeitos numéricos a menos que o texto da habilidade declare expressamente o contrário.
+
+---
+
+## 9.1. Condições Físicas e Motoras
+
+* **Agarrado**
+  * O deslocamento da criatura se torna 0B e ela não pode se beneficiar de nenhum bônus de movimento.
+  * A criatura agarrada sofre desvantagem em testes para Desviar.
+  * O alvo pode gastar uma Ação Padrão para tentar se libertar realizando um teste de Força ou Acrobacia oposto ao teste de Força de quem o agarrou. A condição se encerra imediatamente se o agressor for afastado ou incapacitado.
+
+* **Caído**
+  * A criatura está deitada no chão. Seu único movimento possível é rastejar com metade do seu deslocamento total.
+  * Ataques corpo a corpo desferidos contra a criatura têm vantagem. Ataques de longo alcance contra ela sofrem desvantagem.
+  * A criatura sofre desvantagem em seus próprios testes de ataque.
+  * Levantar-se consome metade do deslocamento total da criatura naquela rodada.
+
+* **Imobilizado**
+  * A criatura está presa por raízes, cordas, vinhas ou gelo. Seu deslocamento se torna 0B e ela não pode realizar disparadas ou arrancadas.
+  * Ataques realizados contra ela recebem vantagem.
+  * A criatura ainda pode realizar ataques e ações que não exijam locomoção física.
+
+* **Lentidão**
+  * O deslocamento total da criatura é reduzido pela metade.
+  * A criatura não pode utilizar a Reação de Desviar enquanto estiver sob o efeito de lentidão.
+
+* **Paralisado**
+  * A criatura está com os nervos totalmente travados ou congelada por estase absoluta.
+  * Não pode realizar nenhuma Ação, Ação Bônus, Reação ou deslocamento.
+  * Falha automaticamente em todos os testes de Força e Destreza.
+  * Ataques corpo a corpo contra um alvo paralisado desferidos a 1B de distância são considerados acertos críticos automáticos.
+
+* **Desarmado**
+  * A criatura soltou sua arma ou equipamento empunhado no solo.
+  * Não pode atacar com essa arma até gastar uma Ação Bônus para recolhê-la do chão ou sacar uma arma sobressalente da cintura.
+
+---
+
+## 9.2. Condições Sensoriais e Mentais
+
+* **Abalado**
+  * A criatura está tomada por pânico, medo sobrenatural ou intimidação severa.
+  * Sofre desvantagem em todos os testes de atributos, ataques e jogadas de perícia.
+  * A criatura não pode se deslocar voluntariamente em direção à fonte do seu medo.
+
+* **Atordoado**
+  * A criatura sofreu uma concussão violenta ou sobrecarga sensorial direta.
+  * Perde o uso de sua Ação Padrão e de sua Ação Bônus no seu próximo turno.
+  * Mantém apenas sua capacidade de deslocamento e sua Reação defensiva.
+
+* **Cego**
+  * A criatura não enxerga o ambiente ao redor, falhando automaticamente em qualquer teste que dependa de visão.
+  * Ataques realizados pela criatura cega sofrem desvantagem.
+  * Todos os ataques desferidos contra a criatura cega ganham vantagem.
+
+* **Confuso**
+  * O fluxo de pensamentos do alvo entra em colapso. No início de cada um dos seus turnos, o jogador rola 1d4 para determinar a conduta da criatura:
+    * **1**: Ataca a criatura mais próxima, seja aliada ou inimiga.
+    * **2**: Gasta todo o seu deslocamento em uma direção aleatória e não realiza ações.
+    * **3**: Fica estática balbuciando e perde o turno.
+    * **4**: Consegue retomar o foco e age normalmente.
+
+* **Inconsciente**
+  * A criatura está desacordada ou à beira da morte. Fica Caída, indefesa e cega ao ambiente.
+  * Não pode realizar ações, reações ou deslocamento.
+  * Qualquer ataque que acerte uma criatura inconsciente a até 1B é considerado um acerto crítico automático.
+
+* **Invisível**
+  * A criatura não pode ser detectada pela visão comum, podendo ser rastreada apenas por sons de passos, cheiro ou marcas deixadas no solo.
+  * Ataques desferidos pela criatura invisível recebem vantagem.
+  * Ataques desferidos contra a criatura invisível sofrem desvantagem.
+
+---
+
+## 9.3. Condições Contínuas e Comuns
+
+* **Sangramento**
+  * Ferimentos abertos fazem a criatura perder sangue continuamente.
+  * No início de cada um de seus turnos, a criatura sofre 1d6 de dano físico direto, que ignora Armadura e DEF.
+  * O sangramento cessa com um teste bem-sucedido de Medicina contra desafio moderado ou pelo uso de bandagens de primeiros socorros.
+
+* **Queimando**
+  * O alvo está envolto em chamas vivas ou calor extremo.
+  * No início de cada turno, sofre 1d6 de dano de fogo. Ataques subsequentes de fogo ou elemento Solar contra o alvo causam +2 de dano adicional.
+  * O fogo pode ser extinto gastando uma Ação Bônus para rolar no chão ou abafar as chamas.
+
+* **Envenenado**
+  * Toxinas letais correm pela circulação sanguínea da criatura.
+  * Sofre desvantagem permanente em todos os testes de Força e Vigor.
+  * Sofre 1d6 de dano tóxico no início de cada um de seus turnos até que o veneno seja neutralizado por um antídoto ou expulso pelo organismo.
+
+* **Eletrocutado**
+  * Descargas elétricas descontroladas percorrem os músculos da criatura.
+  * Sofre desvantagem em testes de ataque corpo a corpo e ataques à distância.
+  * No início do seu turno, sofre 1d6 de dano de Electro. Se houver outra criatura a até 1B dela, o choque salta para esse alvo secundário causando 1d4 de dano imediato.
+
+---
+
+## 9.4. Condições Elementais Exclusivas de Wuitalur
+
+* **Fragmentado**
+  * **Elemento**: Nulídrico
+  * **Duração**: Turnos definidos pelo ataque ou até sair da área de anomalia.
+  * O corpo do alvo é cortado por fissuras carmesins que se espalham como rachaduras no espaço, desestabilizando sua coesão física.
+  * A DEF e a Armadura do alvo são reduzidas em 2 pontos.
+  * O alvo sofre desvantagem em qualquer teste para Desviar.
+  * A margem de acerto crítico de qualquer ataque desferido contra o alvo é ampliada em 1 no d20; ataques contra ele passam a ser críticos com 19 ou 20 natural.
+  * Não acumulável.
+
+* **Assombrado**
+  * **Elemento**: Pesadelo
+  * **Duração**: Turnos definidos ou até superar teste de resistência.
+  * A mente do alvo é invadida por ilusões aterrorizantes, forçando-o a reviver seus piores traumas.
+  * O alvo sofre 1d6 de dano mental direto no início de cada um de seus turnos.
+  * Sofre desvantagem em todos os testes de Mente e em testes para Desviar devido à sobrecarga de alucinações.
+  * Pode repetir o teste de resistência de Mente no final de cada um de seus turnos para encerrar a condição.
+  * Não acumulável.
+
+* **Infectado**
+  * **Elemento**: Praga
+  * **Duração**: Permanente até ser tratada ou regredida.
+  * A vítima é contaminada por uma doença viva e degenerativa que se manifesta através de pele acinzentada e veias negras pulsantes.
+  * A criatura não consegue regenerar Pontos de Vida por descansos curtos ou longos enquanto estiver infectada.
+  * Sofre redução de 2B em seu deslocamento total e desvantagem permanente em todos os testes de Força e Vigor.
+  * Se o alvo morrer infectado, seu cadáver se transforma em uma monstruosidade de Praga após 1d4 horas.
+  * Itens médicos especializados podem regredir os sintomas temporariamente, mas a erradicação exige purificação elemental ou cirurgia complexa.
+  * Não acumulável.
+
+* **Congelado**
+  * **Elemento**: Estase
+  * **Duração**: 1 rodada.
+  * O alvo é revestido por gelo cósmico profundo que retarda o tempo biológico e anula qualquer resposta motora.
+  * A criatura perde totalmente o seu próximo turno e seu deslocamento se torna 0B.
+  * Ao se descongelar no início da rodada seguinte, o choque térmico residual aplica a condição de Lentidão no alvo por 1 rodada adicional.
+  * Não acumulável.
+
+* **Amalgamado**
+  * **Elemento**: Podridão
+  * **Duração**: Até o parasita ser removido.
+  * Um parasita pútrido de lodo vivo se aloja nos órgãos e tecidos internos da vítima, vazando secreções negras pelos poros e alimentando-se de sua essência vital.
+  * O alvo sofre 1d8 de Dano Real no início de cada um de seus turnos, ignorando qualquer valor de DEF ou Armadura.
+  * A condição só cessa ao receber cura elemental ou tratamento médico cirúrgico com solventes purificadores.
+  * Se o parasita permanecer ativo até o final do combate, a criatura entra imediatamente no estado de Morrendo.
+  * Não acumulável.

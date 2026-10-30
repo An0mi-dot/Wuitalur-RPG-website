@@ -80,33 +80,56 @@
     <!-- STAGE SHOWCASE 100VH (SEM SCROLL GERAL) -->
     <div class="showcase-viewport" id="showcase-viewport">
 
-      <!-- 1. COLUNA LATERAL ESQUERDA: HAMBÚRGUER + TÓPICOS (FIEL AO ESBOÇO) -->
-      <aside class="showcase-left-dock" id="showcase-left-dock" aria-label="Navegação da Classe">
-        <!-- Botão Hambúrguer no Topo da Esquerda -->
-        <button type="button" class="showcase-hamburger-btn" id="showcase-hamburger-btn" aria-label="Abrir lista de classes">
-          <span class="hamburger-icon">&#x2630;</span>
-          <span class="hamburger-label" id="showcase-hamburger-label">Classes</span>
-        </button>
+      <!-- TELA 1: HUB DE SELEÇÃO DE CLASSES -->
+      <section class="showcase-hub-view" id="showcase-hub-view" aria-label="Seleção de Classes">
+        <header class="showcase-hub-topbar">
+          <div class="showcase-hub-brand">
+            <span class="brand-tag">W_SYS // V1.5</span>
+            <span class="brand-title">WUITALUR RPG</span>
+          </div>
+        </header>
 
-        <!-- Lista Vertical de Tópicos -->
-        <div class="showcase-topics-nav">
-          <div class="showcase-topics-heading">Tópicos da Classe</div>
-          <div class="showcase-topic-tabs" id="showcase-topic-tabs">
-            <!-- Gerado dinamicamente via JS -->
+        <div class="showcase-hub-hero">
+          <div class="showcase-hub-card">
+            <h1 class="hub-card-title">Selecione a Classe</h1>
+            <p class="hub-card-desc">Escolha uma classe para analisar a ilustração em destaque e o compêndio completo de habilidades.</p>
+            
+            <div class="hub-search-box">
+              <span class="hub-search-icon">&#x2315;</span>
+              <input type="text" id="showcase-hub-search" class="showcase-hub-search-input" placeholder="Filtrar classe por nome..." autocomplete="off">
+            </div>
+
+            <div class="showcase-hub-list-wrap">
+              <div class="showcase-hub-list" id="showcase-hub-list" role="list">
+                <!-- Botões empilhados das classes gerados dinamicamente via JS -->
+              </div>
+            </div>
           </div>
         </div>
-      </aside>
+      </section>
 
-      <!-- 2. PALCO CENTRAL (ILUSTRAÇÃO / CONTEÚDO DINÂMICO) -->
-      <main class="showcase-center-stage" id="showcase-center-stage">
-        <div class="showcase-dots-overlay"></div>
+      <!-- TELA 2: VISUALIZAÇÃO DETALHADA DA CLASSE (2 COLUNAS: ILUSTRAÇÃO À ESQUERDA / COMPÊNDIO À DIREITA) -->
+      <div class="showcase-detail-view" id="showcase-detail-view" style="display: none;">
 
-                <!-- COMPONENTE HERO SPOTLIGHT 2.5D (ESTILO POSTER DEADLOCK) -->
-        <div class="showcase-art-view" id="showcase-art-view">
+        <!-- COLUNA ESQUERDA: ILUSTRAÇÃO HERO SPOTLIGHT 2.5D (FIXA) -->
+        <section class="showcase-detail-left" id="showcase-detail-left" aria-label="Ilustração da Classe">
+          <!-- Barra Superior da Coluna Esquerda -->
+          <div class="showcase-detail-topbar">
+            <button type="button" class="showcase-btn-back-hub" id="showcase-btn-back-hub" title="Voltar para a seleção de classes">
+              <span class="back-icon">&#x2190;</span>
+              <span class="back-text">Seleção de Classes</span>
+            </button>
+            <button type="button" class="showcase-btn-system-menu" id="showcase-btn-detail-sidebar" title="Abrir menu geral do site">
+              <span class="menu-icon">&#x2630;</span>
+              <span class="menu-text">Menu</span>
+            </button>
+          </div>
+
+          <!-- Componente Hero Spotlight 2.5D Parallax -->
           <div class="spotlight-viewport" id="spotlight-viewport">
             <div class="spotlight-stage" id="spotlight-stage">
 
-              <!-- CAMADA 1: FUNDO GEOMÉTRICO LARGO E TÉCNICO (Back Layer) -->
+              <!-- Camada 1: Fundo Geométrico Técnico (Back Layer) -->
               <div class="spotlight-layer spotlight-layer-back" data-depth="12" aria-hidden="true">
                 <div class="spotlight-geo-backdrop">
                   <div class="spotlight-halftone-pattern"></div>
@@ -129,111 +152,79 @@
                 </div>
               </div>
 
-              <!-- CAMADA 2: ILUSTRAÇÃO DA CLASSE PROTAGONISTA (Character Layer) -->
+              <!-- Camada 2: Ilustração da Classe (Character Layer) -->
               <div class="spotlight-layer spotlight-layer-character" data-depth="28">
-                <div class="spotlight-char-wrap">
-                  <img src="" alt="" class="showcase-hero-art" id="showcase-hero-art">
+                <div class="spotlight-char-wrap glitch-portrait-box" id="spotlight-char-wrap">
+                  <canvas id="spotlight-glitch-canvas" class="portrait-glitch-canvas"></canvas>
+                  <img src="" alt="" class="showcase-hero-art glitch-img-base" id="showcase-hero-art">
+                  <img src="" alt="" class="showcase-hero-art glitch-img-layer glitch-layer-1" id="showcase-hero-art-g1" aria-hidden="true">
+                  <img src="" alt="" class="showcase-hero-art glitch-img-layer glitch-layer-2" id="showcase-hero-art-g2" aria-hidden="true">
                 </div>
               </div>
 
-              <!-- GATILHO ESTACIONÁRIO DO PARALLAX (HITBOX SOBRE A ARTE) -->
+              <!-- Hitbox Estacionária para Captura de Mousemove -->
               <div class="spotlight-hitbox" id="spotlight-hitbox" aria-hidden="true"></div>
 
-              <!-- CAMADA 3: TIPOGRAFIA NO TOPO E BADGES (Foreground Layer) -->
+              <!-- Camada 3: Tipografia do Título e Badges (Foreground Layer) -->
               <div class="spotlight-layer spotlight-layer-foreground" data-depth="46">
                 <div class="spotlight-header-block">
                   <h2 class="spotlight-class-title" id="showcase-spotlight-title">Carregando...</h2>
                   <div class="spotlight-concept-tags" id="showcase-spotlight-tags">
-                    <span class="spotlight-tag tag-tape-purple">ESTRATEGISTA</span>
-                    <span class="spotlight-tag tag-tape-dark">SUPORTE</span>
-                    <span class="spotlight-tag tag-tape-hazard">CONTROLADOR</span>
+                    <!-- Badges geradas via JS -->
                   </div>
                 </div>
               </div>
 
             </div>
           </div>
-        </div>
+        </section>
 
-        <!-- MODO CONTEÚDO (AO SELECIONAR UM TÓPICO NA ESQUERDA) -->
-        <div class="showcase-content-view" id="showcase-content-view" style="display: none;">
-          <div class="showcase-content-card">
-            <div class="showcase-content-header">
-              <div class="showcase-content-title-group">
-                <span class="showcase-content-category" id="showcase-content-category">Classe</span>
-                <h3 class="showcase-topic-active-title" id="showcase-topic-active-title">Visão Geral</h3>
+        <!-- COLUNA DIREITA: COMPÊNDIO TÁTICO DA CLASSE (ROLAGEM INDEPENDENTE) -->
+        <section class="showcase-detail-right" id="showcase-detail-right" aria-label="Compêndio da Classe">
+          
+          <header class="compendium-header" id="compendium-header">
+            <div class="compendium-header-main">
+              <div class="compendium-meta-group">
+                <span class="compendium-role-indicator" id="compendium-role-indicator">DOSSIÊ TÁTICO</span>
+                <span class="compendium-nd-indicator" id="compendium-nd-indicator">ND 1 // INICIANTE</span>
               </div>
-              <div class="showcase-content-actions">
-                <span class="showcase-nd-badge" id="showcase-nd-badge">ND 1</span>
-                <button type="button" class="showcase-btn-view-art" id="showcase-btn-view-art" title="Ver Ilustração">
-                  <span>&#x25C0;</span> Ver Arte
-                </button>
+              <div class="compendium-search-wrap">
+                <span class="compendium-search-icon">&#x2315;</span>
+                <input type="text" id="compendium-topic-search" class="compendium-topic-search" placeholder="Pesquisar tópicos ou habilidades..." autocomplete="off">
+                <button type="button" id="compendium-search-clear" class="compendium-search-clear" style="display: none;" title="Limpar pesquisa">&times;</button>
               </div>
             </div>
-            <div class="showcase-topic-content" id="showcase-topic-content">
+
+            <!-- Navegação por Tópicos (Tabs/Chips com Scroll e Controles) -->
+            <div class="compendium-nav-container" id="compendium-nav-container">
+              <button type="button" class="compendium-nav-btn prev" id="compendium-nav-prev" aria-label="Rolar tópicos para a esquerda" title="Tópicos anteriores">&#x2039;</button>
+              <nav class="compendium-topic-nav" id="compendium-topic-nav" aria-label="Tópicos da Classe">
+                <div class="compendium-topic-tabs" id="compendium-topic-tabs">
+                  <!-- Abas geradas dinamicamente via JS -->
+                </div>
+              </nav>
+              <button type="button" class="compendium-nav-btn next" id="compendium-nav-next" aria-label="Rolar tópicos para a direita" title="Próximos tópicos">&#x203A;</button>
+            </div>
+          </header>
+
+          <!-- Área de Leitura com Rolagem Independente -->
+          <div class="compendium-scroll-pane" id="compendium-scroll-pane">
+            <div class="compendium-active-heading-wrap">
+              <h3 class="compendium-topic-title" id="compendium-topic-title">Visão Geral</h3>
+            </div>
+            <div class="compendium-content-body" id="compendium-content-body">
               <!-- Conteúdo injetado dinamicamente via JS -->
             </div>
           </div>
-        </div>
-      </main>
 
-      <!-- 3. PAINEL DA DIREITA: AZUL COBALTO DIAGONAL (FIEL AO ESBOÇO) -->
-      <aside class="showcase-right-blade" id="showcase-right-blade">
-        <div class="showcase-blade-inner">
-          <div class="showcase-blade-hud">
-            <div class="showcase-hud-card">
-              <div class="showcase-hud-card-top">
-                <span class="showcase-hud-bracket">[</span>
-                <span class="showcase-hud-tag">Dossiê de Classe</span>
-                <span class="showcase-hud-bracket">]</span>
-              </div>
+        </section>
 
-              <!-- Nível de Dificuldade (ND) -->
-              <div class="showcase-nd-block">
-                <div class="showcase-nd-header">
-                  <span class="hud-label">Dificuldade</span>
-                  <span class="showcase-nd-tier" id="showcase-nd-tier">Iniciante</span>
-                </div>
-                <div class="showcase-nd-display">
-                  <span class="showcase-nd-large" id="showcase-blade-nd">ND 1</span>
-                  <div class="showcase-nd-gauge" id="showcase-nd-gauge" aria-label="Nível de ameaça">
-                    <span class="gauge-pip active"></span>
-                    <span class="gauge-pip"></span>
-                    <span class="gauge-pip"></span>
-                    <span class="gauge-pip"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Detalhe Decorativo de Listras Diagonais /// do Esboço -->
-          <div class="showcase-tech-stripes" aria-hidden="true">
-            <span></span><span></span><span></span>
-          </div>
-        </div>
-      </aside>
-
-      <!-- 4. NOME GIGANTE DA CLASSE (Sobreposto entre centro e painel direito embaixo) -->
-      <div class="showcase-big-name" id="showcase-big-name">Carregando...</div>
-
-    </div>
-
-    <!-- GAVETA MODAL LATERAL (SELEÇÃO RÁPIDA DE OUTRAS CLASSES) -->
-    <div class="showcase-drawer-backdrop" id="showcase-drawer-backdrop">
-      <div class="showcase-drawer">
-        <div class="showcase-drawer-header">
-          <h3 class="showcase-drawer-title" id="showcase-drawer-heading">Todas as Classes</h3>
-          <button type="button" class="showcase-drawer-close" id="showcase-drawer-close">&times;</button>
-        </div>
-        <div class="showcase-drawer-search">
-          <input type="text" class="showcase-drawer-input" id="showcase-drawer-input" placeholder="Buscar por nome...">
-        </div>
-        <div class="showcase-drawer-list" id="showcase-drawer-list">
-          <!-- Gerado dinamicamente -->
-        </div>
       </div>
+
     </div>
+
+    <!-- BACKDROP DA SIDEBAR GLOBAL QUANDO ABERTA NO SHOWCASE -->
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
 
     <main class="page-content" style="display: none !important;">
 
@@ -2689,6 +2680,9 @@
 
 <section class="subsection" id="anomalo">
         <div class="race-card">
+          <div class="race-card-image">
+            <img src="assets/classes/anomalo.png" alt="Anômalo" loading="lazy" decoding="async">
+          </div>
           <div class="race-card-header">
             <div>
               <h2 class="race-name">Anômalo</h2>
@@ -2992,6 +2986,9 @@
 
 <section class="subsection" id="atirador-espectral">
         <div class="race-card">
+          <div class="race-card-image">
+            <img src="assets/classes/atirador_espectral.png" alt="Atirador Espectral" loading="lazy" decoding="async">
+          </div>
           <div class="race-card-header">
             <div>
               <h2 class="race-name">Atirador Espectral</h2>
@@ -4326,6 +4323,9 @@
 
 <section class="subsection" id="sobrevivente">
         <div class="race-card">
+          <div class="race-card-image">
+            <img src="assets/classes/sobrevivente.png" alt="Sobrevivente" loading="lazy" decoding="async">
+          </div>
           <div class="race-card-header">
             <div>
               <h2 class="race-name">Sobrevivente</h2>
@@ -4546,7 +4546,7 @@
 
       <!-- FILTRO SVG DE PAPEL AMASSADO / POSTER VIVO (ESTILO DEADLOCK - ESTATICO) -->
       <svg class="sr-only" style="position: absolute; width: 0; height: 0; pointer-events: none;" aria-hidden="true">
-        <filter id="paper-warp" x="-10%" y="-10%" width="120%" height="120%" filterUnits="objectBoundingBox">
+        <filter id="paper-warp" x="-35%" y="-35%" width="170%" height="170%" filterUnits="objectBoundingBox">
           <feTurbulence type="fractalNoise" baseFrequency="0.025 0.025" numOctaves="3" result="noise" seed="2" />
           <feDisplacementMap id="paper-warp-map" in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G" />
         </filter>

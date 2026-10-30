@@ -50,6 +50,7 @@
       <div class="sidebar-section-title">Regras</div>
       <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
       <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
 
       <div class="sidebar-section-title">Conteúdo</div>
       <a href="classes.html" class="sidebar-link active"><span class="icon"></span> Classes</a>
@@ -64,33 +65,59 @@
       <h1>Classes</h1>
     </header>
 
-    <!-- STAGE SHOWCASE 100VH -->
+    <!-- STAGE SHOWCASE 100VH (SEM SCROLL GERAL) -->
     <div class="showcase-viewport" id="showcase-viewport">
 
-      <!-- COLUNA LATERAL ESQUERDA -->
-      <aside class="showcase-left-dock" id="showcase-left-dock" aria-label="Navega&ccedil;&atilde;o da Classe">
-        <button type="button" class="showcase-hamburger-btn" id="showcase-hamburger-btn" aria-label="Abrir lista de classes">
-          <span class="hamburger-icon">&#x2630;</span>
-          <span class="hamburger-label" id="showcase-hamburger-label">Classes</span>
-        </button>
+      <!-- TELA 1: HUB DE SELEÇÃO DE CLASSES -->
+      <section class="showcase-hub-view" id="showcase-hub-view" aria-label="Seleção de Classes">
+        <header class="showcase-hub-topbar">
+          <div class="showcase-hub-brand">
+            <span class="brand-tag">W_SYS // V2.0</span>
+            <span class="brand-title">WUITALUR 2.0</span>
+          </div>
+        </header>
 
-        <div class="showcase-topics-nav">
-          <div class="showcase-topics-heading">T&oacute;picos da Classe</div>
-          <div class="showcase-topic-tabs" id="showcase-topic-tabs">
+        <div class="showcase-hub-hero">
+          <div class="showcase-hub-card">
+            <h1 class="hub-card-title">Selecione a Classe</h1>
+            <p class="hub-card-desc">Escolha uma classe para analisar a ilustração em destaque e o compêndio completo de habilidades.</p>
+            
+            <div class="hub-search-box">
+              <span class="hub-search-icon">&#x2315;</span>
+              <input type="text" id="showcase-hub-search" class="showcase-hub-search-input" placeholder="Filtrar classe por nome..." autocomplete="off">
+            </div>
+
+            <div class="showcase-hub-list-wrap">
+              <div class="showcase-hub-list" id="showcase-hub-list" role="list">
+                <!-- Botões empilhados das classes gerados dinamicamente via JS -->
+              </div>
+            </div>
           </div>
         </div>
-      </aside>
+      </section>
 
-      <!-- PALCO CENTRAL -->
-      <main class="showcase-center-stage" id="showcase-center-stage">
-        <div class="showcase-dots-overlay"></div>
+      <!-- TELA 2: VISUALIZAÇÃO DETALHADA DA CLASSE (2 COLUNAS: ILUSTRAÇÃO À ESQUERDA / COMPÊNDIO À DIREITA) -->
+      <div class="showcase-detail-view" id="showcase-detail-view" style="display: none;">
 
-                <!-- COMPONENTE HERO SPOTLIGHT 2.5D (ESTILO POSTER DEADLOCK) -->
-        <div class="showcase-art-view" id="showcase-art-view">
+        <!-- COLUNA ESQUERDA: ILUSTRAÇÃO HERO SPOTLIGHT 2.5D (FIXA) -->
+        <section class="showcase-detail-left" id="showcase-detail-left" aria-label="Ilustração da Classe">
+          <!-- Barra Superior da Coluna Esquerda -->
+          <div class="showcase-detail-topbar">
+            <button type="button" class="showcase-btn-back-hub" id="showcase-btn-back-hub" title="Voltar para a seleção de classes">
+              <span class="back-icon">&#x2190;</span>
+              <span class="back-text">Seleção de Classes</span>
+            </button>
+            <button type="button" class="showcase-btn-system-menu" id="showcase-btn-detail-sidebar" title="Abrir menu geral do site">
+              <span class="menu-icon">&#x2630;</span>
+              <span class="menu-text">Menu</span>
+            </button>
+          </div>
+
+          <!-- Componente Hero Spotlight 2.5D Parallax -->
           <div class="spotlight-viewport" id="spotlight-viewport">
             <div class="spotlight-stage" id="spotlight-stage">
 
-              <!-- CAMADA 1: FUNDO GEOMÉTRICO LARGO E TÉCNICO (Back Layer) -->
+              <!-- Camada 1: Fundo Geométrico Técnico (Back Layer) -->
               <div class="spotlight-layer spotlight-layer-back" data-depth="12" aria-hidden="true">
                 <div class="spotlight-geo-backdrop">
                   <div class="spotlight-halftone-pattern"></div>
@@ -113,105 +140,79 @@
                 </div>
               </div>
 
-              <!-- CAMADA 2: ILUSTRAÇÃO DA CLASSE PROTAGONISTA (Character Layer) -->
+              <!-- Camada 2: Ilustração da Classe (Character Layer) -->
               <div class="spotlight-layer spotlight-layer-character" data-depth="28">
-                <div class="spotlight-char-wrap">
-                  <img src="" alt="" class="showcase-hero-art" id="showcase-hero-art">
+                <div class="spotlight-char-wrap glitch-portrait-box" id="spotlight-char-wrap">
+                  <canvas id="spotlight-glitch-canvas" class="portrait-glitch-canvas"></canvas>
+                  <img src="" alt="" class="showcase-hero-art glitch-img-base" id="showcase-hero-art">
+                  <img src="" alt="" class="showcase-hero-art glitch-img-layer glitch-layer-1" id="showcase-hero-art-g1" aria-hidden="true">
+                  <img src="" alt="" class="showcase-hero-art glitch-img-layer glitch-layer-2" id="showcase-hero-art-g2" aria-hidden="true">
                 </div>
               </div>
 
-              <!-- GATILHO ESTACIONÁRIO DO PARALLAX (HITBOX SOBRE A ARTE) -->
+              <!-- Hitbox Estacionária para Captura de Mousemove -->
               <div class="spotlight-hitbox" id="spotlight-hitbox" aria-hidden="true"></div>
 
-              <!-- CAMADA 3: TIPOGRAFIA NO TOPO E BADGES (Foreground Layer) -->
+              <!-- Camada 3: Tipografia do Título e Badges (Foreground Layer) -->
               <div class="spotlight-layer spotlight-layer-foreground" data-depth="46">
                 <div class="spotlight-header-block">
                   <h2 class="spotlight-class-title" id="showcase-spotlight-title">Carregando...</h2>
                   <div class="spotlight-concept-tags" id="showcase-spotlight-tags">
-                    <span class="spotlight-tag tag-tape-purple">ESTRATEGISTA</span>
-                    <span class="spotlight-tag tag-tape-dark">SUPORTE</span>
-                    <span class="spotlight-tag tag-tape-hazard">CONTROLADOR</span>
+                    <!-- Badges geradas via JS -->
                   </div>
                 </div>
               </div>
 
             </div>
           </div>
-        </div>
+        </section>
 
-        <!-- MODO CONTEÚDO (AO SELECIONAR UM TÓPICO NA ESQUERDA) -->
-        <div class="showcase-content-view" id="showcase-content-view" style="display: none;">
-          <div class="showcase-content-card">
-            <div class="showcase-content-header">
-              <div class="showcase-content-title-group">
-                <span class="showcase-content-category" id="showcase-content-category">Classe</span>
-                <h3 class="showcase-topic-active-title" id="showcase-topic-active-title">Vis&atilde;o Geral</h3>
+        <!-- COLUNA DIREITA: COMPÊNDIO TÁTICO DA CLASSE (ROLAGEM INDEPENDENTE) -->
+        <section class="showcase-detail-right" id="showcase-detail-right" aria-label="Compêndio da Classe">
+          
+          <header class="compendium-header" id="compendium-header">
+            <div class="compendium-header-main">
+              <div class="compendium-meta-group">
+                <span class="compendium-role-indicator" id="compendium-role-indicator">DOSSIÊ TÁTICO</span>
+                <span class="compendium-nd-indicator" id="compendium-nd-indicator">ND 1 // INICIANTE</span>
               </div>
-              <div class="showcase-content-actions">
-                <span class="showcase-nd-badge" id="showcase-nd-badge">Classe</span>
-                <button type="button" class="showcase-btn-view-art" id="showcase-btn-view-art" title="Ver Ilustra&ccedil;&atilde;o">
-                  <span>&#x25C0;</span> Ver Arte
-                </button>
+              <div class="compendium-search-wrap">
+                <span class="compendium-search-icon">&#x2315;</span>
+                <input type="text" id="compendium-topic-search" class="compendium-topic-search" placeholder="Pesquisar tópicos ou habilidades..." autocomplete="off">
+                <button type="button" id="compendium-search-clear" class="compendium-search-clear" style="display: none;" title="Limpar pesquisa">&times;</button>
               </div>
             </div>
-            <div class="showcase-topic-content" id="showcase-topic-content">
-            </div>
-          </div>
-        </div>
-      </main>
 
-      <!-- PAINEL DA DIREITA: BLADE HUD -->
-      <aside class="showcase-right-blade" id="showcase-right-blade">
-        <div class="showcase-blade-inner">
-          <div class="showcase-blade-hud">
-            <div class="showcase-hud-card">
-              <div class="showcase-hud-card-top">
-                <span class="showcase-hud-bracket">[</span>
-                <span class="showcase-hud-tag">Dossi&ecirc; de Classe</span>
-                <span class="showcase-hud-bracket">]</span>
-              </div>
-              <div class="showcase-nd-block">
-                <div class="showcase-nd-header">
-                  <span class="hud-label">Fun&ccedil;&atilde;o T&aacute;tica</span>
-                  <span class="showcase-nd-tier" id="showcase-blade-role">Estrategista Suporte</span>
+            <!-- Navegação por Tópicos (Tabs/Chips com Scroll e Controles) -->
+            <div class="compendium-nav-container" id="compendium-nav-container">
+              <button type="button" class="compendium-nav-btn prev" id="compendium-nav-prev" aria-label="Rolar tópicos para a esquerda" title="Tópicos anteriores">&#x2039;</button>
+              <nav class="compendium-topic-nav" id="compendium-topic-nav" aria-label="Tópicos da Classe">
+                <div class="compendium-topic-tabs" id="compendium-topic-tabs">
+                  <!-- Abas geradas dinamicamente via JS -->
                 </div>
-                <div class="showcase-nd-display">
-                  <span class="showcase-nd-large" id="showcase-blade-nd">Tier 1</span>
-                  <div class="showcase-nd-gauge" id="showcase-nd-gauge" aria-label="N&iacute;vel de amea&ccedil;a">
-                    <span class="gauge-pip active"></span>
-                    <span class="gauge-pip active"></span>
-                    <span class="gauge-pip"></span>
-                    <span class="gauge-pip"></span>
-                  </div>
-                </div>
-              </div>
+              </nav>
+              <button type="button" class="compendium-nav-btn next" id="compendium-nav-next" aria-label="Rolar tópicos para a direita" title="Próximos tópicos">&#x203A;</button>
+            </div>
+          </header>
+
+          <!-- Área de Leitura com Rolagem Independente -->
+          <div class="compendium-scroll-pane" id="compendium-scroll-pane">
+            <div class="compendium-active-heading-wrap">
+              <h3 class="compendium-topic-title" id="compendium-topic-title">Visão Geral</h3>
+            </div>
+            <div class="compendium-content-body" id="compendium-content-body">
+              <!-- Conteúdo injetado dinamicamente via JS -->
             </div>
           </div>
-          <div class="showcase-tech-stripes" aria-hidden="true">
-            <span></span><span></span><span></span>
-          </div>
-        </div>
-      </aside>
 
-      <!-- NOME GIGANTE -->
-      <div class="showcase-big-name" id="showcase-big-name">Carregando...</div>
+        </section>
 
-    </div>
-
-    <!-- GAVETA MODAL LATERAL -->
-    <div class="showcase-drawer-backdrop" id="showcase-drawer-backdrop">
-      <div class="showcase-drawer">
-        <div class="showcase-drawer-header">
-          <h3 class="showcase-drawer-title" id="showcase-drawer-heading">Todas as Classes</h3>
-          <button type="button" class="showcase-drawer-close" id="showcase-drawer-close">&times;</button>
-        </div>
-        <div class="showcase-drawer-search">
-          <input type="text" class="showcase-drawer-input" id="showcase-drawer-input" placeholder="Buscar por nome...">
-        </div>
-        <div class="showcase-drawer-list" id="showcase-drawer-list">
-        </div>
       </div>
+
     </div>
+
+    <!-- BACKDROP DA SIDEBAR GLOBAL QUANDO ABERTA NO SHOWCASE -->
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
 
     <main class="page-content" style="display: none !important;">
 
@@ -378,6 +379,253 @@
         </div>
       </section>
 
+      <!-- COMPACTADOR -->
+      <section class="subsection" id="compactador">
+        <div class="race-card">
+          <div class="race-card-image">
+            <img src="../assets/classes/compactador.png?v=2" alt="Compactador" loading="lazy" decoding="async">
+          </div>
+          <div class="race-card-header">
+            <div>
+              <h2 class="race-name">Compactador</h2>
+              <p class="race-illustration"><em>Papel T&aacute;tico: Defensor Colosso Tanque</em></p>
+            </div>
+            <div class="difficulty-badge difficulty-1"><small>Papel</small>Tanque</div>
+          </div>
+          <div class="race-card-body">
+
+            <p class="race-description">
+              Conhecidos como Dobradores da Vida, os Compactadores s&atilde;o guerreiros devotados &agrave; manipula&ccedil;&atilde;o da densidade da Energia Astral e da mat&eacute;ria f&iacute;sica. Ao inv&eacute;s de apenas projetar energia para fora, eles alteram a coes&atilde;o espiritual e a massa de seus pr&oacute;prios corpos ou de seus alvos, agindo como colossos inabal&aacute;veis na linha de frente que esmagam oponentes e absorvem impactos brutais.
+            </p>
+
+            <h4>Caracter&iacute;sticas da Classe</h4>
+            <div class="class-stat-grid">
+              <div class="class-stat"><div class="class-stat-label">Vida Inicial</div><div class="class-stat-value">14 + <span class="attr-saude">Vigor</span></div></div>
+              <div class="class-stat"><div class="class-stat-label">Vida por N&iacute;vel</div><div class="class-stat-value">8 + <span class="attr-saude">Vigor</span></div></div>
+              <div class="class-stat"><div class="class-stat-label">Energia Astral Inicial</div><div class="class-stat-value">25 <span class="attr-ea">EA</span></div></div>
+              <div class="class-stat"><div class="class-stat-label">Energia Astral por N&iacute;vel</div><div class="class-stat-value">10 <span class="attr-ea">EA</span></div></div>
+            </div>
+
+            <h4>Profici&ecirc;ncias</h4>
+            <div class="class-stat-grid">
+              <div class="class-stat"><div class="class-stat-label">Armas</div><div class="class-stat-value">Armas simples, martelos, clavas pesadas, espadas longas, machados e ataques desarmados</div></div>
+              <div class="class-stat"><div class="class-stat-label">Armaduras</div><div class="class-stat-value">Todas as armaduras leves, m&eacute;dias, pesadas e todos os escudos</div></div>
+              <div class="class-stat"><div class="class-stat-label">Testes de Resist&ecirc;ncia</div><div class="class-stat-value"><span class="attr-for">For&ccedil;a</span> e <span class="attr-saude">Vigor</span></div></div>
+            </div>
+
+            <h4>Evolu&ccedil;&atilde;o de Maestria e Dano Base</h4>
+            <div class="class-prog">
+              <div class="class-prog-row"><span class="class-prog-label">N&iacute;veis 1 ao 4</span> <span>Maestria 2 &bull; Dano Base 1d10</span></div>
+              <div class="class-prog-row"><span class="class-prog-label">N&iacute;veis 5 ao 8</span> <span>Maestria 4 &bull; Dano Base 2d10</span></div>
+              <div class="class-prog-row"><span class="class-prog-label">N&iacute;veis 9 ao 12</span> <span>Maestria 8 &bull; Dano Base 3d10</span></div>
+              <div class="class-prog-row"><span class="class-prog-label">N&iacute;veis 13 ao 15</span> <span>Maestria 16 &bull; Dano Base 4d10</span></div>
+            </div>
+
+            <h4>Mec&acirc;nica de Classe &mdash; Estados de Compacta&ccedil;&atilde;o</h4>
+            <div class="compact-mechanic-box">
+              
+              <!-- Visão Geral e Parâmetros -->
+              <div class="compact-overview">
+                <div class="compact-params">
+                  <span class="compact-param-chip"><strong class="param-key">A&Ccedil;&Atilde;O:</strong> B&Ocirc;NUS</span>
+                  <span class="compact-param-chip"><strong class="param-key">CUSTO:</strong> 5 EA</span>
+                  <span class="compact-param-chip"><strong class="param-key">ALCANCE:</strong> AT&Eacute; 4B</span>
+                  <span class="compact-param-chip"><strong class="param-key">SUSTENTA&Ccedil;&Atilde;O:</strong> M&Aacute;X. 2 ESTADOS (1 POR ALVO)</span>
+                </div>
+                <p class="compact-intro-text">
+                  Com uma A&ccedil;&atilde;o B&ocirc;nus e gastando 5 EA, o Compactador manifesta um Estado de Compacta&ccedil;&atilde;o em si mesmo ou em uma criatura a at&eacute; 4B. Pode manter no m&aacute;ximo 2 Estados ativos simultaneamente no campo de batalha, e um mesmo alvo s&oacute; pode carregar um Estado por vez.
+                </p>
+                <div class="compact-warning-callout">
+                  <div class="callout-tag">SACRIF&Iacute;CIO F&Iacute;SICO // REGRA ESPECIAL DE DISTOR&Ccedil;&Atilde;O</div>
+                  <p>Toda manifesta&ccedil;&atilde;o, habilidade ou efeito que envolver o Estado de Distor&ccedil;&atilde;o exige sacrif&iacute;cio do atributo f&iacute;sico, consumindo Pontos de Vida do pr&oacute;prio Compactador (perda de PV igual &agrave; sua Maestria).</p>
+                </div>
+              </div>
+
+              <!-- Grid dos 3 Estados -->
+              <div class="compact-section-label">OS 3 ESTADOS DE COMPACTA&Ccedil;&Atilde;O</div>
+              <div class="compact-states-grid">
+                
+                <!-- COMPRESSÃO -->
+                <div class="compact-state-card state-compressao">
+                  <div class="compact-state-header">
+                    <h5>Compress&atilde;o</h5>
+                    <span class="compact-state-badge">Massa &bull; Dano</span>
+                  </div>
+                  <div class="compact-state-effects">
+                    <div class="compact-effect-item">
+                      <span class="target-chip target-self">Em si mesmo</span>
+                      <p>Seus ataques corporais causam o seu <strong>Dano Base adicional</strong> em dano f&iacute;sico, mas seu deslocamento &eacute; reduzido em <strong>-2B</strong> enquanto estiver comprimido.</p>
+                    </div>
+                    <div class="compact-effect-item">
+                      <span class="target-chip target-enemy">Em um inimigo</span>
+                      <p>Condensa a massa do alvo. O inimigo tem sua <strong>Armadura reduzida pelo seu N&iacute;vel de Maestria</strong> e sofre <strong>desvantagem</strong> em testes de Atletismo e Acrobacia.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ESTABILIZAÇÃO -->
+                <div class="compact-state-card state-estabilizacao">
+                  <div class="compact-state-header">
+                    <h5>Estabiliza&ccedil;&atilde;o</h5>
+                    <span class="compact-state-badge">Ancoragem &bull; Defesa</span>
+                  </div>
+                  <div class="compact-state-effects">
+                    <div class="compact-effect-item">
+                      <span class="target-chip target-self">Em si mesmo</span>
+                      <p>Concede um b&ocirc;nus de <strong>DEF igual ao seu N&iacute;vel de Maestria</strong> e voc&ecirc; se torna imune a ser derrubado, empurrado ou movido &agrave; for&ccedil;a.</p>
+                    </div>
+                    <div class="compact-effect-item">
+                      <span class="target-chip target-ally">Em um aliado</span>
+                      <p>Estende uma barreira de ancoragem ao aliado. O alvo recebe um escudo com <strong>PVs tempor&aacute;rios iguais a 6 + seu N&iacute;vel de Maestria</strong>.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- DISTORÇÃO -->
+                <div class="compact-state-card state-distorcao">
+                  <div class="compact-state-header">
+                    <h5>Distor&ccedil;&atilde;o</h5>
+                    <span class="compact-state-badge state-badge-hp">Sacrif&iacute;cio &bull; Debuff</span>
+                  </div>
+                  <div class="compact-state-effects">
+                    <div class="compact-state-cost-note">
+                      <span class="cost-note-label">CUSTO ADICIONAL:</span> Perda de Pontos de Vida igual &agrave; sua Maestria
+                    </div>
+                    <div class="compact-effect-item">
+                      <span class="target-chip target-self">Em si mesmo</span>
+                      <p>Desalinha sua silhueta no espa&ccedil;o. Ataques &agrave; dist&acirc;ncia disparados contra voc&ecirc; sofrem <strong>desvantagem</strong>.</p>
+                    </div>
+                    <div class="compact-effect-item">
+                      <span class="target-chip target-enemy">Em um inimigo</span>
+                      <p>Rompe a precis&atilde;o motora do oponente. O alvo sofre <strong>desvantagem em testes de ataque</strong> e seu deslocamento &eacute; reduzido pela metade.</p>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Colapsos de Estado -->
+              <div class="compact-section-label" style="margin-top: var(--space-xl);">COLAPSO DE ESTADO // DETONA&Ccedil;&Otilde;ES DECISIVAS</div>
+              <p class="compact-collapse-intro">
+                O Compactador pode detonar a energia mantida em um Estado de Compacta&ccedil;&atilde;o ativo para gerar um efeito imediato e decisivo. Realizar um Colapso encerra imediatamente o Estado naquele alvo:
+              </p>
+              
+              <div class="compact-collapse-grid">
+                
+                <div class="compact-collapse-card collapse-compressao">
+                  <div class="collapse-header">
+                    <h6>Impacto S&iacute;smico</h6>
+                    <span class="collapse-state-tag">Compress&atilde;o</span>
+                  </div>
+                  <div class="collapse-chips">
+                    <span class="collapse-chip">A&ccedil;&atilde;o Livre</span>
+                    <span class="collapse-chip">5 EA</span>
+                    <span class="collapse-chip trigger-chip">Gatilho: Acerto C/C</span>
+                  </div>
+                  <p>A energia comprimida explode no ponto de contato: causa o <strong>Dano Base da classe adicional</strong> em dano contundente e o alvo &eacute; <strong>arremessado 2B para tr&aacute;s</strong>, ficando <strong>Ca&iacute;do</strong> caso seja de tamanho grande ou menor.</p>
+                </div>
+
+                <div class="compact-collapse-card collapse-estabilizacao">
+                  <div class="collapse-header">
+                    <h6>Barreira Cin&eacute;tica</h6>
+                    <span class="collapse-state-tag">Estabiliza&ccedil;&atilde;o</span>
+                  </div>
+                  <div class="collapse-chips">
+                    <span class="collapse-chip">1 Rea&ccedil;&atilde;o</span>
+                    <span class="collapse-chip">5 EA</span>
+                    <span class="collapse-chip trigger-chip">Gatilho: Ao Sofrer Ataque</span>
+                  </div>
+                  <p>A ancoragem endurece instantaneamente quando voc&ecirc; ou o aliado protegido sofrer um ataque: o dano recebido &eacute; <strong>reduzido diretamente pelo dobro do valor da sua DEF</strong>.</p>
+                </div>
+
+                <div class="compact-collapse-card collapse-distorcao">
+                  <div class="collapse-header">
+                    <h6>Quebra de Continuidade</h6>
+                    <span class="collapse-state-tag state-tag-hp">Distor&ccedil;&atilde;o</span>
+                  </div>
+                  <div class="collapse-chips">
+                    <span class="collapse-chip">1 Rea&ccedil;&atilde;o</span>
+                    <span class="collapse-chip cost-hp-chip">-2x Maestria PV</span>
+                    <span class="collapse-chip trigger-chip">Gatilho: Ataque Inimigo</span>
+                  </div>
+                  <p>Como Rea&ccedil;&atilde;o quando um inimigo sob Distor&ccedil;&atilde;o declarar ataque contra voc&ecirc; ou aliado adjacente: a fratura dimensional <strong>anula totalmente o ataque</strong> e for&ccedil;a o alvo a <strong>recuar 2B em linha reta</strong>, desengajando do combate.</p>
+                </div>
+
+              </div>
+
+            </div>
+
+            <h4>Habilidades de Classe</h4>
+
+            <!-- NV 1 -->
+            <div class="race-ability">
+              <h5>N&iacute;vel 1 &mdash; Escolha 1 Habilidade</h5>
+              <div class="race-subability">
+                <h6>Punho de In&eacute;rcia <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-5 EA</span></h6>
+                <p>Concentra massa extrema no bra&ccedil;o ou na arma ao desferir um golpe corpo a corpo. O ataque causa o dano da arma somado ao seu Dano Base em dano contundente e aplica o Estado de <strong>Compress&atilde;o</strong> no alvo atingido sem consumir sua A&ccedil;&atilde;o B&ocirc;nus.</p>
+              </div>
+              <div class="race-subability">
+                <h6>Revestimento de Densidade <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-5 EA</span></h6>
+                <p>Condensa a camada externa do seu corpo em uma coura&ccedil;a impenetr&aacute;vel. Voc&ecirc; recebe uma barreira protetora com 6 + seu N&iacute;vel de Maestria em PVs tempor&aacute;rios e ativa o Estado de <strong>Estabiliza&ccedil;&atilde;o</strong> em si mesmo sem consumir a&ccedil;&otilde;es adicionais.</p>
+              </div>
+            </div>
+
+            <!-- NV 4 -->
+            <div class="race-ability">
+              <h5>N&iacute;vel 4 &mdash; Escolha 1 Habilidade</h5>
+              <div class="race-subability">
+                <h6>Quebra de Ritmo <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-10 EA</span> <span class="ability-cost ability-cost-hp">-PV igual &agrave; Maestria</span></h6>
+                <p>Fratura sua pr&oacute;pria mat&eacute;ria para distorcer o fluxo de tempo e espa&ccedil;o ao redor de um inimigo a at&eacute; 4B. O alvo sofre desvantagem em todos os testes de ataque at&eacute; o in&iacute;cio do seu pr&oacute;ximo turno e recebe o Estado de <strong>Distor&ccedil;&atilde;o</strong> sem consumir a&ccedil;&otilde;es adicionais.</p>
+              </div>
+              <div class="race-subability">
+                <h6>Ancoragem Tit&acirc;nica <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-10 EA</span></h6>
+                <p>O Compactador bate no solo e cria uma atra&ccedil;&atilde;o gravitacional em uma &aacute;rea de 3B de raio ao seu redor. Todas as criaturas hostis na &aacute;rea realizam um teste de For&ccedil;a; em caso de falha, s&atilde;o puxadas 2B em dire&ccedil;&atilde;o ao Compactador e sofrem a condi&ccedil;&atilde;o <strong>Imobilizado</strong> at&eacute; o final do pr&oacute;ximo turno delas.</p>
+              </div>
+            </div>
+
+            <!-- NV 7 -->
+            <div class="race-ability">
+              <h5>N&iacute;vel 7 &mdash; Escolha 1 Habilidade</h5>
+              <div class="race-subability">
+                <h6>Fratura de Impacto <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-15 EA</span></h6>
+                <p>Desfere um golpe de massa esmagadora com a arma ou os punhos contra um inimigo adjacente. O ataque causa o dano da arma somado ao dobro do seu Dano Base em dano contundente, reduz a Armadura do alvo a zero por 1 rodada e aplica a condi&ccedil;&atilde;o <strong>Ca&iacute;do</strong> caso o alvo seja de tamanho m&eacute;dio ou pequeno. Se o alvo j&aacute; estiver sob o Estado de <strong>Compress&atilde;o</strong>, sofre tamb&eacute;m a condi&ccedil;&atilde;o <strong>Atordoado</strong> at&eacute; o in&iacute;cio do seu pr&oacute;ximo turno.</p>
+              </div>
+              <div class="race-subability">
+                <h6>Basti&atilde;o Inquebr&aacute;vel <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-15 EA</span></h6>
+                <p>Estabiliza a mat&eacute;ria e a gravidade ao redor do grupo. Concede uma barreira protetora com 12 + seu N&iacute;vel de Maestria em PVs tempor&aacute;rios para voc&ecirc; e para at&eacute; dois aliados em at&eacute; 4B. Enquanto essa barreira estiver ativa, os alvos protegidos s&atilde;o imunes a serem empurrados, agarrados ou sofrerem a condi&ccedil;&atilde;o <strong>Ca&iacute;do</strong>.</p>
+              </div>
+            </div>
+
+            <!-- NV 10 -->
+            <div class="race-ability">
+              <h5>N&iacute;vel 10 &mdash; Escolha 1 Habilidade</h5>
+              <div class="race-subability">
+                <h6>Campo de Assimetria <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-20 EA</span> <span class="ability-cost ability-cost-hp">-PV igual &agrave; Maestria</span></h6>
+                <p>O Compactador fratura o pr&oacute;prio corpo para projetar uma c&uacute;pula de distor&ccedil;&atilde;o gravitacional de 4B de raio centrada em si mesmo, que dura at&eacute; o in&iacute;cio do seu pr&oacute;ximo turno. Todas as criaturas hostis dentro da &aacute;rea sofrem a condi&ccedil;&atilde;o <strong>Lentid&atilde;o</strong>, sofrem desvantagem em testes de ataque e recebem o Estado de <strong>Distor&ccedil;&atilde;o</strong> imediatamente.</p>
+              </div>
+              <div class="race-subability">
+                <h6>Esmagamento Vetorial <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-20 EA</span></h6>
+                <p>Comprime brutalmente as for&ccedil;as gravitacionais sobre uma criatura a at&eacute; 6B. O alvo sofre o seu Dano Base + For&ccedil;a em dano contundente e realiza um teste de Vigor. Em caso de falha, sofre a condi&ccedil;&atilde;o <strong>Paralisado</strong> at&eacute; o in&iacute;cio do seu pr&oacute;ximo turno; se tiver sucesso, sofre a condi&ccedil;&atilde;o <strong>Imobilizado</strong>. Caso o alvo possua qualquer Estado de Compacta&ccedil;&atilde;o ativo, o estado &eacute; consumido no impacto para causar 2d10 de dano contundente adicional.</p>
+              </div>
+            </div>
+
+            <!-- NV 13 -->
+            <div class="race-ability">
+              <h5>N&iacute;vel 13 &mdash; Escolha 1 Habilidade</h5>
+              <div class="race-subability">
+                <h6>Forma Inabal&aacute;vel <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-25 EA</span></h6>
+                <p>O Compactador &acirc;ncora sua massa f&iacute;sica e astral diretamente ao n&uacute;cleo do mundo, tornando-se uma fortaleza viva por 3 rodadas. Voc&ecirc; recebe uma barreira com 40 PVs tempor&aacute;rios, torna-se imune a qualquer condi&ccedil;&atilde;o negativa enquanto a barreira durar e aplica o Estado de <strong>Estabiliza&ccedil;&atilde;o</strong> em si mesmo e em todos os aliados a at&eacute; 6B. Al&eacute;m disso, qualquer aliado a at&eacute; 2B de voc&ecirc; pode usar o seu valor de DEF no lugar do dele ao Defender.</p>
+              </div>
+              <div class="race-subability">
+                <h6>Singularidade Astral <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-25 EA</span></h6>
+                <p>Colapsa a gravidade em um ponto vis&iacute;vel a at&eacute; 8B, gerando um po&ccedil;o gravitacional devastador em 6B de raio. Todas as criaturas na &aacute;rea s&atilde;o puxadas com viol&ecirc;ncia para o centro da singularidade, sofrem o seu Dano Base + N&iacute;vel de Maestria em dano contundente e t&ecirc;m sua Armadura anulada por 1 rodada. Criaturas de tamanho grande ou menor realizam um teste de For&ccedil;a; em caso de falha, sofrem a condi&ccedil;&atilde;o <strong>Paralisado</strong> at&eacute; o in&iacute;cio do seu pr&oacute;ximo turno.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 </div>
@@ -386,7 +634,7 @@
 
 <!-- FILTRO SVG DE PAPEL AMASSADO / POSTER VIVO (ESTILO DEADLOCK - ESTATICO) -->
 <svg class="sr-only" style="position: absolute; width: 0; height: 0; pointer-events: none;" aria-hidden="true">
-  <filter id="paper-warp" x="-10%" y="-10%" width="120%" height="120%" filterUnits="objectBoundingBox">
+  <filter id="paper-warp" x="-35%" y="-35%" width="170%" height="170%" filterUnits="objectBoundingBox">
     <feTurbulence type="fractalNoise" baseFrequency="0.025 0.025" numOctaves="3" result="noise" seed="2" />
     <feDisplacementMap id="paper-warp-map" in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G" />
   </filter>

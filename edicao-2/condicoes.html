@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Condi&ccedil;&otilde;es &mdash; Wuitalur RPG 2.0</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    .cond-filter-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: var(--space-xl);
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .cond-search-input {
+      flex: 1;
+      min-width: 240px;
+      max-width: 360px;
+      padding: 8px 14px;
+      background: #141217;
+      border: 1px solid #2C2833;
+      color: #EDEDED;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    .cond-search-input:focus {
+      border-color: #9B51E0;
+      box-shadow: 0 0 10px rgba(155, 81, 224, 0.3);
+    }
+    .cond-filter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px !important;
+      background: #141217 !important;
+      border: 1px solid #282531 !important;
+      color: #8E8A96 !important;
+      font-family: var(--font-mono) !important;
+      font-size: 0.74rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.08em !important;
+      text-transform: uppercase !important;
+      white-space: nowrap !important;
+      cursor: pointer !important;
+      box-shadow: 1px 1px 0 #000000 !important;
+      transition: all 0.16s ease !important;
+      border-radius: 0 !important;
+    }
+    .cond-filter-btn:hover {
+      color: #EDEDED !important;
+      background: #1D1A23 !important;
+      border-color: #3D384A !important;
+    }
+    .cond-filter-btn.active {
+      background: #1F1B27 !important;
+      border: 1px solid #3A3247 !important;
+      border-left: 3px solid #9B51E0 !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45) !important;
+    }
+    .cond-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-md);
+      margin-bottom: var(--space-2xl);
+    }
+    .cond-card {
+      background: #1B191F;
+      border: 1px solid #2C2833;
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.18s ease, border-color 0.18s ease;
+    }
+    .cond-card:hover {
+      border-color: #3D384A;
+      transform: translateY(-2px);
+    }
+    .cond-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--space-xs);
+      gap: 8px;
+    }
+    .cond-card h4 {
+      font-family: var(--font-heading);
+      font-size: 0.98rem;
+      color: #EDEDED;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .cond-elem-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 2px 8px;
+      text-transform: uppercase;
+      border-radius: 0;
+    }
+    .elem-nulidrico { background: rgba(225, 29, 72, 0.15); border: 1px solid rgba(225, 29, 72, 0.5); color: #fb7185; }
+    .elem-pesadelo  { background: rgba(180, 95, 6, 0.18); border: 1px solid rgba(180, 95, 6, 0.55); color: #d97706; }
+    .elem-praga     { background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.5); color: #4ade80; }
+    .elem-estase    { background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.5); color: #38bdf8; }
+    .elem-podridao  { background: rgba(152, 0, 0, 0.2); border: 1px solid rgba(152, 0, 0, 0.6); color: #c53030; }
+    .elem-comum     { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.15); color: #A1A1AA; }
+
+    .cond-meta {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: #9B51E0;
+      margin-bottom: var(--space-sm);
+      display: block;
+    }
+    .cond-card p {
+      font-size: 0.83rem;
+      color: #A1A1AA;
+      line-height: 1.6;
+      margin: 0 0 8px 0;
+    }
+    .cond-card p:last-child {
+      margin-bottom: 0;
+    }
+    .cond-card ul {
+      margin: 4px 0 0 0;
+      padding-left: 18px;
+      font-size: 0.82rem;
+      color: #A1A1AA;
+      line-height: 1.55;
+    }
+    .cond-card strong {
+      color: #EDEDED;
+    }
+    .section-category-title {
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+      color: #EDEDED;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: var(--space-xl);
+      margin-bottom: var(--space-md);
+      padding-bottom: var(--space-xs);
+      border-bottom: 1px dashed #2C2833;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema Base 2.0 (Alpha)</span>
+      </div>
+    </div>
+
+    <!-- BOTÃO VOLTAR AO CATÁLOGO DE SUPLEMENTOS -->
+    <a href="../suplementos.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar aos Suplementos</span>
+    </a>
+
+    <nav class="sidebar-nav">
+
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="vocacoes.html" class="sidebar-link"><span class="icon"></span> Vocações</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+      <a href="condicoes.html" class="sidebar-link active"><span class="icon"></span> Condições</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Condi&ccedil;&otilde;es</h1>
+    </header>
+
+    <main class="page-content">
+
+      <div class="topic-crooked" style="margin-bottom: 20px;">SISTEMA // ESTADOS DE COMBATE E EFEITOS</div>
+
+      <!-- INTRO -->
+      <section class="subsection" id="intro">
+        <div class="section-heading">
+          <h2>Tabela Geral de Condi&ccedil;&otilde;es</h2>
+          <p>
+            Condi&ccedil;&otilde;es s&atilde;o estados tempor&aacute;rios ou cont&iacute;nuos que alteram o desempenho f&iacute;sico, sensorial ou mental de uma criatura no campo de batalha e na explora&ccedil;&atilde;o.
+          </p>
+        </div>
+
+        <div class="hud-card" style="border-left: 4px solid var(--accent); margin-bottom: var(--space-xl);">
+          <div class="race-card-body">
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
+              Uma criatura pode sofrer m&uacute;ltiplas condi&ccedil;&otilde;es diferentes simultaneamente, aplicando os efeitos de cada uma. Efeitos id&ecirc;nticos que aplicam a mesma condi&ccedil;&atilde;o n&atilde;o acumulam seus efeitos num&eacute;ricos a menos que o texto da habilidade declare expressamente o contr&aacute;rio.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- BARRA DE PESQUISA E FILTROS -->
+      <div class="cond-filter-bar">
+        <input type="text" id="cond-search" class="cond-search-input" placeholder="Pesquisar condi&ccedil;&atilde;o ou efeito..." autocomplete="off">
+        <button type="button" class="cond-filter-btn active" data-filter="all">Todas</button>
+        <button type="button" class="cond-filter-btn" data-filter="fisicas">F&iacute;sicas e Motoras</button>
+        <button type="button" class="cond-filter-btn" data-filter="sensoriais">Sensoriais e Mentais</button>
+        <button type="button" class="cond-filter-btn" data-filter="continuas">Cont&iacute;nuas</button>
+        <button type="button" class="cond-filter-btn" data-filter="elementais">Elementais Exclusivas</button>
+      </div>
+
+      <!-- CONDIÇÕES FÍSICAS E MOTORAS -->
+      <div class="cond-category-group" data-cat="fisicas">
+        <div class="section-category-title">Condi&ccedil;&otilde;es F&iacute;sicas e Motoras</div>
+        <div class="cond-grid">
+
+          <div class="cond-card" data-name="agarrado" data-cat="fisicas">
+            <div class="cond-card-header">
+              <h4>Agarrado</h4>
+              <span class="cond-elem-tag elem-comum">F&iacute;sico</span>
+            </div>
+            <p>O deslocamento da criatura se torna 0B e ela n&atilde;o pode se beneficiar de nenhum b&ocirc;nus de movimento.</p>
+            <p>A criatura agarrada sofre desvantagem em testes para Desviar.</p>
+            <p>O alvo pode gastar uma A&ccedil;&atilde;o Padr&atilde;o para tentar se libertar realizando um teste de For&ccedil;a ou Acrobacia oposto ao teste de For&ccedil;a de quem o agarrou. A condi&ccedil;&atilde;o se encerra imediatamente se o agressor for afastado ou incapacitado.</p>
+          </div>
+
+          <div class="cond-card" data-name="caido" data-cat="fisicas">
+            <div class="cond-card-header">
+              <h4>Ca&iacute;do</h4>
+              <span class="cond-elem-tag elem-comum">F&iacute;sico</span>
+            </div>
+            <p>A criatura est&aacute; deitada no ch&atilde;o. Seu &uacute;nico movimento poss&iacute;vel &eacute; rastejar com metade do seu deslocamento total.</p>
+            <p>Ataques corpo a corpo desferidos contra a criatura t&ecirc;m vantagem. Ataques de longo alcance contra ela sofrem desvantagem.</p>
+            <p>A criatura sofre desvantagem em seus pr&oacute;prios testes de ataque.</p>
+            <p>Levantar-se consome metade do deslocamento total da criatura naquela rodada.</p>
+          </div>
+
+          <div class="cond-card" data-name="imobilizado" data-cat="fisicas">
+            <div class="cond-card-header">
+              <h4>Imobilizado</h4>
+              <span class="cond-elem-tag elem-comum">F&iacute;sico</span>
+            </div>
+            <p>A criatura est&aacute; presa por ra&iacute;zes, cordas, vinhas ou gelo. Seu deslocamento se torna 0B e ela n&atilde;o pode realizar disparadas ou arrancadas.</p>
+            <p>Ataques realizados contra ela recebem vantagem.</p>
+            <p>A criatura ainda pode realizar ataques e a&ccedil;&otilde;es que n&atilde;o exijam locomo&ccedil;&atilde;o f&iacute;sica.</p>
+          </div>
+
+          <div class="cond-card" data-name="lentidao" data-cat="fisicas">
+            <div class="cond-card-header">
+              <h4>Lentid&atilde;o</h4>
+              <span class="cond-elem-tag elem-comum">F&iacute;sico</span>
+            </div>
+            <p>O deslocamento total da criatura &eacute; reduzido pela metade.</p>
+            <p>A criatura n&atilde;o pode utilizar a Rea&ccedil;&atilde;o de Desviar enquanto estiver sob o efeito de lentid&atilde;o.</p>
+          </div>
+
+          <div class="cond-card" data-name="paralisado" data-cat="fisicas">
+            <div class="cond-card-header">
+              <h4>Paralisado</h4>
+              <span class="cond-elem-tag elem-comum">F&iacute;sico</span>
+            </div>
+            <p>A criatura est&aacute; com os nervos totalmente travados ou congelada por estase absoluta.</p>
+            <p>N&atilde;o pode realizar nenhuma A&ccedil;&atilde;o, A&ccedil;&atilde;o B&ocirc;nus, Rea&ccedil;&atilde;o ou deslocamento.</p>
+            <p>Falha automaticamente em todos os testes de For&ccedil;a e Destreza.</p>
+            <p>Ataques corpo a corpo contra um alvo paralisado desferidos a 1B de dist&acirc;ncia s&atilde;o considerados acertos cr&iacute;ticos autom&aacute;ticos.</p>
+          </div>
+
+          <div class="cond-card" data-name="desarmado" data-cat="fisicas">
+            <div class="cond-card-header">
+              <h4>Desarmado</h4>
+              <span class="cond-elem-tag elem-comum">F&iacute;sico</span>
+            </div>
+            <p>A criatura soltou sua arma ou equipamento empunhado no solo.</p>
+            <p>N&atilde;o pode atacar com essa arma at&eacute; gastar uma A&ccedil;&atilde;o B&ocirc;nus para recolh&ecirc;-la do ch&atilde;o ou sacar uma arma sobressalente da cintura.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CONDIÇÕES SENSORIAIS E MENTAIS -->
+      <div class="cond-category-group" data-cat="sensoriais">
+        <div class="section-category-title">Condi&ccedil;&otilde;es Sensoriais e Mentais</div>
+        <div class="cond-grid">
+
+          <div class="cond-card" data-name="abalado" data-cat="sensoriais">
+            <div class="cond-card-header">
+              <h4>Abalado</h4>
+              <span class="cond-elem-tag elem-comum">Mental</span>
+            </div>
+            <p>A criatura est&aacute; tomada por p&acirc;nico, medo sobrenatural ou intimida&ccedil;&atilde;o severa.</p>
+            <p>Sofre desvantagem em todos os testes de atributos, ataques e jogadas de per&iacute;cia.</p>
+            <p>A criatura n&atilde;o pode se deslocar voluntariamente em dire&ccedil;&atilde;o &agrave; fonte do seu medo.</p>
+          </div>
+
+          <div class="cond-card" data-name="atordoado" data-cat="sensoriais">
+            <div class="cond-card-header">
+              <h4>Atordoado</h4>
+              <span class="cond-elem-tag elem-comum">Sensorial</span>
+            </div>
+            <p>A criatura sofreu uma concuss&atilde;o violenta ou sobrecarga sensorial direta.</p>
+            <p>Perde o uso de sua A&ccedil;&atilde;o Padr&atilde;o e de sua A&ccedil;&atilde;o B&ocirc;nus no seu pr&oacute;ximo turno.</p>
+            <p>Mant&eacute;m apenas sua capacidade de deslocamento e sua Rea&ccedil;&atilde;o defensiva.</p>
+          </div>
+
+          <div class="cond-card" data-name="cego" data-cat="sensoriais">
+            <div class="cond-card-header">
+              <h4>Cego</h4>
+              <span class="cond-elem-tag elem-comum">Sensorial</span>
+            </div>
+            <p>A criatura n&atilde;o enxerga o ambiente ao redor, falhando automaticamente em qualquer teste que dependa de vis&atilde;o.</p>
+            <p>Ataques realizados pela criatura cega sofrem desvantagem.</p>
+            <p>Todos os ataques desferidos contra a criatura cega ganham vantagem.</p>
+          </div>
+
+          <div class="cond-card" data-name="confuso" data-cat="sensoriais">
+            <div class="cond-card-header">
+              <h4>Confuso</h4>
+              <span class="cond-elem-tag elem-comum">Mental</span>
+            </div>
+            <p>O fluxo de pensamentos do alvo entra em colapso. No in&iacute;cio de cada um dos seus turnos, o jogador rola 1d4 para determinar a conduta da criatura:</p>
+            <ul>
+              <li><strong>1:</strong> Ataca a criatura mais pr&oacute;xima, seja aliada ou inimiga.</li>
+              <li><strong>2:</strong> Gasta todo o seu deslocamento em uma dire&ccedil;&atilde;o aleat&oacute;ria e n&atilde;o realiza a&ccedil;&otilde;es.</li>
+              <li><strong>3:</strong> Fica est&aacute;tica balbuciando e perde o turno.</li>
+              <li><strong>4:</strong> Consegue retomar o foco e age normalmente.</li>
+            </ul>
+          </div>
+
+          <div class="cond-card" data-name="inconsciente" data-cat="sensoriais">
+            <div class="cond-card-header">
+              <h4>Inconsciente</h4>
+              <span class="cond-elem-tag elem-comum">Sensorial</span>
+            </div>
+            <p>A criatura est&aacute; desacordada ou &agrave; beira da morte. Fica Ca&iacute;da, indefesa e cega ao ambiente.</p>
+            <p>N&atilde;o pode realizar a&ccedil;&otilde;es, rea&ccedil;&otilde;es ou deslocamento.</p>
+            <p>Qualquer ataque que acerte uma criatura inconsciente a at&eacute; 1B &eacute; considerado um acerto cr&iacute;tico autom&aacute;tico.</p>
+          </div>
+
+          <div class="cond-card" data-name="invisivel" data-cat="sensoriais">
+            <div class="cond-card-header">
+              <h4>Invis&iacute;vel</h4>
+              <span class="cond-elem-tag elem-comum">Sensorial</span>
+            </div>
+            <p>A criatura n&atilde;o pode ser detectada pela vis&atilde;o comum, podendo ser rastreada apenas por sons de passos, cheiro ou marcas deixadas no solo.</p>
+            <p>Ataques desferidos pela criatura invis&iacute;vel recebem vantagem.</p>
+            <p>Ataques desferidos contra a criatura invis&iacute;vel sofrem desvantagem.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CONDIÇÕES CONTÍNUAS E COMUNS -->
+      <div class="cond-category-group" data-cat="continuas">
+        <div class="section-category-title">Condi&ccedil;&otilde;es Cont&iacute;nuas e Comuns</div>
+        <div class="cond-grid">
+
+          <div class="cond-card" data-name="sangramento" data-cat="continuas">
+            <div class="cond-card-header">
+              <h4>Sangramento</h4>
+              <span class="cond-elem-tag elem-comum">Cont&iacute;nua</span>
+            </div>
+            <p>Ferimentos abertos fazem a criatura perder sangue continuamente.</p>
+            <p>No in&iacute;cio de cada um de seus turnos, a criatura sofre 1d6 de dano f&iacute;sico direto, que ignora Armadura e DEF.</p>
+            <p>O sangramento cessa com um teste bem-sucedido de Medicina contra desafio moderado ou pelo uso de bandagens de primeiros socorros.</p>
+          </div>
+
+          <div class="cond-card" data-name="queimando" data-cat="continuas">
+            <div class="cond-card-header">
+              <h4>Queimando</h4>
+              <span class="cond-elem-tag elem-comum">Cont&iacute;nua</span>
+            </div>
+            <p>O alvo est&aacute; envolto em chamas vivas ou calor extremo.</p>
+            <p>No in&iacute;cio de cada turno, sofre 1d6 de dano de fogo. Ataques subsequentes de fogo ou elemento Solar contra o alvo causam +2 de dano adicional.</p>
+            <p>O fogo pode ser extinto gastando uma A&ccedil;&atilde;o B&ocirc;nus para rolar no ch&atilde;o ou abafar as chamas.</p>
+          </div>
+
+          <div class="cond-card" data-name="envenenado" data-cat="continuas">
+            <div class="cond-card-header">
+              <h4>Envenenado</h4>
+              <span class="cond-elem-tag elem-comum">Cont&iacute;nua</span>
+            </div>
+            <p>Toxinas letais correm pela circula&ccedil;&atilde;o sangu&iacute;nea da criatura.</p>
+            <p>Sofre desvantagem permanente em todos os testes de For&ccedil;a e Vigor.</p>
+            <p>Sofre 1d6 de dano t&oacute;xico no in&iacute;cio de cada um de seus turnos at&eacute; que o veneno seja neutralizado por um ant&iacute;doto ou expulso pelo organismo.</p>
+          </div>
+
+          <div class="cond-card" data-name="eletrocutado" data-cat="continuas">
+            <div class="cond-card-header">
+              <h4>Eletrocutado</h4>
+              <span class="cond-elem-tag elem-comum">Cont&iacute;nua</span>
+            </div>
+            <p>Descargas el&eacute;tricas descontroladas percorrem os m&uacute;sculos da criatura.</p>
+            <p>Sofre desvantagem em testes de ataque corpo a corpo e ataques &agrave; dist&acirc;ncia.</p>
+            <p>No in&iacute;cio do seu turno, sofre 1d6 de dano de Electro. Se houver outra criatura a at&eacute; 1B dela, o choque salta para esse alvo secund&aacute;rio causando 1d4 de dano imediato.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CONDIÇÕES ELEMENTAIS EXCLUSIVAS -->
+      <div class="cond-category-group" data-cat="elementais">
+        <div class="section-category-title">Condi&ccedil;&otilde;es Elementais Exclusivas de Wuitalur</div>
+        <div class="cond-grid">
+
+          <div class="cond-card" data-name="fragmentado" data-cat="elementais">
+            <div class="cond-card-header">
+              <h4>Fragmentado</h4>
+              <span class="cond-elem-tag elem-nulidrico">Nul&iacute;drico</span>
+            </div>
+            <p>O corpo do alvo &eacute; cortado por fissuras carmesins que se espalham como rachaduras no espa&ccedil;o, desestabilizando sua coes&atilde;o f&iacute;sica.</p>
+            <p>A DEF e a Armadura do alvo s&atilde;o reduzidas em 2 pontos.</p>
+            <p>O alvo sofre desvantagem em qualquer teste para Desviar.</p>
+            <p>A margem de acerto cr&iacute;tico de qualquer ataque desferido contra o alvo &eacute; ampliada em 1 no d20; ataques contra ele passam a ser cr&iacute;ticos com 19 ou 20 natural.</p>
+            <p><em>N&atilde;o acumul&aacute;vel.</em></p>
+          </div>
+
+          <div class="cond-card" data-name="assombrado" data-cat="elementais">
+            <div class="cond-card-header">
+              <h4>Assombrado</h4>
+              <span class="cond-elem-tag elem-pesadelo">Pesadelo</span>
+            </div>
+            <p>A mente do alvo &eacute; invadida por ilus&otilde;es aterrorizantes, for&ccedil;ando-o a reviver seus piores traumas.</p>
+            <p>O alvo sofre 1d6 de dano mental direto no in&iacute;cio de cada um de seus turnos.</p>
+            <p>Sofre desvantagem em todos os testes de Mente e em testes para Desviar devido &agrave; sobrecarga de alucina&ccedil;&otilde;es.</p>
+            <p>Pode repetir o teste de resist&ecirc;ncia de Mente no final de cada um de seus turnos para encerrar a condi&ccedil;&atilde;o.</p>
+            <p><em>N&atilde;o acumul&aacute;vel.</em></p>
+          </div>
+
+          <div class="cond-card" data-name="infectado" data-cat="elementais">
+            <div class="cond-card-header">
+              <h4>Infectado</h4>
+              <span class="cond-elem-tag elem-praga">Praga</span>
+            </div>
+            <p>A v&iacute;tima &eacute; contaminada por uma doen&ccedil;a viva e degenerativa que se manifesta atrav&eacute;s de pele acinzentada e veias negras pulsantes.</p>
+            <p>A criatura n&atilde;o consegue regenerar Pontos de Vida por descansos curtos ou longos enquanto estiver infectada.</p>
+            <p>Sofre redu&ccedil;&atilde;o de 2B em seu deslocamento total e desvantagem permanente em todos os testes de For&ccedil;a e Vigor.</p>
+            <p>Se o alvo morrer infectado, seu cad&aacute;ver se transforma em uma monstruosidade de Praga ap&oacute;s 1d4 horas.</p>
+            <p>Itens m&eacute;dicos especializados podem regredir os sintomas temporariamente, mas a erradica&ccedil;&atilde;o exige purifica&ccedil;&atilde;o elemental ou cirurgia complexa.</p>
+            <p><em>N&atilde;o acumul&aacute;vel.</em></p>
+          </div>
+
+          <div class="cond-card" data-name="congelado" data-cat="elementais">
+            <div class="cond-card-header">
+              <h4>Congelado</h4>
+              <span class="cond-elem-tag elem-estase">&Eacute;stase</span>
+            </div>
+            <p>O alvo &eacute; revestido por gelo c&oacute;smico profundo que retarda o tempo biol&oacute;gico e anula qualquer resposta motora.</p>
+            <p>A criatura perde totalmente o seu pr&oacute;ximo turno e seu deslocamento se torna 0B.</p>
+            <p>Ao se descongelar no in&iacute;cio da rodada seguinte, o choque t&eacute;rmico residual aplica a condi&ccedil;&atilde;o de Lentid&atilde;o no alvo por 1 rodada adicional.</p>
+            <p><em>N&atilde;o acumul&aacute;vel.</em></p>
+          </div>
+
+          <div class="cond-card" data-name="amalgamado" data-cat="elementais">
+            <div class="cond-card-header">
+              <h4>Amalgamado</h4>
+              <span class="cond-elem-tag elem-podridao">Podrid&atilde;o</span>
+            </div>
+            <p>Um parasita p&uacute;trido de lodo vivo se aloja nos &oacute;rg&atilde;os e tecidos internos da v&iacute;tima, vazando secre&ccedil;&otilde;es negras pelos poros e alimentando-se de sua ess&ecirc;ncia vital.</p>
+            <p>O alvo sofre 1d8 de Dano Real no in&iacute;cio de cada um de seus turnos, ignorando qualquer valor de DEF ou Armadura.</p>
+            <p>A condi&ccedil;&atilde;o s&oacute; cessa ao receber cura elemental ou tratamento m&eacute;dico cir&uacute;rgico com solventes purificadores.</p>
+            <p>Se o parasita permanecer ativo at&eacute; o final do combate, a criatura entra imediatamente no estado de Morrendo.</p>
+            <p><em>N&atilde;o acumul&aacute;vel.</em></p>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+
+<script src="../js/main.js"></script>
+<script>
+  // Filtro e Busca Instantânea de Condições
+  (function() {
+    const searchInput = document.getElementById('cond-search');
+    const filterBtns = document.querySelectorAll('.cond-filter-btn');
+    const cards = document.querySelectorAll('.cond-card');
+    const groups = document.querySelectorAll('.cond-category-group');
+
+    let activeFilter = 'all';
+    let searchQuery = '';
+
+    function updateVisibility() {
+      const q = searchQuery.toLowerCase().trim();
+
+      groups.forEach(group => {
+        const cat = group.getAttribute('data-cat');
+        const matchesCategory = (activeFilter === 'all' || activeFilter === cat);
+        let groupHasVisibleCards = false;
+
+        const groupCards = group.querySelectorAll('.cond-card');
+        groupCards.forEach(card => {
+          const cardText = card.textContent.toLowerCase();
+          const matchesSearch = !q || cardText.includes(q);
+
+          if (matchesCategory && matchesSearch) {
+            card.style.display = 'flex';
+            groupHasVisibleCards = true;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        group.style.display = groupHasVisibleCards ? 'block' : 'none';
+      });
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        updateVisibility();
+      });
+    }
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = btn.getAttribute('data-filter');
+        updateVisibility();
+      });
+    });
+  })();
+</script>
+</body>
+</html>

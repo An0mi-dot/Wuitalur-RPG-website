@@ -20,6 +20,92 @@
   font-style: normal;
   font-display: swap;
 }
+
+/* Fontes personalizadas para cada Classe no Hero Spotlight */
+@font-face {
+  font-family: 'Font-Anomalo';
+  src: url('../assets/fonts/anomalo.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Font-Atirador-Espectral';
+  src: url('../assets/fonts/atirador_espectral.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Font-Bestial';
+  src: url('../assets/fonts/bestial.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Font-Cavaleiros-Paladium';
+  src: url('../assets/fonts/cavaleiros_de_paladium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Font-Compactador';
+  src: url('../assets/fonts/compactador.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Font-Eterno';
+  src: url('../assets/fonts/O_eterno.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Font-Furtassaltantes';
+  src: url('../assets/fonts/furtassaltante.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Font-Lampinario';
+  src: url('../assets/fonts/lampinario.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Font-Pistoleiro';
+  src: url('../assets/fonts/pistoleiro.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Font-Protegidos';
+  src: url('../assets/fonts/protegidos.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Font-Rastejantes';
+  src: url('../assets/fonts/rastejantes.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Font-Sobrevivente';
+  src: url('../assets/fonts/sobreviventes.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 @font-face {
   font-family: 'BlackFlag';
   src: url('../assets/fonts/BlackFlag.ttf') format('truetype');
@@ -74,12 +160,12 @@
   --attr-san:       #a78bfa;
 
   --elem-solar:     #fbbf24;
-  --elem-podridao:  #ef4444;
+  --elem-podridao:  #980000;
   --elem-praga:     #a855f7;
   --elem-sagrado:   #fde047;
   --elem-electro:   #00f0ff;
   --elem-nulidrico: #fb7185;
-  --elem-pesadelo:  #ea580c;
+  --elem-pesadelo:  #b45f06;
   --elem-estase:    #60a5fa;
   --elem-umbra:     #EDEDED;
 
@@ -89,16 +175,31 @@
 
   --accent:         #9B51E0;
   --accent-secondary: #C084FC;
-  --accent-contrast: #000000;
+  --accent-contrast: #FFFFFF;
   --accent-lilac:   #C084FC;
 
   --dot-color:      rgba(255, 255, 255, 0.04);
   --sticker-bg:     #9B51E0;
-  --sticker-text:   #000000;
+  --sticker-text:   #FFFFFF;
 
   --font-heading: 'Chinese Rocks', 'Impact', sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono:      'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Fontes personalizadas para os titulos de cada Classe */
+  --font-class-anomalo: 'Font-Anomalo', sans-serif;
+  --font-class-atirador-espectral: 'Font-Atirador-Espectral', sans-serif;
+  --font-class-bestial: 'Font-Bestial', sans-serif;
+  --font-class-cavaleiros-paladium: 'Font-Cavaleiros-Paladium', sans-serif;
+  --font-class-compactador: 'Font-Compactador', sans-serif;
+  --font-class-consagrados: 'Protest Demo', sans-serif;
+  --font-class-eterno: 'Font-Eterno', sans-serif;
+  --font-class-furtassaltantes: 'Font-Furtassaltantes', sans-serif;
+  --font-class-lampinario: 'Font-Lampinario', sans-serif;
+  --font-class-pistoleiro: 'Font-Pistoleiro', sans-serif;
+  --font-class-protegidos: 'Font-Protegidos', sans-serif;
+  --font-class-rastejantes: 'Font-Rastejantes', sans-serif;
+  --font-class-sobrevivente: 'Font-Sobrevivente', sans-serif;
 
   --space-xs:  0.25rem;
   --space-sm:  0.5rem;
@@ -477,10 +578,11 @@ code, .mono {
   border-left: 3px solid #9B51E0;
   box-shadow: 2px 2px 0px #000000;
   color: #C084FC !important;
-  font-family: var(--font-body);
-  font-size: 0.82rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: normal;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   text-decoration: none !important;
   transition: all var(--transition-fast);
 }
@@ -513,8 +615,8 @@ code, .mono {
 
 .sidebar-section-title {
   font-family: var(--font-heading);
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: normal;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.15em;
@@ -525,10 +627,13 @@ code, .mono {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  padding: var(--space-sm) var(--space-lg);
+  padding: 8px var(--space-lg);
   color: #9E9AA6 !important;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: normal;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   transition: all var(--transition-fast);
   border-left: 3px solid transparent;
   text-decoration: none;
@@ -538,13 +643,14 @@ code, .mono {
   color: #EDEDED !important;
   text-decoration: none;
   border-left-color: #9B51E0 !important;
+  padding-left: calc(var(--space-lg) + 3px);
 }
 .sidebar-link.active {
   background: #1B191F !important;
   color: #EDEDED !important;
   border-left-color: #9B51E0 !important;
   border-left-width: 3px !important;
-  font-weight: 600;
+  font-weight: normal;
 }
 .sidebar-link .icon {
   width: 20px;
