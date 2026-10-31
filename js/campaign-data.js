@@ -580,83 +580,130 @@
     "npcs_presentes": [],
     "pontos_de_interesse": [
       {
-        "cabecalho": {
-          "nome": "O Mural de Cortiça (Corredor de Entrada)",
-          "descricao_publica": "Um corredor estreito com o teto cedendo. Num canto seco, dezenas de papéis arrancados de postes da cidade foram empilhados sobre um caixote, ao lado de um mural de cortiça mofado."
-        },
-        "testes": [
-          {
-            "pericia": "Sem Teste (Interação Automática)",
-            "ct_dt": "-",
-            "informacao_revelada": "O grupo identifica uma pilha de Panfletos de Desaparecimento de Kali (\"PROCURA-SE: Kali. Vista pela última vez usando um laço de cabelo rosa próximo ao bosque...\"). Quem acumulou os papéis aqui estava limpando os arredores para abafar as buscas."
-          },
-          {
-            "pericia": "Investigação",
-            "ct_dt": 6,
-            "informacao_revelada": "No verso de vários panfletos, há um cronograma manuscrito detalhando os horários exatos em que a menina passava sozinha perto do bosque. Não há assinatura nem nomes, mas toda a caligrafia foi feita com uma caneta de tinta roxa."
-          },
-          {
-            "pericia": "Percepção",
-            "ct_dt": 6,
-            "informacao_revelada": "Confirma que o traço fluido de tinta roxa coincide com anotações solenes da direção. As rotas anotadas comprovam que os passos de Kali eram cronometrados à espera do momento oportuno."
-          }
-        ],
-        "notas_mestre": "Recompensa / Pista: Panfleto Anotado de Kali (Prova que a criança não foi uma vítima acidental, mas sim vigiada e selecionada para o sacrifício de Sara). A tinta roxa é o elemento que aponta para a diretora Constança."
+            "cabecalho": {
+                  "nome": "A Pilha de Panfletos e o Mural (Corredor de Entrada)",
+                  "descricao_publica": "Local no Mapa: Na entrada superior esquerda, espalhados pelo chão e nas escadas de acesso ao mezanino.\n\nO chão está úmido de goteiras e coberto por dezenas de cartazes arrancados dos postes da cidade e empilhados num canto, como se alguém estivesse limpando os arredores da mata para abafar as buscas."
+            },
+            "testes": [
+                  {
+                        "pericia": "Sem Teste (Frente do Cartaz)",
+                        "ct_dt": "-",
+                        "informacao_revelada": "Evidência Encontrada (Frente do Cartaz):\nPROCURA-SE\n• Nome: Kali (Idade aparente: 9 a 11 anos)\n• Descrição: Akivus, cabelos castanhos curtos, olhos expressivos e usa um tapa-olho no olho direito. Blusa de frio simples, vista pela última vez com laço de cabelo rosa.\n• Último Visto: Nas proximidades da trilha do bosque da Mata do Norte."
+                  },
+                  {
+                        "pericia": "Investigação",
+                        "ct_dt": 6,
+                        "informacao_revelada": "Pista Desbloqueada (Verso do Cartaz — Tinta Roxa):\nNo verso de um dos panfletos, há anotações feitas à mão com uma caneta de tinta roxa (a mesma cor de tinta do bilhete no armário de Sara no EP 1), sem nenhuma assinatura:\n• \"Terça-feira (14:15) — Saiu da aula antes dos outros. Caminha sozinha pela orla da mata.\"\n• \"Quinta-feira (14:10) — O mesmo trajeto. Ninguém a acompanha. O bosque está silencioso neste horário.\"\n• \"Conclusão: Perfeita para a passagem. O cordeiro está pronto para a Porta de Sara.\""
+                  }
+            ],
+            "notas_mestre": "Recompensa / Pista: Panfleto Anotado de Kali (Prova que a criança não foi uma vítima acidental, mas sim vigiada e selecionada para a passagem). A tinta roxa é o elemento que aponta para a diretora Constança."
       },
       {
-        "cabecalho": {
-          "nome": "A Sala do Círculo (Salão Térreo)",
-          "descricao_publica": "Uma sala ampla com cadeiras velhas dispostas em roda no centro, cercadas por tocos de velas derretidas. Na parede de fundo, há um quadro-negro rachado; no canto, uma mesa de ferro com papéis espalhados."
-        },
-        "testes": [
-          {
-            "pericia": "Investigação",
-            "ct_dt": 7,
-            "informacao_revelada": "Análise do Quadro-Negro: Escrito em giz branco com letra firme e anônima, há frases de doutrinação sobre \"Ele\":\n• \"O mundo real só vos deu dor; o Jardim Dele vos dará o descanso.\"\n• \"Para quem não tem amanhã, a Porta é a única cura.\"\n• (Sublinhado três vezes no centro): \"A Caixa só se abre para aqueles cujo tempo na Terra já está condenado.\""
-          },
-          {
-            "pericia": "Ocultismo",
-            "ct_dt": 7,
-            "informacao_revelada": "Decifra os dogmas escritos no quadro-negro: a entidade exige alvos cuja esperança mundana já tenha sido esgotada por sofrimentos ou doenças incuráveis, para que a entrega pela Porta da Caixa ocorra sem resistência espiritual."
-          },
-          {
-            "pericia": "Sem Teste (A Mesa Lateral)",
-            "ct_dt": "-",
-            "informacao_revelada": "Após vasculhar a sala, a mesa lateral revela recortes de jornais, rascunhos anônimos e páginas de diários rasgados de vários adolescentes nos últimos anos (incluindo anotações sobre o câncer real de Sara e tragédias graves de outros jovens). Mostra que o responsável pelo local caçava jovens que já estavam genuinamente condenados ou em desespero extremo para oferecer à entidade como salvação."
-          },
-          {
-            "pericia": "Percepção (Loot Oculto)",
-            "ct_dt": 7,
-            "informacao_revelada": "Vasculhando as mochilas velhas no chão, o grupo encontra: 1x Fruta Roxa (Restaura 4 de estresse), 1x Pedaço de Madeira com Prego (1d6 + Força, Peso 1) e 3d4 Vidrilhos esquecidos no fundo de uma bolsa mofada."
-          }
-        ],
-        "notas_mestre": "Este salão expõe o mecanismo predatório da seita: mapear jovens vulneráveis em estado de dor crônica ou sem perspectiva de cura para convencê-los de que a morte na Caixa é libertação."
+            "cabecalho": {
+                  "nome": "O Círculo de Cadeiras e os Relatos (Centro do Galpão)",
+                  "descricao_publica": "Local no Mapa: O círculo central de cadeiras cercado por caixotes, com velas derretidas no chão e papéis espalhados sobre a mesa do mezanino.\n\nNove cadeiras velhas dispostas em círculo no centro do concreto rachado, iluminadas por restos de velas ainda quentes. Ao redor e sobre as bancadas, há diários rasgados, prontuários médicos amassados e recortes de jornais antigos. Não há nenhum documento formal que identifique o dono do local."
+            },
+            "testes": [
+                  {
+                        "pericia": "Investigação",
+                        "ct_dt": 7,
+                        "informacao_revelada": "O Padrão das Vítimas: Todos os jovens que frequentavam aquela roda passavam por tragédias reais e irreversíveis: Sara tinha câncer; outros sofriam de doenças degenerativas sem cura, abandonos severos ou perdas familiares brutais. Quem comanda o círculo seleciona apenas jovens que já estão no limite do sofrimento físico ou mental."
+                  },
+                  {
+                        "pericia": "Ocultismo",
+                        "ct_dt": 7,
+                        "informacao_revelada": "A Regra da Caixa: Entre os rascunhos de doutrinação sobre o \"Jardim Dele\", uma anotação aparece repetida várias vezes: \"A Caixa só se abre para aqueles cujo tempo na Terra já está condenado.\""
+                  }
+            ],
+            "notas_mestre": "Pistas Desbloqueadas:\n• O Padrão das Vítimas: Todos os jovens que frequentavam aquela roda passavam por tragédias reais e irreversíveis: Sara tinha câncer; outros sofriam de doenças degenerativas sem cura, abandonos severos ou perdas familiares brutais. Quem comanda o círculo seleciona apenas jovens que já estão no limite do sofrimento físico ou mental.\n• A Regra da Caixa: Entre os rascunhos de doutrinação sobre o \"Jardim Dele\", uma anotação aparece repetida várias vezes: \"A Caixa só se abre para aqueles cujo tempo na Terra já está condenado.\""
       },
       {
-        "cabecalho": {
-          "nome": "A Galeria de Escoamento (Subsolo)",
-          "descricao_publica": "Uma escadaria de concreto úmido que desce para o porão alagado do prédio. Ao fundo, uma grade de ferro enferrujada leva aos túneis pluviais da cidade. O cheiro de esgoto, ferrugem e carne podre é sufocante."
-        },
-        "testes": [
-          {
-            "pericia": "Mecânica da Grade",
-            "ct_dt": "-",
-            "informacao_revelada": "A grade está emperrada pelo lodo e ferrugem, exigindo que alguém se aproxime fisicamente para puxá-la."
-          },
-          {
-            "pericia": "Evento Gatilho (Emboscada)",
-            "ct_dt": "-",
-            "informacao_revelada": "Assim que Minerva se aproxima da grade (ou tenta destrancá-la), o Rato Carniceiro Portador da Praga salta da tubulação seca, iniciando o combate roteirizado da mordida."
-          },
-          {
-            "pericia": "Percepção / Prontidão",
-            "ct_dt": 7,
-            "informacao_revelada": "Permite notar o ruído úmido de raspagem de unhas nas manilhas metálicas antes do salto, evitando surpresa no início do combate."
-          }
-        ],
-        "notas_mestre": "Ameaça Local (Encontro do PDI #03):\nRATO CARNICEIRO (PORTADOR DA PRAGA) [ Criatura Pequena / Besta Infectada ]\n• PV: 12 | Defesa: 6 | Iniciativa: Alta (Age primeiro na emboscada contra Minerva)\n• Passiva — Sangue Pestilento: O corpo do animal está tomado por caroços cinzentos e veias arroxeadas. Qualquer ataque corpo a corpo que o mate espalha sangue escuro e fétido no chão (sem efeito de contágio pelo ar, apenas por mordida direta).\n• Ação — Incisivos Pestilentos (Corpo a Corpo): Avança ferozmente no alvo mais próximo da grade (Minerva), causando 1d4 de dano perfurante e aplicando silenciosamente a condição oculta Portador da Praga (Incubação)."
+            "cabecalho": {
+                  "nome": "A Gaveta Emperrada — Gravador de Fita #01 (Mezanino Esquerdo)",
+                  "descricao_publica": "Local no Mapa: Na mesa de ferro posicionada na passarela elevada à esquerda.\n\nUma escrivaninha de metal enferrujada com a gaveta central travada pela umidade."
+            },
+            "testes": [
+                  {
+                        "pericia": "Força (Arrancar no Tranco)",
+                        "ct_dt": 7,
+                        "informacao_revelada": "Força a gaveta com impacto físico e solta o trilho empenado, revelando o Gravador de Fita Antigo #01 (\"A Exigência da Passagem\")."
+                  },
+                  {
+                        "pericia": "Crime / Destreza (Destravar Trilho)",
+                        "ct_dt": 6,
+                        "informacao_revelada": "Manipula o trilho corroído com delicadeza, abrindo a gaveta silenciosamente e obtendo o Gravador de Fita Antigo #01 (\"A Exigência da Passagem\")."
+                  },
+                  {
+                        "pericia": "Audição da Fita (Transcrição Completa)",
+                        "ct_dt": "-",
+                        "informacao_revelada": "[O botão 'Play' afunda com um estalo. Som de goteiras no galpão escuro. Ouve-se uma respiração curta, chiada, e o barulho metálico da Caixa Negra já destrancada no colo de Sara]\n\n— Voz da Mulher (calma, solene, com uma autoridade mansa e inquestionável): \"Muito bem, Sara. Olhe para ela aberta no seu colo. A primeira parte acabou. O seu espírito finalmente soltou as amarras deste mundo. Você já não pertence mais a esta vida.\"\n\n— Sara (demora segundos para responder; voz arrastada, oca, de quem já está com a mente completamente derretida): \"...Já posso ir? Nas árvores... eu já posso passar?\"\n\n— Voz da Mulher: \"Ainda não, minha querida. A chave está na sua mão, mas a Porta não se abre para quem chega de mãos vazias. Como eu lhe disse desde o primeiro dia... a dor que nós sentimos aqui fora nos esvazia. Olhe para você: o sofrimento secou tudo o que havia aí dentro. E Ele não aceita cascas vazias no Jardim.\"\n\n— Sara (um murmúrio confuso, lento, quase infantil): \"Vazia... Eu tô vazia. Mas... o que que falta?\"\n\n— Voz da Mulher (o tom fica mais baixo, frio e dogmático): \"A ordem Dele para a passagem é clara, Sara. Antes de cruzar o arco, você deve tomar para dentro de si uma vida que ainda esteja cheia. Você precisa abater o cordeiro e consumir da sua carne ainda quente.\"\n\n— Sara (pausa longa no escuro; a respiração falha um pouco): \"...Comer? Mas... por quê?\"\n\n— Voz da Mulher: \"Porque é a vontade Dele para que a travessia se cumpra. Não cabe a nós questionar o rito, menina, apenas obedecer. As pessoas lá fora passam a vida inteira engolindo remédios amargos, suportando humilhações e agonizando em camas de hospital em troca de nada... Você vai recusar um único ato sagrado em troca da eternidade sem dor? Quando você engolir aquela carne, a centelha que falta ficará guardada dentro de você. Só assim Ele a reconhecerá quando a Porta abrir.\"\n\n— Sara (um silêncio pesado; depois, uma voz completamente submissa e anestesiada): \"...Se Ele mandou... então eu faço. Só quero que pare de doer.\"\n\n— Voz da Mulher (num sussurro acariciante): \"Eu sabia que você estava pronta. Amanhã, às duas e quinze, na beira do bosque. Ela passa sozinha. Cumpra o que Ele pediu... e o seu descanso estará esperando.\"\n\n— Sara (num sopro quase inaudível): \"...Duas e quinze. Como Ele pediu...\"\n\n[Clique seco desligando o aparelho]"
+                  }
+            ],
+            "notas_mestre": "Item Encontrado: Gravador de Fita Antigo #01 (\"A Exigência da Passagem\"). A fita prova a manipulação direta e fria de Sara pela Voz da Mulher (Constança), ordenando o sacrifício e consumo da carne de Kali para a travessia da Porta."
+      },
+      {
+            "cabecalho": {
+                  "nome": "As Mochilas Mofadas — Gravador de Fita #02 (Caixotes Centrais)",
+                  "descricao_publica": "Local no Mapa: Escondido entre as pilhas de caixotes de madeira e mochilas velhas ao redor do círculo de cadeiras.\n\nPertences deixados para trás por outros adolescentes que frequentavam o galpão. No fundo de uma mochila rasgada, há um gravador de bolso branco com a tampa presa por fita adesiva."
+            },
+            "testes": [
+                  {
+                        "pericia": "Vasculhar Caixotes (Automático ou Percepção / Investigação)",
+                        "ct_dt": 6,
+                        "informacao_revelada": "Localiza a mochila rasgada e extrai o Gravador de Bolso #02 (\"Por Trás da Máscara\")."
+                  },
+                  {
+                        "pericia": "Audição da Fita (Sara e Bia)",
+                        "ct_dt": "-",
+                        "informacao_revelada": "[Chiado de fita. Som de chuva fina batendo nas telhas quebradas. Ouve-se o som de Sara balançando o corpo para frente e para trás numa cadeira de madeira que range sem parar]\n\n— Bia (voz jovem, cansada, puxando um caixote para sentar perto): \"Sara? Achei que todo mundo já tinha vazado... Vai ficar aí no escuro até que horas?\"\n\n— Sara (voz baixa, monótona, sem parar de balançar): \"...Só esperando dar amanhã.\"\n\n— Bia (suspira fundo, acendendo um isqueiro só pra fazer luz por um segundo): \"Quem dera eu tivesse pressa pra chegar amanhã. Só de pensar em voltar pra casa, ver meu pai chorando pelos cantos e tomar aquela droga de soro na clínica, já dá vontade de sumir. Às vezes eu fico ouvindo ela falar aqui na roda e penso que a gente é muito idiota mesmo de continuar insistindo nessa vida... Mas sei lá, uma coisa ainda me dá nervoso. Por que ela nunca tira aquela máscara na frente da gente? Se a gente tá todo mundo no mesmo barco, pra que esconder a cara?\"\n\n— Sara (um murmúrio lento, oco, quase sem expressão): \"Ela tirou... Hoje ela me mostrou.\"\n\n— Bia (para na hora; a voz muda, cheia de surpresa e curiosidade): \"Não brinca. Sério? Quando o resto do pessoal saiu? E quem é ela, Sara? A gente conhece da rua?\"\n\n— Sara (com uma calma bizarra, olhando pro vazio): \"Todo mundo conhece... Mas ela disse que rosto é só casca. Só serve pra quem vai ficar aqui. Quando a caixa abriu, ela tirou.\"\n\n— Bia (inclinando-se para perto, impressionada ao olhar para o colo de Sara): \"...A tampa abriu mesmo. Você conseguiu destrancar... Mas me fala logo quem é ela, Sara, não me deixa curiosa.\"\n\n— Sara (ignorando a pergunta sobre o rosto, num tom arrastado e anestesiado): \"Não faz diferença... Ainda falta uma coisa. Ele não deixa passar vazia. Ela disse que eu tenho que fazer o que Ele mandou amanhã.\"\n\n— Bia: \"Ué, mas já não tá com a chave aí na mão? Que que falta fazer?\"\n\n— Sara: \"A passagem... Às duas e quinze, no bosque. Tenho que pegar uma menina que passa lá... e comer a carne enquanto tá quente.\"\n\n— Bia (silêncio de uns três segundos; ela solta o ar devagar, achando bizarro, mas sem entrar em pânico): \"...Comer carne de gente? Pesado isso aí... Você não acha meio estranho Ele pedir um negócio desses?\"\n\n— Sara (apática, quase infantil): \"É a ordem Dele pra abrir a Porta... Lá fora o hospital corta a gente, queima a gente por dentro e não resolve nada. Pelo menos isso... é uma vez só. E depois acaba.\"\n\n— Bia (fica pensativa, a voz baixando num tom melancólico e honesto): \"É... pensando por esse lado, você não tá errada. A gente apanha todo dia de graça mesmo. Sinceramente, Sara? Eu nem julgo você. Se a caixa tivesse aberto pra mim hoje, acho que eu também faria qualquer coisa que mandassem só pra não sentir mais dor.\"\n\n— Sara (vira o rosto devagar na direção dela no escuro): \"...E por que não abriu pra você?\"\n\n— Bia (um riso fraco, cansado, olhando pro chão): \"Sei lá. Acho que lá no fundo eu ainda sou ingênua. Ainda fico esperando acontecer algum milagre, ou ter um dia bom antes de apagar de vez... Mesmo sabendo que é só ilusão e que amanhã vai doer tudo de novo. Você pelo menos teve coragem de largar mão logo.\"\n\n— Sara (voltando a olhar para o nada, a cadeira rangendo): \"Cansa esperar... Eu só quero silêncio.\"\n\n— Bia (levantando do caixote devagar e batendo a poeira da calça): \"Eu sei. Vai dar tudo certo amanhã no bosque, Sara. Tomara que esse Jardim seja bom mesmo... Se eu não aguentar mais essa situação aqui fora, qualquer dia desses eu abro a próxima caixa e vou atrás de você. Boa sorte lá.\"\n\n— Sara (num sopro quase inaudível): \"...Tchau, Bia.\"\n\n[Som dos passos calmos de Bia saindo na chuva. A fita continua rodando no escuro com o barulho constante da cadeira da Sara rangendo — nhec, nhec — até o áudio cortar]"
+                  }
+            ],
+            "notas_mestre": "Item Encontrado: Gravador de Bolso #02 (\"Por Trás da Máscara\"). Revela que Sara viu o rosto da líder mascarada (\"todo mundo conhece\"), confirmando que a responsável é uma figura pública e influente de Fraguiktos."
+      },
+      {
+            "cabecalho": {
+                  "nome": "O Canto do Mercador — Igris (Fundo Direito / Caixotes)",
+                  "descricao_publica": "Local no Mapa: Sentado sobre as caixas de madeira na lateral direita ou na ponta sul do mezanino, surgindo após o grupo investigar a sala.\n\nUm homem de presença silenciosa organizando mercadorias sobre um pano aberto no escuro, completamente indiferente ao perigo lá fora."
+            },
+            "testes": [
+                  {
+                        "pericia": "Diálogo Enigmático",
+                        "ct_dt": "-",
+                        "informacao_revelada": "Nunca responde perguntas de forma direta; fala apenas por enigmas curtos sobre \"mãos que já não têm nada a perder\" e \"a carne faminta nos túneis abaixo\"."
+                  },
+                  {
+                        "pericia": "Comércio Mercante",
+                        "ct_dt": "-",
+                        "informacao_revelada": "Permite aos jogadores gastarem seus Vidrilhos para comprar itens de cura, redutores de estresse, lanternas ou armas improvisadas antes de descerem para o esgoto. Desaparece sem deixar rastro assim que o grupo vira as costas."
+                  }
+            ],
+            "notas_mestre": "Interação e Comércio: Nunca responde perguntas de forma direta; fala por enigmas sobre \"mãos que já não têm nada a perder\" e \"a carne faminta nos túneis abaixo\". Permite comprar itens de cura, lanternas ou armas improvisadas usando Vidrilhos antes de descerem para a drenagem."
+      },
+      {
+            "cabecalho": {
+                  "nome": "A Grade de Escoamento (Canto Inferior Esquerdo)",
+                  "descricao_publica": "Local no Mapa: A grande grade quadrada de ferro enferrujado cercada por lodo e água suja na parte inferior esquerda do mapa.\n\nCom a porta principal acorrentada por fora e vigiada pela Figura Mascarada na mata, a tubulação de drenagem subterrânea é a única rota de fuga de volta para as ruas de Fraguiktos."
+            },
+            "testes": [
+                  {
+                        "pericia": "Mecânica da Grade (Fuga)",
+                        "ct_dt": "-",
+                        "informacao_revelada": "A grade está emperrada pelo lodo e ferrugem, exigindo que alguém se aproxime fisicamente para puxá-la e abrir a passagem de drenagem subterrânea."
+                  },
+                  {
+                        "pericia": "Evento Roteirizado (O Gatilho da Praga)",
+                        "ct_dt": "-",
+                        "informacao_revelada": "Ao puxarem a grade pesada para abrir passagem, o Rato Carniceiro Portador da Praga salta da tubulação seca em emboscada veloz."
+                  },
+                  {
+                        "pericia": "Alvo Fixo (Ataque a Minerva)",
+                        "ct_dt": "-",
+                        "informacao_revelada": "A criatura avança diretamente em Minerva (Incisivos Pestilentos), causando 1d4 de dano perfurante aparentemente superficial, mas transmitindo silenciosamente a Praga para a corrente sanguínea dela."
+                  }
+            ],
+            "notas_mestre": "Ameaça Local (Encontro do PDI #06):\nRATO CARNICEIRO (PORTADOR DA PRAGA) [ Criatura Pequena / Besta Infectada ]\n• PV: 12 | Defesa: 6 | Iniciativa: Alta (Age primeiro na emboscada contra Minerva)\n• Passiva — Sangue Pestilento: O corpo do animal está tomado por caroços cinzentos e veias arroxeadas. Qualquer ataque corpo a corpo que o mate espalha sangue escuro e fétido no chão (sem efeito de contágio pelo ar, apenas por mordida direta).\n• Ação — Incisivos Pestilentos (Corpo a Corpo): Avança ferozmente no alvo mais próximo da grade (Minerva), causando 1d4 de dano perfurante e aplicando silenciosamente a condição oculta Portador da Praga (Incubação)."
       }
-    ],
+],
     "conexoes_saida": [
       {
         "area_id": "floresta-proibida",
@@ -879,6 +926,28 @@
       resumo: "Uma folha A4 com o alerta PROCURA-SE KALI e cronograma de vigilância em tinta roxa no verso.",
       detalhe: "Item idêntico ao Cartaz de Desaparecido, catalogado durante as buscas no Pavilhão de Acolhimento Abandonado."
     },
+    {
+      "id": "col_gravador_fita_01",
+      "nome": "Gravador de Fita Antigo #01 (\"A Exigência da Passagem\")",
+      "peso": 1,
+      "tipo": "Gravação",
+      "campo_tipo": "Áudio / Evidência",
+      "area": "Pavilhão de Acolhimento Abandonado",
+      "desbloqueado": false,
+      "resumo": "Gravador de metal enferrujado resgatado da gaveta emperrada no mezanino esquerdo. Contém o registro da conversa entre a Voz da Mulher e Sara.",
+      "detalhe": "Transcrição da Gravação:\n[Ouve-se a respiração curta e o barulho metálico da Caixa Negra destrancada no colo de Sara]\n• Voz da Mulher: \"Muito bem, Sara. Olhe para ela aberta no seu colo. A primeira parte acabou. O seu espírito finalmente soltou as amarras deste mundo.\"\n• Sara: \"...Já posso ir? Nas árvores... eu já posso passar?\"\n• Voz da Mulher: \"Ainda não, minha querida. A ordem Dele para a passagem é clara. Antes de cruzar o arco, você deve tomar para dentro de si uma vida que ainda esteja cheia. Você precisa abater o cordeiro e consumir da sua carne ainda quente.\"\n• Sara: \"...Se Ele mandou... então eu faço. Só quero que pare de doer.\"\n• Voz da Mulher: \"Amanhã, às duas e quinze, na beira do bosque. Ela passa sozinha. Cumpra o que Ele pediu... e o seu descanso estará esperando.\""
+},
+    {
+      "id": "col_gravador_bolso_02",
+      "nome": "Gravador de Bolso #02 (\"Por Trás da Máscara\")",
+      "peso": 1,
+      "tipo": "Gravação",
+      "campo_tipo": "Áudio / Evidência",
+      "area": "Pavilhão de Acolhimento Abandonado",
+      "desbloqueado": false,
+      "resumo": "Gravador de bolso branco com a tampa presa por fita adesiva, encontrado numa mochila mofada. Contém o diálogo íntimo entre Sara e Bia.",
+      "detalhe": "Transcrição da Gravação:\n[Chiado de fita e chuva nas telhas quebradas. Sara balança o corpo na cadeira de madeira que range sem parar]\n• Bia: \"Por que ela nunca tira aquela máscara na frente da gente? Se a gente tá todo mundo no mesmo barco, pra que esconder a cara?\"\n• Sara: \"Ela tirou... Hoje ela me mostrou.\"\n• Bia: \"Não brinca. Sério? E quem é ela, Sara? A gente conhece da rua?\"\n• Sara: \"Todo mundo conhece... Mas ela disse que rosto é só casca. Só serve pra quem vai ficar aqui. Quando a caixa abriu, ela tirou.\"\n• Sara: \"A passagem... Às duas e quinze, no bosque. Tenho que pegar uma menina que passa lá... e comer a carne enquanto tá quente.\"\n• Bia: \"A gente apanha todo dia de graça mesmo... Vai dar tudo certo amanhã no bosque, Sara. Tomara que esse Jardim seja bom mesmo...\""
+},
     {
       id: "col_caixa_negra_dourada",
       nome: "Caixa Negra e Dourada",
