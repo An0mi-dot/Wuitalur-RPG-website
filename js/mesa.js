@@ -5977,7 +5977,7 @@ const MesaLivroReader = {
                 <p style="margin: 0 0 8px; color: #2e1065;"><strong style="color: #4a044e; font-weight: 900;">Terça-feira (14:15)</strong> — Saiu da aula antes dos outros. Caminha sozinha pela orla da mata.</p>
                 <p style="margin: 0 0 10px; color: #2e1065;"><strong style="color: #4a044e; font-weight: 900;">Quinta-feira (14:10)</strong> — O mesmo trajeto. Ninguém a acompanha. O bosque está silencioso neste horário.</p>
                 <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(107, 33, 168, 0.35); color: #4a044e; font-weight: 900; font-size: 0.95rem; line-height: 1.5;">
-                  <span style="text-decoration: underline; text-underline-offset: 3px; color: #581c87;">Conclusão:</span> Perfeita para a transição. O sacrifício está pronto para a salvação de Sara.
+                  <span style="text-decoration: underline; text-underline-offset: 3px; color: #581c87;">Conclusão:</span> Perfeita para a transição. O sacrifício está pronto para a salvação da Proscrita.
                 </div>
               </div>
             </div>
