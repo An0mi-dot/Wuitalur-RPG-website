@@ -575,7 +575,7 @@
     "district": "Divisa entre a Mata do Norte e o Subúrbio • Fragktus",
     "dangerLevel": "Zona de Investigação / Perigo Baixo",
     "dangerLevelClass": "warning",
-    "resumo_atmosfera": "Um antigo anexo de reabilitação juvenil desativado há décadas, engolido pela vegetação densa na divisa entre a Mata do Norte e o subúrbio de Fragktus. Suas janelas quebradas e paredes de tijolos úmidos escondem um santuário clandestino onde jovens sem esperança eram doutrinados no escuro.\n\nStatus no Mapa: Desbloqueado após a fuga na Parte 1 do EP 2.\n\nCondições de Ambiente: Escuridão - Personagens que não possuem visão noturna, recebem -1 em testes de percepção e investigação.",
+    "resumo_atmosfera": "Um antigo anexo de reabilitação juvenil desativado há décadas, engolido pela vegetação densa na divisa entre a Mata do Norte e o subúrbio de Fragktus. Suas janelas quebradas e paredes de tijolos úmidos escondem um santuário clandestino onde jovens sem esperança eram doutrinados no escuro.\n\nCondições de Ambiente: Escuridão - Personagens que não possuem visão noturna, recebem -1 em testes de percepção e investigação.",
     "requisitos_acesso": "Acessos do Pavilhão:\n• Janela Quebrada (Lateral): Entrada de emergência vinda da orla da floresta.\n• Porta Principal (Frente): Trancada por fora com correntes pesadas e cadeado enferrujado (Força DT 9 ou Crime DT 8 para abrir por dentro, mas faz muito barulho).\n• Galeria de Escoamento (Subsolo): Saída furtiva que dá acesso às tubulações de drenagem e leva de volta às ruas traseiras da cidade.",
     "npcs_presentes": [],
     "pontos_de_interesse": [
