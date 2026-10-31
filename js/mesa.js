@@ -5945,7 +5945,7 @@ const MesaLivroReader = {
                 </div>
                 <div style="padding-bottom: 6px; border-bottom: 1px solid rgba(0,0,0,0.12);">
                   <strong style="color: #000000; font-size: 0.95rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 2px;">Descrição Física:</strong>
-                  <span style="color: #111111; font-weight: 600; font-size: 0.95rem; line-height: 1.5;">Akivus, cabelos castanhos curtos, olhos expressivos. Veste-se com uma blusa de frio simples e foi vista pela última vez usando um marcante laço de cabelo rosa.</span>
+                  <span style="color: #111111; font-weight: 600; font-size: 0.95rem; line-height: 1.5;">Akivus, cabelos castanhos curtos, olhos expressivos e usa um tapa-olho no olho direito. Veste-se com uma blusa de frio simples e foi vista pela última vez usando um marcante laço de cabelo rosa.</span>
                 </div>
                 <div style="padding-bottom: 6px; border-bottom: 1px solid rgba(0,0,0,0.12);">
                   <strong style="color: #000000; font-size: 0.95rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 2px;">Último Visto:</strong>
