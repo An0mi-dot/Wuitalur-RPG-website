@@ -5924,41 +5924,61 @@ const MesaLivroReader = {
       if (container) {
         container.innerHTML = `
           <div class="livro-single-doc-wrap" style="display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 6px 4px;">
-            <!-- FRENTE DO CARTAZ -->
-            <div style="width: 100%; max-width: 620px; background: #fffcf2; color: #1a1a1a; border: 2px solid #33281e; border-radius: 4px; padding: 22px 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.85); font-family: 'Times New Roman', Times, serif;">
-              <div style="text-align: center; border-bottom: 2px solid #1a1a1a; padding-bottom: 10px; margin-bottom: 14px;">
-                <span style="display: block; font-size: 0.8rem; font-weight: 700; letter-spacing: 3px; color: #665c54; text-transform: uppercase;">ALERTA DE DESAPARECIMENTO</span>
-                <h2 style="font-size: 2rem; font-weight: 900; margin: 4px 0 0; letter-spacing: 2px; color: #000;">PROCURA-SE</h2>
+            
+            <div style="width: 100%; max-width: 620px; background: #fffcf2; color: #111111; border: 2px solid #33281e; border-radius: 4px; padding: 24px 26px; box-shadow: 0 8px 32px rgba(0,0,0,0.85); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+              <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #1a1a1a; padding-bottom: 8px; margin-bottom: 12px;">
+                <span style="font-size: 0.8rem; font-weight: 900; letter-spacing: 2px; color: #222222; text-transform: uppercase;">FRENTE DO CARTAZ</span>
+                <span style="font-size: 0.72rem; font-weight: 800; color: #444444; letter-spacing: 1px; text-transform: uppercase;">FOLHA A4</span>
               </div>
-              <div style="font-size: 0.95rem; line-height: 1.6; color: #222;">
-                <p style="margin: 0 0 6px;"><strong>Nome:</strong> Kali <span style="font-size: 0.82rem; color: #666;">(Sem sobrenome divulgado nos panfletos públicos)</span></p>
-                <p style="margin: 0 0 6px;"><strong>Idade Aparente:</strong> Aprox. 9 a 11 anos</p>
-                <p style="margin: 0 0 6px;"><strong>Descrição Física:</strong> Cabelos castanhos curtos, olhos expressivos. Veste-se com uma blusa de frio simples e foi vista pela última vez usando um marcante laço de cabelo rosa.</p>
-                <p style="margin: 0 0 6px;"><strong>Último Visto:</strong> Desaparecida desde a tarde do dia 01/08/2061, vista nas proximidades do bosque da Mata do Norte, nos limites do subúrbio de Fragktus.</p>
-                <div style="margin: 12px 0; padding: 10px 14px; background: rgba(0,0,0,0.04); border-left: 3px solid #7c6f64; font-style: italic; font-size: 0.9rem;">
-                  “Se você viu qualquer coisa ou tem pistas sobre o paradeiro de Kali, por favor, entre em contato com as autoridades locais ou ligue para o número abaixo. A família oferece recompensa por qualquer pista real.”
+              <div style="text-align: center; margin-bottom: 16px;">
+                <h2 style="font-size: 2.2rem; font-weight: 900; margin: 0; letter-spacing: 3px; color: #000000; text-transform: uppercase;">PROCURA-SE</h2>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.95rem; line-height: 1.55; color: #111111;">
+                <div style="padding-bottom: 6px; border-bottom: 1px solid rgba(0,0,0,0.12);">
+                  <strong style="color: #000000; font-size: 0.95rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; min-width: 145px;">Nome:</strong>
+                  <span style="color: #000000; font-weight: 800; font-size: 1.05rem;">Kali</span>
+                  <span style="color: #333333; font-size: 0.85rem; font-weight: 600; margin-left: 4px;">(Sem sobrenome divulgado nos panfletos públicos)</span>
                 </div>
-                <p style="font-size: 0.82rem; color: #777; margin: 8px 0 0; text-align: center; border-top: 1px dashed #aaa; padding-top: 8px;">
+                <div style="padding-bottom: 6px; border-bottom: 1px solid rgba(0,0,0,0.12);">
+                  <strong style="color: #000000; font-size: 0.95rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; min-width: 145px;">Idade Aparente:</strong>
+                  <span style="color: #000000; font-weight: 700; font-size: 1rem;">Aprox. 9 a 11 anos</span>
+                </div>
+                <div style="padding-bottom: 6px; border-bottom: 1px solid rgba(0,0,0,0.12);">
+                  <strong style="color: #000000; font-size: 0.95rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 2px;">Descrição Física:</strong>
+                  <span style="color: #111111; font-weight: 600; font-size: 0.95rem; line-height: 1.5;">Cabelos castanhos curtos, olhos expressivos. Veste-se com uma blusa de frio simples e foi vista pela última vez usando um marcante laço de cabelo rosa.</span>
+                </div>
+                <div style="padding-bottom: 6px; border-bottom: 1px solid rgba(0,0,0,0.12);">
+                  <strong style="color: #000000; font-size: 0.95rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 2px;">Último Visto:</strong>
+                  <span style="color: #111111; font-weight: 600; font-size: 0.95rem; line-height: 1.5;">Desaparecida desde a tarde do dia 01/08/2061, vista nas proximidades do bosque da Mata do Norte, nos limites do subúrbio de Fraguiktos.</span>
+                </div>
+                <div style="margin-top: 4px;">
+                  <strong style="color: #000000; font-size: 0.95rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Informações:</strong>
+                  <div style="background: rgba(0,0,0,0.05); border-left: 4px solid #111111; padding: 10px 14px; font-style: italic; color: #000000; font-weight: 600; font-size: 0.93rem; line-height: 1.55;">
+                    “Se você viu qualquer coisa ou tem pistas sobre o paradeiro de Kali, por favor, entre em contato com as autoridades locais ou ligue para o número abaixo. A família oferece recompensa por qualquer pista real.”
+                  </div>
+                </div>
+                <div style="font-size: 0.85rem; color: #222222; font-weight: 700; margin: 10px 0 0; text-align: center; border-top: 1px dashed #666666; padding-top: 8px;">
                   [Há um número de telefone rasurado à mão no rodapé da folha]
-                </p>
+                </div>
               </div>
             </div>
 
-            <!-- VERSO DO CARTAZ (O SEGREDO) -->
-            <div style="width: 100%; max-width: 620px; background: rgba(20, 14, 28, 0.94); border: 1.5px solid rgba(168, 85, 247, 0.45); border-radius: 4px; padding: 20px 22px; box-shadow: 0 8px 32px rgba(0,0,0,0.9);">
-              <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(168, 85, 247, 0.3); padding-bottom: 8px; margin-bottom: 12px;">
-                <span style="font-size: 0.82rem; font-weight: 800; color: #c084fc; letter-spacing: 1px; font-family: monospace;">O VERSO DO PANFLETO • SEGREDO REVELADO</span>
-                <span style="font-size: 0.72rem; color: #a855f7; font-family: monospace;">TINTA ROXA</span>
+            
+            <div style="width: 100%; max-width: 620px; background: #fffcf2; color: #111111; border: 2px solid #33281e; border-radius: 4px; padding: 24px 26px; box-shadow: 0 8px 32px rgba(0,0,0,0.85); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+              <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #581c87; padding-bottom: 8px; margin-bottom: 12px;">
+                <span style="font-size: 0.8rem; font-weight: 900; letter-spacing: 2px; color: #3b0764; text-transform: uppercase;">VERSO DO CARTAZ</span>
+                <span style="font-size: 0.72rem; font-weight: 800; color: #581c87; letter-spacing: 1px; text-transform: uppercase; border: 1px solid #7e22ce; padding: 2px 8px; border-radius: 2px; background: rgba(126, 34, 206, 0.08);">ANOTAÇÕES EM TINTA ROXA</span>
               </div>
-              <p style="font-size: 0.85rem; color: #9ca3af; margin: 0 0 12px; line-height: 1.4;">
+              <p style="font-size: 0.92rem; color: #262626; margin: 0 0 12px; line-height: 1.5; font-weight: 600;">
                 Ao virar o papel, é possível notar que o verso foi totalmente utilizado como rascunho de vigilância:
               </p>
-              <div style="padding: 12px 16px; background: rgba(0, 0, 0, 0.4); border-left: 3px solid #a855f7; border-radius: 0 4px 4px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.6; color: #e9d5ff;">
-                <p style="margin: 0 0 8px;"><strong>Terça-feira (14:15)</strong> — Saiu da aula antes dos outros. Caminha sozinha pela orla da mata.</p>
-                <p style="margin: 0 0 8px;"><strong>Quinta-feira (14:10)</strong> — O mesmo trajeto. Ninguém a acompanha. O bosque está silencioso neste horário.</p>
-                <p style="margin: 8px 0 0; color: #f472b6; font-weight: 700; border-top: 1px dashed rgba(168, 85, 247, 0.3); padding-top: 8px;">
-                  Conclusão: Perfeita para a transição. O sacrifício está pronto para a salvação de Sara.
-                </p>
+              <div style="padding: 14px 16px; background: rgba(107, 33, 168, 0.06); border-left: 4px solid #6b21a8; border-radius: 0 4px 4px 0; font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 0.92rem; line-height: 1.65; color: #3b0764;">
+                <div style="font-weight: 900; color: #581c87; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; margin-bottom: 8px;">Anotações à Margem (Tinta Roxa):</div>
+                <p style="margin: 0 0 8px; color: #2e1065;"><strong style="color: #4a044e; font-weight: 900;">Terça-feira (14:15)</strong> — Saiu da aula antes dos outros. Caminha sozinha pela orla da mata.</p>
+                <p style="margin: 0 0 10px; color: #2e1065;"><strong style="color: #4a044e; font-weight: 900;">Quinta-feira (14:10)</strong> — O mesmo trajeto. Ninguém a acompanha. O bosque está silencioso neste horário.</p>
+                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(107, 33, 168, 0.35); color: #4a044e; font-weight: 900; font-size: 0.95rem; line-height: 1.5;">
+                  <span style="text-decoration: underline; text-underline-offset: 3px; color: #581c87;">Conclusão:</span> Perfeita para a transição. O sacrifício está pronto para a salvação de Sara.
+                </div>
               </div>
             </div>
           </div>

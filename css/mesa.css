@@ -8016,6 +8016,7 @@ body:has(#abertura-overlay.active) .reaction-picker-popover {
   margin: 4px 0 0 0;
   word-break: break-word;
   overflow-wrap: anywhere;
+  white-space: pre-line;
 }
 
 .coletavel-card-desc strong {
