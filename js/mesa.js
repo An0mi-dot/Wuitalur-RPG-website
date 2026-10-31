@@ -5930,8 +5930,14 @@ const MesaLivroReader = {
                 <span style="font-size: 0.8rem; font-weight: 900; letter-spacing: 2px; color: #222222; text-transform: uppercase;">FRENTE DO CARTAZ</span>
                 <span style="font-size: 0.72rem; font-weight: 800; color: #444444; letter-spacing: 1px; text-transform: uppercase;">FOLHA A4</span>
               </div>
-              <div style="text-align: center; margin-bottom: 16px;">
+              <div style="text-align: center; margin-bottom: 12px;">
                 <h2 style="font-size: 2.2rem; font-weight: 900; margin: 0; letter-spacing: 3px; color: #000000; text-transform: uppercase;">PROCURA-SE</h2>
+              </div>
+              <div style="display: flex; justify-content: center; margin: 0 0 16px;">
+                <div style="background: #ffffff; padding: 6px 6px 10px; border: 2px solid #222222; box-shadow: 0 4px 14px rgba(0,0,0,0.22); border-radius: 2px; max-width: 200px; text-align: center;">
+                  <img src="assets/kali_cartaz.png" alt="Retrato de Kali" style="width: 100%; height: auto; max-height: 240px; object-fit: cover; display: block; border: 1px solid #444444;" />
+                  <span style="display: block; margin-top: 6px; font-size: 0.72rem; font-weight: 800; color: #222222; letter-spacing: 1px; text-transform: uppercase;">KALI (FOTO RECENTE)</span>
+                </div>
               </div>
               <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.95rem; line-height: 1.55; color: #111111;">
                 <div style="padding-bottom: 6px; border-bottom: 1px solid rgba(0,0,0,0.12);">
