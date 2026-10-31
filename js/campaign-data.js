@@ -558,6 +558,115 @@
         "area_id": "floresta-proibida",
         "nome": "A Mata do Norte",
         "gancho": "Para onde Sara fugiu em direção ao sacrifício."
+      },
+      {
+        "area_id": "pavilhao-abandonado",
+        "nome": "Pavilhão de Acolhimento Abandonado",
+        "gancho": "Anexo clandestino na divisa com a floresta."
+      }
+    ]
+  },
+  "pavilhao-abandonado": {
+    "id": "pavilhao-abandonado",
+    "nome": "Pavilhão de Acolhimento Abandonado",
+    "shortName": "Pavilhão Abandonado",
+    "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 21h18\"></path><path d=\"M5 21V7l7-4 7 4v14\"></path><path d=\"M9 10a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v11H9V10z\"></path><line x1=\"9\" y1=\"21\" x2=\"9\" y2=\"14\"></line><line x1=\"15\" y1=\"21\" x2=\"15\" y2=\"14\"></line></svg>",
+    "themeClass": "area-pavilhao-abandonado",
+    "district": "Divisa entre a Mata do Norte e o Subúrbio • Fragktus",
+    "dangerLevel": "Zona de Investigação / Perigo Baixo",
+    "dangerLevelClass": "warning",
+    "resumo_atmosfera": "Um antigo anexo de reabilitação juvenil desativado há décadas, engolido pela vegetação densa na divisa entre a Mata do Norte e o subúrbio de Fragktus. Suas janelas quebradas e paredes de tijolos úmidos escondem um santuário clandestino onde jovens sem esperança eram doutrinados no escuro.\n\nStatus no Mapa: Desbloqueado após a fuga na Parte 1 do EP 2.\n\nCondições de Ambiente: Escuridão parcial (exige lanternas ou fontes de luz), piso barulhento coberto de vidros e goteiras (-1 em testes de Furtividade se o grupo se mover correndo).",
+    "requisitos_acesso": "Acessos do Pavilhão:\n• Janela Quebrada (Lateral): Entrada de emergência vinda da orla da floresta.\n• Porta Principal (Frente): Trancada por fora com correntes pesadas e cadeado enferrujado (Força DT 9 ou Crime DT 8 para abrir por dentro, mas faz muito barulho).\n• Galeria de Escoamento (Subsolo): Saída furtiva que dá acesso às tubulações de drenagem e leva de volta às ruas traseiras da cidade.",
+    "npcs_presentes": [],
+    "pontos_de_interesse": [
+      {
+        "cabecalho": {
+          "nome": "O Mural de Cortiça (Corredor de Entrada)",
+          "descricao_publica": "Um corredor estreito com o teto cedendo. Num canto seco, dezenas de papéis arrancados de postes da cidade foram empilhados sobre um caixote, ao lado de um mural de cortiça mofado."
+        },
+        "testes": [
+          {
+            "pericia": "Sem Teste (Interação Automática)",
+            "ct_dt": "-",
+            "informacao_revelada": "O grupo identifica uma pilha de Panfletos de Desaparecimento de Kali (\"PROCURA-SE: Kali. Vista pela última vez usando um laço de cabelo rosa próximo ao bosque...\"). Quem acumulou os papéis aqui estava limpando os arredores para abafar as buscas."
+          },
+          {
+            "pericia": "Investigação",
+            "ct_dt": 6,
+            "informacao_revelada": "No verso de vários panfletos, há um cronograma manuscrito detalhando os horários exatos em que a menina passava sozinha perto do bosque. Não há assinatura nem nomes, mas toda a caligrafia foi feita com uma caneta de tinta roxa."
+          },
+          {
+            "pericia": "Percepção",
+            "ct_dt": 6,
+            "informacao_revelada": "Confirma que o traço fluido de tinta roxa coincide com anotações solenes da direção. As rotas anotadas comprovam que os passos de Kali eram cronometrados à espera do momento oportuno."
+          }
+        ],
+        "notas_mestre": "Recompensa / Pista: Panfleto Anotado de Kali (Prova que a criança não foi uma vítima acidental, mas sim vigiada e selecionada para o sacrifício de Sara). A tinta roxa é o elemento que aponta para a diretora Constança."
+      },
+      {
+        "cabecalho": {
+          "nome": "A Sala do Círculo (Salão Térreo)",
+          "descricao_publica": "Uma sala ampla com cadeiras velhas dispostas em roda no centro, cercadas por tocos de velas derretidas. Na parede de fundo, há um quadro-negro rachado; no canto, uma mesa de ferro com papéis espalhados."
+        },
+        "testes": [
+          {
+            "pericia": "Investigação",
+            "ct_dt": 7,
+            "informacao_revelada": "Análise do Quadro-Negro: Escrito em giz branco com letra firme e anônima, há frases de doutrinação sobre \"Ele\":\n• \"O mundo real só vos deu dor; o Jardim Dele vos dará o descanso.\"\n• \"Para quem não tem amanhã, a Porta é a única cura.\"\n• (Sublinhado três vezes no centro): \"A Caixa só se abre para aqueles cujo tempo na Terra já está condenado.\""
+          },
+          {
+            "pericia": "Ocultismo",
+            "ct_dt": 7,
+            "informacao_revelada": "Decifra os dogmas escritos no quadro-negro: a entidade exige alvos cuja esperança mundana já tenha sido esgotada por sofrimentos ou doenças incuráveis, para que a entrega pela Porta da Caixa ocorra sem resistência espiritual."
+          },
+          {
+            "pericia": "Sem Teste (A Mesa Lateral)",
+            "ct_dt": "-",
+            "informacao_revelada": "Após vasculhar a sala, a mesa lateral revela recortes de jornais, rascunhos anônimos e páginas de diários rasgados de vários adolescentes nos últimos anos (incluindo anotações sobre o câncer real de Sara e tragédias graves de outros jovens). Mostra que o responsável pelo local caçava jovens que já estavam genuinamente condenados ou em desespero extremo para oferecer à entidade como salvação."
+          },
+          {
+            "pericia": "Percepção (Loot Oculto)",
+            "ct_dt": 7,
+            "informacao_revelada": "Vasculhando as mochilas velhas no chão, o grupo encontra: 1x Fruta Roxa (Restaura 4 de estresse), 1x Pedaço de Madeira com Prego (1d6 + Força, Peso 1) e 3d4 Vidrilhos esquecidos no fundo de uma bolsa mofada."
+          }
+        ],
+        "notas_mestre": "Este salão expõe o mecanismo predatório da seita: mapear jovens vulneráveis em estado de dor crônica ou sem perspectiva de cura para convencê-los de que a morte na Caixa é libertação."
+      },
+      {
+        "cabecalho": {
+          "nome": "A Galeria de Escoamento (Subsolo)",
+          "descricao_publica": "Uma escadaria de concreto úmido que desce para o porão alagado do prédio. Ao fundo, uma grade de ferro enferrujada leva aos túneis pluviais da cidade. O cheiro de esgoto, ferrugem e carne podre é sufocante."
+        },
+        "testes": [
+          {
+            "pericia": "Mecânica da Grade",
+            "ct_dt": "-",
+            "informacao_revelada": "A grade está emperrada pelo lodo e ferrugem, exigindo que alguém se aproxime fisicamente para puxá-la."
+          },
+          {
+            "pericia": "Evento Gatilho (Emboscada)",
+            "ct_dt": "-",
+            "informacao_revelada": "Assim que Minerva se aproxima da grade (ou tenta destrancá-la), o Rato Carniceiro Portador da Praga salta da tubulação seca, iniciando o combate roteirizado da mordida."
+          },
+          {
+            "pericia": "Percepção / Prontidão",
+            "ct_dt": 7,
+            "informacao_revelada": "Permite notar o ruído úmido de raspagem de unhas nas manilhas metálicas antes do salto, evitando surpresa no início do combate."
+          }
+        ],
+        "notas_mestre": "Ameaça Local (Encontro do PDI #03):\nRATO CARNICEIRO (PORTADOR DA PRAGA) [ Criatura Pequena / Besta Infectada ]\n• PV: 12 | Defesa: 6 | Iniciativa: Alta (Age primeiro na emboscada contra Minerva)\n• Passiva — Sangue Pestilento: O corpo do animal está tomado por caroços cinzentos e veias arroxeadas. Qualquer ataque corpo a corpo que o mate espalha sangue escuro e fétido no chão (sem efeito de contágio pelo ar, apenas por mordida direta).\n• Ação — Incisivos Pestilentos (Corpo a Corpo): Avança ferozmente no alvo mais próximo da grade (Minerva), causando 1d4 de dano perfurante e aplicando silenciosamente a condição oculta Portador da Praga (Incubação)."
+      }
+    ],
+    "conexoes_saida": [
+      {
+        "area_id": "floresta-proibida",
+        "nome": "A Mata do Norte",
+        "gancho": "Fuga ou acesso pela orla da floresta."
+      },
+      {
+        "area_id": "casa-auguil",
+        "nome": "Casa Auguil",
+        "gancho": "Tubulações que retornam às ruas do subúrbio."
       }
     ]
   }
@@ -744,6 +853,17 @@
           texto: "Eles entregaram. Então, o Viajante cresceu tanto que abraçou o mundo inteiro. E todos dormiram para sempre, bem quentinhos em seu abraço, em silêncio e em paz."
         }
       ]
+    },
+    {
+      id: "col_panfleto_anotado_kali",
+      nome: "Panfleto Anotado de Kali",
+      peso: 0,
+      tipo: "Documento",
+      campo_tipo: "Evidência",
+      area: "Pavilhão de Acolhimento Abandonado",
+      desbloqueado: false,
+      resumo: "Um panfleto de busca de Kali arrancado da rua, contendo no verso anotações meticulosas em tinta roxa.",
+      detalhe: "O verso apresenta um cronograma detalhado dos horários em que Kali passava sozinha na orla do bosque. Prova cabal de que a menina foi vigiada e escolhida de forma premeditada para o ritual de Sara."
     },
     {
       id: "col_caixa_negra_dourada",

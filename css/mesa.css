@@ -4367,6 +4367,17 @@ body.mesa-body.area-floresta-proibida {
   --area-badge-bg: rgba(16, 185, 129, 0.15);
 }
 
+body.mesa-body.area-pavilhao-abandonado {
+  --area-ambient-1: #3b283d;
+  --area-ambient-2: #241727;
+  --area-ambient-3: #140b17;
+  --area-ambient-dark: #070308;
+  --area-accent: #a855f7;
+  --area-accent-trans: rgba(168, 85, 247, 0.4);
+  --area-glow: rgba(168, 85, 247, 0.45);
+  --area-badge-bg: rgba(168, 85, 247, 0.15);
+}
+
 body.mesa-body.area-refugio-gustavo {
   --area-ambient-1: #991b1b;
   --area-ambient-2: #7f1d1d;
