@@ -100,15 +100,24 @@
 
     <!-- Caixa de Criação de Post -->
     <section class="w-compose-box" id="w-compose-section">
-      <!-- Seletor do Mestre (aparece apenas quando o Mestre está logado) -->
+      <!-- Seletor do Mestre Integrado (HUD Persona Switcher) -->
       <div id="w-master-selector-wrap" class="w-master-selector-banner" style="display: none;">
-        <div class="w-master-badge-title">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <span>Controle do Mestre &bull; Wuitar como:</span>
+        <div class="w-master-switcher-bar">
+          <div class="w-master-badge-title">
+            <span class="w-master-tag-pulse"></span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>POSTANDO COMO</span>
+          </div>
+          <div class="w-master-select-wrap">
+            <select class="w-form-select w-master-select-input" id="w-master-account-select" title="Alternar persona para wuitar">
+              <!-- Preenchido dinamicamente com todas as contas cadastradas -->
+            </select>
+            <button type="button" class="w-master-quick-panel-btn" onclick="window.wuitter.openMasterPanelModal()" title="Abrir Central de Operações do Mestre">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              <span>Gerenciar NPCs</span>
+            </button>
+          </div>
         </div>
-        <select class="w-form-select w-master-select-input" id="w-master-account-select">
-          <!-- Preenchido dinamicamente com todas as contas cadastradas -->
-        </select>
       </div>
 
       <div class="w-compose-layout">
@@ -171,36 +180,59 @@
       </div>
     </div>
 
-    <!-- Painel Exclusivo do Mestre (Lateral Desktop) -->
-    <section class="w-widget-card" id="w-gm-panel-container" style="display: none; border-color: rgba(245, 158, 11, 0.45); box-shadow: 0 4px 20px rgba(245, 158, 11, 0.08);">
-      <div class="w-widget-header" style="background: rgba(245, 158, 11, 0.12); border-bottom: 1px solid rgba(245, 158, 11, 0.25);">
-        <span style="color: var(--w-accent-gold); display: flex; align-items: center; gap: 8px; font-weight: 800;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          Painel do Mestre
-        </span>
-      </div>
-      
-      <div style="padding: 10px 16px; border-bottom: 1px solid var(--w-border); background: rgba(0,0,0,0.2);">
-        <span style="font-size: 0.78rem; font-weight: 800; color: var(--w-text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Gerenciar Contas e NPCs:</span>
-      </div>
-      <div class="w-widget-list" id="w-gm-accounts-list" style="max-height: 250px; overflow-y: auto;">
-        <!-- Lista de contas com botão de editar -->
+    <!-- Terminal do Mestre (HUD Lateral) -->
+    <section class="w-widget-card w-gm-terminal-widget" id="w-gm-panel-container" style="display: none;">
+      <div class="w-gm-terminal-header">
+        <div class="w-gm-terminal-title">
+          <span class="w-gm-live-dot"></span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>TERMINAL DO MESTRE</span>
+        </div>
+        <span class="w-gm-terminal-badge">ADM</span>
       </div>
 
-      <div class="w-gm-panel">
-        <button class="w-gm-btn" id="w-gm-new-account">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
-          <span>Criar Nova Conta / NPC</span>
-        </button>
-        <button class="w-gm-btn" id="w-gm-export-json">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span>Exportar Feed (JSON)</span>
-        </button>
-        <button class="w-gm-btn" id="w-gm-import-json">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-          <span>Importar Feed (JSON)</span>
-        </button>
+      <div class="w-gm-telemetry-grid">
+        <div class="w-gm-stat-box">
+          <span class="w-gm-stat-label">Wuits</span>
+          <span class="w-gm-stat-val" id="w-stat-wuits-count">0</span>
+        </div>
+        <div class="w-gm-stat-box">
+          <span class="w-gm-stat-label">Personagens</span>
+          <span class="w-gm-stat-val" id="w-stat-chars-count">0</span>
+        </div>
+        <div class="w-gm-stat-box">
+          <span class="w-gm-stat-label">Rede</span>
+          <span class="w-gm-stat-val" style="color: var(--w-accent-green);">OK</span>
+        </div>
       </div>
+
+      <div class="w-gm-active-persona-dock">
+        <span class="w-gm-dock-label">Persona de Postagem Ativa:</span>
+        <div class="w-gm-dock-persona" id="w-gm-dock-persona-view">
+          <!-- Preenchido dinamicamente -->
+        </div>
+      </div>
+
+      <div class="w-gm-terminal-actions">
+        <button type="button" class="w-gm-hud-btn primary" onclick="window.wuitter.openMasterPanelModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Central de Operações</span>
+        </button>
+        <div class="w-gm-hud-row">
+          <button type="button" class="w-gm-hud-btn secondary" id="w-gm-new-account" onclick="window.wuitter.openNewAccountModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            <span>Novo NPC</span>
+          </button>
+          <button type="button" class="w-gm-hud-btn secondary" id="w-gm-export-json" onclick="window.wuitter.exportFeedJson()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Backup</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Container oculto para manter compatibilidade com w-gm-accounts-list e w-gm-import-json -->
+      <div id="w-gm-accounts-list" style="display: none;"></div>
+      <button id="w-gm-import-json" style="display: none;"></button>
     </section>
 
     <!-- Trending Topics -->
@@ -217,40 +249,121 @@
 </div>
 
 <!-- ============================================================
-     MODAL: PAINEL GERAL DO MESTRE (RESPONSIVO E COMPLETO)
+     MODAL: CENTRAL DE OPERAÇÕES DO MESTRE (HUD COMPLETO)
      ============================================================ -->
 <div class="w-modal-overlay" id="w-master-modal">
-  <div class="w-modal-card" style="max-width: 620px;">
-    <div class="w-modal-header" style="border-bottom-color: rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.08);">
-      <h3 class="w-modal-title" style="color: var(--w-accent-gold); display: flex; align-items: center; gap: 8px;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        Painel de Administração do Mestre
-      </h3>
-      <button class="w-modal-close" onclick="window.wuitter.closeModals()">
+  <div class="w-modal-card w-master-hud-modal">
+    <div class="w-master-hud-header">
+      <div class="w-master-hud-title-wrap">
+        <span class="w-master-hud-badge">MESTRE DA MESA</span>
+        <h3 class="w-master-hud-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Central de Operações do Wuitter
+        </h3>
+        <p class="w-master-hud-subtitle">Gerenciamento de identidades, NPCs, broadcast global e banco de dados in-universe.</p>
+      </div>
+      <button class="w-modal-close" onclick="window.wuitter.closeModals()" title="Fechar Painel">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
-    <div class="w-modal-body">
-      <p style="font-size: 0.88rem; color: var(--w-text-muted); margin-bottom: 14px;">
-        Controle central do Wuitter. Você pode configurar qualquer personagem, cadastrar novos NPCs, ajustar selos de verificação e alternar a conta que wuitar.
-      </p>
 
-      <div style="display: flex; gap: 10px; margin-bottom: 16px;">
-        <button class="w-btn-post-primary" style="flex: 1; padding: 10px 14px; font-size: 0.88rem;" onclick="window.wuitter.openNewAccountModal()">
-          + Cadastrar Novo NPC
-        </button>
-        <button class="w-gm-btn" style="padding: 10px 14px; font-size: 0.88rem;" onclick="window.wuitter.exportFeedJson()">
-          Exportar JSON
-        </button>
-        <button class="w-gm-btn" style="padding: 10px 14px; font-size: 0.88rem;" onclick="window.wuitter.importFeedJson()">
-          Importar JSON
-        </button>
+    <!-- Navegação por Abas do Painel -->
+    <div class="w-master-tabs-bar">
+      <button type="button" class="w-master-tab active" id="w-mtab-btn-accounts" onclick="window.wuitter.switchMasterTab('accounts')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>Contas & NPCs</span>
+      </button>
+      <button type="button" class="w-master-tab" id="w-mtab-btn-broadcast" onclick="window.wuitter.switchMasterTab('broadcast')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/></svg>
+        <span>Transmissão Rápida</span>
+      </button>
+      <button type="button" class="w-master-tab" id="w-mtab-btn-database" onclick="window.wuitter.switchMasterTab('database')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        <span>Dados & Backup</span>
+      </button>
+    </div>
+
+    <div class="w-master-hud-body">
+      <!-- ABA 1: CONTAS E NPCS -->
+      <div class="w-master-tab-pane active" id="w-mpane-accounts">
+        <div class="w-master-controls-bar">
+          <div class="w-master-search-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="w-master-search-input" placeholder="Buscar personagem por nome, @handle ou token..." oninput="window.wuitter.filterMasterAccounts(this.value)">
+          </div>
+          <button type="button" class="w-btn-post-primary w-master-add-btn" onclick="window.wuitter.openNewAccountModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>Novo NPC</span>
+          </button>
+        </div>
+
+        <div class="w-master-filter-chips">
+          <button type="button" class="w-chip active" data-cat="all" onclick="window.wuitter.setMasterCategoryFilter('all')">Todos (<span id="w-chip-count-all">0</span>)</button>
+          <button type="button" class="w-chip" data-cat="players" onclick="window.wuitter.setMasterCategoryFilter('players')">Jogadores (<span id="w-chip-count-players">0</span>)</button>
+          <button type="button" class="w-chip" data-cat="npcs" onclick="window.wuitter.setMasterCategoryFilter('npcs')">NPCs (<span id="w-chip-count-npcs">0</span>)</button>
+          <button type="button" class="w-chip" data-cat="master" onclick="window.wuitter.setMasterCategoryFilter('master')">Mestre (<span id="w-chip-count-master">0</span>)</button>
+        </div>
+
+        <div class="w-master-accounts-grid" id="w-modal-master-accounts">
+          <!-- Preenchido dinamicamente com cards elegantes -->
+        </div>
       </div>
 
-      <div class="w-form-group">
-        <label class="w-form-label">Contas Registradas no Wuitter:</label>
-        <div class="w-widget-list" id="w-modal-master-accounts" style="max-height: 280px; overflow-y: auto; border: 1px solid var(--w-border); border-radius: var(--w-radius-md);">
-          <!-- Preenchido dinamicamente -->
+      <!-- ABA 2: TRANSMISSÃO RÁPIDA -->
+      <div class="w-master-tab-pane" id="w-mpane-broadcast" style="display: none;">
+        <div class="w-broadcast-box">
+          <h4 class="w-broadcast-title">Disparo Global de Notícia / Ocorrência</h4>
+          <p class="w-broadcast-desc">Publique instantaneamente um comunicado oficial, alerta de rádio pirata ou evento de mundo.</p>
+          
+          <div class="w-form-group" style="margin-top: 14px;">
+            <label class="w-form-label">Identidade Emissora</label>
+            <select class="w-form-select" id="w-broadcast-sender">
+              <!-- Preenchido com contas de autoridade/NPCs -->
+            </select>
+          </div>
+
+          <div class="w-form-group">
+            <label class="w-form-label">Mensagem da Transmissão</label>
+            <textarea class="w-form-textarea" id="w-broadcast-text" rows="4" placeholder="Digite o comunicado para o feed público..."></textarea>
+          </div>
+
+          <div class="w-broadcast-presets">
+            <span class="w-broadcast-presets-label">Modelos rápidos:</span>
+            <button type="button" class="w-preset-btn" onclick="window.wuitter.applyBroadcastPreset('alerta')">[ALERTA DE SEGURANÇA]</button>
+            <button type="button" class="w-preset-btn" onclick="window.wuitter.applyBroadcastPreset('conclave')">[COMUNICADO CONCLAVE]</button>
+            <button type="button" class="w-preset-btn" onclick="window.wuitter.applyBroadcastPreset('rumor')">[RUMOR DE RUA]</button>
+          </div>
+
+          <button type="button" class="w-btn-post-primary" style="width: 100%; margin-top: 14px;" onclick="window.wuitter.sendBroadcastPost()">
+            Transmitir Mensagem ao Feed
+          </button>
+        </div>
+      </div>
+
+      <!-- ABA 3: DADOS E BACKUP -->
+      <div class="w-master-tab-pane" id="w-mpane-database" style="display: none;">
+        <div class="w-database-grid">
+          <div class="w-database-card">
+            <div class="w-database-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </div>
+            <h4>Exportar Feed em JSON</h4>
+            <p>Baixe todas as publicações, respostas, curtidas e NPCs salvos localmente para manter uma cópia segura da sua campanha.</p>
+            <button type="button" class="w-gm-btn" onclick="window.wuitter.exportFeedJson()">
+              Exportar Arquivo JSON
+            </button>
+          </div>
+
+          <div class="w-database-card">
+            <div class="w-database-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <h4>Importar Feed em JSON</h4>
+            <p>Restaure um estado salvo de publicações e NPCs a partir de um arquivo previamente exportado.</p>
+            <button type="button" class="w-gm-btn" onclick="window.wuitter.importFeedJson()">
+              Carregar Arquivo JSON
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -333,7 +446,7 @@
         <label class="w-form-label">Selo de Verificado (Exclusivo Mestre)</label>
         <select class="w-form-select" id="w-edit-badge-select">
           <option value="none">Nenhum</option>
-          <option value="blue">Azul (Investigador / Oficial)</option>
+          <option value="blue">Azul (Investigador / Autoridade)</option>
           <option value="gold">Dourado (Mestre / Conclave / Imprensa)</option>
         </select>
       </div>

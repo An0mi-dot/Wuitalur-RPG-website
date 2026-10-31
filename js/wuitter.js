@@ -218,7 +218,7 @@ const DEFAULT_ACCOUNTS = [
     hashes: [],
     name: 'Governo de Paladium',
     handle: '@gov_paladium',
-    bio: 'Canal Oficial do Governo e Departamento de Segurança e Ordem de Paladium. Comunicados da Chancelaria, decretos civis, registros penitenciários e mandados de custódia da metrópole.',
+    bio: 'Canal Autoridade do Governo e Departamento de Segurança e Ordem de Paladium. Comunicados da Chancelaria, decretos civis, registros penitenciários e mandados de custódia da metrópole.',
     avatarLetter: 'G',
     avatarImage: '',
     avatarColor: '#1e3a8a',
@@ -844,7 +844,7 @@ Com estima e rigor,
 
 Constança Montenegro e Conselho Diretor de Fragktus.
 
-#ColegioPrimordio #Fragktus #ComunicadoOficial #SaraAuguil`,
+#ColegioPrimordio #Fragktus #ComunicadoAutoridade #SaraAuguil`,
         timestamp: now - (5 * 60 * 1000),
         timeDisplay: '02/08/2061',
         likes: 142,
@@ -2736,40 +2736,233 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
 
     panel.style.display = 'block';
 
-    const renderAccountItem = (acc) => {
-      const isCustom = !acc.slot && !acc.isMaster;
-      return `
-      <div class="w-follow-item" style="padding: 8px 12px; border-bottom: 1px solid var(--w-border-subtle); display: flex; align-items: center; justify-content: space-between;">
+    // 1. Atualizar contadores de telemetria
+    const statWuits = document.getElementById('w-stat-wuits-count');
+    const statChars = document.getElementById('w-stat-chars-count');
+    if (statWuits) statWuits.textContent = this.posts.length;
+    if (statChars) statChars.textContent = this.accounts.length;
+
+    // 2. Dock de persona ativa
+    const dockPersona = document.getElementById('w-gm-dock-persona-view');
+    const postingAcc = this.getPostingAccount();
+    if (dockPersona && postingAcc) {
+      dockPersona.innerHTML = `
         <div class="w-persona-info">
-          ${this.renderAvatarHtml(acc, 'sm')}
+          ${this.renderAvatarHtml(postingAcc, 'sm')}
           <div class="w-persona-names">
-            <span class="w-persona-name">${acc.name} ${this.renderBadgeSvg(acc.badge)}</span>
-            <span class="w-persona-handle">${acc.handle} ${acc.isMaster ? '[Mestre]' : ''}</span>
+            <span class="w-persona-name">${postingAcc.name} ${this.renderBadgeSvg(postingAcc.badge)}</span>
+            <span class="w-persona-handle">${postingAcc.handle}</span>
           </div>
         </div>
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <button class="w-btn-follow" style="padding: 4px 10px; font-size: 0.75rem;" onclick="window.wuitter.openEditProfileModal(window.wuitter.getAccountById('${acc.id}'))">
-            Editar
-          </button>
-          ${isCustom ? `
-            <button class="w-delete-btn" style="color: var(--w-accent-red); padding: 4px;" onclick="window.wuitter.deleteAccount('${acc.id}')" title="Excluir Conta">
-              ${SVG_ICONS.trash}
-            </button>
-          ` : ''}
+        <span class="w-master-role-tag master" style="font-size: 0.65rem;">ATIVA</span>
+      `;
+    }
+
+    // 3. Atualizar contadores dos chips da central
+    const chipAll = document.getElementById('w-chip-count-all');
+    const chipPlayers = document.getElementById('w-chip-count-players');
+    const chipNpcs = document.getElementById('w-chip-count-npcs');
+    const chipMaster = document.getElementById('w-chip-count-master');
+    if (chipAll) chipAll.textContent = this.accounts.length;
+    if (chipPlayers) chipPlayers.textContent = this.accounts.filter(a => !!a.slot).length;
+    if (chipNpcs) chipNpcs.textContent = this.accounts.filter(a => !a.slot && !a.isMaster).length;
+    if (chipMaster) chipMaster.textContent = this.accounts.filter(a => !!a.isMaster).length;
+
+    // 4. Renderizar lista de contas no modal
+    this.renderMasterAccountsList();
+
+    // 5. Atualizar select de emissor no Broadcast
+    const broadcastSender = document.getElementById('w-broadcast-sender');
+    if (broadcastSender) {
+      broadcastSender.innerHTML = this.accounts.map(a => `
+        <option value="${a.id}" ${a.id === (this.selectedPostingAccountId || 'mestre') ? 'selected' : ''}>
+          ${a.name} (${a.handle}) ${a.isMaster ? '[MESTRE]' : (a.slot ? `[SLOT ${a.slot}]` : '[NPC]')}
+        </option>
+      `).join('');
+    }
+  }
+
+  renderMasterAccountsList() {
+    const container = document.getElementById('w-modal-master-accounts');
+    if (!container) return;
+
+    let list = [...this.accounts];
+
+    // Categoria
+    if (this.masterCategoryFilter === 'players') {
+      list = list.filter(a => !!a.slot);
+    } else if (this.masterCategoryFilter === 'npcs') {
+      list = list.filter(a => !a.slot && !a.isMaster);
+    } else if (this.masterCategoryFilter === 'master') {
+      list = list.filter(a => !!a.isMaster);
+    }
+
+    // Busca
+    if (this.masterSearchQuery) {
+      const q = this.masterSearchQuery;
+      list = list.filter(a => 
+        (a.name && a.name.toLowerCase().includes(q)) ||
+        (a.handle && a.handle.toLowerCase().includes(q)) ||
+        (a.slot && String(a.slot).includes(q)) ||
+        (a.tokens && a.tokens.some(t => t.toLowerCase().includes(q)))
+      );
+    }
+
+    if (list.length === 0) {
+      container.innerHTML = `
+        <div style="padding: 30px; text-align: center; color: var(--w-text-muted);">
+          Nenhum personagem ou NPC encontrado para os critérios atuais.
         </div>
-      </div>
-    `;
+      `;
+      return;
+    }
+
+    const postingAcc = this.getPostingAccount();
+
+    container.innerHTML = list.map(acc => {
+      const isCustom = !acc.slot && !acc.isMaster;
+      const isCurrentPosting = postingAcc && postingAcc.id === acc.id;
+      const roleClass = acc.isMaster ? 'master' : (acc.slot ? 'player' : 'npc');
+      const roleText = acc.isMaster ? 'Mestre' : (acc.slot ? `Jogador Slot ${acc.slot}` : 'NPC');
+      const tokenVal = (acc.tokens && acc.tokens[0]) ? acc.tokens[0] : (acc.slot ? `SLOT_${acc.slot}` : null);
+
+      return `
+        <div class="w-master-acc-card" style="${isCurrentPosting ? 'border-color: rgba(245, 158, 11, 0.5); background: #131722;' : ''}">
+          <div class="w-master-acc-left">
+            <div class="w-clickable-profile" onclick="window.wuitter.viewProfile('${acc.id}'); window.wuitter.closeModals();">
+              ${this.renderAvatarHtml(acc, 'normal')}
+            </div>
+            <div class="w-master-acc-details">
+              <div class="w-master-acc-name-row">
+                <span class="w-master-acc-name">${acc.name}</span>
+                ${this.renderBadgeSvg(acc.badge)}
+                <span class="w-master-role-tag ${roleClass}">${roleText}</span>
+                ${isCurrentPosting ? '<span class="w-master-role-tag master" style="font-size: 0.62rem;">Ativo no Post</span>' : ''}
+              </div>
+              <span class="w-master-acc-handle">${acc.handle}</span>
+              ${tokenVal ? `
+                <div class="w-master-token-badge" onclick="window.wuitter.copyAccountToken('${tokenVal}', this)" title="Clique para copiar token de acesso">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  <span>Token: ${tokenVal}</span>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+          <div class="w-master-acc-actions">
+            <button type="button" class="w-btn-action-tactical post-as" onclick="window.wuitter.selectPostingAccountDirect('${acc.id}')" title="Wuitar usando esta persona">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span>Wuitar</span>
+            </button>
+            <button type="button" class="w-btn-action-tactical edit" onclick="window.wuitter.openEditProfileModal(window.wuitter.getAccountById('${acc.id}'))" title="Editar dados da conta">
+              ${SVG_ICONS.settings}
+              <span>Editar</span>
+            </button>
+            ${isCustom ? `
+              <button type="button" class="w-btn-action-tactical delete" onclick="window.wuitter.deleteAccount('${acc.id}')" title="Excluir NPC">
+                ${SVG_ICONS.trash}
+              </button>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  switchMasterTab(tabName) {
+    this.activeMasterTab = tabName;
+    ['accounts', 'broadcast', 'database'].forEach(t => {
+      const btn = document.getElementById(`w-mtab-btn-${t}`);
+      const pane = document.getElementById(`w-mpane-${t}`);
+      if (btn) btn.classList.toggle('active', t === tabName);
+      if (pane) pane.style.display = (t === tabName) ? 'block' : 'none';
+    });
+  }
+
+  filterMasterAccounts(query) {
+    this.masterSearchQuery = (query || '').toLowerCase().trim();
+    this.renderMasterAccountsList();
+  }
+
+  setMasterCategoryFilter(cat) {
+    this.masterCategoryFilter = cat;
+    document.querySelectorAll('.w-master-filter-chips .w-chip').forEach(chip => {
+      chip.classList.toggle('active', chip.dataset.cat === cat);
+    });
+    this.renderMasterAccountsList();
+  }
+
+  copyAccountToken(token, btnEl) {
+    if (!token) return;
+    navigator.clipboard.writeText(token).then(() => {
+      const origHtml = btnEl ? btnEl.innerHTML : '';
+      if (btnEl) btnEl.innerHTML = `<span style="color: var(--w-accent-green); font-weight: 800;">Copiado</span>`;
+      setTimeout(() => { if (btnEl) btnEl.innerHTML = origHtml; }, 1800);
+    }).catch(() => {
+      alert(`Token: ${token}`);
+    });
+  }
+
+  selectPostingAccountDirect(accountId) {
+    this.selectedPostingAccountId = accountId;
+    const selectEl = document.getElementById('w-master-account-select');
+    if (selectEl) selectEl.value = accountId;
+    this.renderComposeHeader();
+    this.renderMasterPanel();
+    this.closeModals();
+    const textarea = document.getElementById('w-compose-input');
+    if (textarea) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      textarea.focus();
+    }
+  }
+
+  applyBroadcastPreset(presetKey) {
+    const textarea = document.getElementById('w-broadcast-text');
+    if (!textarea) return;
+    if (presetKey === 'alerta') {
+      textarea.value = '[ALERTA DE SEGURANÇA] Toque de recolher emitido em todos os distritos periféricos. Cidadãos devem evitar a área e reportar anomalias imediatamente. #Alerta #Seguranca';
+    } else if (presetKey === 'conclave') {
+      textarea.value = '[COMUNICADO CONCLAVE] Operações discretas em andamento registradas no setor. Mantenham o silêncio de rádio e operem sob os protocolos habituais. #Conclave #Operacoes';
+    } else if (presetKey === 'rumor') {
+      textarea.value = '[RUMOR DE RUA] Falam que a barreira dimensional do setor leste estremeceu hoje cedo. Quem tiver bom senso não anda por lá depois do anoitecer. #Boatos #Wuitalur';
+    }
+  }
+
+  async sendBroadcastPost() {
+    const senderSelect = document.getElementById('w-broadcast-sender');
+    const textarea = document.getElementById('w-broadcast-text');
+    if (!textarea) return;
+    const text = textarea.value.trim();
+    if (!text) {
+      alert('Digite a mensagem da transmissão.');
+      return;
+    }
+    const senderId = senderSelect ? senderSelect.value : (this.selectedPostingAccountId || 'mestre');
+    const author = this.getAccountById(senderId) || this.authenticatedAccount;
+    if (!author) return;
+
+    const newPost = {
+      id: 'wuit_' + Date.now(),
+      authorId: author.id,
+      text: text,
+      timestamp: Date.now(),
+      likes: 0,
+      likedBy: [],
+      rewuits: 0,
+      rewuitedBy: [],
+      media: '',
+      comments: []
     };
 
-    const accountListEl = document.getElementById('w-gm-accounts-list');
-    if (accountListEl) {
-      accountListEl.innerHTML = this.accounts.map(renderAccountItem).join('');
-    }
+    this.posts.unshift(newPost);
+    this.savePostsLocal();
+    this.broadcastSync('NEW_POST', { post: newPost });
+    await this.syncToCloud();
 
-    const modalMasterAccounts = document.getElementById('w-modal-master-accounts');
-    if (modalMasterAccounts) {
-      modalMasterAccounts.innerHTML = this.accounts.map(renderAccountItem).join('');
-    }
+    textarea.value = '';
+    this.closeModals();
+    this.renderFeed(newPost.id);
+    this.renderMasterPanel();
   }
 
   // Modais
@@ -2861,7 +3054,7 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
 
     this.closeModals();
     this.render();
-    alert('Perfil atualizado e sincronizado com sucesso!');
+    alert('Perfil atualizado e sincronizado com sucesso.');
   }
 
   openNewAccountModal() {
@@ -2909,7 +3102,7 @@ E por favor: parem de deixar seus mascotes mastigarem os fios de cobre da fachad
 
     this.closeModals();
     this.render();
-    alert('Nova conta cadastrada e sincronizada com sucesso!');
+    alert('Nova conta cadastrada e sincronizada com sucesso.');
   }
 
   async deleteAccount(accountId) {
