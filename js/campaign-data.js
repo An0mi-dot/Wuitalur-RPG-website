@@ -855,15 +855,27 @@
       ]
     },
     {
-      id: "col_panfleto_anotado_kali",
-      nome: "Panfleto Anotado de Kali",
+      id: "col_cartaz_desaparecido",
+      aliasId: "col_panfleto_anotado_kali",
+      nome: "Cartaz de Desaparecido",
       peso: 0,
       tipo: "Documento",
       campo_tipo: "Evidência",
       area: "Pavilhão de Acolhimento Abandonado",
       desbloqueado: false,
-      resumo: "Um panfleto de busca de Kali arrancado da rua, contendo no verso anotações meticulosas em tinta roxa.",
-      detalhe: "O verso apresenta um cronograma detalhado dos horários em que Kali passava sozinha na orla do bosque. Prova cabal de que a menina foi vigiada e escolhida de forma premeditada para o ritual de Sara."
+      resumo: "Uma folha de papel sulfite tamanho A4, um pouco amarelada e amassada nas bordas devido à exposição ao clima. O topo traz em letras garrafais pretas o alerta PROCURA-SE. O verso foi totalmente utilizado como rascunho de vigilância em tinta roxa.",
+      detalhe: "DESCRIÇÃO:\nTrata-se de uma folha de papel sulfite tamanho A4, um pouco amarelada e amassada nas bordas devido à exposição ao clima e ao tempo colada em postes e muros da cidade. O topo do papel traz em letras garrafais e pretas a palavra de alerta:\n\nPROCURA-SE\n• Nome: Kali (Sem sobrenome divulgado nos panfletos públicos)\n• Idade Aparente: Aprox. 9 a 11 anos\n• Descrição Física: Cabelos castanhos curtos, olhos expressivos. Veste-se com uma blusa de frio simples e foi vista pela última vez usando um marcante laço de cabelo rosa.\n• Último Visto: Desaparecida desde a tarde do dia 01/08/2061, vista nas proximidades do bosque da Mata do Norte, nos limites do subúrbio de Fragktus.\n• Informações: “Se você viu qualquer coisa ou tem pistas sobre o paradeiro de Kali, por favor, entre em contato com as autoridades locais ou ligue para o número abaixo. A família oferece recompensa por qualquer pista real.”\n[Há um número de telefone rasurado à mão no rodapé da folha]\n\nO VERSO DO PANFLETO (O Segredo Encontrado pelos Jogadores):\nAo virar o papel, é possível notar que o verso foi totalmente utilizado como rascunho de vigilância:\nAnotações à Margem (Tinta Roxa):\n• Terça-feira (14:15) — Saiu da aula antes dos outros. Caminha sozinha pela orla da mata.\n• Quinta-feira (14:10) — O mesmo trajeto. Ninguém a acompanha. O bosque está silencioso neste horário.\n• Conclusão: Perfeita para a transição. O sacrifício está pronto para a salvação de Sara."
+    },
+    {
+      id: "col_panfleto_anotado_kali",
+      nome: "Panfleto Anotado de Kali (Cartaz de Desaparecido)",
+      peso: 0,
+      tipo: "Documento",
+      campo_tipo: "Evidência",
+      area: "Pavilhão de Acolhimento Abandonado",
+      desbloqueado: false,
+      resumo: "Uma folha A4 com o alerta PROCURA-SE KALI e cronograma de vigilância em tinta roxa no verso.",
+      detalhe: "Item idêntico ao Cartaz de Desaparecido, catalogado durante as buscas no Pavilhão de Acolhimento Abandonado."
     },
     {
       id: "col_caixa_negra_dourada",

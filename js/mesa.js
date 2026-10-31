@@ -5589,9 +5589,10 @@ const MesaColetaveis = {
           const isDiario = it.id === 'col_diario_sara';
           const isCaixa = it.id === 'col_caixa_negra_dourada';
           const isNotebook = it.id === 'col_notebook_sara';
-          const isClickable = isBook || isDiario || isCaixa || isNotebook;
-          const clickAction = isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : '')));
-          const clickTitle = isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : '')));
+          const isCartaz = it.id === 'col_cartaz_desaparecido' || it.id === 'col_panfleto_anotado_kali';
+          const isClickable = isBook || isDiario || isCaixa || isNotebook || isCartaz;
+          const clickAction = isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : (isCartaz ? `MesaLivroReader.open('col_cartaz_desaparecido')` : ''))));
+          const clickTitle = isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : (isCartaz ? 'Clique para examinar o cartaz e ler o verso' : ''))));
 
           return `
             <div class="coletavel-card ${isClickable ? 'clickable-item' : ''}" style="padding: 12px 14px;" ${isClickable ? `onclick="${clickAction}" title="${clickTitle}"` : ''}>
@@ -5642,6 +5643,18 @@ const MesaColetaveis = {
                 <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); if(window.MesaNotebookSara) MesaNotebookSara.open();" style="background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.45); color: #38bdf8;">
                   <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
                   <span>Acesso Rápido: Câmeras de Segurança</span>
+                </button>
+              ` : ''}
+              ${isCartaz ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_cartaz_desaparecido');" style="background: rgba(168, 85, 247, 0.16); border-color: rgba(168, 85, 247, 0.45); color: #c084fc;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                  <span>Examinar Cartaz (Frente e Verso)</span>
+                </button>
+              ` : ''}
+              ${isCartaz ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_cartaz_desaparecido');" style="background: rgba(168, 85, 247, 0.16); border-color: rgba(168, 85, 247, 0.45); color: #c084fc;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                  <span>Examinar Cartaz (Frente e Verso)</span>
                 </button>
               ` : ''}
               ${isMaster ? `
@@ -5711,9 +5724,10 @@ const MesaColetaveis = {
           const isDiario = it.id === 'col_diario_sara';
           const isCaixa = it.id === 'col_caixa_negra_dourada';
           const isNotebook = it.id === 'col_notebook_sara';
-          const isClickable = isBook || isDiario || isCaixa || isNotebook;
-          const clickAction = isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : '')));
-          const clickTitle = isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : '')));
+          const isCartaz = it.id === 'col_cartaz_desaparecido' || it.id === 'col_panfleto_anotado_kali';
+          const isClickable = isBook || isDiario || isCaixa || isNotebook || isCartaz;
+          const clickAction = isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : (isCartaz ? `MesaLivroReader.open('col_cartaz_desaparecido')` : ''))));
+          const clickTitle = isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : (isCartaz ? 'Clique para examinar o cartaz e ler o verso' : ''))));
 
           return `
             <div class="coletavel-card ${isMaster ? (it.desbloqueado ? 'master-unlocked' : 'master-locked') : ''} ${isClickable ? 'clickable-item' : ''}" ${isClickable ? `onclick="${clickAction}" title="${clickTitle}"` : ''}>
@@ -5893,6 +5907,65 @@ const MesaLivroReader = {
     const controls = document.getElementById('livro-reader-controls');
     const container = document.getElementById('livro-reader-body');
     const note = document.getElementById('livro-reader-note');
+
+    // MODO 0: CARTAZ DE DESAPARECIDO (FRENTE E VERSO)
+    if (this.currentDocId === 'col_cartaz_desaparecido' || this.currentDocId === 'col_panfleto_anotado_kali') {
+      if (badge) {
+        badge.textContent = 'DOCUMENTO DA CAMPANHA • EVIDÊNCIA';
+        badge.style.display = 'inline-block';
+      }
+      if (title) title.textContent = 'CARTAZ DE DESAPARECIDO';
+      if (subtitle) {
+        subtitle.textContent = 'Pavilhão de Acolhimento Abandonado • Folha A4 Amarelada';
+        subtitle.style.display = 'block';
+      }
+      if (controls) controls.style.display = 'none';
+      if (note) note.textContent = 'Folha de papel sulfite A4 amarelada e amassada nas bordas. O verso foi totalmente utilizado como rascunho de vigilância.';
+      if (container) {
+        container.innerHTML = `
+          <div class="livro-single-doc-wrap" style="display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 6px 4px;">
+            <!-- FRENTE DO CARTAZ -->
+            <div style="width: 100%; max-width: 620px; background: #fffcf2; color: #1a1a1a; border: 2px solid #33281e; border-radius: 4px; padding: 22px 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.85); font-family: 'Times New Roman', Times, serif;">
+              <div style="text-align: center; border-bottom: 2px solid #1a1a1a; padding-bottom: 10px; margin-bottom: 14px;">
+                <span style="display: block; font-size: 0.8rem; font-weight: 700; letter-spacing: 3px; color: #665c54; text-transform: uppercase;">ALERTA DE DESAPARECIMENTO</span>
+                <h2 style="font-size: 2rem; font-weight: 900; margin: 4px 0 0; letter-spacing: 2px; color: #000;">PROCURA-SE</h2>
+              </div>
+              <div style="font-size: 0.95rem; line-height: 1.6; color: #222;">
+                <p style="margin: 0 0 6px;"><strong>Nome:</strong> Kali <span style="font-size: 0.82rem; color: #666;">(Sem sobrenome divulgado nos panfletos públicos)</span></p>
+                <p style="margin: 0 0 6px;"><strong>Idade Aparente:</strong> Aprox. 9 a 11 anos</p>
+                <p style="margin: 0 0 6px;"><strong>Descrição Física:</strong> Cabelos castanhos curtos, olhos expressivos. Veste-se com uma blusa de frio simples e foi vista pela última vez usando um marcante laço de cabelo rosa.</p>
+                <p style="margin: 0 0 6px;"><strong>Último Visto:</strong> Desaparecida desde a tarde do dia 01/08/2061, vista nas proximidades do bosque da Mata do Norte, nos limites do subúrbio de Fragktus.</p>
+                <div style="margin: 12px 0; padding: 10px 14px; background: rgba(0,0,0,0.04); border-left: 3px solid #7c6f64; font-style: italic; font-size: 0.9rem;">
+                  “Se você viu qualquer coisa ou tem pistas sobre o paradeiro de Kali, por favor, entre em contato com as autoridades locais ou ligue para o número abaixo. A família oferece recompensa por qualquer pista real.”
+                </div>
+                <p style="font-size: 0.82rem; color: #777; margin: 8px 0 0; text-align: center; border-top: 1px dashed #aaa; padding-top: 8px;">
+                  [Há um número de telefone rasurado à mão no rodapé da folha]
+                </p>
+              </div>
+            </div>
+
+            <!-- VERSO DO CARTAZ (O SEGREDO) -->
+            <div style="width: 100%; max-width: 620px; background: rgba(20, 14, 28, 0.94); border: 1.5px solid rgba(168, 85, 247, 0.45); border-radius: 4px; padding: 20px 22px; box-shadow: 0 8px 32px rgba(0,0,0,0.9);">
+              <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(168, 85, 247, 0.3); padding-bottom: 8px; margin-bottom: 12px;">
+                <span style="font-size: 0.82rem; font-weight: 800; color: #c084fc; letter-spacing: 1px; font-family: monospace;">O VERSO DO PANFLETO • SEGREDO REVELADO</span>
+                <span style="font-size: 0.72rem; color: #a855f7; font-family: monospace;">TINTA ROXA</span>
+              </div>
+              <p style="font-size: 0.85rem; color: #9ca3af; margin: 0 0 12px; line-height: 1.4;">
+                Ao virar o papel, é possível notar que o verso foi totalmente utilizado como rascunho de vigilância:
+              </p>
+              <div style="padding: 12px 16px; background: rgba(0, 0, 0, 0.4); border-left: 3px solid #a855f7; border-radius: 0 4px 4px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.6; color: #e9d5ff;">
+                <p style="margin: 0 0 8px;"><strong>Terça-feira (14:15)</strong> — Saiu da aula antes dos outros. Caminha sozinha pela orla da mata.</p>
+                <p style="margin: 0 0 8px;"><strong>Quinta-feira (14:10)</strong> — O mesmo trajeto. Ninguém a acompanha. O bosque está silencioso neste horário.</p>
+                <p style="margin: 8px 0 0; color: #f472b6; font-weight: 700; border-top: 1px dashed rgba(168, 85, 247, 0.3); padding-top: 8px;">
+                  Conclusão: Perfeita para a transição. O sacrifício está pronto para a salvação de Sara.
+                </p>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      return;
+    }
 
     // MODO 1: DIÁRIO DE SARA (1 PÁGINA)
     if (this.currentDocId === 'col_diario_sara') {
