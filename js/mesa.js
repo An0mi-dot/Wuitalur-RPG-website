@@ -7612,59 +7612,65 @@ const MesaTvEstatica = {
       this.stopTvStaticAudio();
 
       const sampleRate = this._audioCtx.sampleRate;
-      const bufferSize = sampleRate * 2;
-      const noiseBuffer = this._audioCtx.createBuffer(1, bufferSize, sampleRate);
+      const bufferLength = sampleRate * 5;
+      const noiseBuffer = this._audioCtx.createBuffer(1, bufferLength, sampleRate);
       const data = noiseBuffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) {
-        data[i] = (Math.random() * 2 - 1) * 0.35;
+      for (let i = 0; i < bufferLength; i++) {
+        data[i] = (Math.random() * 2 - 1) * 0.25;
       }
 
       const whiteNoise = this._audioCtx.createBufferSource();
       whiteNoise.buffer = noiseBuffer;
       whiteNoise.loop = true;
+      whiteNoise.loopStart = 0;
+      whiteNoise.loopEnd = 5;
 
       const bandpass = this._audioCtx.createBiquadFilter();
       bandpass.type = 'bandpass';
-      bandpass.frequency.setValueAtTime(1100, this._audioCtx.currentTime);
-      bandpass.Q.setValueAtTime(1.1, this._audioCtx.currentTime);
+      bandpass.frequency.setValueAtTime(1000, this._audioCtx.currentTime);
+      bandpass.Q.setValueAtTime(0.9, this._audioCtx.currentTime);
 
       const highpass = this._audioCtx.createBiquadFilter();
       highpass.type = 'highpass';
-      highpass.frequency.setValueAtTime(320, this._audioCtx.currentTime);
+      highpass.frequency.setValueAtTime(280, this._audioCtx.currentTime);
 
       const gain = this._audioCtx.createGain();
-      gain.gain.setValueAtTime(0.01, this._audioCtx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.2, this._audioCtx.currentTime + 0.5);
+      gain.gain.setValueAtTime(0.005, this._audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.038, this._audioCtx.currentTime + 0.35);
 
       whiteNoise.connect(highpass);
       highpass.connect(bandpass);
       bandpass.connect(gain);
       gain.connect(this._audioCtx.destination);
 
-      whiteNoise.start();
+      whiteNoise.start(0);
       this._staticSource = whiteNoise;
       this._staticGain = gain;
     } catch (e) {}
   },
 
   stopTvStaticAudio() {
-    if (this._staticGain && this._audioCtx) {
+    const oldSource = this._staticSource;
+    const oldGain = this._staticGain;
+    const ctx = this._audioCtx;
+    this._staticSource = null;
+    this._staticGain = null;
+
+    if (oldGain && ctx) {
       try {
-        this._staticGain.gain.linearRampToValueAtTime(0.001, this._audioCtx.currentTime + 0.4);
+        oldGain.gain.setValueAtTime(oldGain.gain.value, ctx.currentTime);
+        oldGain.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 0.25);
       } catch (e) {}
     }
-    setTimeout(() => {
-      try {
-        if (this._staticSource) {
-          this._staticSource.stop();
-          this._staticSource.disconnect();
-        }
-      } catch (e) {}
-      this._staticSource = null;
-      this._staticGain = null;
-    }, 500);
+    if (oldSource) {
+      setTimeout(() => {
+        try {
+          oldSource.stop();
+          oldSource.disconnect();
+        } catch (e) {}
+      }, 300);
+    }
   },
-
   startNoiseCanvas() {
     const canvas = document.getElementById('tv-noise-canvas');
     if (!canvas) return;

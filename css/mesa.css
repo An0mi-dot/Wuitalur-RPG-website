@@ -12919,53 +12919,52 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
 
 /* Eric em Fuga com Efeito de Observador / Stalker Zoom */
 .perseguicao-eric-wrapper {
-  position: relative;
-  z-index: 3;
-  width: min(88vw, 860px);
-  max-height: 86vh;
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: none;
+  z-index: 3;
   animation: stalkerGazeZoom 16s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-  transform-origin: 52% 44%;
+  transform-origin: 50% 50%;
   will-change: transform, filter;
 }
 
 @keyframes stalkerGazeZoom {
   0% {
     transform: scale(1.0) translate(0, 0);
-    filter: drop-shadow(0 0 45px rgba(0, 0, 0, 0.95)) brightness(0.92);
   }
   20% {
     transform: scale(1.07) translate(-1.2%, -0.8%);
-    filter: drop-shadow(0 0 55px rgba(0, 0, 0, 0.98)) brightness(0.96);
   }
   42% {
-    transform: scale(1.18) translate(1.8%, -1.2%);
-    filter: drop-shadow(0 0 65px #000) brightness(1.02);
+    transform: scale(1.16) translate(1.6%, -1.2%);
   }
   60% {
-    transform: scale(1.05) translate(-0.5%, 0.8%);
-    filter: drop-shadow(0 0 50px rgba(0, 0, 0, 0.95)) brightness(0.9);
+    transform: scale(1.05) translate(-0.6%, 0.7%);
   }
   80% {
-    transform: scale(1.24) translate(0.9%, -1.5%);
-    filter: drop-shadow(0 0 75px #000) brightness(1.05);
+    transform: scale(1.22) translate(0.9%, -1.4%);
   }
   100% {
     transform: scale(1.0) translate(0, 0);
-    filter: drop-shadow(0 0 45px rgba(0, 0, 0, 0.95)) brightness(0.92);
   }
 }
 
 .perseguicao-eric-img {
-  width: 100%;
-  height: auto;
-  max-height: 84vh;
+  width: 100vw;
+  height: 100vh;
   object-fit: contain;
+  transform: scale(2.5);
+  transform-origin: center center;
   display: block;
   user-select: none;
   -webkit-user-drag: none;
+  filter: drop-shadow(0 0 35px rgba(0, 0, 0, 0.95));
 }
 
 /* Vinheta de Espreitador Noturno (Efeito Olhos na Escuridao) */
@@ -12995,43 +12994,6 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   opacity: 0.35;
 }
 
-/* HUD Subtil de Ambientacao */
-.perseguicao-hud {
-  position: absolute;
-  bottom: 24px;
-  left: 32px;
-  z-index: 6;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: 'Cinzel', 'Courier New', monospace;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  color: rgba(167, 243, 208, 0.8);
-  text-shadow: 0 0 10px rgba(52, 211, 153, 0.4);
-  background: rgba(2, 10, 5, 0.65);
-  padding: 6px 14px;
-  border-radius: 4px;
-  border: 1px solid rgba(16, 185, 129, 0.25);
-  backdrop-filter: blur(4px);
-  pointer-events: none;
-  user-select: none;
-}
-
-.perseguicao-hud-pulse {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 8px #10b981;
-  animation: stalkerPulseDot 2s ease-in-out infinite;
-}
-
-@keyframes stalkerPulseDot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.3; transform: scale(0.8); }
-}
 
 /* ==========================================================================
    DISPOSITIVO: SINAL DE TV ANTIGA / ESTÁTICA
