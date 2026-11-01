@@ -12843,3 +12843,361 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   }
 }
 
+
+
+/* ==========================================================================
+   DISPOSITIVO: PERSEGUIÇÃO NA FLORESTA (FUGA DE ERIC)
+   ========================================================================== */
+.perseguicao-floresta-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: #020403;
+  z-index: 9999999 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.perseguicao-floresta-overlay.active {
+  opacity: 1 !important;
+  pointer-events: all !important;
+}
+
+/* Camada de Fundo Noturno da Mata com Pan e Escala Lenta */
+.perseguicao-bg-layer {
+  position: absolute;
+  inset: -5%;
+  width: 110%;
+  height: 110%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: brightness(0.65) contrast(1.2) saturate(0.85);
+  animation: forestBgDrift 24s ease-in-out infinite alternate;
+  will-change: transform;
+  z-index: 1;
+}
+
+@keyframes forestBgDrift {
+  0% {
+    transform: scale(1.02) translate(0, 0);
+  }
+  35% {
+    transform: scale(1.08) translate(-1.5%, 1%);
+  }
+  70% {
+    transform: scale(1.05) translate(1%, -1%);
+  }
+  100% {
+    transform: scale(1.1) translate(-0.8%, 1.2%);
+  }
+}
+
+/* Camada de Nevoa Noturna Rastejante */
+.perseguicao-fog-layer {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 60%, rgba(16, 40, 24, 0.35) 0%, rgba(5, 12, 8, 0.75) 75%, #010402 100%);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 2;
+  animation: forestFogDrift 14s ease-in-out infinite alternate;
+}
+
+@keyframes forestFogDrift {
+  0% { opacity: 0.6; }
+  50% { opacity: 0.9; }
+  100% { opacity: 0.7; }
+}
+
+/* Eric em Fuga com Efeito de Observador / Stalker Zoom */
+.perseguicao-eric-wrapper {
+  position: relative;
+  z-index: 3;
+  width: min(88vw, 860px);
+  max-height: 86vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: stalkerGazeZoom 16s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  transform-origin: 52% 44%;
+  will-change: transform, filter;
+}
+
+@keyframes stalkerGazeZoom {
+  0% {
+    transform: scale(1.0) translate(0, 0);
+    filter: drop-shadow(0 0 45px rgba(0, 0, 0, 0.95)) brightness(0.92);
+  }
+  20% {
+    transform: scale(1.07) translate(-1.2%, -0.8%);
+    filter: drop-shadow(0 0 55px rgba(0, 0, 0, 0.98)) brightness(0.96);
+  }
+  42% {
+    transform: scale(1.18) translate(1.8%, -1.2%);
+    filter: drop-shadow(0 0 65px #000) brightness(1.02);
+  }
+  60% {
+    transform: scale(1.05) translate(-0.5%, 0.8%);
+    filter: drop-shadow(0 0 50px rgba(0, 0, 0, 0.95)) brightness(0.9);
+  }
+  80% {
+    transform: scale(1.24) translate(0.9%, -1.5%);
+    filter: drop-shadow(0 0 75px #000) brightness(1.05);
+  }
+  100% {
+    transform: scale(1.0) translate(0, 0);
+    filter: drop-shadow(0 0 45px rgba(0, 0, 0, 0.95)) brightness(0.92);
+  }
+}
+
+.perseguicao-eric-img {
+  width: 100%;
+  height: auto;
+  max-height: 84vh;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Vinheta de Espreitador Noturno (Efeito Olhos na Escuridao) */
+.perseguicao-stalker-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  background: radial-gradient(ellipse at 50% 50%, transparent 35%, rgba(1, 6, 3, 0.7) 70%, #000 95%);
+  box-shadow: inset 0 0 120px 50px #000;
+  animation: stalkerBreathVignette 8s ease-in-out infinite alternate;
+}
+
+@keyframes stalkerBreathVignette {
+  0% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 0.98; transform: scale(1.03); }
+  100% { opacity: 0.88; transform: scale(1.01); }
+}
+
+.perseguicao-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0);
+  background-size: 4px 4px;
+  opacity: 0.35;
+}
+
+/* HUD Subtil de Ambientacao */
+.perseguicao-hud {
+  position: absolute;
+  bottom: 24px;
+  left: 32px;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Cinzel', 'Courier New', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: rgba(167, 243, 208, 0.8);
+  text-shadow: 0 0 10px rgba(52, 211, 153, 0.4);
+  background: rgba(2, 10, 5, 0.65);
+  padding: 6px 14px;
+  border-radius: 4px;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.perseguicao-hud-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  animation: stalkerPulseDot 2s ease-in-out infinite;
+}
+
+@keyframes stalkerPulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.8); }
+}
+
+/* ==========================================================================
+   DISPOSITIVO: SINAL DE TV ANTIGA / ESTÁTICA
+   ========================================================================== */
+.tv-estatica-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: #000;
+  z-index: 9999999 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  transition: opacity 0.8s ease-in-out;
+}
+
+.tv-estatica-overlay.active {
+  opacity: 1 !important;
+  pointer-events: all !important;
+}
+
+/* Bordas Pretas Cinematograficas Amplas */
+.tv-letterbox-backdrop {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 48px);
+  box-sizing: border-box;
+}
+
+/* Moldura Central da Imagem de TV */
+.tv-screen-frame {
+  position: relative;
+  max-width: min(85vw, 920px);
+  max-height: 84vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 2px #0a0a0a,
+    0 0 40px rgba(168, 85, 247, 0.12),
+    0 0 80px rgba(0, 0, 0, 0.95);
+  animation: tvSubtleJitter 0.18s steps(2) infinite;
+}
+
+@keyframes tvSubtleJitter {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(0.3px, -0.2px); }
+  100% { transform: translate(-0.2px, 0.3px); }
+}
+
+.tv-screen-image {
+  width: 100%;
+  height: auto;
+  max-height: 82vh;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: contrast(1.15) brightness(0.98);
+}
+
+/* Efeito de Scanlines CRT */
+.tv-crt-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.45) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 3;
+}
+
+/* Brilho Fosforo de Tubo CRT */
+.tv-crt-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0.3) 85%);
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.85);
+  z-index: 4;
+}
+
+/* Canvas de Ruido Analogo */
+.tv-crt-noise-canvas-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  mix-blend-mode: screen;
+  opacity: 0.28;
+}
+
+.tv-noise-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Botao Flutuante de Fechar para Dispositivos */
+.dispositivo-floating-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  z-index: 100;
+  background: rgba(15, 15, 18, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #e2e8f0;
+  width: 38px;
+  height: 38px;
+  border-radius: 6px;
+  font-size: 24px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.dispositivo-floating-close-btn:hover {
+  background: rgba(220, 38, 38, 0.8);
+  border-color: #ef4444;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* Ocultar elementos flutuantes da mesa quando qualquer overlay cinematografico estiver ativo */
+body:has(#perseguicao-floresta-overlay.active) .mesa-floating-nav,
+body:has(#perseguicao-floresta-overlay.active) .mesa-mobile-fab-container,
+body:has(#perseguicao-floresta-overlay.active) .mesa-version,
+body:has(#perseguicao-floresta-overlay.active) .combat-header,
+body:has(#perseguicao-floresta-overlay.active) .combat-dock-container,
+body:has(#perseguicao-floresta-overlay.active) .combat-master-controls,
+body:has(#perseguicao-floresta-overlay.active) .combat-menu-drawer,
+body:has(#perseguicao-floresta-overlay.active) .combat-menu-backdrop,
+body:has(#perseguicao-floresta-overlay.active) .mesa-mobile-menu-drawer,
+body:has(#perseguicao-floresta-overlay.active) .mesa-mobile-backdrop,
+body:has(#perseguicao-floresta-overlay.active) .mesa-quick-menu-dropdown,
+body:has(#perseguicao-floresta-overlay.active) .mesa-ink-frame,
+body:has(#perseguicao-floresta-overlay.active) .reaction-picker-popover,
+body:has(#tv-estatica-overlay.active) .mesa-floating-nav,
+body:has(#tv-estatica-overlay.active) .mesa-mobile-fab-container,
+body:has(#tv-estatica-overlay.active) .mesa-version,
+body:has(#tv-estatica-overlay.active) .combat-header,
+body:has(#tv-estatica-overlay.active) .combat-dock-container,
+body:has(#tv-estatica-overlay.active) .combat-master-controls,
+body:has(#tv-estatica-overlay.active) .combat-menu-drawer,
+body:has(#tv-estatica-overlay.active) .combat-menu-backdrop,
+body:has(#tv-estatica-overlay.active) .mesa-mobile-menu-drawer,
+body:has(#tv-estatica-overlay.active) .mesa-mobile-backdrop,
+body:has(#tv-estatica-overlay.active) .mesa-quick-menu-dropdown,
+body:has(#tv-estatica-overlay.active) .mesa-ink-frame,
+body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
+  display: none !important;
+}

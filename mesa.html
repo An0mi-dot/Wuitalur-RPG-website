@@ -329,16 +329,6 @@
           <div class="slot-empty-label">Slot 1</div>
         </div>
 
-        <!-- Card Central do Mestre (Não interagível, posicionado entre Slot 1 e Slot 2) -->
-        <div class="player-slot master-slot" id="master-slot">
-          <div class="player-avatar-placeholder master-avatar">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-            </svg>
-          </div>
-          <div class="player-name-badge master-name-badge" title="Mestre">MESTRE</div>
-        </div>
-
         <div class="player-slot slot-2 empty" onclick="MesaApp.handleSlotClick(2)">
           <div class="slot-empty-label">Slot 2</div>
         </div>
@@ -1447,6 +1437,70 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
           </div>
         </div>
 
+        <!-- Card Dispositivo: Perseguição na Floresta (Fuga de Eric) -->
+        <div class="dispositivo-card" id="dispositivo-card-perseguicao-floresta">
+          <div class="dispositivo-card-header" style="cursor: pointer;" onclick="MesaPerseguicaoFloresta.play()" title="Clique para abrir e transmitir">
+            <div class="dispositivo-icon-box" style="background: rgba(16, 185, 129, 0.14); border-color: rgba(16, 185, 129, 0.4); color: #34d399;">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            <div class="dispositivo-meta">
+              <div class="dispositivo-title">Perseguição na Floresta</div>
+              <div class="dispositivo-subtitle">Fuga de Eric • Mata do Norte Noturna</div>
+            </div>
+            <span id="perseguicao-status-badge" class="dispositivo-status-badge ready" style="border-color: #10b981; color: #34d399;">Pronto</span>
+          </div>
+
+          <p class="dispositivo-card-desc">
+            Dispositivo cinematográfico de tela cheia simulando a perseguição de Eric na mata escura sob o ponto de vista de um observador oculto com zooms graduais e tensão.
+          </p>
+
+          <div class="dispositivo-actions">
+            <button type="button" id="btn-transmit-perseguicao" class="dispositivo-btn-primary" onclick="MesaPerseguicaoFloresta.play()" style="background: #065f46; border-color: #10b981; color: #ecfdf5;">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Transmitir para Todos (Tela Cheia)</span>
+            </button>
+            <button type="button" id="btn-stop-perseguicao" class="dispositivo-btn-stop" onclick="MesaPerseguicaoFloresta.stop()" style="display: none;">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12"></rect></svg>
+              <span>Encerrar Transmissão</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card Dispositivo: Sinal de TV Antiga (Estática CRT) -->
+        <div class="dispositivo-card" id="dispositivo-card-tv-estatica">
+          <div class="dispositivo-card-header" style="cursor: pointer;" onclick="MesaTvEstatica.play()" title="Clique para abrir e transmitir">
+            <div class="dispositivo-icon-box" style="background: rgba(168, 85, 247, 0.14); border-color: rgba(168, 85, 247, 0.4); color: #c084fc;">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
+                <polyline points="17 2 12 7 7 2"></polyline>
+              </svg>
+            </div>
+            <div class="dispositivo-meta">
+              <div class="dispositivo-title">Sinal de TV Antiga</div>
+              <div class="dispositivo-subtitle">Transmissão CRT • Som de Estática</div>
+            </div>
+            <span id="tv-status-badge" class="dispositivo-status-badge ready" style="border-color: #a855f7; color: #c084fc;">Pronto</span>
+          </div>
+
+          <p class="dispositivo-card-desc">
+            Transmissão misteriosa em tela cheia com a imagem da TV no centro, bordas pretas cinematográficas, scanlines analógicas e som de estática contínua.
+          </p>
+
+          <div class="dispositivo-actions">
+            <button type="button" id="btn-transmit-tv" class="dispositivo-btn-primary" onclick="MesaTvEstatica.play()" style="background: #581c87; border-color: #a855f7; color: #faf5ff;">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Transmitir para Todos (Tela Cheia)</span>
+            </button>
+            <button type="button" id="btn-stop-tv" class="dispositivo-btn-stop" onclick="MesaTvEstatica.stop()" style="display: none;">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12"></rect></svg>
+              <span>Encerrar Transmissão</span>
+            </button>
+          </div>
+        </div>
+
         <!-- Card Dispositivo: Ilustrações de Cena (Centro da Mesa) -->
         <div class="dispositivo-card" id="dispositivo-card-center-artwork">
           <div class="dispositivo-card-header" style="cursor: pointer;" title="Ilustrações no quadrado preto da mesa">
@@ -1787,6 +1841,51 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
     <button id="abertura-skip-btn" class="abertura-skip-btn" onclick="MesaAbertura.stop()" title="Parar Abertura">&times;</button>
   </div>
 
+    <!-- ========================================================================== -->
+  <!-- OVERLAY DE TELA CHEIA: PERSEGUIÇÃO NA FLORESTA (FUGA DE ERIC) -->
+  <!-- ========================================================================== -->
+  <div id="perseguicao-floresta-overlay" class="perseguicao-floresta-overlay">
+    <!-- Camada de Fundo Noturno na Mata -->
+    <div class="perseguicao-bg-layer" id="perseguicao-bg-layer" style="background-image: url('assets/floresta_noite_fundo.png');"></div>
+    <!-- Camada de Nevoa e Particulas da Floresta -->
+    <div class="perseguicao-fog-layer" aria-hidden="true"></div>
+    <!-- Camada de Eric em Fuga com Efeito de Observador / Zoom Dinamico -->
+    <div class="perseguicao-eric-wrapper" id="perseguicao-eric-wrapper">
+      <img src="assets/eric_fuga.png" alt="Eric em fuga pela floresta" class="perseguicao-eric-img" id="perseguicao-eric-img" />
+    </div>
+    <!-- Camada de Sombras de Folhagens e Vinheta de Perseguidor Noturno -->
+    <div class="perseguicao-stalker-vignette" aria-hidden="true"></div>
+    <div class="perseguicao-grain" aria-hidden="true"></div>
+    <!-- Indicador de Status / HUD Sutil Cinematografico -->
+    <div class="perseguicao-hud">
+      <span class="perseguicao-hud-pulse"></span>
+      <span class="perseguicao-hud-text">MATA DO NORTE • PERSEGUIÇÃO NOTURNA</span>
+    </div>
+    <!-- Botao de Fechar Exclusivo do Mestre -->
+    <button type="button" id="perseguicao-close-btn" class="dispositivo-floating-close-btn master-item" onclick="MesaPerseguicaoFloresta.stop()" title="Encerrar Perseguição">&times;</button>
+  </div>
+
+  <!-- ========================================================================== -->
+  <!-- OVERLAY DE TELA CHEIA: SINAL DE TV ANTIGA / ESTÁTICA -->
+  <!-- ========================================================================== -->
+  <div id="tv-estatica-overlay" class="tv-estatica-overlay">
+    <!-- Bordas Pretas Cinematograficas Amplas -->
+    <div class="tv-letterbox-backdrop">
+      <!-- Container Central da Imagem de TV -->
+      <div class="tv-screen-frame">
+        <img src="assets/tv_estatica.png" alt="Sinal de TV Antiga" class="tv-screen-image" id="tv-screen-image" />
+        <!-- Scanlines e Distorcao de Tubo de Raio Catodico (CRT) -->
+        <div class="tv-crt-scanlines" aria-hidden="true"></div>
+        <div class="tv-crt-glow" aria-hidden="true"></div>
+        <div class="tv-crt-noise-canvas-wrap">
+          <canvas id="tv-noise-canvas" class="tv-noise-canvas"></canvas>
+        </div>
+      </div>
+    </div>
+    <!-- Botao de Fechar Exclusivo do Mestre -->
+    <button type="button" id="tv-close-btn" class="dispositivo-floating-close-btn master-item" onclick="MesaTvEstatica.stop()" title="Encerrar Sinal de TV">&times;</button>
+  </div>
+
   <!-- FLASH DE ENCONTRO DE COMBATE (ESTILO UNDERTALE) -->
   <div id="combat-encounter-flash" class="combat-flash-fx"></div>
 
@@ -1941,7 +2040,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
           </div>
           <div class="combat-form-row">
             <label for="combat-custom-video">Arquivo ou URL do Vídeo:</label>
-            <input type="text" id="combat-custom-video" placeholder="Ex: assets/videos/cine1.mp4 ou URL..." class="coletaveis-search-input">
+            <input type="text" id="combat-custom-video" placeholder="Ex: assets/videos/rato_cinematica.mp4 ou URL..." class="coletaveis-search-input">
             <div class="combat-input-hint">Vídeos na pasta <code>assets/videos/</code> tocam diretamente no fundo do combate.</div>
           </div>
         </div>

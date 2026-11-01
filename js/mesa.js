@@ -1642,6 +1642,27 @@ const MesaApp = {
                 MesaAbertura.triggerStop();
               }
             }
+            
+            if (p1Attrs._sys_perseguicao && window.MesaPerseguicaoFloresta) {
+              const pf = p1Attrs._sys_perseguicao;
+              const ov = document.getElementById('perseguicao-floresta-overlay');
+              const isActive = ov && ov.classList.contains('active');
+              if (pf.active && !isActive && (Date.now() - (pf.timestamp || 0) < 1800000)) {
+                MesaPerseguicaoFloresta.triggerStart();
+              } else if (!pf.active && isActive) {
+                MesaPerseguicaoFloresta.triggerStop();
+              }
+            }
+            if (p1Attrs._sys_tv_estatica && window.MesaTvEstatica) {
+              const tv = p1Attrs._sys_tv_estatica;
+              const ov = document.getElementById('tv-estatica-overlay');
+              const isActive = ov && ov.classList.contains('active');
+              if (tv.active && !isActive && (Date.now() - (tv.timestamp || 0) < 1800000)) {
+                MesaTvEstatica.triggerStart();
+              } else if (!tv.active && isActive) {
+                MesaTvEstatica.triggerStop();
+              }
+            }
             if (p1Attrs._sys_combate && window.MesaCombate) {
               const cb = p1Attrs._sys_combate;
               const remoteTime = cb.updatedAt || 0;
@@ -7241,6 +7262,450 @@ window.MesaAbertura = MesaAbertura;
 // ==========================================================================
 // MESA DISPOSITIVOS DA CAMPANHA (HUB DO MESTRE)
 // ==========================================================================
+
+// ==========================================================================
+// MESA PERSEGUIÇÃO NA FLORESTA (FUGA DE ERIC)
+// ==========================================================================
+const MesaPerseguicaoFloresta = {
+  isActive: false,
+  _audioCtx: null,
+  _ambientNodes: null,
+
+  play() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    const now = Date.now();
+
+    const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'perseguicao_floresta_start',
+          payload: { timestamp: now }
+        });
+      } catch (e) {}
+    }
+
+    if (MesaApp.supabase) {
+      (async () => {
+        try {
+          const { data } = await MesaApp.supabase
+            .from('personagens')
+            .select('atributos')
+            .eq('id', 1)
+            .single();
+          const attrs = data && data.atributos
+            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+            : {};
+          attrs._sys_perseguicao = { active: true, timestamp: now };
+          await MesaApp.supabase
+            .from('personagens')
+            .update({ atributos: attrs })
+            .eq('id', 1);
+        } catch (e) {}
+      })();
+    }
+
+    this.triggerStart();
+  },
+
+  stop() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+
+    const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'perseguicao_floresta_stop',
+          payload: {}
+        });
+      } catch (e) {}
+    }
+
+    if (MesaApp.supabase) {
+      (async () => {
+        try {
+          const { data } = await MesaApp.supabase
+            .from('personagens')
+            .select('atributos')
+            .eq('id', 1)
+            .single();
+          const attrs = data && data.atributos
+            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+            : {};
+          attrs._sys_perseguicao = { active: false, timestamp: Date.now() };
+          await MesaApp.supabase
+            .from('personagens')
+            .update({ atributos: attrs })
+            .eq('id', 1);
+        } catch (e) {}
+      })();
+    }
+
+    this.triggerStop();
+  },
+
+  triggerStart() {
+    this.isActive = true;
+    const overlay = document.getElementById('perseguicao-floresta-overlay');
+    if (overlay) {
+      overlay.classList.add('active');
+    }
+    const badge = document.getElementById('perseguicao-status-badge');
+    if (badge) {
+      badge.textContent = 'Em Exibição';
+      badge.className = 'dispositivo-status-badge active';
+      badge.style.borderColor = '#10b981';
+      badge.style.color = '#34d399';
+    }
+    const btnTransmit = document.getElementById('btn-transmit-perseguicao');
+    const btnStop = document.getElementById('btn-stop-perseguicao');
+    if (btnTransmit) btnTransmit.style.display = 'none';
+    if (btnStop) btnStop.style.display = 'inline-flex';
+
+    this.startAmbientAudio();
+  },
+
+  triggerStop() {
+    this.isActive = false;
+    const overlay = document.getElementById('perseguicao-floresta-overlay');
+    if (overlay) {
+      overlay.classList.remove('active');
+    }
+    const badge = document.getElementById('perseguicao-status-badge');
+    if (badge) {
+      badge.textContent = 'Pronto';
+      badge.className = 'dispositivo-status-badge ready';
+      badge.style.borderColor = '#10b981';
+      badge.style.color = '#34d399';
+    }
+    const btnTransmit = document.getElementById('btn-transmit-perseguicao');
+    const btnStop = document.getElementById('btn-stop-perseguicao');
+    if (btnTransmit) btnTransmit.style.display = 'inline-flex';
+    if (btnStop) btnStop.style.display = 'none';
+
+    this.stopAmbientAudio();
+  },
+
+  startAmbientAudio() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      if (!this._audioCtx) {
+        this._audioCtx = new AudioCtx();
+      }
+      if (this._audioCtx.state === 'suspended') {
+        this._audioCtx.resume();
+      }
+      this.stopAmbientAudio();
+
+      const sampleRate = this._audioCtx.sampleRate;
+      const bufferSize = sampleRate * 3;
+      const noiseBuffer = this._audioCtx.createBuffer(1, bufferSize, sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+      for (let i = 0; i < bufferSize; i++) {
+        const white = Math.random() * 2 - 1;
+        b0 = 0.99886 * b0 + white * 0.0555179;
+        b1 = 0.99332 * b1 + white * 0.0750759;
+        b2 = 0.96900 * b2 + white * 0.1538520;
+        b3 = 0.86650 * b3 + white * 0.3104856;
+        b4 = 0.55000 * b4 + white * 0.5329522;
+        b5 = -0.7616 * b5 - white * 0.0168980;
+        output[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.05;
+        b6 = white * 0.115926;
+      }
+
+      const noiseSource = this._audioCtx.createBufferSource();
+      noiseSource.buffer = noiseBuffer;
+      noiseSource.loop = true;
+
+      const lowpass = this._audioCtx.createBiquadFilter();
+      lowpass.type = 'lowpass';
+      lowpass.frequency.setValueAtTime(160, this._audioCtx.currentTime);
+
+      const droneOsc = this._audioCtx.createOscillator();
+      droneOsc.type = 'sine';
+      droneOsc.frequency.setValueAtTime(54, this._audioCtx.currentTime);
+
+      const droneGain = this._audioCtx.createGain();
+      droneGain.gain.setValueAtTime(0.08, this._audioCtx.currentTime);
+
+      const masterGain = this._audioCtx.createGain();
+      masterGain.gain.setValueAtTime(0.01, this._audioCtx.currentTime);
+      masterGain.gain.linearRampToValueAtTime(0.24, this._audioCtx.currentTime + 1.8);
+
+      noiseSource.connect(lowpass);
+      lowpass.connect(masterGain);
+
+      droneOsc.connect(droneGain);
+      droneGain.connect(masterGain);
+
+      masterGain.connect(this._audioCtx.destination);
+
+      noiseSource.start();
+      droneOsc.start();
+
+      this._ambientNodes = { noiseSource, droneOsc, masterGain };
+    } catch (e) {}
+  },
+
+  stopAmbientAudio() {
+    if (this._ambientNodes) {
+      try {
+        const { noiseSource, droneOsc, masterGain } = this._ambientNodes;
+        if (this._audioCtx && masterGain) {
+          masterGain.gain.linearRampToValueAtTime(0.001, this._audioCtx.currentTime + 0.6);
+        }
+        setTimeout(() => {
+          try {
+            if (noiseSource) noiseSource.stop();
+            if (droneOsc) droneOsc.stop();
+          } catch (e) {}
+        }, 700);
+      } catch (e) {}
+      this._ambientNodes = null;
+    }
+  }
+};
+
+// ==========================================================================
+// MESA SINAL DE TV ANTIGA / ESTÁTICA
+// ==========================================================================
+const MesaTvEstatica = {
+  isActive: false,
+  _audioCtx: null,
+  _staticSource: null,
+  _staticGain: null,
+  _canvasRaf: null,
+
+  play() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    const now = Date.now();
+
+    const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'tv_estatica_start',
+          payload: { timestamp: now }
+        });
+      } catch (e) {}
+    }
+
+    if (MesaApp.supabase) {
+      (async () => {
+        try {
+          const { data } = await MesaApp.supabase
+            .from('personagens')
+            .select('atributos')
+            .eq('id', 1)
+            .single();
+          const attrs = data && data.atributos
+            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+            : {};
+          attrs._sys_tv_estatica = { active: true, timestamp: now };
+          await MesaApp.supabase
+            .from('personagens')
+            .update({ atributos: attrs })
+            .eq('id', 1);
+        } catch (e) {}
+      })();
+    }
+
+    this.triggerStart();
+  },
+
+  stop() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+
+    const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'tv_estatica_stop',
+          payload: {}
+        });
+      } catch (e) {}
+    }
+
+    if (MesaApp.supabase) {
+      (async () => {
+        try {
+          const { data } = await MesaApp.supabase
+            .from('personagens')
+            .select('atributos')
+            .eq('id', 1)
+            .single();
+          const attrs = data && data.atributos
+            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+            : {};
+          attrs._sys_tv_estatica = { active: false, timestamp: Date.now() };
+          await MesaApp.supabase
+            .from('personagens')
+            .update({ atributos: attrs })
+            .eq('id', 1);
+        } catch (e) {}
+      })();
+    }
+
+    this.triggerStop();
+  },
+
+  triggerStart() {
+    this.isActive = true;
+    const overlay = document.getElementById('tv-estatica-overlay');
+    if (overlay) {
+      overlay.classList.add('active');
+    }
+    const badge = document.getElementById('tv-status-badge');
+    if (badge) {
+      badge.textContent = 'Em Exibição';
+      badge.className = 'dispositivo-status-badge active';
+      badge.style.borderColor = '#a855f7';
+      badge.style.color = '#c084fc';
+    }
+    const btnTransmit = document.getElementById('btn-transmit-tv');
+    const btnStop = document.getElementById('btn-stop-tv');
+    if (btnTransmit) btnTransmit.style.display = 'none';
+    if (btnStop) btnStop.style.display = 'inline-flex';
+
+    this.startTvStaticAudio();
+    this.startNoiseCanvas();
+  },
+
+  triggerStop() {
+    this.isActive = false;
+    const overlay = document.getElementById('tv-estatica-overlay');
+    if (overlay) {
+      overlay.classList.remove('active');
+    }
+    const badge = document.getElementById('tv-status-badge');
+    if (badge) {
+      badge.textContent = 'Pronto';
+      badge.className = 'dispositivo-status-badge ready';
+      badge.style.borderColor = '#a855f7';
+      badge.style.color = '#c084fc';
+    }
+    const btnTransmit = document.getElementById('btn-transmit-tv');
+    const btnStop = document.getElementById('btn-stop-tv');
+    if (btnTransmit) btnTransmit.style.display = 'inline-flex';
+    if (btnStop) btnStop.style.display = 'none';
+
+    this.stopTvStaticAudio();
+    this.stopNoiseCanvas();
+  },
+
+  startTvStaticAudio() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      if (!this._audioCtx) {
+        this._audioCtx = new AudioCtx();
+      }
+      if (this._audioCtx.state === 'suspended') {
+        this._audioCtx.resume();
+      }
+      this.stopTvStaticAudio();
+
+      const sampleRate = this._audioCtx.sampleRate;
+      const bufferSize = sampleRate * 2;
+      const noiseBuffer = this._audioCtx.createBuffer(1, bufferSize, sampleRate);
+      const data = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * 0.35;
+      }
+
+      const whiteNoise = this._audioCtx.createBufferSource();
+      whiteNoise.buffer = noiseBuffer;
+      whiteNoise.loop = true;
+
+      const bandpass = this._audioCtx.createBiquadFilter();
+      bandpass.type = 'bandpass';
+      bandpass.frequency.setValueAtTime(1100, this._audioCtx.currentTime);
+      bandpass.Q.setValueAtTime(1.1, this._audioCtx.currentTime);
+
+      const highpass = this._audioCtx.createBiquadFilter();
+      highpass.type = 'highpass';
+      highpass.frequency.setValueAtTime(320, this._audioCtx.currentTime);
+
+      const gain = this._audioCtx.createGain();
+      gain.gain.setValueAtTime(0.01, this._audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.2, this._audioCtx.currentTime + 0.5);
+
+      whiteNoise.connect(highpass);
+      highpass.connect(bandpass);
+      bandpass.connect(gain);
+      gain.connect(this._audioCtx.destination);
+
+      whiteNoise.start();
+      this._staticSource = whiteNoise;
+      this._staticGain = gain;
+    } catch (e) {}
+  },
+
+  stopTvStaticAudio() {
+    if (this._staticGain && this._audioCtx) {
+      try {
+        this._staticGain.gain.linearRampToValueAtTime(0.001, this._audioCtx.currentTime + 0.4);
+      } catch (e) {}
+    }
+    setTimeout(() => {
+      try {
+        if (this._staticSource) {
+          this._staticSource.stop();
+          this._staticSource.disconnect();
+        }
+      } catch (e) {}
+      this._staticSource = null;
+      this._staticGain = null;
+    }, 500);
+  },
+
+  startNoiseCanvas() {
+    const canvas = document.getElementById('tv-noise-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    canvas.width = 320;
+    canvas.height = 200;
+
+    const imgData = ctx.createImageData(canvas.width, canvas.height);
+    const buf = new Uint32Array(imgData.data.buffer);
+    const len = buf.length;
+
+    const render = () => {
+      if (!this.isActive) return;
+      for (let i = 0; i < len; i++) {
+        if (Math.random() < 0.12) {
+          buf[i] = 0xffffffff;
+        } else {
+          buf[i] = 0x00000000;
+        }
+      }
+      ctx.putImageData(imgData, 0, 0);
+      this._canvasRaf = requestAnimationFrame(render);
+    };
+    render();
+  },
+
+  stopNoiseCanvas() {
+    if (this._canvasRaf) {
+      cancelAnimationFrame(this._canvasRaf);
+      this._canvasRaf = null;
+    }
+    const canvas = document.getElementById('tv-noise-canvas');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+};
+
 const MesaDispositivos = {
   isOpen: false,
 
@@ -9593,10 +10058,10 @@ window.MesaIgrisShop = MesaIgrisShop;
 const MesaCombate = {
   isActive: false,
   lastLocalUpdate: 0,
-  opponentId: 'unknown',
-  opponentName: '???',
-  videoUrl: 'assets/videos/cine1.mp4',
-  selectedPresetId: 'unknown',
+  opponentId: 'ratos',
+  opponentName: 'Ratos da Mata',
+  videoUrl: 'assets/videos/rato_cinematica.mp4',
+  selectedPresetId: 'ratos',
   turnCycle: null,
   playerHpCache: {},
   _audioCtx: null,
@@ -9611,10 +10076,16 @@ const MesaCombate = {
 
   presets: [
     {
+      id: 'ratos',
+      name: 'Ratos da Mata',
+      video: 'assets/videos/rato_cinematica.mp4',
+      desc: 'Infestação voraz de roedores carniceiros na escuridão'
+    },
+    {
       id: 'unknown',
-      name: '???',
-      video: 'assets/videos/cine1.mp4',
-      desc: 'Oponente de teste'
+      name: '??? (Inimigo Antigo)',
+      video: 'assets/videos/inimigo_antigo.mp4',
+      desc: 'Arquivo do oponente anterior guardado'
     }
   ],
 
@@ -9676,7 +10147,7 @@ const MesaCombate = {
         active: !!this.isActive,
         opponentId: this.opponentId || 'unknown',
         opponentName: this.opponentName || '???',
-        videoUrl: this.videoUrl || 'assets/videos/cine1.mp4',
+        videoUrl: this.videoUrl || 'assets/videos/rato_cinematica.mp4',
         turnCycle: this.turnCycle ? JSON.parse(JSON.stringify(this.turnCycle)) : null,
         updatedAt: Date.now()
       };
@@ -9713,7 +10184,7 @@ const MesaCombate = {
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
     if (nameInput) nameInput.value = this.opponentName || '???';
-    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/cine1.mp4';
+    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/rato_cinematica.mp4';
   },
 
   closeSelectModal() {
@@ -9762,7 +10233,7 @@ const MesaCombate = {
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
     const name = (nameInput && nameInput.value.trim()) || '???';
-    const video = (videoInput && videoInput.value.trim()) || 'assets/videos/cine1.mp4';
+    const video = (videoInput && videoInput.value.trim()) || 'assets/videos/rato_cinematica.mp4';
 
     this.closeSelectModal();
 
@@ -9780,7 +10251,7 @@ const MesaCombate = {
     this.lastLocalUpdate = Date.now();
     this.opponentId = data.opponentId || 'unknown';
     this.opponentName = data.opponentName || '???';
-    this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/cine1.mp4');
+    this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/rato_cinematica.mp4');
 
     // Reseta cache de PV dos personagens
     this.playerHpCache = {};
