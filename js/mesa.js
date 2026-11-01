@@ -10065,7 +10065,7 @@ const MesaCombate = {
   isActive: false,
   lastLocalUpdate: 0,
   opponentId: 'ratos',
-  opponentName: 'Ratos da Mata',
+  opponentName: 'Ratos',
   videoUrl: 'assets/videos/rato_cinematica.mp4',
   selectedPresetId: 'ratos',
   turnCycle: null,
@@ -10083,7 +10083,7 @@ const MesaCombate = {
   presets: [
     {
       id: 'ratos',
-      name: 'Ratos da Mata',
+      name: 'Ratos',
       video: 'assets/videos/rato_cinematica.mp4',
       desc: 'Infestação voraz de roedores carniceiros na escuridão'
     },
