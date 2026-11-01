@@ -366,26 +366,181 @@
         </div>
       </section>
 
-      <!-- 5. MECÂNICA DE SE ESCONDER -->
+      <!-- 5. MECÂNICA DE SE ESCONDER & O DADO DE PAVOR -->
       <section class="subsection" id="se-esconder">
         <div class="section-heading">
-          <h2>5. Mecânica de Se Esconder</h2>
+          <h2>5. Mecânica de Se Esconder &amp; O Dado de Pavor</h2>
           <p>
-            Quando um personagem se oculta com sucesso e o perseguidor decide vasculhar a área ao perceber que a presa sumiu, inicia-se uma rodada de busca e silêncio absoluto:
+            Em <em>Fios do Medo</em>, quando a presa percebe que não conseguirá superar a velocidade do Perseguidor em campo aberto, romper a linha de visão e desaparecer nas sombras é a única chance de sobrevivência. Ao alcançar <strong>Vantagem de Distância (VD) 2</strong> ou superior, o sobrevivente pode gastar sua <strong>Ação Padrão</strong> para tentar se ocultar no ambiente, iniciando o jogo tenso de gato e rato entre presa e caçador.
           </p>
         </div>
 
-        <div class="fdm-card highlight" style="max-width: 850px; margin: 0 auto var(--space-2xl);">
-          <ul style="font-size: 0.9rem; color: var(--text-primary); line-height: 1.8; margin: 0; padding-left: 20px;">
-            <li><strong>Iniciativa da Busca:</strong> Rola-se uma nova iniciativa entre o personagem escondido e o perseguidor. O personagem escondido <strong>sempre começa primeiro</strong>.</li>
-            <li><strong>Turno do Personagem Escondido:</strong> Ele pode escolher uma de duas opções:
-              <ul style="margin-top: 6px; padding-left: 20px; color: var(--text-secondary);">
-                <li><strong>Sair do Esconderijo:</strong> Abandonar o local e correr, reiniciando a perseguição padrão caso o perseguidor o veja;</li>
-                <li><strong>Controlar a Respiração:</strong> Realizar um teste de <strong><span class="attr-fdm-saude">Saúde</span></strong> durante toda a rodada para controlar os batimentos cardíacos, abafar o arfar e não emitir nenhum ruído sob o pânico.</li>
+        <div style="max-width: 850px; margin: 0 auto var(--space-2xl); display: flex; flex-direction: column; gap: var(--space-xl);">
+          
+          <!-- A Ocultação Inicial (Teste de Furtividade) -->
+          <div class="fdm-card" style="border-left: 3px solid var(--attr-fdm-vigor); margin-bottom: 0;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-sm); flex-wrap: wrap; gap: 8px;">
+              <h3 style="font-family: var(--font-heading); font-size: 1.2rem; color: #fff; margin: 0; display: flex; align-items: center; gap: 10px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--attr-fdm-vigor);"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                A Ocultação Inicial (Teste de Furtividade)
+              </h3>
+              <span class="action-badge" style="background: rgba(245, 158, 11, 0.2); border-color: rgba(245, 158, 11, 0.5); color: #fbbf24;">Furtividade &bull; Vigor</span>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: var(--space-md);">
+              O personagem procura uma fresta, armário, duto ou vão sob móveis e realiza um teste de <strong>Furtividade (<span class="attr-fdm-vigor">Vigor</span>)</strong> contra a <strong>Percepção</strong> do Perseguidor:
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-md);">
+              <div style="background: rgba(255, 17, 51, 0.08); border: 1px solid rgba(255, 17, 51, 0.35); border-radius: var(--radius-md); padding: var(--space-md);">
+                <div style="color: var(--accent-red-bright); font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px;">&bull; Falha</div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">O personagem hesita, faz barulho ou deixa um rastro óbvio. Ele continua visível e a perseguição segue normalmente na rodada seguinte.</div>
+              </div>
+              <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: var(--radius-md); padding: var(--space-md);">
+                <div style="color: #34d399; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px;">&bull; Sucesso</div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">O sobrevivente consegue sumir da vista da criatura e adentra a dinâmica de <strong>Esconderijo</strong>.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Os Setores do Esconderijo (O Dado de Ocultação) -->
+          <div class="fdm-card" style="border-left: 3px solid var(--attr-fdm-mente); margin-bottom: 0;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-sm); flex-wrap: wrap; gap: 8px;">
+              <h3 style="font-family: var(--font-heading); font-size: 1.2rem; color: #fff; margin: 0; display: flex; align-items: center; gap: 10px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--attr-fdm-mente);"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                Os Setores do Esconderijo (O Dado de Ocultação)
+              </h3>
+              <span class="action-badge" style="background: rgba(6, 182, 212, 0.2); border-color: rgba(6, 182, 212, 0.5); color: #38bdf8;">Zoneamento Tático</span>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: var(--space-md);">
+              O tamanho do cômodo ou da área onde o personagem se escondeu determina quantos pontos possíveis de busca existem no local:
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-md);">
+              <div style="background: rgba(20, 20, 28, 0.9); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: var(--space-md); text-align: center;">
+                <div style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: #fff; text-transform: uppercase; margin-bottom: 4px;">Sala Pequena</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px;">escritório, quarto, beco estreito</div>
+                <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.5); border: 1px solid rgba(56, 189, 248, 0.35); padding: 5px 12px; border-radius: 4px;">
+                  <strong style="color: #38bdf8; font-size: 1.05rem;">4 Setores</strong>
+                  <span style="font-family: var(--font-mono, monospace); font-size: 0.82rem; font-weight: 700; color: #38bdf8; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.5); border-radius: 3px; padding: 2px 7px; letter-spacing: 0.05em;">1d4</span>
+                </div>
+              </div>
+              <div style="background: rgba(20, 20, 28, 0.9); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: var(--space-md); text-align: center;">
+                <div style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: #fff; text-transform: uppercase; margin-bottom: 4px;">Sala Média</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px;">laboratório, galpão comercial, biblioteca</div>
+                <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.5); border: 1px solid rgba(245, 158, 11, 0.35); padding: 5px 12px; border-radius: 4px;">
+                  <strong style="color: #fbbf24; font-size: 1.05rem;">6 Setores</strong>
+                  <span style="font-family: var(--font-mono, monospace); font-size: 0.82rem; font-weight: 700; color: #fbbf24; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.5); border-radius: 3px; padding: 2px 7px; letter-spacing: 0.05em;">1d6</span>
+                </div>
+              </div>
+              <div style="background: rgba(20, 20, 28, 0.9); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: var(--space-md); text-align: center;">
+                <div style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: #fff; text-transform: uppercase; margin-bottom: 4px;">Sala Grande</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px;">armazém abandonado, fábrica, subsolo aberto</div>
+                <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255, 17, 51, 0.35); padding: 5px 12px; border-radius: 4px;">
+                  <strong style="color: var(--accent-red-bright); font-size: 1.05rem;">8 Setores</strong>
+                  <span style="font-family: var(--font-mono, monospace); font-size: 0.82rem; font-weight: 700; color: #ff8093; background: rgba(255, 17, 51, 0.15); border: 1px solid rgba(255, 17, 51, 0.5); border-radius: 3px; padding: 2px 7px; letter-spacing: 0.05em;">1d8</span>
+                </div>
+              </div>
+            </div>
+            <div class="callout callout-info" style="font-size: 0.88rem; line-height: 1.7; margin: 0;">
+              <strong>Ao se esconder com sucesso:</strong><br>
+              &bull; <strong>Sorteio Secreto:</strong> O jogador rola secretamente o dado correspondente àquele cômodo (ex: <span style="font-family: var(--font-mono, monospace); font-weight: 700; color: #fff;">1d6</span> numa sala média). O valor sorteado representa o <strong>Setor Exato</strong> onde seu personagem está enfiado.<br>
+              &bull; <strong>Reserva de Fôlego:</strong> O sobrevivente recebe <strong>2 Pontos de Respiração</strong>.
+            </div>
+          </div>
+
+          <!-- O Turno do Perseguidor (A Busca) -->
+          <div class="fdm-card" style="border-left: 3px solid var(--accent-red); margin-bottom: 0;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-sm); flex-wrap: wrap; gap: 8px;">
+              <h3 style="font-family: var(--font-heading); font-size: 1.2rem; color: #fff; margin: 0; display: flex; align-items: center; gap: 10px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--accent-red);"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                O Turno do Perseguidor (A Busca)
+              </h3>
+              <span class="action-badge" style="background: rgba(255, 17, 51, 0.2); border-color: rgba(255, 17, 51, 0.4); color: #ff8093;">Tensão Progressiva</span>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: var(--space-md);">
+              A criatura invade o recinto farejando, quebrando móveis ou rasgando cortinas. Em cada rodada de busca, o Mestre declara o dado do Setor o monstro está revirando:
+            </p>
+            <div style="display: flex; flex-direction: column; gap: var(--space-sm); margin-bottom: var(--space-md);">
+              <div style="background: rgba(20, 20, 28, 0.9); border: 1px solid var(--border-medium); border-left: 3px solid #38bdf8; border-radius: var(--radius-md); padding: var(--space-sm) var(--space-md);">
+                <strong style="color: #38bdf8; font-size: 0.88rem;">O número NÃO bateu com o do jogador:</strong>
+                <span style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; display: block; margin-top: 2px;">
+                  A criatura vasculhou o canto errado, destruiu um armário vazio ou passou direto pela porta. A tensão sobe, mas o personagem continua oculto.
+                </span>
+              </div>
+              <div style="background: rgba(20, 20, 28, 0.9); border: 1px solid var(--border-medium); border-left: 3px solid #fbbf24; border-radius: var(--radius-md); padding: var(--space-sm) var(--space-md);">
+                <strong style="color: #fbbf24; font-size: 0.88rem;">O número BATEU com o do jogador:</strong>
+                <span style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; display: block; margin-top: 2px;">
+                  O monstro para exatamente em frente ao esconderijo, fareja a fresta ou arranha a porta. O jogador perde <strong>1 Ponto de Respiração</strong> enquanto segura o pânico.
+                </span>
+              </div>
+              <div style="background: rgba(255, 17, 51, 0.12); border: 1px solid rgba(255, 17, 51, 0.45); border-left: 3px solid var(--accent-red-bright); border-radius: var(--radius-md); padding: var(--space-sm) var(--space-md);">
+                <strong style="color: var(--accent-red-bright); font-size: 0.88rem;">Se os Pontos de Respiração chegarem a 0:</strong>
+                <span style="font-size: 0.85rem; color: #fecdd3; line-height: 1.6; display: block; margin-top: 2px;">
+                  A criatura arranca a porta do esconderijo ou enfia as garras no esconderijo. O personagem é <strong>Descoberto</strong>, o Combate Direto começa imediatamente e o monstro tem a iniciativa.
+                </span>
+              </div>
+            </div>
+            <div style="background: rgba(12, 12, 17, 0.8); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-md);">
+              <h4 style="font-family: var(--font-heading); font-size: 0.95rem; color: #fff; margin: 0 0 var(--space-sm); text-transform: uppercase; letter-spacing: 0.08em;">
+                Ações do Personagem Escondido
+              </h4>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0 0 var(--space-sm);">
+                Em seu turno, enquanto a criatura vasculha outros cantos, o sobrevivente pode:
+              </p>
+              <ul style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; margin: 0; padding-left: 20px;">
+                <li><strong>Manter a Respiração:</strong> Ficar imóvel, mantendo sua posição e observando as rotas de fuga.</li>
+                <li><strong>Trocar de Esconderijo:</strong> Realizar um novo teste de <strong>Furtividade</strong> para rastejar até outro ponto da sala enquanto o monstro está de costas, rolando um novo setor no dado caso tenha sucesso.</li>
+                <li><strong>Disparar em Fuga:</strong> Chutar a porta ou sair correndo, reiniciando a perseguição com <strong>VD 1</strong>.</li>
               </ul>
-            </li>
-            <li><strong>3 Falhas e Descoberta:</strong> Caso quem está se escondendo <strong>falhe 3 vezes</strong> no teste de Saúde, o perseguidor o encontra no esconderijo e um <strong>combate direto</strong> começa imediatamente.</li>
-          </ul>
+            </div>
+          </div>
+
+          <!-- O Dado de Pavor -->
+          <div class="fdm-card" style="border-left: 3px solid #ff1133; background: linear-gradient(180deg, rgba(255, 17, 51, 0.09) 0%, rgba(20, 20, 28, 0.98) 100%); margin-bottom: 0; box-shadow: 0 8px 32px rgba(255, 17, 51, 0.15);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-sm); flex-wrap: wrap; gap: 8px;">
+              <h3 style="font-family: var(--font-heading); font-size: 1.25rem; color: #fff; margin: 0; display: flex; align-items: center; gap: 10px;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff1133" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M12 6v6l4 2"/></svg>
+                O Dado de Pavor
+              </h3>
+            </div>
+            <p style="font-size: 0.92rem; color: var(--text-primary); line-height: 1.7; margin-bottom: var(--space-md);">
+              Quando um sobrevivente falha em um teste de Sanidade/Medo, presencia a morte brutal de um aliado ou fica cara a cara com o horror sem saída, ele é consumido pelo terror e recebe <strong>1 Dado de Pavor</strong>.
+            </p>
+
+            <div style="background: rgba(12, 12, 17, 0.9); border: 1px solid rgba(255, 17, 51, 0.35); border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-md);">
+              <div style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+                Enquanto carregar o Dado de Pavor, em qualquer teste realizado, o jogador rola o dado do seu atributo normalmente de acordo com seu degrau (<span style="font-family: var(--font-mono, monospace); font-weight: 700; color: #fff;">d4</span>, <span style="font-family: var(--font-mono, monospace); font-weight: 700; color: #fff;">d8</span>, <span style="font-family: var(--font-mono, monospace); font-weight: 700; color: #fff;">d12</span> ou <span style="font-family: var(--font-mono, monospace); font-weight: 700; color: #fff;">d16</span>) e <strong>ROLA O DADO DE PAVOR JUNTO</strong>.
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-md);">
+              <div style="background: rgba(12, 12, 17, 0.9); border: 1px solid rgba(255, 17, 51, 0.35); border-radius: var(--radius-md); padding: var(--space-md);">
+                <div style="font-family: var(--font-heading); color: #ff8093; font-size: 0.88rem; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">
+                  Anulação por Pânico
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                  Se o resultado do seu dado de atributo for <strong>MENOR OU IGUAL</strong> ao resultado do Dado de Pavor, o pavor sobrepõe o foco do personagem. O teste <strong>FALHA AUTOMATICAMENTE</strong>, mesmo que o número alcançado fosse suficiente para bater a DT.
+                </div>
+              </div>
+
+              <div style="background: rgba(12, 12, 17, 0.9); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: var(--space-md);">
+                <div style="font-family: var(--font-heading); color: #fbbf24; font-size: 0.88rem; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">
+                  Bloqueio de Degrau
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                  Enquanto o teste for anulado pelo Dado de Pavor, o dado do personagem não pode critar nem subir de degrau.
+                </div>
+              </div>
+
+              <div style="background: rgba(12, 12, 17, 0.9); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: var(--space-md);">
+                <div style="font-family: var(--font-heading); color: #34d399; font-size: 0.88rem; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">
+                  Duração e Remoção
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                  O Dado de Pavor é persistente e só é removido quando a cena termina por completo. O personagem carrega esse terror até que a situação de perigo imediato chegue ao fim.
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 
