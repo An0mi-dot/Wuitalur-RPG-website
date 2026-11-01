@@ -10152,7 +10152,7 @@ const MesaCombate = {
       attrs._sys_combate = {
         active: !!this.isActive,
         opponentId: this.opponentId || 'unknown',
-        opponentName: this.opponentName || '???',
+        opponentName: this.opponentName || 'Ratos',
         videoUrl: this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=3',
         turnCycle: this.turnCycle ? JSON.parse(JSON.stringify(this.turnCycle)) : null,
         updatedAt: Date.now()
@@ -10189,7 +10189,7 @@ const MesaCombate = {
 
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
-    if (nameInput) nameInput.value = this.opponentName || '???';
+    if (nameInput) nameInput.value = this.opponentName || 'Ratos';
     if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=3';
   },
 
@@ -10238,7 +10238,7 @@ const MesaCombate = {
 
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
-    const name = (nameInput && nameInput.value.trim()) || '???';
+    const name = (nameInput && nameInput.value.trim()) || 'Ratos';
     const video = (videoInput && videoInput.value.trim()) || 'assets/videos/rato_cinematica.mp4?v=3';
 
     this.closeSelectModal();
@@ -10256,7 +10256,7 @@ const MesaCombate = {
     this.isActive = true;
     this.lastLocalUpdate = Date.now();
     this.opponentId = data.opponentId || 'unknown';
-    this.opponentName = data.opponentName || '???';
+    this.opponentName = (data.opponentName && data.opponentName !== '???') ? data.opponentName : (this.opponentName || 'Ratos');
     this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=3');
 
     // Reseta cache de PV dos personagens
@@ -10265,6 +10265,14 @@ const MesaCombate = {
     // Sincroniza turnos caso já venham no payload
     if (data.turnCycle) {
       this.turnCycle = data.turnCycle;
+      if (this.turnCycle && Array.isArray(this.turnCycle.order)) {
+        const bossName = (this.opponentName && this.opponentName !== '???') ? this.opponentName : 'Ratos';
+        this.turnCycle.order.forEach(it => {
+          if (it && it.type === 'boss') {
+            it.name = bossName;
+          }
+        });
+      }
     }
 
     // Flash dramático de encontro (estilo Undertale)
@@ -10743,7 +10751,7 @@ const MesaCombate = {
     order.push({
       id: 'boss',
       slot: null,
-      name: this.opponentName || '???',
+      name: this.opponentName || 'Ratos',
       type: 'boss'
     });
 
@@ -10764,7 +10772,8 @@ const MesaCombate = {
     listEl.innerHTML = this.turnCycle.order.map((item, idx) => {
       const isCurrent = idx === (this.turnCycle.currentIndex || 0);
       const isBoss = item.type === 'boss';
-      const label = isBoss ? `${item.name} [OPONENTE]` : `${item.name} (S${item.slot})`;
+      const bossRealName = (this.opponentName && this.opponentName !== '???') ? this.opponentName : (item.name !== '???' ? item.name : 'Ratos');
+      const label = isBoss ? `${bossRealName} [OPONENTE]` : `${item.name} (S${item.slot})`;
       const numLabel = `${idx + 1}º`;
 
       return `
@@ -10853,7 +10862,7 @@ const MesaCombate = {
     this.turnCycle.order.push({
       id: `boss_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
       slot: null,
-      name: this.opponentName || '???',
+      name: this.opponentName || 'Ratos',
       type: 'boss'
     });
     this.renderTurnOrderList();
@@ -10871,7 +10880,7 @@ const MesaCombate = {
     if (!this.turnCycle) this.initDefaultTurnOrder();
     const players = (MesaApp && MesaApp.state && MesaApp.state.players) || [];
     const activePlayers = players.filter(p => p && p.nome);
-    const bossName = this.opponentName || '???';
+    const bossName = this.opponentName || 'Ratos';
 
     if (activePlayers.length === 0) {
       this.turnCycle.order = [{
@@ -11083,6 +11092,14 @@ const MesaCombate = {
     }
 
     this.turnCycle = cycleData;
+    if (this.turnCycle && Array.isArray(this.turnCycle.order)) {
+      const bossName = (this.opponentName && this.opponentName !== '???') ? this.opponentName : 'Ratos';
+      this.turnCycle.order.forEach(it => {
+        if (it && it.type === 'boss') {
+          it.name = bossName;
+        }
+      });
+    }
     this.updateTurnUI();
     this.updateMasterControls();
   },
@@ -11163,8 +11180,12 @@ const MesaCombate = {
     }
 
     // 1. Atualiza "Turno de [Nome]" logo abaixo do nome do inimigo com micro-pulso de confirmação
+    const isBossItem = currentItem.type === 'boss';
+    const bossRealName = (this.opponentName && this.opponentName !== '???') ? this.opponentName : (currentItem.name !== '???' ? currentItem.name : 'Ratos');
+    const displayTurnName = isBossItem ? bossRealName : currentItem.name;
+
     if (subLabel) {
-      subLabel.textContent = `Turno de ${currentItem.name}${actionCountText}`;
+      subLabel.textContent = `Turno de ${displayTurnName}${actionCountText}`;
       subLabel.style.display = 'block';
       subLabel.classList.remove('turn-pulse');
       void subLabel.offsetWidth;
