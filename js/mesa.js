@@ -39,6 +39,30 @@ const GlitchEngine = {
   glitches: [],
   running: true,
 
+  
+  createDustVanishEffect(targetElement, color = '#ff1133', count = 35) {
+    if (!targetElement) return;
+    const rect = targetElement.getBoundingClientRect();
+    targetElement.classList.add('dust-vanish-active');
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'dust-particle';
+      const size = Math.random() * 5 + 2;
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      p.style.background = Math.random() > 0.4 ? color : '#111';
+      p.style.boxShadow = `0 0 6px ${color}`;
+      p.style.left = (rect.left + Math.random() * rect.width) + 'px';
+      p.style.top = (rect.top + Math.random() * rect.height) + 'px';
+      const tx = (Math.random() - 0.5) * 80;
+      const ty = - (Math.random() * 60 + 20);
+      p.style.setProperty('--tx', tx + 'px');
+      p.style.setProperty('--ty', ty + 'px');
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 1200);
+    }
+  },
+
   init() {
     if (MESA_LITE) return;
     this.canvas = document.getElementById('glitch-canvas');
@@ -2066,6 +2090,39 @@ const MesaApp = {
       }
     });
 
+    channel.on('broadcast', { event: 'pavor_toggle' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      const data = payload.payload;
+      if (data && data.slot) {
+        const p = MesaApp.state.players[data.slot - 1];
+        if (p) {
+          p.dadoDePavor = Boolean(data.dadoDePavor);
+          MesaApp.renderMesa();
+          if (MesaApp.state.activeViewingPlayer && MesaApp.state.activeViewingPlayer.slot === p.slot) {
+            MesaApp.openFicha(p);
+          }
+        }
+      }
+    });
+
+    channel.on('broadcast', { event: 'esconderijo_iniciar' }, (payload) => {
+      if (window.MesaEsconderijo) {
+        MesaEsconderijo.handleIncomingStart(payload.payload);
+      }
+    });
+
+    channel.on('broadcast', { event: 'esconderijo_busca' }, (payload) => {
+      if (window.MesaEsconderijo) {
+        MesaEsconderijo.handleIncomingSearch(payload.payload);
+      }
+    });
+
+    channel.on('broadcast', { event: 'esconderijo_encerrar' }, (payload) => {
+      if (window.MesaEsconderijo) {
+        MesaEsconderijo.handleIncomingStop(payload.payload);
+      }
+    });
+
     channel.on('broadcast', { event: 'dice_roll' }, (payload) => {
       if (isFromSelf(payload)) return;
       const data = payload.payload;
@@ -2115,6 +2172,24 @@ const MesaApp = {
     });
   },
 
+  
+  toggleDadoDePavor(slot) {
+    const p = this.state.players[slot - 1];
+    if (!p) return;
+    p.dadoDePavor = !p.dadoDePavor;
+    this.renderMesa();
+    if (this.state.activeViewingPlayer && this.state.activeViewingPlayer.slot === p.slot) {
+      this.openFicha(p);
+    }
+    if (MesaChat && MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'pavor_toggle',
+        payload: { slot: slot, dadoDePavor: p.dadoDePavor }
+      });
+    }
+  },
+
   renderMesa() {
     for (let i = 0; i < 8; i++) {
       const slotEl = document.querySelector(`.slot-${i + 1}`);
@@ -2131,6 +2206,7 @@ const MesaApp = {
 
         slotEl.innerHTML = `
           <div class="player-avatar-placeholder">${avatarContent}</div>
+          ${p.dadoDePavor ? `<div class="slot-pavor-badge" title="Dado de Pavor Ativo">PAVOR</div>` : ''}
           <div class="player-name-badge" title="${p.nome}">${p.nome}</div>
           <div class="player-stats-segmented">
             <div class="stat-segmented-row">
@@ -2539,6 +2615,10 @@ const MesaApp = {
             <span class="ficha-badge-tag">${player.arquetipo || 'N/A'}</span>
             <span class="ficha-badge-tag">${player.idade || 'N/A'}</span>
             <span class="ficha-badge-tag">${player.altura || 'N/A'}</span>
+            <button type="button" class="ficha-pavor-toggle-btn ${player.dadoDePavor ? 'active' : ''}" onclick="MesaApp.toggleDadoDePavor(${player.slot})" title="Alternar Dado de Pavor">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M16 8h.01"/><path d="M8 8h.01"/><path d="M8 16h.01"/><path d="M16 16h.01"/><path d="M12 12h.01"/></svg>
+              <span>${player.dadoDePavor ? 'Dado de Pavor Ativo' : 'Ativar Pavor'}</span>
+            </button>
             <span class="ficha-permission-tag ${editable ? 'edit' : 'view'}">
               ${editable ? `${SVG_ICONS.pencil} Modo Edição` : `${SVG_ICONS.eye} Modo Leitura`}
             </span>
@@ -3443,17 +3523,38 @@ const MesaDice = {
       val: this.cryptoRandomInt(1, sides)
     }));
 
-    const diceSum = diceResults.reduce((acc, d) => acc + d.val, 0);
-    const total = diceSum + this.modifier;
-
     const sender = MesaChat.getCurrentSender();
+
+    let rollerPlayer = null;
+    if (MesaApp.state && MesaApp.state.mySlot && MesaApp.state.players) {
+      rollerPlayer = MesaApp.state.players[MesaApp.state.mySlot - 1];
+    } else if (MesaApp.state && MesaApp.state.players) {
+      rollerPlayer = MesaApp.state.players.find(p => p && p.nome === sender.name);
+    }
+
+    let pavorResult = null;
+    const diceSum = diceResults.reduce((acc, d) => acc + d.val, 0);
+    let finalTotal = diceSum + this.modifier;
+
+    if (rollerPlayer && rollerPlayer.dadoDePavor) {
+      const mirroredSides = this.selectedDice[0] || 20;
+      const pavorVal = this.cryptoRandomInt(1, mirroredSides);
+      pavorResult = {
+        sides: mirroredSides,
+        val: pavorVal,
+        playerSlot: rollerPlayer.slot,
+        playerName: rollerPlayer.nome
+      };
+      finalTotal = diceSum - pavorVal + this.modifier;
+    }
 
     const rollPayload = {
       rollerName: sender.name,
       isMaster: sender.isMaster,
       results: diceResults,
+      pavorResult: pavorResult,
       modifier: this.modifier,
-      total: total
+      total: finalTotal
     };
 
     // 4. Executa a animação no quadrado preto central
@@ -3469,9 +3570,33 @@ const MesaDice = {
     }
 
     // 6. Log no chat da mesa
-    const breakdown = diceResults.map(d => `[d${d.sides}: ${d.val}]`).join(' + ');
+    let breakdown = diceResults.map(d => `[d${d.sides}: ${d.val}]`).join(' + ');
+    if (pavorResult) {
+      breakdown += ` - [Pavor d${pavorResult.sides}: ${pavorResult.val}]`;
+    }
     const modStr = this.modifier !== 0 ? (this.modifier > 0 ? ` + ${this.modifier}` : ` - ${Math.abs(this.modifier)}`) : '';
-    const chatContent = `Rolou ${breakdown}${modStr} -> Total: ${total}`;
+    const chatContent = `Rolou ${breakdown}${modStr} -> Total: ${finalTotal}`;
+
+    if (pavorResult && pavorResult.val === 1 && rollerPlayer) {
+      setTimeout(() => {
+        MesaChat.receiveMessage({
+          id: 'pavor_clear_' + Date.now(),
+          sender_name: 'Fios do Medo',
+          is_master: true,
+          content: `O Dado de Pavor de ${rollerPlayer.nome} sorteou 1 e se desfez em cinzas. O terror foi descartado da ficha.`,
+          created_at: new Date().toISOString()
+        });
+        rollerPlayer.dadoDePavor = false;
+        MesaApp.renderMesa();
+        if (MesaChat.channel) {
+          MesaChat.channel.send({
+            type: 'broadcast',
+            event: 'pavor_toggle',
+            payload: { slot: rollerPlayer.slot, dadoDePavor: false }
+          });
+        }
+      }, 2500);
+    }
 
     MesaChat.receiveMessage({
       id: 'dice_' + Date.now(),
@@ -3510,6 +3635,12 @@ const MesaDice = {
             <span id="dice-val-${i}" class="dice-tumble-val">?</span>
           </div>
         `).join('')}
+        ${data.pavorResult ? `
+          <div id="dice-pavor-box" class="dice-tumble-box pavor-box rolling">
+            <span class="dice-tumble-type">PAVOR d${data.pavorResult.sides}</span>
+            <span id="dice-pavor-val" class="dice-tumble-val">?</span>
+          </div>
+        ` : ''}
       </div>
       <div id="dice-total-box" class="dice-total-banner" style="display:none;"></div>
     `;
@@ -3522,6 +3653,12 @@ const MesaDice = {
           valEl.textContent = this.cryptoRandomInt(1, d.sides);
         }
       });
+      if (data.pavorResult) {
+        const pValEl = stage.querySelector('#dice-pavor-val');
+        if (pValEl) {
+          pValEl.textContent = this.cryptoRandomInt(1, data.pavorResult.sides);
+        }
+      }
     }, 45);
 
     // Para a animação e bate o valor real criptográfico
@@ -3538,10 +3675,33 @@ const MesaDice = {
         }
       });
 
+      if (data.pavorResult) {
+        const pBox = stage.querySelector('#dice-pavor-box');
+        const pValEl = stage.querySelector('#dice-pavor-val');
+        if (pBox && pValEl) {
+          pBox.classList.remove('rolling');
+          pBox.classList.add('settled-pavor');
+          pValEl.textContent = data.pavorResult.val;
+
+          if (data.pavorResult.val === 1) {
+            setTimeout(() => {
+              this.createDustVanishEffect(pBox, '#ff1133');
+            }, 800);
+          } else {
+            setTimeout(() => {
+              this.createDustVanishEffect(pBox, 'rgba(255, 17, 51, 0.65)', 15);
+            }, 500);
+          }
+        }
+      }
+
       // Exibe o total final e detalhamento
       const totalBox = stage.querySelector('#dice-total-box');
       if (totalBox) {
-        const breakdownStr = data.results.map(d => `d${d.sides}(${d.val})`).join(' + ');
+        let breakdownStr = data.results.map(d => `d${d.sides}(${d.val})`).join(' + ');
+        if (data.pavorResult) {
+          breakdownStr += ` - <span class="pavor-breakdown-minus">Pavor (${data.pavorResult.val})</span>`;
+        }
         const modStr = data.modifier !== 0 ? (data.modifier > 0 ? ` + ${data.modifier}` : ` - ${Math.abs(data.modifier)}`) : '';
 
         totalBox.style.display = 'flex';
@@ -4925,6 +5085,14 @@ const MesaQuickMenu = {
       mediaBtn.style.display = isMaster ? 'flex' : 'none';
     }
 
+    const navEsconderijoBtn = document.getElementById('nav-esconderijo-btn');
+    if (navEsconderijoBtn) {
+      navEsconderijoBtn.style.display = isMaster ? 'inline-flex' : 'none';
+    }
+    const menuEsconderijoBtn = document.getElementById('menu-esconderijo-btn');
+    if (menuEsconderijoBtn) {
+      menuEsconderijoBtn.style.display = isMaster ? 'flex' : 'none';
+    }
     const navDispositivosBtn = document.getElementById('nav-dispositivos-btn');
     if (navDispositivosBtn) {
       navDispositivosBtn.style.display = isMaster ? 'inline-flex' : 'none';
@@ -5057,6 +5225,10 @@ const MesaMobileMenu = {
       mobileMediaBtn.style.display = isMaster ? 'flex' : 'none';
     }
     const mobileDispBtn = document.getElementById('mobile-dispositivos-item');
+    const mobileEsconderijo = document.getElementById('mobile-esconderijo-item');
+    if (mobileEsconderijo) {
+      mobileEsconderijo.style.display = isMaster ? 'flex' : 'none';
+    }
     if (mobileDispBtn) {
       mobileDispBtn.style.display = isMaster ? 'flex' : 'none';
     }
@@ -11716,3 +11888,379 @@ const MesaCombatPlayersModal = {
 window.MesaCombatPlayersModal = MesaCombatPlayersModal;
 
 
+
+
+// ==========================================================================
+// MESA ESCONDERIJO E BUSCA DE SETORES — FIOS DO MEDO
+// ==========================================================================
+const MesaEsconderijo = {
+  room: 'media',
+  roomSides: 6,
+  roomName: 'Sala Média',
+  isMasterActive: false,
+  declaredSectors: [],
+  selectedSector: null,
+
+  // Estado privado do jogador (NUNCA enviado ao Mestre):
+  playerSector: null,
+  playerCamouflage: 2,
+  playerMaxCamouflage: 4,
+  playerHidden: false,
+  playerDiscovered: false,
+
+  init() {
+    this.renderMasterSectors();
+  },
+
+  openMasterModal() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) {
+      alert("Apenas o Mestre pode gerenciar o Modo Esconderijo.");
+      return;
+    }
+    const modal = document.getElementById('esconderijo-master-modal');
+    if (modal) modal.classList.add('active');
+  },
+
+  closeMasterModal() {
+    const modal = document.getElementById('esconderijo-master-modal');
+    if (modal) modal.classList.remove('active');
+  },
+
+  selectRoom(roomType) {
+    this.room = roomType;
+    if (roomType === 'pequena') {
+      this.roomSides = 4;
+      this.roomName = 'Sala Pequena';
+    } else if (roomType === 'grande') {
+      this.roomSides = 8;
+      this.roomName = 'Sala Grande';
+    } else {
+      this.roomSides = 6;
+      this.roomName = 'Sala Média';
+    }
+
+    document.querySelectorAll('.esconderijo-room-btn').forEach(btn => btn.classList.remove('selected'));
+    const selectedBtn = document.getElementById(`room-opt-${roomType}`);
+    if (selectedBtn) selectedBtn.classList.add('selected');
+  },
+
+  startHidingRound() {
+    this.isMasterActive = true;
+    this.declaredSectors = [];
+    this.selectedSector = null;
+
+    const setupView = document.getElementById('esconderijo-setup-view');
+    const activeView = document.getElementById('esconderijo-active-view');
+    if (setupView) setupView.style.display = 'none';
+    if (activeView) activeView.style.display = 'block';
+
+    const roomLabel = document.getElementById('esconderijo-current-room-label');
+    if (roomLabel) {
+      roomLabel.textContent = `${this.roomName.toUpperCase()} (${this.roomSides} SETORES)`;
+    }
+
+    this.renderMasterSectors();
+    this.updateHistoryBox();
+
+    if (MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'esconderijo_iniciar',
+        payload: {
+          room: this.room,
+          roomSides: this.roomSides,
+          roomName: this.roomName,
+          timestamp: Date.now()
+        }
+      });
+    }
+
+    MesaChat.receiveMessage({
+      id: 'hiding_start_' + Date.now(),
+      sender_name: 'Mestre',
+      is_master: true,
+      content: `[PERSEGUIÇÃO]: A criatura invadiu o recinto (${this.roomName})! Sobreviventes devem rolar secretamente seus setores e pontos de camuflagem.`,
+      created_at: new Date().toISOString()
+    });
+  },
+
+  renderMasterSectors() {
+    const grid = document.getElementById('esconderijo-sectors-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    for (let i = 1; i <= this.roomSides; i++) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `esconderijo-sector-btn ${this.selectedSector === i ? 'selected' : ''}`;
+      btn.textContent = `Setor ${i}`;
+      btn.onclick = () => this.selectSector(i);
+      grid.appendChild(btn);
+    }
+    const declareBtn = document.getElementById('esconderijo-declare-btn');
+    if (declareBtn) {
+      declareBtn.textContent = this.selectedSector ? `Declarar Busca no Setor ${this.selectedSector}` : 'Selecione um Setor';
+      declareBtn.disabled = !this.selectedSector;
+    }
+  },
+
+  selectSector(num) {
+    this.selectedSector = num;
+    this.renderMasterSectors();
+  },
+
+  rollRandomSearch() {
+    this.selectedSector = Math.floor(Math.random() * this.roomSides) + 1;
+    this.renderMasterSectors();
+  },
+
+  declareSearch() {
+    if (!this.selectedSector) return;
+    const sector = this.selectedSector;
+    this.declaredSectors.push(sector);
+    this.updateHistoryBox();
+
+    if (MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'esconderijo_busca',
+        payload: {
+          sector: sector,
+          timestamp: Date.now()
+        }
+      });
+    }
+
+    MesaChat.receiveMessage({
+      id: 'hiding_search_' + Date.now(),
+      sender_name: 'Perseguidor',
+      is_master: true,
+      content: `[BUSCA]: A criatura quebra móveis e fareja o SETOR ${sector}!`,
+      created_at: new Date().toISOString()
+    });
+
+    this.selectedSector = null;
+    this.renderMasterSectors();
+  },
+
+  updateHistoryBox() {
+    const box = document.getElementById('esconderijo-history-box');
+    if (!box) return;
+    if (this.declaredSectors.length === 0) {
+      box.textContent = 'Nenhum setor declarado ainda nesta rodada.';
+    } else {
+      box.innerHTML = `<strong>Setores revirados nesta cena:</strong> ${this.declaredSectors.map(s => `Setor ${s}`).join(' &bull; ')}`;
+    }
+  },
+
+  stopHidingRound() {
+    this.isMasterActive = false;
+    this.declaredSectors = [];
+    this.selectedSector = null;
+
+    const setupView = document.getElementById('esconderijo-setup-view');
+    const activeView = document.getElementById('esconderijo-active-view');
+    if (setupView) setupView.style.display = 'block';
+    if (activeView) activeView.style.display = 'none';
+
+    this.closeMasterModal();
+
+    if (MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'esconderijo_encerrar',
+        payload: { timestamp: Date.now() }
+      });
+    }
+
+    MesaChat.receiveMessage({
+      id: 'hiding_end_' + Date.now(),
+      sender_name: 'Mestre',
+      is_master: true,
+      content: '[PERSEGUIÇÃO]: A rodada de esconderijo foi encerrada.',
+      created_at: new Date().toISOString()
+    });
+  },
+
+  // ---- CONTROLES PRIVADOS DO JOGADOR ----
+  handleIncomingStart(payload) {
+    if (MesaApp.state && MesaApp.state.isMaster) return;
+
+    this.roomSides = payload.roomSides || 6;
+    this.roomName = payload.roomName || 'Sala Média';
+    this.playerSector = null;
+    this.playerCamouflage = 2;
+    this.playerHidden = true;
+    this.playerDiscovered = false;
+
+    const modal = document.getElementById('esconderijo-player-modal');
+    const phaseRoll = document.getElementById('player-esconderijo-phase-roll');
+    const phaseActive = document.getElementById('player-esconderijo-phase-active');
+    const alertEl = document.getElementById('player-search-alert');
+
+    if (modal) modal.classList.add('active');
+    if (phaseRoll) phaseRoll.style.display = 'block';
+    if (phaseActive) phaseActive.style.display = 'none';
+    if (alertEl) alertEl.style.display = 'none';
+
+    const btn = document.getElementById('btn-roll-secret-sector');
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = `🎲 Rolar Meu Setor Secreto (1d${this.roomSides})`;
+    }
+  },
+
+  playerRollSector() {
+    const btn = document.getElementById('btn-roll-secret-sector');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Rolando secretamente...';
+    }
+
+    setTimeout(() => {
+      this.playerSector = Math.floor(Math.random() * this.roomSides) + 1;
+
+      const phaseRoll = document.getElementById('player-esconderijo-phase-roll');
+      const phaseActive = document.getElementById('player-esconderijo-phase-active');
+      const sectorBadge = document.getElementById('player-sector-badge');
+
+      if (phaseRoll) phaseRoll.style.display = 'none';
+      if (phaseActive) phaseActive.style.display = 'flex';
+      if (sectorBadge) sectorBadge.textContent = `SETOR ${this.playerSector}`;
+
+      this.updatePlayerCamouflageUI();
+    }, 800);
+  },
+
+  updatePlayerCamouflageUI() {
+    const pipsContainer = document.getElementById('player-camouflage-pips');
+    const statusText = document.getElementById('camouflage-status-text');
+    if (!pipsContainer) return;
+
+    pipsContainer.innerHTML = '';
+    for (let i = 0; i < this.playerMaxCamouflage; i++) {
+      const pip = document.createElement('span');
+      pip.className = `camouflage-pip ${i >= this.playerCamouflage ? 'lost' : ''}`;
+      pip.title = `Ponto ${i + 1}`;
+      pipsContainer.appendChild(pip);
+    }
+
+    if (statusText) {
+      if (this.playerCamouflage <= 0) {
+        statusText.textContent = 'DESCOBERTO! O monstro te encontrou!';
+        statusText.style.color = '#ff1133';
+      } else {
+        statusText.textContent = `${this.playerCamouflage} Ponto(s) de Camuflagem restante(s)`;
+        statusText.style.color = 'var(--text-muted)';
+      }
+    }
+  },
+
+  handleIncomingSearch(payload) {
+    if (!this.playerHidden) return;
+    const sector = payload.sector;
+    const alertEl = document.getElementById('player-search-alert');
+    if (!alertEl) return;
+
+    alertEl.style.display = 'block';
+
+    if (this.playerSector === sector) {
+      this.playerCamouflage = Math.max(0, this.playerCamouflage - 1);
+      this.updatePlayerCamouflageUI();
+
+      const pips = document.querySelectorAll('#player-camouflage-pips .camouflage-pip');
+      if (pips && pips[this.playerCamouflage]) {
+        MesaDice.createDustVanishEffect(pips[this.playerCamouflage], '#ff1133');
+      }
+
+      alertEl.className = 'esconderijo-search-banner danger';
+      if (this.playerCamouflage === 0) {
+        this.playerDiscovered = true;
+        alertEl.innerHTML = `
+          <strong style="color:#ff1133; font-size:1.05rem;">VOCÊ FOI DESCOBERTO!</strong><br>
+          A criatura invadiu o <strong>Setor ${sector}</strong> e arrancou a porta do seu esconderijo! O combate direto começa imediatamente.
+        `;
+      } else {
+        alertEl.innerHTML = `
+          <strong style="color:#ff4d6d;">O PERSEGUIDOR ESTÁ NA SUA PORTA!</strong><br>
+          O monstro vasculhou exatamente o <strong>Setor ${sector}</strong>, farejou a fresta e arranhou seu esconderijo. Você perdeu 1 Ponto de Camuflagem!
+        `;
+      }
+    } else {
+      alertEl.className = 'esconderijo-search-banner safe';
+      alertEl.innerHTML = `
+        <strong>O monstro vasculhou o Setor ${sector}.</strong><br>
+        A criatura foi para outro canto e você continua oculto nas sombras.
+      `;
+    }
+  },
+
+  actionHoldBreath() {
+    if (this.playerCamouflage >= this.playerMaxCamouflage) {
+      alert("Você já está no limite máximo de camuflagem.");
+      return;
+    }
+    this.playerCamouflage++;
+    this.updatePlayerCamouflageUI();
+    const alertEl = document.getElementById('player-search-alert');
+    if (alertEl) {
+      alertEl.style.display = 'block';
+      alertEl.className = 'esconderijo-search-banner safe';
+      alertEl.innerHTML = `<strong>Manter a Respiração:</strong> Você controlou os batimentos e ganhou +1 Ponto de Camuflagem.`;
+    }
+  },
+
+  actionChangeHideout() {
+    const success = Math.random() > 0.35;
+    const alertEl = document.getElementById('player-search-alert');
+    if (success) {
+      this.playerSector = Math.floor(Math.random() * this.roomSides) + 1;
+      const sectorBadge = document.getElementById('player-sector-badge');
+      if (sectorBadge) sectorBadge.textContent = `SETOR ${this.playerSector}`;
+      if (alertEl) {
+        alertEl.style.display = 'block';
+        alertEl.className = 'esconderijo-search-banner safe';
+        alertEl.innerHTML = `<strong>Sucesso na Furtividade:</strong> Você rastejou pelas sombras e trocou para o novo Setor secreto.`;
+      }
+    } else {
+      this.playerCamouflage = Math.max(0, this.playerCamouflage - 1);
+      this.updatePlayerCamouflageUI();
+      const pips = document.querySelectorAll('#player-camouflage-pips .camouflage-pip');
+      if (pips && pips[this.playerCamouflage]) {
+        MesaDice.createDustVanishEffect(pips[this.playerCamouflage], '#ff1133');
+      }
+      if (alertEl) {
+        alertEl.style.display = 'block';
+        alertEl.className = 'esconderijo-search-banner danger';
+        alertEl.innerHTML = `<strong>Falha na Furtividade:</strong> Você fez barulho ao se mover e perdeu 1 Ponto de Camuflagem!`;
+      }
+    }
+  },
+
+  actionDistract() {
+    this.playerCamouflage = Math.max(0, this.playerCamouflage - 1);
+    this.updatePlayerCamouflageUI();
+    const pips = document.querySelectorAll('#player-camouflage-pips .camouflage-pip');
+    if (pips && pips[this.playerCamouflage]) {
+      MesaDice.createDustVanishEffect(pips[this.playerCamouflage], '#ff1133');
+    }
+    const alertEl = document.getElementById('player-search-alert');
+    if (alertEl) {
+      alertEl.style.display = 'block';
+      alertEl.className = 'esconderijo-search-banner safe';
+      alertEl.innerHTML = `<strong>Distração Criada:</strong> Você arremessou um objeto para longe. Perdeu 1 Ponto de Camuflagem para atrair a atenção do monstro.`;
+    }
+  },
+
+  handleIncomingStop() {
+    this.closePlayerModal();
+    this.playerHidden = false;
+    this.playerSector = null;
+    this.playerCamouflage = 2;
+  },
+
+  closePlayerModal() {
+    const modal = document.getElementById('esconderijo-player-modal');
+    if (modal) modal.classList.remove('active');
+  }
+};
+window.MesaEsconderijo = MesaEsconderijo;
