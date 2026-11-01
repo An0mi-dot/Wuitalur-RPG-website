@@ -179,7 +179,7 @@
               <span>Mudar Área / Mapa</span>
               <span class="quick-menu-badge-master">Mestre</span>
             </button>
-            <button type="button" id="menu-esconderijo-btn" class="quick-menu-item master-item" onclick="MesaEsconderijo.openMasterModal(); MesaQuickMenu.close();" style="display: none; color: #ff1133;">
+            <button type="button" id="menu-esconderijo-btn" class="quick-menu-item master-item" onclick="MesaEsconderijo.openContextualModal(); MesaQuickMenu.close();" style="display: none; color: #ff1133;">
               <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
               <span>Modo Esconderijo</span>
               <span class="quick-menu-badge-master">Mestre</span>
@@ -261,7 +261,7 @@
 
       <div class="mesa-actions">
         <!-- Botão Dispositivos da Campanha (Exclusivo do Mestre) -->
-        <button id="nav-esconderijo-btn" class="ink-tag nav-esconderijo master-item" onclick="MesaEsconderijo.openMasterModal()" style="display: none; color: #ff1133;" title="Modo Esconderijo e Busca (Fios do Medo)">
+        <button id="nav-esconderijo-btn" class="ink-tag nav-esconderijo master-item" onclick="MesaEsconderijo.openContextualModal()" style="display: none; color: #ff1133;" title="Modo Esconderijo e Busca (Fios do Medo)">
           <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
           <span>Esconderijo</span>
         </button>
@@ -432,15 +432,31 @@
         <div class="dice-selector-section">
           <div class="dice-section-label">ADICIONAR DADO À ROLAGEM:</div>
           <div class="dice-chips-grid">
-            <button class="dice-chip-btn" onclick="MesaDice.addDie(4)">+ d4</button>
-            <button class="dice-chip-btn" onclick="MesaDice.addDie(6)">+ d6</button>
-            <button class="dice-chip-btn" onclick="MesaDice.addDie(8)">+ d8</button>
-            <button class="dice-chip-btn" onclick="MesaDice.addDie(10)">+ d10</button>
-            <button class="dice-chip-btn" onclick="MesaDice.addDie(12)">+ d12</button>
-            <button class="dice-chip-btn" onclick="MesaDice.addDie(16)">+ d16</button>
-            <button class="dice-chip-btn" onclick="MesaDice.addDie(20)">+ d20</button>
-            <button class="dice-chip-btn" onclick="MesaDice.addDie(100)">+ d100</button>
-            <button type="button" id="dice-pavor-chip-btn" class="dice-chip-btn pavor-chip-btn" onclick="MesaDice.togglePavorInModal()" title="Alternar Dado de Pavor (espelhado)">☠ + Dado de Pavor</button>
+            <button type="button" class="dice-chip-btn" onclick="MesaDice.addDie(4)">+ d4</button>
+            <button type="button" class="dice-chip-btn" onclick="MesaDice.addDie(6)">+ d6</button>
+            <button type="button" class="dice-chip-btn" onclick="MesaDice.addDie(8)">+ d8</button>
+            <button type="button" class="dice-chip-btn" onclick="MesaDice.addDie(10)">+ d10</button>
+            <button type="button" class="dice-chip-btn" onclick="MesaDice.addDie(12)">+ d12</button>
+            <button type="button" class="dice-chip-btn" onclick="MesaDice.addDie(16)">+ d16</button>
+            <button type="button" class="dice-chip-btn" onclick="MesaDice.addDie(20)">+ d20</button>
+            <button type="button" class="dice-chip-btn" onclick="MesaDice.addDie(100)">+ d100</button>
+          </div>
+        </div>
+
+        <!-- Condicao Especial: Dado de Pavor (Fios do Medo) -->
+        <div class="dice-pavor-card">
+          <div class="dice-pavor-main">
+            <div class="dice-pavor-identity">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M16 8h.01"/><path d="M8 8h.01"/><path d="M8 16h.01"/><path d="M16 16h.01"/><path d="M12 12h.01"/></svg>
+              <div class="dice-pavor-texts">
+                <span class="dice-pavor-title">DADO DE PAVOR</span>
+                <span class="dice-pavor-desc">Espelha o maior dado do teste e subtrai o valor sorteado</span>
+              </div>
+            </div>
+            <button type="button" id="dice-pavor-chip-btn" class="dice-pavor-toggle-btn" onclick="MesaDice.togglePavorInModal()" title="Alternar Dado de Pavor">
+              <span class="pavor-toggle-dot"></span>
+              <span id="dice-pavor-chip-label">INATIVO</span>
+            </button>
           </div>
         </div>
 
@@ -679,7 +695,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
             <span>Coletáveis (Mestre)</span>
           </button>
 
-                              <button id="mobile-esconderijo-item" class="mobile-menu-item master-item" onclick="MesaEsconderijo.openMasterModal(); MesaMobileMenu.close()" style="display: none; color: #ff1133;">
+                              <button id="mobile-esconderijo-item" class="mobile-menu-item master-item" onclick="MesaEsconderijo.openContextualModal(); MesaMobileMenu.close()" style="display: none; color: #ff1133;">
           <svg class="mobile-menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
           <span>Modo Esconderijo</span>
         </button>
@@ -1922,7 +1938,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       </div>
       <!-- Ações Rápidas do Topo: Rolar Dados e Menu -->
       <div class="combat-top-nav-group">
-        <button type="button" id="combat-top-esconderijo-btn" class="combat-top-btn master-item" onclick="MesaEsconderijo.openMasterModal()" title="Modo Esconderijo e Busca (Fios do Medo)" style="color: #ff1133; border-color: rgba(255,17,51,0.4);">
+        <button type="button" id="combat-top-esconderijo-btn" class="combat-top-btn master-item" onclick="MesaEsconderijo.openContextualModal()" title="Modo Esconderijo e Busca (Fios do Medo)" style="color: #ff1133; border-color: rgba(255,17,51,0.4);">
           <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>
           </svg>
@@ -1947,7 +1963,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Desktop: Visualização Completa -->
       <div class="combat-master-desktop-view">
         <div class="combat-ctrls-row">
-          <button type="button" class="combat-ctrl-btn" onclick="MesaEsconderijo.openMasterModal()" title="Gerenciar Modo Esconderijo e Busca de Setores" style="border-color: rgba(255, 17, 51, 0.4); color: #ff8093;">
+          <button type="button" class="combat-ctrl-btn" onclick="MesaEsconderijo.openContextualModal()" title="Gerenciar Modo Esconderijo e Busca de Setores" style="border-color: rgba(255, 17, 51, 0.4); color: #ff8093;">
             <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
             <span id="combat-master-ctrl-esconderijo-label">Esconderijo</span>
           </button>
@@ -2217,7 +2233,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Seção Exclusiva do Mestre -->
       <div class="combat-menu-divider combat-menu-master-item" style="color: #a78bfa;">GERENCIAMENTO DO MESTRE</div>
 
-      <button type="button" class="combat-menu-item combat-menu-master-item" onclick="MesaEsconderijo.openMasterModal(); MesaCombatMenu.close();" style="color: #ff1133;">
+      <button type="button" class="combat-menu-item combat-menu-master-item" onclick="MesaEsconderijo.openContextualModal(); MesaCombatMenu.close();" style="color: #ff1133;">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>
         </svg>
@@ -2408,7 +2424,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
             O Perseguidor está vasculhando a área. Role o dado do cômodo para definir seu <strong>Setor Secreto</strong>. Esta rolagem ocorre somente na sua tela — o Mestre e os outros jogadores NÃO têm acesso ao resultado.
           </p>
           <button type="button" id="btn-roll-secret-sector" class="dispositivo-btn-primary" onclick="MesaEsconderijo.playerRollSector()" style="background: #38bdf8; border-color: #0284c7; padding: 12px 24px; font-size: 1rem; margin: 0 auto;">
-            🎲 Rolar Meu Setor Secreto
+            Rolar Meu Setor Secreto
           </button>
         </div>
 

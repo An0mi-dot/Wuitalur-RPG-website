@@ -13246,31 +13246,31 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border-medium);
-  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #d4d4d8;
   font-family: var(--font-heading);
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.76rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 5px 12px;
-  border-radius: 4px;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: 2px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .ficha-pavor-toggle-btn:hover {
-  background: rgba(255, 17, 51, 0.15);
-  border-color: rgba(255, 17, 51, 0.5);
+  background: rgba(255, 17, 51, 0.2);
+  border-color: rgba(255, 17, 51, 0.6);
   color: #fff;
 }
 
 .ficha-pavor-toggle-btn.active {
-  background: rgba(255, 17, 51, 0.25);
-  border-color: #ff1133;
-  color: #ff8093;
-  box-shadow: 0 0 12px rgba(255, 17, 51, 0.4);
+  background: #ff1133;
+  border-color: #ff4d6d;
+  color: #fff;
+  box-shadow: 0 0 14px rgba(255, 17, 51, 0.6);
 }
 
 /* 2. DADO DE PAVOR NO MOTOR DE ROLAGEM */
@@ -13344,9 +13344,10 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 .esconderijo-master-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(6px);
-  z-index: 10000;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 999999 !important;
   display: none;
   align-items: center;
   justify-content: center;
@@ -13354,7 +13355,7 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 }
 
 .esconderijo-master-modal.active {
-  display: flex;
+  display: flex !important;
 }
 
 .esconderijo-panel-card {
@@ -13489,7 +13490,8 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
   inset: 0;
   background: rgba(0, 0, 0, 0.88);
   backdrop-filter: blur(8px);
-  z-index: 10001;
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 999999 !important;
   display: none;
   align-items: center;
   justify-content: center;
@@ -13497,7 +13499,7 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 }
 
 .esconderijo-player-modal.active {
-  display: flex;
+  display: flex !important;
 }
 
 .esconderijo-player-card {
@@ -13674,52 +13676,127 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 
 
 /* 6. DADO DE PAVOR NO MODAL DE DADOS E CARD DE COMBATE */
-.dice-chip-btn.pavor-chip-btn {
-  background: rgba(255, 17, 51, 0.08);
-  border: 1px solid rgba(255, 17, 51, 0.4);
-  color: #ff8093;
-  grid-column: span 2;
+.dice-pavor-card {
+  margin: 14px 0 16px;
+  background: rgba(20, 5, 8, 0.65);
+  border: 1px solid rgba(255, 17, 51, 0.28);
+  border-radius: 4px;
+  padding: 10px 14px;
+  transition: all 0.25s ease;
+}
+
+.dice-pavor-card:has(.dice-pavor-toggle-btn.active) {
+  background: rgba(35, 6, 12, 0.88);
+  border-color: rgba(255, 17, 51, 0.65);
+  box-shadow: 0 0 18px rgba(255, 17, 51, 0.3);
+}
+
+.dice-pavor-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dice-pavor-identity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ff4d6d;
+}
+
+.dice-pavor-texts {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dice-pavor-title {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
   font-weight: 800;
-  transition: all 0.2s ease;
-}
-
-.dice-chip-btn.pavor-chip-btn:hover {
-  background: rgba(255, 17, 51, 0.2);
-  border-color: #ff1133;
+  letter-spacing: 0.06em;
   color: #fff;
+  line-height: 1.1;
 }
 
-.dice-chip-btn.pavor-chip-btn.active {
-  background: #ff1133 !important;
-  border-color: #ff4d6d !important;
-  color: #fff !important;
-  box-shadow: 0 0 16px rgba(255, 17, 51, 0.6) !important;
+.dice-pavor-desc {
+  font-size: 0.72rem;
+  color: #a1a1aa;
+  line-height: 1.3;
 }
 
-.combat-pavor-toggle-btn {
+.dice-pavor-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #aaa;
+  color: #d4d4d8;
   font-family: var(--font-heading);
-  font-size: 0.65rem;
+  font-size: 0.72rem;
   font-weight: 800;
-  padding: 1px 6px;
+  letter-spacing: 0.08em;
+  padding: 6px 14px;
   border-radius: 3px;
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.dice-pavor-toggle-btn .pavor-toggle-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #71717a;
+  transition: all 0.2s ease;
+}
+
+.dice-pavor-toggle-btn:hover {
+  background: rgba(255, 17, 51, 0.18);
+  border-color: rgba(255, 17, 51, 0.45);
+  color: #fff;
+}
+
+.dice-pavor-toggle-btn.active {
+  background: #ff1133;
+  border-color: #ff4d6d;
+  color: #fff;
+  box-shadow: 0 0 14px rgba(255, 17, 51, 0.55);
+}
+
+.dice-pavor-toggle-btn.active .pavor-toggle-dot {
+  background: #ffffff;
+  box-shadow: 0 0 6px #ffffff;
+}
+
+.combat-pavor-toggle-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #d4d4d8;
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .combat-pavor-toggle-btn:hover {
   background: rgba(255, 17, 51, 0.2);
-  border-color: #ff1133;
-  color: #ff8093;
+  border-color: rgba(255, 17, 51, 0.6);
+  color: #fff;
 }
 
 .combat-pavor-toggle-btn.active {
   background: #ff1133;
   border-color: #ff4d6d;
   color: #fff;
-  box-shadow: 0 0 8px rgba(255, 17, 51, 0.7);
+  box-shadow: 0 0 8px rgba(255, 17, 51, 0.5);
 }
 
 .combat-player-card.has-pavor {

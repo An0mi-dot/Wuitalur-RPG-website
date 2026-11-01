@@ -3491,7 +3491,10 @@ const MesaDice = {
     }
     const hasPavor = Boolean(p && p.dadoDePavor);
     btn.classList.toggle('active', hasPavor);
-    btn.textContent = hasPavor ? '☠ Dado de Pavor (Ativo)' : '☠ + Dado de Pavor';
+    const label = document.getElementById('dice-pavor-chip-label');
+    if (label) {
+      label.textContent = hasPavor ? 'ATIVO' : 'INATIVO';
+    }
   },
 
   addDie(sides) {
@@ -10799,7 +10802,7 @@ const MesaCombate = {
           <div class="combat-card-header">
             <span class="combat-card-name">${p.nome}</span>
             <div style="display: flex; align-items: center; gap: 4px;">
-              <button type="button" class="combat-pavor-toggle-btn ${p.dadoDePavor ? 'active' : ''}" onclick="event.stopPropagation(); MesaApp.toggleDadoDePavor(${slotNum});" title="${p.dadoDePavor ? 'Remover Dado de Pavor' : 'Ativar Dado de Pavor'}">${p.dadoDePavor ? '☠ PAVOR' : '+ PAVOR'}</button>
+              <button type="button" class="combat-pavor-toggle-btn ${p.dadoDePavor ? 'active' : ''}" onclick="event.stopPropagation(); MesaApp.toggleDadoDePavor(${slotNum});" title="${p.dadoDePavor ? 'Remover Dado de Pavor' : 'Ativar Dado de Pavor'}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M12 12h.01"/></svg><span>${p.dadoDePavor ? 'PAVOR ON' : '+ PAVOR'}</span></button>
               <span class="combat-card-slot-badge">S${slotNum}</span>
             </div>
           </div>
@@ -12006,17 +12009,41 @@ const MesaEsconderijo = {
   },
 
   openMasterModal() {
-    if (!MesaApp.state || !MesaApp.state.isMaster) {
-      alert("Apenas o Mestre pode gerenciar o Modo Esconderijo.");
+    if (MesaApp.state && MesaApp.state.myToken && !MesaApp.state.isMaster) {
+      this.openPlayerModal();
       return;
     }
     const modal = document.getElementById('esconderijo-master-modal');
-    if (modal) modal.classList.add('active');
+    if (modal) {
+      modal.classList.add('active');
+      modal.style.display = 'flex';
+      this.renderMasterSectors();
+    }
   },
 
   closeMasterModal() {
     const modal = document.getElementById('esconderijo-master-modal');
-    if (modal) modal.classList.remove('active');
+    if (modal) {
+      modal.classList.remove('active');
+      modal.style.display = 'none';
+    }
+  },
+
+  openPlayerModal() {
+    const modal = document.getElementById('esconderijo-player-modal');
+    if (modal) {
+      modal.classList.add('active');
+      modal.style.display = 'flex';
+      this.updatePlayerCamouflageUI();
+    }
+  },
+
+  closePlayerModal() {
+    const modal = document.getElementById('esconderijo-player-modal');
+    if (modal) {
+      modal.classList.remove('active');
+      modal.style.display = 'none';
+    }
   },
 
   selectRoom(roomType) {
@@ -12185,17 +12212,10 @@ const MesaEsconderijo = {
 
   // ---- CONTROLES PRIVADOS DO JOGADOR ----
   openContextualModal() {
-    if (MesaApp.state && MesaApp.state.isMaster) {
-      this.openMasterModal();
+    if (MesaApp.state && MesaApp.state.myToken && !MesaApp.state.isMaster) {
+      this.openPlayerModal();
     } else {
-      const banner = document.getElementById('esconderijo-active-floating-banner');
-    if (banner) {
-      banner.style.display = 'flex';
-      const floatingLabel = document.getElementById('esconderijo-floating-label');
-      if (floatingLabel) floatingLabel.textContent = `VOCÊ ESTÁ ESCONDIDO (${this.roomName.toUpperCase()})`;
-    }
-    const modal = document.getElementById('esconderijo-player-modal');
-      if (modal) modal.classList.add('active');
+      this.openMasterModal();
     }
   },
 
@@ -12233,7 +12253,7 @@ const MesaEsconderijo = {
     const btn = document.getElementById('btn-roll-secret-sector');
     if (btn) {
       btn.disabled = false;
-      btn.textContent = `🎲 Rolar Meu Setor Secreto (1d${this.roomSides})`;
+      btn.textContent = `Rolar Meu Setor Secreto (1d${this.roomSides})`;
     }
   },
 
@@ -12389,9 +12409,6 @@ const MesaEsconderijo = {
     MesaApp.showToast("O Modo Esconderijo foi encerrado pelo Mestre.");
   },
 
-  closePlayerModal() {
-    const modal = document.getElementById('esconderijo-player-modal');
-    if (modal) modal.classList.remove('active');
-  }
+
 };
 window.MesaEsconderijo = MesaEsconderijo;
