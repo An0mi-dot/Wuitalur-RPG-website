@@ -2435,7 +2435,7 @@ body.is-master .coletaveis-master-deliver-btn {
     gap: 5px;
   }
 
-  /* Container da Mesa no Mobile (Totalmente livre, sem sobreposição no Quadro Central) */
+  /* Container da Mesa no Mobile (Grade Responsiva de 2 Colunas com Quadro Central em Destaque) */
   .mesa-board-container {
     position: relative;
     top: 44px !important;
@@ -2445,21 +2445,23 @@ body.is-master .coletaveis-master-deliver-btn {
     height: calc(100vh - 44px) !important;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 8px 10px 90px 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    padding: 8px 8px 100px 8px !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
     z-index: 10;
+    box-sizing: border-box !important;
   }
 
-  /* O Quadro Preto fica visível no topo da mesa no mobile */
+  /* O Quadro Preto ocupa a largura total da grade no topo */
   .mesa-black-board {
+    grid-column: 1 / -1 !important;
     display: block !important;
     position: relative !important;
     inset: auto !important;
     width: 100% !important;
-    height: 190px !important;
-    min-height: 190px !important;
+    height: 175px !important;
+    min-height: 175px !important;
     margin: 0 auto;
     border-width: 3px !important;
     transform: none !important;
@@ -2478,10 +2480,25 @@ body.is-master .coletaveis-master-deliver-btn {
     left: auto !important;
     transform: none !important;
     width: 100% !important;
-    min-height: 165px !important;
+    min-height: 135px !important;
     height: auto !important;
-    padding: 8px 6px;
-    margin: 0 auto;
+    padding: 6px 6px !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+  }
+
+  .player-name-badge {
+    font-size: 0.7rem !important;
+    padding: 3px 4px !important;
+  }
+
+  .stat-segmented-row {
+    font-size: 0.62rem !important;
+  }
+
+  .stat-label-tag {
+    font-size: 0.58rem !important;
+    padding: 1px 4px !important;
   }
 
   .player-slot:hover {
@@ -10583,24 +10600,50 @@ body.combat-active .combat-black-ramp {
     line-height: 1.15;
   }
 
-  .combat-header {
-    top: 14px;
-  }
-
-  .combat-title-box {
-    padding: 0;
-    gap: 4px;
+  .combat-top-nav-group {
+    position: fixed !important;
+    top: max(10px, env(safe-area-inset-top, 10px)) !important;
+    right: max(10px, env(safe-area-inset-right, 10px)) !important;
+    gap: 6px !important;
+    z-index: 1250 !important;
   }
 
   .combat-master-controls {
-    top: 14px;
-    right: 180px;
-    bottom: auto;
-    left: auto;
-    flex-direction: row;
-    align-items: center;
-    gap: 6px;
-    z-index: 35;
+    position: fixed !important;
+    top: max(10px, env(safe-area-inset-top, 10px)) !important;
+    left: max(10px, env(safe-area-inset-left, 10px)) !important;
+    right: auto !important;
+    bottom: auto !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 6px !important;
+    z-index: 1250 !important;
+  }
+
+  .combat-header {
+    position: absolute !important;
+    top: 50px !important;
+    left: 0 !important;
+    width: 100% !important;
+    padding: 0 10px !important;
+    box-sizing: border-box !important;
+    pointer-events: none !important;
+  }
+
+  .combat-title-box {
+    padding: 0 !important;
+    gap: 4px !important;
+    margin: 0 auto !important;
+    max-width: 96vw !important;
+  }
+
+  .combat-title-name {
+    font-size: clamp(1rem, 5.2vw, 1.45rem) !important;
+  }
+
+  .combat-current-turn-sub {
+    font-size: clamp(0.48rem, 2.6vw, 0.65rem) !important;
+    max-width: 90vw !important;
   }
 
   .combat-ctrl-btn {
@@ -10611,8 +10654,9 @@ body.combat-active .combat-black-ramp {
 
 @media (max-width: 600px) {
   .combat-top-nav-group {
-    gap: 5px !important;
+    gap: 4px !important;
     right: 8px !important;
+    top: 8px !important;
   }
   .combat-top-btn {
     font-size: 0.46rem !important;
@@ -10620,7 +10664,13 @@ body.combat-active .combat-black-ramp {
     gap: 4px !important;
   }
   .combat-master-controls {
-    right: 145px !important;
+    top: 8px !important;
+    left: 8px !important;
+    right: auto !important;
+    gap: 4px !important;
+  }
+  .combat-header {
+    top: 48px !important;
   }
 }
 
@@ -13103,14 +13153,16 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
 /* Botao Flutuante de Fechar para Dispositivos */
 .dispositivo-floating-close-btn {
   position: absolute;
-  top: 20px;
-  right: 24px;
+  top: max(16px, env(safe-area-inset-top, 16px));
+  right: max(16px, env(safe-area-inset-right, 16px));
   z-index: 100;
   background: rgba(15, 15, 18, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: #e2e8f0;
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
   border-radius: 6px;
   font-size: 24px;
   line-height: 1;
@@ -13120,6 +13172,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   cursor: pointer;
   transition: all 0.2s ease;
   backdrop-filter: blur(8px);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .dispositivo-floating-close-btn:hover {

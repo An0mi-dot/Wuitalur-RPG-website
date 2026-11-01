@@ -1083,11 +1083,45 @@ body.has-showcase .page-content {
 
 @media (max-width: 860px) {
   .showcase-left-dock {
-    height: auto;
-    padding: 16px;
+    height: auto !important;
+    padding: 10px 12px !important;
+    gap: 10px !important;
+  }
+  .showcase-topic-tabs {
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    padding-bottom: 6px !important;
+    padding-right: 0 !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  .showcase-tab-btn {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+    border-radius: 4px !important;
+    padding: 8px 14px !important;
+    font-size: 0.8rem !important;
+    border-left: 1px solid #2C2833 !important;
+    border-bottom: 3px solid transparent !important;
+  }
+  .showcase-tab-btn:hover {
+    transform: none !important;
+  }
+  .showcase-tab-btn.active {
+    border-bottom-color: var(--spotlight-accent, #9B51E0) !important;
+    border-left-color: #2C2833 !important;
+    transform: none !important;
+  }
+  .showcase-blade-inner {
+    padding: 16px 14px !important;
+  }
+  .showcase-hud-card {
+    padding: 14px 16px !important;
   }
 }
-
 /* Botão Hambúrguer Superior Esquerdo */
 .showcase-hamburger-btn {
   background: #151318;
@@ -1226,7 +1260,9 @@ body.has-showcase .page-content {
 
 @media (max-width: 860px) {
   .showcase-center-stage {
-    min-height: 480px;
+    min-height: 280px !important;
+    max-height: 380px !important;
+    padding: 10px 0 !important;
   }
 }
 

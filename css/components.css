@@ -2713,3 +2713,28 @@ body:not(.mesa-body) .tactical-chip * {
 .compact-collapse-card strong {
   color: #EDEDED;
 }
+
+
+/* === MOBILE TABLE & VIEWPORT SHIELD === */
+table {
+  max-width: 100%;
+}
+
+.table-responsive,
+.progression-table-wrapper {
+  width: 100%;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 480px) {
+  .progression-table th,
+  .progression-table td {
+    padding: 6px 8px;
+    font-size: 0.78rem;
+  }
+  .difficulty-badge {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+  }
+}
