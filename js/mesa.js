@@ -10066,7 +10066,7 @@ const MesaCombate = {
   lastLocalUpdate: 0,
   opponentId: 'ratos',
   opponentName: 'Ratos',
-  videoUrl: 'assets/videos/rato_cinematica.mp4',
+  videoUrl: 'assets/videos/rato_cinematica.mp4?v=3',
   selectedPresetId: 'ratos',
   turnCycle: null,
   playerHpCache: {},
@@ -10084,7 +10084,7 @@ const MesaCombate = {
     {
       id: 'ratos',
       name: 'Ratos',
-      video: 'assets/videos/rato_cinematica.mp4',
+      video: 'assets/videos/rato_cinematica.mp4?v=3',
       desc: 'Infestação voraz de roedores carniceiros na escuridão'
     },
     {
@@ -10153,7 +10153,7 @@ const MesaCombate = {
         active: !!this.isActive,
         opponentId: this.opponentId || 'unknown',
         opponentName: this.opponentName || '???',
-        videoUrl: this.videoUrl || 'assets/videos/rato_cinematica.mp4',
+        videoUrl: this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=3',
         turnCycle: this.turnCycle ? JSON.parse(JSON.stringify(this.turnCycle)) : null,
         updatedAt: Date.now()
       };
@@ -10190,7 +10190,7 @@ const MesaCombate = {
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
     if (nameInput) nameInput.value = this.opponentName || '???';
-    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/rato_cinematica.mp4';
+    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=3';
   },
 
   closeSelectModal() {
@@ -10239,7 +10239,7 @@ const MesaCombate = {
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
     const name = (nameInput && nameInput.value.trim()) || '???';
-    const video = (videoInput && videoInput.value.trim()) || 'assets/videos/rato_cinematica.mp4';
+    const video = (videoInput && videoInput.value.trim()) || 'assets/videos/rato_cinematica.mp4?v=3';
 
     this.closeSelectModal();
 
@@ -10257,7 +10257,7 @@ const MesaCombate = {
     this.lastLocalUpdate = Date.now();
     this.opponentId = data.opponentId || 'unknown';
     this.opponentName = data.opponentName || '???';
-    this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/rato_cinematica.mp4');
+    this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=3');
 
     // Reseta cache de PV dos personagens
     this.playerHpCache = {};
@@ -10423,9 +10423,20 @@ const MesaCombate = {
       fallbackLabel.textContent = this.opponentName || 'ÁREA DE COMBATE';
     }
 
-    if (url && url.trim()) {
-      video.src = url.trim();
-      video.load();
+    const trimmedUrl = (url && url.trim()) || '';
+    if (trimmedUrl) {
+      const currentSrc = video.getAttribute('src') || '';
+      if (currentSrc === trimmedUrl && !video.paused && video.readyState >= 2) {
+        video.classList.add('playing');
+        if (fallback) fallback.style.display = 'none';
+        return;
+      }
+
+      if (currentSrc !== trimmedUrl) {
+        video.src = trimmedUrl;
+        video.load();
+      }
+
       const playPromise = video.play();
       if (playPromise !== undefined) {
         playPromise.then(() => {
@@ -11328,10 +11339,17 @@ const MesaCombate = {
     // Tamanho do bloco pixelado para estética retro (4px desktop, 3px mobile)
     const pixelSize = isMobile ? 3 : 4;
 
-    const dockContainer = document.querySelector('.combat-dock-container');
-    const containerRect = dockContainer ? dockContainer.getBoundingClientRect() : null;
-    const canvasRect = canvas.getBoundingClientRect();
-    const dockTopInCanvas = (containerRect && canvasRect) ? (containerRect.top - canvasRect.top) : (h * 0.45);
+    if (!this._cachedMetricsTime || performance.now() - this._cachedMetricsTime > 400) {
+      const dockContainer = document.querySelector('.combat-dock-container');
+      const containerRect = dockContainer ? dockContainer.getBoundingClientRect() : null;
+      const canvasRect = canvas.getBoundingClientRect();
+      this._cachedDockTopInCanvas = (containerRect && canvasRect) ? (containerRect.top - canvasRect.top) : (h * 0.45);
+      this._cachedDockLeftInCanvas = (containerRect && canvasRect) ? (containerRect.left - canvasRect.left) : 0;
+      this._cachedDockRightInCanvas = (containerRect && canvasRect) ? (containerRect.right - canvasRect.left) : w;
+      this._cachedHasContainer = !!(containerRect && containerRect.width > 0 && containerRect.height > 0);
+      this._cachedMetricsTime = performance.now();
+    }
+    const dockTopInCanvas = this._cachedDockTopInCanvas || (h * 0.45);
 
     let targetLeft, targetRight, targetTop, cornerR;
 
@@ -11350,11 +11368,9 @@ const MesaCombate = {
       targetRight = Math.min(w - 16, Math.round(w * 0.5 + 420));
       targetTop = Math.max(16, Math.round(h * 0.45));
 
-      if (containerRect && containerRect.width > 0 && containerRect.height > 0) {
-        const dockLeftInCanvas = containerRect.left - canvasRect.left;
-        const dockRightInCanvas = containerRect.right - canvasRect.left;
-        targetLeft = Math.max(16, Math.round(dockLeftInCanvas - padX));
-        targetRight = Math.min(w - 16, Math.round(dockRightInCanvas + padX));
+      if (this._cachedHasContainer) {
+        targetLeft = Math.max(16, Math.round(this._cachedDockLeftInCanvas - padX));
+        targetRight = Math.min(w - 16, Math.round(this._cachedDockRightInCanvas + padX));
         targetTop = Math.max(16, Math.round(dockTopInCanvas - padTop));
       }
 
@@ -11484,8 +11500,6 @@ const MesaCombate = {
     // 5. Desenho do Contorno do Domo em Pixel Art Laranja (#ff5500) com Glow Neon
     ctx.save();
     ctx.fillStyle = '#ff5500';
-    ctx.shadowColor = 'rgba(255, 85, 0, 0.7)';
-    ctx.shadowBlur = 8;
 
     for (let i = 0; i <= numSteps; i++) {
       const curr = points[i];

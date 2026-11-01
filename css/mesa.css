@@ -9669,6 +9669,8 @@ body.combat-active .combat-black-ramp {
   z-index: 2;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
+  filter: drop-shadow(0 0 5px rgba(255, 85, 0, 0.6));
+  will-change: transform;
 }
 
 /* Container do Dock de Personagens e Indicador de Rodada (Centralizado) */
