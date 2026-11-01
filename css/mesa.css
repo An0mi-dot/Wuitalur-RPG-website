@@ -13671,3 +13671,172 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
   from { box-shadow: 0 0 10px rgba(255, 17, 51, 0.3); }
   to { box-shadow: 0 0 25px rgba(255, 17, 51, 0.7); }
 }
+
+
+/* 6. DADO DE PAVOR NO MODAL DE DADOS E CARD DE COMBATE */
+.dice-chip-btn.pavor-chip-btn {
+  background: rgba(255, 17, 51, 0.08);
+  border: 1px solid rgba(255, 17, 51, 0.4);
+  color: #ff8093;
+  grid-column: span 2;
+  font-weight: 800;
+  transition: all 0.2s ease;
+}
+
+.dice-chip-btn.pavor-chip-btn:hover {
+  background: rgba(255, 17, 51, 0.2);
+  border-color: #ff1133;
+  color: #fff;
+}
+
+.dice-chip-btn.pavor-chip-btn.active {
+  background: #ff1133 !important;
+  border-color: #ff4d6d !important;
+  color: #fff !important;
+  box-shadow: 0 0 16px rgba(255, 17, 51, 0.6) !important;
+}
+
+.combat-pavor-toggle-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #aaa;
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.combat-pavor-toggle-btn:hover {
+  background: rgba(255, 17, 51, 0.2);
+  border-color: #ff1133;
+  color: #ff8093;
+}
+
+.combat-pavor-toggle-btn.active {
+  background: #ff1133;
+  border-color: #ff4d6d;
+  color: #fff;
+  box-shadow: 0 0 8px rgba(255, 17, 51, 0.7);
+}
+
+.combat-player-card.has-pavor {
+  border-color: rgba(255, 17, 51, 0.6) !important;
+  box-shadow: 0 0 14px rgba(255, 17, 51, 0.35) !important;
+}
+
+.combat-card-pavor-tag {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  background: #ff1133;
+  color: #fff;
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  font-weight: 900;
+  padding: 1px 4px;
+  border-radius: 2px;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  z-index: 5;
+  animation: pavorBadgePulse 1.8s infinite ease-in-out;
+}
+
+/* 7. FLOATING BANNER PARA DESATIVAR ESCONDERIJO A QUALQUER MOMENTO */
+.esconderijo-active-floating-banner {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(13, 13, 18, 0.94);
+  border: 1px solid #ff1133;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 17, 51, 0.4);
+  border-radius: 8px;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  z-index: 9999;
+  backdrop-filter: blur(8px);
+  animation: bannerSlideUp 0.3s ease-out;
+}
+
+@keyframes bannerSlideUp {
+  from { opacity: 0; transform: translate(-50%, 20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.esconderijo-banner-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.esconderijo-banner-btn-open {
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid #38bdf8;
+  color: #38bdf8;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.esconderijo-banner-btn-stop {
+  background: rgba(255, 17, 51, 0.25);
+  border: 1px solid #ff1133;
+  color: #ff8093;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.esconderijo-banner-btn-stop:hover {
+  background: #ff1133;
+  color: #fff;
+}
+
+/* 8. TOAST NOTIFICATION */
+.mesa-toast-container {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.mesa-toast-item {
+  background: rgba(15, 15, 22, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: 3px solid #ff1133;
+  color: #fff;
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  padding: 8px 16px;
+  border-radius: 4px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(6px);
+  animation: toastFadeInOut 3s forwards ease-in-out;
+  pointer-events: auto;
+}
+
+@keyframes toastFadeInOut {
+  0% { opacity: 0; transform: translateY(-10px); }
+  12% { opacity: 1; transform: translateY(0); }
+  85% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}

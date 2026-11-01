@@ -2173,19 +2173,65 @@ const MesaApp = {
   },
 
   
+  showToast(msg) {
+    const container = document.getElementById('mesa-toast-container');
+    if (!container) return;
+    const item = document.createElement('div');
+    item.className = 'mesa-toast-item';
+    item.textContent = msg;
+    container.appendChild(item);
+    setTimeout(() => item.remove(), 3200);
+  },
+
   toggleDadoDePavor(slot) {
-    const p = this.state.players[slot - 1];
-    if (!p) return;
-    p.dadoDePavor = !p.dadoDePavor;
-    this.renderMesa();
-    if (this.state.activeViewingPlayer && this.state.activeViewingPlayer.slot === p.slot) {
-      this.openFicha(p);
+    if (slot === undefined || slot === null) {
+      if (this.state.activeViewingPlayer) slot = this.state.activeViewingPlayer.slot;
+      else if (this.state.mySlot) slot = this.state.mySlot;
+      else slot = 1;
     }
+    const slotNum = Number(slot);
+    let p = (this.state.players || []).find(pl => pl && Number(pl.slot) === slotNum);
+    if (!p && this.state.players && this.state.players[slotNum - 1]) {
+      p = this.state.players[slotNum - 1];
+    }
+    if (!p) {
+      console.warn("[PAVOR] Jogador nao encontrado para slot:", slot);
+      return;
+    }
+
+    p.dadoDePavor = !p.dadoDePavor;
+    console.log(`[PAVOR] Dado de Pavor para ${p.nome} (Slot ${p.slot}):`, p.dadoDePavor);
+
+    // 1. Atualiza Ficha aberta diretamente
+    const fichaBtn = document.querySelector('.ficha-pavor-toggle-btn');
+    if (fichaBtn) {
+      fichaBtn.classList.toggle('active', Boolean(p.dadoDePavor));
+      const span = fichaBtn.querySelector('span');
+      if (span) {
+        span.textContent = p.dadoDePavor ? 'Dado de Pavor Ativo' : 'Ativar Pavor';
+      }
+    }
+
+    // 2. Atualiza chip no modal de rolagem
+    if (window.MesaDice && MesaDice.updatePavorChipUI) {
+      MesaDice.updatePavorChipUI();
+    }
+
+    // 3. Atualiza slots da mesa e dock de combate
+    this.renderMesa();
+    if (window.MesaCombate && MesaCombate.isActive && MesaCombate.renderPlayers) {
+      MesaCombate.renderPlayers();
+    }
+
+    // 4. Feedback visual em toast
+    this.showToast(p.dadoDePavor ? `Dado de Pavor ativado para ${p.nome}` : `Dado de Pavor desativado para ${p.nome}`);
+
+    // 5. Broadcast Supabase
     if (MesaChat && MesaChat.channel) {
       MesaChat.channel.send({
         type: 'broadcast',
         event: 'pavor_toggle',
-        payload: { slot: slot, dadoDePavor: p.dadoDePavor }
+        payload: { slot: p.slot || slotNum, dadoDePavor: p.dadoDePavor }
       });
     }
   },
@@ -2287,6 +2333,15 @@ const MesaApp = {
     const vidVal = player.vidrilhos != null ? player.vidrilhos : 0;
     if (vidEl) vidEl.textContent = `${vidVal}`;
     if (vidInvEl) vidInvEl.textContent = `${vidVal}`;
+
+    const fichaPavorBtn = document.querySelector('.ficha-pavor-toggle-btn');
+    if (fichaPavorBtn) {
+      fichaPavorBtn.classList.toggle('active', Boolean(player.dadoDePavor));
+      const span = fichaPavorBtn.querySelector('span');
+      if (span) {
+        span.textContent = player.dadoDePavor ? 'Dado de Pavor Ativo' : 'Ativar Pavor';
+      }
+    }
 
     if (pipsEl) {
       let stressPipsHtml = '';
@@ -3403,6 +3458,40 @@ const MesaDice = {
 
     MesaApp.openModal('dice-modal');
     this.renderSelectedList();
+    this.updatePavorChipUI();
+  },
+
+  togglePavorInModal() {
+    let p = null;
+    if (MesaApp.state && MesaApp.state.mySlot && MesaApp.state.players) {
+      p = MesaApp.state.players[MesaApp.state.mySlot - 1];
+    } else if (MesaApp.state && MesaApp.state.activeViewingPlayer) {
+      p = MesaApp.state.activeViewingPlayer;
+    } else if (MesaApp.state && MesaApp.state.players) {
+      p = MesaApp.state.players.find(pl => pl && pl.nome);
+    }
+    if (p) {
+      MesaApp.toggleDadoDePavor(p.slot);
+    } else {
+      MesaApp.showToast("Conecte um personagem para ativar Dado de Pavor.");
+    }
+    this.updatePavorChipUI();
+  },
+
+  updatePavorChipUI() {
+    const btn = document.getElementById('dice-pavor-chip-btn');
+    if (!btn) return;
+    let p = null;
+    if (MesaApp.state && MesaApp.state.mySlot && MesaApp.state.players) {
+      p = MesaApp.state.players[MesaApp.state.mySlot - 1];
+    } else if (MesaApp.state && MesaApp.state.activeViewingPlayer) {
+      p = MesaApp.state.activeViewingPlayer;
+    } else if (MesaApp.state && MesaApp.state.players) {
+      p = MesaApp.state.players.find(pl => pl && pl.nome);
+    }
+    const hasPavor = Boolean(p && p.dadoDePavor);
+    btn.classList.toggle('active', hasPavor);
+    btn.textContent = hasPavor ? '☠ Dado de Pavor (Ativo)' : '☠ + Dado de Pavor';
   },
 
   addDie(sides) {
@@ -10704,11 +10793,15 @@ const MesaCombate = {
       const animDelay = (idx * 0.05).toFixed(2);
 
       return `
-        <div class="combat-player-card combat-card-entrance" id="combat-player-card-${slotNum}" style="animation-delay: ${animDelay}s" onclick="MesaCombate.openPlayerFicha(${slotNum})" title="Clique para abrir a ficha de ${p.nome}">
+        <div class="combat-player-card combat-card-entrance ${p.dadoDePavor ? 'has-pavor' : ''}" id="combat-player-card-${slotNum}" style="animation-delay: ${animDelay}s" onclick="MesaCombate.openPlayerFicha(${slotNum})" title="Clique para abrir a ficha de ${p.nome}">
           <div class="combat-slash-overlay" id="combat-slash-${slotNum}"></div>
+          ${p.dadoDePavor ? `<div class="combat-card-pavor-tag">PAVOR</div>` : ''}
           <div class="combat-card-header">
             <span class="combat-card-name">${p.nome}</span>
-            <span class="combat-card-slot-badge">S${slotNum}</span>
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <button type="button" class="combat-pavor-toggle-btn ${p.dadoDePavor ? 'active' : ''}" onclick="event.stopPropagation(); MesaApp.toggleDadoDePavor(${slotNum});" title="${p.dadoDePavor ? 'Remover Dado de Pavor' : 'Ativar Dado de Pavor'}">${p.dadoDePavor ? '☠ PAVOR' : '+ PAVOR'}</button>
+              <span class="combat-card-slot-badge">S${slotNum}</span>
+            </div>
           </div>
           <div class="combat-card-body">
             <div class="combat-card-avatar-box">
@@ -11959,6 +12052,11 @@ const MesaEsconderijo = {
       roomLabel.textContent = `${this.roomName.toUpperCase()} (${this.roomSides} SETORES)`;
     }
 
+    const banner = document.getElementById('esconderijo-active-floating-banner');
+    if (banner) banner.style.display = 'flex';
+    const floatingLabel = document.getElementById('esconderijo-floating-label');
+    if (floatingLabel) floatingLabel.textContent = `ESCONDERIJO ATIVO (${this.roomName.toUpperCase()})`;
+
     this.renderMasterSectors();
     this.updateHistoryBox();
 
@@ -12062,7 +12160,11 @@ const MesaEsconderijo = {
     if (setupView) setupView.style.display = 'block';
     if (activeView) activeView.style.display = 'none';
 
+    const banner = document.getElementById('esconderijo-active-floating-banner');
+    if (banner) banner.style.display = 'none';
+
     this.closeMasterModal();
+    this.closePlayerModal();
 
     if (MesaChat.channel) {
       MesaChat.channel.send({
@@ -12082,6 +12184,32 @@ const MesaEsconderijo = {
   },
 
   // ---- CONTROLES PRIVADOS DO JOGADOR ----
+  openContextualModal() {
+    if (MesaApp.state && MesaApp.state.isMaster) {
+      this.openMasterModal();
+    } else {
+      const banner = document.getElementById('esconderijo-active-floating-banner');
+    if (banner) {
+      banner.style.display = 'flex';
+      const floatingLabel = document.getElementById('esconderijo-floating-label');
+      if (floatingLabel) floatingLabel.textContent = `VOCÊ ESTÁ ESCONDIDO (${this.roomName.toUpperCase()})`;
+    }
+    const modal = document.getElementById('esconderijo-player-modal');
+      if (modal) modal.classList.add('active');
+    }
+  },
+
+  exitHiding() {
+    this.closePlayerModal();
+    this.playerHidden = false;
+    this.playerSector = null;
+    const banner = document.getElementById('esconderijo-active-floating-banner');
+    if (banner && (!MesaApp.state || !MesaApp.state.isMaster)) {
+      banner.style.display = 'none';
+    }
+    MesaApp.showToast("Você abandonou o esconderijo.");
+  },
+
   handleIncomingStart(payload) {
     if (MesaApp.state && MesaApp.state.isMaster) return;
 
@@ -12256,6 +12384,9 @@ const MesaEsconderijo = {
     this.playerHidden = false;
     this.playerSector = null;
     this.playerCamouflage = 2;
+    const banner = document.getElementById('esconderijo-active-floating-banner');
+    if (banner) banner.style.display = 'none';
+    MesaApp.showToast("O Modo Esconderijo foi encerrado pelo Mestre.");
   },
 
   closePlayerModal() {
