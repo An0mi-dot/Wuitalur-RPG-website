@@ -117,26 +117,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!sidebar) return;
     sidebar.classList.remove('open');
     overlay.classList.remove('open');
-    if (toggle) toggle.textContent = '☰';
+    document.querySelectorAll('.sidebar-toggle').forEach(t => t.textContent = '☰');
   }
 
   function openSidebar() {
     if (!sidebar) return;
     sidebar.classList.add('open');
     overlay.classList.add('open');
-    if (toggle) toggle.textContent = '✕';
+    document.querySelectorAll('.sidebar-toggle').forEach(t => t.textContent = '✕');
   }
 
-  if (toggle && sidebar) {
-    toggle.addEventListener('click', () => {
+  document.addEventListener('click', (e) => {
+    const toggleBtn = e.target.closest('.sidebar-toggle');
+    if (toggleBtn && sidebar) {
+      e.stopPropagation();
       if (sidebar.classList.contains('open')) {
         closeSidebar();
       } else {
         openSidebar();
       }
-    });
-    overlay.addEventListener('click', closeSidebar);
-  }
+    }
+  });
+
+  overlay.addEventListener('click', closeSidebar);
 
   const sidebarLinks = document.querySelectorAll('.sidebar-link');
   sidebarLinks.forEach(link => {

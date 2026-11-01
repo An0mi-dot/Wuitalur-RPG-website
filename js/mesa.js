@@ -4982,6 +4982,14 @@ const MesaMobileMenu = {
   isOpen: false,
 
   init() {
+    const fabBtn = document.getElementById('mesa-mobile-fab-btn');
+    if (fabBtn && !fabBtn._hasFabBound) {
+      fabBtn._hasFabBound = true;
+      fabBtn.addEventListener('click', (e) => {
+        if (e && e.stopPropagation) e.stopPropagation();
+        this.toggle(e);
+      });
+    }
     document.addEventListener('click', (e) => {
       const container = document.getElementById('mesa-mobile-fab-container');
       if (container && this.isOpen && !container.contains(e.target)) {
@@ -4991,7 +4999,8 @@ const MesaMobileMenu = {
     this.updateState();
   },
 
-  toggle() {
+  toggle(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
     if (this.isOpen) {
       this.close();
     } else {
@@ -5087,13 +5096,15 @@ const MesaMobileMenu = {
     }
   }
 };
+window.MesaMobileMenu = MesaMobileMenu;
 
 document.addEventListener('DOMContentLoaded', async () => {
   if (window.MesaMediaPlayer) MesaMediaPlayer.init();
   if (window.MesaCombate) MesaCombate.init();
+  MesaMobileMenu.init();
   const savedToken = localStorage.getItem('wu_user_token') || localStorage.getItem('mesa_token');
   await MesaApp.init(savedToken);
-  MesaMobileMenu.init();
+  MesaMobileMenu.updateState();
   if (window.MesaQuickMenu) {
     MesaQuickMenu.updateState();
   }
