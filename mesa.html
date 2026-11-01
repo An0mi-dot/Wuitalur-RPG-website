@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.2.9">
+  <link rel="stylesheet" href="css/mesa.css?v=2.3.0">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1074,7 +1074,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
           </div>
         </div>
       </div>
-    </div>
+    </aside>
     
     <!-- BACKUP: PLAYER DE MIDIA DA MESA VIRTUAL (MesaMediaPlayer) -->
 <!-- Estrutura HTML, Estilos CSS e Logica JavaScript completa para restauracao futura -->
@@ -1273,9 +1273,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.8.8"></script>
 
-<script src="js/mesa.js?v=2.2.9"></script>
+<script src="js/mesa.js?v=2.3.0"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.2.9</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.3.0</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -2145,6 +2145,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         </button>
       </div>
     </div>
+  </div>
   <!-- ========================================================================== -->
   <!-- DRAWER: MENU DE FERRAMENTAS E PERSONAGENS EM COMBATE -->
   <!-- ========================================================================== -->
@@ -2385,7 +2386,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
           <div style="display: flex; gap: 8px; margin-top: 10px;">
             <button type="button" class="dispositivo-btn-primary" onclick="MesaEsconderijo.rollRandomSearch()" style="flex: 1; background: rgba(255,255,255,0.06); border-color: var(--border-medium);">
-              🎲 Sortear no Dado
+              Sortear no Dado
             </button>
             <button type="button" id="esconderijo-declare-btn" class="dispositivo-btn-primary" onclick="MesaEsconderijo.declareSearch()" style="flex: 2; background: #ff1133; border-color: #ff4d6d;">
               Declarar Busca no Setor

@@ -936,6 +936,12 @@ const MesaApp = {
       if (mobileColetaveisBtn) mobileColetaveisBtn.style.display = 'flex';
       const combatColetaveisBtn = document.getElementById('combat-coletaveis-item');
       if (combatColetaveisBtn) combatColetaveisBtn.style.display = 'flex';
+      const navEsconderijoBtn = document.getElementById('nav-esconderijo-btn');
+      if (navEsconderijoBtn) navEsconderijoBtn.style.display = 'inline-flex';
+      const menuEsconderijoBtn = document.getElementById('menu-esconderijo-btn');
+      if (menuEsconderijoBtn) menuEsconderijoBtn.style.display = 'flex';
+      const mobileEsconderijo = document.getElementById('mobile-esconderijo-item');
+      if (mobileEsconderijo) mobileEsconderijo.style.display = 'flex';
     } else if (this.state.myToken) {
       if (tokenLabel) {
         tokenLabel.textContent = this.state.myPlayerSlot ? `Slot ${this.state.myPlayerSlot} Conectado` : 'Token Ativo';
@@ -956,6 +962,12 @@ const MesaApp = {
       if (mobileColetaveisBtn) mobileColetaveisBtn.style.display = 'none';
       const combatColetaveisBtn = document.getElementById('combat-coletaveis-item');
       if (combatColetaveisBtn) combatColetaveisBtn.style.display = 'none';
+      const navEsconderijoBtn = document.getElementById('nav-esconderijo-btn');
+      if (navEsconderijoBtn) navEsconderijoBtn.style.display = 'none';
+      const menuEsconderijoBtn = document.getElementById('menu-esconderijo-btn');
+      if (menuEsconderijoBtn) menuEsconderijoBtn.style.display = 'none';
+      const mobileEsconderijo = document.getElementById('mobile-esconderijo-item');
+      if (mobileEsconderijo) mobileEsconderijo.style.display = 'none';
     } else {
       if (tokenLabel) tokenLabel.textContent = 'Token';
       if (alertBadge) alertBadge.style.display = 'flex';
@@ -974,6 +986,12 @@ const MesaApp = {
       if (mobileColetaveisBtn) mobileColetaveisBtn.style.display = 'none';
       const combatColetaveisBtn = document.getElementById('combat-coletaveis-item');
       if (combatColetaveisBtn) combatColetaveisBtn.style.display = 'none';
+      const navEsconderijoBtn = document.getElementById('nav-esconderijo-btn');
+      if (navEsconderijoBtn) navEsconderijoBtn.style.display = 'none';
+      const menuEsconderijoBtn = document.getElementById('menu-esconderijo-btn');
+      if (menuEsconderijoBtn) menuEsconderijoBtn.style.display = 'none';
+      const mobileEsconderijo = document.getElementById('mobile-esconderijo-item');
+      if (mobileEsconderijo) mobileEsconderijo.style.display = 'none';
     }
 
     this.updateAuthChip();
@@ -12009,10 +12027,6 @@ const MesaEsconderijo = {
   },
 
   openMasterModal() {
-    if (MesaApp.state && MesaApp.state.myToken && !MesaApp.state.isMaster) {
-      this.openPlayerModal();
-      return;
-    }
     const modal = document.getElementById('esconderijo-master-modal');
     if (modal) {
       modal.classList.add('active');
@@ -12212,7 +12226,9 @@ const MesaEsconderijo = {
 
   // ---- CONTROLES PRIVADOS DO JOGADOR ----
   openContextualModal() {
-    if (MesaApp.state && MesaApp.state.myToken && !MesaApp.state.isMaster) {
+    if (MesaApp.state && MesaApp.state.isMaster) {
+      this.openMasterModal();
+    } else if (MesaApp.state && MesaApp.state.myToken) {
       this.openPlayerModal();
     } else {
       this.openMasterModal();
