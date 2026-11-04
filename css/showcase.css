@@ -610,6 +610,7 @@ body.has-showcase .page-content {
   position: relative;
   border-left: none !important;
   box-shadow: -22px 0 45px rgba(0, 0, 0, 0.65);
+  user-select: text;
 }
 
 .showcase-detail-right::before {
@@ -930,6 +931,8 @@ body.has-showcase .page-content {
   background: #151318;
   scrollbar-color: var(--spotlight-accent, #9B51E0) #121114;
   box-sizing: border-box;
+  user-select: text !important;
+  -webkit-user-select: text !important;
 }
 
 .compendium-scroll-pane::-webkit-scrollbar {
@@ -955,6 +958,8 @@ body.has-showcase .page-content {
   letter-spacing: 0.05em;
   margin: 0;
   text-transform: uppercase;
+  user-select: text !important;
+  -webkit-user-select: text !important;
 }
 
 .compendium-content-body {
@@ -962,6 +967,35 @@ body.has-showcase .page-content {
   font-family: var(--font-body);
   font-size: 0.95rem;
   line-height: 1.7;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+}
+
+.compendium-content-body *,
+.race-ability,
+.race-ability *,
+.race-subability,
+.race-subability *,
+.characteristic-ability-section,
+.characteristic-ability-section *,
+.characteristic-ability-card,
+.characteristic-ability-card * {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+}
+
+.compendium-content-body button,
+.compendium-content-body .btn,
+.compendium-topic-nav button {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+.compendium-content-body p,
+.race-ability p,
+.race-subability p,
+.characteristic-ability-card p {
+  cursor: text;
 }
 
 .compendium-content-body p {

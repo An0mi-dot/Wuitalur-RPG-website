@@ -15,6 +15,61 @@
     .class-prog-row { display: flex; justify-content: space-between; padding: var(--space-xs) var(--space-sm); border-bottom: 1px solid rgba(46,46,62,0.3); font-size: 0.85rem; color: var(--text-secondary); }
     .class-prog-row:last-child { border-bottom: none; }
     .class-prog-label { color: var(--text-primary); font-weight: 600; }
+    .characteristic-ability-section {
+      margin-top: var(--space-lg);
+      padding-top: var(--space-md);
+      border-top: 1px dashed rgba(255, 255, 255, 0.22);
+      user-select: text !important;
+      -webkit-user-select: text !important;
+    }
+    .characteristic-ability-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      background: rgba(192, 132, 252, 0.12);
+      border: 1px solid rgba(192, 132, 252, 0.35);
+      color: var(--spotlight-accent-light, #c084fc);
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-xs);
+      user-select: text !important;
+      -webkit-user-select: text !important;
+    }
+    .characteristic-ability-card {
+      background: rgba(155, 81, 224, 0.06);
+      border: 1px solid rgba(155, 81, 224, 0.28);
+      border-left: 3px solid var(--spotlight-accent, #9b51e0);
+      padding: var(--space-md);
+      margin-top: var(--space-xs);
+      user-select: text !important;
+      -webkit-user-select: text !important;
+    }
+    .characteristic-ability-card h6 {
+      color: #ffffff;
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      user-select: text !important;
+      -webkit-user-select: text !important;
+    }
+    .characteristic-ability-card p {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin: 0;
+      cursor: text;
+      user-select: text !important;
+      -webkit-user-select: text !important;
+    }
+    .race-ability, .race-ability *, .race-subability, .race-subability *,
+    .compendium-content-body, .compendium-content-body * {
+      user-select: text !important;
+      -webkit-user-select: text !important;
+    }
   </style>
   <link rel="stylesheet" href="../css/showcase.css">
 </head>
@@ -321,6 +376,15 @@
                 <h6>Guarda Devota <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-5 EA</span></h6>
                 <p>Ergue uma barreira espiritual protetora em voc&ecirc; e em um aliado em at&eacute; 4B. A barreira tem 6 + Maestria de PVs e dura at&eacute; ser destru&iacute;da. Gera 1 ponto de Fervor.</p>
               </div>
+
+              <!-- Habilidade Característica Separada -->
+              <div class="characteristic-ability-section">
+                <div class="characteristic-ability-badge">Habilidade Caracter&iacute;stica</div>
+                <div class="race-subability characteristic-ability-card">
+                  <h6>N&iacute;vel 1 &mdash; Sentido da F&eacute; <span class="ability-tag">Passiva</span></h6>
+                  <p>O Consagrado sente a presen&ccedil;a de corrup&ccedil;&otilde;es, anomalias astrais, pragas e rel&iacute;quias sagradas num raio de 20B. Al&eacute;m disso, l&ecirc; e compreende ritos antigos e escrituras divinas sem precisar de teste.</p>
+                </div>
+              </div>
             </div>
 
             <!-- NV 4 -->
@@ -334,6 +398,15 @@
                 <h6>Prece Restauradora <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-10 EA</span></h6>
                 <p>Canaliza a energia do seu patrono para restaurar a vitalidade de um aliado a at&eacute; 6B. O alvo recupera PVs iguais a 2d4 + Maestria + Express&atilde;o e encerra uma condi&ccedil;&atilde;o que esteja sofrendo. Gera 1 ponto de Fervor.</p>
               </div>
+
+              <!-- Habilidade Característica Separada -->
+              <div class="characteristic-ability-section">
+                <div class="characteristic-ability-badge">Habilidade Caracter&iacute;stica</div>
+                <div class="race-subability characteristic-ability-card">
+                  <h6>N&iacute;vel 4 &mdash; Fonte de Luz <span class="ability-tag">Passiva</span></h6>
+                  <p>Sua liga&ccedil;&atilde;o cont&iacute;nua com os deuses expande sua reserva espiritual. O Consagrado recebe +15 de Energia Astral m&aacute;xima de forma permanente.</p>
+                </div>
+              </div>
             </div>
 
             <!-- NV 7 -->
@@ -346,6 +419,15 @@
               <div class="race-subability">
                 <h6>Elo de Resguarde <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-15 EA</span></h6>
                 <p>Cria um v&iacute;nculo radiante entre voc&ecirc; e at&eacute; dois aliados em at&eacute; 6B que dura at&eacute; o fim da cena. Os alvos vinculados recebem b&ocirc;nus de DEF igual &agrave; metade da sua Maestria e recuperam 2d6 PVs no in&iacute;cio de cada um dos seus turnos enquanto mantiverem a dist&acirc;ncia. Sair do v&iacute;nculo rompe o efeito. Gera 1 ponto de Fervor.</p>
+              </div>
+
+              <!-- Habilidade Característica Separada -->
+              <div class="characteristic-ability-section">
+                <div class="characteristic-ability-badge">Habilidade Caracter&iacute;stica</div>
+                <div class="race-subability characteristic-ability-card">
+                  <h6>N&iacute;vel 7 &mdash; Press&aacute;gio do Patrono <span class="ability-tag">1/dia</span></h6>
+                  <p>Uma vez por dia, o Consagrado pode entrar em ora&ccedil;&atilde;o por 5 minutos para buscar orienta&ccedil;&atilde;o divina sobre uma escolha ou mist&eacute;rio do grupo. O Mestre concede uma vis&atilde;o, press&aacute;gio ou pista direta sobre o caminho mais seguro, a fraqueza de uma criatura da regi&atilde;o ou um perigo iminente.</p>
+                </div>
               </div>
             </div>
 
@@ -568,6 +650,15 @@
                 <h6>Revestimento de Densidade <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-5 EA</span></h6>
                 <p>Condensa a camada externa do seu corpo em uma coura&ccedil;a impenetr&aacute;vel. Voc&ecirc; recebe uma barreira protetora com 6 + seu N&iacute;vel de Maestria em PVs tempor&aacute;rios e ativa o Estado de <strong>Estabiliza&ccedil;&atilde;o</strong> em si mesmo sem consumir a&ccedil;&otilde;es adicionais.</p>
               </div>
+
+              <!-- Habilidade Característica Separada -->
+              <div class="characteristic-ability-section">
+                <div class="characteristic-ability-badge">Habilidade Caracter&iacute;stica</div>
+                <div class="race-subability characteristic-ability-card">
+                  <h6>N&iacute;vel 1 &mdash; Densidade Negativa <span class="ability-tag">Passiva</span></h6>
+                  <p>O Compactador manipula a in&eacute;rcia do pr&oacute;prio corpo e de objetos tocados. Ele n&atilde;o sofre dano em quedas de at&eacute; 10B e consegue erguer, arrastar e transportar cargas e pesos maci&ccedil;os como se pesassem apenas um d&eacute;cimo do peso real.</p>
+                </div>
+              </div>
             </div>
 
             <!-- NV 4 -->
@@ -581,6 +672,15 @@
                 <h6>Ancoragem Tit&acirc;nica <span class="ability-tag">A&ccedil;&atilde;o Padr&atilde;o</span> <span class="ability-cost">-10 EA</span></h6>
                 <p>O Compactador bate no solo e cria uma atra&ccedil;&atilde;o gravitacional em uma &aacute;rea de 3B de raio ao seu redor. Todas as criaturas hostis na &aacute;rea realizam um teste de For&ccedil;a; em caso de falha, s&atilde;o puxadas 2B em dire&ccedil;&atilde;o ao Compactador e sofrem a condi&ccedil;&atilde;o <strong>Imobilizado</strong> at&eacute; o final do pr&oacute;ximo turno delas.</p>
               </div>
+
+              <!-- Habilidade Característica Separada -->
+              <div class="characteristic-ability-section">
+                <div class="characteristic-ability-badge">Habilidade Caracter&iacute;stica</div>
+                <div class="race-subability characteristic-ability-card">
+                  <h6>N&iacute;vel 4 &mdash; Massa Tit&acirc;nica <span class="ability-tag">Passiva</span></h6>
+                  <p>A densidade da sua carne e ossos se compacta como rocha pura. O Compactador recebe +12 Pontos de Vida m&aacute;ximos de forma permanente.</p>
+                </div>
+              </div>
             </div>
 
             <!-- NV 7 -->
@@ -593,6 +693,15 @@
               <div class="race-subability">
                 <h6>Basti&atilde;o Inquebr&aacute;vel <span class="ability-tag">A&ccedil;&atilde;o B&ocirc;nus</span> <span class="ability-cost">-15 EA</span></h6>
                 <p>Estabiliza a mat&eacute;ria e a gravidade ao redor do grupo. Concede uma barreira protetora com 12 + seu N&iacute;vel de Maestria em PVs tempor&aacute;rios para voc&ecirc; e para at&eacute; dois aliados em at&eacute; 4B. Enquanto essa barreira estiver ativa, os alvos protegidos s&atilde;o imunes a serem empurrados, agarrados ou sofrerem a condi&ccedil;&atilde;o <strong>Ca&iacute;do</strong>.</p>
+              </div>
+
+              <!-- Habilidade Característica Separada -->
+              <div class="characteristic-ability-section">
+                <div class="characteristic-ability-badge">Habilidade Caracter&iacute;stica</div>
+                <div class="race-subability characteristic-ability-card">
+                  <h6>N&iacute;vel 7 &mdash; Demolidor de Estruturas <span class="ability-tag">Passiva</span></h6>
+                  <p>Ao golpear ou arrombar portas refor&ccedil;adas, port&otilde;es de ferro, paredes, grades ou mecanismos maci&ccedil;os, o Compactador causa dano dobrado e recebe vantagem em qualquer teste de For&ccedil;a para despeda&ccedil;ar o obst&aacute;culo.</p>
+                </div>
               </div>
             </div>
 

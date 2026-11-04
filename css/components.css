@@ -469,6 +469,8 @@
   padding: var(--space-lg);
   margin-bottom: var(--space-md);
   transition: border-color var(--transition-fast);
+  user-select: text;
+  -webkit-user-select: text;
 }
 .race-ability:hover {
   border-color: var(--border-medium);
@@ -478,12 +480,17 @@
   font-size: 1rem;
   color: var(--text-primary);
   margin-bottom: var(--space-sm);
+  user-select: text;
+  -webkit-user-select: text;
 }
 .race-ability p {
   font-size: 0.9rem;
   line-height: 1.7;
   color: var(--text-secondary);
   margin-bottom: var(--space-sm);
+  user-select: text;
+  -webkit-user-select: text;
+  cursor: text;
 }
 .race-ability p:last-child {
   margin-bottom: 0;
@@ -494,6 +501,8 @@
   border-radius: 0;
   padding: var(--space-md);
   margin-top: var(--space-md);
+  user-select: text;
+  -webkit-user-select: text;
 }
 .race-subability h6 {
   display: flex;

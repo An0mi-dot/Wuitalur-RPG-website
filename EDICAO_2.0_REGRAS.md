@@ -462,44 +462,50 @@ O Consagrado acumula fervor divino através do gasto de sua energia mística.
 
 #### 6. Habilidades de Classe
 
-##### Nível 1 — Escolha
-*O jogador escolhe 1 entre as duas opções abaixo:*
+##### Nível 1
+* **Habilidade Característica — Sentido da Fé**
+  * O Consagrado sente a presença de corrupções, anomalias astrais, pragas e relíquias sagradas num raio de 20B. Além disso, lê e compreende ritos antigos e escrituras divinas sem precisar de teste.
 
-* **Golpe Consagrado**
-  * **Custo**: 5 EA
-  * **Ação**: Ação Padrão
-  * Imbui sua arma com a essência do seu elemento. Ao desferir um ataque corpo a corpo ou à distância, adiciona o Dano Base em dano do elemento escolhido ao dano da arma. Gera 1 ponto de Fervor.
+* **Escolha de Habilidade**
+  *O jogador escolhe 1 entre as duas opções abaixo:*
+  * **Golpe Consagrado**
+    * **Custo**: 5 EA
+    * **Ação**: Ação Padrão
+    * Imbui sua arma com a essência do seu elemento. Ao desferir um ataque corpo a corpo ou à distância, adiciona o Dano Base em dano do elemento escolhido ao dano da arma. Gera 1 ponto de Fervor.
+  * **Guarda Devota**
+    * **Custo**: 5 EA
+    * **Ação**: Ação Bônus
+    * Ergue uma barreira espiritual protetora em você e em um aliado em até 4B. A barreira tem 6 + Maestria de PVs e dura até ser destruida. Gera 1 ponto de Fervor.
 
-* **Guarda Devota**
-  * **Custo**: 5 EA
-  * **Ação**: Ação Bônus
-  * Ergue uma barreira espiritual protetora em você e em um aliado em até 4B. A barreira tem 6 + Maestria de PVs e dura até ser destruida. Gera 1 ponto de Fervor.
+##### Nível 4
+* **Habilidade Característica — Fonte de Luz**
+  * Sua ligação contínua com os deuses expande sua reserva espiritual. O Consagrado recebe +15 de Energia Astral máxima de forma permanente.
 
-##### Nível 4 — Escolha
-*O jogador escolhe 1 entre as duas opções abaixo:*
+* **Escolha de Habilidade**
+  *O jogador escolhe 1 entre as duas opções abaixo:*
+  * **Lança Elemental**
+    * **Custo**: 10 EA
+    * **Ação**: Ação Bônus
+    * Dispara um projétil moldado a sua preferência do seu elemento em linha reta contra um alvo a até 10B de distância. O ataque causa o Dano Base + Expressão em dano elemental e ignora resistências. Gera 1 ponto de Fervor.
+  * **Prece Restauradora**
+    * **Custo**: 10 EA
+    * **Ação**: Ação Bônus
+    * Canaliza a energia do seu patrono para restaurar a vitalidade de um aliado a até 6B. O alvo recupera PVs iguais a 2d4 + Maestria + Expressão e encerra uma condição que esteja sofrendo. Gera 1 ponto de Fervor.
 
-* **Lança Elemental**
-  * **Custo**: 10 EA
-  * **Ação**: Ação Bônus
-  * Dispara um projétil moldado a sua preferência do seu elemento em linha reta contra um alvo a até 10B de distância. O ataque causa o Dano Base + Expressão em dano elemental e ignora resistências. Gera 1 ponto de Fervor.
+##### Nível 7
+* **Habilidade Característica — Presságio do Patrono**
+  * Uma vez por dia, o Consagrado pode entrar em oração por 5 minutos para buscar orientação divina sobre uma escolha ou mistério do grupo. O Mestre concede uma visão, presságio ou pista direta sobre o caminho mais seguro, a fraqueza de uma criatura da região ou um perigo iminente.
 
-* **Prece Restauradora**
-  * **Custo**: 10 EA
-  * **Ação**: Ação Bônus
-  * Canaliza a energia do seu patrono para restaurar a vitalidade de um aliado a até 6B. O alvo recupera PVs iguais a 2d4 + Maestria + Expressão e encerra uma condição que esteja sofrendo. Gera 1 ponto de Fervor.
-
-##### Nível 7 — Escolha
-*O jogador escolhe 1 entre as duas opções abaixo:*
-
-* **Vórtice Elemental**
-  * **Custo**: 15 EA
-  * **Ação**: Ação Padrão
-  * Condensa a força do seu elemento em um ponto a até 8B, criando uma área de impacto de 3B de raio. Inimigos na área sofrem Dano Base + Expressão em dano elemental e são puxados 2B em direção ao centro do vórtice. Gera 1 ponto de Fervor.
-
-* **Elo de Resguarde**
-  * **Custo**: 15 EA
-  * **Ação**: Ação Padrão
-  * Cria um vínculo radiante entre você e até dois aliados em até 6B que dura até o fim da cena. Os alvos vinculados recebem bônus de DEF igual a metade da sua Maestria e recuperam 2d6 PVs no início de cada um dos seus turnos enquanto mantiverem a distância. Sair da distância do vinculo rompe ele, desativando esses efeitos. Gera 1 ponto de Fervor.
+* **Escolha de Habilidade**
+  *O jogador escolhe 1 entre as duas opções abaixo:*
+  * **Vórtice Elemental**
+    * **Custo**: 15 EA
+    * **Ação**: Ação Padrão
+    * Condensa a força do seu elemento em um ponto a até 8B, criando uma área de impacto de 3B de raio. Inimigos na área sofrem Dano Base + Expressão em dano elemental e são puxados 2B em direção ao centro do vórtice. Gera 1 ponto de Fervor.
+  * **Elo de Resguarde**
+    * **Custo**: 15 EA
+    * **Ação**: Ação Padrão
+    * Cria um vínculo radiante entre você e até dois aliados em até 6B que dura até o fim da cena. Os alvos vinculados recebem bônus de DEF igual a metade da sua Maestria e recuperam 2d6 PVs no início de cada um dos seus turnos enquanto mantiverem a distância. Sair da distância do vinculo rompe ele, desativando esses efeitos. Gera 1 ponto de Fervor.
 
 ##### Nível 10 — Escolha
 *O jogador escolhe 1 entre as duas opções abaixo:*
@@ -598,44 +604,50 @@ O Compactador pode detonar a energia mantida em um Estado de Compactação ativo
 
 #### 6. Habilidades de Classe
 
-##### Nível 1 — Escolha
-*O jogador escolhe 1 entre as duas opções abaixo:*
+##### Nível 1
+* **Habilidade Característica — Densidade Negativa**
+  * O Compactador manipula a inércia do próprio corpo e de objetos tocados. Ele não sofre dano em quedas de até 10B e consegue erguer, arrastar e transportar cargas e pesos maciços como se pesassem apenas um décimo do peso real.
 
-* **Punho de Inércia**
-  * **Custo**: 5 EA
-  * **Ação**: Ação Padrão
-  * Concentra massa extrema no braço ou na arma ao desferir um golpe corpo a corpo. O ataque causa o dano da arma somado ao seu Dano Base em dano contundente e aplica o Estado de **Compressão** no alvo atingido sem consumir sua Ação Bônus.
+* **Escolha de Habilidade**
+  *O jogador escolhe 1 entre as duas opções abaixo:*
+  * **Punho de Inércia**
+    * **Custo**: 5 EA
+    * **Ação**: Ação Padrão
+    * Concentra massa extrema no braço ou na arma ao desferir um golpe corpo a corpo. O ataque causa o dano da arma somado ao seu Dano Base em dano contundente e aplica o Estado de **Compressão** no alvo atingido sem consumir sua Ação Bônus.
+  * **Revestimento de Densidade**
+    * **Custo**: 5 EA
+    * **Ação**: Ação Bônus
+    * Condensa a camada externa do seu corpo em uma couraça impenetrável. Você recebe uma barreira protetora com 6 + seu Nível de Maestria em PVs temporários e ativa o Estado de **Estabilização** em si mesmo sem consumir ações adicionais.
 
-* **Revestimento de Densidade**
-  * **Custo**: 5 EA
-  * **Ação**: Ação Bônus
-  * Condensa a camada externa do seu corpo em uma couraça impenetrável. Você recebe uma barreira protetora com 6 + seu Nível de Maestria em PVs temporários e ativa o Estado de **Estabilização** em si mesmo sem consumir ações adicionais.
+##### Nível 4
+* **Habilidade Característica — Massa Titânica**
+  * A densidade da sua carne e ossos se compacta como rocha pura. O Compactador recebe +12 Pontos de Vida máximos de forma permanente.
 
-##### Nível 4 — Escolha
-*O jogador escolhe 1 entre as duas opções abaixo:*
+* **Escolha de Habilidade**
+  *O jogador escolhe 1 entre as duas opções abaixo:*
+  * **Quebra de Ritmo**
+    * **Custo**: 10 EA + perda de Pontos de Vida igual ao seu Nível de Maestria
+    * **Ação**: Ação Bônus
+    * Fratura sua própria matéria para distorcer o fluxo de tempo e espaço ao redor de um inimigo a até 4B. O alvo sofre desvantagem em todos os testes de ataque até o início do seu próximo turno e recebe o Estado de **Distorção** sem consumir ações adicionais.
+  * **Ancoragem Titânica**
+    * **Custo**: 10 EA
+    * **Ação**: Ação Padrão
+    * O Compactador bate no solo e cria uma atração gravitacional em uma área de 3B de raio ao seu redor. Todas as criaturas hostis na área realizam um teste de Força; em caso de falha, são puxadas 2B em direção ao Compactador e sofrem a condição **Imobilizado** até o final do próximo turno delas.
 
-* **Quebra de Ritmo**
-  * **Custo**: 10 EA + perda de Pontos de Vida igual ao seu Nível de Maestria
-  * **Ação**: Ação Bônus
-  * Fratura sua própria matéria para distorcer o fluxo de tempo e espaço ao redor de um inimigo a até 4B. O alvo sofre desvantagem em todos os testes de ataque até o início do seu próximo turno e recebe o Estado de **Distorção** sem consumir ações adicionais.
+##### Nível 7
+* **Habilidade Característica — Demolidor de Estruturas**
+  * Ao golpear ou arrombar portas reforçadas, portões de ferro, paredes, grades ou mecanismos maciços, o Compactador causa dano dobrado e recebe vantagem em qualquer teste de Força para despedaçar o obstáculo.
 
-* **Ancoragem Titânica**
-  * **Custo**: 10 EA
-  * **Ação**: Ação Padrão
-  * O Compactador bate no solo e cria uma atração gravitacional em uma área de 3B de raio ao seu redor. Todas as criaturas hostis na área realizam um teste de Força; em caso de falha, são puxadas 2B em direção ao Compactador e sofrem a condição **Imobilizado** até o final do próximo turno delas.
-
-##### Nível 7 — Escolha
-*O jogador escolhe 1 entre as duas opções abaixo:*
-
-* **Fratura de Impacto**
-  * **Custo**: 15 EA
-  * **Ação**: Ação Padrão
-  * Desfere um golpe de massa esmagadora com a arma ou os punhos contra um inimigo adjacente. O ataque causa o dano da arma somado ao dobro do seu Dano Base em dano contundente, reduz a Armadura do alvo a zero por 1 rodada e aplica a condição **Caído** caso o alvo seja de tamanho médio ou pequeno. Se o alvo já estiver sob o Estado de **Compressão**, sofre também a condição **Atordoado** até o início do seu próximo turno.
-
-* **Bastião Inquebrável**
-  * **Custo**: 15 EA
-  * **Ação**: Ação Bônus
-  * Estabiliza a matéria e a gravidade ao redor do grupo. Concede uma barreira protetora com 12 + seu Nível de Maestria em PVs temporários para você e para até dois aliados em até 4B. Enquanto essa barreira estiver ativa, os alvos protegidos são imunes a serem empurrados, agarrados ou sofrerem a condição **Caído**.
+* **Escolha de Habilidade**
+  *O jogador escolhe 1 entre as duas opções abaixo:*
+  * **Fratura de Impacto**
+    * **Custo**: 15 EA
+    * **Ação**: Ação Padrão
+    * Desfere um golpe de massa esmagadora com a arma ou os punhos contra um inimigo adjacente. O ataque causa o dano da arma somado ao dobro do seu Dano Base em dano contundente, reduz a Armadura do alvo a zero por 1 rodada e aplica a condição **Caído** caso o alvo seja de tamanho médio ou pequeno. Se o alvo já estiver sob o Estado de **Compressão**, sofre também a condição **Atordoado** até o início do seu próximo turno.
+  * **Bastião Inquebrável**
+    * **Custo**: 15 EA
+    * **Ação**: Ação Bônus
+    * Estabiliza a matéria e a gravidade ao redor do grupo. Concede uma barreira protetora com 12 + seu Nível de Maestria em PVs temporários para você e para até dois aliados em até 4B. Enquanto essa barreira estiver ativa, os alvos protegidos são imunes a serem empurrados, agarrados ou sofrerem a condição **Caído**.
 
 ##### Nível 10 — Escolha
 *O jogador escolhe 1 entre as duas opções abaixo:*
