@@ -26,10 +26,10 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: transparent;
-  border: 1px solid transparent;
-  color: #8E8A96;
-  font-family: var(--font-heading);
+  background: #141217 !important;
+  border: 1px solid #262130 !important;
+  color: #8E8A96 !important;
+  font-family: var(--font-heading) !important;
   font-size: 0.82rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -37,18 +37,22 @@
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s ease;
+  box-shadow: 1px 1px 0 #000000 !important;
 }
 
 .wizard-step-indicator:hover {
-  color: #EDEDED;
-  background: rgba(255, 255, 255, 0.04);
+  color: #EDEDED !important;
+  background: #1C1922 !important;
+  border-color: #383044 !important;
+  box-shadow: 1px 1px 0 #000000 !important;
 }
 
 .wizard-step-indicator.active {
-  background: #1F1B27;
-  border-color: #3A3247;
-  border-left: 3px solid var(--spotlight-accent, #9B51E0);
-  color: #FFFFFF;
+  background: #1F1B27 !important;
+  border-color: #3A3247 !important;
+  border-left: 3px solid #7C3AED !important;
+  color: #FFFFFF !important;
+  box-shadow: 2px 2px 0 #000000 !important;
 }
 
 .wizard-step-indicator.completed {
@@ -69,9 +73,9 @@
 }
 
 .wizard-step-indicator.active .step-badge {
-  background: var(--spotlight-accent, #9B51E0);
-  color: #FFFFFF;
-  border-color: #C084FC;
+  background: #2C2138 !important;
+  color: #D8B4FE !important;
+  border-color: #553E6E !important;
 }
 
 .wizard-step-indicator.completed .step-badge {
@@ -294,6 +298,11 @@
   gap: 4px;
 }
 
+.variant-select-btn:hover {
+  background: #1C1824;
+  border-color: #383047;
+}
+
 .variant-select-btn strong {
   color: #EDEDED;
   font-family: var(--font-heading);
@@ -373,30 +382,33 @@
 .attr-pill-btn {
   width: 44px;
   height: 44px;
-  background: #121016;
-  border: 1px solid #332B40;
-  color: #D1CFD7;
-  font-family: var(--font-heading);
+  background: #15131A !important;
+  border: 1px solid #2B2536 !important;
+  color: #C5C1CC !important;
+  font-family: var(--font-heading) !important;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 700 !important;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   transition: all 0.16s ease;
+  box-shadow: none !important;
 }
 
 .attr-pill-btn:hover {
-  background: #1C1824;
-  border-color: #55476B;
-  color: #FFFFFF;
+  background: #201C26 !important;
+  border-color: #443854 !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
 }
 
 .attr-pill-btn.active {
-  background: var(--spotlight-accent, #9B51E0);
-  border-color: #D8B4FE;
-  color: #FFFFFF;
-  box-shadow: 0 0 14px rgba(155, 81, 224, 0.45);
+  background: #251D30 !important;
+  border-color: #523F6B !important;
+  border-bottom: 2px solid #8B5CF6 !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
 }
 
 /* 4. CLASSE E PODERES */
@@ -641,36 +653,46 @@
 }
 
 .btn-wizard {
-  font-family: var(--font-heading);
+  font-family: var(--font-heading) !important;
   font-size: 0.9rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: 12px 24px;
   cursor: pointer;
   transition: all 0.16s ease;
-  border: none;
+  border-radius: 0 !important;
+  font-weight: 600 !important;
+  box-shadow: 1px 1px 0 #000000 !important;
 }
 
 .btn-wizard.btn-primary {
-  background: var(--spotlight-accent, #9B51E0);
-  color: #FFFFFF;
-  box-shadow: 0 4px 14px rgba(155, 81, 224, 0.4);
+  background: #1C1826 !important;
+  color: #EDEDED !important;
+  border: 1px solid #382D4A !important;
+  border-left: 3px solid #7C3AED !important;
+  box-shadow: 1px 1px 0 #000000 !important;
 }
 
 .btn-wizard.btn-primary:hover {
-  background: #A855F7;
-  box-shadow: 0 6px 18px rgba(168, 85, 247, 0.55);
+  background: #252033 !important;
+  border-color: #4D3D66 !important;
+  border-left-color: #9333EA !important;
+  color: #FFFFFF !important;
+  box-shadow: 2px 2px 0 #000000 !important;
 }
 
 .btn-wizard.btn-secondary {
-  background: #1C1923;
-  color: #D1CFD7;
-  border: 1px solid #332D3F;
+  background: #141217 !important;
+  color: #9E9AA6 !important;
+  border: 1px solid #282431 !important;
+  box-shadow: 1px 1px 0 #000000 !important;
 }
 
 .btn-wizard.btn-secondary:hover {
-  background: #252130;
-  color: #FFFFFF;
+  background: #1D1A22 !important;
+  border-color: #3C3649 !important;
+  color: #FFFFFF !important;
+  box-shadow: 2px 2px 0 #000000 !important;
 }
 
 /* 7. PAINEL LATERAL DE PREVIA REATIVA */
@@ -851,9 +873,9 @@
 }
 
 .tracker-pip.active {
-  background: var(--spotlight-accent, #9B51E0);
-  border-color: #D8B4FE;
-  box-shadow: 0 0 10px rgba(155, 81, 224, 0.45);
+  background: #2C223A !important;
+  border-color: #584475 !important;
+  box-shadow: 0 0 8px rgba(124, 58, 237, 0.3) !important;
 }
 
 /* SLOTS */

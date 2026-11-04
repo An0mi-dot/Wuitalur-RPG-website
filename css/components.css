@@ -1651,7 +1651,7 @@ body:not(.mesa-body) .conclave-card:hover {
   }
 }
 
-body:not(.mesa-body) button:not([class*="showcase-"]):not([class*="compendium-"]):not([class*="hub-"]):not([class*="cond-"]):not([class*="filter-"]):not([class*="tab-"]):not([class*="chip-"]):not(.per-filter-chip):not(.v2-filter-chip):not(.sidebar-toggle):not(.boletim-nav-arrow-btn):not(.boletim-mobile-toggle-btn),
+body:not(.mesa-body) button:not([class*="showcase-"]):not([class*="compendium-"]):not([class*="hub-"]):not([class*="cond-"]):not([class*="filter-"]):not([class*="tab-"]):not([class*="chip-"]):not(.per-filter-chip):not(.v2-filter-chip):not(.sidebar-toggle):not(.boletim-nav-arrow-btn):not(.boletim-mobile-toggle-btn):not([class*="wizard-"]):not([class*="btn-wizard"]):not([class*="attr-"]):not([class*="tracker-"]):not([class*="variant-"]):not([class*="choice-"]),
 body:not(.mesa-body) .btn:not(.boletim-nav-arrow-btn):not([class*="showcase-"]):not([class*="cond-"]):not([class*="filter-"]):not([class*="tab-"]):not([class*="chip-"]),
 body:not(.mesa-body) .wiki-btn:not([class*="showcase-"]):not([class*="cond-"]):not([class*="filter-"]):not([class*="tab-"]):not([class*="chip-"]),
 body:not(.mesa-body) .home-card-btn,
@@ -1672,7 +1672,7 @@ body:not(.mesa-body) input[type="button"] {
   user-select: none;
 }
 
-body:not(.mesa-body) button:not([class*="showcase-"]):not([class*="compendium-"]):not([class*="hub-"]):not([class*="cond-"]):not([class*="filter-"]):not([class*="tab-"]):not([class*="chip-"]):not(.per-filter-chip):not(.v2-filter-chip):not(.sidebar-toggle):not(.boletim-nav-arrow-btn):not(.boletim-mobile-toggle-btn):hover,
+body:not(.mesa-body) button:not([class*="showcase-"]):not([class*="compendium-"]):not([class*="hub-"]):not([class*="cond-"]):not([class*="filter-"]):not([class*="tab-"]):not([class*="chip-"]):not(.per-filter-chip):not(.v2-filter-chip):not(.sidebar-toggle):not(.boletim-nav-arrow-btn):not(.boletim-mobile-toggle-btn):not([class*="wizard-"]):not([class*="btn-wizard"]):not([class*="attr-"]):not([class*="tracker-"]):not([class*="variant-"]):not([class*="choice-"]):hover,
 body:not(.mesa-body) .btn:not(.boletim-nav-arrow-btn):not([class*="showcase-"]):not([class*="cond-"]):not([class*="filter-"]):not([class*="tab-"]):not([class*="chip-"]):hover,
 body:not(.mesa-body) .wiki-btn:not([class*="showcase-"]):not([class*="cond-"]):not([class*="filter-"]):not([class*="tab-"]):not([class*="chip-"]):hover,
 body:not(.mesa-body) .home-card-btn:hover {
@@ -1682,7 +1682,7 @@ body:not(.mesa-body) .home-card-btn:hover {
   border-color: #ffffff !important;
 }
 
-body:not(.mesa-body) button:not([class*="showcase-"]):not([class*="compendium-"]):not([class*="hub-"]):not([class*="cond-"]):not([class*="filter-"]):not([class*="tab-"]):not([class*="chip-"]):not(.per-filter-chip):not(.v2-filter-chip):not(.sidebar-toggle):not(.boletim-nav-arrow-btn):not(.boletim-mobile-toggle-btn):active,
+body:not(.mesa-body) button:not([class*="showcase-"]):not([class*="compendium-"]):not([class*="hub-"]):not([class*="cond-"]):not([class*="filter-"]):not([class*="tab-"]):not([class*="chip-"]):not(.per-filter-chip):not(.v2-filter-chip):not(.sidebar-toggle):not(.boletim-nav-arrow-btn):not(.boletim-mobile-toggle-btn):not([class*="wizard-"]):not([class*="btn-wizard"]):not([class*="attr-"]):not([class*="tracker-"]):not([class*="variant-"]):not([class*="choice-"]):active,
 body:not(.mesa-body) .btn:not(.boletim-nav-arrow-btn):not([class*="showcase-"]):not([class*="cond-"]):not([class*="filter-"]):not([class*="tab-"]):not([class*="chip-"]):active,
 body:not(.mesa-body) .wiki-btn:not([class*="showcase-"]):not([class*="cond-"]):not([class*="filter-"]):not([class*="tab-"]):not([class*="chip-"]):active,
 body:not(.mesa-body) .home-card-btn:active,
