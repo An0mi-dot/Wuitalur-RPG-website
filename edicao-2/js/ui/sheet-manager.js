@@ -289,7 +289,8 @@
       const attrs = calc?.effectiveAttributes || { for: 0, des: 0, vig: 0, men: 0, exp: 0 };
 
       const Registry = global.WuRulesRegistry || {};
-      const cDef = Registry.CLASSES ? Registry.CLASSES[sheet.identity?.classId] : null;
+      const classKey = (sheet.identity?.classId || "").toLowerCase();
+      const cDef = Registry.getClass ? Registry.getClass(classKey) : (Registry.CLASSES ? (Registry.CLASSES[classKey] || Registry.CLASSES[sheet.identity?.classId]) : null);
 
       // Habilidades caracteristicas ativas
       let charsHtml = "";
@@ -313,7 +314,7 @@
       // Habilidade escolhida nivel 1
       let chosenHtml = "";
       if (cDef && cDef.progression && cDef.progression.choices && cDef.progression.choices[1]) {
-        const choiceId = sheet.abilities?.choices ? sheet.abilities.choices["1"] : null;
+        const choiceId = sheet.abilities?.choices ? (sheet.abilities.choices["1"] || sheet.abilities.choices[1]) : null;
         const choiceDef = cDef.progression.choices[1].find((x) => x.id === choiceId);
         if (choiceDef) {
           chosenHtml = `
@@ -328,12 +329,13 @@
         }
       }
 
-      // Pericias
+      // Pericias (calc.skills e um objeto chave-valor)
       let skillsHtml = "";
       if (calc && calc.skills) {
+        const skillsList = Object.values(calc.skills);
         skillsHtml = `
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px;">
-            ${calc.skills.map((s) => `
+            ${skillsList.map((s) => `
               <div style="background: #17141E; border: 1px solid ${s.trained ? "#4D3866" : "#282431"}; padding: 6px 10px; display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-size: 0.8rem; color: ${s.trained ? "#C084FC" : "#D1CFD7"};">${s.name}</span>
                 <span style="font-family: var(--font-mono); font-size: 0.72rem; color: ${s.trained ? "#38BDF8" : "#8E8A96"};">

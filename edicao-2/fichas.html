@@ -4,29 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gerenciador de Fichas &mdash; Wuitalur RPG 2.0</title>
-
-  <link rel="stylesheet" href="../css/base.css">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
   <link rel="stylesheet" href="../css/components.css">
-  <link rel="stylesheet" href="../css/layout.css">
-  <link rel="stylesheet" href="css/edicao-2.css">
   <link rel="stylesheet" href="css/criador.css">
   <link rel="stylesheet" href="css/fichas.css">
 </head>
-<body class="page-edicao-2">
+<body>
 
-<div class="layout-container">
+<div class="app-layout">
 
   <!-- SIDEBAR FIXA -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <div class="logo">
-        <h2>WUITALUR</h2>
-        <span class="badge">Edi&ccedil;&atilde;o 2.0</span>
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema Base 2.0 (Alpha)</span>
       </div>
     </div>
 
-    <a href="../suplementos.html" class="back-link">
-      <span class="icon">&larr;</span>
+    <!-- BOTAO VOLTAR AO CATALOGO DE SUPLEMENTOS -->
+    <a href="../suplementos.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
       <span>Voltar aos Suplementos</span>
     </a>
 

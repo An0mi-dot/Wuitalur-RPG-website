@@ -457,19 +457,23 @@
     },
 
     getRace(raceId) {
-      return RACES[raceId] || null;
+      if (!raceId) return null;
+      return RACES[raceId] || RACES[String(raceId).toLowerCase()] || null;
     },
 
     getClass(classId) {
-      return CLASSES[classId] || null;
+      if (!classId) return null;
+      return CLASSES[classId] || CLASSES[String(classId).toLowerCase()] || null;
     },
 
     getVocation(vocationId) {
-      return VOCATIONS[vocationId] || null;
+      if (!vocationId) return null;
+      return VOCATIONS[vocationId] || VOCATIONS[String(vocationId).toLowerCase()] || null;
     },
 
     getKit(kitId) {
-      return KITS[kitId] || null;
+      if (!kitId) return null;
+      return KITS[kitId] || KITS[String(kitId).toLowerCase()] || null;
     },
 
     registerRace(raceData) {
