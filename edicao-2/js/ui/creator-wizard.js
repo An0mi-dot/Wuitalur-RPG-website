@@ -48,6 +48,13 @@
     },
 
     setStep(stepNum) {
+      if (this.currentStep === 4 && stepNum > 4) {
+        const choiceSelected = Boolean(this.charData.abilities && this.charData.abilities.choices && this.charData.abilities.choices["1"]);
+        if (!choiceSelected) {
+          this.render();
+          return;
+        }
+      }
       if (stepNum >= 1 && stepNum <= this.totalSteps) {
         this.currentStep = stepNum;
         this.render();
@@ -56,6 +63,13 @@
     },
 
     nextStep() {
+      if (this.currentStep === 4) {
+        const choiceSelected = Boolean(this.charData.abilities && this.charData.abilities.choices && this.charData.abilities.choices["1"]);
+        if (!choiceSelected) {
+          this.render();
+          return;
+        }
+      }
       if (this.currentStep < this.totalSteps) {
         this.setStep(this.currentStep + 1);
       } else {
@@ -125,8 +139,30 @@
       nextBtn.type = "button";
       nextBtn.className = "btn-wizard btn-primary";
       nextBtn.textContent = this.currentStep === this.totalSteps ? "Concluir Ficha" : "Proximo Passo";
+
+      let isChoiceBlocked = false;
+      if (this.currentStep === 4) {
+        const choiceSelected = Boolean(this.charData.abilities && this.charData.abilities.choices && this.charData.abilities.choices["1"]);
+        if (!choiceSelected) {
+          isChoiceBlocked = true;
+          nextBtn.disabled = true;
+          nextBtn.classList.add("btn-disabled");
+          nextBtn.title = "Selecione uma habilidade de escolha de nivel 1 da sua classe antes de avancar";
+        }
+      }
+
       nextBtn.addEventListener("click", () => this.nextStep());
       navButtons.appendChild(nextBtn);
+
+      if (isChoiceBlocked) {
+        const warnNotice = document.createElement("div");
+        warnNotice.className = "step-blocking-notice";
+        warnNotice.innerHTML = `
+          <span class="blocking-tag">Escolha Obrigatoria</span>
+          <span>Selecione 1 Habilidade de Escolha de Nivel 1 da sua classe acima para poder avancar para a Fase 5.</span>
+        `;
+        stepContainer.appendChild(warnNotice);
+      }
 
       stepContainer.appendChild(navButtons);
       contentGrid.appendChild(stepContainer);
@@ -753,13 +789,24 @@
       }
     },
 
-    finishCreation() {
-      // Salva no LocalStorage
+    async finishCreation() {
+      const activeToken = global.WuAuthToken ? global.WuAuthToken.getActiveToken() : null;
+      if (global.WuSheetStorage && activeToken) {
+        try {
+          await global.WuSheetStorage.saveSheet(activeToken, this.charData);
+        } catch (err) {
+          console.warn("Falha ao sincronizar ficha no Supabase:", err);
+        }
+      }
+
+      // Salva no LocalStorage legado / local
       try {
         const Model = global.WuSheetModel;
-        const serialized = Model.serializeCharacter(this.charData);
-        localStorage.setItem(`wuitalur_v2_char_${this.charData.meta.id}`, serialized);
-        localStorage.setItem("wuitalur_v2_active_char_id", this.charData.meta.id);
+        if (Model) {
+          const serialized = Model.serializeCharacter(this.charData);
+          localStorage.setItem(`wuitalur_v2_char_${this.charData.meta.id}`, serialized);
+          localStorage.setItem("wuitalur_v2_active_char_id", this.charData.meta.id);
+        }
       } catch (err) {
         console.warn("Nao foi possivel persistir ficha no localStorage:", err);
       }
@@ -767,7 +814,52 @@
       if (typeof this.onFinishCallback === "function") {
         this.onFinishCallback(this.charData, this.calculationState);
       } else {
-        alert("Ficha criada com sucesso. Dados persistidos.");
+        this.renderCompletionModal(activeToken);
+      }
+    },
+
+    renderCompletionModal(activeToken) {
+      const existingModal = document.getElementById("wizard-completion-modal");
+      if (existingModal) existingModal.remove();
+
+      const overlay = document.createElement("div");
+      overlay.id = "wizard-completion-modal";
+      overlay.className = "wizard-modal-overlay";
+
+      const charName = this.charData.meta.name || "Aventureiro";
+      const tokenDisplay = activeToken ? activeToken : "Armazenamento Local";
+
+      overlay.innerHTML = `
+        <div class="wizard-modal-dialog">
+          <div class="wizard-modal-header">
+            <span class="modal-sub">Processo Concluido</span>
+            <h3 class="modal-title">Ficha Criada e Salva</h3>
+          </div>
+          <div class="wizard-modal-body">
+            <p>O personagem <strong>${charName}</strong> foi registrado com integridade matematica no sistema 2.0.</p>
+            <p style="color: #9E9AA6; font-size: 0.85rem; margin-top: 8px;">
+              Vinculado ao token: <span class="auth-token-badge">${tokenDisplay}</span>
+            </p>
+          </div>
+          <div class="wizard-modal-footer">
+            <a href="fichas.html" class="btn-wizard btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">
+              Ver no Gerenciador de Fichas
+            </a>
+            <button type="button" class="btn-wizard btn-secondary" id="btn-modal-new-char">
+              Criar Outro Personagem
+            </button>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(overlay);
+
+      const newCharBtn = overlay.querySelector("#btn-modal-new-char");
+      if (newCharBtn) {
+        newCharBtn.addEventListener("click", () => {
+          overlay.remove();
+          this.init();
+        });
       }
     }
   };

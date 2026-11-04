@@ -250,15 +250,85 @@ assertEqual(restoredChar.meta.name, "Test Hero", "Nome serializado e restaurado 
 assertEqual(restoredChar.progression.level, 4, "Nivel serializado e restaurado com integridade");
 assert(SheetModel.validateCharacter(restoredChar).valid, "Ficha restaurada deve ser valida perante o schema");
 
-console.log("\n================================================");
-console.log(`TOTAL DE TESTES: ${totalTests}`);
-console.log(`PASSOU: ${passedTests}`);
-console.log(`FALHOU: ${failedTests}`);
-console.log("================================================");
+// ------------------------------------------------------------
+// 8. Autenticacao Unificada por Token
+// ------------------------------------------------------------
+console.log("\n--- 8. Autenticacao Unificada por Token ---");
 
-if (failedTests > 0) {
-  process.exit(1);
-} else {
-  console.log("TODOS OS TESTES FORAM APROVADOS COM SUCESSO.");
-  process.exit(0);
+if (typeof localStorage === "undefined") {
+  global.localStorage = {
+    _data: {},
+    getItem(k) { return this._data[k] || null; },
+    setItem(k, v) { this._data[k] = String(v); },
+    removeItem(k) { delete this._data[k]; }
+  };
 }
+
+const AuthToken = require("./auth-token.js");
+const SheetStorage = require("./sheet-storage.js");
+
+global.WuCalculationEngine = CalculationEngine;
+global.WuRulesRegistry = RulesRegistry;
+
+(async () => {
+  // Salvamento e normalizacao de token
+  AuthToken.saveActiveToken("r5k1");
+  assertEqual(AuthToken.getActiveToken(), "R5K1", "Token deve ser normalizado em letras maiusculas");
+
+  // Chaves sincronizadas
+  assertEqual(localStorage.getItem("wu_user_token"), "R5K1", "wu_user_token deve conter o token ativo");
+  assertEqual(localStorage.getItem("mesa_token"), "R5K1", "mesa_token deve conter o token ativo");
+
+  // Rejeicao de token vazio
+  const emptyRes = await AuthToken.validateToken("");
+  assertEqual(emptyRes.valid, false, "Token vazio deve ser rejeitado");
+
+  // Validacao de token formatado
+  const validRes = await AuthToken.validateToken("R5K1");
+  assertEqual(validRes.valid, true, "Token de 4 caracteres alfanumericos deve ser valido");
+
+  // ------------------------------------------------------------
+  // 9. Persistencia de Fichas e Subida de Nivel
+  // ------------------------------------------------------------
+  console.log("\n--- 9. Persistencia de Fichas e Subida de Nivel ---");
+
+  const testHero = SheetModel.createDefaultCharacter({
+    identity: { classId: "compactador", raceId: "humanos" },
+    attributes: { base: { for: 2, vig: 2 } }
+  });
+
+  const saveRes = await SheetStorage.saveSheet("R5K1", testHero);
+  assert(saveRes.success, "Ficha deve ser salva com sucesso");
+  assert(saveRes.sheet.meta.id.length > 0, "Ficha deve receber um identificador unico");
+  assertEqual(saveRes.sheet.meta.token, "R5K1", "Ficha deve ser associada ao token ativo");
+
+  const loadedList = await SheetStorage.loadSheets("R5K1");
+  assertEqual(loadedList.length, 1, "Lista de fichas do token deve conter 1 personagem");
+
+  // Subida de nivel para 5 (marco de Maestria +4)
+  const levelUpRes = await SheetStorage.levelUpSheet("R5K1", saveRes.sheet.meta.id, 5);
+  assertEqual(levelUpRes.sheet.progression.level, 5, "Nivel da ficha deve ser atualizado para 5");
+
+  const recalcState = CalculationEngine.recalculate(levelUpRes.sheet, RulesRegistry);
+  assertEqual(recalcState.maestry, 4, "Maestria no nivel 5 deve ser recalculada para +4");
+  assert(levelUpRes.sheet.abilities.characteristics.includes("densidade_negativa"), "Habilidade caracteristica nivel 1 mantida");
+  assert(levelUpRes.sheet.abilities.characteristics.includes("massa_titanica"), "Habilidade caracteristica nivel 4 desbloqueada");
+
+  // Exclusao de ficha
+  await SheetStorage.deleteSheet("R5K1", saveRes.sheet.meta.id);
+  const afterDeleteList = await SheetStorage.loadSheets("R5K1");
+  assertEqual(afterDeleteList.length, 0, "Ficha excluida deve ser removida da lista do usuario");
+
+  console.log("\n================================================");
+  console.log(`TOTAL DE TESTES: ${totalTests}`);
+  console.log(`PASSOU: ${passedTests}`);
+  console.log(`FALHOU: ${failedTests}`);
+  console.log("================================================");
+
+  if (failedTests > 0) {
+    process.exit(1);
+  } else {
+    console.log("TODOS OS TESTES FORAM APROVADOS COM SUCESSO.");
+    process.exit(0);
+  }
+})();

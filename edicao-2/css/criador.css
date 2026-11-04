@@ -142,6 +142,13 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
 }
 
+.race-detail-box,
+.powers-setup-box {
+  margin-top: 36px !important;
+  border-top: 1px solid #2C263A;
+  padding-top: 24px;
+}
+
 /* FORM GROUPS */
 .meta-input-grid {
   display: grid;
@@ -695,6 +702,147 @@
   box-shadow: 2px 2px 0 #000000 !important;
 }
 
+.btn-wizard:disabled,
+.btn-wizard.btn-disabled {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  background: #141217 !important;
+  border-color: #262130 !important;
+  border-left-color: #262130 !important;
+  color: #6E6877 !important;
+  box-shadow: none !important;
+}
+
+.step-blocking-notice {
+  margin-top: 14px;
+  background: #1A141A;
+  border: 1px solid #4D2638;
+  border-left: 3px solid #E11D48;
+  padding: 12px 16px;
+  color: #FECDD3;
+  font-size: 0.86rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  line-height: 1.4;
+}
+
+.step-blocking-notice .blocking-tag {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  background: #2E1522;
+  color: #FB7185;
+  border: 1px solid #5C2237;
+  padding: 2px 6px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* TOKEN AUTH BAR */
+.token-auth-bar {
+  background: #141217;
+  border: 1px solid #282431;
+  padding: 12px 18px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.auth-bar-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.84rem;
+}
+
+.auth-bar-label {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  color: #8E8A96;
+}
+
+.auth-token-badge {
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: #C084FC;
+  background: #1F1929;
+  border: 1px solid #3B2D4E;
+  padding: 3px 8px;
+  letter-spacing: 0.06em;
+}
+
+.auth-player-name {
+  color: #EDEDED;
+  font-weight: 600;
+}
+
+.auth-bar-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.auth-token-input {
+  background: #0E0C10;
+  border: 1px solid #2B2536;
+  color: #FFFFFF;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  width: 130px;
+  letter-spacing: 0.1em;
+  text-align: center;
+}
+
+.auth-token-input:focus {
+  outline: none;
+  border-color: #554470;
+  background: #14111A;
+}
+
+.btn-auth-action {
+  background: #1B1824 !important;
+  border: 1px solid #362E44 !important;
+  color: #D1CFD7 !important;
+  font-family: var(--font-heading) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  box-shadow: 1px 1px 0 #000000 !important;
+}
+
+.btn-auth-action:hover {
+  background: #252033 !important;
+  border-color: #4D3D66 !important;
+  color: #FFFFFF !important;
+}
+
+.auth-feedback-msg {
+  font-size: 0.76rem;
+  color: #9E9AA6;
+}
+
+.auth-feedback-msg.error {
+  color: #FB7185;
+}
+
+.auth-feedback-msg.success {
+  color: #4ADE80;
+}
+
 /* 7. PAINEL LATERAL DE PREVIA REATIVA */
 .wizard-preview-sidebar {
   background: #17141C;
@@ -968,4 +1116,61 @@
   font-size: 0.78rem;
   color: #7E788A;
   font-style: italic;
+}
+
+/* MODAL DE CONCLUSAO */
+.wizard-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+}
+
+.wizard-modal-dialog {
+  background: #141218;
+  border: 1px solid #362E44;
+  border-left: 4px solid #7C3AED;
+  max-width: 480px;
+  width: 100%;
+  padding: 28px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wizard-modal-header .modal-sub {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: #A855F7;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.wizard-modal-header .modal-title {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.wizard-modal-body p {
+  color: #D1CFD7;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.wizard-modal-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
 }

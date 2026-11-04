@@ -1,0 +1,430 @@
+/* ============================================================
+   WUITALUR RPG - GERENCIADOR DE FICHAS 2.0 (CSS)
+   Paleta Escura, Zero Botoes Roxos com Hover Branco
+   ============================================================ */
+
+.fichas-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.fichas-title-wrap h2 {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  color: #FFFFFF;
+  margin: 0 0 4px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.fichas-subtitle {
+  font-size: 0.85rem;
+  color: #9E9AA6;
+  margin: 0;
+}
+
+.fichas-actions-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* CARDS GRID */
+.fichas-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 20px;
+}
+
+/* CARD DE PERSONAGEM */
+.char-card-v2 {
+  background: #15131A;
+  border: 1px solid #282433;
+  border-left: 3px solid #7C3AED;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.char-card-v2:hover {
+  border-color: #3D354E;
+  border-left-color: #9333EA;
+  transform: translateY(-2px);
+}
+
+.char-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.char-card-identity h3 {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  color: #FFFFFF;
+  margin: 0 0 4px;
+}
+
+.char-card-concept {
+  font-size: 0.8rem;
+  color: #9E9AA6;
+  display: block;
+}
+
+.badge-level-pill {
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+  font-size: 0.75rem;
+  background: #251D30;
+  border: 1px solid #4D3866;
+  color: #C084FC;
+  padding: 4px 8px;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+/* TAGS STRIP */
+.char-tags-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.char-tag {
+  font-size: 0.72rem;
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  background: #1D1A24;
+  border: 1px solid #322C3E;
+  color: #D1CFD7;
+}
+
+.char-tag.tag-maestry {
+  background: #1B2129;
+  border-color: #2D3A4B;
+  color: #38BDF8;
+}
+
+.char-tag.tag-special {
+  background: #261622;
+  border-color: #4A2840;
+  color: #F472B6;
+}
+
+/* METRICS STRIP */
+.char-metrics-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  background: #100E14;
+  border: 1px solid #231F2C;
+  padding: 10px;
+}
+
+.char-metric-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.char-metric-label {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: #7E7888;
+}
+
+.char-metric-val {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+/* TRACKERS MINI STRIP */
+.char-trackers-mini {
+  background: #131118;
+  border: 1px dashed #2A2536;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #9E9AA6;
+}
+
+.char-trackers-mini strong {
+  color: #EDEDED;
+}
+
+/* ACTION BUTTONS */
+.char-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-top: 1px solid #231F2D;
+  padding-top: 14px;
+}
+
+.btn-card-action {
+  font-family: var(--font-heading) !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  flex: 1;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: 1px 1px 0 #000000 !important;
+}
+
+.btn-action-open {
+  background: #1C1826 !important;
+  color: #EDEDED !important;
+  border: 1px solid #382D4A !important;
+  border-left: 3px solid #7C3AED !important;
+}
+
+.btn-action-open:hover {
+  background: #252033 !important;
+  border-color: #4D3D66 !important;
+  color: #FFFFFF !important;
+  box-shadow: 2px 2px 0 #000000 !important;
+}
+
+.btn-action-lvl {
+  background: #141217 !important;
+  color: #9E9AA6 !important;
+  border: 1px solid #282431 !important;
+}
+
+.btn-action-lvl:hover {
+  background: #1D1A22 !important;
+  border-color: #3C3649 !important;
+  color: #FFFFFF !important;
+  box-shadow: 2px 2px 0 #000000 !important;
+}
+
+.btn-action-del {
+  background: #181216 !important;
+  color: #FECDD3 !important;
+  border: 1px solid #38222B !important;
+  flex: 0 0 auto;
+}
+
+.btn-action-del:hover {
+  background: #24141D !important;
+  border-color: #522737 !important;
+  color: #FFFFFF !important;
+  box-shadow: 2px 2px 0 #000000 !important;
+}
+
+/* ESTADO VAZIO / SEM FICHAS */
+.empty-fichas-card {
+  background: #141218;
+  border: 1px dashed #312A3D;
+  padding: 40px 24px;
+  text-align: center;
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.empty-fichas-card h4 {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.empty-fichas-card p {
+  color: #8E8A96;
+  font-size: 0.88rem;
+  max-width: 480px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* MODAL DE SUBIDA DE NIVEL */
+.level-up-modal-overlay,
+.sheet-viewer-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+}
+
+.level-up-dialog {
+  background: #141218;
+  border: 1px solid #362E44;
+  border-left: 4px solid #7C3AED;
+  max-width: 440px;
+  width: 100%;
+  padding: 24px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.level-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.level-btn {
+  background: #16131D !important;
+  border: 1px solid #2B2536 !important;
+  color: #C5C1CC !important;
+  font-family: var(--font-heading) !important;
+  font-size: 0.95rem;
+  padding: 10px 0;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  text-align: center;
+}
+
+.level-btn:hover {
+  background: #201C28 !important;
+  border-color: #443854 !important;
+  color: #FFFFFF !important;
+}
+
+.level-btn.active {
+  background: #251D30 !important;
+  border-color: #523F6B !important;
+  border-bottom: 2px solid #8B5CF6 !important;
+  color: #FFFFFF !important;
+}
+
+/* MODAL DO VISUALIZADOR DA FICHA COMPLETA */
+.sheet-viewer-dialog {
+  background: #121016;
+  border: 1px solid #2F293C;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-direction: column;
+}
+
+.viewer-header {
+  background: #17141E;
+  border-bottom: 1px solid #2A2436;
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.viewer-header-info h2 {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  color: #FFFFFF;
+  margin: 0 0 4px;
+}
+
+.viewer-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.viewer-section-title {
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #C084FC;
+  margin: 0 0 10px;
+  border-bottom: 1px solid #282333;
+  padding-bottom: 6px;
+}
+
+.viewer-attrs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 10px;
+}
+
+.viewer-attr-card {
+  background: #17141E;
+  border: 1px solid #2B2538;
+  padding: 10px;
+  text-align: center;
+}
+
+.viewer-attr-name {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: #8E8A96;
+  text-transform: uppercase;
+}
+
+.viewer-attr-val {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+.viewer-powers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.viewer-power-item {
+  background: #16131D;
+  border: 1px solid #2A2536;
+  padding: 12px 14px;
+}
+
+.viewer-power-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.viewer-power-top strong {
+  color: #EDEDED;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+}
+
+.viewer-power-desc {
+  font-size: 0.82rem;
+  color: #9E9AA6;
+  line-height: 1.45;
+  margin: 0;
+}

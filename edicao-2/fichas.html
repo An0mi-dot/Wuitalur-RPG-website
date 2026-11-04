@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciador de Fichas &mdash; Wuitalur RPG 2.0</title>
+
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="css/edicao-2.css">
+  <link rel="stylesheet" href="css/criador.css">
+  <link rel="stylesheet" href="css/fichas.css">
+</head>
+<body class="page-edicao-2">
+
+<div class="layout-container">
+
+  <!-- SIDEBAR FIXA -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <h2>WUITALUR</h2>
+        <span class="badge">Edi&ccedil;&atilde;o 2.0</span>
+      </div>
+    </div>
+
+    <a href="../suplementos.html" class="back-link">
+      <span class="icon">&larr;</span>
+      <span>Voltar aos Suplementos</span>
+    </a>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="vocacoes.html" class="sidebar-link"><span class="icon"></span> Vocações</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+
+      <div class="sidebar-section-title">Ferramentas 2.0</div>
+      <a href="fichas.html" class="sidebar-link active"><span class="icon"></span> Fichas</a>
+      <a href="criador.html" class="sidebar-link"><span class="icon"></span> Criador de Fichas</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Gerenciador de Fichas &mdash; Edi&ccedil;&atilde;o 2.0</h1>
+    </header>
+
+    <main class="page-content">
+      <!-- BARRA DE AUTENTICACAO POR TOKEN -->
+      <div id="auth-bar-mount"></div>
+
+      <!-- CABECALHO DA SECAO DE FICHAS -->
+      <div class="fichas-page-header">
+        <div class="fichas-title-wrap">
+          <h2>Seus Personagens Registrados</h2>
+          <p class="fichas-subtitle">Fichas ativas sincronizadas na nuvem (Supabase) e com cache local no navegador.</p>
+        </div>
+        <div class="fichas-actions-top">
+          <a href="criador.html" class="btn-wizard btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">
+            Criar Novo Personagem
+          </a>
+        </div>
+      </div>
+
+      <!-- CONTAINER DOS CARDS DE FICHAS -->
+      <div id="fichas-mount-point"></div>
+    </main>
+
+  </div>
+
+</div>
+
+<!-- SUPABASE CLIENT E SCRIPTS DO MOTOR E DA INTERFACE 2.0 -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/engine/sheet-model.js"></script>
+<script src="js/engine/rules-registry.js"></script>
+<script src="js/engine/calculation-engine.js"></script>
+<script src="js/engine/auth-token.js"></script>
+<script src="js/engine/sheet-storage.js"></script>
+<script src="js/ui/dynamic-trackers.js"></script>
+<script src="js/ui/sheet-manager.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    WuSheetManager.init("fichas-mount-point");
+  });
+</script>
+
+</body>
+</html>
