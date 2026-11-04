@@ -48,6 +48,14 @@
     },
 
     setStep(stepNum) {
+      if (this.currentStep === 2 && stepNum > 2) {
+        const vocSelected = Boolean(this.charData.identity.vocationId);
+        const chosenCount = (this.charData.skills.chosen || []).length;
+        if (!vocSelected || chosenCount !== 4) {
+          this.render();
+          return;
+        }
+      }
       if (this.currentStep === 4 && stepNum > 4) {
         const choiceSelected = Boolean(this.charData.abilities && this.charData.abilities.choices && this.charData.abilities.choices["1"]);
         if (!choiceSelected) {
@@ -63,6 +71,14 @@
     },
 
     nextStep() {
+      if (this.currentStep === 2) {
+        const vocSelected = Boolean(this.charData.identity.vocationId);
+        const chosenCount = (this.charData.skills.chosen || []).length;
+        if (!vocSelected || chosenCount !== 4) {
+          this.render();
+          return;
+        }
+      }
       if (this.currentStep === 4) {
         const choiceSelected = Boolean(this.charData.abilities && this.charData.abilities.choices && this.charData.abilities.choices["1"]);
         if (!choiceSelected) {
@@ -140,26 +156,42 @@
       nextBtn.className = "btn-wizard btn-primary";
       nextBtn.textContent = this.currentStep === this.totalSteps ? "Concluir Ficha" : "Proximo Passo";
 
-      let isChoiceBlocked = false;
-      if (this.currentStep === 4) {
+      let isBlocked = false;
+      let blockNoticeText = "";
+
+      if (this.currentStep === 2) {
+        const vocSelected = Boolean(this.charData.identity.vocationId);
+        const chosenCount = (this.charData.skills.chosen || []).length;
+        if (!vocSelected) {
+          isBlocked = true;
+          blockNoticeText = "Selecione uma Vocacao de origem antes de avancar para a Fase 3.";
+        } else if (chosenCount !== 4) {
+          isBlocked = true;
+          blockNoticeText = `Selecione exatamente 4 pericias complementares (${chosenCount}/4) para totalizar as 6 pericias treinadas antes de avancar para a Fase 3.`;
+        }
+      } else if (this.currentStep === 4) {
         const choiceSelected = Boolean(this.charData.abilities && this.charData.abilities.choices && this.charData.abilities.choices["1"]);
         if (!choiceSelected) {
-          isChoiceBlocked = true;
-          nextBtn.disabled = true;
-          nextBtn.classList.add("btn-disabled");
-          nextBtn.title = "Selecione uma habilidade de escolha de nivel 1 da sua classe antes de avancar";
+          isBlocked = true;
+          blockNoticeText = "Selecione 1 Habilidade de Escolha de Nivel 1 da sua classe acima para poder avancar para a Fase 5.";
         }
+      }
+
+      if (isBlocked) {
+        nextBtn.disabled = true;
+        nextBtn.classList.add("btn-disabled");
+        nextBtn.title = blockNoticeText;
       }
 
       nextBtn.addEventListener("click", () => this.nextStep());
       navButtons.appendChild(nextBtn);
 
-      if (isChoiceBlocked) {
+      if (isBlocked && blockNoticeText) {
         const warnNotice = document.createElement("div");
         warnNotice.className = "step-blocking-notice";
         warnNotice.innerHTML = `
           <span class="blocking-tag">Escolha Obrigatoria</span>
-          <span>Selecione 1 Habilidade de Escolha de Nivel 1 da sua classe acima para poder avancar para a Fase 5.</span>
+          <span>${blockNoticeText}</span>
         `;
         stepContainer.appendChild(warnNotice);
       }
@@ -394,7 +426,10 @@
 
         card.addEventListener("click", () => {
           this.charData.identity.vocationId = vId;
-          this.charData.skills.trained = [...(vDef.trainedSkills || [])];
+          const vocationSkills = vDef.trainedSkills || [];
+          const chosen = (this.charData.skills.chosen || []).filter((s) => !vocationSkills.includes(s));
+          this.charData.skills.chosen = chosen;
+          this.charData.skills.trained = [...vocationSkills, ...chosen];
           this.charData.abilities.vocationPowers = vDef.powers ? vDef.powers.map(p => p.id) : [];
 
           // Adiciona o kit padrao ao inventario se houver
@@ -421,6 +456,85 @@
       });
 
       section.appendChild(vocGrid);
+
+      // Se uma vocacao estiver selecionada, renderiza o painel de selecao de 4 pericias complementares
+      const selectedVoc = vocationsMap[this.charData.identity.vocationId];
+      if (selectedVoc) {
+        const vocationSkills = selectedVoc.trainedSkills || [];
+        const chosenSkills = this.charData.skills.chosen || [];
+
+        const skillsBox = document.createElement("div");
+        skillsBox.className = "card-sub-box skill-selection-box";
+
+        skillsBox.innerHTML = `
+          <div class="power-tier-header">
+            <h4 style="font-weight: 400; color: #FFFFFF; font-family: var(--font-heading); margin: 0 0 6px;">
+              Escolha de Perícias Treinadas (Total: 6 Perícias)
+            </h4>
+          </div>
+          <p style="color: #9E9AA6; font-size: 0.86rem; margin: 0 0 12px; line-height: 1.5;">
+            Sua vocação concede 2 perícias automáticas. Selecione exatamente <strong>4 perícias complementares</strong> da lista abaixo para totalizar 6 perícias treinadas com Vantagem.
+          </p>
+
+          <div class="skills-choice-counter">
+            <span>Vocação: <strong>2 Automáticas</strong></span>
+            <span>&bull;</span>
+            <span>Complementares: <span class="counter-highlight">${chosenSkills.length} / 4</span></span>
+            <span>&bull;</span>
+            <span>Total da Ficha: <strong>${2 + chosenSkills.length} / 6</strong></span>
+          </div>
+
+          <div class="skills-picker-grid">
+            ${Object.keys(Registry.SKILLS || {}).map((sId) => {
+              const sDef = Registry.SKILLS[sId];
+              const isVocation = vocationSkills.includes(sId);
+              const isChosen = chosenSkills.includes(sId);
+              let cardClass = "skill-pick-card";
+              let statusText = "Clique para Escolher";
+
+              if (isVocation) {
+                cardClass += " locked-vocation";
+                statusText = "Automática da Vocação";
+              } else if (isChosen) {
+                cardClass += " selected";
+                statusText = "Selecionada";
+              }
+
+              return `
+                <div class="${cardClass}" data-sid="${sId}">
+                  <div class="skill-pick-top">
+                    <span class="skill-pick-name">${sDef.name}</span>
+                    <span class="skill-pick-attr">${sDef.attrs.join("/").toUpperCase()}</span>
+                  </div>
+                  <p class="skill-pick-desc">${sDef.desc}</p>
+                  <span class="skill-pick-status">${statusText}</span>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        `;
+
+        const pickCards = skillsBox.querySelectorAll(".skill-pick-card:not(.locked-vocation)");
+        pickCards.forEach((c) => {
+          c.addEventListener("click", () => {
+            const sid = c.getAttribute("data-sid");
+            let currentChosen = this.charData.skills.chosen || [];
+            if (currentChosen.includes(sid)) {
+              currentChosen = currentChosen.filter((x) => x !== sid);
+            } else {
+              if (currentChosen.length < 4) {
+                currentChosen.push(sid);
+              }
+            }
+            this.charData.skills.chosen = currentChosen;
+            this.charData.skills.trained = [...vocationSkills, ...currentChosen];
+            this.updateCalculations();
+            this.render();
+          });
+        });
+
+        section.appendChild(skillsBox);
+      }
       return section;
     },
 
@@ -701,6 +815,12 @@
           <div class="review-stat-item">
             <span class="stat-name">Maestria</span>
             <span class="stat-val">+${maestry}</span>
+          </div>
+          <div class="review-stat-item" style="grid-column: 1 / -1;">
+            <span class="stat-name">Perícias Treinadas (Total: 6 com Vantagem)</span>
+            <span class="stat-val" style="font-size: 0.84rem; color: #D8B4FE;">
+              ${(this.charData.skills.trained || []).map(s => (Registry.SKILLS && Registry.SKILLS[s] ? Registry.SKILLS[s].name : s)).join(", ") || "Nenhuma selecionada"}
+            </span>
           </div>
         </div>
       `;

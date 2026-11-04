@@ -420,6 +420,7 @@
   color: #EDEDED;
   font-family: var(--font-heading);
   font-size: 0.9rem;
+  font-weight: 400 !important;
 }
 
 .viewer-power-desc {

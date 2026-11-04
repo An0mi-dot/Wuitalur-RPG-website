@@ -328,6 +328,118 @@
   border-left: 3px solid #A855F7;
 }
 
+/* 2.5 SELECAO DE PERICIAS COMPLEMENTARES */
+.skill-selection-box {
+  margin-top: 36px !important;
+  border-top: 1px solid #2C263A;
+  padding-top: 24px;
+}
+
+.skills-choice-counter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #141119;
+  border: 1px solid #2A2436;
+  padding: 10px 14px;
+  margin: 14px 0 16px;
+  font-size: 0.85rem;
+  color: #9E9AA6;
+}
+
+.skills-choice-counter strong {
+  color: #EDEDED;
+}
+
+.skills-choice-counter .counter-highlight {
+  color: #C084FC;
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+}
+
+.skills-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 12px;
+}
+
+.skill-pick-card {
+  background: #15131A;
+  border: 1px solid #282433;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+  box-shadow: 1px 1px 0 #000000;
+}
+
+.skill-pick-card:hover {
+  background: #1C1923;
+  border-color: #3E364E;
+}
+
+.skill-pick-card.selected {
+  background: #201A2B;
+  border-color: #7C3AED;
+  border-left: 3px solid #7C3AED;
+}
+
+.skill-pick-card.locked-vocation {
+  background: #171522;
+  border-color: #312942;
+  border-left: 3px solid #38BDF8;
+  cursor: default;
+}
+
+.skill-pick-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.skill-pick-name {
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  font-weight: 400;
+  color: #FFFFFF;
+}
+
+.skill-pick-attr {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  color: #8E8A96;
+}
+
+.skill-pick-desc {
+  font-size: 0.78rem;
+  color: #9E9AA6;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.skill-pick-status {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  color: #6E6877;
+  letter-spacing: 0.06em;
+  margin-top: 4px;
+}
+
+.skill-pick-card.selected .skill-pick-status {
+  color: #C084FC;
+  font-weight: 700;
+}
+
+.skill-pick-card.locked-vocation .skill-pick-status {
+  color: #38BDF8;
+  font-weight: 700;
+}
+
 /* 3. ATRIBUTOS ASSIGNER */
 .attributes-assigner-grid {
   display: flex;
@@ -450,6 +562,7 @@
 .char-power-title {
   font-family: var(--font-heading);
   font-size: 1.05rem;
+  font-weight: 400 !important;
   color: #FFFFFF;
   margin: 0 0 6px;
 }
@@ -508,6 +621,7 @@
 .choice-title {
   font-family: var(--font-heading);
   font-size: 0.95rem;
+  font-weight: 400 !important;
   color: #FFFFFF;
 }
 

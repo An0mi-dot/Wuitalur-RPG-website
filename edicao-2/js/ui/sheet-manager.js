@@ -335,14 +335,19 @@
         const skillsList = Object.values(calc.skills);
         skillsHtml = `
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px;">
-            ${skillsList.map((s) => `
-              <div style="background: #17141E; border: 1px solid ${s.trained ? "#4D3866" : "#282431"}; padding: 6px 10px; display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 0.8rem; color: ${s.trained ? "#C084FC" : "#D1CFD7"};">${s.name}</span>
-                <span style="font-family: var(--font-mono); font-size: 0.72rem; color: ${s.trained ? "#38BDF8" : "#8E8A96"};">
-                  ${s.trained ? "2d20kh1" : "1d20"}${s.attributeBonus >= 0 ? `+${s.attributeBonus}` : s.attributeBonus}
-                </span>
-              </div>
-            `).join("")}
+            ${skillsList.map((s) => {
+              const sign = s.attributeBonus >= 0 ? "+" : "-";
+              const absVal = Math.abs(s.attributeBonus);
+              const formulaText = s.trained ? `2d20 (Maior) ${sign} ${absVal}` : `1d20 ${sign} ${absVal}`;
+              return `
+                <div style="background: #17141E; border: 1px solid ${s.trained ? "#4D3866" : "#282431"}; padding: 6px 10px; display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-size: 0.8rem; color: ${s.trained ? "#C084FC" : "#D1CFD7"};">${s.name}</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.72rem; color: ${s.trained ? "#38BDF8" : "#8E8A96"};">
+                    ${formulaText}
+                  </span>
+                </div>
+              `;
+            }).join("")}
           </div>
         `;
       }
@@ -420,7 +425,7 @@
 
             <!-- PERICIAS -->
             <div>
-              <div class="viewer-section-title">Pericias (Vantagem = 2d20kh1 + Atributo)</div>
+              <div class="viewer-section-title">Pericias (Vantagem = 2d20 Maior + Atributo)</div>
               ${skillsHtml}
             </div>
 

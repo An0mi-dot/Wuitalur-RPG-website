@@ -119,7 +119,9 @@ Apenas nestas 4 perícias o jogador pode escolher entre dois atributos, de acord
 ---
 
 ### 2.3. Quantidade de Perícias Iniciais
-Na criação do personagem, cada herói escolhe exatamente **4 Perícias Treinadas** para a sua ficha (obtidas pela soma de sua Classe e Origem/Histórico).
+Na criação do personagem, cada herói possui um total de **6 Perícias Treinadas** na sua ficha:
+* **2 Perícias de Vocação**: Concedidas automaticamente pela origem do personagem.
+* **4 Perícias de Escolha Livre**: O jogador seleciona livremente outras 4 perícias entre as disponíveis na lista geral para compor o seu repertório prático e tático. Caso uma perícia de vocação se repita, ele escolhe outra normalmente.
 
 ---
 
