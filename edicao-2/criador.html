@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criador de Personagem &mdash; Wuitalur RPG 2.0</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="css/criador.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Sistema Base 2.0 (Alpha)</span>
+      </div>
+    </div>
+
+    <!-- BOTÃO VOLTAR AO CATÁLOGO DE SUPLEMENTOS -->
+    <a href="../suplementos.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar aos Suplementos</span>
+    </a>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="races.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="vocacoes.html" class="sidebar-link"><span class="icon"></span> Vocações</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="combate.html" class="sidebar-link"><span class="icon"></span> Combate</a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="classes.html" class="sidebar-link"><span class="icon"></span> Classes</a>
+      <a href="equipamentos.html" class="sidebar-link"><span class="icon"></span> Equipamentos</a>
+      <a href="conclave.html" class="sidebar-link"><span class="icon"></span> O Conclave</a>
+
+      <div class="sidebar-section-title">Ferramentas 2.0</div>
+      <a href="criador.html" class="sidebar-link active"><span class="icon"></span> Criador de Fichas</a>
+    </nav>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Criador de Personagem &mdash; Edi&ccedil;&atilde;o 2.0</h1>
+    </header>
+
+    <main class="page-content">
+      <div id="wizard-mount-point"></div>
+    </main>
+
+  </div>
+
+</div>
+
+<!-- SCRIPTS DO MOTOR E DA INTERFACE 2.0 -->
+<script src="js/engine/sheet-model.js"></script>
+<script src="js/engine/rules-registry.js"></script>
+<script src="js/engine/calculation-engine.js"></script>
+<script src="js/ui/dynamic-trackers.js"></script>
+<script src="js/ui/creator-wizard.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    WuCreatorWizard.init("wizard-mount-point", (charData, calculatedState) => {
+      // Notifica e redireciona ou exibe confirmacao
+      const name = charData.meta.name || "Aventureiro";
+      alert("Ficha de " + name + " salva com sucesso no armazenamento local.");
+    });
+  });
+</script>
+
+</body>
+</html>
