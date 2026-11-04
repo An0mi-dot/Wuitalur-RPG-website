@@ -86,7 +86,7 @@
         this.container.innerHTML = `
           <div class="empty-fichas-card">
             <h4>Nenhuma Ficha Registrada</h4>
-            <p>Voce ainda nao possui personagens criados na Edicao 2.0 sob o token <strong>${this.currentAuth.token}</strong>.</p>
+            <p>Voce ainda nao possui personagens criados na Edicao 2.0 sob o token ativo.</p>
             <a href="criador.html" class="btn-wizard btn-primary" style="text-decoration: none; margin-top: 8px;">
               Criar Primeiro Personagem
             </a>

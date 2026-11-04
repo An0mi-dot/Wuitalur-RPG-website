@@ -769,6 +769,12 @@
   color: #8E8A96;
 }
 
+.auth-token-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .auth-token-badge {
   font-family: var(--font-mono, monospace);
   font-weight: 700;
@@ -777,7 +783,36 @@
   background: #1F1929;
   border: 1px solid #3B2D4E;
   padding: 3px 8px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
+  min-width: 44px;
+  text-align: center;
+  display: inline-block;
+}
+
+.btn-token-toggle-eye {
+  background: #191622 !important;
+  border: 1px solid #332B42 !important;
+  color: #9E9AA6 !important;
+  cursor: pointer;
+  padding: 4px 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.16s ease;
+  border-radius: 0 !important;
+  box-shadow: 1px 1px 0 #000000 !important;
+  height: 26px;
+}
+
+.btn-token-toggle-eye:hover {
+  background: #252033 !important;
+  border-color: #4D3D66 !important;
+  color: #FFFFFF !important;
+  box-shadow: 2px 2px 0 #000000 !important;
+}
+
+.btn-token-toggle-eye svg {
+  display: block;
 }
 
 .auth-player-name {
@@ -789,6 +824,12 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.auth-input-eye-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .auth-token-input {

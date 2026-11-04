@@ -191,16 +191,26 @@
       const container = typeof containerOrId === "string" ? document.getElementById(containerOrId) : containerOrId;
       if (!container) return;
 
+      const EYE_OPEN_SVG = `<svg class="eye-icon eye-open" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+      const EYE_CLOSED_SVG = `<svg class="eye-icon eye-closed" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
+
       const renderBar = (authData) => {
         container.innerHTML = "";
         const bar = document.createElement("div");
         bar.className = "token-auth-bar";
 
         if (authData && authData.valid) {
+          let isTokenVisible = false;
+
           bar.innerHTML = `
             <div class="auth-bar-status">
               <span class="auth-bar-label">Autenticacao:</span>
-              <span class="auth-token-badge">${authData.token}</span>
+              <span class="auth-token-wrapper">
+                <span class="auth-token-badge" id="auth-token-display">****</span>
+                <button type="button" class="btn-token-toggle-eye" id="btn-toggle-token-eye" title="Revelar ou ocultar token" aria-label="Revelar ou ocultar token">
+                  ${EYE_OPEN_SVG}
+                </button>
+              </span>
               <span class="auth-player-name">${authData.playerName || "Jogador"}</span>
               <span class="badge-tag-passiva" style="margin-left: 6px;">${authData.roleLabel || "Conectado"}</span>
             </div>
@@ -208,6 +218,22 @@
               <button type="button" class="btn-auth-action btn-auth-switch" id="btn-auth-switch">Trocar Token</button>
             </div>
           `;
+
+          const tokenDisplay = bar.querySelector("#auth-token-display");
+          const toggleEyeBtn = bar.querySelector("#btn-toggle-token-eye");
+
+          if (toggleEyeBtn && tokenDisplay) {
+            toggleEyeBtn.addEventListener("click", () => {
+              isTokenVisible = !isTokenVisible;
+              if (isTokenVisible) {
+                tokenDisplay.textContent = authData.token;
+                toggleEyeBtn.innerHTML = EYE_CLOSED_SVG;
+              } else {
+                tokenDisplay.textContent = "****";
+                toggleEyeBtn.innerHTML = EYE_OPEN_SVG;
+              }
+            });
+          }
 
           const switchBtn = bar.querySelector("#btn-auth-switch");
           if (switchBtn) {
@@ -224,15 +250,33 @@
               <span style="color: #9E9AA6; font-size: 0.8rem;">Conecte seu token da Mesa Virtual para sincronizar fichas.</span>
             </div>
             <div class="auth-bar-form">
-              <input type="text" class="auth-token-input" id="auth-token-input-field" placeholder="Ex: R5K1" maxlength="12" autocomplete="off">
+              <div class="auth-input-eye-wrap">
+                <input type="password" class="auth-token-input" id="auth-token-input-field" placeholder="Ex: R5K1" maxlength="12" autocomplete="off">
+                <button type="button" class="btn-token-toggle-eye" id="btn-toggle-input-eye" title="Revelar ou ocultar token digitado" aria-label="Revelar ou ocultar token digitado">
+                  ${EYE_OPEN_SVG}
+                </button>
+              </div>
               <button type="button" class="btn-auth-action btn-auth-submit" id="btn-auth-submit">Conectar</button>
               <span class="auth-feedback-msg" id="auth-feedback-msg"></span>
             </div>
           `;
 
           const input = bar.querySelector("#auth-token-input-field");
+          const toggleInputEye = bar.querySelector("#btn-toggle-input-eye");
           const submitBtn = bar.querySelector("#btn-auth-submit");
           const msgEl = bar.querySelector("#auth-feedback-msg");
+
+          if (toggleInputEye && input) {
+            toggleInputEye.addEventListener("click", () => {
+              if (input.type === "password") {
+                input.type = "text";
+                toggleInputEye.innerHTML = EYE_CLOSED_SVG;
+              } else {
+                input.type = "password";
+                toggleInputEye.innerHTML = EYE_OPEN_SVG;
+              }
+            });
+          }
 
           const doAuth = async () => {
             const val = input.value.trim();
