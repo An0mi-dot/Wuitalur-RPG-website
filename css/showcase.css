@@ -1245,6 +1245,109 @@ body.has-showcase .page-content {
   margin: 18px 0;
 }
 
+/* ============================================================
+   ESTILOS ESTRUTURADOS PARA MECANICAS E COMPENDIO DE RACAS
+   ============================================================ */
+.compendium-content-body .race-ability {
+  background: #16141C !important;
+  border: 1px solid #282333 !important;
+  border-left: 3px solid var(--spotlight-accent, #7C3AED) !important;
+  padding: 18px 20px !important;
+  margin-bottom: 20px !important;
+}
+
+.compendium-content-body .race-ability h5 {
+  font-family: var(--font-heading) !important;
+  font-size: 1.15rem !important;
+  color: #FFFFFF !important;
+  margin: 0 0 10px 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  font-weight: 400 !important;
+}
+
+.compendium-content-body .race-subability {
+  background: #1A1722 !important;
+  border: 1px solid #2E273A !important;
+  border-left: 3px solid var(--spotlight-accent-light, #C084FC) !important;
+  padding: 14px 16px !important;
+  margin-top: 12px !important;
+}
+
+.compendium-content-body .race-subability h6 {
+  font-family: var(--font-heading) !important;
+  font-size: 0.95rem !important;
+  color: #EDEAF2 !important;
+  margin: 0 0 8px 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+  font-weight: 400 !important;
+}
+
+.compendium-content-body .race-subability p {
+  font-size: 0.88rem !important;
+  color: #B5B0C0 !important;
+  line-height: 1.6 !important;
+  margin: 0 !important;
+}
+
+.compendium-content-body .ability-tag {
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  padding: 3px 8px !important;
+  background: rgba(124, 58, 237, 0.15) !important;
+  border: 1px solid rgba(124, 58, 237, 0.35) !important;
+  color: var(--spotlight-accent-light, #C084FC) !important;
+}
+
+.compendium-content-body .ability-tag.tag-cost {
+  background: rgba(34, 211, 238, 0.12) !important;
+  border-color: rgba(34, 211, 238, 0.35) !important;
+  color: #38BDF8 !important;
+}
+
+.compendium-content-body .ability-tag.tag-negative {
+  background: rgba(239, 68, 68, 0.15) !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
+  color: #F87171 !important;
+}
+
+.compendium-content-body .ability-tag.tag-positive {
+  background: rgba(34, 197, 94, 0.15) !important;
+  border-color: rgba(34, 197, 94, 0.4) !important;
+  color: #4ADE80 !important;
+}
+
+.compendium-content-body .ability-tag.tag-critical {
+  background: rgba(250, 204, 21, 0.15) !important;
+  border-color: rgba(250, 204, 21, 0.4) !important;
+  color: #FACC15 !important;
+}
+
+.condition-callout-box {
+  background: #15131A !important;
+  border: 1px dashed #3A2F4C !important;
+  border-left: 3px solid #F59E0B !important;
+  padding: 10px 14px !important;
+  margin-top: 8px !important;
+  font-size: 0.82rem !important;
+  color: #D1CFD7 !important;
+  line-height: 1.5 !important;
+}
+
+.condition-callout-box strong {
+  color: #FBBF24 !important;
+}
+
 .compendium-search-suggestions {
   margin-bottom: 20px;
   padding: 12px 18px;
