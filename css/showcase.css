@@ -493,6 +493,201 @@ body.has-showcase .page-content {
 }
 
 /* ============================================================
+   GRID DE CARDS DE SELECAO (MODO RACAS)
+   ============================================================ */
+.showcase-hub-view.hub-grid-mode {
+  height: auto !important;
+  min-height: 100vh !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  overflow-y: auto !important;
+  padding: 80px 24px 60px !important;
+}
+
+.showcase-hub-hero.hub-grid-hero {
+  width: min(96%, 1280px) !important;
+  max-width: 1280px !important;
+  margin: 0 auto !important;
+}
+
+.showcase-hub-card.hub-grid-card {
+  max-width: 100% !important;
+  padding: 32px 30px !important;
+}
+
+.hub-race-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  width: 100%;
+  margin-top: 14px;
+}
+
+.hub-race-card {
+  background: #15131A !important;
+  border: 1px solid #282433 !important;
+  border-left: 3px solid var(--race-accent, #7C3AED) !important;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.hub-race-card:hover {
+  transform: translateY(-4px);
+  border-color: #4D3D66 !important;
+  border-left-color: var(--race-accent, #9333EA) !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.65), 0 0 18px rgba(124, 58, 237, 0.18);
+  background: #1A1722 !important;
+}
+
+.hub-race-card-media {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  background: #0E0C12;
+  overflow: hidden;
+}
+
+.hub-race-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.3s ease;
+}
+
+.hub-race-card:hover .hub-race-card-media img {
+  transform: scale(1.05);
+}
+
+.hub-race-media-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 40%, rgba(21, 19, 26, 0.95) 100%);
+  pointer-events: none;
+}
+
+.hub-race-nd-pill {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border: 1px solid currentColor;
+  text-transform: uppercase;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  background: rgba(18, 16, 22, 0.85);
+}
+
+.hub-race-card-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 10px;
+  background: transparent;
+}
+
+.hub-race-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hub-race-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: #FFFFFF;
+  margin: 0;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 400 !important;
+}
+
+.hub-race-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hub-race-chip {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  color: var(--race-accent, #C084FC);
+  background: rgba(124, 58, 237, 0.12);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  padding: 2px 6px;
+  letter-spacing: 0.04em;
+}
+
+.hub-race-card-desc {
+  font-size: 0.82rem;
+  color: #9E9AA6;
+  line-height: 1.45;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+}
+
+.hub-race-card-action {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid #231F2E;
+  margin-top: 4px;
+}
+
+.hub-race-action-text {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  color: var(--race-accent, #C084FC);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 0.16s ease;
+}
+
+.hub-race-card:hover .hub-race-action-text {
+  color: #FFFFFF;
+}
+
+.hub-race-action-arrow {
+  color: var(--race-accent, #7C3AED);
+  font-size: 0.95rem;
+  transition: transform 0.16s ease, color 0.16s ease;
+}
+
+.hub-race-card:hover .hub-race-action-arrow {
+  transform: translateX(4px);
+  color: #FFFFFF;
+}
+
+@media (max-width: 768px) {
+  .showcase-hub-view.hub-grid-mode {
+    padding: 70px 14px 40px !important;
+  }
+  .showcase-hub-card.hub-grid-card {
+    padding: 20px 14px !important;
+  }
+  .hub-race-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* ============================================================
    2. TELA DETALHADA DA CLASSE (SPLIT VIEW 2 COLUNAS)
    ============================================================ */
 .showcase-detail-view {

@@ -143,8 +143,9 @@ const ShowcaseEngine = {
   currentId: null,
   activeTopicIndex: 0,
   
-  // Dicionário de Conceitos / Tags para cada Classe
+  // Dicionário de Conceitos / Tags para cada Classe e Raça
   classConcepts: {
+    // Classes
     consagrados: ['ESTRATEGISTA', 'SUPORTE', 'CONTROLADOR'],
     compactador: ['DEFENSOR', 'COLOSSO', 'TANQUE'],
     bestial: ['ATACANTE', 'COLOSSO', 'DUELISTA'],
@@ -157,11 +158,27 @@ const ShowcaseEngine = {
     'atirador-espectral': ['ATACANTE', 'CANHÃO DE VIDRO', 'TÁTICO'],
     lampinario: ['ESTRATEGISTA', 'SUPORTE', 'UTILITÁRIO'],
     protegidos: ['DEFENSOR', 'TANQUE', 'TÁTICO'],
-    sobrevivente: ['N/A']
+    sobrevivente: ['N/A'],
+
+    // Raças
+    akivus: ['SILVESTRE', 'FLORA & VINHAS', 'FURTIVO'],
+    animalescos: ['FERAL', 'INSTINTO', 'PREDATÓRIO'],
+    plantiferos: ['VEGETAL', 'REGENERAÇÃO', 'CLOROFILA'],
+    humanos: ['ADAPTAÇÃO', 'VERSATILIDADE', 'DETERMINAÇÃO'],
+    vampiros: ['SANGUINÁRIO', 'CARGAS DE SANGUE', 'NOTURNO'],
+    'dragao-anao': ['RÉPTIL', 'DRACÔNICO', 'SOPRO & ESCAMAS'],
+    dragaoanao: ['RÉPTIL', 'DRACÔNICO', 'SOPRO & ESCAMAS'],
+    insectoides: ['QUITINOSO', 'EXOESQUELETO', 'MEMBROS EXTRAS'],
+    praguentos: ['TOXINAS', 'INFECÇÃO', 'RESISTÊNCIA'],
+    abissais: ['AQUÁTICO', 'PROFUNDEZAS', 'PRESSÃO ASTRAL'],
+    exos: ['AUTÔMATO', 'PONTOS DE CHASSI', 'OVERCLOCK'],
+    exo: ['AUTÔMATO', 'PONTOS DE CHASSI', 'OVERCLOCK'],
+    espectros: ['ANOMALIA', 'ESTABILIDADE CÓSMICA', 'GLITCH']
   },
 
-  // Funções Táticas / Dossiês de cada Classe
+  // Funções Táticas / Dossiês de cada Classe e Raça
   classRoles: {
+    // Classes
     consagrados: 'ESTRATEGISTA | SUPORTE | CONTROLADOR',
     compactador: 'DEFENSOR | COLOSSO | TANQUE',
     bestial: 'ATACANTE | COLOSSO | DUELISTA',
@@ -174,10 +191,25 @@ const ShowcaseEngine = {
     'atirador-espectral': 'ATACANTE | CANHÃO DE VIDRO | TÁTICO',
     lampinario: 'ESTRATEGISTA | SUPORTE | UTILITÁRIO',
     protegidos: 'DEFENSOR | TANQUE | TÁTICO',
-    sobrevivente: 'N/A'
+    sobrevivente: 'N/A',
+
+    // Raças
+    akivus: 'SILVESTRE | CONTROLADOR | FURTIVO',
+    animalescos: 'FERAL | AGILIDADE | INSTINTIVO',
+    plantiferos: 'VEGETAL | REGENERAÇÃO | RESILIENTE',
+    humanos: 'VERSÁTIL | ADAPTATIVO | DETERMINADO',
+    vampiros: 'SANGUINÁRIO | SUSTENTAÇÃO | PREDADOR',
+    'dragao-anao': 'DRACÔNICO | ROBUSTEZ | ELEMENTAL',
+    dragaoanao: 'DRACÔNICO | ROBUSTEZ | ELEMENTAL',
+    insectoides: 'QUITINOSO | MULTITAREFA | DEFENSOR',
+    praguentos: 'TOXINAS | INFECÇÃO | DEBILITANTE',
+    abissais: 'AQUÁTICO | PRESSÃO ASTRAL | SONDADOR',
+    exos: 'AUTÔMATO | PONTOS DE CHASSI | OVERCLOCK',
+    exo: 'AUTÔMATO | PONTOS DE CHASSI | OVERCLOCK',
+    espectros: 'ANOMALIA | ESTABILIDADE CÓSMICA | GLITCH'
   },
 
-  // Enquadramento e Posição Customizados para a Ilustração de cada Classe
+  // Enquadramento e Posição Customizados para a Ilustração de cada Classe e Raça
   // Otimizado com foco no busto (torso até a cabeça), com enquadramento harmonioso abaixo do título
   classFraming: {
     consagrados: { scale: 1.48, x: 0, y: -22 },
@@ -192,7 +224,22 @@ const ShowcaseEngine = {
     bestial: { scale: 1.05, x: 0, y: 0 },
     anomalo: { scale: 1.18, x: 0, y: -6 },
     'atirador-espectral': { scale: 1.35, x: 0, y: -34 },
-    sobrevivente: { scale: 1.08, x: 0, y: 0 }
+    sobrevivente: { scale: 1.08, x: 0, y: 0 },
+
+    // Raças
+    akivus: { scale: 1.15, x: 0, y: 0 },
+    animalescos: { scale: 1.12, x: 0, y: 0 },
+    plantiferos: { scale: 1.12, x: 0, y: 0 },
+    humanos: { scale: 1.12, x: 0, y: 0 },
+    vampiros: { scale: 1.15, x: 0, y: 0 },
+    'dragao-anao': { scale: 1.1, x: 0, y: 0 },
+    dragaoanao: { scale: 1.1, x: 0, y: 0 },
+    insectoides: { scale: 1.12, x: 0, y: 0 },
+    praguentos: { scale: 1.12, x: 0, y: 0 },
+    abissais: { scale: 1.12, x: 0, y: 0 },
+    exos: { scale: 1.12, x: 0, y: 0 },
+    exo: { scale: 1.12, x: 0, y: 0 },
+    espectros: { scale: 1.18, x: 0, y: 0 }
   },
 
   // Paletas de Cores Streetwear personalizadas para cada Classe e Raça
@@ -310,10 +357,12 @@ const ShowcaseEngine = {
     humanos: { accent: '#3B82F6', accentLight: '#93C5FD', contrast: '#FFFFFF', rgb: '59, 130, 246', darkTint: '#0A1C36', border: 'rgba(59, 130, 246, 0.45)' },
     vampiros: { accent: '#E11D48', accentLight: '#FDA4AF', contrast: '#FFFFFF', rgb: '225, 29, 72', darkTint: '#260B12', border: 'rgba(225, 29, 72, 0.45)' },
     dragaoanao: { accent: '#F97316', accentLight: '#FDBA74', contrast: '#000000', rgb: '249, 115, 22', darkTint: '#281408', border: 'rgba(249, 115, 22, 0.45)' },
+    'dragao-anao': { accent: '#F97316', accentLight: '#FDBA74', contrast: '#000000', rgb: '249, 115, 22', darkTint: '#281408', border: 'rgba(249, 115, 22, 0.45)' },
     insectoides: { accent: '#84CC16', accentLight: '#BEF264', contrast: '#000000', rgb: '132, 204, 22', darkTint: '#182208', border: 'rgba(132, 204, 22, 0.45)' },
     praguentos: { accent: '#DC2626', accentLight: '#FCA5A5', contrast: '#FFFFFF', rgb: '220, 38, 38', darkTint: '#260B0B', border: 'rgba(220, 38, 38, 0.45)' },
     abissais: { accent: '#0284C7', accentLight: '#7DD3FC', contrast: '#FFFFFF', rgb: '2, 132, 199', darkTint: '#061D2B', border: 'rgba(2, 132, 199, 0.45)' },
     exo: { accent: '#00D2FF', accentLight: '#67E8F9', contrast: '#000000', rgb: '0, 210, 255', darkTint: '#061C24', border: 'rgba(0, 210, 255, 0.45)' },
+    exos: { accent: '#00D2FF', accentLight: '#67E8F9', contrast: '#000000', rgb: '0, 210, 255', darkTint: '#061C24', border: 'rgba(0, 210, 255, 0.45)' },
     espectros: { accent: '#A855F7', accentLight: '#DDD6FE', contrast: '#FFFFFF', rgb: '168, 85, 247', darkTint: '#1D1730', border: 'rgba(168, 85, 247, 0.45)' }
   },
 
@@ -689,11 +738,15 @@ const ShowcaseEngine = {
         });
       }
 
+      const descEl = sec.querySelector('.race-description, p');
+      const description = descEl ? descEl.textContent.trim() : '';
+
       this.items.push({
         id,
         name,
         imgSrc,
         badge,
+        description,
         topics
       });
     });
@@ -991,6 +1044,9 @@ const ShowcaseEngine = {
 
     if (this.elements.hubView) {
       this.elements.hubView.style.display = 'flex';
+      if (this.mode === 'races') {
+        this.elements.hubView.classList.add('hub-grid-mode');
+      }
     }
     if (this.elements.detailView) {
       this.elements.detailView.style.display = 'none';
@@ -1028,53 +1084,128 @@ const ShowcaseEngine = {
       this.elements.detailView.style.display = 'flex';
     }
 
+    if (this.elements.btnBackHub) {
+      const backText = this.elements.btnBackHub.querySelector('.back-text');
+      if (backText) {
+        backText.textContent = this.mode === 'classes' ? 'Seleção de Classes' : 'Seleção de Raças';
+      }
+    }
+
     this.closeSidebar();
     this.selectItem(id, false);
     window.scrollTo(0, 0);
   },
 
   renderHubList(filterQuery = '') {
-    const container = this.elements.hubList || document.getElementById('showcase-hub-list');
-    if (!container) return;
+    const listContainer = this.elements.hubList || document.getElementById('showcase-hub-list');
+    const gridContainer = this.elements.hubGrid || document.getElementById('showcase-hub-grid');
+    if (!listContainer && !gridContainer) return;
+
     const q = (filterQuery || '').toLowerCase().trim();
-    container.innerHTML = '';
 
     const filtered = this.items.filter(it => {
       const nameMatch = it.name.toLowerCase().includes(q) || it.id.toLowerCase().includes(q);
       const tags = this.classConcepts[it.id] || [];
       const tagMatch = tags.some(t => t.toLowerCase().includes(q));
-      return nameMatch || tagMatch;
+      const descMatch = (it.description || '').toLowerCase().includes(q);
+      return nameMatch || tagMatch || descMatch;
     });
 
-    if (filtered.length === 0) {
-      container.innerHTML = `
-        <div class="hub-list-empty">
-          Nenhuma classe encontrada para o filtro.
-        </div>
-      `;
+    if (gridContainer) {
+      gridContainer.innerHTML = '';
+      if (filtered.length === 0) {
+        gridContainer.innerHTML = `
+          <div class="hub-list-empty" style="grid-column: 1 / -1;">
+            Nenhuma raça encontrada para o filtro.
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(it => {
+        const card = document.createElement('div');
+        card.className = 'hub-race-card font-scope-' + it.id;
+        card.setAttribute('data-class', it.id);
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('aria-label', 'Selecionar ' + it.name);
+
+        const badgeText = it.badge || (this.mode === 'classes' ? 'ND 1' : 'ND 1');
+        const ndMeta = this.getNDMeta(badgeText);
+        const tags = this.classConcepts[it.id] || [];
+        const tagChips = tags.slice(0, 2).map(t => `<span class="hub-race-chip">${t}</span>`).join('');
+        const p = this.classPalettes[it.id] || { accent: '#7C3AED' };
+        card.style.setProperty('--race-accent', p.accent);
+
+        card.innerHTML = `
+          <div class="hub-race-card-media">
+            <img src="${it.imgSrc}" alt="${it.name}" loading="lazy" decoding="async">
+            <div class="hub-race-media-overlay"></div>
+            <div class="hub-race-nd-pill" style="color: ${ndMeta.color}; border-color: ${ndMeta.color};">
+              ${badgeText}
+            </div>
+          </div>
+          <div class="hub-race-card-body">
+            <div class="hub-race-card-header">
+              <h3 class="hub-race-card-title">${it.name}</h3>
+              <div class="hub-race-chips-row">${tagChips}</div>
+            </div>
+            <p class="hub-race-card-desc">${it.description || ''}</p>
+            <div class="hub-race-card-action">
+              <span class="hub-race-action-text">Ver Dossiê da Raça</span>
+              <span class="hub-race-action-arrow">&rarr;</span>
+            </div>
+          </div>
+        `;
+
+        card.addEventListener('click', () => {
+          this.openClass(it.id, true);
+        });
+
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.openClass(it.id, true);
+          }
+        });
+
+        gridContainer.appendChild(card);
+      });
       return;
     }
 
-    filtered.forEach(it => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'hub-class-btn font-scope-' + it.id;
-      btn.setAttribute('data-class', it.id);
-      btn.setAttribute('aria-label', 'Selecionar ' + it.name);
+    if (listContainer) {
+      listContainer.innerHTML = '';
+      if (filtered.length === 0) {
+        listContainer.innerHTML = `
+          <div class="hub-list-empty">
+            Nenhuma classe encontrada para o filtro.
+          </div>
+        `;
+        return;
+      }
 
-      const displayName = it.id === 'anomalo' ? 'ANOMALO' : it.name;
+      filtered.forEach(it => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'hub-class-btn font-scope-' + it.id;
+        btn.setAttribute('data-class', it.id);
+        btn.setAttribute('aria-label', 'Selecionar ' + it.name);
 
-      btn.innerHTML = `
-        <span class="hub-btn-name font-class-${it.id}">${displayName}</span>
-        <span class="hub-btn-arrow">&#x2192;</span>
-      `;
+        const displayName = it.id === 'anomalo' ? 'ANOMALO' : it.name;
 
-      btn.addEventListener('click', () => {
-        this.openClass(it.id, true);
+        btn.innerHTML = `
+          <span class="hub-btn-name font-class-${it.id}">${displayName}</span>
+          <span class="hub-btn-arrow">&#x2192;</span>
+        `;
+
+        btn.addEventListener('click', () => {
+          this.openClass(it.id, true);
+        });
+
+        listContainer.appendChild(btn);
       });
-
-      container.appendChild(btn);
-    });
+    }
   },
 
   renderCompendium(item) {
