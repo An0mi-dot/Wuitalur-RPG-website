@@ -231,7 +231,7 @@ const ShowcaseEngine = {
     animalescos: { scale: 1.12, x: 0, y: 0 },
     plantiferos: { scale: 1.12, x: 0, y: 0 },
     humanos: { scale: 1.12, x: 0, y: 0 },
-    vampiros: { scale: 1.72, x: 0, y: -14 },
+    vampiros: { scale: 1.62, x: 0, y: -5 },
     'dragao-anao': { scale: 1.1, x: 0, y: 0 },
     dragaoanao: { scale: 1.1, x: 0, y: 0 },
     insectoides: { scale: 1.12, x: 0, y: 0 },
@@ -363,7 +363,7 @@ const ShowcaseEngine = {
     abissais: { accent: '#0284C7', accentLight: '#7DD3FC', contrast: '#FFFFFF', rgb: '2, 132, 199', darkTint: '#061D2B', border: 'rgba(2, 132, 199, 0.45)' },
     exo: { accent: '#00D2FF', accentLight: '#67E8F9', contrast: '#000000', rgb: '0, 210, 255', darkTint: '#061C24', border: 'rgba(0, 210, 255, 0.45)' },
     exos: { accent: '#00D2FF', accentLight: '#67E8F9', contrast: '#000000', rgb: '0, 210, 255', darkTint: '#061C24', border: 'rgba(0, 210, 255, 0.45)' },
-    espectros: { accent: '#A855F7', accentLight: '#DDD6FE', contrast: '#FFFFFF', rgb: '168, 85, 247', darkTint: '#1D1730', border: 'rgba(168, 85, 247, 0.45)' }
+    espectros: { accent: '#F8FAFC', accentLight: '#FFFFFF', contrast: '#0B0D11', rgb: '248, 250, 252', darkTint: '#0B0D11', border: 'rgba(255, 255, 255, 0.55)' }
   },
 
   applyClassTheme(itemId) {

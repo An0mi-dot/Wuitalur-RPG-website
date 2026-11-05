@@ -2465,6 +2465,101 @@ body.has-showcase .page-content {
 }
 
 /* ============================================================
+   ESTÉTICA GLITCH E CROMÁTICA PERSONALIZADA — ESPECTROS
+   ============================================================ */
+.spotlight-stage[data-class="espectros"] .spotlight-geo-backdrop {
+  background: linear-gradient(150deg, #101216 0%, #0c0e12 55%, #050608 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 
+    -3px 0 0 rgba(255, 34, 68, 0.55),
+    3px 0 0 rgba(0, 240, 255, 0.55),
+    inset 0 0 24px rgba(0, 255, 102, 0.12),
+    0 24px 60px rgba(0, 0, 0, 0.95) !important;
+}
+
+.spotlight-stage[data-class="espectros"] .spotlight-crosshair.corner-tl {
+  border-top-color: #00F0FF !important;
+  border-left-color: #00F0FF !important;
+  filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.8));
+}
+
+.spotlight-stage[data-class="espectros"] .spotlight-crosshair.corner-tr {
+  border-top-color: #00FF66 !important;
+  border-right-color: #00FF66 !important;
+  filter: drop-shadow(0 0 6px rgba(0, 255, 102, 0.8));
+}
+
+.spotlight-stage[data-class="espectros"] .spotlight-crosshair.corner-bl {
+  border-bottom-color: #FF2244 !important;
+  border-left-color: #FF2244 !important;
+  filter: drop-shadow(0 0 6px rgba(255, 34, 68, 0.8));
+}
+
+.spotlight-stage[data-class="espectros"] .spotlight-crosshair.corner-br {
+  border-bottom-color: #FFFFFF !important;
+  border-right-color: #FFFFFF !important;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
+}
+
+.spotlight-stage[data-class="espectros"] .spotlight-tag.tag-tape-primary {
+  background: #00FF66 !important;
+  color: #06080A !important;
+  font-weight: 700 !important;
+  border-color: #00FF66 !important;
+  box-shadow: 0 0 10px rgba(0, 255, 102, 0.45) !important;
+}
+
+.spotlight-stage[data-class="espectros"] .spotlight-tag.tag-tape-dark {
+  background: #080D14 !important;
+  color: #00F0FF !important;
+  font-weight: 700 !important;
+  border-color: #00F0FF !important;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.35) !important;
+}
+
+.spotlight-stage[data-class="espectros"] .spotlight-tag.tag-tape-hazard {
+  background: #14080A !important;
+  color: #FF2244 !important;
+  font-weight: 700 !important;
+  border-color: #FF2244 !important;
+  box-shadow: 0 0 10px rgba(255, 34, 68, 0.4) !important;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 34, 68, 0.25),
+    rgba(255, 34, 68, 0.25) 6px,
+    transparent 6px,
+    transparent 12px
+  ) !important;
+}
+
+.spotlight-stage[data-class="espectros"] .spotlight-class-title {
+  color: #FFFFFF !important;
+  text-shadow: -2px 0 #FF2244, 2px 0 #00F0FF !important;
+}
+
+.spotlight-stage[data-class="espectros"] .spotlight-tech-hud {
+  color: #FFFFFF !important;
+  text-shadow: -1px 0 #FF2244, 1px 0 #00F0FF !important;
+}
+
+.spotlight-stage[data-class="espectros"] .spotlight-diagonal-slash.slash-1 {
+  background: rgba(0, 240, 255, 0.08) !important;
+  border-top-color: rgba(0, 240, 255, 0.35) !important;
+}
+
+.spotlight-stage[data-class="espectros"] .spotlight-diagonal-slash.slash-2 {
+  background: rgba(255, 34, 68, 0.08) !important;
+}
+
+[data-class="espectros"] .compendium-content-body .race-ability {
+  border-left-color: #00F0FF !important;
+}
+
+[data-class="espectros"] .compendium-content-body .race-subability {
+  border-left-color: #00FF66 !important;
+}
+
+/* ============================================================
    MODO CONTEÚDO (AO CLICAR EM UM TÓPICO)
    ============================================================ */
 .showcase-content-view {
