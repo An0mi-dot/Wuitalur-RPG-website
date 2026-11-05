@@ -231,7 +231,7 @@ const ShowcaseEngine = {
     animalescos: { scale: 1.12, x: 0, y: 0 },
     plantiferos: { scale: 1.12, x: 0, y: 0 },
     humanos: { scale: 1.12, x: 0, y: 0 },
-    vampiros: { scale: 1.15, x: 0, y: 0 },
+    vampiros: { scale: 1.72, x: 0, y: -14 },
     'dragao-anao': { scale: 1.1, x: 0, y: 0 },
     dragaoanao: { scale: 1.1, x: 0, y: 0 },
     insectoides: { scale: 1.12, x: 0, y: 0 },

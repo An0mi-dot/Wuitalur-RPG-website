@@ -496,12 +496,34 @@ body.has-showcase .page-content {
    GRID DE CARDS DE SELECAO (MODO RACAS)
    ============================================================ */
 .showcase-hub-view.hub-grid-mode {
-  height: auto !important;
-  min-height: 100vh !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
   justify-content: flex-start !important;
   align-items: center !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  padding: 60px 24px 80px !important;
+  box-sizing: border-box !important;
+  scrollbar-width: thin;
+  scrollbar-color: #7C3AED #121114;
+}
+
+.showcase-viewport:has(.hub-grid-mode) {
   overflow-y: auto !important;
-  padding: 80px 24px 60px !important;
+}
+
+.showcase-hub-view.hub-grid-mode::-webkit-scrollbar {
+  width: 8px;
+}
+.showcase-hub-view.hub-grid-mode::-webkit-scrollbar-track {
+  background: #121114;
+}
+.showcase-hub-view.hub-grid-mode::-webkit-scrollbar-thumb {
+  background: #382D4A;
+  border-left: 1px solid #7C3AED;
+}
+.showcase-hub-view.hub-grid-mode::-webkit-scrollbar-thumb:hover {
+  background: #7C3AED;
 }
 
 .showcase-hub-hero.hub-grid-hero {
