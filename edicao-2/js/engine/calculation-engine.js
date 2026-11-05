@@ -94,8 +94,8 @@
     // 3. Calculo de Energia Astral (EA)
     let maxEa = 20;
     if (classDef) {
-      const initEa = classDef.baseEaInitial || 25;
-      const perLevelEa = classDef.baseEaPerLevel || 10;
+      const initEa = classDef.baseEaInitial !== undefined ? classDef.baseEaInitial : 20;
+      const perLevelEa = classDef.baseEaPerLevel !== undefined ? classDef.baseEaPerLevel : 5;
       maxEa = initEa + ((level - 1) * perLevelEa);
 
       // Bonus Permanentes de EA (ex: Fonte de Luz no Nivel 4)

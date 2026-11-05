@@ -698,7 +698,7 @@
             <span class="card-category">${cDef.role}</span>
           </div>
           <h4 class="card-name">${cDef.name}</h4>
-          <p class="card-desc">Vida: ${cDef.baseHpInitial} + VIG inicial | EA: ${cDef.baseEaInitial} + 10/nivel</p>
+          <p class="card-desc">Vida: ${cDef.baseHpInitial} + VIG inicial | EA: ${cDef.baseEaInitial} + ${cDef.baseEaPerLevel}/nivel</p>
           <div class="card-footer-power">
             <span>Resistencias: ${cDef.savingThrows.join(" e ").toUpperCase()}</span>
           </div>
@@ -885,7 +885,7 @@
       aside.id = "wizard-preview-sidebar";
 
       const vitals = this.calculationState?.vitals || { resourceLabel: "Vida", max: 10, resourceType: "pv" };
-      const ea = this.calculationState?.vitals?.energyAstral?.max || 25;
+      const ea = this.calculationState?.vitals?.energyAstral?.max ?? 20;
       const def = this.calculationState?.defense?.total || 10;
       const load = this.calculationState?.load || { current: 0, max: 5 };
       const maestry = this.calculationState?.maestry || 2;

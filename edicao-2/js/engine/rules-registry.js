@@ -183,8 +183,8 @@
       role: "Canhao de Vidro / Suporte Radiante",
       baseHpInitial: 10,
       baseHpPerLevel: 6,
-      baseEaInitial: 30,
-      baseEaPerLevel: 10,
+      baseEaInitial: 20,
+      baseEaPerLevel: 5,
       savingThrows: ["exp", "men"],
       proficiencies: {
         weapons: ["espadas_curtas", "lancas", "macas", "martelos_leves", "foices", "arcos_leves", "bestas"],
@@ -258,8 +258,8 @@
       role: "Colosso Inabalavel",
       baseHpInitial: 14,
       baseHpPerLevel: 8,
-      baseEaInitial: 25,
-      baseEaPerLevel: 10,
+      baseEaInitial: 15,
+      baseEaPerLevel: 3,
       savingThrows: ["for", "vig"],
       proficiencies: {
         weapons: ["simples", "martelos", "clavas_pesadas", "espadas_longas", "machados", "desarmados"],

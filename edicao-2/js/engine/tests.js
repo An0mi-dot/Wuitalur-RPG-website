@@ -135,16 +135,17 @@ const compactadorNv4 = SheetModel.createDefaultCharacter({
 });
 const vitalsCompNv4 = CalculationEngine.calculateVitals(compactadorNv4, { for: 2, des: 1, vig: 2, men: 0, exp: 1 }, 2);
 assertEqual(vitalsCompNv4.max, 58, "Compactador Nv 4 com VIG 2 e Massa Titanica deve ter 58 PV maximos");
+assertEqual(vitalsCompNv4.energyAstral.max, 24, "Compactador Nv 4 deve ter 15 + 3*3 = 24 EA maxima");
 
 // Consagrados Nivel 4: Nivel 4 desbloqueia Fonte de Luz (+15 EA permanentes)
-// Base EA: 30 + 3 * 10 = 60. + 15 (Fonte de Luz) = 75 EA
+// Base EA compacta: 20 + 3 * 5 = 35. + 15 (Fonte de Luz) = 50 EA
 const consagradoNv4 = SheetModel.createDefaultCharacter({
   progression: { level: 4 },
   identity: { classId: "consagrados", raceId: "humanos" },
   attributes: { base: { for: 0, des: 1, vig: 1, men: 2, exp: 3 } }
 });
 const vitalsConsNv4 = CalculationEngine.calculateVitals(consagradoNv4, { for: 0, des: 1, vig: 1, men: 2, exp: 3 }, 2);
-assertEqual(vitalsConsNv4.energyAstral.max, 75, "Consagrado Nv 4 com Fonte de Luz deve ter 75 EA maxima");
+assertEqual(vitalsConsNv4.energyAstral.max, 50, "Consagrado Nv 4 com Fonte de Luz deve ter 50 EA maxima");
 
 // Caso B: Raca Atipica — Espect@&%s (Estabilidade Cosmica)
 // Formula: (10 + MEN) + (level - 1) * (4 + MEN)

@@ -433,8 +433,8 @@ Os Consagrados são devotos escolhidos que canalizam a energia primordial das di
 #### 2. Características da Classe
 * **Pontos de Vida Iniciais**: 10 + Vigor
 * **Pontos de Vida por Nível**: 6 + Vigor
-* **Energia Astral Inicial**: 30
-* **Energia Astral por Nível**: 10
+* **Energia Astral Inicial**: 20
+* **Energia Astral por Nível**: 5
 
 #### 3. Proficiências
 * **Armas**: Espadas curtas, lanças, maças, martelos leves, foices, arcos leves e bestas.
@@ -546,8 +546,8 @@ Conhecidos como Dobradores da Vida, os Compactadores são guerreiros devotados �
 #### 2. Características da Classe
 * **Pontos de Vida Iniciais**: 14 + Vigor
 * **Pontos de Vida por Nível**: 8 + Vigor
-* **Energia Astral Inicial**: 25
-* **Energia Astral por Nível**: 10
+* **Energia Astral Inicial**: 15
+* **Energia Astral por Nível**: 3
 
 #### 3. Proficiências
 * **Armas**: Armas simples, martelos, clavas pesadas, espadas longas, machados e ataques desarmados.
