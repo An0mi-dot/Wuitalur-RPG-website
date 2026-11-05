@@ -231,7 +231,7 @@ const ShowcaseEngine = {
     animalescos: { scale: 1.12, x: 0, y: 0 },
     plantiferos: { scale: 1.12, x: 0, y: 0 },
     humanos: { scale: 1.12, x: 0, y: 0 },
-    vampiros: { scale: 1.62, x: 0, y: -5 },
+    vampiros: { scale: 1.22, x: 0, y: 2 },
     'dragao-anao': { scale: 1.1, x: 0, y: 0 },
     dragaoanao: { scale: 1.1, x: 0, y: 0 },
     insectoides: { scale: 1.12, x: 0, y: 0 },
@@ -239,7 +239,7 @@ const ShowcaseEngine = {
     abissais: { scale: 1.12, x: 0, y: 0 },
     exos: { scale: 1.12, x: 0, y: 0 },
     exo: { scale: 1.12, x: 0, y: 0 },
-    espectros: { scale: 1.18, x: 0, y: 0 }
+    espectros: { scale: 1.18, x: 0, y: -16 }
   },
 
   // Paletas de Cores Streetwear personalizadas para cada Classe e Raça

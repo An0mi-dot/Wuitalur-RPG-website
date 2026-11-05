@@ -2196,6 +2196,18 @@ body.has-showcase .page-content {
   --art-offset-y: 0%;
 }
 
+.showcase-hero-art[data-class="vampiros"] {
+  --art-scale: 1.22;
+  --art-offset-x: 0%;
+  --art-offset-y: 2%;
+}
+
+.showcase-hero-art[data-class="espectros"] {
+  --art-scale: 1.18;
+  --art-offset-x: 0%;
+  --art-offset-y: -16%;
+}
+
 /* --- CAMADA 3: TIPOGRAFIA NO TOPO E BADGES (FOREGROUND LAYER - 100% FIXA) --- */
 .spotlight-layer-foreground {
   z-index: 50;
