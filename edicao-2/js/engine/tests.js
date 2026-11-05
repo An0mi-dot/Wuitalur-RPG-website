@@ -319,6 +319,58 @@ global.WuRulesRegistry = RulesRegistry;
   const afterDeleteList = await SheetStorage.loadSheets("R5K1");
   assertEqual(afterDeleteList.length, 0, "Ficha excluida deve ser removida da lista do usuario");
 
+  // ------------------------------------------------------------
+  // 10. Validacao e Restricao de Navegacao no Assistente (Wizard)
+  // ------------------------------------------------------------
+  console.log("\n--- 10. Validacao e Restricao de Navegacao no Assistente (Wizard) ---");
+  const Wizard = require("../ui/creator-wizard.js");
+  Wizard.charData = SheetModel.createDefaultCharacter();
+  Wizard.charData.identity.raceId = null;
+  Wizard.charData.identity.vocationId = null;
+  Wizard.charData.identity.classId = null;
+  Wizard.charData.skills.chosen = [];
+  Wizard.assignedPills = { for: null, des: null, vig: null, men: null, exp: null };
+  Wizard.currentStep = 1;
+
+  assertEqual(Wizard.isStepValid(1), false, "Fase 1 deve ser invalida sem raca definida");
+  assertEqual(Wizard.canGoToStep(2), false, "Navegacao para Fase 2 deve ser bloqueada sem raca");
+  assertEqual(Wizard.canGoToStep(5), false, "Pulo para Fase 5 a partir da Fase 1 deve ser bloqueado");
+
+  // Preenche raca
+  Wizard.charData.identity.raceId = "humanos";
+  assertEqual(Wizard.isStepValid(1), true, "Fase 1 valida apos escolher raca");
+  assertEqual(Wizard.canGoToStep(2), true, "Navegacao para Fase 2 liberada apos escolher raca");
+  assertEqual(Wizard.canGoToStep(3), false, "Pulo para Fase 3 deve ser bloqueado sem vocacao e pericias");
+
+  // Avanca para Fase 2
+  Wizard.currentStep = 2;
+  assertEqual(Wizard.canGoToStep(1), true, "Retorno para Fase 1 anterior sempre permitido");
+  Wizard.charData.identity.vocationId = "academico";
+  Wizard.charData.skills.chosen = ["atletismo", "furtividade", "percepcao"];
+  assertEqual(Wizard.isStepValid(2), false, "Fase 2 invalida com apenas 3 pericias de 4");
+  assertEqual(Wizard.canGoToStep(3), false, "Avanco para Fase 3 bloqueado com pericias incompletas");
+
+  Wizard.charData.skills.chosen.push("sobrevivencia");
+  assertEqual(Wizard.isStepValid(2), true, "Fase 2 valida com vocacao e 4 pericias complementares");
+  assertEqual(Wizard.canGoToStep(3), true, "Avanco para Fase 3 liberado com requisitos da Fase 2");
+
+  // Fase 3
+  Wizard.currentStep = 3;
+  assertEqual(Wizard.canGoToStep(4), false, "Pulo para Fase 4 bloqueado sem distribuir atributos");
+  assertEqual(Wizard.canGoToStep(5), false, "Pulo para Fase 5 a partir da Fase 3 deve ser bloqueado");
+  Wizard.assignedPills = { for: 0, des: 1, vig: 2, men: 3, exp: 4 };
+  assertEqual(Wizard.isStepValid(3), true, "Fase 3 valida com os 5 atributos distribuidos");
+  assertEqual(Wizard.canGoToStep(4), true, "Avanco para Fase 4 liberado");
+
+  // Fase 4
+  Wizard.currentStep = 4;
+  assertEqual(Wizard.canGoToStep(5), false, "Avanco para Fase 5 bloqueado sem classe e sem escolha de nivel 1");
+  Wizard.charData.identity.classId = "compactador";
+  assertEqual(Wizard.canGoToStep(5), false, "Avanco para Fase 5 bloqueado apenas com classe sem escolha de nivel 1");
+  Wizard.charData.abilities = { choices: { "1": "pulso_gravitacional" } };
+  assertEqual(Wizard.isStepValid(4), true, "Fase 4 valida com classe e escolha de nivel 1");
+  assertEqual(Wizard.canGoToStep(5), true, "Avanco para Fase 5 liberado com todos os passos preenchidos");
+
   console.log("\n================================================");
   console.log(`TOTAL DE TESTES: ${totalTests}`);
   console.log(`PASSOU: ${passedTests}`);

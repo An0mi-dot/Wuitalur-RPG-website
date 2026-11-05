@@ -47,44 +47,99 @@
       }
     },
 
-    setStep(stepNum) {
-      if (this.currentStep === 2 && stepNum > 2) {
-        const vocSelected = Boolean(this.charData.identity.vocationId);
-        const chosenCount = (this.charData.skills.chosen || []).length;
-        if (!vocSelected || chosenCount !== 4) {
-          this.render();
-          return;
+    isStepValid(stepNum) {
+      if (!this.charData) return false;
+      switch (stepNum) {
+        case 1:
+          return Boolean(this.charData.identity && this.charData.identity.raceId);
+        case 2: {
+          const vocSelected = Boolean(this.charData.identity && this.charData.identity.vocationId);
+          const chosenCount = (this.charData.skills && this.charData.skills.chosen || []).length;
+          return vocSelected && chosenCount === 4;
         }
-      }
-      if (this.currentStep === 4 && stepNum > 4) {
-        const choiceSelected = Boolean(this.charData.abilities && this.charData.abilities.choices && this.charData.abilities.choices["1"]);
-        if (!choiceSelected) {
-          this.render();
-          return;
+        case 3: {
+          if (!this.assignedPills) return false;
+          const keys = ["for", "des", "vig", "men", "exp"];
+          return keys.every((k) => typeof this.assignedPills[k] === "number" && this.assignedPills[k] !== null);
         }
-      }
-      if (stepNum >= 1 && stepNum <= this.totalSteps) {
-        this.currentStep = stepNum;
-        this.render();
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        case 4: {
+          const classSelected = Boolean(this.charData.identity && this.charData.identity.classId);
+          const choiceSelected = Boolean(this.charData.abilities && this.charData.abilities.choices && this.charData.abilities.choices["1"]);
+          return classSelected && choiceSelected;
+        }
+        case 5:
+          return true;
+        default:
+          return true;
       }
     },
 
-    nextStep() {
-      if (this.currentStep === 2) {
-        const vocSelected = Boolean(this.charData.identity.vocationId);
-        const chosenCount = (this.charData.skills.chosen || []).length;
-        if (!vocSelected || chosenCount !== 4) {
-          this.render();
-          return;
-        }
+    canGoToStep(targetStep) {
+      if (targetStep < 1 || targetStep > this.totalSteps) return false;
+      if (targetStep <= this.currentStep) return true;
+      for (let s = 1; s < targetStep; s++) {
+        if (!this.isStepValid(s)) return false;
       }
-      if (this.currentStep === 4) {
-        const choiceSelected = Boolean(this.charData.abilities && this.charData.abilities.choices && this.charData.abilities.choices["1"]);
-        if (!choiceSelected) {
-          this.render();
-          return;
+      return true;
+    },
+
+    getStepBlockReason(stepNum) {
+      switch (stepNum) {
+        case 1:
+          if (!this.charData.identity || !this.charData.identity.raceId) {
+            return "Selecione uma Raca para seu personagem antes de avancar para a Fase 2.";
+          }
+          return "";
+        case 2: {
+          const vocSelected = Boolean(this.charData.identity && this.charData.identity.vocationId);
+          const chosenCount = (this.charData.skills && this.charData.skills.chosen || []).length;
+          if (!vocSelected) {
+            return "Selecione uma Vocacao de origem antes de avancar para a Fase 3.";
+          }
+          if (chosenCount !== 4) {
+            return `Selecione exatamente 4 pericias complementares (${chosenCount}/4) para totalizar as 6 pericias treinadas antes de avancar para a Fase 3.`;
+          }
+          return "";
         }
+        case 3: {
+          const keys = ["for", "des", "vig", "men", "exp"];
+          const assignedCount = keys.filter((k) => this.assignedPills && typeof this.assignedPills[k] === "number" && this.assignedPills[k] !== null).length;
+          if (assignedCount < 5) {
+            return `Distribua todos os valores da matriz [+3, +2, +1, +1, 0] nos cinco atributos (${assignedCount}/5) antes de avancar para a Fase 4.`;
+          }
+          return "";
+        }
+        case 4: {
+          const classSelected = Boolean(this.charData.identity && this.charData.identity.classId);
+          const choiceSelected = Boolean(this.charData.abilities && this.charData.abilities.choices && this.charData.abilities.choices["1"]);
+          if (!classSelected) {
+            return "Selecione uma Classe para seu personagem antes de avancar para a Fase 5.";
+          }
+          if (!choiceSelected) {
+            return "Selecione 1 Habilidade de Escolha de Nivel 1 da sua classe acima para poder avancar para a Fase 5.";
+          }
+          return "";
+        }
+        default:
+          return "";
+      }
+    },
+
+    setStep(stepNum) {
+      if (stepNum < 1 || stepNum > this.totalSteps) return;
+      if (!this.canGoToStep(stepNum)) {
+        this.render();
+        return;
+      }
+      this.currentStep = stepNum;
+      this.render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
+
+    nextStep() {
+      if (!this.isStepValid(this.currentStep)) {
+        this.render();
+        return;
       }
       if (this.currentStep < this.totalSteps) {
         this.setStep(this.currentStep + 1);
@@ -156,26 +211,8 @@
       nextBtn.className = "btn-wizard btn-primary";
       nextBtn.textContent = this.currentStep === this.totalSteps ? "Concluir Ficha" : "Proximo Passo";
 
-      let isBlocked = false;
-      let blockNoticeText = "";
-
-      if (this.currentStep === 2) {
-        const vocSelected = Boolean(this.charData.identity.vocationId);
-        const chosenCount = (this.charData.skills.chosen || []).length;
-        if (!vocSelected) {
-          isBlocked = true;
-          blockNoticeText = "Selecione uma Vocacao de origem antes de avancar para a Fase 3.";
-        } else if (chosenCount !== 4) {
-          isBlocked = true;
-          blockNoticeText = `Selecione exatamente 4 pericias complementares (${chosenCount}/4) para totalizar as 6 pericias treinadas antes de avancar para a Fase 3.`;
-        }
-      } else if (this.currentStep === 4) {
-        const choiceSelected = Boolean(this.charData.abilities && this.charData.abilities.choices && this.charData.abilities.choices["1"]);
-        if (!choiceSelected) {
-          isBlocked = true;
-          blockNoticeText = "Selecione 1 Habilidade de Escolha de Nivel 1 da sua classe acima para poder avancar para a Fase 5.";
-        }
-      }
+      const isBlocked = !this.isStepValid(this.currentStep);
+      const blockNoticeText = isBlocked ? this.getStepBlockReason(this.currentStep) : "";
 
       if (isBlocked) {
         nextBtn.disabled = true;
@@ -223,12 +260,22 @@
       stepsData.forEach((s) => {
         const item = document.createElement("button");
         item.type = "button";
-        item.className = `wizard-step-indicator ${s.num === this.currentStep ? "active" : ""} ${s.num < this.currentStep ? "completed" : ""}`;
+        const isCurrent = s.num === this.currentStep;
+        const isCompleted = s.num < this.currentStep && this.isStepValid(s.num);
+        const canAccess = this.canGoToStep(s.num);
+
+        item.className = `wizard-step-indicator ${isCurrent ? "active" : ""} ${isCompleted ? "completed" : ""} ${!canAccess ? "disabled" : ""}`;
+        if (!canAccess) {
+          item.disabled = true;
+          item.setAttribute("aria-disabled", "true");
+        } else {
+          item.addEventListener("click", () => this.setStep(s.num));
+        }
+
         item.innerHTML = `
-          <span class="step-badge">${s.num < this.currentStep ? "&#10003;" : s.num}</span>
+          <span class="step-badge">${isCompleted ? "&#10003;" : s.num}</span>
           <span class="step-label">${s.title}</span>
         `;
-        item.addEventListener("click", () => this.setStep(s.num));
         wrap.appendChild(item);
       });
 
