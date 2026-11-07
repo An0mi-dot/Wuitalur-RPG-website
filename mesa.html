@@ -1273,9 +1273,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.8.8"></script>
 
-<script src="js/mesa.js?v=2.3.1"></script>
+<script src="js/mesa.js?v=2.3.2"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.3.1</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.3.2</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -2061,6 +2061,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         <p class="combat-modal-desc">
           Selecione quem será o oponente da batalha. A tela de combate mudará instantaneamente para todos os jogadores com o nome e o vídeo correspondente.
         </p>
+        <div id="combat-local-badge" style="display:none; margin: 12px 0; padding: 10px 14px; background: rgba(245, 158, 11, 0.12); border: 1px solid #f59e0b; border-radius: 4px; font-size: 0.78rem; color: #f59e0b; font-family: var(--font-mono, monospace); line-height: 1.5;">
+          <strong>MODO LOCAL ATIVO:</strong> Executando em ambiente de teste local. Este combate não será transmitido aos jogadores remotos nem salvo no banco de dados.
+        </div>
 
         <div class="combat-section-subtitle">OPONENTES DA CAMPANHA</div>
         <div class="combat-presets-grid" id="combat-presets-grid">

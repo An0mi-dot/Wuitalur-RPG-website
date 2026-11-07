@@ -10493,11 +10493,31 @@ const MesaCombate = {
     if (drop) drop.style.display = 'none';
   },
 
+  isLocalEnvironment() {
+    try {
+      const h = window.location.hostname;
+      return h === 'localhost' || h === '127.0.0.1' || h === '' || window.location.protocol === 'file:';
+    } catch(e) {
+      return false;
+    }
+  },
+
+  forceRemoteSync: false,
+
+  canBroadcast() {
+    if (this.isLocalEnvironment() && !this.forceRemoteSync) {
+      return false;
+    }
+    return true;
+  },
+
   getChannel() {
+    if (!this.canBroadcast()) return null;
     return (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel) || null;
   },
 
   saveCombatStateDebounced() {
+    if (!this.canBroadcast()) return;
     if (this._saveCombatTimeout) {
       clearTimeout(this._saveCombatTimeout);
     }
@@ -10507,6 +10527,7 @@ const MesaCombate = {
   },
 
   async saveCombatStateToSupabase() {
+    if (!this.canBroadcast()) return;
     if (!window.MesaApp || !MesaApp.supabase || !MesaApp.state || !MesaApp.state.isMaster) return;
     try {
       const { data } = await MesaApp.supabase
@@ -10559,6 +10580,11 @@ const MesaCombate = {
     const videoInput = document.getElementById('combat-custom-video');
     if (nameInput) nameInput.value = this.opponentName || 'Ratos';
     if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=3';
+
+    const localNotice = document.getElementById('combat-local-badge');
+    if (localNotice) {
+      localNotice.style.display = this.isLocalEnvironment() ? 'block' : 'none';
+    }
   },
 
   closeSelectModal() {
