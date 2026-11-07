@@ -5,7 +5,82 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.2.9';
+const MESA_VERSION = 'v2.3.1';
+const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
+  'Raciocínio Lógico': {
+    nome: 'Raciocínio Lógico',
+    custo: '2 PE',
+    desc: 'Ao analisar um enigma, mecanismo de tranca, terminal ou mensagem cifrada, pode gastar 2 PE para subir o dado de Mente em 1 degrau no teste de decifração. Se tiver sucesso, o Mestre revela a lógica do mecanismo ou a pista direta para o próximo passo.'
+  },
+  'Lábia Convincente': {
+    nome: 'Lábia Convincente',
+    custo: '2 PE',
+    desc: 'Ao negociar com porteiros, policiais ou testemunhas hesitantes, pode gastar 2 PE para transformar uma Falha simples em um Sucesso comum em testes de persuasão e suborno, ou para obter acesso imediato a uma área restrita sem precisar arrombar portas.'
+  },
+  'Disciplina Sob Fogo': {
+    nome: 'Disciplina Sob Fogo',
+    custo: '1 PE',
+    desc: 'Ignora qualquer Desvantagem imposta por penumbra ou escuridão em seus ataques e ferramentas. Quando estiver sob o efeito do Dado de Pavor, pode gastar 1 PE para anular a penalidade do Pavor na rolagem atual.'
+  },
+  'Solitário Resiliente': {
+    nome: 'Solitário Resiliente',
+    custo: 'Passiva',
+    desc: 'Sempre que estiver a mais de 6B de distância de qualquer aliado ou completamente sozinho em um cômodo, sobe em 1 degrau seus dados de Força e Vigor para testes de Esquiva, Defesa e manobras de fuga.'
+  },
+  'Quebrar a Tensão': {
+    nome: 'Quebrar a Tensão',
+    custo: '2 PE',
+    desc: 'Imediatamente após um combate, armadilha ou perseguição, pode gastar 2 PE com uma Ação Padrão para soltar uma piada. Todos os aliados que puderem ouvi-lo recuperam 1d4 pontos na Barra de Estresse. Limite de uma vez por cena de respiro.'
+  },
+  'Por um Triz': {
+    nome: 'Por um Triz',
+    custo: '3 PE',
+    desc: 'Como uma Reação ao sofrer um golpe que acertaria ou ao falhar em uma Esquiva, pode gastar 3 PE para que um acidente bizarro do ambiente salve sua vida. O ataque inimigo erra completamente e você sofre zero de dano, mas você termina a ação com a condição Caído no chão.'
+  },
+  'Intimidação Física': {
+    nome: 'Intimidação Física',
+    custo: '2 PE',
+    desc: 'Pode gastar 2 PE com uma Ação Padrão para uma investida brutal. Contra portas ou barricadas, sobe o dado de Força em 1 degrau e dobra o dano de impacto para arrombar. Contra um humanoide, força um teste resistido de Força; se vencer, deixa o alvo Caído e Abalado até o fim do próximo turno dele.'
+  },
+  'Carisma Natural': {
+    nome: 'Carisma Natural',
+    custo: '2 PE',
+    desc: 'Possui Vantagem natural em testes de Mente para persuadir ou acalmar civis neutros. Pode gastar 2 PE em uma conversa para fazer uma pergunta incisiva adicional sem levantar suspeitas ou para reduzir a Dificuldade do teste social em 4 pontos.'
+  },
+  'Olhar Investigativo': {
+    nome: 'Olhar Investigativo',
+    custo: '2 PE',
+    desc: 'Pode gastar 2 PE para realizar uma busca minuciosa com Ação Bônus em vez de Ação Padrão, recebendo Vantagem no teste de Mente para encontrar compartimentos secretos, travas ocultas ou fios de armadilhas no cômodo.'
+  },
+  'Instinto Andarilho': {
+    nome: 'Instinto Andarilho',
+    custo: '2 PE',
+    desc: 'Possui Vantagem permanente em testes de Sobrevivência para traçar rotas e se orientar no escuro. Em perseguições, pode gastar 2 PE como Ação Livre para identificar uma rota alternativa, concedendo +2B de deslocamento a si mesmo e a um aliado adjacente na rodada.'
+  },
+  'Frente ao Perigo': {
+    nome: 'Frente ao Perigo',
+    custo: '2 PE',
+    desc: 'Como uma Reação ao declarar a retirada do grupo de um cômodo ou corredor estreito, gasta 2 PE para barrar a passagem. Aliados recuam sem sofrer ataques de oportunidade e ganham Vantagem no teste de fuga. O Corajoso ganha +1 degrau no dado de Defesa, sendo o último a sair.'
+  },
+  'Recusa em Cair': {
+    nome: 'Recusa em Cair',
+    custo: '3 PE',
+    desc: 'Ao sofrer dano que o deixaria com 0 PV, gasta 3 PE para permanecer de pé com exatamente 1 PV. Limite de uma vez por sessão.'
+  }
+};
+
+function normalizeFiosDoMedoHabilidades(habs) {
+  if (!Array.isArray(habs)) return [];
+  return habs.map(h => {
+    if (!h || !h.nome) return h;
+    const canon = FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES[h.nome.trim()];
+    if (canon) {
+      return { ...h, custo: canon.custo, desc: canon.desc };
+    }
+    return h;
+  });
+}
+
 
 // SVG CONSTANTS (Sem Emojis)
 const SVG_ICONS = {
@@ -1042,7 +1117,7 @@ const MesaApp = {
       habilidades: [
         { nome: 'Sopro Ancestral', custo: '4 PE', desc: 'Expele um cone de energia elemental (frio, fogo ou ácido) de 3m. Inimigos na área sofrem dano igual a uma rolagem de Força e devem passar em teste de Vigor (CT 13) ou ficam atordoados por 1 rodada.' },
         { nome: 'Conexão Sensorial', custo: '2 PE', desc: 'Usa suas antenas para se comunicar telepaticamente com aliados a até 20m por 1 cena. Transmite emoções, imagens simples e intenções.' },
-        { nome: 'Carisma Natural', custo: 'Passiva', desc: 'Testemunhas e habitantes locais sempre confiam em você e compartilham boatos e segredos da cidade.' }
+        { nome: 'Carisma Natural', custo: '2 PE', desc: 'Possui Vantagem natural em testes de Mente para persuadir ou acalmar civis neutros. Pode gastar 2 PE em uma conversa para fazer uma pergunta incisiva adicional sem levantar suspeitas ou para reduzir a Dificuldade do teste social em 4 pontos.' }
       ]
     };
 
@@ -1077,7 +1152,7 @@ const MesaApp = {
       habilidades: [
         { nome: 'Mordida Vampírica', custo: '3 PE', desc: 'Morde um alvo adjacente para drenar sangue. Causa dano igual a uma rolagem de Força e restaura PV iguais à metade do dano causado.' },
         { nome: 'Presença Hipnótica', custo: '2 PE', desc: 'Exerce magnetismo sobrenatural. Ganha vantagem em testes de Mente para intimidar ou convencer até o fim da cena.' },
-        { nome: 'Raciocínio Lógico', custo: '2 PE', desc: 'Pode gastar 2 PE para analisar uma cena de enigma, mecanismo ou texto cifrado e deduzir instantaneamente um padrão oculto.' }
+        { nome: 'Raciocínio Lógico', custo: '2 PE', desc: 'Ao analisar um enigma, mecanismo de tranca, terminal ou mensagem cifrada, pode gastar 2 PE para subir o dado de Mente em 1 degrau no teste de decifração. Se tiver sucesso, o Mestre revela a lógica do mecanismo ou a pista direta para o próximo passo.' }
       ]
     };
 
@@ -1112,7 +1187,7 @@ const MesaApp = {
       habilidades: [
         { nome: 'Mordida Vampírica', custo: '3 PE', desc: 'Morde um alvo adjacente para drenar sangue. Causa dano igual a uma rolagem de Força e restaura PV iguais à metade do dano causado.' },
         { nome: 'Presença Hipnótica', custo: '2 PE', desc: 'Exerce magnetismo sobrenatural. Ganha vantagem em testes de Mente para intimidar ou convencer até o fim da cena.' },
-        { nome: 'Olhar Investigativo', custo: '2 PE', desc: 'Gasta 2 PE para notar instantaneamente marcas de arranhões, botões falsos ou compartimentos secretos na cena.' }
+        { nome: 'Olhar Investigativo', custo: '2 PE', desc: 'Pode gastar 2 PE para realizar uma busca minuciosa com Ação Bônus em vez de Ação Padrão, recebendo Vantagem no teste de Mente para encontrar compartimentos secretos, travas ocultas ou fios de armadilhas no cômodo.' }
       ]
     };
 
@@ -1177,7 +1252,7 @@ const MesaApp = {
       habilidades: [
         { nome: 'Percepção Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguçam. Ganha vantagem em testes de Mente para detectar presenças, sons ou cheiros suspeitos por 1 cena.' },
         { nome: 'Instinto de Sobrevivência', custo: '3 PE', desc: 'Em situações de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou Força para a próxima ação.' },
-        { nome: 'Intimidação Física', custo: '2 PE', desc: 'Gasta 2 PE para subjugar NPCs humanos ou abrir portas emperradas com uma ombrada violenta.' }
+        { nome: 'Intimidação Física', custo: '2 PE', desc: 'Pode gastar 2 PE com uma Ação Padrão para uma investida brutal. Contra portas ou barricadas, sobe o dado de Força em 1 degrau e dobra o dano de impacto para arrombar. Contra um humanoide, força um teste resistido de Força; se vencer, deixa o alvo Caído e Abalado até o fim do próximo turno dele.' }
       ]
     };
 
@@ -1210,7 +1285,7 @@ const MesaApp = {
       ],
       pericias: ['Atletismo (Força)', 'Diplomacia (Mente)', 'Intimidação (Força/Mente)', 'Percepção (Mente)'],
       habilidades: [
-        { nome: 'Quebrar a Tensão', custo: 'Passiva', desc: 'Com uma piada ou comentário sarcástico, reduz em 1d4 a Barra de Estresse de todos os aliados após um momento de pânico.' },
+        { nome: 'Quebrar a Tensão', custo: '2 PE', desc: 'Imediatamente após um combate, armadilha ou perseguição, pode gastar 2 PE com uma Ação Padrão para soltar uma piada. Todos os aliados que puderem ouvi-lo recuperam 1d4 pontos na Barra de Estresse. Limite de uma vez por cena de respiro.' },
         { nome: 'Mira Telemétrica', custo: '3 PE', desc: 'Sensores ópticos calculam vento, distância e trajetória. Ganha vantagem em testes de ataque à distância até o fim da cena.' },
         { nome: 'Torque Forçado', custo: '2 PE', desc: 'Trava engrenagens no solo para aplicar força bruta. Ganha +d4 em testes de Força para erguer cargas, arrombar portas ou resistir a ser empurrado.' }
       ]
@@ -1280,7 +1355,7 @@ const MesaApp = {
       ],
       pericias: ['Intimidação', 'Engenharia', 'Atletismo', 'História'],
       habilidades: [
-        { nome: 'Recusa em Cair', custo: '3 PE', desc: 'Ao sofrer dano que o deixaria com 0 PV, gasta 3 PE para permanecer de pé com exatamente 1 PV (uma vez por sessão).' },
+        { nome: 'Recusa em Cair', custo: '3 PE', desc: 'Ao sofrer dano que o deixaria com 0 PV, gasta 3 PE para permanecer de pé com exatamente 1 PV. Limite de uma vez por sessão.' },
         { nome: 'Percepção Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguçam. Ganha vantagem em testes de Mente para detectar presenças, sons ou cheiros suspeitos por 1 cena.' },
         { nome: 'Instinto de Sobrevivência', custo: '3 PE', desc: 'Em situações de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou Força para a próxima ação.' }
       ]
@@ -1375,7 +1450,7 @@ const MesaApp = {
             })(),
             bonus: typeof raw.bonus === 'string' ? JSON.parse(raw.bonus || '[]') : (raw.bonus || []),
             pericias: typeof raw.pericias === 'string' ? JSON.parse(raw.pericias || '[]') : (raw.pericias || []),
-            habilidades: (typeof raw.habilidades === 'string' ? JSON.parse(raw.habilidades || '[]') : (raw.habilidades || []))
+            habilidades: normalizeFiosDoMedoHabilidades(typeof raw.habilidades === 'string' ? JSON.parse(raw.habilidades || '[]') : (raw.habilidades || []))
               .filter(h => {
                 if (!h || !h.nome) return false;
                 const clean = h.nome.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
@@ -1399,7 +1474,7 @@ const MesaApp = {
               p.habilidades.push({
                 nome: 'Olhar Investigativo',
                 custo: '2 PE',
-                desc: 'Gasta 2 PE para notar instantaneamente marcas de arranhões, botões falsos ou compartimentos secretos na cena.'
+                desc: 'Pode gastar 2 PE para realizar uma busca minuciosa com Ação Bônus em vez de Ação Padrão, recebendo Vantagem no teste de Mente para encontrar compartimentos secretos, travas ocultas ou fios de armadilhas no cômodo.'
               });
             }
 
@@ -1506,7 +1581,7 @@ const MesaApp = {
           habilidades: [
             { nome: 'Sopro Ancestral', custo: '4 PE', desc: 'Expele um cone de energia elemental (frio, fogo ou ácido) de 3m. Inimigos na área sofrem dano igual a uma rolagem de Força e devem passar em teste de Vigor (CT 13) ou ficam atordoados por 1 rodada.' },
             { nome: 'Conexão Sensorial', custo: '2 PE', desc: 'Usa suas antenas para se comunicar telepaticamente com aliados a até 20m por 1 cena. Transmite emoções, imagens simples e intenções.' },
-            { nome: 'Carisma Natural', custo: 'Passiva', desc: 'Testemunhas e habitantes locais sempre confiam em você e compartilham boatos e segredos da cidade.' }
+            { nome: 'Carisma Natural', custo: '2 PE', desc: 'Possui Vantagem natural em testes de Mente para persuadir ou acalmar civis neutros. Pode gastar 2 PE em uma conversa para fazer uma pergunta incisiva adicional sem levantar suspeitas ou para reduzir a Dificuldade do teste social em 4 pontos.' }
           ]
         };
       }
@@ -1522,7 +1597,7 @@ const MesaApp = {
           habilidades: [
             { nome: 'Mordida Vampírica', custo: '3 PE', desc: 'Morde um alvo adjacente para drenar sangue. Causa dano igual a uma rolagem de Força e restaura PV iguais à metade do dano causado.' },
             { nome: 'Presença Hipnótica', custo: '2 PE', desc: 'Exerce magnetismo sobrenatural. Ganha vantagem em testes de Mente para intimidar ou convencer até o fim da cena.' },
-            { nome: 'Raciocínio Lógico', custo: '2 PE', desc: 'Pode gastar 2 PE para analisar uma cena de enigma, mecanismo ou texto cifrado e deduzir instantaneamente um padrão oculto.' }
+            { nome: 'Raciocínio Lógico', custo: '2 PE', desc: 'Ao analisar um enigma, mecanismo de tranca, terminal ou mensagem cifrada, pode gastar 2 PE para subir o dado de Mente em 1 degrau no teste de decifração. Se tiver sucesso, o Mestre revela a lógica do mecanismo ou a pista direta para o próximo passo.' }
           ]
         };
       }
@@ -1537,7 +1612,7 @@ const MesaApp = {
           habilidades: [
             { nome: 'Mordida Vampírica', custo: '3 PE', desc: 'Morde um alvo adjacente para drenar sangue. Causa dano igual a uma rolagem de Força e restaura PV iguais à metade do dano causado.' },
             { nome: 'Presença Hipnótica', custo: '2 PE', desc: 'Exerce magnetismo sobrenatural. Ganha vantagem em testes de Mente para intimidar ou convencer até o fim da cena.' },
-            { nome: 'Olhar Investigativo', custo: '2 PE', desc: 'Gasta 2 PE para notar instantaneamente marcas de arranhões, botões falsos ou compartimentos secretos na cena.' }
+            { nome: 'Olhar Investigativo', custo: '2 PE', desc: 'Pode gastar 2 PE para realizar uma busca minuciosa com Ação Bônus em vez de Ação Padrão, recebendo Vantagem no teste de Mente para encontrar compartimentos secretos, travas ocultas ou fios de armadilhas no cômodo.' }
           ]
         };
       }
@@ -1573,7 +1648,7 @@ const MesaApp = {
           habilidades: [
             { nome: 'Percepção Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguçam. Ganha vantagem em testes de Mente para detectar presenças, sons ou cheiros suspeitos por 1 cena.' },
             { nome: 'Instinto de Sobrevivência', custo: '3 PE', desc: 'Em situações de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou Força para a próxima ação.' },
-            { nome: 'Intimidação Física', custo: '2 PE', desc: 'Gasta 2 PE para subjugar NPCs humanos ou abrir portas emperradas com uma ombrada violenta.' }
+            { nome: 'Intimidação Física', custo: '2 PE', desc: 'Pode gastar 2 PE com uma Ação Padrão para uma investida brutal. Contra portas ou barricadas, sobe o dado de Força em 1 degrau e dobra o dano de impacto para arrombar. Contra um humanoide, força um teste resistido de Força; se vencer, deixa o alvo Caído e Abalado até o fim do próximo turno dele.' }
           ]
         };
       }
@@ -1589,7 +1664,7 @@ const MesaApp = {
           ],
           pericias: ['Atletismo (Força)', 'Diplomacia (Mente)', 'Intimidação (Força/Mente)', 'Percepção (Mente)'],
           habilidades: [
-            { nome: 'Quebrar a Tensão', custo: 'Passiva', desc: 'Com uma piada ou comentário sarcástico, reduz em 1d4 a Barra de Estresse de todos os aliados após um momento de pânico.' },
+            { nome: 'Quebrar a Tensão', custo: '2 PE', desc: 'Imediatamente após um combate, armadilha ou perseguição, pode gastar 2 PE com uma Ação Padrão para soltar uma piada. Todos os aliados que puderem ouvi-lo recuperam 1d4 pontos na Barra de Estresse. Limite de uma vez por cena de respiro.' },
             { nome: 'Mira Telemétrica', custo: '3 PE', desc: 'Sensores ópticos calculam vento, distância e trajetória. Ganha vantagem em testes de ataque à distância até o fim da cena.' },
             { nome: 'Torque Forçado', custo: '2 PE', desc: 'Trava engrenagens no solo para aplicar força bruta. Ganha +d4 em testes de Força para erguer cargas, arrombar portas ou resistir a ser empurrado.' }
           ]
@@ -1627,7 +1702,7 @@ const MesaApp = {
           ],
           pericias: ['Intimidação', 'Engenharia', 'Atletismo', 'História'],
           habilidades: [
-            { nome: 'Recusa em Cair', custo: '3 PE', desc: 'Ao sofrer dano que o deixaria com 0 PV, gasta 3 PE para permanecer de pé com exatamente 1 PV (uma vez por sessão).' },
+            { nome: 'Recusa em Cair', custo: '3 PE', desc: 'Ao sofrer dano que o deixaria com 0 PV, gasta 3 PE para permanecer de pé com exatamente 1 PV. Limite de uma vez por sessão.' },
             { nome: 'Percepção Aprimorada', custo: '2 PE', desc: 'Seus sentidos animais se aguçam. Ganha vantagem em testes de Mente para detectar presenças, sons ou cheiros suspeitos por 1 cena.' },
             { nome: 'Instinto de Sobrevivência', custo: '3 PE', desc: 'Em situações de perigo iminente, o corpo reage antes da mente. Sobe 1 degrau no dado de Vigor ou Força para a próxima ação.' }
           ]
@@ -2577,7 +2652,7 @@ const MesaApp = {
 
     let rawAttrs = player.atributos || {};
     let skills = player.pericias || [];
-    let habs = player.habilidades || [];
+    let habs = normalizeFiosDoMedoHabilidades(player.habilidades || []);
     let bonusList = player.bonus && player.bonus.length > 0 ? player.bonus : [
       { origem: `Raça (${player.raca || 'Vampiro'})`, desc: '+d4 em Mente' },
       { origem: `Arquétipo (${player.arquetipo || 'Curioso'})`, desc: '+d4 em Mente' }
