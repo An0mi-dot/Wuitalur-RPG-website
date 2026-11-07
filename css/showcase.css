@@ -134,8 +134,9 @@ body.has-showcase.is-detail-view .sidebar {
   transform: translateX(-100%);
 }
 
-body.has-showcase.is-detail-view .sidebar.is-open {
-  transform: translateX(0);
+body.has-showcase .sidebar.open,
+body.has-showcase .sidebar.is-open {
+  transform: translateX(0) !important;
   box-shadow: 12px 0 50px rgba(0, 0, 0, 0.95) !important;
 }
 
@@ -144,15 +145,18 @@ body.has-showcase .sidebar-backdrop {
   inset: 0;
   background: rgba(18, 17, 20, 0.85);
   backdrop-filter: blur(8px);
-  z-index: 2400;
+  z-index: 9990 !important;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.24s ease;
 }
 
-body.has-showcase .sidebar-backdrop.is-open {
-  opacity: 1;
-  pointer-events: auto;
+body.has-showcase .sidebar-backdrop.open,
+body.has-showcase .sidebar-backdrop.is-open,
+body.has-showcase .sidebar-overlay.open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
 }
 
 body.has-showcase .main-wrapper {
@@ -1368,24 +1372,36 @@ body.has-showcase .page-content {
 
 @media (max-width: 1024px) {
   .showcase-detail-view {
-    flex-direction: column;
-    overflow-y: auto;
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
   }
   .showcase-detail-left {
-    width: 100%;
-    min-width: 0;
-    max-width: none;
-    height: 50vh;
-    border-right: none;
-    border-bottom: 1px solid #2C2833;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 46vh !important;
+    min-height: 290px !important;
+    max-height: 420px !important;
+    border-right: none !important;
+    border-bottom: 2px solid #2C2833 !important;
   }
   .showcase-detail-right {
-    height: auto;
-    overflow: visible;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 54vh !important;
+    overflow: visible !important;
+    flex: none !important;
+    box-shadow: none !important;
   }
   .compendium-scroll-pane {
-    height: auto;
-    overflow: visible;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
   }
 }
 
@@ -1398,18 +1414,193 @@ body.has-showcase .page-content {
 @media (max-width: 860px) {
   body.has-showcase {
     overflow-y: auto !important;
+    overflow-x: hidden !important;
     height: auto !important;
+    min-height: 100vh !important;
   }
   body.has-showcase .app-layout {
     height: auto !important;
-    overflow: visible !important;
+    min-height: 100vh !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+  }
+  body.has-showcase .sidebar {
+    transform: translateX(-100%) !important;
+    width: 280px !important;
+    max-width: 85vw !important;
+    height: 100vh !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    z-index: 9995 !important;
+  }
+  body.has-showcase .sidebar.open,
+  body.has-showcase .sidebar.is-open {
+    transform: translateX(0) !important;
+    box-shadow: 10px 0 40px rgba(0, 0, 0, 0.95) !important;
   }
   body.has-showcase .main-wrapper {
     margin-left: 0 !important;
-    width: 100% !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
     height: auto !important;
+    min-height: 100vh !important;
+    max-height: none !important;
     overflow-y: visible !important;
+    overflow-x: hidden !important;
   }
+  body.has-showcase .main-content {
+    height: auto !important;
+    min-height: 100vh !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+    width: 100% !important;
+  }
+
+  /* HUB VIEW NO CELULAR */
+  .showcase-hub-view {
+    height: auto !important;
+    min-height: 100vh !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+    justify-content: flex-start !important;
+    padding: 24px 14px 100px !important;
+  }
+  .showcase-hub-hero {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+  }
+  .showcase-hub-card {
+    padding: 22px 14px 18px !important;
+    gap: 14px !important;
+  }
+  .hub-card-title {
+    font-size: 1.8rem !important;
+  }
+  .showcase-hub-list-wrap {
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 6px !important;
+  }
+  .hub-class-btn {
+    padding: 12px 14px !important;
+  }
+  .hub-race-cards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    margin-top: 10px !important;
+  }
+  .hub-race-card-media {
+    height: 180px !important;
+  }
+
+  /* DETAIL VIEW NO CELULAR */
+  .showcase-detail-view {
+    flex-direction: column !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+    background: #121114 !important;
+  }
+  .showcase-detail-left {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 44vh !important;
+    min-height: 300px !important;
+    max-height: 390px !important;
+    border-right: none !important;
+    border-bottom: 2px solid #2C2833 !important;
+    flex-shrink: 0 !important;
+    position: relative !important;
+    overflow: hidden !important;
+  }
+  .showcase-detail-left::after {
+    display: none !important;
+  }
+  .showcase-detail-left .spotlight-viewport {
+    width: 100% !important;
+    height: 100% !important;
+    padding-top: 48px !important;
+  }
+  .spotlight-hitbox {
+    pointer-events: none !important;
+  }
+  .spotlight-class-title {
+    font-size: clamp(1.8rem, 6.5vw, 2.3rem) !important;
+  }
+  .showcase-detail-right {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 56vh !important;
+    max-height: none !important;
+    overflow: visible !important;
+    flex: none !important;
+    box-shadow: none !important;
+    border-left: none !important;
+  }
+  .showcase-detail-right::before {
+    display: none !important;
+  }
+  .compendium-header {
+    padding: 14px 14px 10px !important;
+    gap: 10px !important;
+  }
+  .compendium-header-main {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+  .compendium-topic-nav {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    padding-bottom: 6px !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+  }
+  .compendium-nav-btn {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+    padding: 8px 12px !important;
+    font-size: 0.8rem !important;
+  }
+  .compendium-scroll-pane {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 16px 14px 110px !important;
+  }
+  .showcase-detail-topbar {
+    top: 10px !important;
+    left: 10px !important;
+    right: 10px !important;
+    justify-content: flex-start !important;
+  }
+
+  /* REMOCAO DO MENU HAMBURGER SUPERIOR NO CELULAR */
+  .showcase-btn-system-menu,
+  .showcase-hub-menu-btn,
+  .showcase-hamburger-btn,
+  #showcase-btn-detail-sidebar,
+  #showcase-hub-menu-btn,
+  #showcase-hamburger-btn {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
   .showcase-viewport {
     display: flex;
     flex-direction: column;

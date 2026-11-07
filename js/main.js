@@ -116,14 +116,20 @@ document.addEventListener('DOMContentLoaded', () => {
   function closeSidebar() {
     if (!sidebar) return;
     sidebar.classList.remove('open');
+    sidebar.classList.remove('is-open');
     overlay.classList.remove('open');
+    const backdrop = document.getElementById('sidebar-backdrop');
+    if (backdrop) backdrop.classList.remove('is-open');
     document.querySelectorAll('.sidebar-toggle').forEach(t => t.textContent = '☰');
   }
 
   function openSidebar() {
     if (!sidebar) return;
     sidebar.classList.add('open');
+    sidebar.classList.add('is-open');
     overlay.classList.add('open');
+    const backdrop = document.getElementById('sidebar-backdrop');
+    if (backdrop) backdrop.classList.add('is-open');
     document.querySelectorAll('.sidebar-toggle').forEach(t => t.textContent = '✕');
   }
 
@@ -131,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleBtn = e.target.closest('.sidebar-toggle');
     if (toggleBtn && sidebar) {
       e.stopPropagation();
-      if (sidebar.classList.contains('open')) {
+      if (sidebar.classList.contains('open') || sidebar.classList.contains('is-open')) {
         closeSidebar();
       } else {
         openSidebar();

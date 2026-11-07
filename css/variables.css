@@ -785,29 +785,27 @@ code, .mono {
   position: fixed;
   bottom: var(--space-lg);
   right: var(--space-lg);
-  z-index: 1100 !important;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
+  z-index: 9999 !important;
+  width: 52px;
+  height: 52px;
   background: var(--purple-main);
   color: #fff;
   border: 2px solid #ffffff;
   border-radius: 0;
-  box-shadow: 4px 4px 0px var(--shadow-color);
-  font-size: 1.2rem;
+  box-shadow: 4px 4px 0px #000000;
+  font-size: 1.3rem;
   cursor: pointer;
-  box-shadow: var(--shadow-lg);
   transition: transform var(--transition-fast);
   -webkit-tap-highlight-color: transparent;
 }
-.sidebar-toggle:hover { transform: scale(1.1); }
+.sidebar-toggle:hover { transform: scale(1.08); }
 
 /* Sidebar overlay backdrop */
 .sidebar-overlay {
   position: fixed;
   inset: 0;
-  z-index: 1040 !important;
-  background: rgba(0, 0, 0, 0.5);
+  z-index: 9990 !important;
+  background: rgba(0, 0, 0, 0.7);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -817,31 +815,46 @@ code, .mono {
   pointer-events: auto;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 860px) {
   .sidebar {
     transform: translateX(-100%);
-    z-index: 1050 !important;
+    z-index: 9995 !important;
     width: 280px !important;
     max-width: 85vw !important;
   }
-  .sidebar.open {
-    transform: translateX(0);
-    box-shadow: 6px 0 0 #000000;
+  .sidebar.open,
+  .sidebar.is-open {
+    transform: translateX(0) !important;
+    box-shadow: 10px 0 40px rgba(0, 0, 0, 0.95) !important;
   }
   .sidebar-overlay {
-    z-index: 1040 !important;
+    z-index: 9990 !important;
   }
   .sidebar-overlay.open {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
   }
   .main-wrapper { margin-left: 0; }
-  .sidebar-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1100 !important;
+  
+  /* Remove o menu hamburger superior no mobile */
+  .page-header .sidebar-toggle,
+  .content-header .sidebar-toggle {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  /* Mantem somente o botao hamburger inferior flutuante por cima de tudo */
+  .sidebar-toggle:not(.page-header *):not(.content-header *) {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 9999 !important;
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    pointer-events: auto !important;
   }
   .page-header { padding: var(--space-md); }
   .page-content { padding: var(--space-xl) var(--space-md); }

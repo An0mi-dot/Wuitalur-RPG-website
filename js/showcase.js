@@ -1012,18 +1012,26 @@ const ShowcaseEngine = {
   toggleSidebar() {
     if (!this.elements.siteSidebar) return;
     const isOpen = this.elements.siteSidebar.classList.toggle('is-open');
+    this.elements.siteSidebar.classList.toggle('open', isOpen);
     if (this.elements.sidebarBackdrop) {
       this.elements.sidebarBackdrop.classList.toggle('is-open', isOpen);
     }
+    const overlay = document.getElementById('sidebar-overlay');
+    if (overlay) overlay.classList.toggle('open', isOpen);
+    document.querySelectorAll('.sidebar-toggle').forEach(t => t.textContent = isOpen ? '✕' : '☰');
   },
 
   closeSidebar() {
     if (this.elements.siteSidebar) {
       this.elements.siteSidebar.classList.remove('is-open');
+      this.elements.siteSidebar.classList.remove('open');
     }
     if (this.elements.sidebarBackdrop) {
       this.elements.sidebarBackdrop.classList.remove('is-open');
     }
+    const overlay = document.getElementById('sidebar-overlay');
+    if (overlay) overlay.classList.remove('open');
+    document.querySelectorAll('.sidebar-toggle').forEach(t => t.textContent = '☰');
   },
 
   openHub(updateHash = true) {
