@@ -12,15 +12,31 @@ const BOLETINS_DATA = [
     epoca: "Novembro 2026",
     data: "7 de Novembro de 2026",
     dataIso: "2026-11-07",
-    titulo: "Ajustes no Mobile, EA Enxuta e Rework de Raças",
-    subtitulo: "Arrumei a navegação no celular, baixei a Energia Astral do 2.0 pra equilibrar o jogo e fechei o texto de Espectros e Abissais.",
+    titulo: "Ajustes no Mobile, Criador de Fichas e Rework de Raças",
+    subtitulo: "Arrumei a navegação no celular, liberei o teste do Criador de Fichas, baixei a EA no 2.0 e fechei o texto de Espectros e Abissais.",
     autor: "Mestre",
-    tempoLeitura: "4 min",
-    resumo: "Dei uma geral no site e nas regras: arrumei os bugs chatos da navegação no celular, baixei os valores de Energia Astral pra ninguém ficar com mana infinita e detalhei de vez as mecânicas dos Espectros e dos Abissais.",
-    tags: ["Sistema 2.0", "Interface Mobile", "Balanceamento", "Energia Astral", "Raças", "Classes"],
+    tempoLeitura: "5 min",
+    resumo: "Dei uma geral no site e nas regras: arrumei os bugs chatos da navegação no celular, liberei a versão de testes do novo Criador de Fichas, baixei os valores de Energia Astral do 2.0 e detalhei as mecânicas dos Espectros e dos Abissais.",
+    tags: ["Sistema 2.0", "Criador de Fichas", "Interface Mobile", "Balanceamento", "Energia Astral", "Raças"],
     conteudoHtml: `<section class="boletim-section">
         <p class="boletim-lead">
-          Dei uma geral no site e nas regras: arrumei os bugs chatos da navegação no celular, baixei os valores de Energia Astral pra ninguém ficar com mana infinita e detalhei de vez as mecânicas dos Espectros e dos Abissais.
+          Dei uma geral no site e nas regras: arrumei os bugs chatos da navegação no celular, liberei a versão de testes do novo Criador de Fichas, baixei os valores de Energia Astral do 2.0 e detalhei as mecânicas dos Espectros e dos Abissais.
+        </p>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">O novo Criador de Fichas no site</h3>
+        <p>
+          Como vocês já sabem, a gente já usa as fichas dos personagens embutidas direto na Mesa Virtual lá no site do Wu. Como comentei antes, esse vai ser o padrão definitivo para todas as próximas campanhas daqui pra frente, do mesmo jeitinho que tá funcionando agora.
+        </p>
+        <p>
+          Pra facilitar ainda mais a nossa vida no futuro, to fazendo um Criador de Fichas próprio do Wuitalur que realmente funciona na prática (pra Edição 2.0 e pro suplemento Fios do Medo).
+        </p>
+        <p>
+          Hoje mesmo to soltando uma versão de testes lá no site, junto com esse boletim, pra quem quiser dar uma olhada e mexer um pouco. Pelo que testei já tá tudo de boa, só falta adicionar as classes novas e configurar os cálculos automáticos delas.
+        </p>
+        <p>
+          Além de criar, vocês vão poder acessar todas as fichas direto na aba "Fichas" do site. A interface é a mesma que vocês já usam na mesa virtual, mas agora dá pra editar os valores livremente e fazer Level Up automático, sem precisar ficar revisando o sistema toda vez pra saber o que ganha.
         </p>
       </section>
 
@@ -47,13 +63,6 @@ const BOLETINS_DATA = [
         </ul>
         <p>
           Os custos de habilidades pelos marcos continuam os mesmos: 5 EA no nível 1, 10 no nível 4, 15 no nível 7, 20 no nível 10 e 25 no nível 13. A diferença é que agora o jogador precisa escolher com calma onde vai gastar os recursos em vez de sair usando tudo sem critério. Já atualizei isso no motor e os testes de regras tão todos passando redondos.
-        </p>
-      </section>
-
-      <section class="boletim-section">
-        <h3 class="boletim-section-title">Trava sequencial no criador de ficha</h3>
-        <p>
-          Arrumei o assistente de criação de personagens pra impedir que a pessoa pule etapas. Antes dava pra ir direto pras fases finais com a ficha incompleta. Agora o criador só libera avançar se a etapa anterior estiver certinha (raça, vocação, perícias e atributos distribuídos). Voltar pra trás pra alterar qualquer coisa continua liberado.
         </p>
       </section>
 
