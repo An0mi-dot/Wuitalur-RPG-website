@@ -1584,41 +1584,132 @@ body.has-showcase.is-detail-view .showcase-detail-view {
     width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
-    height: 48vh !important;
-    min-height: 320px !important;
-    max-height: 420px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
     border-right: none !important;
     border-bottom: 2px solid #2C2833 !important;
     flex-shrink: 0 !important;
     position: relative !important;
     overflow: hidden !important;
-  }
-  .spotlight-layer-foreground {
-    padding-top: 54px !important;
-  }
-  .spotlight-class-title {
-    font-size: clamp(1.7rem, 6vw, 2.3rem) !important;
-    max-width: 90% !important;
-  }
-  .spotlight-concept-tags {
-    margin-top: 4px !important;
-    gap: 6px !important;
-    flex-wrap: wrap !important;
-    justify-content: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    background: radial-gradient(circle at 50% 70%, var(--spotlight-backlight-outer, rgba(155, 81, 224, 0.15)) 0%, #121114 75%) !important;
   }
   .showcase-detail-left::after {
     display: none !important;
   }
   .showcase-detail-left .spotlight-viewport {
     width: 100% !important;
-    height: 100% !important;
-    padding-top: 48px !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    position: relative !important;
+    padding-top: 0 !important;
   }
-  .spotlight-hitbox {
+  .showcase-detail-left .spotlight-stage {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    transform: none !important;
+  }
+  .showcase-detail-left .spotlight-layer-back {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    transform: none !important;
+    opacity: 0.6 !important;
+  }
+  .showcase-detail-left .spotlight-hitbox {
+    display: none !important;
     pointer-events: none !important;
   }
-  .spotlight-class-title {
-    font-size: clamp(1.8rem, 6.5vw, 2.3rem) !important;
+  /* 1. Nome e Funcao Tatica no Topo */
+  .showcase-detail-left .spotlight-layer-foreground {
+    order: 1 !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    padding: 56px 14px 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    z-index: 10 !important;
+    transform: none !important;
+    pointer-events: none !important;
+  }
+  .showcase-detail-left .spotlight-header-block {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .showcase-detail-left .spotlight-class-title {
+    font-size: clamp(1.8rem, 6.5vw, 2.5rem) !important;
+    max-width: 95% !important;
+    text-align: center !important;
+    line-height: 1.1 !important;
+    margin: 0 !important;
+  }
+  .showcase-detail-left .spotlight-concept-tags {
+    margin-top: 4px !important;
+    gap: 6px !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+  }
+  /* 2. Ilustracao Posicionada Abaixo do Nome e Funcao Tatica */
+  .showcase-detail-left .spotlight-layer-character {
+    order: 2 !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 100% !important;
+    height: 320px !important;
+    max-height: 48vh !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-end !important;
+    z-index: 5 !important;
+    padding: 0 10px 10px !important;
+    margin: 0 0 6px 0 !important;
+    transform: none !important;
+  }
+  .showcase-detail-left .spotlight-char-wrap {
+    height: 100% !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  .showcase-detail-left .spotlight-char-wrap::before {
+    display: none !important;
+  }
+  .showcase-detail-left .showcase-hero-art {
+    max-height: 300px !important;
+    max-width: 94% !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    margin-bottom: 0 !important;
+    transform: translate(0, 0) scale(1) !important;
   }
   .showcase-detail-right {
     width: 100% !important;
