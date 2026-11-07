@@ -317,14 +317,15 @@ body.has-showcase .page-content {
 .showcase-hub-topbar {
   position: absolute;
   top: 24px;
+  left: 32px;
   right: 32px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   border-bottom: none;
   margin: 0;
   padding: 0;
-  z-index: 10;
+  z-index: 20;
 }
 
 .showcase-hub-menu-btn {
@@ -750,10 +751,27 @@ body.has-showcase .page-content {
 .showcase-detail-view {
   width: 100vw;
   height: 100vh;
-  display: flex !important;
-  flex-direction: row !important;
+  display: flex;
+  flex-direction: row;
   background: #121114;
   overflow: hidden;
+}
+
+body.has-showcase.is-hub-view .showcase-hub-view {
+  display: flex !important;
+}
+body.has-showcase.is-hub-view .showcase-detail-view {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+body.has-showcase.is-detail-view .showcase-hub-view {
+  display: none !important;
+  visibility: hidden !important;
+}
+body.has-showcase.is-detail-view .showcase-detail-view {
+  display: flex !important;
+  visibility: visible !important;
 }
 
 /* --- COLUNA ESQUERDA: HERO SPOTLIGHT (FIXA) --- */
@@ -797,7 +815,8 @@ body.has-showcase .page-content {
   pointer-events: auto;
 }
 
-.showcase-btn-back-hub {
+.showcase-btn-back-hub,
+.showcase-btn-back-home {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -811,14 +830,18 @@ body.has-showcase .page-content {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  text-decoration: none;
   cursor: pointer;
   box-shadow: 2px 2px 0 #000000;
   transition: all 0.2s ease;
 }
 
-.showcase-btn-back-hub:hover {
+.showcase-btn-back-hub:hover,
+.showcase-btn-back-home:hover {
   background: #25222B;
   border-color: var(--spotlight-accent, #9B51E0);
+  color: #FFFFFF;
+  text-decoration: none;
   transform: translateX(-3px);
 }
 
@@ -1500,7 +1523,21 @@ body.has-showcase .page-content {
     overflow-y: visible !important;
     overflow-x: hidden !important;
     justify-content: flex-start !important;
-    padding: 24px 14px 100px !important;
+    padding: 16px 14px 100px !important;
+  }
+  .showcase-hub-topbar {
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 16px !important;
+    padding: 0 4px !important;
+  }
+  body.has-showcase.is-hub-view .showcase-detail-view {
+    display: none !important;
+    visibility: hidden !important;
   }
   .showcase-hub-hero {
     width: 100% !important;
@@ -1547,14 +1584,27 @@ body.has-showcase .page-content {
     width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
-    height: 44vh !important;
-    min-height: 300px !important;
-    max-height: 390px !important;
+    height: 48vh !important;
+    min-height: 320px !important;
+    max-height: 420px !important;
     border-right: none !important;
     border-bottom: 2px solid #2C2833 !important;
     flex-shrink: 0 !important;
     position: relative !important;
     overflow: hidden !important;
+  }
+  .spotlight-layer-foreground {
+    padding-top: 54px !important;
+  }
+  .spotlight-class-title {
+    font-size: clamp(1.7rem, 6vw, 2.3rem) !important;
+    max-width: 90% !important;
+  }
+  .spotlight-concept-tags {
+    margin-top: 4px !important;
+    gap: 6px !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
   }
   .showcase-detail-left::after {
     display: none !important;

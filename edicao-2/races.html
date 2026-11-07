@@ -7,7 +7,7 @@
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../css/variables.css?v=20261107_v2">
   <link rel="stylesheet" href="../css/components.css?v=20261107_v2">
-  <link rel="stylesheet" href="../css/showcase.css?v=20261107_v3">
+  <link rel="stylesheet" href="../css/showcase.css?v=20261107_v4">
   <style>
     .race-stat { background: rgba(0,0,0,0.15); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-md); }
     .race-ability, .race-ability *, .race-subability, .race-subability *,
@@ -77,7 +77,11 @@
       <!-- TELA 1: HUB DE SELEÇÃO DE RAÇAS COM GRID DE CARDS -->
       <section class="showcase-hub-view hub-grid-mode" id="showcase-hub-view" aria-label="Seleção de Raças">
         <header class="showcase-hub-topbar">
-          <div class="showcase-hub-brand">
+  <a href="../index.html" class="showcase-btn-back-hub showcase-btn-back-home" id="showcase-btn-back-home" title="Voltar para a página inicial">
+            <span class="back-icon">&#x2190;</span>
+            <span class="back-text">Início</span>
+          </a>
+                  <div class="showcase-hub-brand">
             <span class="brand-tag">W_SYS // V2.0</span>
             <span class="brand-title">WUITALUR 2.0</span>
           </div>
@@ -859,9 +863,9 @@
   </filter>
 </svg>
 
-<script src="../js/conditions.js?v=20261107_v3"></script>
-<script src="../js/main.js?v=20261107_v3"></script>
-<script src="../js/showcase.js?v=20261107_v3"></script>
+<script src="../js/conditions.js?v=20261107_v4"></script>
+<script src="../js/main.js?v=20261107_v4"></script>
+<script src="../js/showcase.js?v=20261107_v4"></script>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     ShowcaseEngine.init("races");
