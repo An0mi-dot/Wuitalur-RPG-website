@@ -123,6 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.sidebar-toggle').forEach(t => t.textContent = '☰');
   }
 
+  if (window.innerWidth <= 860) {
+    closeSidebar();
+  }
+
   function openSidebar() {
     if (!sidebar) return;
     sidebar.classList.add('open');
@@ -152,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('click', function () {
       sidebarLinks.forEach(l => l.classList.remove('active'));
       this.classList.add('active');
-      if (window.innerWidth <= 768) closeSidebar();
+      if (window.innerWidth <= 860) closeSidebar();
     });
   });
 

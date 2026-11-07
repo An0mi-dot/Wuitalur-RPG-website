@@ -72,9 +72,9 @@
       -webkit-user-select: text !important;
     }
   </style>
-  <link rel="stylesheet" href="../css/showcase.css?v=20261107_v2">
+  <link rel="stylesheet" href="../css/showcase.css?v=20261107_v3">
 </head>
-<body>
+<body class="has-showcase is-hub-view">
 
 <div class="app-layout">
 
@@ -149,7 +149,8 @@
 
             <div class="showcase-hub-list-wrap">
               <div class="showcase-hub-list" id="showcase-hub-list" role="list">
-                <!-- Botões empilhados das classes gerados dinamicamente via JS -->
+                <button type="button" class="hub-class-btn font-scope-consagrados" data-class="consagrados" aria-label="Selecionar Consagrados"><span class="hub-btn-name font-class-consagrados">Consagrados</span><span class="hub-btn-arrow">&#x2192;</span></button>
+                <button type="button" class="hub-class-btn font-scope-compactador" data-class="compactador" aria-label="Selecionar Compactador"><span class="hub-btn-name font-class-compactador">Compactador</span><span class="hub-btn-arrow">&#x2192;</span></button>
               </div>
             </div>
           </div>
@@ -759,9 +760,9 @@
   </filter>
 </svg>
 
-<script src="../js/conditions.js?v=20261107_v2"></script>
-<script src="../js/main.js?v=20261107_v2"></script>
-<script src="../js/showcase.js?v=20261107_v2"></script>
+<script src="../js/conditions.js?v=20261107_v3"></script>
+<script src="../js/main.js?v=20261107_v3"></script>
+<script src="../js/showcase.js?v=20261107_v3"></script>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     ShowcaseEngine.init("classes");

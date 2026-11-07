@@ -610,6 +610,7 @@ const ShowcaseEngine = {
     this.bindElements();
     this.bindEvents();
     this.parallax.init(this);
+    this.closeSidebar();
 
     // Garante que a janela fique no topo
     window.scrollTo(0, 0);

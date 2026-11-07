@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Classes  Wuitalur RPG</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/variables.css?v=20261107_v2">
-  <link rel="stylesheet" href="css/components.css?v=20261107_v2">
+  <link rel="stylesheet" href="css/variables.css?v=20261107_v3">
+  <link rel="stylesheet" href="css/components.css?v=20261107_v3">
   <style>
     .class-stat { background: rgba(0,0,0,0.15); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-md); }
     .class-stat-label { font-family: var(--font-heading); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--attr-ea); margin-bottom: var(--space-xs); }
@@ -27,9 +27,9 @@
       -webkit-user-select: text !important;
     }
   </style>
-  <link rel="stylesheet" href="css/showcase.css?v=20261107_v2">
+  <link rel="stylesheet" href="css/showcase.css?v=20261107_v3">
 </head>
-<body>
+<body class="has-showcase is-hub-view">
 
 <div class="app-layout">
 
@@ -106,7 +106,19 @@
 
             <div class="showcase-hub-list-wrap">
               <div class="showcase-hub-list" id="showcase-hub-list" role="list">
-                <!-- Botões empilhados das classes gerados dinamicamente via JS -->
+                <button type="button" class="hub-class-btn font-scope-compactador" data-class="compactador" aria-label="Selecionar Compactador"><span class="hub-btn-name font-class-compactador">Compactador</span><span class="hub-btn-arrow">&#x2192;</span></button>
+                <button type="button" class="hub-class-btn font-scope-consagrados" data-class="consagrados" aria-label="Selecionar Consagrados"><span class="hub-btn-name font-class-consagrados">Consagrados</span><span class="hub-btn-arrow">&#x2192;</span></button>
+                <button type="button" class="hub-class-btn font-scope-bestial" data-class="bestial" aria-label="Selecionar Bestial"><span class="hub-btn-name font-class-bestial">Bestial</span><span class="hub-btn-arrow">&#x2192;</span></button>
+                <button type="button" class="hub-class-btn font-scope-cavaleiros-paladium" data-class="cavaleiros-paladium" aria-label="Selecionar Cavaleiros de Paladium"><span class="hub-btn-name font-class-cavaleiros-paladium">Cavaleiros de Paladium</span><span class="hub-btn-arrow">&#x2192;</span></button>
+                <button type="button" class="hub-class-btn font-scope-eterno" data-class="eterno" aria-label="Selecionar O Eterno"><span class="hub-btn-name font-class-eterno">O Eterno</span><span class="hub-btn-arrow">&#x2192;</span></button>
+                <button type="button" class="hub-class-btn font-scope-furtassaltantes" data-class="furtassaltantes" aria-label="Selecionar Furtassaltante"><span class="hub-btn-name font-class-furtassaltantes">Furtassaltante</span><span class="hub-btn-arrow">&#x2192;</span></button>
+                <button type="button" class="hub-class-btn font-scope-pistoleiro" data-class="pistoleiro" aria-label="Selecionar Pistoleiro"><span class="hub-btn-name font-class-pistoleiro">Pistoleiro</span><span class="hub-btn-arrow">&#x2192;</span></button>
+                <button type="button" class="hub-class-btn font-scope-rastejantes" data-class="rastejantes" aria-label="Selecionar Rastejantes"><span class="hub-btn-name font-class-rastejantes">Rastejantes</span><span class="hub-btn-arrow">&#x2192;</span></button>
+                <button type="button" class="hub-class-btn font-scope-anomalo" data-class="anomalo" aria-label="Selecionar Anômalo"><span class="hub-btn-name font-class-anomalo">ANOMALO</span><span class="hub-btn-arrow">&#x2192;</span></button>
+                <button type="button" class="hub-class-btn font-scope-atirador-espectral" data-class="atirador-espectral" aria-label="Selecionar Atirador Espectral"><span class="hub-btn-name font-class-atirador-espectral">Atirador Espectral</span><span class="hub-btn-arrow">&#x2192;</span></button>
+                <button type="button" class="hub-class-btn font-scope-lampinario" data-class="lampinario" aria-label="Selecionar Lampinário"><span class="hub-btn-name font-class-lampinario">Lampinário</span><span class="hub-btn-arrow">&#x2192;</span></button>
+                <button type="button" class="hub-class-btn font-scope-protegidos" data-class="protegidos" aria-label="Selecionar Protegidos"><span class="hub-btn-name font-class-protegidos">Protegidos</span><span class="hub-btn-arrow">&#x2192;</span></button>
+                <button type="button" class="hub-class-btn font-scope-sobrevivente" data-class="sobrevivente" aria-label="Selecionar Sobrevivente"><span class="hub-btn-name font-class-sobrevivente">Sobrevivente</span><span class="hub-btn-arrow">&#x2192;</span></button>
               </div>
             </div>
           </div>
@@ -4564,8 +4576,8 @@
 
 <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
 
-<script src="js/main.js?v=20261107_v2"></script>
-<script src="js/showcase.js?v=20261107_v2"></script>
+<script src="js/main.js?v=20261107_v3"></script>
+<script src="js/showcase.js?v=20261107_v3"></script>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     ShowcaseEngine.init("classes");
