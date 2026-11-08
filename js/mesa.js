@@ -90,17 +90,9 @@ const SVG_ICONS = {
 };
 
 // ---- MODO LEVE (PERFORMANCE) ----
-// Aparelhos fracos, celulares e quem prefere menos movimento recebem a versão sem efeitos pesados.
 const MESA_LITE = (() => {
   try {
-    const weakCpu = (navigator.hardwareConcurrency || 8) <= 4;
-    const weakRam = (navigator.deviceMemory || 8) <= 4;
-    const touch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-    const small = window.innerWidth < 900;
-    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const forced = localStorage.getItem('mesa_perf') === 'lite';
-    const full = localStorage.getItem('mesa_perf') === 'full';
-    return !full && (forced || weakCpu || weakRam || touch || small || reduced);
+    return localStorage.getItem('mesa_perf') === 'lite';
   } catch (e) { return false; }
 })();
 if (MESA_LITE) document.documentElement.classList.add('perf-lite');
@@ -139,7 +131,6 @@ const GlitchEngine = {
   },
 
   init() {
-    if (MESA_LITE) return;
     this.canvas = document.getElementById('glitch-canvas');
     if (!this.canvas) return;
     this.ctx = this.canvas.getContext('2d');
@@ -1847,6 +1838,14 @@ const MesaApp = {
                 MesaTvEstatica2.triggerStart();
               } else if (!tv2.active && isActive2) {
                 MesaTvEstatica2.triggerStop();
+              }
+            }
+            if (p1Attrs._sys_camera && window.MesaCamera) {
+              const cam = p1Attrs._sys_camera;
+              if (cam.active && !MesaCamera.isActive && (Date.now() - (cam.timestamp || 0) < 600000)) {
+                MesaCamera.handleIncomingStart(cam);
+              } else if (!cam.active && MesaCamera.isActive && !MesaCamera.isLocal) {
+                MesaCamera.handleIncomingStop();
               }
             }
             if (p1Attrs._sys_fita_1 && window.MesaFita1) {
@@ -8477,6 +8476,263 @@ const MesaPerseguicaoFloresta = {
   }
 };
 
+
+// ==========================================================================
+// MESA CÂMERA DE VÍDEO AO VIVO (CENTRO DA MESA VIRTUAL)
+// ==========================================================================
+const MesaCamera = {
+  isActive: false,
+  isLocal: false,
+  stream: null,
+  intervalId: null,
+  canvas: null,
+  ctx: null,
+
+  async toggle() {
+    if (this.isActive && this.isLocal) {
+      await this.stop();
+    } else {
+      await this.start();
+    }
+  },
+
+  async start() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { width: { ideal: 480 }, height: { ideal: 360 } },
+        audio: false
+      });
+
+      this.stream = stream;
+      this.isActive = true;
+      this.isLocal = true;
+
+      const videoEl = document.getElementById('board-center-camera-video');
+      const streamImg = document.getElementById('board-center-camera-stream');
+      const container = document.getElementById('board-center-camera');
+      const userTag = document.getElementById('board-center-camera-user');
+      const btn = document.getElementById('nav-camera-btn');
+      const quickText = document.getElementById('quick-menu-camera-text');
+      const cardBtnText = document.getElementById('btn-transmit-camera-text');
+
+      if (videoEl) {
+        videoEl.srcObject = stream;
+        videoEl.style.display = 'block';
+        videoEl.play();
+      }
+      if (streamImg) streamImg.style.display = 'none';
+
+      // Identidade de quem ligou a câmera
+      const user = window.MesaIgrisShop && typeof MesaIgrisShop.getCurrentUserIdentity === 'function'
+        ? MesaIgrisShop.getCurrentUserIdentity()
+        : null;
+      const userName = (user && user.name) ? user.name : (MesaApp.state && MesaApp.state.isMaster ? 'Mestre da Mesa' : 'Jogador');
+
+      if (userTag) userTag.textContent = userName;
+      if (container) container.style.display = 'flex';
+      if (btn) btn.classList.add('active');
+      if (quickText) quickText.textContent = 'Desligar Câmera (Centro)';
+      if (cardBtnText) cardBtnText.textContent = 'Desligar Câmera no Centro';
+
+      // Oculta artwork estatico da cena enquanto a câmera estiver ativa
+      const artwork = document.getElementById('board-center-artwork');
+      if (artwork) artwork.style.display = 'none';
+
+      // Canvas em memória para amostragem de quadros leves (~8 fps)
+      if (!this.canvas) {
+        this.canvas = document.createElement('canvas');
+        this.canvas.width = 320;
+        this.canvas.height = 240;
+        this.ctx = this.canvas.getContext('2d');
+      }
+
+      // Notifica todos na mesa que a câmera iniciou
+      const chan = (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel);
+      if (chan) {
+        try {
+          chan.send({
+            type: 'broadcast',
+            event: 'camera_start',
+            payload: { user: userName, timestamp: Date.now() }
+          });
+        } catch(e) {}
+      }
+
+      // Salva estado da câmera no Supabase para sincronização
+      if (window.MesaApp && MesaApp.supabase) {
+        (async () => {
+          try {
+            const { data } = await MesaApp.supabase
+              .from('personagens')
+              .select('atributos')
+              .eq('id', 1)
+              .single();
+            const attrs = data && data.atributos
+              ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+              : {};
+            attrs._sys_camera = { active: true, user: userName, timestamp: Date.now() };
+            await MesaApp.supabase
+              .from('personagens')
+              .update({ atributos: attrs })
+              .eq('id', 1);
+          } catch(e) {}
+        })();
+      }
+
+      // Loop de envio de frames via WebSocket
+      this.intervalId = setInterval(() => {
+        if (!this.isActive || !this.isLocal || !this.ctx || !videoEl || videoEl.videoWidth === 0) return;
+        try {
+          this.ctx.drawImage(videoEl, 0, 0, this.canvas.width, this.canvas.height);
+          const base64 = this.canvas.toDataURL('image/jpeg', 0.45);
+          const ch = (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel);
+          if (ch) {
+            ch.send({
+              type: 'broadcast',
+              event: 'camera_frame',
+              payload: { frame: base64, user: userName }
+            });
+          }
+        } catch(e) {}
+      }, 125);
+
+    } catch(err) {
+      console.warn("Acesso à câmera não concedido:", err);
+      alert("Acesso à câmera não autorizado ou dispositivo não encontrado.");
+      this.stop();
+    }
+  },
+
+  async stop() {
+    this.isActive = false;
+    this.isLocal = false;
+
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+
+    if (this.stream) {
+      this.stream.getTracks().forEach(t => t.stop());
+      this.stream = null;
+    }
+
+    const videoEl = document.getElementById('board-center-camera-video');
+    const container = document.getElementById('board-center-camera');
+    const streamImg = document.getElementById('board-center-camera-stream');
+    const btn = document.getElementById('nav-camera-btn');
+    const quickText = document.getElementById('quick-menu-camera-text');
+    const cardBtnText = document.getElementById('btn-transmit-camera-text');
+
+    if (videoEl) {
+      videoEl.srcObject = null;
+      videoEl.style.display = 'none';
+    }
+    if (streamImg) {
+      streamImg.src = '';
+      streamImg.style.display = 'none';
+    }
+    if (container) container.style.display = 'none';
+    if (btn) btn.classList.remove('active');
+    if (quickText) quickText.textContent = 'Ligar Câmera (Centro)';
+    if (cardBtnText) cardBtnText.textContent = 'Ligar Câmera no Centro';
+
+    // Restaura artwork central se havia algum ativo
+    if (window.MesaCenterArtwork && MesaCenterArtwork.active) {
+      const artwork = document.getElementById('board-center-artwork');
+      if (artwork) artwork.style.display = 'flex';
+    }
+
+    // Notifica encerramento via broadcast
+    const chan = (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel);
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'camera_stop',
+          payload: { timestamp: Date.now() }
+        });
+      } catch(e) {}
+    }
+
+    // Atualiza estado no Supabase
+    if (window.MesaApp && MesaApp.supabase) {
+      (async () => {
+        try {
+          const { data } = await MesaApp.supabase
+            .from('personagens')
+            .select('atributos')
+            .eq('id', 1)
+            .single();
+          const attrs = data && data.atributos
+            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+            : {};
+          attrs._sys_camera = { active: false, timestamp: Date.now() };
+          await MesaApp.supabase
+            .from('personagens')
+            .update({ atributos: attrs })
+            .eq('id', 1);
+        } catch(e) {}
+      })();
+    }
+  },
+
+  handleIncomingStart(payload) {
+    if (this.isLocal) return;
+    this.isActive = true;
+    const container = document.getElementById('board-center-camera');
+    const videoEl = document.getElementById('board-center-camera-video');
+    const streamImg = document.getElementById('board-center-camera-stream');
+    const userTag = document.getElementById('board-center-camera-user');
+
+    const artwork = document.getElementById('board-center-artwork');
+    if (artwork) artwork.style.display = 'none';
+
+    if (container) container.style.display = 'flex';
+    if (videoEl) videoEl.style.display = 'none';
+    if (streamImg) streamImg.style.display = 'block';
+    if (userTag && payload && payload.user) userTag.textContent = payload.user;
+  },
+
+  handleIncomingFrame(payload) {
+    if (this.isLocal) return;
+    this.isActive = true;
+    const container = document.getElementById('board-center-camera');
+    const streamImg = document.getElementById('board-center-camera-stream');
+    const userTag = document.getElementById('board-center-camera-user');
+
+    if (container && container.style.display === 'none') {
+      container.style.display = 'flex';
+      const artwork = document.getElementById('board-center-artwork');
+      if (artwork) artwork.style.display = 'none';
+    }
+    if (streamImg) {
+      if (streamImg.style.display === 'none') streamImg.style.display = 'block';
+      if (payload && payload.frame) {
+        streamImg.src = payload.frame;
+      }
+    }
+    if (userTag && payload && payload.user) userTag.textContent = payload.user;
+  },
+
+  handleIncomingStop() {
+    if (this.isLocal) return;
+    this.isActive = false;
+    const container = document.getElementById('board-center-camera');
+    const streamImg = document.getElementById('board-center-camera-stream');
+    if (streamImg) {
+      streamImg.src = '';
+      streamImg.style.display = 'none';
+    }
+    if (container) container.style.display = 'none';
+
+    if (window.MesaCenterArtwork && MesaCenterArtwork.active) {
+      const artwork = document.getElementById('board-center-artwork');
+      if (artwork) artwork.style.display = 'flex';
+    }
+  }
+};
+
 // ==========================================================================
 // MESA SINAL DE TV ANTIGA / ESTÁTICA
 // ==========================================================================
@@ -10843,57 +11099,51 @@ const IGRIS_DEFAULT_ITEMS = [
     categoria: 'transitorio'
   },
 
-  // --- ARTEFATOS DO MEDO: PRÓS E CONTRAS ---
+  // --- ARTEFATOS ESPECIAIS DO CONCLAVE ---
   {
     id: 'igris_dedal_carne_cega',
     nome: 'DEDAL DA CARNE CEGA',
-    tipo: 'Artefato do Medo [ Peso 1 ]',
+    tipo: 'Especial do Conclave [ Peso 1 ]',
     peso: 1,
-    raridade: 'Artefato do Medo',
+    raridade: 'Especial do Conclave',
     descricao: 'Um dedal antigo de alfaiataria feito de latão escurecido, com o interior revestido por pequenas farpas voltadas para dentro. Da borda inferior pende um pedaço curto de fio alaranjado e áspero, ressecado como um tendão velho. Ao encaixá-lo no dedo, as farpas furam a ponta da pele e o metal parece ficar morno, pulsando junto com o coração do usuário.',
-    ladoBomTitulo: 'Anestesia de Costura',
-    ladoBom: 'Enquanto estiver usando o dedal, a dor física do portador é abafada por um torpor estranho. Uma vez por cena, ao sofrer dano físico de qualquer fonte, o usuário pode puxar o fio do dedal para reduzir o dano recebido pela metade e ignorar qualquer penalidade por ferimento grave ou sangramento até o fim do combate.',
-    ladoRuimTitulo: 'Fio Puxado na Mente',
-    ladoRuim: 'A dor que o corpo deixa de sentir é costurada diretamente nos nervos da mente. Sempre que ativar o efeito para reduzir o dano físico, o portador sofre imediatamente 2d6 de dano de Estresse / Sanidade (ou perde 1d8 de PE) e sente a articulação do braço travar com um puxão brusco nos tendões, ficando com -2 em testes de Agilidade/Destreza na rodada seguinte.',
+    beneficio: 'Enquanto estiver usando o dedal, a dor física do portador é abafada por um torpor estranho. Uma vez por cena, ao sofrer dano físico de qualquer fonte, o usuário pode puxar o fio do dedal para reduzir o dano recebido pela metade e ignorar qualquer penalidade por ferimento grave ou sangramento até o fim do combate.',
+    prejuizo: 'A dor que o corpo deixa de sentir é costurada diretamente nos nervos da mente. Sempre que ativar o efeito para reduzir o dano físico, o portador sofre imediatamente 2d6 de dano de Estresse / Sanidade (ou perde 1d8 de PE) e sente a articulação do braço travar com um puxão brusco nos tendões, ficando com -2 em testes de Agilidade/Destreza na rodada seguinte.',
     preco: '1 Unidade',
-    precoVidrilhos: 5,
+    precoVidrilhos: 8,
     quantidade: 1,
     isDefault: false,
-    categoria: 'medo'
+    categoria: 'conclave'
   },
   {
     id: 'igris_monoculo_fuliginoso',
     nome: 'MONÓCULO DE VIDRO FULIGINOSO',
-    tipo: 'Artefato do Medo [ Peso 1 ]',
+    tipo: 'Especial do Conclave [ Peso 1 ]',
     peso: 1,
-    raridade: 'Artefato do Medo',
+    raridade: 'Especial do Conclave',
     descricao: 'Uma lente redonda e grossa, sem haste, encaixada num aro de ferro oxidado que parece ter sido arrancado de um equipamento médico velho. O vidro é manchado por uma fuligem escura que nunca sai quando limpo, mas que se move lentamente lá dentro como fumaça presa quando colocado contra a luz.',
-    ladoBomTitulo: 'Olhar sob a Rasura',
-    ladoBom: 'Olhar através da lente revela o que tenta se esconder na penumbra ou atrás de mentiras. O usuário recebe Vantagem (+2) em testes de Investigação, Percepção ou Ocultismo para encontrar pistas ocultas, rastros de sangue lavado, passagens falsas ou notar quando alguém está mentindo/escondendo algo.',
-    ladoRuimTitulo: 'Atenção Retribuída',
-    ladoRuim: 'O vidro não apenas mostra o que está escondido, mas também marca os olhos de quem espia. Sempre que o usuário usar o monóculo para passar em um teste, o olho usado começa a lacrimejar um líquido escuro e frio; até o final da cena, o personagem fica com a visão periférica borrada por vultos (-2 em Percepção passiva e Esquiva/Defesa) e, se houver alguma ameaça na área, ela passa a focar seus ataques prioritariamente nele no primeiro turno.',
+    beneficio: 'Olhar através da lente revela o que tenta se esconder na penumbra ou atrás de mentiras. O usuário recebe Vantagem (+2) em testes de Investigação, Percepção ou Ocultismo para encontrar pistas ocultas, rastros de sangue lavado, passagens falsas ou notar quando alguém está mentindo/escondendo algo.',
+    prejuizo: 'O vidro não apenas mostra o que está escondido, mas também marca os olhos de quem espia. Sempre que o usuário usar o monóculo para passar em um teste, o olho usado começa a lacrimejar um líquido escuro e frio; até o final da cena, o personagem fica com a visão periférica borrada por vultos (-2 em Percepção passiva e Esquiva/Defesa) e, se houver alguma ameaça na área, ela passa a focar seus ataques prioritariamente nele no primeiro turno.',
     preco: '1 Unidade',
-    precoVidrilhos: 5,
+    precoVidrilhos: 8,
     quantidade: 1,
     isDefault: false,
-    categoria: 'medo'
+    categoria: 'conclave'
   },
   {
     id: 'igris_isqueiro_sebo',
     nome: 'ISQUEIRO DE SEBO CINZENTO',
-    tipo: 'Artefato do Medo [ Peso 1 ]',
+    tipo: 'Especial do Conclave [ Peso 1 ]',
     peso: 1,
-    raridade: 'Artefato do Medo',
+    raridade: 'Especial do Conclave',
     descricao: 'Um isqueiro de fluido quadrado, pesado e amassado, com a carcaça de metal tomada por uma crosta áspera que lembra cera de vela misturada com cinzas. Quando a tampa é aberta e a roda é riscada, a chama que sobe é baixa, pálida e completamente silenciosa, soltando um cheiro leve de terra molhada e ozônio em vez de querosene.',
-    ladoBomTitulo: 'Chama que Acalma',
-    ladoBom: 'Encarar a chama silenciosa por alguns segundos esvazia o pânico da cabeça. Uma vez por cena (ou como uma ação rápida), o portador pode acender o isqueiro para recuperar 1d6 de Sanidade / Estresse (ou 1d4 de PE) e encerrar imediatamente condições de medo, tremedeira ou paralisia mental em si mesmo ou em um aliado adjacente.',
-    ladoRuimTitulo: 'Combustível Vital',
-    ladoRuim: 'O isqueiro não queima fluido comum; ele queima o próprio calor do corpo de quem o segura. Cada vez que a chama é acesa para usar seu efeito, os dedos do usuário ficam roxos de frio e um cansaço pesado desce pelo peito, custando 1d4 de Pontos de Vida (PV) diretos (que não podem ser reduzidos) e deixando as mãos trêmulas de frio (-1 em testes de ataque corpo a corpo ou pontaria pelo resto da cena).',
+    beneficio: 'Encarar a chama silenciosa por alguns segundos esvazia o pânico da cabeça. Uma vez por cena (ou como uma ação rápida), o portador pode acender o isqueiro para recuperar 1d6 de Sanidade / Estresse (ou 1d4 de PE) e encerrar imediatamente condições de medo, tremedeira ou paralisia mental em si mesmo ou em um aliado adjacente.',
+    prejuizo: 'O isqueiro não queima fluido comum; ele queima o próprio calor do corpo de quem o segura. Cada vez que a chama é acesa para usar seu efeito, os dedos do usuário ficam roxos de frio e um cansaço pesado desce pelo peito, custando 1d4 de Pontos de Vida (PV) diretos (que não podem ser reduzidos) e deixando as mãos trêmulas de frio (-1 em testes de ataque corpo a corpo ou pontaria pelo resto da cena).',
     preco: '1 Unidade',
-    precoVidrilhos: 5,
+    precoVidrilhos: 8,
     quantidade: 1,
     isDefault: false,
-    categoria: 'medo'
+    categoria: 'conclave'
   }
 ];
 
@@ -11263,25 +11513,25 @@ const MesaIgrisShop = {
     // Categorias de itens
     const defaultItems = this.items.filter(it => it.isDefault === true || (it.categoria === 'padrao') || String(it.id).includes('fruta'));
     const transitorioItems = this.items.filter(it => !it.isDefault && it.categoria === 'transitorio' && !String(it.id).includes('fruta'));
-    const medoItems = this.items.filter(it => it.categoria === 'medo');
+    const conclaveItems = this.items.filter(it => it.categoria === 'conclave' || it.categoria === 'medo');
 
     const renderCard = (item) => {
       const interestedList = this.interests[item.id] || [];
       const hasMyInterest = myId && interestedList.includes(myId);
       const avatarsHtml = this.renderInterestAvatars(item.id);
-      const isMedo = item.categoria === 'medo';
+      const isConclave = item.categoria === 'conclave' || item.categoria === 'medo';
 
       let effectHtml = '';
-      if (item.ladoBom && item.ladoRuim) {
+      if (item.beneficio && item.prejuizo) {
         effectHtml = `
           <div class="igris-card-fear-box">
             <div class="igris-card-fear-pros">
-              <span class="fear-tag fear-pro-tag">O Lado Bom (${item.ladoBomTitulo || 'Benefício'}):</span>
-              ${item.ladoBom}
+              <span class="fear-tag fear-pro-tag">Benefício:</span>
+              ${item.beneficio}
             </div>
             <div class="igris-card-fear-cons">
-              <span class="fear-tag fear-con-tag">O Lado Ruim (${item.ladoRuimTitulo || 'Penalidade'}):</span>
-              ${item.ladoRuim}
+              <span class="fear-tag fear-con-tag">Prejuízo:</span>
+              ${item.prejuizo}
             </div>
           </div>
         `;
@@ -11294,13 +11544,13 @@ const MesaIgrisShop = {
       }
 
       return `
-        <div class="igris-item-card ${isMedo ? 'igris-card-medo' : ''} ${hasMyInterest ? 'has-my-interest' : ''}" 
+        <div class="igris-item-card ${isConclave ? 'igris-card-conclave' : ''} ${hasMyInterest ? 'has-my-interest' : ''}" 
              data-item-id="${item.id}" 
              onclick="MesaIgrisShop.toggleInterest('${item.id}')"
              title="Clique para manifestar interesse de troca">
           <div class="igris-card-inner">
             <div class="igris-card-header-top">
-              <span class="igris-card-rarity-badge ${isMedo ? 'badge-medo' : ''}">${item.raridade || (isMedo ? 'Artefato do Medo' : 'Consumível')}</span>
+              <span class="igris-card-rarity-badge ${isConclave ? 'badge-conclave' : ''}">${item.raridade || (isConclave ? 'Especial do Conclave' : 'Consumível')}</span>
               <span class="igris-card-type-tag">${item.tipo || 'Consumível [ Peso 1 ]'}</span>
             </div>
             <div class="igris-card-content">
@@ -11309,7 +11559,7 @@ const MesaIgrisShop = {
               <p class="igris-card-desc">${item.descricao || 'Nenhuma informação decifrada sobre esta relíquia.'}</p>
               <div class="igris-card-footer">
                 <span class="igris-card-stock ${item.isInfinite || item.quantidade === Infinity || item.isDefault || item.categoria === 'padrao' || String(item.id).includes('fruta') ? 'is-infinite' : ''}">${(item.isInfinite || item.quantidade === Infinity || item.isDefault || item.categoria === 'padrao' || String(item.id).includes('fruta')) ? 'Infinito' : (item.preco || (item.quantidade ? `${item.quantidade} Unidade` : '1 Unidade'))}</span>
-                <span class="igris-card-price"><img src="assets/vidrilhos.png" class="vidrilhos-icon" alt="" /> ${item.precoVidrilhos != null ? item.precoVidrilhos : 5} Vidrilhos</span>
+                <span class="igris-card-price"><img src="assets/vidrilhos.png" class="vidrilhos-icon" alt="" /> ${item.precoVidrilhos != null ? item.precoVidrilhos : 8} Vidrilhos</span>
               </div>
             </div>
           </div>
@@ -11323,6 +11573,21 @@ const MesaIgrisShop = {
 
     const tab = this.activeTab || 'todos';
 
+    // 1. ITENS PADRÕES: SEMPRE ACIMA DE TUDO
+    const padraoSection = `
+      <div class="igris-category-block">
+        <div class="igris-category-header">
+          <div class="igris-category-badge">[ ITENS PADRÕES — ESTOQUE PERMANENTE ]</div>
+          <div class="igris-category-line"></div>
+          <span class="igris-category-count">${defaultItems.length} permanente(s)</span>
+        </div>
+        <div class="igris-cards-subgrid">
+          ${defaultItems.map(renderCard).join('')}
+        </div>
+      </div>
+    `;
+
+    // 2. ARTEFATOS TRANSITÓRIOS
     const transitorioSection = `
       <div class="igris-category-block">
         <div class="igris-category-header">
@@ -11340,54 +11605,42 @@ const MesaIgrisShop = {
       </div>
     `;
 
-    const medoSection = `
+    // 3. ESPECIAIS DO CONCLAVE: POR ÚLTIMO
+    const conclaveSection = `
       <div class="igris-category-block">
         <div class="igris-category-header">
-          <div class="igris-category-badge badge-medo">[ ARTEFATOS DO MEDO — PRÓS & CONTRAS ]</div>
+          <div class="igris-category-badge badge-conclave">[ ESPECIAIS DO CONCLAVE ]</div>
           <div class="igris-category-line" style="background: linear-gradient(to right, rgba(239, 68, 68, 0.45), rgba(239, 68, 68, 0.05));"></div>
-          <span class="igris-category-count" style="border-color: rgba(239, 68, 68, 0.35); color: #fca5a5;">${medoItems.length} disponível(is)</span>
+          <span class="igris-category-count" style="border-color: rgba(239, 68, 68, 0.35); color: #fca5a5;">${conclaveItems.length} disponível(is)</span>
         </div>
-        ${medoItems.length > 0 ? `
+        ${conclaveItems.length > 0 ? `
           <div class="igris-cards-subgrid">
-            ${medoItems.map(renderCard).join('')}
+            ${conclaveItems.map(renderCard).join('')}
           </div>
         ` : `
-          <div class="igris-category-empty">Nenhum artefato do medo disponível nesta visita.</div>
+          <div class="igris-category-empty">Nenhum artefato especial do Conclave disponível nesta visita.</div>
         `}
       </div>
     `;
 
-    const padraoSection = `
-      <div class="igris-category-block">
-        <div class="igris-category-header">
-          <div class="igris-category-badge">[ ITENS PADRÕES — ESTOQUE PERMANENTE ]</div>
-          <div class="igris-category-line"></div>
-          <span class="igris-category-count">${defaultItems.length} permanente(s)</span>
-        </div>
-        <div class="igris-cards-subgrid">
-          ${defaultItems.map(renderCard).join('')}
-        </div>
-      </div>
-    `;
-
     let sectionsHtml = '';
-    if (tab === 'transitorio') {
-      sectionsHtml = transitorioSection;
-    } else if (tab === 'medo') {
-      sectionsHtml = medoSection;
-    } else if (tab === 'padrao') {
+    if (tab === 'padrao') {
       sectionsHtml = padraoSection;
+    } else if (tab === 'transitorio') {
+      sectionsHtml = transitorioSection;
+    } else if (tab === 'conclave' || tab === 'medo') {
+      sectionsHtml = conclaveSection;
     } else {
-      // 'todos': Transitorios primeiro, depois Medo, depois Padroes
-      sectionsHtml = transitorioSection + medoSection + padraoSection;
+      // 'todos': PADROES SEMPRE ACIMA DE TUDO, TRANSITORIOS NO MEIO, CONCLAVE POR ÚLTIMO
+      sectionsHtml = padraoSection + transitorioSection + conclaveSection;
     }
 
     grid.innerHTML = `
       <div class="igris-tabs-nav">
         <button type="button" class="igris-tab-btn ${tab === 'todos' ? 'active' : ''}" onclick="MesaIgrisShop.setTab('todos')">Todos os Artefatos</button>
-        <button type="button" class="igris-tab-btn ${tab === 'transitorio' ? 'active' : ''}" onclick="MesaIgrisShop.setTab('transitorio')">Artefatos Transitórios (${transitorioItems.length})</button>
-        <button type="button" class="igris-tab-btn tab-medo ${tab === 'medo' ? 'active' : ''}" onclick="MesaIgrisShop.setTab('medo')">Artefatos do Medo (${medoItems.length})</button>
         <button type="button" class="igris-tab-btn ${tab === 'padrao' ? 'active' : ''}" onclick="MesaIgrisShop.setTab('padrao')">Itens Padrões (${defaultItems.length})</button>
+        <button type="button" class="igris-tab-btn ${tab === 'transitorio' ? 'active' : ''}" onclick="MesaIgrisShop.setTab('transitorio')">Artefatos Transitórios (${transitorioItems.length})</button>
+        <button type="button" class="igris-tab-btn tab-conclave ${tab === 'conclave' || tab === 'medo' ? 'active' : ''}" onclick="MesaIgrisShop.setTab('conclave')">Especiais do Conclave (${conclaveItems.length})</button>
       </div>
 
       ${sectionsHtml}
@@ -11792,8 +12045,8 @@ const MesaIgrisShop = {
           const grantedId = (shopItem && (shopItem.isDefault || isInfinite)) ? `${itemId}_${slotNum}_${Date.now()}` : itemId;
           let colItem = MesaColetaveis.items.find(x => String(x.id) === String(grantedId));
           if (!colItem && shopItem) {
-            const fearDetail = (shopItem.ladoBom && shopItem.ladoRuim)
-              ? `[O Lado Bom (${shopItem.ladoBomTitulo || 'Benefício'})]: ${shopItem.ladoBom}\n\n[O Lado Ruim (${shopItem.ladoRuimTitulo || 'Penalidade'})]: ${shopItem.ladoRuim}`
+            const fearDetail = (shopItem.beneficio && shopItem.prejuizo)
+              ? `Benefício: ${shopItem.beneficio}\n\nPrejuízo: ${shopItem.prejuizo}`
               : (shopItem.efeito || shopItem.descricao || '');
 
             colItem = {
