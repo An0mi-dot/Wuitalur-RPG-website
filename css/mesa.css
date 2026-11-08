@@ -9362,16 +9362,12 @@ body.combat-active .mesa-combat-overlay {
   pointer-events: all;
 }
 
-body.combat-active .mesa-floating-nav {
-  z-index: 1200 !important;
+body.combat-active .mesa-floating-nav,
+body.combat-active .nav-reaction-wrapper {
+  display: none !important;
   pointer-events: none !important;
 }
 
-body.combat-active .mesa-floating-nav .nav-left-group {
-  pointer-events: auto !important;
-}
-
-body.combat-active .mesa-floating-nav .mesa-actions,
 body.combat-active .mesa-mobile-fab-container,
 body.combat-active .mesa-version {
   display: none !important;
@@ -9608,20 +9604,41 @@ body.combat-active .combat-title-box {
 
 /* Controles Exclusivos do Mestre Durante o Combate */
 .combat-master-controls {
-  position: absolute;
+  position: fixed;
   top: 14px;
-  right: 188px;
+  left: 16px;
+  right: auto;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  z-index: 1250;
+  pointer-events: auto !important;
+}
+
+.combat-master-desktop-view {
+  display: flex;
+  align-items: center;
   gap: 6px;
-  z-index: 30;
 }
 
 .combat-ctrls-row {
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.combat-ctrl-btn.combat-ctrl-esconderijo-btn {
+  border-color: rgba(255, 17, 51, 0.6) !important;
+  color: #ff6680 !important;
+}
+
+.combat-ctrl-btn.combat-ctrl-esconderijo-btn:hover {
+  background: #ff1133 !important;
+  color: #000000 !important;
+  border-color: #ff3355 !important;
+  box-shadow: 0 0 14px #ff1133 !important;
 }
 
 .combat-ctrl-btn {
@@ -13275,26 +13292,116 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 
 /* 2. DADO DE PAVOR NO MOTOR DE ROLAGEM */
 .dice-tumble-box.pavor-box {
-  background: linear-gradient(135deg, rgba(30, 5, 10, 0.95), rgba(10, 2, 5, 0.98)) !important;
-  border: 2px solid #ff1133 !important;
-  box-shadow: 0 0 20px rgba(255, 17, 51, 0.45) !important;
-  color: #ff4d6d !important;
+  background: radial-gradient(circle at center, #1c050a 0%, #080103 100%) !important;
+  border: 2px solid #e11d48 !important;
+  box-shadow: 0 0 18px rgba(225, 29, 72, 0.6), inset 0 0 12px rgba(225, 29, 72, 0.35) !important;
+  color: #ff3355 !important;
+  position: relative !important;
+  overflow: visible !important;
+  animation: pavorBoxCrimsonPulse 2.2s infinite ease-in-out !important;
 }
 
-.dice-tumble-box.pavor-box .dice-tumble-type {
-  color: #ff1133 !important;
-  font-weight: 900 !important;
+@keyframes pavorBoxCrimsonPulse {
+  0%, 100% {
+    border-color: #be123c;
+    box-shadow: 0 0 16px rgba(190, 18, 60, 0.6), inset 0 0 10px rgba(190, 18, 60, 0.3);
+  }
+  50% {
+    border-color: #ff1133;
+    box-shadow: 0 0 28px rgba(255, 17, 51, 0.95), inset 0 0 18px rgba(255, 17, 51, 0.55);
+  }
+}
+
+.pavor-box-top-tag {
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff1133;
+  color: #ffffff;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.38rem;
+  padding: 2px 6px;
+  letter-spacing: 0.1em;
+  border: 1px solid #ffffff;
+  box-shadow: 0 0 8px #ff1133;
+  white-space: nowrap;
+}
+
+.pavor-box-sub {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.34rem;
+  color: #ff4d6d;
   letter-spacing: 0.08em;
+  margin-top: 2px;
+}
+
+.dice-tumble-box.pavor-box .dice-tumble-val.pavor-number {
+  color: #ff1744 !important;
+  text-shadow: 0 0 14px #ff1744, 0 0 24px rgba(255, 23, 68, 0.9) !important;
+  font-family: 'Press Start 2P', monospace !important;
 }
 
 .dice-tumble-box.pavor-box.settled-pavor {
-  border-color: #ff4d6d !important;
-  box-shadow: 0 0 25px rgba(255, 17, 51, 0.6) !important;
+  border-color: #ff1133 !important;
+  box-shadow: 0 0 32px rgba(255, 17, 51, 0.95), inset 0 0 15px rgba(255, 17, 51, 0.5) !important;
 }
 
 .pavor-breakdown-minus {
-  color: #ff4d6d;
-  font-weight: 700;
+  color: #ff1744 !important;
+  font-weight: 800;
+  text-shadow: 0 0 8px rgba(255, 23, 68, 0.6);
+  padding: 0 4px;
+}
+
+.dice-formula-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dice-grand-total.with-pavor {
+  text-shadow: 0 0 20px #ff1133, 0 0 35px #990018 !important;
+}
+
+.pavor-alivio-badge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  margin-top: 8px;
+  padding: 8px 16px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1.5px solid #10b981;
+  color: #6ee7b7;
+  font-family: 'Press Start 2P', monospace;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.4);
+  animation: pavorAlivioEntrance 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes pavorAlivioEntrance {
+  0% { opacity: 0; transform: scale(0.85) translateY(6px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.pavor-alivio-icon {
+  font-size: 0.9rem;
+  color: #34d399;
+}
+
+.pavor-alivio-title {
+  font-size: 0.58rem;
+  color: #34d399;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 10px rgba(52, 211, 153, 0.8);
+}
+
+.pavor-alivio-desc {
+  font-size: 0.42rem;
+  color: #a7f3d0;
+  letter-spacing: 0.04em;
 }
 
 /* 3. ANIMAÇÃO DE VANISH / POEIRA SE DISSOLVENDO */
@@ -13359,12 +13466,12 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 }
 
 .esconderijo-panel-card {
-  background: #0d0d12;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
+  background: #060204;
+  border: 2px solid #ff1133;
+  border-radius: 0;
   width: 100%;
   max-width: 540px;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.9), 0 0 30px rgba(56, 189, 248, 0.1);
+  box-shadow: 0 0 35px rgba(255, 17, 51, 0.4), inset 0 0 20px rgba(255, 17, 51, 0.15);
   overflow: hidden;
 }
 
@@ -13372,17 +13479,17 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
-  background: rgba(255, 255, 255, 0.02);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px 18px;
+  background: rgba(255, 17, 51, 0.08);
+  border-bottom: 2px solid rgba(255, 17, 51, 0.4);
 }
 
 .esconderijo-panel-title {
-  font-family: var(--font-heading);
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: 0.05em;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.65rem;
+  color: #ff3355;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 10px rgba(255, 51, 85, 0.8);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -13402,9 +13509,9 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 }
 
 .esconderijo-room-btn {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border-medium);
-  border-radius: 6px;
+  background: rgba(20, 5, 8, 0.9);
+  border: 1.5px solid #44111c;
+  border-radius: 0;
   padding: 12px 8px;
   text-align: center;
   cursor: pointer;
@@ -13413,19 +13520,20 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 }
 
 .esconderijo-room-btn:hover {
-  background: rgba(56, 189, 248, 0.08);
-  border-color: rgba(56, 189, 248, 0.5);
+  background: rgba(50, 10, 20, 0.95);
+  border-color: #ff3355;
+  box-shadow: 0 0 12px rgba(255, 51, 85, 0.4);
 }
 
 .esconderijo-room-btn.selected {
-  background: rgba(56, 189, 248, 0.18);
-  border-color: #38bdf8;
-  box-shadow: 0 0 14px rgba(56, 189, 248, 0.3);
+  background: #880818;
+  border-color: #ff1133;
+  box-shadow: 0 0 16px rgba(255, 17, 51, 0.7);
 }
 
 .esconderijo-room-btn .room-title {
-  font-family: var(--font-heading);
-  font-size: 0.82rem;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.58rem;
   font-weight: 700;
   text-transform: uppercase;
   display: block;
@@ -13433,10 +13541,10 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 }
 
 .esconderijo-room-btn .room-dice {
-  font-family: monospace;
-  font-size: 0.78rem;
-  color: #38bdf8;
-  font-weight: 800;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.44rem;
+  color: #ff8093;
+  font-weight: 700;
 }
 
 /* SETORES BOTÕES NA TELA DO MESTRE */
@@ -13447,12 +13555,12 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 }
 
 .esconderijo-sector-btn {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 6px;
+  background: #0d0407;
+  border: 1.5px solid #44111c;
+  border-radius: 0;
   padding: 12px 6px;
-  font-family: var(--font-heading);
-  font-size: 1.15rem;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.85rem;
   font-weight: 800;
   color: #fff;
   cursor: pointer;
@@ -13461,26 +13569,28 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 }
 
 .esconderijo-sector-btn:hover {
-  background: rgba(255, 17, 51, 0.15);
-  border-color: rgba(255, 17, 51, 0.5);
-  color: #ff8093;
+  background: #ff1133;
+  border-color: #ff3355;
+  color: #000;
+  box-shadow: 0 0 14px #ff1133;
 }
 
 .esconderijo-sector-btn.selected {
-  background: rgba(255, 17, 51, 0.3);
+  background: #b91c1c;
   border-color: #ff1133;
   color: #fff;
-  box-shadow: 0 0 16px rgba(255, 17, 51, 0.5);
+  box-shadow: 0 0 18px rgba(255, 17, 51, 0.8);
   transform: scale(1.05);
 }
 
 .esconderijo-history-box {
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 6px;
+  background: rgba(10, 2, 4, 0.8);
+  border: 1px solid rgba(255, 17, 51, 0.3);
+  border-radius: 0;
   padding: 10px 14px;
-  font-size: 0.8rem;
-  color: var(--text-muted);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.46rem;
+  color: #f43f5e;
   line-height: 1.6;
 }
 
@@ -13503,31 +13613,31 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 }
 
 .esconderijo-player-card {
-  background: #09090d;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
+  background: #060204;
+  border: 2px solid #ff1133;
+  border-radius: 0;
   width: 100%;
   max-width: 520px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(255, 17, 51, 0.15);
+  box-shadow: 0 0 35px rgba(255, 17, 51, 0.4), inset 0 0 20px rgba(255, 17, 51, 0.15);
   overflow: hidden;
   position: relative;
 }
 
 .esconderijo-player-header {
-  padding: 16px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(180deg, rgba(255, 17, 51, 0.08) 0%, transparent 100%);
+  padding: 12px 18px;
+  border-bottom: 2px solid rgba(255, 17, 51, 0.4);
+  background: rgba(255, 17, 51, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .esconderijo-player-title {
-  font-family: var(--font-heading);
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: 0.06em;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.65rem;
+  color: #ff3355;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 10px rgba(255, 51, 85, 0.8);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -13542,20 +13652,19 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 
 /* SETOR SECRETO DISPLAY */
 .secret-sector-display-box {
-  background: rgba(20, 20, 28, 0.8);
-  border: 1px solid rgba(56, 189, 248, 0.35);
-  border-radius: 8px;
+  background: #0d0306;
+  border: 2px dashed #ff1133;
+  border-radius: 0;
   padding: 18px;
   text-align: center;
 }
 
 .secret-sector-badge {
-  font-family: var(--font-heading);
-  font-size: 2.2rem;
-  font-weight: 900;
-  color: #38bdf8;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.3rem;
+  color: #ff3355;
   letter-spacing: 0.06em;
-  text-shadow: 0 0 16px rgba(56, 189, 248, 0.6);
+  text-shadow: 0 0 16px rgba(255, 51, 85, 0.8);
   margin: 6px 0;
 }
 
@@ -13678,17 +13787,18 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 /* 6. DADO DE PAVOR NO MODAL DE DADOS E CARD DE COMBATE */
 .dice-pavor-card {
   margin: 14px 0 16px;
-  background: rgba(20, 5, 8, 0.65);
-  border: 1px solid rgba(255, 17, 51, 0.28);
-  border-radius: 4px;
-  padding: 10px 14px;
+  background: rgba(20, 5, 8, 0.85);
+  border: 1.5px solid rgba(255, 17, 51, 0.4);
+  border-radius: 0;
+  padding: 12px 14px;
   transition: all 0.25s ease;
 }
 
+.dice-pavor-card.active,
 .dice-pavor-card:has(.dice-pavor-toggle-btn.active) {
-  background: rgba(35, 6, 12, 0.88);
-  border-color: rgba(255, 17, 51, 0.65);
-  box-shadow: 0 0 18px rgba(255, 17, 51, 0.3);
+  background: rgba(35, 6, 12, 0.95);
+  border-color: #ff1133;
+  box-shadow: 0 0 20px rgba(255, 17, 51, 0.4);
 }
 
 .dice-pavor-main {
@@ -13708,22 +13818,22 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 .dice-pavor-texts {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
 .dice-pavor-title {
-  font-family: var(--font-heading);
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.58rem;
   color: #fff;
-  line-height: 1.1;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
 }
 
 .dice-pavor-desc {
-  font-size: 0.72rem;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.42rem;
   color: #a1a1aa;
-  line-height: 1.3;
+  line-height: 1.5;
 }
 
 .dice-pavor-toggle-btn {
@@ -13731,30 +13841,29 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
   align-items: center;
   gap: 8px;
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
   color: #d4d4d8;
-  font-family: var(--font-heading);
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  padding: 6px 14px;
-  border-radius: 3px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.06em;
+  padding: 6px 12px;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
 }
 
 .dice-pavor-toggle-btn .pavor-toggle-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: #71717a;
   transition: all 0.2s ease;
 }
 
 .dice-pavor-toggle-btn:hover {
-  background: rgba(255, 17, 51, 0.18);
-  border-color: rgba(255, 17, 51, 0.45);
+  background: rgba(255, 17, 51, 0.25);
+  border-color: rgba(255, 17, 51, 0.6);
   color: #fff;
 }
 
@@ -13762,7 +13871,7 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
   background: #ff1133;
   border-color: #ff4d6d;
   color: #fff;
-  box-shadow: 0 0 14px rgba(255, 17, 51, 0.55);
+  box-shadow: 0 0 14px rgba(255, 17, 51, 0.7);
 }
 
 .dice-pavor-toggle-btn.active .pavor-toggle-dot {
@@ -13771,32 +13880,34 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 }
 
 .combat-pavor-toggle-btn {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  color: #d4d4d8;
-  font-family: var(--font-heading);
-  font-size: 0.65rem;
-  font-weight: 800;
-  padding: 2px 7px;
-  border-radius: 2px;
+  background: rgba(20, 5, 8, 0.95);
+  border: 1px solid rgba(255, 17, 51, 0.4);
+  color: #ff6680;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.42rem;
+  padding: 3px 6px;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.18s ease;
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  text-transform: uppercase;
 }
 
 .combat-pavor-toggle-btn:hover {
-  background: rgba(255, 17, 51, 0.2);
-  border-color: rgba(255, 17, 51, 0.6);
-  color: #fff;
+  background: #ff1133;
+  color: #000;
+  border-color: #ff3355;
+  box-shadow: 0 0 10px #ff1133;
 }
 
 .combat-pavor-toggle-btn.active {
-  background: #ff1133;
-  border-color: #ff4d6d;
-  color: #fff;
-  box-shadow: 0 0 8px rgba(255, 17, 51, 0.5);
+  background: #990018;
+  border-color: #ff2244;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 34, 68, 0.8);
+  animation: pavorBadgePulse 1.8s infinite ease-in-out;
 }
 
 .combat-player-card.has-pavor {

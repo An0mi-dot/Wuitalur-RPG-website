@@ -3510,6 +3510,7 @@ const MesaReactions = {
 const MesaDice = {
   selectedDice: [20], // padrão inicial: 1d20
   modifier: 0,
+  manualPavorActive: false,
   isRolling: false,
   isGlobalRolling: false,
   currentRoller: null,
@@ -3539,14 +3540,24 @@ const MesaDice = {
 
   openModal() {
     if (!MesaApp.state.myToken && !MesaApp.state.isMaster) {
-      alert("Observadores não podem rolar dados. Conecte seu token de personagem para rolar dados na mesa!");
+      alert("Observadores não podem rolar dados. Conecte seu token de personagem para rolar dados na mesa.");
       MesaApp.openTokenModal();
       return;
     }
 
     if (this.isGlobalRolling) {
-      alert(`[MESA OCUPADA]: ${this.currentRoller || 'Outro jogador'} está rolando dados no palco central neste momento. Aguarde a rolagem terminar!`);
+      alert(`[MESA OCUPADA]: ${this.currentRoller || 'Outro jogador'} está rolando dados no palco central neste momento. Aguarde a rolagem terminar.`);
       return;
+    }
+
+    let p = null;
+    if (MesaApp.state && MesaApp.state.mySlot && MesaApp.state.players) {
+      p = MesaApp.state.players[MesaApp.state.mySlot - 1];
+    } else if (MesaApp.state && MesaApp.state.activeViewingPlayer) {
+      p = MesaApp.state.activeViewingPlayer;
+    }
+    if (p && p.dadoDePavor) {
+      this.manualPavorActive = true;
     }
 
     MesaApp.openModal('dice-modal');
@@ -3555,18 +3566,23 @@ const MesaDice = {
   },
 
   togglePavorInModal() {
+    this.manualPavorActive = !this.manualPavorActive;
     let p = null;
     if (MesaApp.state && MesaApp.state.mySlot && MesaApp.state.players) {
       p = MesaApp.state.players[MesaApp.state.mySlot - 1];
     } else if (MesaApp.state && MesaApp.state.activeViewingPlayer) {
       p = MesaApp.state.activeViewingPlayer;
-    } else if (MesaApp.state && MesaApp.state.players) {
-      p = MesaApp.state.players.find(pl => pl && pl.nome);
     }
     if (p) {
-      MesaApp.toggleDadoDePavor(p.slot);
-    } else {
-      MesaApp.showToast("Conecte um personagem para ativar Dado de Pavor.");
+      p.dadoDePavor = this.manualPavorActive;
+      MesaApp.renderMesa();
+      if (MesaChat.channel) {
+        MesaChat.channel.send({
+          type: 'broadcast',
+          event: 'pavor_toggle',
+          payload: { slot: p.slot, dadoDePavor: p.dadoDePavor }
+        });
+      }
     }
     this.updatePavorChipUI();
   },
@@ -3574,19 +3590,15 @@ const MesaDice = {
   updatePavorChipUI() {
     const btn = document.getElementById('dice-pavor-chip-btn');
     if (!btn) return;
-    let p = null;
-    if (MesaApp.state && MesaApp.state.mySlot && MesaApp.state.players) {
-      p = MesaApp.state.players[MesaApp.state.mySlot - 1];
-    } else if (MesaApp.state && MesaApp.state.activeViewingPlayer) {
-      p = MesaApp.state.activeViewingPlayer;
-    } else if (MesaApp.state && MesaApp.state.players) {
-      p = MesaApp.state.players.find(pl => pl && pl.nome);
+    const isActive = Boolean(this.manualPavorActive);
+    btn.classList.toggle('active', isActive);
+    const card = document.getElementById('dice-pavor-card') || btn.closest('.dice-pavor-card');
+    if (card) {
+      card.classList.toggle('active', isActive);
     }
-    const hasPavor = Boolean(p && p.dadoDePavor);
-    btn.classList.toggle('active', hasPavor);
     const label = document.getElementById('dice-pavor-chip-label');
     if (label) {
-      label.textContent = hasPavor ? 'ATIVO' : 'INATIVO';
+      label.textContent = isActive ? 'LIGADO' : 'DESLIGADO';
     }
   },
 
@@ -3721,14 +3733,18 @@ const MesaDice = {
     const diceSum = diceResults.reduce((acc, d) => acc + d.val, 0);
     let finalTotal = diceSum + this.modifier;
 
-    if (rollerPlayer && rollerPlayer.dadoDePavor) {
-      const mirroredSides = this.selectedDice[0] || 20;
+    const isPavorActive = Boolean(this.manualPavorActive || (rollerPlayer && rollerPlayer.dadoDePavor));
+
+    if (isPavorActive) {
+      const mirroredSides = (this.selectedDice && this.selectedDice.length > 0)
+        ? Math.max(...this.selectedDice)
+        : 20;
       const pavorVal = this.cryptoRandomInt(1, mirroredSides);
       pavorResult = {
         sides: mirroredSides,
         val: pavorVal,
-        playerSlot: rollerPlayer.slot,
-        playerName: rollerPlayer.nome
+        playerSlot: rollerPlayer ? rollerPlayer.slot : null,
+        playerName: rollerPlayer ? rollerPlayer.nome : sender.name
       };
       finalTotal = diceSum - pavorVal + this.modifier;
     }
@@ -3762,25 +3778,34 @@ const MesaDice = {
     const modStr = this.modifier !== 0 ? (this.modifier > 0 ? ` + ${this.modifier}` : ` - ${Math.abs(this.modifier)}`) : '';
     const chatContent = `Rolou ${breakdown}${modStr} -> Total: ${finalTotal}`;
 
-    if (pavorResult && pavorResult.val === 1 && rollerPlayer) {
-      setTimeout(() => {
-        MesaChat.receiveMessage({
-          id: 'pavor_clear_' + Date.now(),
-          sender_name: 'Fios do Medo',
-          is_master: true,
-          content: `O Dado de Pavor de ${rollerPlayer.nome} sorteou 1 e se desfez em cinzas. O terror foi descartado da ficha.`,
-          created_at: new Date().toISOString()
-        });
-        rollerPlayer.dadoDePavor = false;
-        MesaApp.renderMesa();
-        if (MesaChat.channel) {
-          MesaChat.channel.send({
-            type: 'broadcast',
-            event: 'pavor_toggle',
-            payload: { slot: rollerPlayer.slot, dadoDePavor: false }
-          });
+    if (pavorResult) {
+      if (pavorResult.val === 1) {
+        this.manualPavorActive = false;
+        if (rollerPlayer) {
+          setTimeout(() => {
+            MesaChat.receiveMessage({
+              id: 'pavor_clear_' + Date.now(),
+              sender_name: 'Fios do Medo',
+              is_master: true,
+              content: `O Dado de Pavor de ${rollerPlayer.nome} sorteou 1 e se desfez em cinzas. O terror foi superado.`,
+              created_at: new Date().toISOString()
+            });
+            rollerPlayer.dadoDePavor = false;
+            MesaApp.renderMesa();
+            if (MesaChat.channel) {
+              MesaChat.channel.send({
+                type: 'broadcast',
+                event: 'pavor_toggle',
+                payload: { slot: rollerPlayer.slot, dadoDePavor: false }
+              });
+            }
+          }, 2500);
         }
-      }, 2500);
+      } else {
+        if (!rollerPlayer || !rollerPlayer.dadoDePavor) {
+          this.manualPavorActive = false;
+        }
+      }
     }
 
     MesaChat.receiveMessage({
@@ -3821,9 +3846,11 @@ const MesaDice = {
           </div>
         `).join('')}
         ${data.pavorResult ? `
-          <div id="dice-pavor-box" class="dice-tumble-box pavor-box rolling">
-            <span class="dice-tumble-type">PAVOR d${data.pavorResult.sides}</span>
-            <span id="dice-pavor-val" class="dice-tumble-val">?</span>
+          <div id="dice-pavor-box" class="dice-tumble-box pavor-box rolling" title="Dado de Pavor (Fios do Medo)">
+            <span class="pavor-box-top-tag">PAVOR</span>
+            <span class="dice-tumble-type">d${data.pavorResult.sides}</span>
+            <span id="dice-pavor-val" class="dice-tumble-val pavor-number">?</span>
+            <span class="pavor-box-sub">SUBTRAI</span>
           </div>
         ` : ''}
       </div>
@@ -3871,40 +3898,67 @@ const MesaDice = {
           if (data.pavorResult.val === 1) {
             setTimeout(() => {
               this.createDustVanishEffect(pBox, '#ff1133');
-            }, 800);
+            }, 900);
           } else {
             setTimeout(() => {
               this.createDustVanishEffect(pBox, 'rgba(255, 17, 51, 0.65)', 15);
-            }, 500);
+            }, 600);
           }
         }
       }
 
-      // Exibe o total final e detalhamento
+      // Exibe o total final e detalhamento com fórmula visual clara
       const totalBox = stage.querySelector('#dice-total-box');
       if (totalBox) {
-        let breakdownStr = data.results.map(d => `d${d.sides}(${d.val})`).join(' + ');
-        if (data.pavorResult) {
-          breakdownStr += ` - <span class="pavor-breakdown-minus">Pavor (${data.pavorResult.val})</span>`;
+        let commonDiceBreakdown = data.results.map(d => `d${d.sides}(${d.val})`).join(' + ');
+        const commonSum = data.results.reduce((a, b) => a + b.val, 0);
+
+        let formulaParts = '';
+        if (data.results.length > 1) {
+          formulaParts += `<span class="dice-formula-pool">${commonDiceBreakdown} [${commonSum}]</span>`;
+        } else {
+          formulaParts += `<span class="dice-formula-pool">${commonDiceBreakdown}</span>`;
         }
-        const modStr = data.modifier !== 0 ? (data.modifier > 0 ? ` + ${data.modifier}` : ` - ${Math.abs(data.modifier)}`) : '';
+
+        if (data.pavorResult) {
+          formulaParts += ` <span class="pavor-breakdown-minus">− PAVOR (${data.pavorResult.val})</span>`;
+        }
+
+        const modStr = data.modifier !== 0 ? (data.modifier > 0 ? ` + ${data.modifier}` : ` − ${Math.abs(data.modifier)}`) : '';
+        if (modStr) {
+          formulaParts += ` <span class="dice-formula-mod">${modStr}</span>`;
+        }
+
+        let alivioHtml = '';
+        if (data.pavorResult && data.pavorResult.val === 1) {
+          alivioHtml = `
+            <div class="pavor-alivio-badge">
+              <span class="pavor-alivio-icon">✦</span>
+              <span class="pavor-alivio-title">PAVOR SUPERADO</span>
+              <span class="pavor-alivio-desc">Resultado 1 no Dado de Pavor: o terror foi dissipado</span>
+            </div>
+          `;
+        }
 
         totalBox.style.display = 'flex';
         totalBox.innerHTML = `
-          <span class="dice-breakdown-text">${breakdownStr}${modStr}</span>
-          <span class="dice-grand-total">${data.total}</span>
+          <div class="dice-formula-container">
+            <span class="dice-breakdown-text">${formulaParts} =</span>
+            <span class="dice-grand-total ${data.pavorResult ? 'with-pavor' : ''}">${data.total}</span>
+          </div>
+          ${alivioHtml}
         `;
       }
     }, 1200);
 
-    // Mantém na tela e retorna suavemente ao estado de repouso após 5.0s, liberando a trava global
+    // Mantém na tela e retorna suavemente ao estado de repouso após 5.5s, liberando a trava global
     this.rollTimeout = setTimeout(() => {
       stage.classList.remove('active');
       stage.innerHTML = '';
       this.isGlobalRolling = false;
       this.currentRoller = null;
       this.updateRollButtonLabel();
-    }, 5000);
+    }, 5500);
   }
 };
 
@@ -10921,7 +10975,7 @@ const MesaCombate = {
           <div class="combat-card-header">
             <span class="combat-card-name">${p.nome}</span>
             <div style="display: flex; align-items: center; gap: 4px;">
-              <button type="button" class="combat-pavor-toggle-btn ${p.dadoDePavor ? 'active' : ''}" onclick="event.stopPropagation(); MesaApp.toggleDadoDePavor(${slotNum});" title="${p.dadoDePavor ? 'Remover Dado de Pavor' : 'Ativar Dado de Pavor'}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M12 12h.01"/></svg><span>${p.dadoDePavor ? 'PAVOR ON' : '+ PAVOR'}</span></button>
+              <button type="button" class="combat-pavor-toggle-btn ${p.dadoDePavor ? 'active' : ''}" onclick="event.stopPropagation(); MesaApp.toggleDadoDePavor(${slotNum});" title="${p.dadoDePavor ? 'Desativar Dado de Pavor' : 'Ativar Dado de Pavor'}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg><span>${p.dadoDePavor ? 'PAVOR ATIVO' : '+ PAVOR'}</span></button>
               <span class="combat-card-slot-badge">S${slotNum}</span>
             </div>
           </div>
