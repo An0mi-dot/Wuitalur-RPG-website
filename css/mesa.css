@@ -9415,6 +9415,23 @@ body.combat-active .player-slot {
   transition: none !important;
 }
 
+/* Posicionamento mais elevado especifico para o oponente ??? (assasino1 e variacao vermelha) */
+.combat-bg-video.video-assasino,
+.combat-bg-video[src*="assasino1"] {
+  object-position: center top !important;
+  transform: translateY(-80px) scale(1.12) !important;
+  transform-origin: center top !important;
+}
+
+@media (max-width: 768px) {
+  .combat-bg-video.video-assasino,
+  .combat-bg-video[src*="assasino1"] {
+    object-position: center top !important;
+    transform: translateY(-48px) scale(1.12) !important;
+    transform-origin: center top !important;
+  }
+}
+
 .combat-bg-video.playing {
   display: block;
   opacity: 1;

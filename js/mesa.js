@@ -10676,9 +10676,9 @@ const MesaCombate = {
         : {};
       attrs._sys_combate = {
         active: !!this.isActive,
-        opponentId: this.opponentId || 'unknown',
-        opponentName: this.opponentName || 'Ratos',
-        videoUrl: this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=3',
+        opponentId: this.opponentId || 'assasino',
+        opponentName: this.opponentName || '???',
+        videoUrl: this.videoUrl || 'assets/videos/assasino1.mp4',
         turnCycle: this.turnCycle ? JSON.parse(JSON.stringify(this.turnCycle)) : null,
         updatedAt: Date.now()
       };
@@ -10714,8 +10714,8 @@ const MesaCombate = {
 
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
-    if (nameInput) nameInput.value = this.opponentName || 'Ratos';
-    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=3';
+    if (nameInput) nameInput.value = this.opponentName || '???';
+    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/assasino1.mp4';
 
     const localNotice = document.getElementById('combat-local-badge');
     if (localNotice) {
@@ -10768,8 +10768,8 @@ const MesaCombate = {
 
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
-    const name = (nameInput && nameInput.value.trim()) || 'Ratos';
-    const video = (videoInput && videoInput.value.trim()) || 'assets/videos/rato_cinematica.mp4?v=3';
+    const name = (nameInput && nameInput.value.trim()) || this.opponentName || '???';
+    const video = (videoInput && videoInput.value.trim()) || this.videoUrl || 'assets/videos/assasino1.mp4';
 
     this.closeSelectModal();
 
@@ -10796,7 +10796,7 @@ const MesaCombate = {
     if (data.turnCycle) {
       this.turnCycle = data.turnCycle;
       if (this.turnCycle && Array.isArray(this.turnCycle.order)) {
-        const bossName = (this.opponentName && this.opponentName !== '???') ? this.opponentName : 'Ratos';
+        const bossName = this.opponentName || '???';
         this.turnCycle.order.forEach(it => {
           if (it && it.type === 'boss') {
             it.name = bossName;
@@ -10963,7 +10963,14 @@ const MesaCombate = {
 
     let trimmedUrl = (url && url.trim()) || '';
     const isEsconderijoNow = document.body.classList.contains('esconderijo-active');
-    if ((trimmedUrl.includes('assasino1') || this.opponentName === '???') && isEsconderijoNow) {
+    const isAssasinoVideo = trimmedUrl.includes('assasino1') || this.opponentName === '???';
+    if (isAssasinoVideo) {
+      video.classList.add('video-assasino');
+    } else {
+      video.classList.remove('video-assasino');
+    }
+
+    if (isAssasinoVideo && isEsconderijoNow) {
       trimmedUrl = 'assets/videos/assasino1_vermelho.mp4';
     } else if (trimmedUrl.includes('assasino1') && !isEsconderijoNow) {
       trimmedUrl = 'assets/videos/assasino1.mp4';
@@ -11291,7 +11298,7 @@ const MesaCombate = {
     order.push({
       id: 'boss',
       slot: null,
-      name: this.opponentName || 'Ratos',
+      name: this.opponentName || '???',
       type: 'boss'
     });
 
@@ -11312,7 +11319,7 @@ const MesaCombate = {
     listEl.innerHTML = this.turnCycle.order.map((item, idx) => {
       const isCurrent = idx === (this.turnCycle.currentIndex || 0);
       const isBoss = item.type === 'boss';
-      const bossRealName = (this.opponentName && this.opponentName !== '???') ? this.opponentName : (item.name !== '???' ? item.name : 'Ratos');
+      const bossRealName = this.opponentName || item.name || '???';
       const label = isBoss ? `${bossRealName} [OPONENTE]` : `${item.name} (S${item.slot})`;
       const numLabel = `${idx + 1}º`;
 
@@ -11402,7 +11409,7 @@ const MesaCombate = {
     this.turnCycle.order.push({
       id: `boss_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
       slot: null,
-      name: this.opponentName || 'Ratos',
+      name: this.opponentName || '???',
       type: 'boss'
     });
     this.renderTurnOrderList();
@@ -11420,7 +11427,7 @@ const MesaCombate = {
     if (!this.turnCycle) this.initDefaultTurnOrder();
     const players = (MesaApp && MesaApp.state && MesaApp.state.players) || [];
     const activePlayers = players.filter(p => p && p.nome);
-    const bossName = this.opponentName || 'Ratos';
+    const bossName = this.opponentName || '???';
 
     if (activePlayers.length === 0) {
       this.turnCycle.order = [{
@@ -11633,7 +11640,7 @@ const MesaCombate = {
 
     this.turnCycle = cycleData;
     if (this.turnCycle && Array.isArray(this.turnCycle.order)) {
-      const bossName = (this.opponentName && this.opponentName !== '???') ? this.opponentName : 'Ratos';
+      const bossName = this.opponentName || '???';
       this.turnCycle.order.forEach(it => {
         if (it && it.type === 'boss') {
           it.name = bossName;
@@ -11721,7 +11728,7 @@ const MesaCombate = {
 
     // 1. Atualiza "Turno de [Nome]" logo abaixo do nome do inimigo com micro-pulso de confirmação
     const isBossItem = currentItem.type === 'boss';
-    const bossRealName = (this.opponentName && this.opponentName !== '???') ? this.opponentName : (currentItem.name !== '???' ? currentItem.name : 'Ratos');
+    const bossRealName = this.opponentName || currentItem.name || '???';
     const displayTurnName = isBossItem ? bossRealName : currentItem.name;
 
     if (subLabel) {
@@ -11879,7 +11886,11 @@ const MesaCombate = {
 
     const currentSrc = video.getAttribute('src') || '';
     const isAssasino = currentSrc.includes('assasino1') || (this.videoUrl && this.videoUrl.includes('assasino1')) || this.opponentName === '???';
-    if (!isAssasino) return;
+    if (!isAssasino) {
+      video.classList.remove('video-assasino');
+      return;
+    }
+    video.classList.add('video-assasino');
 
     const targetUrl = isEsconderijo ? 'assets/videos/assasino1_vermelho.mp4' : 'assets/videos/assasino1.mp4';
     if (currentSrc.includes(targetUrl)) return;
