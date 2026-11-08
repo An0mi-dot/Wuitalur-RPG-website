@@ -1839,6 +1839,16 @@ const MesaApp = {
                 MesaTvEstatica.triggerStop();
               }
             }
+            if (p1Attrs._sys_tv_estatica_2 && window.MesaTvEstatica2) {
+              const tv2 = p1Attrs._sys_tv_estatica_2;
+              const ov2 = document.getElementById('tv-estatica-2-overlay');
+              const isActive2 = ov2 && ov2.classList.contains('active');
+              if (tv2.active && !isActive2 && (Date.now() - (tv2.timestamp || 0) < 1800000)) {
+                MesaTvEstatica2.triggerStart();
+              } else if (!tv2.active && isActive2) {
+                MesaTvEstatica2.triggerStop();
+              }
+            }
             if (p1Attrs._sys_fita_1 && window.MesaFita1) {
               const f1 = p1Attrs._sys_fita_1;
               const ov = document.getElementById('fita-1-overlay');
@@ -2063,6 +2073,16 @@ const MesaApp = {
               MesaTvEstatica.triggerStop();
             }
           }
+          if (attrs && attrs._sys_tv_estatica_2 && window.MesaTvEstatica2) {
+            const tv2 = attrs._sys_tv_estatica_2;
+            const ov2 = document.getElementById('tv-estatica-2-overlay');
+            const isActive2 = ov2 && ov2.classList.contains('active');
+            if (tv2.active && !isActive2 && (Date.now() - (tv2.timestamp || 0) < 1800000)) {
+              MesaTvEstatica2.triggerStart();
+            } else if (!tv2.active && isActive2) {
+              MesaTvEstatica2.triggerStop();
+            }
+          }
           if (attrs && attrs._sys_perseguicao && window.MesaPerseguicaoFloresta) {
             const pf = attrs._sys_perseguicao;
             const ov = document.getElementById('perseguicao-floresta-overlay');
@@ -2218,6 +2238,34 @@ const MesaApp = {
       if (isFromSelf(payload)) return;
       if (window.MesaFita1) {
         MesaFita1.triggerStop();
+      }
+    });
+
+    channel.on('broadcast', { event: 'tv_estatica_start' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaTvEstatica) {
+        MesaTvEstatica.triggerStart();
+      }
+    });
+
+    channel.on('broadcast', { event: 'tv_estatica_stop' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaTvEstatica) {
+        MesaTvEstatica.triggerStop();
+      }
+    });
+
+    channel.on('broadcast', { event: 'tv_estatica_2_start' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaTvEstatica2) {
+        MesaTvEstatica2.triggerStart();
+      }
+    });
+
+    channel.on('broadcast', { event: 'tv_estatica_2_stop' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaTvEstatica2) {
+        MesaTvEstatica2.triggerStop();
       }
     });
 
@@ -8664,6 +8712,251 @@ const MesaTvEstatica = {
       this._canvasRaf = null;
     }
     const canvas = document.getElementById('tv-noise-canvas');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+};
+
+
+
+// ==========================================================================
+// MESA SINAL DE TV ANTIGA 2 (VARIAÇÃO COM IMAGEM ALTERNATIVA)
+// ==========================================================================
+const MesaTvEstatica2 = {
+  isActive: false,
+  _audioCtx: null,
+  _staticSource: null,
+  _staticGain: null,
+  _canvasRaf: null,
+
+  play() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    const now = Date.now();
+
+    const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'tv_estatica_2_start',
+          payload: { timestamp: now }
+        });
+      } catch (e) {}
+    }
+
+    if (MesaApp.supabase) {
+      (async () => {
+        try {
+          const { data } = await MesaApp.supabase
+            .from('personagens')
+            .select('atributos')
+            .eq('id', 1)
+            .single();
+          const attrs = data && data.atributos
+            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+            : {};
+          attrs._sys_tv_estatica_2 = { active: true, timestamp: now };
+          await MesaApp.supabase
+            .from('personagens')
+            .update({ atributos: attrs })
+            .eq('id', 1);
+        } catch (e) {}
+      })();
+    }
+
+    this.triggerStart();
+  },
+
+  stop() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+
+    const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'tv_estatica_2_stop',
+          payload: {}
+        });
+      } catch (e) {}
+    }
+
+    if (MesaApp.supabase) {
+      (async () => {
+        try {
+          const { data } = await MesaApp.supabase
+            .from('personagens')
+            .select('atributos')
+            .eq('id', 1)
+            .single();
+          const attrs = data && data.atributos
+            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+            : {};
+          attrs._sys_tv_estatica_2 = { active: false, timestamp: Date.now() };
+          await MesaApp.supabase
+            .from('personagens')
+            .update({ atributos: attrs })
+            .eq('id', 1);
+        } catch (e) {}
+      })();
+    }
+
+    this.triggerStop();
+  },
+
+  triggerStart() {
+    this.isActive = true;
+    const overlay = document.getElementById('tv-estatica-2-overlay');
+    if (overlay) {
+      overlay.classList.add('active');
+    }
+    const badge = document.getElementById('tv2-status-badge');
+    if (badge) {
+      badge.textContent = 'Em Exibição';
+      badge.className = 'dispositivo-status-badge active';
+      badge.style.borderColor = '#a855f7';
+      badge.style.color = '#c084fc';
+    }
+    const btnTransmit = document.getElementById('btn-transmit-tv2');
+    const btnStop = document.getElementById('btn-stop-tv2');
+    if (btnTransmit) btnTransmit.style.display = 'none';
+    if (btnStop) btnStop.style.display = 'inline-flex';
+
+    this.startTvStaticAudio();
+    this.startNoiseCanvas();
+  },
+
+  triggerStop() {
+    this.isActive = false;
+    const overlay = document.getElementById('tv-estatica-2-overlay');
+    if (overlay) {
+      overlay.classList.remove('active');
+    }
+    const badge = document.getElementById('tv2-status-badge');
+    if (badge) {
+      badge.textContent = 'Pronto';
+      badge.className = 'dispositivo-status-badge ready';
+      badge.style.borderColor = '#a855f7';
+      badge.style.color = '#c084fc';
+    }
+    const btnTransmit = document.getElementById('btn-transmit-tv2');
+    const btnStop = document.getElementById('btn-stop-tv2');
+    if (btnTransmit) btnTransmit.style.display = 'inline-flex';
+    if (btnStop) btnStop.style.display = 'none';
+
+    this.stopTvStaticAudio();
+    this.stopNoiseCanvas();
+  },
+
+  startTvStaticAudio() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      if (!this._audioCtx) {
+        this._audioCtx = new AudioCtx();
+      }
+      if (this._audioCtx.state === 'suspended') {
+        this._audioCtx.resume();
+      }
+      this.stopTvStaticAudio();
+
+      const sampleRate = this._audioCtx.sampleRate;
+      const bufferLength = sampleRate * 5;
+      const noiseBuffer = this._audioCtx.createBuffer(1, bufferLength, sampleRate);
+      const data = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferLength; i++) {
+        data[i] = (Math.random() * 2 - 1) * 0.25;
+      }
+
+      const whiteNoise = this._audioCtx.createBufferSource();
+      whiteNoise.buffer = noiseBuffer;
+      whiteNoise.loop = true;
+      whiteNoise.loopStart = 0;
+      whiteNoise.loopEnd = 5;
+
+      const bandpass = this._audioCtx.createBiquadFilter();
+      bandpass.type = 'bandpass';
+      bandpass.frequency.setValueAtTime(1000, this._audioCtx.currentTime);
+      bandpass.Q.setValueAtTime(0.9, this._audioCtx.currentTime);
+
+      const highpass = this._audioCtx.createBiquadFilter();
+      highpass.type = 'highpass';
+      highpass.frequency.setValueAtTime(280, this._audioCtx.currentTime);
+
+      const gain = this._audioCtx.createGain();
+      gain.gain.setValueAtTime(0.005, this._audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.038, this._audioCtx.currentTime + 0.35);
+
+      whiteNoise.connect(highpass);
+      highpass.connect(bandpass);
+      bandpass.connect(gain);
+      gain.connect(this._audioCtx.destination);
+
+      whiteNoise.start(0);
+      this._staticSource = whiteNoise;
+      this._staticGain = gain;
+    } catch (e) {}
+  },
+
+  stopTvStaticAudio() {
+    const oldSource = this._staticSource;
+    const oldGain = this._staticGain;
+    const ctx = this._audioCtx;
+    this._staticSource = null;
+    this._staticGain = null;
+
+    if (oldGain && ctx) {
+      try {
+        oldGain.gain.setValueAtTime(oldGain.gain.value, ctx.currentTime);
+        oldGain.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 0.25);
+      } catch (e) {}
+    }
+    if (oldSource) {
+      setTimeout(() => {
+        try {
+          oldSource.stop();
+          oldSource.disconnect();
+        } catch (e) {}
+      }, 300);
+    }
+  },
+
+  startNoiseCanvas() {
+    const canvas = document.getElementById('tv2-noise-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    canvas.width = 320;
+    canvas.height = 200;
+
+    const imgData = ctx.createImageData(canvas.width, canvas.height);
+    const buf = new Uint32Array(imgData.data.buffer);
+    const len = buf.length;
+
+    const render = () => {
+      if (!this.isActive) return;
+      for (let i = 0; i < len; i++) {
+        if (Math.random() < 0.12) {
+          buf[i] = 0xffffffff;
+        } else {
+          buf[i] = 0x00000000;
+        }
+      }
+      ctx.putImageData(imgData, 0, 0);
+      this._canvasRaf = requestAnimationFrame(render);
+    };
+    render();
+  },
+
+  stopNoiseCanvas() {
+    if (this._canvasRaf) {
+      cancelAnimationFrame(this._canvasRaf);
+      this._canvasRaf = null;
+    }
+    const canvas = document.getElementById('tv2-noise-canvas');
     if (canvas) {
       const ctx = canvas.getContext('2d');
       if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
