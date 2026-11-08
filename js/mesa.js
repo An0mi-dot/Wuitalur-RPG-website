@@ -12045,9 +12045,10 @@ const MesaCombate = {
     ctx.fill();
     ctx.restore();
 
-    // 5. Desenho do Contorno do Domo em Pixel Art Laranja (#ff5500) com Glow Neon
+    // 5. Desenho do Contorno do Domo em Pixel Art (#ff1133 em esconderijo ou #ff5500)
     ctx.save();
-    ctx.fillStyle = '#ff5500';
+    const isEsconderijoActive = document.body.classList.contains('esconderijo-active');
+    ctx.fillStyle = isEsconderijoActive ? '#ff1133' : '#ff5500';
 
     for (let i = 0; i <= numSteps; i++) {
       const curr = points[i];
@@ -12253,6 +12254,9 @@ const MesaEsconderijo = {
   playerMaxCamouflage: 4,
   playerHidden: false,
 
+  _panelWaveRaf: null,
+  _panelWaveStartTime: 0,
+
   init() {
     this.renderSurvivalPanel();
   },
@@ -12265,10 +12269,16 @@ const MesaEsconderijo = {
       if (this.isPanelOpen) {
         panel.classList.add('active');
         if (toggleBtn) toggleBtn.classList.add('active');
+        document.body.classList.add('esconderijo-active');
+        this.startPanelWave();
         this.renderSurvivalPanel();
       } else {
         panel.classList.remove('active');
         if (toggleBtn) toggleBtn.classList.remove('active');
+        if (!this.isMasterActive) {
+          document.body.classList.remove('esconderijo-active');
+        }
+        this.stopPanelWave();
       }
     }
   },
@@ -12280,6 +12290,8 @@ const MesaEsconderijo = {
     if (panel) {
       panel.classList.add('active');
       if (toggleBtn) toggleBtn.classList.add('active');
+      document.body.classList.add('esconderijo-active');
+      this.startPanelWave();
       this.renderSurvivalPanel();
     }
   },
@@ -12291,7 +12303,97 @@ const MesaEsconderijo = {
     if (panel) {
       panel.classList.remove('active');
       if (toggleBtn) toggleBtn.classList.remove('active');
+      if (!this.isMasterActive) {
+        document.body.classList.remove('esconderijo-active');
+      }
+      this.stopPanelWave();
     }
+  },
+
+  startPanelWave() {
+    this.stopPanelWave();
+    const canvas = document.getElementById('survival-panel-wave-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    this._panelWaveStartTime = performance.now();
+    const loop = () => {
+      if (!this.isPanelOpen) {
+        this.stopPanelWave();
+        return;
+      }
+      this.drawPanelWave(canvas, ctx);
+      this._panelWaveRaf = requestAnimationFrame(loop);
+    };
+    this._panelWaveRaf = requestAnimationFrame(loop);
+  },
+
+  stopPanelWave() {
+    if (this._panelWaveRaf) {
+      cancelAnimationFrame(this._panelWaveRaf);
+      this._panelWaveRaf = null;
+    }
+    const canvas = document.getElementById('survival-panel-wave-canvas');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  },
+
+  drawPanelWave(canvas, ctx) {
+    const w = 18;
+    const h = canvas.parentElement ? canvas.parentElement.clientHeight : window.innerHeight;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width = w;
+      canvas.height = h;
+    }
+    ctx.clearRect(0, 0, w, h);
+
+    const pixelSize = 3;
+    const t = (performance.now() - (this._panelWaveStartTime || 0)) * 0.001;
+    const numSteps = Math.ceil(h / pixelSize);
+
+    ctx.save();
+    // 1. Preenche a lateral direita com preto absoluto para emendar perfeitamente no fundo da janela
+    ctx.fillStyle = '#000000';
+    ctx.beginPath();
+    for (let i = 0; i <= numSteps; i++) {
+      const y = i * pixelSize;
+      const w1 = Math.sin(y * 0.015 - t * 2.5) * 4.5;
+      const w2 = Math.cos(y * 0.035 + t * 3.2) * 2.5;
+      const x = Math.round((8 + w1 + w2) / pixelSize) * pixelSize;
+      if (i === 0) {
+        ctx.moveTo(x, 0);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    }
+    ctx.lineTo(w, h);
+    ctx.lineTo(w, 0);
+    ctx.closePath();
+    ctx.fill();
+
+    // 2. Traco pixelado da onda em carmesim (#ff1133)
+    ctx.fillStyle = '#ff1133';
+    let prevX = null;
+    for (let i = 0; i <= numSteps; i++) {
+      const y = i * pixelSize;
+      const w1 = Math.sin(y * 0.015 - t * 2.5) * 4.5;
+      const w2 = Math.cos(y * 0.035 + t * 3.2) * 2.5;
+      const x = Math.round((8 + w1 + w2) / pixelSize) * pixelSize;
+
+      ctx.fillRect(x, y, pixelSize, pixelSize);
+      if (prevX !== null && prevX !== x) {
+        const minX = Math.min(prevX, x);
+        const maxX = Math.max(prevX, x);
+        for (let bx = minX; bx <= maxX; bx += pixelSize) {
+          ctx.fillRect(bx, y, pixelSize, pixelSize);
+        }
+      }
+      prevX = x;
+    }
+    ctx.restore();
   },
 
   openContextualModal() {
@@ -12407,15 +12509,19 @@ const MesaEsconderijo = {
   },
 
   adjustCamouflage(delta) {
-    const prev = this.playerCamouflage;
-    this.setCamouflage(this.playerCamouflage + delta);
-    if (delta < 0 && prev > this.playerCamouflage) {
+    if (delta < 0 && this.playerCamouflage > 0) {
       const pips = document.querySelectorAll('#survival-cam-pips .survival-pip');
-      if (pips && pips[this.playerCamouflage]) {
-        if (window.MesaDice && typeof MesaDice.createDustVanishEffect === 'function') {
-          MesaDice.createDustVanishEffect(pips[this.playerCamouflage], '#ff1133', 15);
-        }
+      const lastPip = pips[pips.length - 1];
+      if (lastPip && window.MesaDice && typeof MesaDice.createDustVanishEffect === 'function') {
+        MesaDice.createDustVanishEffect(lastPip, '#ff1133', 25);
       }
+      this.playerCamouflage = Math.max(0, this.playerCamouflage - 1);
+      setTimeout(() => {
+        this.renderCamouflagePips();
+      }, 150);
+    } else if (delta > 0) {
+      this.playerCamouflage = Math.min(this.playerMaxCamouflage, this.playerCamouflage + 1);
+      this.renderCamouflagePips();
     }
   },
 
@@ -12425,11 +12531,12 @@ const MesaEsconderijo = {
     if (countEl) countEl.textContent = `${this.playerCamouflage}/${this.playerMaxCamouflage}`;
     if (!container) return;
     container.innerHTML = '';
-    for (let i = 0; i < this.playerMaxCamouflage; i++) {
+    // Renderiza apenas os quadrados existentes (sem caixas vazias residuais)
+    for (let i = 0; i < this.playerCamouflage; i++) {
       const pip = document.createElement('span');
-      pip.className = `survival-pip ${i < this.playerCamouflage ? 'filled' : ''}`;
+      pip.className = 'survival-pip filled';
       pip.title = `Ponto de Camuflagem ${i + 1}`;
-      pip.onclick = () => this.setCamouflage(i + 1);
+      pip.onclick = () => this.adjustCamouflage(-1);
       container.appendChild(pip);
     }
   },
@@ -12568,12 +12675,16 @@ const MesaEsconderijo = {
     if (payload.roomSides) this.roomSides = payload.roomSides;
     if (payload.roomName) this.roomName = payload.roomName;
     this.playerHidden = true;
+    this.isMasterActive = true;
+    document.body.classList.add('esconderijo-active');
     this.openSurvivalPanel();
   },
 
   handleIncomingStop() {
     this.playerHidden = false;
     this.playerSector = null;
+    this.isMasterActive = false;
+    document.body.classList.remove('esconderijo-active');
     this.closeSurvivalPanel();
   },
 
@@ -12592,6 +12703,8 @@ const MesaEsconderijo = {
     this.selectedSector = null;
     this.playerHidden = false;
     this.playerSector = null;
+    this.isMasterActive = false;
+    document.body.classList.remove('esconderijo-active');
     this.closeSurvivalPanel();
     if (window.MesaChat && MesaChat.channel) {
       MesaChat.channel.send({

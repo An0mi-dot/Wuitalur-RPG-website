@@ -13501,6 +13501,79 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 }
 
 /* ============================================================
+   TEMA AVERMELHADO DINÂMICO NO MODO ESCONDERIJO
+   ============================================================ */
+body.esconderijo-active {
+  --mesa-orange: #ff1133 !important;
+  --ink-orange: #ff1133 !important;
+  --ink-hot: #ff2244 !important;
+  --accent-orange: #ff1133 !important;
+  --mesa-glow-orange: rgba(255, 17, 51, 0.45) !important;
+}
+
+body.esconderijo-active .combat-ramp-canvas {
+  filter: drop-shadow(0 0 8px rgba(255, 17, 51, 0.85)) !important;
+}
+
+body.esconderijo-active .combat-round-badge {
+  border-color: #ff1133 !important;
+  color: #ff1133 !important;
+  box-shadow: 0 0 16px rgba(255, 17, 51, 0.5), 0 4px 15px rgba(0, 0, 0, 0.95) !important;
+}
+
+body.esconderijo-active .combat-player-card {
+  border-color: #ff1133 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.95), 0 0 14px rgba(255, 17, 51, 0.35) !important;
+}
+
+body.esconderijo-active .undertale-stat-label {
+  color: #ff3355 !important;
+}
+
+body.esconderijo-active .undertale-hp-track {
+  border-color: #ff1133 !important;
+}
+
+body.esconderijo-active .undertale-hp-bar {
+  background: #ff1133 !important;
+  box-shadow: 0 0 8px rgba(255, 17, 51, 0.7) !important;
+}
+
+body.esconderijo-active .undertale-stress-pip.filled {
+  border-color: #ff1133 !important;
+  background: #ff1133 !important;
+  box-shadow: 0 0 6px #ff1133 !important;
+}
+
+body.esconderijo-active .combat-ctrl-btn.end-btn {
+  border-color: #ff1133 !important;
+  color: #ff1133 !important;
+}
+
+body.esconderijo-active .combat-ctrl-btn.end-btn:hover {
+  background: #ff1133 !important;
+  color: #000000 !important;
+  box-shadow: 0 0 16px rgba(255, 17, 51, 0.6) !important;
+}
+
+body.esconderijo-active .combat-top-menu-btn {
+  border-color: #ff1133 !important;
+  color: #ff1133 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.85), 0 0 10px rgba(255, 17, 51, 0.35) !important;
+}
+
+body.esconderijo-active .combat-top-menu-btn:hover {
+  background: #ff1133 !important;
+  color: #000000 !important;
+}
+
+body.esconderijo-active .combat-ctrl-btn.combat-ctrl-esconderijo-btn {
+  background: #ff1133 !important;
+  color: #000000 !important;
+  box-shadow: 0 0 14px #ff1133 !important;
+}
+
+/* ============================================================
    PAINEL LATERAL DE SOBREVIVÊNCIA (MODO ESCONDERIJO)
    ============================================================ */
 .combat-survival-panel {
@@ -13511,9 +13584,9 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
   max-width: 90vw;
   height: 100vh;
   height: 100dvh;
-  background: rgba(10, 5, 5, 0.96);
-  border-left: 2px solid #ff1133;
-  box-shadow: -8px 0 28px rgba(0, 0, 0, 0.9);
+  background: #000000 !important;
+  border-left: none !important;
+  box-shadow: -8px 0 28px rgba(0, 0, 0, 0.95);
   z-index: 2200;
   display: flex;
   flex-direction: column;
@@ -13528,13 +13601,29 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
   transform: translateX(0);
 }
 
+/* Canvas de onda pixelada na borda esquerda da janela */
+.survival-panel-wave-canvas {
+  position: absolute;
+  top: 0;
+  left: -15px;
+  width: 18px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(-3px 0 8px rgba(255, 17, 51, 0.75));
+}
+
 .survival-panel-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 12px 14px;
-  background: rgba(25, 5, 8, 0.95);
-  border-bottom: 1.5px solid rgba(255, 17, 51, 0.5);
+  background: #000000 !important;
+  border-bottom: 1.5px solid rgba(255, 17, 51, 0.6);
+  position: relative;
+  z-index: 2;
 }
 
 .survival-panel-title {
@@ -13562,8 +13651,10 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 
 .survival-phase-card {
   padding: 10px 14px;
-  background: rgba(20, 10, 12, 0.85);
+  background: #000000 !important;
   border-bottom: 1px solid rgba(255, 17, 51, 0.3);
+  position: relative;
+  z-index: 2;
 }
 
 .survival-phase-badge {
@@ -13603,17 +13694,22 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  background: #000000 !important;
+  position: relative;
+  z-index: 2;
 }
 
 .survival-section {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  background: #000000 !important;
 }
 
 .survival-section-header {
   border-bottom: 1px dashed rgba(255, 17, 51, 0.35);
   padding-bottom: 4px;
+  background: #000000 !important;
 }
 
 .survival-section-title {
@@ -13626,6 +13722,7 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  background: #000000 !important;
 }
 
 .survival-field-label {
@@ -13653,7 +13750,7 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 }
 
 .survival-sector-btn {
-  background: rgba(0, 0, 0, 0.85);
+  background: #000000;
   border: 1px solid rgba(255, 255, 255, 0.25);
   color: #fff;
   font-family: 'Press Start 2P', monospace;
@@ -13686,24 +13783,27 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
   font-weight: 600;
 }
 
+/* Pontos de Camuflagem: cada ponto e uma caixa solida; ao se dissipar, ela some totalmente */
 .survival-pips-row {
   display: flex;
   gap: 6px;
   align-items: center;
+  min-height: 24px;
 }
 
 .survival-pip {
   width: 22px;
   height: 22px;
   border: 1.5px solid #ff1133;
-  background: rgba(0, 0, 0, 0.6);
+  background: #ff1133;
+  box-shadow: 0 0 8px rgba(255, 17, 51, 0.7);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.15s ease;
+  box-sizing: border-box;
 }
 
-.survival-pip.filled {
-  background: #ff1133;
-  box-shadow: 0 0 8px rgba(255, 17, 51, 0.6);
+.survival-pip:hover {
+  transform: scale(1.1);
 }
 
 .survival-pips-ctrls {
@@ -13713,7 +13813,7 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 }
 
 .survival-pip-adj-btn {
-  background: rgba(20, 20, 25, 0.9);
+  background: #000000;
   border: 1px solid rgba(255, 255, 255, 0.3);
   color: #fff;
   font-family: 'Press Start 2P', monospace;
@@ -13728,7 +13828,7 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 }
 
 .survival-pavor-switch-box {
-  background: rgba(255, 255, 255, 0.03);
+  background: #000000 !important;
   border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 6px 10px;
 }
@@ -13767,7 +13867,7 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 
 .survival-room-btn {
   flex: 1;
-  background: rgba(0, 0, 0, 0.8);
+  background: #000000;
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #aaa;
   font-family: 'Press Start 2P', monospace;
@@ -13791,7 +13891,7 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 
 .survival-btn-secondary {
   flex: 1;
-  background: rgba(30, 30, 35, 0.9);
+  background: #000000;
   border: 1px solid rgba(255, 255, 255, 0.3);
   color: #fff;
   font-family: 'Press Start 2P', monospace;
@@ -13823,8 +13923,8 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 }
 
 .survival-history-box {
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 17, 51, 0.2);
+  background: #000000 !important;
+  border: 1px solid rgba(255, 17, 51, 0.3);
   padding: 8px;
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 0.72rem;
