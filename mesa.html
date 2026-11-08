@@ -113,16 +113,7 @@
         </a>
 
         <!-- Botão Hambúrguer para Ferramentas Secundárias -->
-                <!-- Botão de Câmera ao Vivo no Centro da Mesa -->
-        <button id="nav-camera-btn" type="button" class="ink-tag nav-camera-btn" onclick="MesaCamera.toggle()" title="Ligar ou Desligar Câmera no Centro da Mesa">
-          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M23 7l-7 5 7 5V7z"></path>
-            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-          </svg>
-          <span id="nav-camera-btn-text">Câmera</span>
-        </button>
-
-        <div class="nav-hamburger-wrapper">
+                <div class="nav-hamburger-wrapper">
           <button id="nav-hamburger-btn" class="ink-tag nav-hamburger-btn" onclick="MesaQuickMenu.toggle()" title="Menu de Ferramentas">
             <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -137,10 +128,6 @@
           <div id="mesa-quick-menu-dropdown" class="mesa-quick-menu-dropdown">
             <div class="quick-menu-header">FERRAMENTAS DA MESA</div>
             
-            <button type="button" class="quick-menu-item" onclick="MesaCamera.toggle(); MesaQuickMenu.close();" style="color: #f43f5e;">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
-              <span id="quick-menu-camera-text">Ligar Câmera (Centro)</span>
-            </button>
             <button type="button" class="quick-menu-item" onclick="MesaDice.openModal(); MesaQuickMenu.close();">
               <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="3" ry="3"></rect><path d="M8 8h.01"></path><path d="M16 8h.01"></path><path d="M12 12h.01"></path><path d="M8 16h.01"></path><path d="M16 16h.01"></path></svg>
               <span>Rolar Dados</span>
@@ -345,17 +332,6 @@
     <div class="mesa-board-container" id="mesa-board-container">
         <!-- O Quadrado Preto com borda de nanquim artesanal -->
         <div class="mesa-black-board">
-          <!-- Camada de Câmera do Mestre / Jogador em Tempo Real -->
-          <div id="board-center-camera" class="board-center-camera" style="display: none;">
-            <video id="board-center-camera-video" class="board-center-camera-video" autoplay playsinline muted></video>
-            <img id="board-center-camera-stream" class="board-center-camera-stream" style="display: none;" alt="Câmera ao Vivo" />
-            <div class="board-center-camera-hud">
-              <span class="camera-live-badge"><span class="camera-rec-dot"></span> AO VIVO</span>
-              <span id="board-center-camera-user" class="camera-user-name">Mestre</span>
-            </div>
-            <button id="board-center-camera-stop-btn" type="button" class="board-camera-close-btn" onclick="MesaCamera.stop()" title="Desligar Câmera">&times; Desligar Câmera</button>
-          </div>
-
           <!-- Camada de Ilustração Central de Cena / NPC -->
           <div id="board-center-artwork" class="board-center-artwork" style="display: none;">
             <img id="board-center-artwork-img" class="board-center-artwork-img" src="" alt="Ilustração da Cena" />
@@ -1594,36 +1570,6 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         </div>
 
         <!-- 4. Card Dispositivo: Notebook da Sara (Cena & Mesa) -->
-        <div class="dispositivo-card" id="dispositivo-card-camera" data-category="mesa" data-title="Camera ao Vivo Video Transmissao Centro da Mesa">
-          <div class="dispositivo-card-header" style="cursor: pointer;" onclick="MesaCamera.toggle()" title="Ligar ou Desligar Câmera no Centro da Mesa">
-            <div class="dispositivo-icon-box" style="background: rgba(244, 63, 94, 0.15); border-color: rgba(244, 63, 94, 0.4); color: #fb7185;">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M23 7l-7 5 7 5V7z"></path>
-                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-              </svg>
-            </div>
-            <div class="dispositivo-meta">
-              <div class="dispositivo-title-row">
-                <div class="dispositivo-title">Câmera de Vídeo ao Vivo</div>
-                <span class="dispositivo-cat-tag cat-mesa">Cena &amp; Mesa</span>
-              </div>
-              <div class="dispositivo-subtitle">Transmissão no Centro da Mesa • WebRTC/Stream</div>
-            </div>
-            <span id="camera-status-badge" class="dispositivo-status-badge ready" style="border-color: #f43f5e; color: #fb7185;">Pronto</span>
-          </div>
-
-          <p class="dispositivo-card-desc">
-            Ativa sua câmera de vídeo diretamente no quadrado central da mesa virtual para todos os jogadores visualizarem em tempo real.
-          </p>
-
-          <div class="dispositivo-actions">
-            <button type="button" id="btn-transmit-camera" class="dispositivo-btn-primary" onclick="MesaCamera.toggle()" style="background: #9f1239; border-color: #f43f5e; color: #fff1f2;">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
-              <span id="btn-transmit-camera-text">Ligar Câmera no Centro</span>
-            </button>
-          </div>
-        </div>
-
         <div class="dispositivo-card" id="dispositivo-card-notebook-sara" data-category="mesa" data-title="Notebook da Sara Sistema Operacional Residencia Auguil CFTV Cameras">
           <div class="dispositivo-card-header" style="cursor: pointer;" onclick="MesaNotebookSara.play()" title="Clique para abrir e transmitir">
             <div class="dispositivo-icon-box">
