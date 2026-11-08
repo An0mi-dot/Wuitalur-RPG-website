@@ -12997,12 +12997,7 @@ const MesaRollLog = {
   render() {
     const container = document.getElementById('roll-log-scroll-container');
     const badge = document.getElementById('roll-log-stats-badge');
-    const floatCounter = document.getElementById('roll-log-counter-badge');
     if (badge) badge.textContent = this.rolls.length + (this.rolls.length === 1 ? ' rolagem' : ' rolagens');
-    if (floatCounter) {
-      floatCounter.textContent = this.rolls.length;
-      floatCounter.style.display = this.rolls.length > 0 ? 'inline-flex' : 'none';
-    }
     if (!container) return;
 
     const filtered = this.getFilteredRolls();

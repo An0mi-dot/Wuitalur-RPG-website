@@ -243,23 +243,23 @@
           <span class="nav-auth-dot"></span>
           <span class="nav-auth-text">Não autenticado</span>
         </button>
-      </div>
 
-      <!-- Botão Central de Reações com Emojis (Posicionado no topo, acima do Card do Mestre) -->
-      <div class="nav-reaction-wrapper">
-        <button id="nav-reaction-btn" class="ink-tag nav-reaction-btn" onclick="MesaReactions.togglePicker(event)" title="Reagir com Emoji">
-          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
-            <line x1="9" y1="9" x2="9.01" y2="9"></line>
-            <line x1="15" y1="9" x2="15.01" y2="9"></line>
-          </svg>
-          <span>Reagir</span>
-        </button>
+        <!-- Botão de Reações com Emojis -->
+        <div class="nav-reaction-wrapper">
+          <button id="nav-reaction-btn" class="ink-tag nav-reaction-btn" onclick="MesaReactions.togglePicker(event)" title="Reagir com Emoji">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+              <line x1="9" y1="9" x2="9.01" y2="9"></line>
+              <line x1="15" y1="9" x2="15.01" y2="9"></line>
+            </svg>
+            <span>Reagir</span>
+          </button>
 
-        <!-- Paleta de Emojis Pixel Flutuante -->
-        <div id="mesa-reaction-picker" class="reaction-picker-popover">
-          <div id="reaction-picker-grid" class="reaction-picker-grid"></div>
+          <!-- Paleta de Emojis Pixel Flutuante -->
+          <div id="mesa-reaction-picker" class="reaction-picker-popover">
+            <div id="reaction-picker-grid" class="reaction-picker-grid"></div>
+          </div>
         </div>
       </div>
 
@@ -375,18 +375,6 @@
     </div>
 
     <!-- PAINEL DE CHAT EM TEMPO REAL DA MESA -->
-    <!-- Botao Flutuante no Canto: Registro de Rolagens -->
-    <button id="roll-log-float-btn" class="roll-log-float-btn" onclick="MesaRollLog.openModal()" title="Registro de Rolagens dos Jogadores">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-        <polyline points="14 2 14 8 20 8"></polyline>
-        <line x1="16" y1="13" x2="8" y2="13"></line>
-        <line x1="16" y1="17" x2="8" y2="17"></line>
-      </svg>
-      <span>Registro de Rolagens</span>
-      <span id="roll-log-counter-badge" class="roll-log-counter-badge" style="display: none;">0</span>
-    </button>
-
     <div id="mesa-chat-panel" class="mesa-chat-panel">
       <div class="chat-header">
         <div class="chat-header-info">
