@@ -8360,6 +8360,205 @@ body.dispositivos-drawer-open .mesa-board-container,
   gap: 16px;
 }
 
+/* Barra de Pesquisa e Filtros de Dispositivos */
+.dispositivos-filter-header {
+  padding: 12px 22px 0 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(10, 11, 14, 0.6);
+}
+
+.dispositivos-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dispositivos-search-icon {
+  position: absolute;
+  left: 10px;
+  color: #71717a;
+  pointer-events: none;
+}
+
+.dispositivos-search-input {
+  width: 100%;
+  height: 34px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  padding: 0 30px 0 32px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+}
+
+.dispositivos-search-input:focus {
+  outline: none;
+  border-color: #38bdf8;
+  background: rgba(56, 189, 248, 0.06);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+}
+
+.dispositivos-search-clear-btn {
+  position: absolute;
+  right: 8px;
+  background: transparent;
+  border: none;
+  color: #a1a1aa;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  line-height: 1;
+}
+
+.dispositivos-search-clear-btn:hover {
+  color: #fff;
+}
+
+.dispositivos-category-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scrollbar-width: none;
+}
+
+.dispositivos-category-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.dispositivo-category-tab {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #a1a1aa;
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 3px;
+}
+
+.dispositivo-category-tab:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.dispositivo-category-tab.active {
+  background: rgba(56, 189, 248, 0.18);
+  border-color: #38bdf8;
+  color: #38bdf8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.25);
+}
+
+.disp-tab-count {
+  display: inline-block;
+  padding: 1px 5px;
+  font-size: 0.6rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  opacity: 0.85;
+}
+
+/* Category Accent Borders & Tags on Cards */
+.dispositivo-card[data-category="cinematica"] {
+  border-left: 3px solid #f43f5e;
+}
+.dispositivo-card[data-category="cinematica"]:hover {
+  border-color: rgba(244, 63, 94, 0.5);
+}
+
+.dispositivo-card[data-category="mesa"] {
+  border-left: 3px solid #f59e0b;
+}
+.dispositivo-card[data-category="mesa"]:hover {
+  border-color: rgba(245, 158, 11, 0.5);
+}
+
+.dispositivo-card[data-category="mapa"] {
+  border-left: 3px solid #38bdf8;
+}
+.dispositivo-card[data-category="mapa"]:hover {
+  border-color: rgba(56, 189, 248, 0.5);
+}
+
+.dispositivo-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dispositivo-cat-tag {
+  font-size: 0.58rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+.dispositivo-cat-tag.cat-cinematica {
+  background: rgba(244, 63, 94, 0.15);
+  border: 1px solid rgba(244, 63, 94, 0.4);
+  color: #fb7185;
+}
+
+.dispositivo-cat-tag.cat-mesa {
+  background: rgba(245, 158, 11, 0.14);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fcd34d;
+}
+
+.dispositivo-cat-tag.cat-mapa {
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  color: #7dd3fc;
+}
+
+.dispositivos-empty-msg {
+  padding: 24px 16px;
+  text-align: center;
+  color: #71717a;
+  font-size: 0.8rem;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.disp-subcontrols-details {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 11, 14, 0.4);
+  margin-top: 4px;
+}
+
+.disp-subcontrols-summary {
+  padding: 7px 10px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #94a3b8;
+  cursor: pointer;
+  user-select: none;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.disp-subcontrols-summary:hover {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.08);
+}
+
 .dispositivos-drawer-desc {
   font-size: 0.8rem;
   line-height: 1.5;
@@ -12788,7 +12987,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
 }
 
 /* ==========================================================================
-   MOEDA OFICIAL: VIDRILHOS (FICHA DE PERSONAGEM & TENDA DO IGRIS)
+   MOEDA CANÔNICA: VIDRILHOS (FICHA DE PERSONAGEM & TENDA DO IGRIS)
    ========================================================================== */
 .vidrilhos-icon {
   width: 14px;
@@ -13105,6 +13304,77 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
 .tv-estatica-overlay.active {
   opacity: 1 !important;
   pointer-events: all !important;
+}
+
+
+/* ==========================================================================
+   DISPOSITIVO: FITA_1 (TELA CHEIA COM FADE TO BLACK E FADE IN DO VIDEO)
+   ========================================================================== */
+.fita-1-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: #000;
+  z-index: 9999999 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fita-1-overlay.active {
+  opacity: 1 !important;
+  pointer-events: all !important;
+}
+
+.fita-1-blackout {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  pointer-events: none;
+}
+
+.fita-1-overlay.active .fita-1-blackout {
+  opacity: 1;
+}
+
+.fita-1-video {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+
+.fita-1-overlay.active .fita-1-video.playing {
+  opacity: 1;
+}
+
+body:has(#fita-1-overlay.active) .mesa-floating-nav,
+body:has(#fita-1-overlay.active) .mesa-mobile-fab-container,
+body:has(#fita-1-overlay.active) .mesa-version,
+body:has(#fita-1-overlay.active) .combat-header,
+body:has(#fita-1-overlay.active) .combat-dock-container,
+body:has(#fita-1-overlay.active) .combat-master-controls,
+body:has(#fita-1-overlay.active) .combat-menu-drawer,
+body:has(#fita-1-overlay.active) .combat-menu-backdrop,
+body:has(#fita-1-overlay.active) .mesa-mobile-menu-drawer,
+body:has(#fita-1-overlay.active) .mesa-mobile-backdrop,
+body:has(#fita-1-overlay.active) .mesa-quick-menu-dropdown,
+body:has(#fita-1-overlay.active) .mesa-ink-frame,
+body:has(#fita-1-overlay.active) .reaction-picker-popover {
+  display: none !important;
 }
 
 /* Bordas Pretas Cinematograficas Amplas */

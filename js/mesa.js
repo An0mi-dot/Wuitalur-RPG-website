@@ -1783,6 +1783,16 @@ const MesaApp = {
                 MesaTvEstatica.triggerStop();
               }
             }
+            if (p1Attrs._sys_fita_1 && window.MesaFita1) {
+              const f1 = p1Attrs._sys_fita_1;
+              const ov = document.getElementById('fita-1-overlay');
+              const isActive = ov && ov.classList.contains('active');
+              if (f1.active && !isActive && (Date.now() - (f1.timestamp || 0) < 1800000)) {
+                MesaFita1.triggerStart(f1.timestamp);
+              } else if (!f1.active && isActive) {
+                MesaFita1.triggerStop();
+              }
+            }
             if (p1Attrs._sys_roll_log && window.MesaRollLog) {
               MesaRollLog.syncFromRemote(p1Attrs._sys_roll_log);
             }
@@ -1957,6 +1967,37 @@ const MesaApp = {
             }
           }
 
+          if (attrs && attrs._sys_fita_1 && window.MesaFita1) {
+            const f1 = attrs._sys_fita_1;
+            const ov = document.getElementById('fita-1-overlay');
+            const isActive = ov && ov.classList.contains('active');
+            if (f1.active && !isActive && (Date.now() - (f1.timestamp || 0) < 1800000)) {
+              MesaFita1.triggerStart(f1.timestamp);
+            } else if (!f1.active && isActive) {
+              MesaFita1.triggerStop();
+            }
+          }
+          if (attrs && attrs._sys_tv_estatica && window.MesaTvEstatica) {
+            const tv = attrs._sys_tv_estatica;
+            const ov = document.getElementById('tv-estatica-overlay');
+            const isActive = ov && ov.classList.contains('active');
+            if (tv.active && !isActive && (Date.now() - (tv.timestamp || 0) < 1800000)) {
+              MesaTvEstatica.triggerStart();
+            } else if (!tv.active && isActive) {
+              MesaTvEstatica.triggerStop();
+            }
+          }
+          if (attrs && attrs._sys_perseguicao && window.MesaPerseguicaoFloresta) {
+            const pf = attrs._sys_perseguicao;
+            const ov = document.getElementById('perseguicao-floresta-overlay');
+            const isActive = ov && ov.classList.contains('active');
+            if (pf.active && !isActive && (Date.now() - (pf.timestamp || 0) < 1800000)) {
+              MesaPerseguicaoFloresta.triggerStart();
+            } else if (!pf.active && isActive) {
+              MesaPerseguicaoFloresta.triggerStop();
+            }
+          }
+
           // 6. Sincronizacao do Tabuleiro Mapa [Owlbear]
           if (attrs && attrs._sys_owlbear_url && window.MesaOwlbear) {
             if (attrs._sys_owlbear_url !== MesaOwlbear.url) {
@@ -2073,6 +2114,20 @@ const MesaApp = {
           MesaNotebookSara.activeCam = payload.payload.activeCam;
         }
         MesaNotebookSara.triggerStart(payload.payload && payload.payload.sessionStartTime);
+      }
+    });
+
+    channel.on('broadcast', { event: 'fita_1_start' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaFita1) {
+        MesaFita1.triggerStart(payload && payload.payload && payload.payload.timestamp);
+      }
+    });
+
+    channel.on('broadcast', { event: 'fita_1_stop' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaFita1) {
+        MesaFita1.triggerStop();
       }
     });
 
@@ -4795,7 +4850,7 @@ const MesaAreaManager = {
       return;
     }
 
-    console.log("[MASTER ACTION] Deslocando grupo oficialmente para:", this.selectedAreaId);
+    console.log("[MASTER ACTION] Deslocando grupo em definitivo para:", this.selectedAreaId);
     this.applyArea(this.selectedAreaId, true);
     this.closeModals();
   },
@@ -4867,7 +4922,7 @@ const MesaAreaManager = {
               .from('personagens')
               .update({ atributos: attrs })
               .eq('id', 1);
-            console.log("[SYNC MASTER] Área oficial salva no Supabase:", area.id);
+            console.log("[SYNC MASTER] Área ativa salva no Supabase:", area.id);
           } catch(err) {
             console.error("[SYNC MASTER] Erro ao gravar área:", err);
           }
@@ -5796,7 +5851,7 @@ const MesaColetaveis = {
   init() {
     const canonical = window.CAMPAIGN_COLETAVEIS || window.MESA_COLETAVEIS || [];
 
-    // Prioridade 1: Sincronização oficial remota do Supabase
+    // Prioridade 1: Sincronização canônica remota do Supabase
     if (MesaApp && MesaApp.state && MesaApp.state.players && MesaApp.state.players[0] && MesaApp.state.players[0].atributos) {
       try {
         const raw = MesaApp.state.players[0].atributos;
@@ -8246,14 +8301,208 @@ const MesaTvEstatica = {
   }
 };
 
+// ==========================================================================
+// DISPOSITIVO CINEMATOGRÁFICO: FITA_1 (VÍDEO EM TELA CHEIA COM FADE TO BLACK)
+// ==========================================================================
+const MesaFita1 = {
+  isActive: false,
+  _fadeTimeout: null,
+
+  play() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    const now = Date.now();
+
+    const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'fita_1_start',
+          payload: { timestamp: now }
+        });
+      } catch (e) {}
+    }
+
+    if (MesaApp.supabase) {
+      (async () => {
+        try {
+          const { data } = await MesaApp.supabase
+            .from('personagens')
+            .select('atributos')
+            .eq('id', 1)
+            .single();
+          const attrs = data && data.atributos
+            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+            : {};
+          attrs._sys_fita_1 = { active: true, timestamp: now };
+          await MesaApp.supabase
+            .from('personagens')
+            .update({ atributos: attrs })
+            .eq('id', 1);
+        } catch (e) {}
+      })();
+    }
+
+    this.triggerStart(now);
+  },
+
+  stop() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+
+    const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'fita_1_stop',
+          payload: {}
+        });
+      } catch (e) {}
+    }
+
+    if (MesaApp.supabase) {
+      (async () => {
+        try {
+          const { data } = await MesaApp.supabase
+            .from('personagens')
+            .select('atributos')
+            .eq('id', 1)
+            .single();
+          const attrs = data && data.atributos
+            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+            : {};
+          attrs._sys_fita_1 = { active: false, timestamp: Date.now() };
+          await MesaApp.supabase
+            .from('personagens')
+            .update({ atributos: attrs })
+            .eq('id', 1);
+        } catch (e) {}
+      })();
+    }
+
+    this.triggerStop();
+  },
+
+  triggerStart(startTime) {
+    this.isActive = true;
+    if (this._fadeTimeout) {
+      clearTimeout(this._fadeTimeout);
+      this._fadeTimeout = null;
+    }
+
+    const overlay = document.getElementById('fita-1-overlay');
+    const video = document.getElementById('fita-1-video');
+    if (!overlay || !video) return;
+
+    overlay.classList.add('active');
+    overlay.setAttribute('aria-hidden', 'false');
+
+    const badge = document.getElementById('fita1-status-badge');
+    if (badge) {
+      badge.textContent = 'Em Exibição';
+      badge.className = 'dispositivo-status-badge active';
+      badge.style.borderColor = '#f43f5e';
+      badge.style.color = '#fb7185';
+    }
+    const btnTransmit = document.getElementById('btn-transmit-fita1');
+    const btnStop = document.getElementById('btn-stop-fita1');
+    if (btnTransmit) btnTransmit.style.display = 'none';
+    if (btnStop) btnStop.style.display = 'inline-flex';
+
+    const now = Date.now();
+    const elapsed = startTime ? Math.max(0, (now - startTime) / 1000) : 0;
+
+    video.onended = () => {
+      if (MesaApp.state && MesaApp.state.isMaster) {
+        this.stop();
+      }
+    };
+
+    if (elapsed > 1.5) {
+      // Conexao ou recarregamento no meio do video
+      video.currentTime = elapsed;
+      video.classList.add('playing');
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          video.muted = true;
+          video.play().catch(() => {});
+        });
+      }
+    } else {
+      // Sequencia cinematografica: tela preta primeiro, fade in do video em seguida
+      video.classList.remove('playing');
+      video.currentTime = 0;
+      this._fadeTimeout = setTimeout(() => {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            video.muted = true;
+            video.play().catch(() => {});
+          });
+        }
+        video.classList.add('playing');
+      }, 650);
+    }
+  },
+
+  triggerStop() {
+    this.isActive = false;
+    if (this._fadeTimeout) {
+      clearTimeout(this._fadeTimeout);
+      this._fadeTimeout = null;
+    }
+
+    const overlay = document.getElementById('fita-1-overlay');
+    const video = document.getElementById('fita-1-video');
+    if (video) {
+      video.classList.remove('playing');
+    }
+
+    if (overlay) {
+      overlay.classList.remove('active');
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+
+    setTimeout(() => {
+      if (!this.isActive && video) {
+        try {
+          video.pause();
+          video.currentTime = 0;
+        } catch (e) {}
+      }
+    }, 600);
+
+    const badge = document.getElementById('fita1-status-badge');
+    if (badge) {
+      badge.textContent = 'Pronto';
+      badge.className = 'dispositivo-status-badge ready';
+      badge.style.borderColor = '#f43f5e';
+      badge.style.color = '#fb7185';
+    }
+    const btnTransmit = document.getElementById('btn-transmit-fita1');
+    const btnStop = document.getElementById('btn-stop-fita1');
+    if (btnTransmit) btnTransmit.style.display = 'inline-flex';
+    if (btnStop) btnStop.style.display = 'none';
+  }
+};
+window.MesaFita1 = MesaFita1;
+
+// ==========================================================================
+// MESA DISPOSITIVOS: CONTROLE DO HUB LATERAL, FILTROS E PESQUISA
+// ==========================================================================
 const MesaDispositivos = {
   isOpen: false,
+  activeCategory: 'all',
+  searchQuery: '',
 
   toggleDrawer() {
     if (!MesaApp.state || !MesaApp.state.isMaster) return;
     this.isOpen = !this.isOpen;
     if (this.isOpen) {
       document.body.classList.add('dispositivos-drawer-open');
+      this.updateCounts();
+      this.applyFilter();
     } else {
       document.body.classList.remove('dispositivos-drawer-open');
     }
@@ -8262,6 +8511,85 @@ const MesaDispositivos = {
   closeDrawer() {
     this.isOpen = false;
     document.body.classList.remove('dispositivos-drawer-open');
+  },
+
+  setCategory(category) {
+    this.activeCategory = category || 'all';
+    document.querySelectorAll('.dispositivo-category-tab').forEach(tab => {
+      if (tab.dataset.category === this.activeCategory) {
+        tab.classList.add('active');
+      } else {
+        tab.classList.remove('active');
+      }
+    });
+    this.applyFilter();
+  },
+
+  filterCards(query) {
+    this.searchQuery = (query || '').toLowerCase().trim();
+    const clearBtn = document.getElementById('dispositivos-search-clear-btn');
+    if (clearBtn) {
+      clearBtn.style.display = this.searchQuery.length > 0 ? 'inline-flex' : 'none';
+    }
+    this.applyFilter();
+  },
+
+  clearSearch() {
+    const input = document.getElementById('dispositivos-search-input');
+    if (input) input.value = '';
+    this.filterCards('');
+  },
+
+  applyFilter() {
+    const cards = document.querySelectorAll('.dispositivos-list .dispositivo-card');
+    let visibleCount = 0;
+    cards.forEach(card => {
+      const cardCategory = card.dataset.category || 'mesa';
+      const categoryMatches = (this.activeCategory === 'all' || cardCategory === this.activeCategory);
+
+      let textMatches = true;
+      if (this.searchQuery) {
+        const textContent = (card.textContent || '').toLowerCase();
+        const searchTags = (card.dataset.title || '').toLowerCase();
+        textMatches = textContent.includes(this.searchQuery) || searchTags.includes(this.searchQuery);
+      }
+
+      if (categoryMatches && textMatches) {
+        card.style.display = '';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    const emptyMsg = document.getElementById('dispositivos-empty-msg');
+    if (emptyMsg) {
+      emptyMsg.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+  },
+
+  updateCounts() {
+    const cards = document.querySelectorAll('.dispositivos-list .dispositivo-card');
+    let total = 0;
+    let cinematica = 0;
+    let mesa = 0;
+    let mapa = 0;
+    cards.forEach(card => {
+      total++;
+      const cat = card.dataset.category;
+      if (cat === 'cinematica') cinematica++;
+      else if (cat === 'mesa') mesa++;
+      else if (cat === 'mapa') mapa++;
+    });
+
+    const elTotal = document.getElementById('disp-count-all');
+    const elCin = document.getElementById('disp-count-cinematica');
+    const elMesa = document.getElementById('disp-count-mesa');
+    const elMapa = document.getElementById('disp-count-mapa');
+    if (elTotal) elTotal.textContent = total;
+    if (elCin) elCin.textContent = cinematica;
+    if (elMesa) elMesa.textContent = mesa;
+    if (elMapa) elMapa.textContent = mapa;
   }
 };
 window.MesaDispositivos = MesaDispositivos;
