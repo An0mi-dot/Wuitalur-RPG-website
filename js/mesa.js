@@ -1396,10 +1396,12 @@ const MesaApp = {
       
       if (data && data.length > 0) {
         let sysArea = 'none';
+        let sysPavorSlots = {};
         data.forEach(raw => {
           if (raw.atributos) {
             const attr = typeof raw.atributos === 'string' ? JSON.parse(raw.atributos) : raw.atributos;
             if (attr && attr._sys_area) sysArea = attr._sys_area;
+            if (attr && attr._sys_pavor_slots) sysPavorSlots = attr._sys_pavor_slots;
             if (attr && attr._sys_owlbear_url && window.MesaOwlbear) {
               MesaOwlbear.syncFromRemote(attr._sys_owlbear_url);
             }
@@ -1565,6 +1567,10 @@ const MesaApp = {
                 p.atributos[attrName] = defaultVal;
               }
             }
+          }
+
+          if (p.slot && sysPavorSlots && sysPavorSlots[p.slot] !== undefined) {
+            p.dadoDePavor = Boolean(sysPavorSlots[p.slot]);
           }
 
           if (p.slot >= 1 && p.slot <= 8) {
@@ -2384,6 +2390,10 @@ const MesaApp = {
   },
 
   toggleDadoDePavor(slot) {
+    if (!this.state || !this.state.isMaster) {
+      this.showToast("Apenas o Mestre pode adicionar ou remover o Dado de Pavor.");
+      return;
+    }
     if (slot === undefined || slot === null) {
       if (this.state.activeViewingPlayer) slot = this.state.activeViewingPlayer.slot;
       else if (this.state.mySlot) slot = this.state.mySlot;
@@ -2433,6 +2443,30 @@ const MesaApp = {
         event: 'pavor_toggle',
         payload: { slot: p.slot || slotNum, dadoDePavor: p.dadoDePavor }
       });
+    }
+
+    // 6. Persistencia no Supabase (apenas Mestre)
+    if (this.supabase && this.state.isMaster) {
+      (async () => {
+        try {
+          const { data } = await this.supabase
+            .from('personagens')
+            .select('atributos')
+            .eq('id', 1)
+            .single();
+          const attrs = data && data.atributos
+            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+            : {};
+          if (!attrs._sys_pavor_slots) attrs._sys_pavor_slots = {};
+          attrs._sys_pavor_slots[p.slot || slotNum] = Boolean(p.dadoDePavor);
+          await this.supabase
+            .from('personagens')
+            .update({ atributos: attrs })
+            .eq('id', 1);
+        } catch (e) {
+          console.warn("[PAVOR] Erro ao persistir estado no Supabase:", e);
+        }
+      })();
     }
   },
 
@@ -2535,12 +2569,27 @@ const MesaApp = {
     if (vidEl) vidEl.textContent = `${vidVal}`;
     if (vidInvEl) vidInvEl.textContent = `${vidVal}`;
 
+    const isMaster = Boolean(this.state && this.state.isMaster);
     const fichaPavorBtn = document.querySelector('.ficha-pavor-toggle-btn');
     if (fichaPavorBtn) {
-      fichaPavorBtn.classList.toggle('active', Boolean(player.dadoDePavor));
-      const span = fichaPavorBtn.querySelector('span');
-      if (span) {
-        span.textContent = player.dadoDePavor ? 'Dado de Pavor Ativo' : 'Ativar Pavor';
+      if (isMaster) {
+        fichaPavorBtn.style.display = 'inline-flex';
+        fichaPavorBtn.style.cursor = 'pointer';
+        fichaPavorBtn.style.pointerEvents = 'auto';
+        fichaPavorBtn.classList.toggle('active', Boolean(player.dadoDePavor));
+        const span = fichaPavorBtn.querySelector('span');
+        if (span) {
+          span.textContent = player.dadoDePavor ? 'Dado de Pavor Ativo' : 'Ativar Pavor';
+        }
+      } else {
+        fichaPavorBtn.style.display = player.dadoDePavor ? 'inline-flex' : 'none';
+        fichaPavorBtn.style.cursor = 'default';
+        fichaPavorBtn.style.pointerEvents = 'none';
+        fichaPavorBtn.classList.toggle('active', Boolean(player.dadoDePavor));
+        const span = fichaPavorBtn.querySelector('span');
+        if (span) {
+          span.textContent = 'Dado de Pavor Ativo';
+        }
       }
     }
 
@@ -2871,10 +2920,17 @@ const MesaApp = {
             <span class="ficha-badge-tag">${player.arquetipo || 'N/A'}</span>
             <span class="ficha-badge-tag">${player.idade || 'N/A'}</span>
             <span class="ficha-badge-tag">${player.altura || 'N/A'}</span>
-            <button type="button" class="ficha-pavor-toggle-btn ${player.dadoDePavor ? 'active' : ''}" onclick="MesaApp.toggleDadoDePavor(${player.slot})" title="Alternar Dado de Pavor">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M16 8h.01"/><path d="M8 8h.01"/><path d="M8 16h.01"/><path d="M16 16h.01"/><path d="M12 12h.01"/></svg>
-              <span>${player.dadoDePavor ? 'Dado de Pavor Ativo' : 'Ativar Pavor'}</span>
-            </button>
+            ${isMaster ? `
+              <button type="button" class="ficha-pavor-toggle-btn \${player.dadoDePavor ? 'active' : ''}" onclick="MesaApp.toggleDadoDePavor(\${player.slot})" title="Alternar Dado de Pavor">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M16 8h.01"/><path d="M8 8h.01"/><path d="M8 16h.01"/><path d="M16 16h.01"/><path d="M12 12h.01"/></svg>
+                <span>\${player.dadoDePavor ? 'Dado de Pavor Ativo' : 'Ativar Pavor'}</span>
+              </button>
+            ` : (player.dadoDePavor ? `
+              <span class="ficha-pavor-toggle-btn active" style="cursor: default; pointer-events: none;" title="Dado de Pavor ativo pelo Mestre">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M16 8h.01"/><path d="M8 8h.01"/><path d="M8 16h.01"/><path d="M16 16h.01"/><path d="M12 12h.01"/></svg>
+                <span>Dado de Pavor Ativo</span>
+              </span>
+            ` : '')}
             <span class="ficha-permission-tag ${editable ? 'edit' : 'view'}">
               ${editable ? `${SVG_ICONS.pencil} Modo Edição` : `${SVG_ICONS.eye} Modo Leitura`}
             </span>
@@ -3709,6 +3765,12 @@ const MesaDice = {
   },
 
   togglePavorInModal() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) {
+      if (typeof MesaApp.showToast === 'function') {
+        MesaApp.showToast("Apenas o Mestre pode alterar o Dado de Pavor.");
+      }
+      return;
+    }
     this.manualPavorActive = !this.manualPavorActive;
     let p = null;
     if (MesaApp.state && MesaApp.state.mySlot && MesaApp.state.players) {
@@ -3733,6 +3795,9 @@ const MesaDice = {
   updatePavorChipUI() {
     const btn = document.getElementById('dice-pavor-chip-btn');
     if (!btn) return;
+    const isMaster = Boolean(MesaApp.state && MesaApp.state.isMaster);
+    btn.style.cursor = isMaster ? 'pointer' : 'not-allowed';
+    btn.title = isMaster ? 'Alternar Dado de Pavor nesta rolagem' : 'Apenas o Mestre pode alterar o Dado de Pavor';
     const isActive = Boolean(this.manualPavorActive);
     btn.classList.toggle('active', isActive);
     const card = document.getElementById('dice-pavor-card') || btn.closest('.dice-pavor-card');
@@ -11654,7 +11719,9 @@ const MesaCombate = {
           <div class="combat-card-header">
             <span class="combat-card-name">${p.nome}</span>
             <div style="display: flex; align-items: center; gap: 4px;">
-              <button type="button" class="combat-pavor-toggle-btn ${p.dadoDePavor ? 'active' : ''}" onclick="event.stopPropagation(); MesaApp.toggleDadoDePavor(${slotNum});" title="${p.dadoDePavor ? 'Desativar Dado de Pavor' : 'Ativar Dado de Pavor'}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg><span>${p.dadoDePavor ? 'PAVOR ATIVO' : '+ PAVOR'}</span></button>
+              ${MesaApp.state && MesaApp.state.isMaster ? `
+                <button type="button" class="combat-pavor-toggle-btn \${p.dadoDePavor ? 'active' : ''}" onclick="event.stopPropagation(); MesaApp.toggleDadoDePavor(\${slotNum});" title="\${p.dadoDePavor ? 'Desativar Dado de Pavor' : 'Ativar Dado de Pavor'}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg><span>\${p.dadoDePavor ? 'PAVOR ATIVO' : '+ PAVOR'}</span></button>
+              ` : ''}
               <span class="combat-card-slot-badge">S${slotNum}</span>
             </div>
           </div>
@@ -13181,10 +13248,15 @@ const MesaEsconderijo = {
   updatePavorToggleUI() {
     const toggle = document.getElementById('survival-pavor-toggle');
     const label = document.getElementById('survival-pavor-switch-text');
+    const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
     const activePlayer = (window.MesaApp && MesaApp.state && MesaApp.state.myPlayerSlot && MesaApp.state.players[MesaApp.state.myPlayerSlot - 1])
       || (window.MesaApp && MesaApp.state && MesaApp.state.players && MesaApp.state.players[0]);
     const hasPavor = activePlayer ? Boolean(activePlayer.dadoDePavor) : false;
-    if (toggle) toggle.checked = hasPavor;
+    if (toggle) {
+      toggle.checked = hasPavor;
+      toggle.disabled = !isMaster;
+      toggle.title = isMaster ? 'Alternar Dado de Pavor' : 'Apenas o Mestre pode alterar o Dado de Pavor';
+    }
     if (label) {
       label.textContent = hasPavor ? 'Pavor Ativo' : 'Pavor Inativo';
       label.style.color = hasPavor ? '#ff1133' : 'var(--text-muted, #888)';
@@ -13192,6 +13264,13 @@ const MesaEsconderijo = {
   },
 
   togglePavorFromSurvival(isChecked) {
+    if (!window.MesaApp || !MesaApp.state || !MesaApp.state.isMaster) {
+      if (window.MesaApp && typeof MesaApp.showToast === 'function') {
+        MesaApp.showToast("Apenas o Mestre pode alterar o Dado de Pavor.");
+      }
+      this.updatePavorToggleUI();
+      return;
+    }
     const slot = (window.MesaApp && MesaApp.state && MesaApp.state.myPlayerSlot) || 1;
     if (window.MesaApp && typeof MesaApp.toggleDadoDePavor === 'function') {
       MesaApp.toggleDadoDePavor(slot);
