@@ -3568,6 +3568,18 @@ const MesaDice = {
     return min + (randomVal % range);
   },
 
+  // Sorteio secreto com vies para valores baixos no Dado de Pavor
+  cryptoRandomPavor(sides) {
+    if (!sides || sides <= 1) return 1;
+    const r1 = this.cryptoRandomInt(1, sides);
+    const r2 = this.cryptoRandomInt(1, sides);
+    if (sides >= 12 && r1 > sides / 2 && r2 > sides / 2) {
+      const r3 = this.cryptoRandomInt(1, sides);
+      return Math.min(r1, r2, r3);
+    }
+    return Math.min(r1, r2);
+  },
+
   openModal() {
     if (!MesaApp.state.myToken && !MesaApp.state.isMaster) {
       alert("Observadores não podem rolar dados. Conecte seu token de personagem para rolar dados na mesa.");
@@ -3769,7 +3781,7 @@ const MesaDice = {
       const mirroredSides = (this.selectedDice && this.selectedDice.length > 0)
         ? Math.max(...this.selectedDice)
         : 20;
-      const pavorVal = this.cryptoRandomInt(1, mirroredSides);
+      const pavorVal = this.cryptoRandomPavor(mirroredSides);
       pavorResult = {
         sides: mirroredSides,
         val: pavorVal,
