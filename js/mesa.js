@@ -856,6 +856,9 @@ const MesaApp = {
     MesaReactions.init();
     MesaDice.init();
     MesaAreaManager.init();
+    if (window.MesaRollLog) {
+      MesaRollLog.init();
+    }
     this.updateTokenBtnState();
     if (window.MesaCombate && typeof MesaCombate.updateMasterControls === 'function') {
       MesaCombate.updateMasterControls();
@@ -1780,6 +1783,9 @@ const MesaApp = {
                 MesaTvEstatica.triggerStop();
               }
             }
+            if (p1Attrs._sys_roll_log && window.MesaRollLog) {
+              MesaRollLog.syncFromRemote(p1Attrs._sys_roll_log);
+            }
             if (p1Attrs._sys_combate && window.MesaCombate) {
               const cb = p1Attrs._sys_combate;
               const remoteTime = cb.updatedAt || 0;
@@ -1928,6 +1934,9 @@ const MesaApp = {
           }
 
           // 5. Sincronização de Combate
+          if (attrs && attrs._sys_roll_log && window.MesaRollLog) {
+            MesaRollLog.syncFromRemote(attrs._sys_roll_log);
+          }
           if (attrs && attrs._sys_combate && window.MesaCombate) {
             const cb = attrs._sys_combate;
             const remoteTime = cb.updatedAt || 0;
@@ -2227,6 +2236,9 @@ const MesaApp = {
       const data = payload.payload;
       if (data && window.MesaDice) {
         MesaDice.playRollAnimation(data);
+      }
+      if (data && !data.isMaster && window.MesaRollLog) {
+        MesaRollLog.receiveIncomingRoll(data);
       }
     });
 
@@ -3857,6 +3869,19 @@ const MesaDice = {
       content: chatContent,
       created_at: new Date().toISOString()
     });
+
+    // Grava no Registro de Rolagens se a rolagem for de jogador (nao do mestre)
+    if (!sender.isMaster && window.MesaRollLog) {
+      MesaRollLog.recordRoll({
+        rollerName: sender.name,
+        rollerSlot: rollerPlayer ? rollerPlayer.slot : (MesaApp.state && MesaApp.state.mySlot ? MesaApp.state.mySlot : null),
+        results: diceResults,
+        pavorResult: pavorResult,
+        modifier: this.modifier,
+        total: finalTotal,
+        breakdown: breakdown
+      });
+    }
   },
 
   playRollAnimation(data) {
@@ -12792,3 +12817,234 @@ const MesaEsconderijo = {
   }
 };
 window.MesaEsconderijo = MesaEsconderijo;
+
+
+// ==========================================================================
+// REGISTRO DE ROLAGENS DOS JOGADORES (PERSISTÊNCIA EM BANCO DE DADOS SUPABASE)
+// ==========================================================================
+const MesaRollLog = {
+  rolls: [],
+  searchQuery: '',
+
+  init() {
+    this.render();
+    this.fetchFromSupabase();
+  },
+
+  openModal() {
+    this.fetchFromSupabase();
+    const modal = document.getElementById('roll-log-modal');
+    if (modal) modal.classList.add('active');
+    this.render();
+  },
+
+  closeModal() {
+    const modal = document.getElementById('roll-log-modal');
+    if (modal) modal.classList.remove('active');
+  },
+
+  escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  },
+
+  async fetchFromSupabase(showToast = false) {
+    if (!MesaApp || !MesaApp.supabase) return;
+    try {
+      const { data, error } = await MesaApp.supabase
+        .from('personagens')
+        .select('atributos')
+        .eq('id', 1)
+        .single();
+      if (data && data.atributos) {
+        const attrs = typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos;
+        if (attrs && Array.isArray(attrs._sys_roll_log)) {
+          this.syncFromRemote(attrs._sys_roll_log);
+          if (showToast && MesaApp.showToast) {
+            MesaApp.showToast('Registro de rolagens sincronizado');
+          }
+        }
+      }
+    } catch(err) {
+      console.warn("Erro ao buscar registro de rolagens do Supabase:", err);
+    }
+  },
+
+  syncFromRemote(remoteRolls) {
+    if (!Array.isArray(remoteRolls)) return;
+    const existingIds = new Set(this.rolls.map(r => r.id));
+    let hasNew = false;
+    remoteRolls.forEach(r => {
+      if (r && r.id && !existingIds.has(r.id)) {
+        this.rolls.push(r);
+        existingIds.add(r.id);
+        hasNew = true;
+      }
+    });
+    this.rolls.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+    if (this.rolls.length > 150) {
+      this.rolls = this.rolls.slice(0, 150);
+    }
+    this.render();
+  },
+
+  recordRoll(data) {
+    const now = Date.now();
+    const timeFormatted = new Date(now).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' • ' + new Date(now).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+
+    const entry = {
+      id: 'roll_' + now + '_' + Math.random().toString(36).substr(2, 6),
+      timestamp: now,
+      timeFormatted: timeFormatted,
+      rollerName: data.rollerName || 'Jogador',
+      rollerSlot: data.rollerSlot || null,
+      results: data.results || [],
+      pavorResult: data.pavorResult || null,
+      modifier: data.modifier || 0,
+      total: data.total !== undefined ? data.total : 0,
+      breakdown: data.breakdown || ''
+    };
+
+    this.rolls.unshift(entry);
+    if (this.rolls.length > 150) {
+      this.rolls = this.rolls.slice(0, 150);
+    }
+    this.render();
+    this.saveToSupabase();
+
+    // Insere tambem no historico do chat no Supabase
+    if (MesaApp && MesaApp.supabase) {
+      const sender = MesaChat.getCurrentSender();
+      const modStr = entry.modifier !== 0 ? (entry.modifier > 0 ? ' + ' + entry.modifier : ' - ' + Math.abs(entry.modifier)) : '';
+      MesaApp.supabase.from('mensagens_chat').insert({
+        sender_name: entry.rollerName,
+        sender_token: sender.token,
+        is_master: false,
+        content: '[REGISTRO] ' + entry.breakdown + modStr + ' -> Total: ' + entry.total
+      }).catch(() => {});
+    }
+  },
+
+  receiveIncomingRoll(data) {
+    if (!data || data.isMaster) return;
+    const now = Date.now();
+    const timeFormatted = new Date(now).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' • ' + new Date(now).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+
+    const entry = {
+      id: 'roll_' + now + '_' + Math.random().toString(36).substr(2, 6),
+      timestamp: now,
+      timeFormatted: timeFormatted,
+      rollerName: data.rollerName || 'Jogador',
+      rollerSlot: data.pavorResult ? data.pavorResult.playerSlot : null,
+      results: data.results || [],
+      pavorResult: data.pavorResult || null,
+      modifier: data.modifier || 0,
+      total: data.total !== undefined ? data.total : 0,
+      breakdown: (data.results || []).map(d => '[d' + d.sides + ': ' + d.val + ']').join(' + ') + (data.pavorResult ? ' - [Pavor d' + data.pavorResult.sides + ': ' + data.pavorResult.val + ']' : '')
+    };
+
+    const existing = this.rolls.find(r => Math.abs((r.timestamp || 0) - now) < 2500 && r.rollerName === entry.rollerName && r.total === entry.total);
+    if (!existing) {
+      this.rolls.unshift(entry);
+      if (this.rolls.length > 150) this.rolls = this.rolls.slice(0, 150);
+      this.render();
+    }
+  },
+
+  async saveToSupabase() {
+    if (!MesaApp || !MesaApp.supabase) return;
+    try {
+      const { data } = await MesaApp.supabase
+        .from('personagens')
+        .select('atributos')
+        .eq('id', 1)
+        .single();
+      const attrs = data && data.atributos
+        ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+        : {};
+      attrs._sys_roll_log = this.rolls.slice(0, 100);
+      await MesaApp.supabase
+        .from('personagens')
+        .update({ atributos: attrs })
+        .eq('id', 1);
+    } catch(err) {
+      console.warn("Erro ao salvar registro de rolagens no Supabase:", err);
+    }
+  },
+
+  onSearch(val) {
+    this.searchQuery = (val || '').trim().toLowerCase();
+    this.render();
+  },
+
+  getFilteredRolls() {
+    if (!this.searchQuery) return this.rolls;
+    const q = this.searchQuery;
+    return this.rolls.filter(r => {
+      const nameMatch = (r.rollerName || '').toLowerCase().includes(q);
+      const totalMatch = String(r.total).includes(q);
+      const modMatch = String(r.modifier).includes(q);
+      const diceMatch = (r.results || []).some(d => ('d' + d.sides).includes(q) || String(d.val).includes(q));
+      const pavorMatch = r.pavorResult && ('pavor'.includes(q) || String(r.pavorResult.val).includes(q));
+      return nameMatch || totalMatch || modMatch || diceMatch || pavorMatch;
+    });
+  },
+
+  render() {
+    const container = document.getElementById('roll-log-scroll-container');
+    const badge = document.getElementById('roll-log-stats-badge');
+    const floatCounter = document.getElementById('roll-log-counter-badge');
+    if (badge) badge.textContent = this.rolls.length + (this.rolls.length === 1 ? ' rolagem' : ' rolagens');
+    if (floatCounter) {
+      floatCounter.textContent = this.rolls.length;
+      floatCounter.style.display = this.rolls.length > 0 ? 'inline-flex' : 'none';
+    }
+    if (!container) return;
+
+    const filtered = this.getFilteredRolls();
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="roll-log-empty">' +
+        '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>' +
+        '<div class="roll-log-empty-title">NENHUMA ROLAGEM REGISTRADA</div>' +
+        '<div class="roll-log-empty-sub">As rolagens realizadas pelos jogadores aparecem aqui automaticamente e ficam salvas no banco de dados.</div>' +
+        '</div>';
+      return;
+    }
+
+    container.innerHTML = filtered.map(r => {
+      const timeStr = r.timeFormatted || (r.timestamp ? new Date(r.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' • ' + new Date(r.timestamp).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) : '');
+      const diceChips = (r.results || []).map(d => '<span class="roll-log-dice-chip">d' + d.sides + ': <strong>' + d.val + '</strong></span>').join('');
+      const pavorChip = r.pavorResult ? '<span class="roll-log-pavor-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> PAVOR d' + r.pavorResult.sides + ': <strong>-' + r.pavorResult.val + '</strong></span>' : '';
+      const pavorReliefBadge = (r.pavorResult && r.pavorResult.val === 1) ? '<span class="roll-log-relief-badge">Pavor Superado (Tirou 1)</span>' : '';
+      const modChip = (r.modifier !== undefined && r.modifier !== 0) ? '<span class="roll-log-mod-chip">Mod: <strong>' + (r.modifier > 0 ? '+' + r.modifier : r.modifier) + '</strong></span>' : '';
+      const slotLabel = r.rollerSlot ? 'S' + r.rollerSlot : 'JOGADOR';
+
+      return '<div class="roll-log-card ' + (r.pavorResult ? 'has-pavor-roll' : '') + '">' +
+        '<div class="roll-log-card-header">' +
+          '<div class="roll-log-identity">' +
+            '<span class="roll-log-slot-tag">' + slotLabel + '</span>' +
+            '<span class="roll-log-player-name">' + this.escapeHtml(r.rollerName || 'Jogador') + '</span>' +
+            pavorReliefBadge +
+          '</div>' +
+          '<span class="roll-log-time-tag">' + timeStr + '</span>' +
+        '</div>' +
+        '<div class="roll-log-card-body">' +
+          '<div class="roll-log-chips-row">' +
+            diceChips +
+            pavorChip +
+            modChip +
+          '</div>' +
+          '<div class="roll-log-total-badge">' +
+            '<span class="roll-log-total-lbl">TOTAL</span>' +
+            '<span class="roll-log-total-num">' + r.total + '</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+};
+window.MesaRollLog = MesaRollLog;

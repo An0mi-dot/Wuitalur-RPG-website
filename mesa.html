@@ -132,6 +132,10 @@
               <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="3" ry="3"></rect><path d="M8 8h.01"></path><path d="M16 8h.01"></path><path d="M12 12h.01"></path><path d="M8 16h.01"></path><path d="M16 16h.01"></path></svg>
               <span>Rolar Dados</span>
             </button>
+            <button type="button" class="quick-menu-item" onclick="MesaRollLog.openModal(); MesaQuickMenu.close();">
+              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              <span>Registro de Rolagens</span>
+            </button>
 
             <button type="button" class="quick-menu-item" onclick="MesaChat.toggleChat(); MesaQuickMenu.close();">
               <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
@@ -311,6 +315,15 @@
         </button>
 
         <!-- Botão Minha Ficha -->
+        <button id="nav-roll-log-btn" class="ink-tag nav-roll-log" onclick="MesaRollLog.openModal()" title="Registro de Rolagens dos Jogadores">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+          </svg>
+          <span>Registro de Rolagens</span>
+        </button>
         <button id="nav-ficha-btn" class="ink-tag primary" onclick="MesaApp.toggleView()">Minha Ficha</button>
       </div>
     </nav>
@@ -362,6 +375,18 @@
     </div>
 
     <!-- PAINEL DE CHAT EM TEMPO REAL DA MESA -->
+    <!-- Botao Flutuante no Canto: Registro de Rolagens -->
+    <button id="roll-log-float-btn" class="roll-log-float-btn" onclick="MesaRollLog.openModal()" title="Registro de Rolagens dos Jogadores">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+      </svg>
+      <span>Registro de Rolagens</span>
+      <span id="roll-log-counter-badge" class="roll-log-counter-badge" style="display: none;">0</span>
+    </button>
+
     <div id="mesa-chat-panel" class="mesa-chat-panel">
       <div class="chat-header">
         <div class="chat-header-info">
@@ -479,8 +504,47 @@
         </div>
 
         <div class="dice-modal-actions">
+          <button type="button" class="mesa-btn ink-tag" style="background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;" onclick="MesaRollLog.openModal()" title="Ver historico de rolagens dos jogadores">Registro de Rolagens</button>
           <button class="mesa-btn ink-tag" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.3);" onclick="MesaDice.clearPool()">Limpar</button>
           <button id="dice-roll-execute-btn" class="mesa-btn ink-tag primary roll-action-btn" onclick="MesaDice.executeRoll()">ROLAR DADOS</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal do Registro de Rolagens dos Jogadores -->
+    <div id="roll-log-modal" class="mesa-modal-overlay" onclick="if(event.target===this) MesaRollLog.closeModal()">
+      <div class="mesa-modal roll-log-modal-dialog">
+        <button class="mesa-modal-close" onclick="MesaRollLog.closeModal()">&times;</button>
+        
+        <div class="roll-log-header-box">
+          <div class="ink-ribbon-title">REGISTRO DE ROLAGENS</div>
+          <div class="roll-log-subtitle">Historico persistente de todas as rolagens efetuadas pelos jogadores na mesa.</div>
+        </div>
+
+        <div class="roll-log-toolbar">
+          <div class="roll-log-search-wrapper">
+            <svg class="roll-log-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input 
+              type="text" 
+              id="roll-log-search-input" 
+              class="roll-log-search-input" 
+              placeholder="Pesquisar por jogador, dado ou resultado..." 
+              oninput="MesaRollLog.onSearch(this.value)"
+            />
+          </div>
+          <div class="roll-log-stats-badge" id="roll-log-stats-badge">
+            0 rolagens
+          </div>
+          <button id="roll-log-refresh-btn" type="button" class="mesa-btn ink-tag" onclick="MesaRollLog.fetchFromSupabase(true)" title="Recarregar rolagens do banco de dados">
+            Atualizar
+          </button>
+        </div>
+
+        <div id="roll-log-scroll-container" class="roll-log-scroll-container">
+          <!-- Renderizado dinamicamente via MesaRollLog -->
         </div>
       </div>
     </div>
@@ -2189,6 +2253,14 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
           <path d="M8 8h.01"></path><path d="M16 8h.01"></path><path d="M12 12h.01"></path><path d="M8 16h.01"></path><path d="M16 16h.01"></path>
         </svg>
         <span>Rolar Dados</span>
+      </button>
+
+      <!-- Registro de Rolagens -->
+      <button type="button" class="combat-menu-item" onclick="MesaRollLog.openModal(); MesaCombatMenu.close();" style="color: #38bdf8;">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line>
+        </svg>
+        <span>Registro de Rolagens</span>
       </button>
 
       <!-- Sara (IA / Guia) -->
