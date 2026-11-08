@@ -12973,7 +12973,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
-  filter: brightness(0.65) contrast(1.2) saturate(0.85);
+  filter: brightness(0.9) contrast(1.08);
   animation: forestBgDrift 24s ease-in-out infinite alternate;
   will-change: transform;
   z-index: 1;
@@ -12998,7 +12998,7 @@ body:has(#igris-shop-overlay.active) .reaction-picker-popover {
 .perseguicao-fog-layer {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 60%, rgba(16, 40, 24, 0.35) 0%, rgba(5, 12, 8, 0.75) 75%, #010402 100%);
+  background: radial-gradient(circle at 50% 60%, rgba(10, 20, 50, 0.22) 0%, rgba(2, 6, 20, 0.65) 75%, #010208 100%);
   mix-blend-mode: multiply;
   pointer-events: none;
   z-index: 2;
