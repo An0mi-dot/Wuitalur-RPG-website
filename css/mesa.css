@@ -15048,3 +15048,122 @@ body.esconderijo-active .combat-ctrl-btn.combat-ctrl-esconderijo-btn {
   border-color: #ff7733 !important;
   color: #ffffff !important;
 }
+
+
+/* Tabs e Categorias Especiais da Loja de Igris */
+.igris-tabs-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.igris-tab-btn {
+  background: rgba(18, 18, 22, 0.85);
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  color: #a1a1aa;
+  padding: 6px 14px;
+  font-family: var(--font-title, 'Cinzel', serif);
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.igris-tab-btn:hover {
+  border-color: rgba(249, 115, 22, 0.6);
+  color: #fdba74;
+  background: rgba(249, 115, 22, 0.08);
+}
+
+.igris-tab-btn.active {
+  background: rgba(249, 115, 22, 0.18);
+  border-color: #f97316;
+  color: #ffedd5;
+  box-shadow: 0 0 10px rgba(249, 115, 22, 0.25);
+}
+
+.igris-tab-btn.tab-medo {
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
+}
+
+.igris-tab-btn.tab-medo:hover {
+  border-color: rgba(239, 68, 68, 0.7);
+  background: rgba(239, 68, 68, 0.1);
+  color: #fee2e2;
+}
+
+.igris-tab-btn.tab-medo.active {
+  background: rgba(220, 38, 38, 0.22);
+  border-color: #ef4444;
+  color: #fee2e2;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);
+}
+
+.igris-category-badge.badge-medo {
+  color: #ef4444;
+}
+
+.igris-item-card.igris-card-medo {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: linear-gradient(145deg, rgba(28, 10, 10, 0.75), rgba(14, 5, 5, 0.9));
+}
+
+.igris-item-card.igris-card-medo:hover {
+  border-color: rgba(239, 68, 68, 0.85);
+  box-shadow: 0 4px 20px rgba(220, 38, 38, 0.25);
+}
+
+.igris-card-rarity-badge.badge-medo {
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.igris-card-fear-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+.igris-card-fear-pros {
+  padding: 6px 8px;
+  background: rgba(16, 185, 129, 0.08);
+  border-left: 3px solid #10b981;
+  border-radius: 2px;
+  font-size: 0.76rem;
+  line-height: 1.35;
+  color: #d1fae5;
+}
+
+.igris-card-fear-cons {
+  padding: 6px 8px;
+  background: rgba(239, 68, 68, 0.08);
+  border-left: 3px solid #ef4444;
+  border-radius: 2px;
+  font-size: 0.76rem;
+  line-height: 1.35;
+  color: #fee2e2;
+}
+
+.fear-tag {
+  font-weight: 700;
+  display: block;
+  margin-bottom: 2px;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.fear-pro-tag {
+  color: #34d399;
+}
+
+.fear-con-tag {
+  color: #f87171;
+}

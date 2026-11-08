@@ -10717,41 +10717,13 @@ const IGRIS_DEFAULT_ITEMS = [
 
   // --- ITENS TRANSITORIOS: ARTEFATOS DA CAMPANHA ---
   {
-    id: 'igris_isqueiro_prata_fria',
-    nome: 'ISQUEIRO DE PRATA FRIA',
-    tipo: 'Ferramenta / Iluminação [ Peso 0 ]',
-    peso: 0,
-    raridade: 'Ferramenta',
-    efeito: 'Produz uma pequena chama azulada que ilumina um raio curto ao redor do utilizador. A chama não emite calor e é impossível de ser apagada por causas naturais (como vento forte ou chuva). Só se apaga quando fechado.',
-    descricao: 'Um isqueiro de metal pesado e fosco, constantemente gelado ao toque, com inscrições desgastadas numa língua desconhecida na lateral.',
-    preco: '1 Unidade',
-    precoVidrilhos: 7,
-    quantidade: 1,
-    isDefault: false,
-    categoria: 'transitorio'
-  },
-  {
-    id: 'igris_pingente_osso_polido',
-    nome: 'PINGENTE DE OSSO POLIDO',
-    tipo: 'Consumível - Ativação Automática [ Peso 0 ]',
-    peso: 0,
-    raridade: 'Relíquia',
-    efeito: 'Passivo. Se o utilizador sofrer um ataque ou dano que reduza a sua Vida a 0 (ou que o deixasse inconsciente/a morrer), o pingente estilhaça-se imediatamente, absorvendo o golpe fatal e deixando o utilizador com 1 ponto de Vida.',
-    descricao: 'Um pequeno pedaço de osso envelhecido, esculpido na forma de um olho fechado e pendurado num cordão de cabedal escuro.',
-    preco: '1 Unidade',
-    precoVidrilhos: 10,
-    quantidade: 1,
-    isDefault: false,
-    categoria: 'transitorio'
-  },
-  {
-    id: 'igris_giz_andarilho',
-    nome: 'GIZ DO ANDARILHO',
-    tipo: 'Ferramenta [ Peso 0 ]',
-    peso: 0,
-    raridade: 'Ferramenta',
-    efeito: 'Permite desenhar ou escrever em qualquer superfície física. As marcações feitas com este giz são completamente invisíveis sob qualquer tipo de luz (natural ou artificial), mas brilham intensamente num tom esverdeado na escuridão absoluta. Contém giz suficiente para 5 marcações grandes.',
-    descricao: 'Um pequeno cilindro irregular de giz calcário que emite um odor muito fraco a terra húmida e a ozono.',
+    id: 'igris_pe_de_cabra',
+    nome: 'PÉ DE CABRA ENFERRUJADO',
+    tipo: 'Arma / Ferramenta [ Peso 1 ]',
+    peso: 1,
+    raridade: 'Arma / Ferramenta',
+    efeito: 'Causa 1d6 de dano Contundente. Concede Vantagem (+2) em testes de Força/Físico para arrombar estruturas, portas trancadas ou caixotes.',
+    descricao: 'Uma barra maciça de ferro hexagonal, pesada e fria, com a ponta curvada em fenda. Está coberta por uma crosta grossa de ferrugem avermelhada e manchas antigas de tinta descascada, mas o centro da haste tem um trapo de couro sujo amarrado firme para não escorregar da mão suada.',
     preco: '1 Unidade',
     precoVidrilhos: 4,
     quantidade: 1,
@@ -10759,23 +10731,179 @@ const IGRIS_DEFAULT_ITEMS = [
     categoria: 'transitorio'
   },
   {
-    id: 'igris_cantil_cha_dourado',
-    nome: 'CANTIL DE CHÁ DOURADO',
-    tipo: 'Consumível - 1 Dose [ Peso 1 ]',
+    id: 'igris_corrente_bicicleta',
+    nome: 'CORRENTE DE BICICLETA COM CADEADO',
+    tipo: 'Arma Improvisada [ Peso 1 ]',
     peso: 1,
-    raridade: 'Consumível',
-    efeito: 'Ao ser consumido, acalma os nervos e foca a mente, concedendo um estado de clareza temporário. Você recebe Vantagem em seu próximo teste de resistência de sanidade OU reduz pela metade o próximo dano recebido na barra de estresse. O efeito é consumido e se encerra assim que um desses dois benefícios for ativado (o que ocorrer primeiro). Para obter a proteção novamente, é necessário consumir uma nova dose.',
-    descricao: 'Um pequeno cantil de metal amolgado. O líquido no seu interior mantém-se perpetuamente morno e exala um aroma forte de especiarias exóticas.',
+    raridade: 'Arma Improvisada',
+    efeito: 'Causa 1d6 de dano Contundente (Alcance Curto / Varredura). Ataques giratórios acertam múltiplos alvos próximos ou enxames com facilidade, causando +2 de dano extra contra grupos ou aglomerados de criaturas.',
+    descricao: 'Uma corrente grossa de elos de aço engraxados, com quase um metro de comprimento. Na ponta de impacto, um cadeado de latão pesado e amassado funciona como um pêndulo brutal; na outra extremidade, os elos foram soldados num punho improvisado que não machuca os dedos de quem gira.',
     preco: '1 Unidade',
     precoVidrilhos: 5,
     quantidade: 1,
     isDefault: false,
     categoria: 'transitorio'
+  },
+  {
+    id: 'igris_sinalizador_magnesio',
+    nome: 'SINALIZADOR DE MAGNÉSIO',
+    tipo: 'Utilitário / Combate [ Peso 1 ]',
+    peso: 1,
+    raridade: 'Utilitário / Combate',
+    efeito: 'Uso único (dura 1 cena). Acende uma chama vermelha cegante e solta faíscas brancas que iluminam totalmente a área ao redor. Pode ser arremessado ou brandido como arma improvisada para causar 2d6 de dano de Fogo/Luz automático no contato.',
+    descricao: 'Um cilindro de papelão industrial grosso e plastificado, da cor de tijolo desbotado, com uma tampa de plástico preto áspero na ponta para riscar. Tem cheiro forte de pólvora seca e enxofre mesmo fechado.',
+    preco: '2 Unidades',
+    precoVidrilhos: 3,
+    quantidade: 2,
+    isDefault: false,
+    categoria: 'transitorio'
+  },
+  {
+    id: 'igris_fluido_isqueiro',
+    nome: 'FLUIDO DE ISQUEIRO ADULTERADO',
+    tipo: 'Consumível Tático [ Peso 1 ]',
+    peso: 1,
+    raridade: 'Consumível Tático',
+    efeito: 'Uso único. Pode ser jogado no chão para criar uma barreira de fogo (com um isqueiro) ou despejado sobre uma arma corpo a corpo para somar +1d4 de Fogo pelos próximos 3 ataques.',
+    descricao: 'Uma garrafinha achatada de vidro âmbar, sem rótulo e fechada com uma rolha de cortiça inchada. O líquido lá dentro é amarelado, meio oleoso e tem um cheiro químico tão forte de querosene misturado com solvente que faz os olhos lacrimejarem só de destampar.',
+    preco: '2 Unidades',
+    precoVidrilhos: 3,
+    quantidade: 2,
+    isDefault: false,
+    categoria: 'transitorio'
+  },
+  {
+    id: 'igris_balsamo_seiva',
+    nome: 'BÁLSAMO DE SEIVA AMARGA',
+    tipo: 'Cura [ Peso 1 ]',
+    peso: 1,
+    raridade: 'Cura',
+    efeito: 'Consumível. Passar em cortes ou ferimentos estanca o sangue na hora, recuperando 1d6 + 2 PV.',
+    descricao: 'Um potinho de lata amassado (daqueles antigos de pomada) cheio até a borda com uma pasta verde-escura, quase preta e grudenta. Cheira a folhas maceradas, cânfora velha e álcool puro. Quando passada na pele aberta, arde como brasa por dois segundos antes de adormecer a região inteira.',
+    preco: '3 Unidades',
+    precoVidrilhos: 3,
+    quantidade: 3,
+    isDefault: false,
+    categoria: 'transitorio'
+  },
+  {
+    id: 'igris_cigarros_cravo',
+    nome: 'CIGARROS DE CRAVO MOFADOS',
+    tipo: 'Mente / Fôlego [ Peso 0 ]',
+    peso: 0,
+    raridade: 'Mente / Fôlego',
+    efeito: 'Consumível (2 usos por maço). O cheiro forte de cravo queimado corta qualquer fedor do ambiente e acalma a tremedeira nas mãos. Recupera 1d4 de Estresse/Sanidade (ou PE) e anula penalidades por náusea ou mau cheiro.',
+    descricao: 'Um maço de papel mole e amarelado pela umidade, amarrado com um elástico velho. Lá dentro há apenas dois cigarros escuros, enrolados de forma irregular, que estalam baixinho quando acesos e soltam uma fumaça densa e adocicada.',
+    preco: '2 Maços',
+    precoVidrilhos: 2,
+    quantidade: 2,
+    isDefault: false,
+    categoria: 'transitorio'
+  },
+  {
+    id: 'igris_canivete_trincheira',
+    nome: 'CANIVETE DE TRINCHEIRA "DENTE DE FERRO"',
+    tipo: 'Arma Leve / Soco [ Peso 1 ]',
+    peso: 1,
+    raridade: 'Arma Leve / Soco',
+    efeito: 'Causa 1d4 + 1 de dano Perfurante ou Contundente. Permite escolher entre furar (lâmina) ou esmagar (soqueira) no mesmo golpe, sem precisar trocar de arma.',
+    descricao: 'Uma peça bruta de metal escuro que combina uma soqueira de ferro fundido (com quatro anéis grossos para os dedos) e uma lâmina curta e larga de dois gumes que salta da lateral com uma mola dura. O metal está cheio de riscos antigos de uso.',
+    preco: '1 Unidade',
+    precoVidrilhos: 4,
+    quantidade: 1,
+    isDefault: false,
+    categoria: 'transitorio'
+  },
+  {
+    id: 'igris_oculos_soldador',
+    nome: 'ÓCULOS DE SOLDADOR RACHADO',
+    tipo: 'Equipamento [ Peso 1 ]',
+    peso: 1,
+    raridade: 'Equipamento',
+    efeito: 'Protege os olhos contra líquidos, pó químico, poeira e clarões súbitos. Concede +1 em Percepção em ambientes cheios de fumaça, penumbra ou detritos no ar.',
+    descricao: 'Uma armação pesada de borracha preta ressecada e aros de latão, presa por uma tira elástica larga. A lente direita tem um trincado em forma de teia de aranha no canto, mas o vidro grosso levemente fumê veda perfeitamente o rosto.',
+    preco: '1 Unidade',
+    precoVidrilhos: 2,
+    quantidade: 1,
+    isDefault: false,
+    categoria: 'transitorio'
+  },
+  {
+    id: 'igris_amuleto_no_cego',
+    nome: 'AMULETO DE FIO LARANJA "NÓ CEGO"',
+    tipo: 'Relíquia Estranha [ Peso 0 ]',
+    peso: 0,
+    raridade: 'Relíquia Estranha',
+    efeito: 'Uso único. Enquanto estiver no bolso, se o portador falhar em um teste de resistência mental ou contra o sobrenatural, o fio laranja se arrebenta sozinho (queimando como um pavio rápido sem deixar cinzas) e transforma a falha em um Sucesso Automático.',
+    descricao: 'Um dente animal amarelado e rachado ao meio, completamente estrangulado por dezenas de voltas de um fio laranja áspero e terroso. Ao segurá-lo na palma da mão, o nó parece pulsar de leve, como se estivesse morno.',
+    preco: '1 Unidade',
+    precoVidrilhos: 6,
+    quantidade: 1,
+    isDefault: false,
+    categoria: 'transitorio'
+  },
+
+  // --- ARTEFATOS DO MEDO: PRÓS E CONTRAS ---
+  {
+    id: 'igris_dedal_carne_cega',
+    nome: 'DEDAL DA CARNE CEGA',
+    tipo: 'Artefato do Medo [ Peso 1 ]',
+    peso: 1,
+    raridade: 'Artefato do Medo',
+    descricao: 'Um dedal antigo de alfaiataria feito de latão escurecido, com o interior revestido por pequenas farpas voltadas para dentro. Da borda inferior pende um pedaço curto de fio alaranjado e áspero, ressecado como um tendão velho. Ao encaixá-lo no dedo, as farpas furam a ponta da pele e o metal parece ficar morno, pulsando junto com o coração do usuário.',
+    ladoBomTitulo: 'Anestesia de Costura',
+    ladoBom: 'Enquanto estiver usando o dedal, a dor física do portador é abafada por um torpor estranho. Uma vez por cena, ao sofrer dano físico de qualquer fonte, o usuário pode puxar o fio do dedal para reduzir o dano recebido pela metade e ignorar qualquer penalidade por ferimento grave ou sangramento até o fim do combate.',
+    ladoRuimTitulo: 'Fio Puxado na Mente',
+    ladoRuim: 'A dor que o corpo deixa de sentir é costurada diretamente nos nervos da mente. Sempre que ativar o efeito para reduzir o dano físico, o portador sofre imediatamente 2d6 de dano de Estresse / Sanidade (ou perde 1d8 de PE) e sente a articulação do braço travar com um puxão brusco nos tendões, ficando com -2 em testes de Agilidade/Destreza na rodada seguinte.',
+    preco: '1 Unidade',
+    precoVidrilhos: 5,
+    quantidade: 1,
+    isDefault: false,
+    categoria: 'medo'
+  },
+  {
+    id: 'igris_monoculo_fuliginoso',
+    nome: 'MONÓCULO DE VIDRO FULIGINOSO',
+    tipo: 'Artefato do Medo [ Peso 1 ]',
+    peso: 1,
+    raridade: 'Artefato do Medo',
+    descricao: 'Uma lente redonda e grossa, sem haste, encaixada num aro de ferro oxidado que parece ter sido arrancado de um equipamento médico velho. O vidro é manchado por uma fuligem escura que nunca sai quando limpo, mas que se move lentamente lá dentro como fumaça presa quando colocado contra a luz.',
+    ladoBomTitulo: 'Olhar sob a Rasura',
+    ladoBom: 'Olhar através da lente revela o que tenta se esconder na penumbra ou atrás de mentiras. O usuário recebe Vantagem (+2) em testes de Investigação, Percepção ou Ocultismo para encontrar pistas ocultas, rastros de sangue lavado, passagens falsas ou notar quando alguém está mentindo/escondendo algo.',
+    ladoRuimTitulo: 'Atenção Retribuída',
+    ladoRuim: 'O vidro não apenas mostra o que está escondido, mas também marca os olhos de quem espia. Sempre que o usuário usar o monóculo para passar em um teste, o olho usado começa a lacrimejar um líquido escuro e frio; até o final da cena, o personagem fica com a visão periférica borrada por vultos (-2 em Percepção passiva e Esquiva/Defesa) e, se houver alguma ameaça na área, ela passa a focar seus ataques prioritariamente nele no primeiro turno.',
+    preco: '1 Unidade',
+    precoVidrilhos: 5,
+    quantidade: 1,
+    isDefault: false,
+    categoria: 'medo'
+  },
+  {
+    id: 'igris_isqueiro_sebo',
+    nome: 'ISQUEIRO DE SEBO CINZENTO',
+    tipo: 'Artefato do Medo [ Peso 1 ]',
+    peso: 1,
+    raridade: 'Artefato do Medo',
+    descricao: 'Um isqueiro de fluido quadrado, pesado e amassado, com a carcaça de metal tomada por uma crosta áspera que lembra cera de vela misturada com cinzas. Quando a tampa é aberta e a roda é riscada, a chama que sobe é baixa, pálida e completamente silenciosa, soltando um cheiro leve de terra molhada e ozônio em vez de querosene.',
+    ladoBomTitulo: 'Chama que Acalma',
+    ladoBom: 'Encarar a chama silenciosa por alguns segundos esvazia o pânico da cabeça. Uma vez por cena (ou como uma ação rápida), o portador pode acender o isqueiro para recuperar 1d6 de Sanidade / Estresse (ou 1d4 de PE) e encerrar imediatamente condições de medo, tremedeira ou paralisia mental em si mesmo ou em um aliado adjacente.',
+    ladoRuimTitulo: 'Combustível Vital',
+    ladoRuim: 'O isqueiro não queima fluido comum; ele queima o próprio calor do corpo de quem o segura. Cada vez que a chama é acesa para usar seu efeito, os dedos do usuário ficam roxos de frio e um cansaço pesado desce pelo peito, custando 1d4 de Pontos de Vida (PV) diretos (que não podem ser reduzidos) e deixando as mãos trêmulas de frio (-1 em testes de ataque corpo a corpo ou pontaria pelo resto da cena).',
+    preco: '1 Unidade',
+    precoVidrilhos: 5,
+    quantidade: 1,
+    isDefault: false,
+    categoria: 'medo'
   }
 ];
 
 const MesaIgrisShop = {
   isOpen: false,
+  activeTab: 'todos',
+  setTab(tab) {
+    this.activeTab = tab;
+    this.renderShowcase();
+  },
   lastLocalUpdate: 0,
   _saveTimer: null,
   merchantImage: 'assets/igris.png',
@@ -11132,33 +11260,52 @@ const MesaIgrisShop = {
     const user = this.getCurrentUserIdentity();
     const myId = user ? user.id : null;
 
-    // Separa os itens transitorios dos itens padroes (as frutas)
+    // Categorias de itens
     const defaultItems = this.items.filter(it => it.isDefault === true || (it.categoria === 'padrao') || String(it.id).includes('fruta'));
-    const transitorioItems = this.items.filter(it => !it.isDefault && it.categoria !== 'padrao' && !String(it.id).includes('fruta'));
+    const transitorioItems = this.items.filter(it => !it.isDefault && it.categoria === 'transitorio' && !String(it.id).includes('fruta'));
+    const medoItems = this.items.filter(it => it.categoria === 'medo');
 
     const renderCard = (item) => {
       const interestedList = this.interests[item.id] || [];
       const hasMyInterest = myId && interestedList.includes(myId);
       const avatarsHtml = this.renderInterestAvatars(item.id);
+      const isMedo = item.categoria === 'medo';
+
+      let effectHtml = '';
+      if (item.ladoBom && item.ladoRuim) {
+        effectHtml = `
+          <div class="igris-card-fear-box">
+            <div class="igris-card-fear-pros">
+              <span class="fear-tag fear-pro-tag">O Lado Bom (${item.ladoBomTitulo || 'Benefício'}):</span>
+              ${item.ladoBom}
+            </div>
+            <div class="igris-card-fear-cons">
+              <span class="fear-tag fear-con-tag">O Lado Ruim (${item.ladoRuimTitulo || 'Penalidade'}):</span>
+              ${item.ladoRuim}
+            </div>
+          </div>
+        `;
+      } else if (item.efeito) {
+        effectHtml = `
+          <div class="igris-card-effect">
+            <strong>Efeito:</strong> ${item.efeito}
+          </div>
+        `;
+      }
 
       return `
-        <div class="igris-item-card ${hasMyInterest ? 'has-my-interest' : ''}" 
+        <div class="igris-item-card ${isMedo ? 'igris-card-medo' : ''} ${hasMyInterest ? 'has-my-interest' : ''}" 
              data-item-id="${item.id}" 
              onclick="MesaIgrisShop.toggleInterest('${item.id}')"
              title="Clique para manifestar interesse de troca">
           <div class="igris-card-inner">
             <div class="igris-card-header-top">
-              <span class="igris-card-rarity-badge">${item.raridade || 'Consumível'}</span>
+              <span class="igris-card-rarity-badge ${isMedo ? 'badge-medo' : ''}">${item.raridade || (isMedo ? 'Artefato do Medo' : 'Consumível')}</span>
               <span class="igris-card-type-tag">${item.tipo || 'Consumível [ Peso 1 ]'}</span>
             </div>
             <div class="igris-card-content">
-              <!-- Titulo limpo e sem distorcao -->
               <h4 class="igris-card-title">${item.nome || 'Item Desconhecido'}</h4>
-              ${item.efeito ? `
-                <div class="igris-card-effect">
-                  <strong>Efeito:</strong> ${item.efeito}
-                </div>
-              ` : ''}
+              ${effectHtml}
               <p class="igris-card-desc">${item.descricao || 'Nenhuma informação decifrada sobre esta relíquia.'}</p>
               <div class="igris-card-footer">
                 <span class="igris-card-stock ${item.isInfinite || item.quantidade === Infinity || item.isDefault || item.categoria === 'padrao' || String(item.id).includes('fruta') ? 'is-infinite' : ''}">${(item.isInfinite || item.quantidade === Infinity || item.isDefault || item.categoria === 'padrao' || String(item.id).includes('fruta')) ? 'Infinito' : (item.preco || (item.quantidade ? `${item.quantidade} Unidade` : '1 Unidade'))}</span>
@@ -11167,7 +11314,6 @@ const MesaIgrisShop = {
             </div>
           </div>
 
-          <!-- Borda inferior direita: Avatares lado a lado indicando disputa -->
           <div class="igris-card-interests" id="igris-card-interests-${item.id}">
             ${avatarsHtml}
           </div>
@@ -11175,20 +11321,9 @@ const MesaIgrisShop = {
       `;
     };
 
-    grid.innerHTML = `
-      <!-- SECAO 1: ITENS PADROES (AS FRUTAS ESTRANHAS - SEMPRE NO TOPO) -->
-      <div class="igris-category-block">
-        <div class="igris-category-header">
-          <div class="igris-category-badge">[ ITENS PADRÕES — ESTOQUE PERMANENTE ]</div>
-          <div class="igris-category-line"></div>
-          <span class="igris-category-count">${defaultItems.length} permanente(s)</span>
-        </div>
-        <div class="igris-cards-subgrid">
-          ${defaultItems.map(renderCard).join('')}
-        </div>
-      </div>
+    const tab = this.activeTab || 'todos';
 
-      <!-- SECAO 2: ITENS TRANSITORIOS -->
+    const transitorioSection = `
       <div class="igris-category-block">
         <div class="igris-category-header">
           <div class="igris-category-badge">[ ARTEFATOS TRANSITÓRIOS ]</div>
@@ -11203,6 +11338,59 @@ const MesaIgrisShop = {
           <div class="igris-category-empty">Nenhum artefato transitório disponível nesta visita.</div>
         `}
       </div>
+    `;
+
+    const medoSection = `
+      <div class="igris-category-block">
+        <div class="igris-category-header">
+          <div class="igris-category-badge badge-medo">[ ARTEFATOS DO MEDO — PRÓS & CONTRAS ]</div>
+          <div class="igris-category-line" style="background: linear-gradient(to right, rgba(239, 68, 68, 0.45), rgba(239, 68, 68, 0.05));"></div>
+          <span class="igris-category-count" style="border-color: rgba(239, 68, 68, 0.35); color: #fca5a5;">${medoItems.length} disponível(is)</span>
+        </div>
+        ${medoItems.length > 0 ? `
+          <div class="igris-cards-subgrid">
+            ${medoItems.map(renderCard).join('')}
+          </div>
+        ` : `
+          <div class="igris-category-empty">Nenhum artefato do medo disponível nesta visita.</div>
+        `}
+      </div>
+    `;
+
+    const padraoSection = `
+      <div class="igris-category-block">
+        <div class="igris-category-header">
+          <div class="igris-category-badge">[ ITENS PADRÕES — ESTOQUE PERMANENTE ]</div>
+          <div class="igris-category-line"></div>
+          <span class="igris-category-count">${defaultItems.length} permanente(s)</span>
+        </div>
+        <div class="igris-cards-subgrid">
+          ${defaultItems.map(renderCard).join('')}
+        </div>
+      </div>
+    `;
+
+    let sectionsHtml = '';
+    if (tab === 'transitorio') {
+      sectionsHtml = transitorioSection;
+    } else if (tab === 'medo') {
+      sectionsHtml = medoSection;
+    } else if (tab === 'padrao') {
+      sectionsHtml = padraoSection;
+    } else {
+      // 'todos': Transitorios primeiro, depois Medo, depois Padroes
+      sectionsHtml = transitorioSection + medoSection + padraoSection;
+    }
+
+    grid.innerHTML = `
+      <div class="igris-tabs-nav">
+        <button type="button" class="igris-tab-btn ${tab === 'todos' ? 'active' : ''}" onclick="MesaIgrisShop.setTab('todos')">Todos os Artefatos</button>
+        <button type="button" class="igris-tab-btn ${tab === 'transitorio' ? 'active' : ''}" onclick="MesaIgrisShop.setTab('transitorio')">Artefatos Transitórios (${transitorioItems.length})</button>
+        <button type="button" class="igris-tab-btn tab-medo ${tab === 'medo' ? 'active' : ''}" onclick="MesaIgrisShop.setTab('medo')">Artefatos do Medo (${medoItems.length})</button>
+        <button type="button" class="igris-tab-btn ${tab === 'padrao' ? 'active' : ''}" onclick="MesaIgrisShop.setTab('padrao')">Itens Padrões (${defaultItems.length})</button>
+      </div>
+
+      ${sectionsHtml}
     `;
 
     this.updateMasterControls();
@@ -11604,14 +11792,18 @@ const MesaIgrisShop = {
           const grantedId = (shopItem && (shopItem.isDefault || isInfinite)) ? `${itemId}_${slotNum}_${Date.now()}` : itemId;
           let colItem = MesaColetaveis.items.find(x => String(x.id) === String(grantedId));
           if (!colItem && shopItem) {
+            const fearDetail = (shopItem.ladoBom && shopItem.ladoRuim)
+              ? `[O Lado Bom (${shopItem.ladoBomTitulo || 'Benefício'})]: ${shopItem.ladoBom}\n\n[O Lado Ruim (${shopItem.ladoRuimTitulo || 'Penalidade'})]: ${shopItem.ladoRuim}`
+              : (shopItem.efeito || shopItem.descricao || '');
+
             colItem = {
               id: grantedId,
               nome: shopItem.nome || `Artefato ${itemId}`,
               tipo: shopItem.tipo || 'Consumível',
               peso: shopItem.peso !== undefined ? shopItem.peso : 1,
               resumo: shopItem.descricao || '',
-              detalhe: shopItem.efeito || shopItem.descricao || '',
-              campo_tipo: shopItem.efeito ? 'Efeito' : 'Detalhe',
+              detalhe: fearDetail,
+              campo_tipo: (shopItem.ladoBom || shopItem.efeito) ? 'Efeito' : 'Detalhe',
               imagem: shopItem.imagem || null,
               desbloqueado: true,
               posse: slotNum
