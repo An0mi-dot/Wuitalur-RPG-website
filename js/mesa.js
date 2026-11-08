@@ -1800,7 +1800,7 @@ const MesaApp = {
               }
               if (!isMaster) {
                 if (ig.isOpen && !MesaIgrisShop.isOpen) {
-                  MesaIgrisShop.open();
+                  MesaIgrisShop.open(false);
                 } else if (!ig.isOpen && MesaIgrisShop.isOpen) {
                   MesaIgrisShop.close(false);
                 }
@@ -2004,7 +2004,7 @@ const MesaApp = {
             }
             if (!isMaster) {
               if (ig.isOpen && !MesaIgrisShop.isOpen) {
-                MesaIgrisShop.open();
+                MesaIgrisShop.open(false);
               } else if (!ig.isOpen && MesaIgrisShop.isOpen) {
                 MesaIgrisShop.close(false);
               }
@@ -11111,8 +11111,8 @@ const MesaIgrisShop = {
     typeNextChar();
   },
 
-  // Abre a interface localmente com animacao suave de fade-in
-  open(autoBroadcastIfMaster = false) {
+  // Abre a interface localmente com animacao suave de fade-in (transmite se for o Mestre)
+  open(autoBroadcastIfMaster = true) {
     if (autoBroadcastIfMaster && window.MesaApp && MesaApp.state && MesaApp.state.isMaster) {
       this.broadcastOpen();
       return;
