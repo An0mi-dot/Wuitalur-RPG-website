@@ -1791,11 +1791,19 @@ const MesaApp = {
             if (p1Attrs._sys_igris_shop && window.MesaIgrisShop) {
               const ig = p1Attrs._sys_igris_shop;
               const isShopOpen = MesaIgrisShop.isOpen;
+              const isMaster = !!(this.state && this.state.isMaster);
               const remoteTime = ig.updatedAt || 0;
               const localTime = MesaIgrisShop.lastLocalUpdate || 0;
               if (!isShopOpen || remoteTime > localTime) {
                 if (ig.interests) MesaIgrisShop.interests = ig.interests;
                 if (ig.merchantImage) MesaIgrisShop.setMerchantImage(ig.merchantImage);
+              }
+              if (!isMaster) {
+                if (ig.isOpen && !MesaIgrisShop.isOpen) {
+                  MesaIgrisShop.open();
+                } else if (!ig.isOpen && MesaIgrisShop.isOpen) {
+                  MesaIgrisShop.close(false);
+                }
               }
             }
             if (p1Attrs._sys_abertura && window.MesaAbertura) {
@@ -1981,9 +1989,10 @@ const MesaApp = {
             }
           }
 
-          // 3.1 Sincronização da Tenda do Igris (somente se a loja estiver fechada ou update for mais novo)
+          // 3.1 Sincronização da Tenda do Igris
           if (attrs && attrs._sys_igris_shop && window.MesaIgrisShop) {
             const ig = attrs._sys_igris_shop;
+            const isMaster = !!(this.state && this.state.isMaster);
             const remoteTime = ig.updatedAt || 0;
             const localTime = MesaIgrisShop.lastLocalUpdate || 0;
             // Se a loja estiver aberta na tela, as selecoes sao gerenciadas em tempo real via WebSocket (evita reverter desselecao)
@@ -1992,6 +2001,13 @@ const MesaApp = {
                 MesaIgrisShop.interests = ig.interests;
               }
               if (ig.merchantImage) MesaIgrisShop.setMerchantImage(ig.merchantImage);
+            }
+            if (!isMaster) {
+              if (ig.isOpen && !MesaIgrisShop.isOpen) {
+                MesaIgrisShop.open();
+              } else if (!ig.isOpen && MesaIgrisShop.isOpen) {
+                MesaIgrisShop.close(false);
+              }
             }
           }
 
@@ -2257,6 +2273,20 @@ const MesaApp = {
       if (isFromSelf(payload)) return;
       if (window.MesaTvEstatica2) {
         MesaTvEstatica2.triggerStop();
+      }
+    });
+
+    channel.on('broadcast', { event: 'perseguicao_floresta_start' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaPerseguicaoFloresta) {
+        MesaPerseguicaoFloresta.triggerStart();
+      }
+    });
+
+    channel.on('broadcast', { event: 'perseguicao_floresta_stop' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaPerseguicaoFloresta) {
+        MesaPerseguicaoFloresta.triggerStop();
       }
     });
 
@@ -11082,7 +11112,11 @@ const MesaIgrisShop = {
   },
 
   // Abre a interface localmente com animacao suave de fade-in
-  open() {
+  open(autoBroadcastIfMaster = false) {
+    if (autoBroadcastIfMaster && window.MesaApp && MesaApp.state && MesaApp.state.isMaster) {
+      this.broadcastOpen();
+      return;
+    }
     this.isOpen = true;
     document.body.classList.add('igris-shop-open');
     const overlay = document.getElementById('igris-shop-overlay');
@@ -11098,6 +11132,8 @@ const MesaIgrisShop = {
 
   // Fecha a interface localmente com fade-out suave
   close(broadcast = false) {
+    const isMaster = !!(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    const shouldBroadcast = broadcast || isMaster;
     const overlay = document.getElementById('igris-shop-overlay');
     const doClose = () => {
       this.isOpen = false;
@@ -11126,7 +11162,7 @@ const MesaIgrisShop = {
       doClose();
     }
 
-    if (broadcast && window.MesaApp && MesaApp.state && MesaApp.state.isMaster) {
+    if (shouldBroadcast && isMaster) {
       const chan = this.getChannel();
       if (chan) {
         try {
@@ -11137,12 +11173,13 @@ const MesaIgrisShop = {
           });
         } catch(e) {}
       }
+      this.saveStateToSupabase(true);
     }
   },
 
   // Transmite a abertura da tenda para todos os jogadores na mesa
   broadcastOpen() {
-    this.open();
+    this.open(false);
     const chan = this.getChannel();
     if (chan) {
       try {
@@ -11158,7 +11195,7 @@ const MesaIgrisShop = {
         console.warn('Erro ao transmitir abertura da Tenda de Igris:', e);
       }
     }
-    this.saveStateToSupabase();
+    this.saveStateToSupabase(true);
   },
 
   // Define uma imagem para o mercador
@@ -11928,6 +11965,7 @@ const MesaIgrisShop = {
           ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos) 
           : {};
         attrs._sys_igris_shop = {
+          isOpen: !!this.isOpen,
           interests: this.interests || {},
           merchantImage: this.merchantImage || null,
           updatedAt: Date.now()
