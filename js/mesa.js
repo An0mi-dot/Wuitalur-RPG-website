@@ -13264,7 +13264,7 @@ const MesaEsconderijo = {
   },
 
   drawPanelWave(canvas, ctx) {
-    const w = 18;
+    const w = 32;
     const h = canvas.parentElement ? canvas.parentElement.clientHeight : window.innerHeight;
     if (canvas.width !== w || canvas.height !== h) {
       canvas.width = w;
@@ -13272,7 +13272,7 @@ const MesaEsconderijo = {
     }
     ctx.clearRect(0, 0, w, h);
 
-    const pixelSize = 3;
+    const pixelSize = 4;
     const t = (performance.now() - (this._panelWaveStartTime || 0)) * 0.001;
     const numSteps = Math.ceil(h / pixelSize);
 
@@ -13282,9 +13282,9 @@ const MesaEsconderijo = {
     ctx.beginPath();
     for (let i = 0; i <= numSteps; i++) {
       const y = i * pixelSize;
-      const w1 = Math.sin(y * 0.015 - t * 2.5) * 4.5;
-      const w2 = Math.cos(y * 0.035 + t * 3.2) * 2.5;
-      const x = Math.round((8 + w1 + w2) / pixelSize) * pixelSize;
+      const w1 = Math.sin(y * 0.012 - t * 2.2) * 8.0;
+      const w2 = Math.cos(y * 0.028 + t * 2.8) * 4.5;
+      const x = Math.round((14 + w1 + w2) / pixelSize) * pixelSize;
       if (i === 0) {
         ctx.moveTo(x, 0);
       } else {
@@ -13301,9 +13301,9 @@ const MesaEsconderijo = {
     let prevX = null;
     for (let i = 0; i <= numSteps; i++) {
       const y = i * pixelSize;
-      const w1 = Math.sin(y * 0.015 - t * 2.5) * 4.5;
-      const w2 = Math.cos(y * 0.035 + t * 3.2) * 2.5;
-      const x = Math.round((8 + w1 + w2) / pixelSize) * pixelSize;
+      const w1 = Math.sin(y * 0.012 - t * 2.2) * 8.0;
+      const w2 = Math.cos(y * 0.028 + t * 2.8) * 4.5;
+      const x = Math.round((14 + w1 + w2) / pixelSize) * pixelSize;
 
       ctx.fillRect(x, y, pixelSize, pixelSize);
       if (prevX !== null && prevX !== x) {
@@ -13434,13 +13434,18 @@ const MesaEsconderijo = {
     if (delta < 0 && this.playerCamouflage > 0) {
       const pips = document.querySelectorAll('#survival-cam-pips .survival-pip');
       const lastPip = pips[pips.length - 1];
-      if (lastPip && window.MesaDice && typeof MesaDice.createDustVanishEffect === 'function') {
-        MesaDice.createDustVanishEffect(lastPip, '#ff1133', 25);
+      if (lastPip) {
+        if (window.MesaDice && typeof MesaDice.createDustVanishEffect === 'function') {
+          MesaDice.createDustVanishEffect(lastPip, '#ff1133', 25);
+        }
+        lastPip.style.pointerEvents = 'none';
+        lastPip.style.opacity = '0';
+        lastPip.style.transform = 'scale(0.2)';
       }
       this.playerCamouflage = Math.max(0, this.playerCamouflage - 1);
       setTimeout(() => {
         this.renderCamouflagePips();
-      }, 150);
+      }, 160);
     } else if (delta > 0) {
       this.playerCamouflage = Math.min(this.playerMaxCamouflage, this.playerCamouflage + 1);
       this.renderCamouflagePips();
@@ -13453,11 +13458,11 @@ const MesaEsconderijo = {
     if (countEl) countEl.textContent = `${this.playerCamouflage}/${this.playerMaxCamouflage}`;
     if (!container) return;
     container.innerHTML = '';
-    // Renderiza apenas os quadrados existentes (sem caixas vazias residuais)
+    // Renderiza apenas os quadrados existentes. Ao se dissipar, some junto com o quadrado!
     for (let i = 0; i < this.playerCamouflage; i++) {
       const pip = document.createElement('span');
       pip.className = 'survival-pip filled';
-      pip.title = `Ponto de Camuflagem ${i + 1}`;
+      pip.title = `Ponto de Camuflagem ${i + 1} (Clique para dissipar)`;
       pip.onclick = () => this.adjustCamouflage(-1);
       container.appendChild(pip);
     }

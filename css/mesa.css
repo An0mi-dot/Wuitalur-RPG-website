@@ -13861,14 +13861,98 @@ body.esconderijo-active::after {
   opacity: 0.16 !important;
 }
 
-/* Tabuleiro Central e Borda da Mesa */
+/* Tabuleiro Central e Quadrado Onde Ficam os Cards (Fundo Preto Absoluto e Borda Carmesim) */
+body.esconderijo-active .mesa-black-board,
+body.esconderijo-active .mesa-board-container,
+body.esconderijo-active .board-inner,
+body.esconderijo-active .combat-black-ramp,
+body.esconderijo-active .combat-dock-container,
+body.esconderijo-active .combat-players-dock,
+body.esconderijo-active .combat-player-card,
+body.esconderijo-active .player-slot {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #ff1133 !important;
+}
+
 body.esconderijo-active .mesa-black-board {
   border-color: #ff1133 !important;
+  background: #000000 !important;
   box-shadow:
     0 0 0 1px #000,
     0 0 30px rgba(255, 17, 51, 0.55),
     0 30px 80px rgba(0, 0, 0, 0.95),
     inset 0 0 120px rgba(0, 0, 0, 0.9) !important;
+}
+
+/* Fundo Preto Absoluto para toda a Janela de Esconderijo */
+#combat-survival-panel,
+.combat-survival-panel,
+.survival-panel-header,
+.survival-phase-card,
+.survival-panel-content,
+.survival-section,
+.survival-section-header,
+.survival-field,
+.survival-pavor-switch-box,
+.survival-history-box {
+  background: #000000 !important;
+  background-color: #000000 !important;
+}
+
+/* OVERRIDE GLOBAL: Todo o Laranja do Site Fica com Tons Avermelhados */
+body.esconderijo-active svg[stroke="#ff5500"],
+body.esconderijo-active svg[stroke="#ff7700"],
+body.esconderijo-active svg[stroke="var(--mesa-orange)"] {
+  stroke: #ff1133 !important;
+}
+
+body.esconderijo-active svg[fill="#ff5500"],
+body.esconderijo-active svg[fill="#ff7700"] {
+  fill: #ff1133 !important;
+}
+
+body.esconderijo-active .ink-tag,
+body.esconderijo-active .nav-menu-btn,
+body.esconderijo-active .mesa-nav-btn,
+body.esconderijo-active .mesa-btn,
+body.esconderijo-active .dice-btn,
+body.esconderijo-active .mesa-quick-tag,
+body.esconderijo-active .mesa-version,
+body.esconderijo-active .nav-auth-chip,
+body.esconderijo-active .combat-top-menu-btn,
+body.esconderijo-active .combat-ctrl-btn,
+body.esconderijo-active .combat-round-badge,
+body.esconderijo-active .undertale-stat-label,
+body.esconderijo-active .undertale-hp-track,
+body.esconderijo-active .undertale-hp-bar,
+body.esconderijo-active .undertale-stress-pip.filled,
+body.esconderijo-active .board-crosshair-c::before,
+body.esconderijo-active .board-crosshair-c::after,
+body.esconderijo-active .board-ink-inner-border,
+body.esconderijo-active .dice-grand-total,
+body.esconderijo-active .chat-drawer,
+body.esconderijo-active .chat-header,
+body.esconderijo-active .chat-toggle-btn,
+body.esconderijo-active .chat-send-btn,
+body.esconderijo-active .chat-input:focus,
+body.esconderijo-active .mesa-audio-player,
+body.esconderijo-active .audio-track-title,
+body.esconderijo-active .audio-progress-bar,
+body.esconderijo-active .bestiary-drawer,
+body.esconderijo-active .device-drawer,
+body.esconderijo-active .inventory-drawer {
+  border-color: #ff1133 !important;
+  color: #ff3355 !important;
+}
+
+body.esconderijo-active .ink-tag.primary,
+body.esconderijo-active .mesa-btn.primary,
+body.esconderijo-active .combat-ctrl-btn.combat-ctrl-esconderijo-btn {
+  background: #ff1133 !important;
+  border-color: #ff4d6d !important;
+  color: #000000 !important;
+  box-shadow: 0 0 14px rgba(255, 17, 51, 0.7) !important;
 }
 
 body.esconderijo-active .board-ink-inner-border {
@@ -14045,14 +14129,14 @@ body.esconderijo-active .combat-ctrl-btn.combat-ctrl-esconderijo-btn {
 .survival-panel-wave-canvas {
   position: absolute;
   top: 0;
-  left: -15px;
-  width: 18px;
+  left: -28px;
+  width: 32px;
   height: 100%;
   pointer-events: none;
   z-index: 10;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
-  filter: drop-shadow(-3px 0 8px rgba(255, 17, 51, 0.75));
+  filter: drop-shadow(-4px 0 10px rgba(255, 17, 51, 0.85));
 }
 
 .survival-panel-header {
@@ -14232,13 +14316,13 @@ body.esconderijo-active .combat-ctrl-btn.combat-ctrl-esconderijo-btn {
 }
 
 .survival-pip {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border: 1.5px solid #ff1133;
   background: #ff1133;
   box-shadow: 0 0 8px rgba(255, 17, 51, 0.7);
   cursor: pointer;
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, opacity 0.2s ease;
   box-sizing: border-box;
 }
 
