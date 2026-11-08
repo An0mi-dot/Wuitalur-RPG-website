@@ -13235,23 +13235,47 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
    ========================================================================== */
 
 /* 1. BADGES E BOTÕES DE DADO DE PAVOR */
-.slot-pavor-badge {
+@keyframes pavorCrimsonBorderWave {
+  0% {
+    border-color: #880818;
+    box-shadow: 0 0 8px rgba(136, 8, 24, 0.4), inset 0 0 4px rgba(136, 8, 24, 0.2);
+  }
+  50% {
+    border-color: #ff1133;
+    box-shadow: 0 0 22px rgba(255, 17, 51, 0.8), inset 0 0 10px rgba(255, 17, 51, 0.35);
+  }
+  100% {
+    border-color: #880818;
+    box-shadow: 0 0 8px rgba(136, 8, 24, 0.4), inset 0 0 4px rgba(136, 8, 24, 0.2);
+  }
+}
+
+.combat-player-card.has-pavor,
+.player-slot.has-pavor {
+  border: 1.5px solid #ff1133 !important;
+  animation: pavorCrimsonBorderWave 2.2s infinite ease-in-out !important;
+}
+
+.slot-pavor-badge,
+.combat-card-pavor-tag {
   position: absolute;
-  top: 6px;
-  right: 6px;
-  background: rgba(255, 17, 51, 0.25);
-  border: 1px solid #ff1133;
-  color: #ff8093;
-  font-family: var(--font-heading);
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  padding: 2px 6px;
-  border-radius: 4px;
-  box-shadow: 0 0 10px rgba(255, 17, 51, 0.4);
-  animation: pavorBadgePulse 2s infinite ease-in-out;
+  top: 4px;
+  right: 4px;
+  left: auto;
+  background: #990018 !important;
+  border: 1px solid #ff2244 !important;
+  color: #ffffff !important;
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 0.42rem !important;
+  font-weight: 700 !important;
+  padding: 2px 5px !important;
+  border-radius: 0 !important;
+  letter-spacing: 0.08em !important;
+  box-shadow: 0 0 8px rgba(255, 34, 68, 0.7) !important;
   pointer-events: none;
   z-index: 10;
+  text-transform: uppercase;
+  animation: pavorBadgePulse 1.8s infinite ease-in-out;
 }
 
 @keyframes pavorBadgePulse {
@@ -13310,6 +13334,27 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
     border-color: #ff1133;
     box-shadow: 0 0 28px rgba(255, 17, 51, 0.95), inset 0 0 18px rgba(255, 17, 51, 0.55);
   }
+}
+
+@keyframes pavorEntrancePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-8deg);
+    filter: blur(8px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.15) rotate(2deg);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.dice-tumble-box.pavor-box.pavor-entrance {
+  animation: pavorEntrancePop 0.45s cubic-bezier(0.16, 1, 0.3, 1) both, pavorBoxCrimsonPulse 2.2s infinite ease-in-out !important;
 }
 
 .pavor-box-top-tag {
@@ -13910,27 +13955,7 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
   animation: pavorBadgePulse 1.8s infinite ease-in-out;
 }
 
-.combat-player-card.has-pavor {
-  border-color: rgba(255, 17, 51, 0.6) !important;
-  box-shadow: 0 0 14px rgba(255, 17, 51, 0.35) !important;
-}
-
-.combat-card-pavor-tag {
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  background: #ff1133;
-  color: #fff;
-  font-family: var(--font-heading);
-  font-size: 0.6rem;
-  font-weight: 900;
-  padding: 1px 4px;
-  border-radius: 2px;
-  letter-spacing: 0.05em;
-  pointer-events: none;
-  z-index: 5;
-  animation: pavorBadgePulse 1.8s infinite ease-in-out;
-}
+/* Combat card has-pavor and tag managed with unified pixel styling above */
 
 /* 7. FLOATING BANNER PARA DESATIVAR ESCONDERIJO A QUALQUER MOMENTO */
 .esconderijo-active-floating-banner {
@@ -14027,4 +14052,184 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
   12% { opacity: 1; transform: translateY(0); }
   85% { opacity: 1; transform: translateY(0); }
   100% { opacity: 0; transform: translateY(-10px); }
+}
+
+
+/* ============================================================
+   8. ALERTA DRAMÁTICO DE PRESA ENCONTRADA COM DESINTEGRAÇÃO EM POEIRA
+   ============================================================ */
+.esconderijo-discovery-banner {
+  position: fixed;
+  inset: 0;
+  z-index: 9999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.esconderijo-discovery-banner .discovery-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 0, 3, 0.88);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: discoveryBackdropFade 0.4s ease both;
+}
+
+@keyframes discoveryBackdropFade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.discovery-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 32px;
+  background: #080204;
+  border: 2px solid #ff1133;
+  box-shadow: 0 0 50px rgba(255, 17, 51, 0.75), inset 0 0 25px rgba(255, 17, 51, 0.25);
+  animation: discoveryContentPop 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  text-align: center;
+  max-width: min(90vw, 480px);
+}
+
+@keyframes discoveryContentPop {
+  0% { opacity: 0; transform: scale(0.65); filter: blur(6px); }
+  100% { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+.discovery-danger-tag {
+  background: #ff1133;
+  color: #000000;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.58rem;
+  font-weight: 900;
+  padding: 4px 12px;
+  letter-spacing: 0.1em;
+  box-shadow: 0 0 14px #ff1133;
+}
+
+.discovery-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0;
+}
+
+.discovery-sector-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.6rem;
+  color: #ff3355;
+  letter-spacing: 0.12em;
+  text-shadow: 0 0 20px #ff1133, 0 0 35px rgba(255, 17, 51, 0.8);
+}
+
+.discovery-player-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.9rem;
+  color: #ffffff;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.discovery-flavor-text {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.46rem;
+  color: #ff8093;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   9. PAINEL DE SIMULAÇÃO DO MESTRE NO MODO ESCONDERIJO
+   ============================================================ */
+.esconderijo-simulation-box {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: rgba(15, 3, 7, 0.85);
+  border: 1px dashed rgba(255, 17, 51, 0.45);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.simulation-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.simulation-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.5rem;
+  color: #ff6680;
+  letter-spacing: 0.06em;
+}
+
+.simulation-badge {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.42rem;
+  padding: 2px 6px;
+  border: 1px solid #44111c;
+  color: #a1a1aa;
+  background: #080204;
+}
+
+.simulation-badge.active {
+  border-color: #38bdf8;
+  color: #38bdf8;
+  background: #041220;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
+}
+
+.simulation-desc {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.42rem;
+  color: #a1a1aa;
+  line-height: 1.5;
+}
+
+.simulation-actions-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.simulation-btn {
+  flex: 1;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 17, 51, 0.4);
+  color: #ffffff;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.44rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.simulation-btn:hover {
+  background: rgba(255, 17, 51, 0.25);
+  border-color: #ff1133;
+  box-shadow: 0 0 10px rgba(255, 17, 51, 0.5);
+}
+
+.simulation-btn.view-player-btn {
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+.simulation-btn.view-player-btn:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: #38bdf8;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
 }

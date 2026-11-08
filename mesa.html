@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.3.3">
+  <link rel="stylesheet" href="css/mesa.css?v=2.3.4">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1273,9 +1273,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.8.8"></script>
 
-<script src="js/mesa.js?v=2.3.3"></script>
+<script src="js/mesa.js?v=2.3.4"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.3.3</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.3.4</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -2388,6 +2388,25 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
             Nenhum setor declarado ainda nesta rodada.
           </div>
 
+          <!-- PAINEL DE SIMULAÇÃO (TESTES DO MESTRE) -->
+          <div class="esconderijo-simulation-box" id="esconderijo-simulation-box">
+            <div class="simulation-header">
+              <span class="simulation-title">MODO DE SIMULAÇÃO DE PRESA</span>
+              <span class="simulation-badge" id="simulated-player-status">SEM PRESA</span>
+            </div>
+            <div class="simulation-desc">
+              Atribua um setor secreto a um personagem de teste e alterne para a visão do jogador para testar o ciclo.
+            </div>
+            <div class="simulation-actions-row">
+              <button type="button" class="simulation-btn" onclick="MesaEsconderijo.simulatePlayerSector()" id="btn-simular-jogador">
+                Simular Jogador no Setor ?
+              </button>
+              <button type="button" class="simulation-btn view-player-btn" onclick="MesaEsconderijo.openPlayerModalFromMaster()">
+                Alternar para Visão do Jogador
+              </button>
+            </div>
+          </div>
+
           <button type="button" class="dispositivo-btn-stop" onclick="MesaEsconderijo.stopHidingRound()" style="width: 100%; margin-top: 10px;">
             Encerrar Esconderijo
           </button>
@@ -2406,7 +2425,12 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff1133" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
           <span>SEU ESCONDERIJO • DINÂMICA DE SOMBRAS</span>
         </div>
-        <button type="button" class="mesa-modal-close" onclick="MesaEsconderijo.closePlayerModal()" title="Minimizar">&times;</button>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" id="player-return-to-master-btn" class="simulation-btn" onclick="MesaEsconderijo.returnToMasterModalFromPlayer()" style="display:none; padding: 4px 8px;" title="Retornar ao Painel do Mestre">
+            Painel do Mestre
+          </button>
+          <button type="button" class="mesa-modal-close" onclick="MesaEsconderijo.closePlayerModal()" title="Minimizar">&times;</button>
+        </div>
       </div>
 
       <div class="esconderijo-player-body">
@@ -2475,6 +2499,19 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
     </div>
   </div>
 
+
+  <!-- ALERTA DRAMATICO DE PRESA ENCONTRADA COM DESINTEGRACAO EM POEIRA -->
+  <div id="esconderijo-discovery-banner" class="esconderijo-discovery-banner" style="display: none;">
+    <div class="discovery-backdrop"></div>
+    <div class="discovery-content" id="discovery-content-box">
+      <div class="discovery-danger-tag">PRESA LOCALIZADA</div>
+      <div class="discovery-details" id="discovery-details-card">
+        <span class="discovery-sector-label" id="discovery-sector-text">SETOR ?</span>
+        <span class="discovery-player-label" id="discovery-player-text">JOGADOR</span>
+      </div>
+      <div class="discovery-flavor-text" id="discovery-flavor-text">A protecao do esconderijo ruiu. O combate direto comeca imediatamente.</div>
+    </div>
+  </div>
 
   <!-- BANNER FLUTUANTE DE ESCONDERIJO ATIVO (PERMITE DESATIVAR A QUALQUER MOMENTO) -->
   <div id="esconderijo-active-floating-banner" class="esconderijo-active-floating-banner" style="display: none;">

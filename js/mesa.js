@@ -2343,6 +2343,7 @@ const MesaApp = {
           ? `<img src="${avatarSrc}" alt="${p.nome}" class="slot-avatar-img" />`
           : `${p.nome.charAt(0)}`;
 
+        slotEl.classList.toggle('has-pavor', Boolean(p.dadoDePavor));
         slotEl.innerHTML = `
           <div class="player-avatar-placeholder">${avatarContent}</div>
           ${p.dadoDePavor ? `<div class="slot-pavor-badge" title="Dado de Pavor Ativo">PAVOR</div>` : ''}
@@ -3522,6 +3523,29 @@ const MesaDice = {
     this.renderSelectedList();
   },
 
+  createDustVanishEffect(targetElement, color = '#ff1133', count = 35) {
+    if (!targetElement) return;
+    const rect = targetElement.getBoundingClientRect();
+    targetElement.classList.add('dust-vanish-active');
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'dust-particle';
+      const size = Math.random() * 5 + 2;
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      p.style.background = Math.random() > 0.4 ? color : '#111';
+      p.style.boxShadow = `0 0 6px ${color}`;
+      p.style.left = (rect.left + Math.random() * rect.width) + 'px';
+      p.style.top = (rect.top + Math.random() * rect.height) + 'px';
+      const tx = (Math.random() - 0.5) * 80;
+      const ty = - (Math.random() * 60 + 20);
+      p.style.setProperty('--tx', tx + 'px');
+      p.style.setProperty('--ty', ty + 'px');
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 1200);
+    }
+  },
+
   // Gerador Criptograficamente Seguro de Números Aleatórios (CSPRNG - sem viés de módulo)
   cryptoRandomInt(min, max) {
     const range = max - min + 1;
@@ -3833,49 +3857,39 @@ const MesaDice = {
 
     stage.classList.add('active');
 
-    // Monta a arena de rolagem
+    const hasPavor = Boolean(data.pavorResult);
+
+    // Etapa 1: Renderiza dados comuns rolando. O Dado de Pavor fica oculto inicialmente.
     stage.innerHTML = `
       <div class="dice-roller-badge ${data.isMaster ? 'is-master' : ''}">
         ${data.rollerName} está rolando...
       </div>
-      <div class="dice-tumbling-arena">
+      <div id="dice-tumbling-arena" class="dice-tumbling-arena">
         ${data.results.map((d, i) => `
           <div id="dice-box-${i}" class="dice-tumble-box rolling">
             <span class="dice-tumble-type">d${d.sides}</span>
             <span id="dice-val-${i}" class="dice-tumble-val">?</span>
           </div>
         `).join('')}
-        ${data.pavorResult ? `
-          <div id="dice-pavor-box" class="dice-tumble-box pavor-box rolling" title="Dado de Pavor (Fios do Medo)">
-            <span class="pavor-box-top-tag">PAVOR</span>
-            <span class="dice-tumble-type">d${data.pavorResult.sides}</span>
-            <span id="dice-pavor-val" class="dice-tumble-val pavor-number">?</span>
-            <span class="pavor-box-sub">SUBTRAI</span>
-          </div>
-        ` : ''}
       </div>
       <div id="dice-total-box" class="dice-total-banner" style="display:none;"></div>
     `;
 
-    // Animação de números girando em alta velocidade por 1.2 segundos
-    const interval = setInterval(() => {
+    const arena = stage.querySelector('#dice-tumbling-arena');
+
+    // Rola dados comuns
+    const commonInterval = setInterval(() => {
       data.results.forEach((d, i) => {
         const valEl = stage.querySelector(`#dice-val-${i}`);
         if (valEl) {
           valEl.textContent = this.cryptoRandomInt(1, d.sides);
         }
       });
-      if (data.pavorResult) {
-        const pValEl = stage.querySelector('#dice-pavor-val');
-        if (pValEl) {
-          pValEl.textContent = this.cryptoRandomInt(1, data.pavorResult.sides);
-        }
-      }
     }, 45);
 
-    // Para a animação e bate o valor real criptográfico
+    // Fim da Etapa 1: Estabiliza dados comuns após 1.1s e exibe o total parcial
     setTimeout(() => {
-      clearInterval(interval);
+      clearInterval(commonInterval);
 
       data.results.forEach((d, i) => {
         const box = stage.querySelector(`#dice-box-${i}`);
@@ -3887,78 +3901,133 @@ const MesaDice = {
         }
       });
 
-      if (data.pavorResult) {
-        const pBox = stage.querySelector('#dice-pavor-box');
-        const pValEl = stage.querySelector('#dice-pavor-val');
-        if (pBox && pValEl) {
-          pBox.classList.remove('rolling');
-          pBox.classList.add('settled-pavor');
-          pValEl.textContent = data.pavorResult.val;
+      const commonDiceBreakdown = data.results.map(d => `d${d.sides}(${d.val})`).join(' + ');
+      const commonSum = data.results.reduce((a, b) => a + b.val, 0);
+      const modStr = data.modifier !== 0 ? (data.modifier > 0 ? ` + ${data.modifier}` : ` − ${Math.abs(data.modifier)}`) : '';
+      const partialTotal = commonSum + data.modifier;
 
-          if (data.pavorResult.val === 1) {
-            setTimeout(() => {
-              this.createDustVanishEffect(pBox, '#ff1133');
-            }, 900);
-          } else {
-            setTimeout(() => {
-              this.createDustVanishEffect(pBox, 'rgba(255, 17, 51, 0.65)', 15);
-            }, 600);
-          }
-        }
-      }
-
-      // Exibe o total final e detalhamento com fórmula visual clara
       const totalBox = stage.querySelector('#dice-total-box');
-      if (totalBox) {
-        let commonDiceBreakdown = data.results.map(d => `d${d.sides}(${d.val})`).join(' + ');
-        const commonSum = data.results.reduce((a, b) => a + b.val, 0);
 
-        let formulaParts = '';
-        if (data.results.length > 1) {
-          formulaParts += `<span class="dice-formula-pool">${commonDiceBreakdown} [${commonSum}]</span>`;
-        } else {
-          formulaParts += `<span class="dice-formula-pool">${commonDiceBreakdown}</span>`;
-        }
-
-        if (data.pavorResult) {
-          formulaParts += ` <span class="pavor-breakdown-minus">− PAVOR (${data.pavorResult.val})</span>`;
-        }
-
-        const modStr = data.modifier !== 0 ? (data.modifier > 0 ? ` + ${data.modifier}` : ` − ${Math.abs(data.modifier)}`) : '';
-        if (modStr) {
-          formulaParts += ` <span class="dice-formula-mod">${modStr}</span>`;
-        }
-
-        let alivioHtml = '';
-        if (data.pavorResult && data.pavorResult.val === 1) {
-          alivioHtml = `
-            <div class="pavor-alivio-badge">
-              <span class="pavor-alivio-icon">✦</span>
-              <span class="pavor-alivio-title">PAVOR SUPERADO</span>
-              <span class="pavor-alivio-desc">Resultado 1 no Dado de Pavor: o terror foi dissipado</span>
+      if (!hasPavor) {
+        // Rolagem padrão sem pavor: exibe total final diretamente
+        if (totalBox) {
+          let formulaParts = '';
+          if (data.results.length > 1) {
+            formulaParts = `${commonDiceBreakdown} [${commonSum}]${modStr} =`;
+          } else {
+            formulaParts = `${commonDiceBreakdown}${modStr} =`;
+          }
+          totalBox.style.display = 'flex';
+          totalBox.innerHTML = `
+            <div class="dice-formula-container">
+              <span class="dice-breakdown-text">${formulaParts}</span>
+              <span class="dice-grand-total">${data.total}</span>
             </div>
           `;
         }
+        return;
+      }
 
+      // Se há pavor: exibe o total parcial provisório no centro
+      if (totalBox) {
+        let partialFormula = data.results.length > 1 ? `${commonDiceBreakdown} [${commonSum}]${modStr} =` : `${commonDiceBreakdown}${modStr} =`;
         totalBox.style.display = 'flex';
         totalBox.innerHTML = `
-          <div class="dice-formula-container">
-            <span class="dice-breakdown-text">${formulaParts} =</span>
-            <span class="dice-grand-total ${data.pavorResult ? 'with-pavor' : ''}">${data.total}</span>
+          <div class="dice-formula-container" id="dice-partial-formula-wrap">
+            <span class="dice-breakdown-text">${partialFormula}</span>
+            <span id="dice-partial-total-num" class="dice-grand-total">${partialTotal}</span>
           </div>
-          ${alivioHtml}
         `;
       }
-    }, 1200);
 
-    // Mantém na tela e retorna suavemente ao estado de repouso após 5.5s, liberando a trava global
+      // Etapa 2: Após suspense de 750ms, o Dado de Pavor surge no palco e começa a rolar
+      setTimeout(() => {
+        if (!arena) return;
+
+        const pavorEl = document.createElement('div');
+        pavorEl.id = 'dice-pavor-box';
+        pavorEl.className = 'dice-tumble-box pavor-box pavor-entrance rolling';
+        pavorEl.title = 'Dado de Pavor (Fios do Medo)';
+        pavorEl.innerHTML = `
+          <span class="pavor-box-top-tag">PAVOR</span>
+          <span class="dice-tumble-type">d${data.pavorResult.sides}</span>
+          <span id="dice-pavor-val" class="dice-tumble-val pavor-number">?</span>
+          <span class="pavor-box-sub">SUBTRAI</span>
+        `;
+        arena.appendChild(pavorEl);
+
+        const pavorInterval = setInterval(() => {
+          const pVal = stage.querySelector('#dice-pavor-val');
+          if (pVal) {
+            pVal.textContent = this.cryptoRandomInt(1, data.pavorResult.sides);
+          }
+        }, 40);
+
+        // Etapa 3: Estabiliza o Dado de Pavor após 1.1s de rolagem
+        setTimeout(() => {
+          clearInterval(pavorInterval);
+
+          pavorEl.classList.remove('rolling');
+          pavorEl.classList.add('settled-pavor');
+          const pVal = stage.querySelector('#dice-pavor-val');
+          if (pVal) pVal.textContent = data.pavorResult.val;
+
+          // Desintegração em poeira do total provisório antigo
+          const oldTotalNum = stage.querySelector('#dice-partial-total-num');
+          if (oldTotalNum) {
+            this.createDustVanishEffect(oldTotalNum, '#ffffff', 28);
+          }
+
+          // Após desintegração, substitui pelo novo total já subtraído em destaque carmesim
+          setTimeout(() => {
+            if (totalBox) {
+              let formulaParts = data.results.length > 1
+                ? `${commonDiceBreakdown} [${commonSum}] <span class="pavor-breakdown-minus">− PAVOR (${data.pavorResult.val})</span>${modStr} =`
+                : `${commonDiceBreakdown} <span class="pavor-breakdown-minus">− PAVOR (${data.pavorResult.val})</span>${modStr} =`;
+
+              let alivioHtml = '';
+              if (data.pavorResult.val === 1) {
+                alivioHtml = `
+                  <div class="pavor-alivio-badge">
+                    <span class="pavor-alivio-icon">✦</span>
+                    <span class="pavor-alivio-title">PAVOR SUPERADO</span>
+                    <span class="pavor-alivio-desc">Resultado 1 no Dado de Pavor: o terror foi dissipado</span>
+                  </div>
+                `;
+                setTimeout(() => {
+                  this.createDustVanishEffect(pavorEl, '#ff1133', 45);
+                }, 900);
+              } else {
+                setTimeout(() => {
+                  this.createDustVanishEffect(pavorEl, 'rgba(255, 17, 51, 0.65)', 16);
+                }, 600);
+              }
+
+              totalBox.innerHTML = `
+                <div class="dice-formula-container">
+                  <span class="dice-breakdown-text">${formulaParts}</span>
+                  <span class="dice-grand-total with-pavor">${data.total}</span>
+                </div>
+                ${alivioHtml}
+              `;
+            }
+          }, 320);
+
+        }, 1100);
+
+      }, 750);
+
+    }, 1100);
+
+    // Mantém na tela e retorna ao estado de repouso liberando a trava global
+    const totalDuration = hasPavor ? 7800 : 5000;
     this.rollTimeout = setTimeout(() => {
       stage.classList.remove('active');
       stage.innerHTML = '';
       this.isGlobalRolling = false;
       this.currentRoller = null;
       this.updateRollButtonLabel();
-    }, 5500);
+    }, totalDuration);
   }
 };
 
@@ -12169,13 +12238,114 @@ const MesaEsconderijo = {
   isMasterActive: false,
   declaredSectors: [],
   selectedSector: null,
+  simulatedPlayer: null,
 
-  // Estado privado do jogador (NUNCA enviado ao Mestre):
+  // Estado privado do jogador:
   playerSector: null,
   playerCamouflage: 2,
   playerMaxCamouflage: 4,
   playerHidden: false,
   playerDiscovered: false,
+
+  simulatePlayerSector(customSector = null) {
+    const sec = customSector || this.selectedSector || Math.floor(Math.random() * this.roomSides) + 1;
+    const playerName = (MesaApp.state && MesaApp.state.players && MesaApp.state.players[0] && MesaApp.state.players[0].nome) || 'Eric';
+    this.simulatedPlayer = {
+      name: playerName,
+      sector: sec,
+      camouflage: 2
+    };
+    this.playerSector = sec;
+    this.playerCamouflage = 2;
+    this.playerHidden = true;
+    this.playerDiscovered = false;
+
+    const sectorBadge = document.getElementById('player-sector-badge');
+    if (sectorBadge) sectorBadge.textContent = `SETOR ${sec}`;
+    const phaseRoll = document.getElementById('player-esconderijo-phase-roll');
+    const phaseActive = document.getElementById('player-esconderijo-phase-active');
+    if (phaseRoll) phaseRoll.style.display = 'none';
+    if (phaseActive) phaseActive.style.display = 'flex';
+    this.updatePlayerCamouflageUI();
+
+    this.updateSimulationUI();
+    MesaApp.showToast(`Presa simulada: ${playerName} no Setor ${sec}`);
+  },
+
+  updateSimulationUI() {
+    const btn = document.getElementById('btn-simular-jogador');
+    const badge = document.getElementById('simulated-player-status');
+    if (this.simulatedPlayer) {
+      if (btn) btn.textContent = `Presa: ${this.simulatedPlayer.name} no Setor ${this.simulatedPlayer.sector}`;
+      if (badge) {
+        badge.textContent = `SETOR ${this.simulatedPlayer.sector} (${this.simulatedPlayer.name})`;
+        badge.classList.add('active');
+      }
+    } else {
+      if (btn) btn.textContent = 'Simular Jogador no Setor ?';
+      if (badge) {
+        badge.textContent = 'SEM PRESA';
+        badge.classList.remove('active');
+      }
+    }
+  },
+
+  openPlayerModalFromMaster() {
+    if (!this.playerSector) {
+      this.simulatePlayerSector();
+    }
+    this.closeMasterModal();
+    const returnBtn = document.getElementById('player-return-to-master-btn');
+    if (returnBtn) returnBtn.style.display = 'inline-block';
+    this.openPlayerModal();
+  },
+
+  returnToMasterModalFromPlayer() {
+    this.closePlayerModal();
+    this.openMasterModal();
+    this.updateSimulationUI();
+  },
+
+  showDiscoveryDramaticAlert(playerName, sector) {
+    const banner = document.getElementById('esconderijo-discovery-banner');
+    if (!banner) return;
+
+    const sectorEl = document.getElementById('discovery-sector-text');
+    const playerEl = document.getElementById('discovery-player-text');
+    const detailsCard = document.getElementById('discovery-details-card');
+    const contentBox = document.getElementById('discovery-content-box');
+
+    if (sectorEl) sectorEl.textContent = `SETOR ${sector}`;
+    if (playerEl) playerEl.textContent = playerName.toUpperCase();
+
+    if (detailsCard) {
+      detailsCard.classList.remove('dust-vanish-active');
+      detailsCard.style.opacity = '1';
+    }
+    if (contentBox) {
+      contentBox.classList.remove('dust-vanish-active');
+      contentBox.style.opacity = '1';
+    }
+
+    banner.style.display = 'flex';
+    banner.classList.add('active');
+
+    // Suspense de 1.8 segundos e depois desintegração em poeira dos dados da presa
+    setTimeout(() => {
+      if (detailsCard) {
+        MesaDice.createDustVanishEffect(detailsCard, '#ff1133', 45);
+      }
+      if (contentBox) {
+        MesaDice.createDustVanishEffect(contentBox, 'rgba(255, 30, 60, 0.8)', 25);
+      }
+    }, 1800);
+
+    // Encerra e oculta o banner após as partículas se dispersarem (3.1s)
+    setTimeout(() => {
+      banner.classList.remove('active');
+      banner.style.display = 'none';
+    }, 3100);
+  },
 
   init() {
     this.renderMasterSectors();
@@ -12312,6 +12482,18 @@ const MesaEsconderijo = {
     const sector = this.selectedSector;
     this.declaredSectors.push(sector);
     this.updateHistoryBox();
+
+    // Verifica se a busca encontrou a presa (jogador real ou simulado)
+    let foundPlayerName = null;
+    if (this.playerHidden && this.playerSector === sector) {
+      foundPlayerName = (MesaApp.state && MesaApp.state.players && MesaApp.state.players[0] && MesaApp.state.players[0].nome) || 'Jogador';
+    } else if (this.simulatedPlayer && this.simulatedPlayer.sector === sector) {
+      foundPlayerName = this.simulatedPlayer.name;
+    }
+
+    if (foundPlayerName) {
+      this.showDiscoveryDramaticAlert(foundPlayerName, sector);
+    }
 
     if (MesaChat.channel) {
       MesaChat.channel.send({
@@ -12483,6 +12665,9 @@ const MesaEsconderijo = {
     alertEl.style.display = 'block';
 
     if (this.playerSector === sector) {
+      const pName = (MesaApp.state && MesaApp.state.players && MesaApp.state.players[0] && MesaApp.state.players[0].nome) || 'Você';
+      this.showDiscoveryDramaticAlert(pName, sector);
+
       this.playerCamouflage = Math.max(0, this.playerCamouflage - 1);
       this.updatePlayerCamouflageUI();
 
