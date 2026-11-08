@@ -825,13 +825,6 @@ const MesaApp = {
     GlitchEngine.init();
     FichaParticlesEngine.init();
 
-    const tokenToValidate = initialToken || localStorage.getItem('wu_user_token') || localStorage.getItem('mesa_token');
-    if (tokenToValidate) {
-      await this.checkSavedToken(tokenToValidate);
-    } else {
-      this.updateTokenBtnState();
-    }
-
     if (this.SUPABASE_URL && this.SUPABASE_KEY && window.supabase) {
       this.supabase = window.supabase.createClient(this.SUPABASE_URL, this.SUPABASE_KEY);
       await this.fetchPlayers();
@@ -840,6 +833,13 @@ const MesaApp = {
     } else {
       console.warn("Supabase não disponível. Exibindo dados locais.");
       this.loadMockData();
+    }
+
+    const tokenToValidate = initialToken || localStorage.getItem('wu_user_token') || localStorage.getItem('mesa_token');
+    if (tokenToValidate) {
+      await this.checkSavedToken(tokenToValidate);
+    } else {
+      this.updateTokenBtnState();
     }
 
     MesaColetaveis.init();
