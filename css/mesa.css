@@ -9349,7 +9349,7 @@ body.dispositivos-drawer-open .mesa-board-container,
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  z-index: 800;
+  z-index: 2000;
   opacity: 0;
   pointer-events: none;
   background: #000000;
@@ -9363,9 +9363,16 @@ body.combat-active .mesa-combat-overlay {
 }
 
 body.combat-active .mesa-floating-nav,
-body.combat-active .nav-reaction-wrapper {
+body.combat-active .mesa-floating-nav *,
+body.combat-active .nav-reaction-wrapper,
+body.combat-active #nav-reaction-btn,
+body.combat-active #nav-auth-chip,
+body.combat-active .mesa-mobile-fab-container,
+body.combat-active .mesa-version {
   display: none !important;
   pointer-events: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
 }
 
 body.combat-active .mesa-mobile-fab-container,
@@ -9612,8 +9619,9 @@ body.combat-active .combat-title-box {
   flex-direction: row;
   align-items: center;
   gap: 8px;
-  z-index: 1250;
+  z-index: 2050;
   pointer-events: auto !important;
+  max-width: calc(100vw - 220px);
 }
 
 .combat-master-desktop-view {
@@ -10622,7 +10630,7 @@ body.combat-active .combat-black-ramp {
     top: max(10px, env(safe-area-inset-top, 10px)) !important;
     right: max(10px, env(safe-area-inset-right, 10px)) !important;
     gap: 6px !important;
-    z-index: 1250 !important;
+    z-index: 2050 !important;
   }
 
   .combat-master-controls {
@@ -10701,7 +10709,7 @@ body.combat-active .combat-black-ramp {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  z-index: 1250;
+  z-index: 2050;
   pointer-events: auto !important;
 }
 
@@ -13492,342 +13500,364 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
   }
 }
 
-/* 4. MODAL DO MESTRE: ESCONDERIJO E BUSCA */
-.esconderijo-master-modal {
+/* ============================================================
+   PAINEL LATERAL DE SOBREVIVÊNCIA (MODO ESCONDERIJO)
+   ============================================================ */
+.combat-survival-panel {
   position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  z-index: 999999 !important;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
+  top: 0;
+  right: 0;
+  width: 320px;
+  max-width: 90vw;
+  height: 100vh;
+  height: 100dvh;
+  background: rgba(10, 5, 5, 0.96);
+  border-left: 2px solid #ff1133;
+  box-shadow: -8px 0 28px rgba(0, 0, 0, 0.9);
+  z-index: 2200;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(105%);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #fff;
+  font-family: 'Press Start 2P', monospace;
+  box-sizing: border-box;
 }
 
-.esconderijo-master-modal.active {
-  display: flex !important;
+.combat-survival-panel.active {
+  transform: translateX(0);
 }
 
-.esconderijo-panel-card {
-  background: #060204;
-  border: 2px solid #ff1133;
-  border-radius: 0;
-  width: 100%;
-  max-width: 540px;
-  box-shadow: 0 0 35px rgba(255, 17, 51, 0.4), inset 0 0 20px rgba(255, 17, 51, 0.15);
-  overflow: hidden;
-}
-
-.esconderijo-panel-header {
+.survival-panel-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 18px;
-  background: rgba(255, 17, 51, 0.08);
-  border-bottom: 2px solid rgba(255, 17, 51, 0.4);
+  padding: 12px 14px;
+  background: rgba(25, 5, 8, 0.95);
+  border-bottom: 1.5px solid rgba(255, 17, 51, 0.5);
 }
 
-.esconderijo-panel-title {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.65rem;
-  color: #ff3355;
-  letter-spacing: 0.08em;
-  text-shadow: 0 0 10px rgba(255, 51, 85, 0.8);
+.survival-panel-title {
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-
-.esconderijo-panel-body {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.esconderijo-room-picker {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-.esconderijo-room-btn {
-  background: rgba(20, 5, 8, 0.9);
-  border: 1.5px solid #44111c;
-  border-radius: 0;
-  padding: 12px 8px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: #fff;
-}
-
-.esconderijo-room-btn:hover {
-  background: rgba(50, 10, 20, 0.95);
-  border-color: #ff3355;
-  box-shadow: 0 0 12px rgba(255, 51, 85, 0.4);
-}
-
-.esconderijo-room-btn.selected {
-  background: #880818;
-  border-color: #ff1133;
-  box-shadow: 0 0 16px rgba(255, 17, 51, 0.7);
-}
-
-.esconderijo-room-btn .room-title {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.58rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  display: block;
-  margin-bottom: 4px;
-}
-
-.esconderijo-room-btn .room-dice {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.44rem;
-  color: #ff8093;
-  font-weight: 700;
-}
-
-/* SETORES BOTÕES NA TELA DO MESTRE */
-.esconderijo-sectors-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
   gap: 8px;
+  font-size: 0.62rem;
+  color: #ff3355;
+  letter-spacing: 0.08em;
 }
 
-.esconderijo-sector-btn {
-  background: #0d0407;
-  border: 1.5px solid #44111c;
-  border-radius: 0;
-  padding: 12px 6px;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.85rem;
-  font-weight: 800;
-  color: #fff;
+.survival-close-btn {
+  background: transparent;
+  border: none;
+  color: #ff4d6d;
+  font-size: 1.2rem;
   cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: center;
+  line-height: 1;
+  padding: 0 4px;
 }
 
-.esconderijo-sector-btn:hover {
-  background: #ff1133;
-  border-color: #ff3355;
-  color: #000;
-  box-shadow: 0 0 14px #ff1133;
-}
-
-.esconderijo-sector-btn.selected {
-  background: #b91c1c;
-  border-color: #ff1133;
+.survival-close-btn:hover {
   color: #fff;
-  box-shadow: 0 0 18px rgba(255, 17, 51, 0.8);
-  transform: scale(1.05);
 }
 
-.esconderijo-history-box {
-  background: rgba(10, 2, 4, 0.8);
-  border: 1px solid rgba(255, 17, 51, 0.3);
-  border-radius: 0;
+.survival-phase-card {
   padding: 10px 14px;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.46rem;
-  color: #f43f5e;
-  line-height: 1.6;
+  background: rgba(20, 10, 12, 0.85);
+  border-bottom: 1px solid rgba(255, 17, 51, 0.3);
 }
 
-/* 5. MODAL DO JOGADOR: ESCONDERIJO PRIVADO */
-.esconderijo-player-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.88);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  z-index: 999999 !important;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-}
-
-.esconderijo-player-modal.active {
-  display: flex !important;
-}
-
-.esconderijo-player-card {
-  background: #060204;
-  border: 2px solid #ff1133;
-  border-radius: 0;
-  width: 100%;
-  max-width: 520px;
-  box-shadow: 0 0 35px rgba(255, 17, 51, 0.4), inset 0 0 20px rgba(255, 17, 51, 0.15);
-  overflow: hidden;
-  position: relative;
-}
-
-.esconderijo-player-header {
-  padding: 12px 18px;
-  border-bottom: 2px solid rgba(255, 17, 51, 0.4);
-  background: rgba(255, 17, 51, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.esconderijo-player-title {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.65rem;
-  color: #ff3355;
-  letter-spacing: 0.08em;
-  text-shadow: 0 0 10px rgba(255, 51, 85, 0.8);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.esconderijo-player-body {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-/* SETOR SECRETO DISPLAY */
-.secret-sector-display-box {
-  background: #0d0306;
-  border: 2px dashed #ff1133;
-  border-radius: 0;
-  padding: 18px;
-  text-align: center;
-}
-
-.secret-sector-badge {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 1.3rem;
-  color: #ff3355;
-  letter-spacing: 0.06em;
-  text-shadow: 0 0 16px rgba(255, 51, 85, 0.8);
-  margin: 6px 0;
-}
-
-.secret-privacy-notice {
-  font-size: 0.76rem;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  text-transform: uppercase;
+.survival-phase-badge {
+  display: inline-block;
+  font-size: 0.52rem;
+  padding: 4px 8px;
+  border: 1px solid #38bdf8;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  margin-bottom: 6px;
   letter-spacing: 0.05em;
 }
 
-/* PONTOS DE CAMUFLAGEM PIPS */
-.camouflage-tracker-box {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--border-subtle);
-  border-radius: 6px;
-  padding: 14px 18px;
+.survival-phase-badge.perseguidor {
+  border-color: #ff1133;
+  color: #ff1133;
+  background: rgba(255, 17, 51, 0.12);
+}
+
+.survival-phase-desc {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.75rem;
+  color: var(--text-secondary, #cbd5e1);
+  line-height: 1.4;
+  margin: 0 0 8px 0;
+}
+
+.survival-phase-actions {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  gap: 6px;
 }
 
-.camouflage-pips-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.camouflage-pip {
-  width: 22px;
-  height: 22px;
-  border-radius: 4px;
-  background: rgba(16, 185, 129, 0.2);
-  border: 1.5px solid #10b981;
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-
-.camouflage-pip.lost {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: none;
-  opacity: 0.3;
-}
-
-.camouflage-actions-list {
+.survival-panel-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
 }
 
-.camouflage-action-btn {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border-medium);
-  border-radius: 6px;
-  padding: 10px 14px;
+.survival-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.survival-section-header {
+  border-bottom: 1px dashed rgba(255, 17, 51, 0.35);
+  padding-bottom: 4px;
+}
+
+.survival-section-title {
+  font-size: 0.52rem;
+  color: #ff8093;
+  letter-spacing: 0.06em;
+}
+
+.survival-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.survival-field-label {
+  font-size: 0.48rem;
+  color: #94a3b8;
+  letter-spacing: 0.04em;
+}
+
+.survival-field-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.survival-cam-count {
+  font-size: 0.52rem;
+  color: #38bdf8;
+}
+
+.survival-sectors-row,
+.survival-sectors-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.survival-sector-btn {
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   color: #fff;
-  font-family: var(--font-heading);
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.48rem;
+  padding: 6px 8px;
   cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.survival-sector-btn:hover {
+  border-color: #ff1133;
+  color: #ff8093;
+}
+
+.survival-sector-btn.selected {
+  background: #ff1133;
+  border-color: #ff4d6d;
+  color: #000;
+  box-shadow: 0 0 10px #ff1133;
+}
+
+.survival-sector-selected-indicator {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.72rem;
+  color: #64748b;
+}
+
+.survival-sector-selected-indicator.active {
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.survival-pips-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.survival-pip {
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid #ff1133;
+  background: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.survival-pip.filled {
+  background: #ff1133;
+  box-shadow: 0 0 8px rgba(255, 17, 51, 0.6);
+}
+
+.survival-pips-ctrls {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.survival-pip-adj-btn {
+  background: rgba(20, 20, 25, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.48rem;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.survival-pip-adj-btn:hover {
+  background: #fff;
+  color: #000;
+}
+
+.survival-pavor-switch-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 6px 10px;
+}
+
+.survival-switch-label {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.48rem;
+}
+
+.survival-switch-label input {
+  display: none;
+}
+
+.survival-switch-slider {
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  background: transparent;
+  display: inline-block;
   transition: all 0.2s ease;
-  text-align: left;
 }
 
-.camouflage-action-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.4);
+.survival-switch-label input:checked + .survival-switch-slider {
+  background: #ff1133;
+  border-color: #ff4d6d;
+  box-shadow: 0 0 8px #ff1133;
 }
 
-.camouflage-action-btn small {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  font-weight: normal;
+.survival-room-picker {
+  display: flex;
+  gap: 4px;
 }
 
-/* ALERTA DE BUSCA CINEMATOGRAFICO NA TELA DO JOGADOR */
-.esconderijo-search-banner {
-  padding: 14px 18px;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  animation: bannerFadeIn 0.3s ease-out;
+.survival-room-btn {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #aaa;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.42rem;
+  padding: 6px 4px;
+  cursor: pointer;
+  text-align: center;
 }
 
-.esconderijo-search-banner.safe {
-  background: rgba(16, 185, 129, 0.08);
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  color: #34d399;
+.survival-room-btn.selected {
+  border-color: #38bdf8;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.15);
 }
 
-.esconderijo-search-banner.danger {
-  background: rgba(255, 17, 51, 0.15);
-  border: 1px solid #ff1133;
-  color: #fecdd3;
-  box-shadow: 0 0 20px rgba(255, 17, 51, 0.4);
-  animation: dangerPulse 1.2s infinite alternate;
+.survival-master-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
 }
 
-@keyframes bannerFadeIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+.survival-btn-secondary {
+  flex: 1;
+  background: rgba(30, 30, 35, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.46rem;
+  padding: 7px 6px;
+  cursor: pointer;
 }
 
-@keyframes dangerPulse {
-  from { box-shadow: 0 0 10px rgba(255, 17, 51, 0.3); }
-  to { box-shadow: 0 0 25px rgba(255, 17, 51, 0.7); }
+.survival-btn-secondary:hover {
+  background: #fff;
+  color: #000;
 }
 
+.survival-btn-danger {
+  flex: 1.5;
+  background: #ff1133;
+  border: 1px solid #ff4d6d;
+  color: #000;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.46rem;
+  padding: 7px 6px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.survival-btn-danger:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.survival-history-box {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 17, 51, 0.2);
+  padding: 8px;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.72rem;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
+/* ============================================================
+   REVELAÇÃO DIRETA NOS CARDS COM DESINTEGRAÇÃO EM POEIRA
+   ============================================================ */
+.card-revealed-sector-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff1133;
+  color: #000;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.52rem;
+  font-weight: 900;
+  padding: 3px 8px;
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 0 14px #ff1133, 0 4px 10px rgba(0, 0, 0, 0.9);
+  z-index: 50;
+  pointer-events: none;
+  white-space: nowrap;
+  animation: revealedSectorPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes revealedSectorPop {
+  0% { transform: translateX(-50%) translateY(6px) scale(0.7); opacity: 0; }
+  100% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+}
 
 /* 6. DADO DE PAVOR NO MODAL DE DADOS E CARD DE COMBATE */
 .dice-pavor-card {
@@ -13957,67 +13987,6 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 
 /* Combat card has-pavor and tag managed with unified pixel styling above */
 
-/* 7. FLOATING BANNER PARA DESATIVAR ESCONDERIJO A QUALQUER MOMENTO */
-.esconderijo-active-floating-banner {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(13, 13, 18, 0.94);
-  border: 1px solid #ff1133;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 17, 51, 0.4);
-  border-radius: 8px;
-  padding: 10px 18px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  z-index: 9999;
-  backdrop-filter: blur(8px);
-  animation: bannerSlideUp 0.3s ease-out;
-}
-
-@keyframes bannerSlideUp {
-  from { opacity: 0; transform: translate(-50%, 20px); }
-  to { opacity: 1; transform: translate(-50%, 0); }
-}
-
-.esconderijo-banner-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-heading);
-  font-size: 0.85rem;
-  font-weight: 800;
-  color: #fff;
-}
-
-.esconderijo-banner-btn-open {
-  background: rgba(56, 189, 248, 0.15);
-  border: 1px solid #38bdf8;
-  color: #38bdf8;
-  padding: 5px 12px;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.esconderijo-banner-btn-stop {
-  background: rgba(255, 17, 51, 0.25);
-  border: 1px solid #ff1133;
-  color: #ff8093;
-  padding: 5px 12px;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.esconderijo-banner-btn-stop:hover {
-  background: #ff1133;
-  color: #fff;
-}
 
 /* 8. TOAST NOTIFICATION */
 .mesa-toast-container {
@@ -14055,181 +14024,3 @@ body:has(#tv-estatica-overlay.active) .reaction-picker-popover {
 }
 
 
-/* ============================================================
-   8. ALERTA DRAMÁTICO DE PRESA ENCONTRADA COM DESINTEGRAÇÃO EM POEIRA
-   ============================================================ */
-.esconderijo-discovery-banner {
-  position: fixed;
-  inset: 0;
-  z-index: 9999999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.esconderijo-discovery-banner .discovery-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(10, 0, 3, 0.88);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  animation: discoveryBackdropFade 0.4s ease both;
-}
-
-@keyframes discoveryBackdropFade {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-.discovery-content {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  padding: 24px 32px;
-  background: #080204;
-  border: 2px solid #ff1133;
-  box-shadow: 0 0 50px rgba(255, 17, 51, 0.75), inset 0 0 25px rgba(255, 17, 51, 0.25);
-  animation: discoveryContentPop 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
-  text-align: center;
-  max-width: min(90vw, 480px);
-}
-
-@keyframes discoveryContentPop {
-  0% { opacity: 0; transform: scale(0.65); filter: blur(6px); }
-  100% { opacity: 1; transform: scale(1); filter: blur(0); }
-}
-
-.discovery-danger-tag {
-  background: #ff1133;
-  color: #000000;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.58rem;
-  font-weight: 900;
-  padding: 4px 12px;
-  letter-spacing: 0.1em;
-  box-shadow: 0 0 14px #ff1133;
-}
-
-.discovery-details {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  margin: 6px 0;
-}
-
-.discovery-sector-label {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 1.6rem;
-  color: #ff3355;
-  letter-spacing: 0.12em;
-  text-shadow: 0 0 20px #ff1133, 0 0 35px rgba(255, 17, 51, 0.8);
-}
-
-.discovery-player-label {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.9rem;
-  color: #ffffff;
-  letter-spacing: 0.08em;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-}
-
-.discovery-flavor-text {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.46rem;
-  color: #ff8093;
-  line-height: 1.6;
-}
-
-/* ============================================================
-   9. PAINEL DE SIMULAÇÃO DO MESTRE NO MODO ESCONDERIJO
-   ============================================================ */
-.esconderijo-simulation-box {
-  margin-top: 14px;
-  padding: 12px 14px;
-  background: rgba(15, 3, 7, 0.85);
-  border: 1px dashed rgba(255, 17, 51, 0.45);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.simulation-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.simulation-title {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.5rem;
-  color: #ff6680;
-  letter-spacing: 0.06em;
-}
-
-.simulation-badge {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.42rem;
-  padding: 2px 6px;
-  border: 1px solid #44111c;
-  color: #a1a1aa;
-  background: #080204;
-}
-
-.simulation-badge.active {
-  border-color: #38bdf8;
-  color: #38bdf8;
-  background: #041220;
-  box-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
-}
-
-.simulation-desc {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.42rem;
-  color: #a1a1aa;
-  line-height: 1.5;
-}
-
-.simulation-actions-row {
-  display: flex;
-  gap: 8px;
-  margin-top: 4px;
-}
-
-.simulation-btn {
-  flex: 1;
-  padding: 8px 10px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 17, 51, 0.4);
-  color: #ffffff;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.44rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-transform: uppercase;
-  text-align: center;
-  line-height: 1.4;
-}
-
-.simulation-btn:hover {
-  background: rgba(255, 17, 51, 0.25);
-  border-color: #ff1133;
-  box-shadow: 0 0 10px rgba(255, 17, 51, 0.5);
-}
-
-.simulation-btn.view-player-btn {
-  border-color: #38bdf8;
-  color: #38bdf8;
-}
-
-.simulation-btn.view-player-btn:hover {
-  background: rgba(56, 189, 248, 0.2);
-  border-color: #38bdf8;
-  color: #ffffff;
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
-}

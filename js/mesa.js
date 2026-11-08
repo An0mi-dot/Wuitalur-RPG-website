@@ -2216,6 +2216,12 @@ const MesaApp = {
       }
     });
 
+    channel.on('broadcast', { event: 'esconderijo_fase' }, (payload) => {
+      if (window.MesaEsconderijo) {
+        MesaEsconderijo.handleIncomingPhase(payload.payload);
+      }
+    });
+
     channel.on('broadcast', { event: 'dice_roll' }, (payload) => {
       if (isFromSelf(payload)) return;
       const data = payload.payload;
@@ -12229,159 +12235,107 @@ window.MesaCombatPlayersModal = MesaCombatPlayersModal;
 
 
 // ==========================================================================
-// MESA ESCONDERIJO E BUSCA DE SETORES — FIOS DO MEDO
+// MESA ESCONDERIJO E BUSCA DE SETORES — FIOS DO MEDO (PAINEL LATERAL)
 // ==========================================================================
 const MesaEsconderijo = {
   room: 'media',
   roomSides: 6,
   roomName: 'Sala Média',
   isMasterActive: false,
+  isPanelOpen: false,
+  currentPhase: 'sobreviventes',
   declaredSectors: [],
   selectedSector: null,
-  simulatedPlayer: null,
 
-  // Estado privado do jogador:
+  // Estado privado do jogador / personagem
   playerSector: null,
   playerCamouflage: 2,
   playerMaxCamouflage: 4,
   playerHidden: false,
-  playerDiscovered: false,
-
-  simulatePlayerSector(customSector = null) {
-    const sec = customSector || this.selectedSector || Math.floor(Math.random() * this.roomSides) + 1;
-    const playerName = (MesaApp.state && MesaApp.state.players && MesaApp.state.players[0] && MesaApp.state.players[0].nome) || 'Eric';
-    this.simulatedPlayer = {
-      name: playerName,
-      sector: sec,
-      camouflage: 2
-    };
-    this.playerSector = sec;
-    this.playerCamouflage = 2;
-    this.playerHidden = true;
-    this.playerDiscovered = false;
-
-    const sectorBadge = document.getElementById('player-sector-badge');
-    if (sectorBadge) sectorBadge.textContent = `SETOR ${sec}`;
-    const phaseRoll = document.getElementById('player-esconderijo-phase-roll');
-    const phaseActive = document.getElementById('player-esconderijo-phase-active');
-    if (phaseRoll) phaseRoll.style.display = 'none';
-    if (phaseActive) phaseActive.style.display = 'flex';
-    this.updatePlayerCamouflageUI();
-
-    this.updateSimulationUI();
-    MesaApp.showToast(`Presa simulada: ${playerName} no Setor ${sec}`);
-  },
-
-  updateSimulationUI() {
-    const btn = document.getElementById('btn-simular-jogador');
-    const badge = document.getElementById('simulated-player-status');
-    if (this.simulatedPlayer) {
-      if (btn) btn.textContent = `Presa: ${this.simulatedPlayer.name} no Setor ${this.simulatedPlayer.sector}`;
-      if (badge) {
-        badge.textContent = `SETOR ${this.simulatedPlayer.sector} (${this.simulatedPlayer.name})`;
-        badge.classList.add('active');
-      }
-    } else {
-      if (btn) btn.textContent = 'Simular Jogador no Setor ?';
-      if (badge) {
-        badge.textContent = 'SEM PRESA';
-        badge.classList.remove('active');
-      }
-    }
-  },
-
-  openPlayerModalFromMaster() {
-    if (!this.playerSector) {
-      this.simulatePlayerSector();
-    }
-    this.closeMasterModal();
-    const returnBtn = document.getElementById('player-return-to-master-btn');
-    if (returnBtn) returnBtn.style.display = 'inline-block';
-    this.openPlayerModal();
-  },
-
-  returnToMasterModalFromPlayer() {
-    this.closePlayerModal();
-    this.openMasterModal();
-    this.updateSimulationUI();
-  },
-
-  showDiscoveryDramaticAlert(playerName, sector) {
-    const banner = document.getElementById('esconderijo-discovery-banner');
-    if (!banner) return;
-
-    const sectorEl = document.getElementById('discovery-sector-text');
-    const playerEl = document.getElementById('discovery-player-text');
-    const detailsCard = document.getElementById('discovery-details-card');
-    const contentBox = document.getElementById('discovery-content-box');
-
-    if (sectorEl) sectorEl.textContent = `SETOR ${sector}`;
-    if (playerEl) playerEl.textContent = playerName.toUpperCase();
-
-    if (detailsCard) {
-      detailsCard.classList.remove('dust-vanish-active');
-      detailsCard.style.opacity = '1';
-    }
-    if (contentBox) {
-      contentBox.classList.remove('dust-vanish-active');
-      contentBox.style.opacity = '1';
-    }
-
-    banner.style.display = 'flex';
-    banner.classList.add('active');
-
-    // Suspense de 1.8 segundos e depois desintegração em poeira dos dados da presa
-    setTimeout(() => {
-      if (detailsCard) {
-        MesaDice.createDustVanishEffect(detailsCard, '#ff1133', 45);
-      }
-      if (contentBox) {
-        MesaDice.createDustVanishEffect(contentBox, 'rgba(255, 30, 60, 0.8)', 25);
-      }
-    }, 1800);
-
-    // Encerra e oculta o banner após as partículas se dispersarem (3.1s)
-    setTimeout(() => {
-      banner.classList.remove('active');
-      banner.style.display = 'none';
-    }, 3100);
-  },
 
   init() {
-    this.renderMasterSectors();
+    this.renderSurvivalPanel();
   },
 
-  openMasterModal() {
-    const modal = document.getElementById('esconderijo-master-modal');
-    if (modal) {
-      modal.classList.add('active');
-      modal.style.display = 'flex';
-      this.renderMasterSectors();
+  toggleSurvivalPanel() {
+    this.isPanelOpen = !this.isPanelOpen;
+    const panel = document.getElementById('combat-survival-panel');
+    const toggleBtn = document.getElementById('combat-survival-toggle-btn');
+    if (panel) {
+      if (this.isPanelOpen) {
+        panel.classList.add('active');
+        if (toggleBtn) toggleBtn.classList.add('active');
+        this.renderSurvivalPanel();
+      } else {
+        panel.classList.remove('active');
+        if (toggleBtn) toggleBtn.classList.remove('active');
+      }
     }
   },
 
-  closeMasterModal() {
-    const modal = document.getElementById('esconderijo-master-modal');
-    if (modal) {
-      modal.classList.remove('active');
-      modal.style.display = 'none';
+  openSurvivalPanel() {
+    this.isPanelOpen = true;
+    const panel = document.getElementById('combat-survival-panel');
+    const toggleBtn = document.getElementById('combat-survival-toggle-btn');
+    if (panel) {
+      panel.classList.add('active');
+      if (toggleBtn) toggleBtn.classList.add('active');
+      this.renderSurvivalPanel();
     }
   },
 
-  openPlayerModal() {
-    const modal = document.getElementById('esconderijo-player-modal');
-    if (modal) {
-      modal.classList.add('active');
-      modal.style.display = 'flex';
-      this.updatePlayerCamouflageUI();
+  closeSurvivalPanel() {
+    this.isPanelOpen = false;
+    const panel = document.getElementById('combat-survival-panel');
+    const toggleBtn = document.getElementById('combat-survival-toggle-btn');
+    if (panel) {
+      panel.classList.remove('active');
+      if (toggleBtn) toggleBtn.classList.remove('active');
     }
   },
 
-  closePlayerModal() {
-    const modal = document.getElementById('esconderijo-player-modal');
-    if (modal) {
-      modal.classList.remove('active');
-      modal.style.display = 'none';
+  openContextualModal() {
+    this.toggleSurvivalPanel();
+  },
+
+  advanceEsconderijoPhase(shouldBroadcast = true) {
+    this.currentPhase = (this.currentPhase === 'sobreviventes') ? 'perseguidor' : 'sobreviventes';
+    this.updatePhaseUI();
+    if (shouldBroadcast && MesaChat && MesaChat.channel) {
+      MesaChat.channel.send({
+        type: 'broadcast',
+        event: 'esconderijo_fase',
+        payload: { phase: this.currentPhase, timestamp: Date.now() }
+      });
+    }
+    const phaseName = (this.currentPhase === 'sobreviventes') ? 'Fase dos Sobreviventes' : 'Fase do Perseguidor';
+    if (window.MesaApp && typeof MesaApp.showToast === 'function') {
+      MesaApp.showToast(`Ordem de Esconderijo: ${phaseName}`);
+    }
+  },
+
+  handleIncomingPhase(payload) {
+    if (!payload || !payload.phase) return;
+    this.currentPhase = payload.phase;
+    this.updatePhaseUI();
+    const phaseName = (this.currentPhase === 'sobreviventes') ? 'Fase dos Sobreviventes' : 'Fase do Perseguidor';
+    if (window.MesaApp && typeof MesaApp.showToast === 'function') {
+      MesaApp.showToast(`Ordem de Esconderijo: ${phaseName}`);
+    }
+  },
+
+  updatePhaseUI() {
+    const badge = document.getElementById('survival-phase-badge');
+    const desc = document.getElementById('survival-phase-desc');
+    if (!badge || !desc) return;
+    if (this.currentPhase === 'sobreviventes') {
+      badge.textContent = 'FASE DOS SOBREVIVENTES';
+      badge.className = 'survival-phase-badge sobreviventes';
+      desc.textContent = 'Sobreviventes agem e declaram suas ações verbais primeiro. Em seguida, a vez passa ao Perseguidor.';
+    } else {
+      badge.textContent = 'FASE DO PERSEGUIDOR';
+      badge.className = 'survival-phase-badge perseguidor';
+      desc.textContent = 'A vez passa ao Perseguidor. O Mestre escolhe e declara o setor a ser vasculhado.';
     }
   },
 
@@ -12397,77 +12351,130 @@ const MesaEsconderijo = {
       this.roomSides = 6;
       this.roomName = 'Sala Média';
     }
-
-    document.querySelectorAll('.esconderijo-room-btn').forEach(btn => btn.classList.remove('selected'));
-    const selectedBtn = document.getElementById(`room-opt-${roomType}`);
-    if (selectedBtn) selectedBtn.classList.add('selected');
+    document.querySelectorAll('.survival-room-btn').forEach(b => b.classList.remove('selected'));
+    const btn = document.getElementById(`srv-room-${roomType}`);
+    if (btn) btn.classList.add('selected');
+    this.renderPlayerSectors();
+    this.renderMasterSectors();
   },
 
-  startHidingRound() {
-    this.isMasterActive = true;
-    this.declaredSectors = [];
-    this.selectedSector = null;
-
-    const setupView = document.getElementById('esconderijo-setup-view');
-    const activeView = document.getElementById('esconderijo-active-view');
-    if (setupView) setupView.style.display = 'none';
-    if (activeView) activeView.style.display = 'block';
-
-    const roomLabel = document.getElementById('esconderijo-current-room-label');
-    if (roomLabel) {
-      roomLabel.textContent = `${this.roomName.toUpperCase()} (${this.roomSides} SETORES)`;
-    }
-
-    const banner = document.getElementById('esconderijo-active-floating-banner');
-    if (banner) banner.style.display = 'flex';
-    const floatingLabel = document.getElementById('esconderijo-floating-label');
-    if (floatingLabel) floatingLabel.textContent = `ESCONDERIJO ATIVO (${this.roomName.toUpperCase()})`;
-
+  renderSurvivalPanel() {
+    this.updatePhaseUI();
+    this.renderPlayerSectors();
+    this.renderCamouflagePips();
+    this.updatePavorToggleUI();
     this.renderMasterSectors();
     this.updateHistoryBox();
+  },
 
-    if (MesaChat.channel) {
-      MesaChat.channel.send({
-        type: 'broadcast',
-        event: 'esconderijo_iniciar',
-        payload: {
-          room: this.room,
-          roomSides: this.roomSides,
-          roomName: this.roomName,
-          timestamp: Date.now()
-        }
-      });
+  renderPlayerSectors() {
+    const container = document.getElementById('survival-player-sectors-row');
+    const badge = document.getElementById('survival-player-sector-badge');
+    if (!container) return;
+    container.innerHTML = '';
+    for (let i = 1; i <= this.roomSides; i++) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `survival-sector-btn ${this.playerSector === i ? 'selected' : ''}`;
+      btn.textContent = `S${i}`;
+      btn.title = `Esconder no Setor ${i}`;
+      btn.onclick = () => this.selectPlayerSector(i);
+      container.appendChild(btn);
     }
+    if (badge) {
+      if (this.playerSector) {
+        badge.textContent = `Setor ${this.playerSector} Definido (Privado)`;
+        badge.className = 'survival-sector-selected-indicator active';
+      } else {
+        badge.textContent = 'Nenhum setor definido';
+        badge.className = 'survival-sector-selected-indicator';
+      }
+    }
+  },
 
-    MesaChat.receiveMessage({
-      id: 'hiding_start_' + Date.now(),
-      sender_name: 'Mestre',
-      is_master: true,
-      content: `[PERSEGUIÇÃO]: A criatura invadiu o recinto (${this.roomName})! Sobreviventes devem rolar secretamente seus setores e pontos de camuflagem.`,
-      created_at: new Date().toISOString()
-    });
+  selectPlayerSector(num) {
+    this.playerSector = num;
+    this.playerHidden = true;
+    this.renderPlayerSectors();
+    if (window.MesaApp && typeof MesaApp.showToast === 'function') {
+      MesaApp.showToast(`Setor secreto definido: Setor ${num}`);
+    }
+  },
+
+  setCamouflage(val) {
+    this.playerCamouflage = Math.max(0, Math.min(this.playerMaxCamouflage, val));
+    this.renderCamouflagePips();
+  },
+
+  adjustCamouflage(delta) {
+    const prev = this.playerCamouflage;
+    this.setCamouflage(this.playerCamouflage + delta);
+    if (delta < 0 && prev > this.playerCamouflage) {
+      const pips = document.querySelectorAll('#survival-cam-pips .survival-pip');
+      if (pips && pips[this.playerCamouflage]) {
+        if (window.MesaDice && typeof MesaDice.createDustVanishEffect === 'function') {
+          MesaDice.createDustVanishEffect(pips[this.playerCamouflage], '#ff1133', 15);
+        }
+      }
+    }
+  },
+
+  renderCamouflagePips() {
+    const container = document.getElementById('survival-cam-pips');
+    const countEl = document.getElementById('survival-cam-count');
+    if (countEl) countEl.textContent = `${this.playerCamouflage}/${this.playerMaxCamouflage}`;
+    if (!container) return;
+    container.innerHTML = '';
+    for (let i = 0; i < this.playerMaxCamouflage; i++) {
+      const pip = document.createElement('span');
+      pip.className = `survival-pip ${i < this.playerCamouflage ? 'filled' : ''}`;
+      pip.title = `Ponto de Camuflagem ${i + 1}`;
+      pip.onclick = () => this.setCamouflage(i + 1);
+      container.appendChild(pip);
+    }
+  },
+
+  updatePavorToggleUI() {
+    const toggle = document.getElementById('survival-pavor-toggle');
+    const label = document.getElementById('survival-pavor-switch-text');
+    const activePlayer = (window.MesaApp && MesaApp.state && MesaApp.state.myPlayerSlot && MesaApp.state.players[MesaApp.state.myPlayerSlot - 1])
+      || (window.MesaApp && MesaApp.state && MesaApp.state.players && MesaApp.state.players[0]);
+    const hasPavor = activePlayer ? Boolean(activePlayer.dadoDePavor) : false;
+    if (toggle) toggle.checked = hasPavor;
+    if (label) {
+      label.textContent = hasPavor ? 'Pavor Ativo' : 'Pavor Inativo';
+      label.style.color = hasPavor ? '#ff1133' : 'var(--text-muted, #888)';
+    }
+  },
+
+  togglePavorFromSurvival(isChecked) {
+    const slot = (window.MesaApp && MesaApp.state && MesaApp.state.myPlayerSlot) || 1;
+    if (window.MesaApp && typeof MesaApp.toggleDadoDePavor === 'function') {
+      MesaApp.toggleDadoDePavor(slot);
+    }
+    this.updatePavorToggleUI();
   },
 
   renderMasterSectors() {
-    const grid = document.getElementById('esconderijo-sectors-grid');
+    const grid = document.getElementById('survival-master-sectors-grid');
     if (!grid) return;
     grid.innerHTML = '';
     for (let i = 1; i <= this.roomSides; i++) {
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = `esconderijo-sector-btn ${this.selectedSector === i ? 'selected' : ''}`;
+      btn.className = `survival-sector-btn ${this.selectedSector === i ? 'selected' : ''}`;
       btn.textContent = `Setor ${i}`;
-      btn.onclick = () => this.selectSector(i);
+      btn.onclick = () => this.selectMasterSector(i);
       grid.appendChild(btn);
     }
-    const declareBtn = document.getElementById('esconderijo-declare-btn');
+    const declareBtn = document.getElementById('survival-declare-btn');
     if (declareBtn) {
       declareBtn.textContent = this.selectedSector ? `Declarar Busca no Setor ${this.selectedSector}` : 'Selecione um Setor';
       declareBtn.disabled = !this.selectedSector;
     }
   },
 
-  selectSector(num) {
+  selectMasterSector(num) {
     this.selectedSector = num;
     this.renderMasterSectors();
   },
@@ -12483,288 +12490,125 @@ const MesaEsconderijo = {
     this.declaredSectors.push(sector);
     this.updateHistoryBox();
 
-    // Verifica se a busca encontrou a presa (jogador real ou simulado)
-    let foundPlayerName = null;
-    if (this.playerHidden && this.playerSector === sector) {
-      foundPlayerName = (MesaApp.state && MesaApp.state.players && MesaApp.state.players[0] && MesaApp.state.players[0].nome) || 'Jogador';
-    } else if (this.simulatedPlayer && this.simulatedPlayer.sector === sector) {
-      foundPlayerName = this.simulatedPlayer.name;
-    }
+    // Verifica correspondência direta com jogadores
+    this.checkSectorMatch(sector);
 
-    if (foundPlayerName) {
-      this.showDiscoveryDramaticAlert(foundPlayerName, sector);
-    }
-
-    if (MesaChat.channel) {
+    if (window.MesaChat && MesaChat.channel) {
       MesaChat.channel.send({
         type: 'broadcast',
         event: 'esconderijo_busca',
-        payload: {
-          sector: sector,
-          timestamp: Date.now()
-        }
+        payload: { sector: sector, timestamp: Date.now() }
       });
     }
 
-    MesaChat.receiveMessage({
-      id: 'hiding_search_' + Date.now(),
-      sender_name: 'Perseguidor',
-      is_master: true,
-      content: `[BUSCA]: A criatura quebra móveis e fareja o SETOR ${sector}!`,
-      created_at: new Date().toISOString()
-    });
+    if (window.MesaChat && typeof MesaChat.receiveMessage === 'function') {
+      MesaChat.receiveMessage({
+        id: 'hiding_search_' + Date.now(),
+        sender_name: 'Perseguidor',
+        is_master: true,
+        content: `[BUSCA]: A criatura vasculhou o SETOR ${sector}.`,
+        created_at: new Date().toISOString()
+      });
+    }
 
     this.selectedSector = null;
     this.renderMasterSectors();
   },
 
+  checkSectorMatch(sector) {
+    // 1. Verifica se o jogador local esta no setor
+    if (this.playerHidden && this.playerSector === sector) {
+      const mySlot = (window.MesaApp && MesaApp.state && MesaApp.state.myPlayerSlot) || 1;
+      this.revealPlayerCardSector(mySlot, sector);
+      this.adjustCamouflage(-1);
+    }
+
+    // 2. No modo Mestre, verifica se algum personagem da mesa esta no setor
+    if (window.MesaApp && MesaApp.state && MesaApp.state.isMaster && MesaApp.state.players) {
+      MesaApp.state.players.forEach((p, idx) => {
+        if (!p) return;
+        const slotNum = p.slot || (idx + 1);
+        if (p.secretSector === sector || (slotNum === 1 && this.playerSector === sector)) {
+          this.revealPlayerCardSector(slotNum, sector);
+        }
+      });
+    }
+  },
+
+  revealPlayerCardSector(slotNum, sector) {
+    const card = document.getElementById(`combat-player-card-${slotNum}`);
+    if (!card) return;
+
+    // Remove badge antigo se existir
+    const existing = card.querySelector('.card-revealed-sector-badge');
+    if (existing) existing.remove();
+
+    const badge = document.createElement('div');
+    badge.className = 'card-revealed-sector-badge';
+    badge.textContent = `SETOR ${sector}`;
+    card.appendChild(badge);
+
+    // Efeito de desintegracao em poeira apos 1.2 segundos
+    setTimeout(() => {
+      if (window.MesaDice && typeof MesaDice.createDustVanishEffect === 'function') {
+        MesaDice.createDustVanishEffect(badge, '#ff1133', 30);
+      } else {
+        badge.remove();
+      }
+    }, 1200);
+  },
+
+  handleIncomingSearch(payload) {
+    if (!payload || !payload.sector) return;
+    const sector = payload.sector;
+    this.checkSectorMatch(sector);
+  },
+
+  handleIncomingStart(payload) {
+    if (payload.roomSides) this.roomSides = payload.roomSides;
+    if (payload.roomName) this.roomName = payload.roomName;
+    this.playerHidden = true;
+    this.openSurvivalPanel();
+  },
+
+  handleIncomingStop() {
+    this.playerHidden = false;
+    this.playerSector = null;
+    this.closeSurvivalPanel();
+  },
+
   updateHistoryBox() {
-    const box = document.getElementById('esconderijo-history-box');
+    const box = document.getElementById('survival-history-box');
     if (!box) return;
     if (this.declaredSectors.length === 0) {
-      box.textContent = 'Nenhum setor declarado ainda nesta rodada.';
+      box.textContent = 'Nenhum setor revirado ainda.';
     } else {
-      box.innerHTML = `<strong>Setores revirados nesta cena:</strong> ${this.declaredSectors.map(s => `Setor ${s}`).join(' &bull; ')}`;
+      box.innerHTML = `<strong>Setores revirados:</strong> ${this.declaredSectors.map(s => `Setor ${s}`).join(' &bull; ')}`;
     }
   },
 
   stopHidingRound() {
-    this.isMasterActive = false;
     this.declaredSectors = [];
     this.selectedSector = null;
-
-    const setupView = document.getElementById('esconderijo-setup-view');
-    const activeView = document.getElementById('esconderijo-active-view');
-    if (setupView) setupView.style.display = 'block';
-    if (activeView) activeView.style.display = 'none';
-
-    const banner = document.getElementById('esconderijo-active-floating-banner');
-    if (banner) banner.style.display = 'none';
-
-    this.closeMasterModal();
-    this.closePlayerModal();
-
-    if (MesaChat.channel) {
+    this.playerHidden = false;
+    this.playerSector = null;
+    this.closeSurvivalPanel();
+    if (window.MesaChat && MesaChat.channel) {
       MesaChat.channel.send({
         type: 'broadcast',
         event: 'esconderijo_encerrar',
         payload: { timestamp: Date.now() }
       });
     }
-
-    MesaChat.receiveMessage({
-      id: 'hiding_end_' + Date.now(),
-      sender_name: 'Mestre',
-      is_master: true,
-      content: '[PERSEGUIÇÃO]: A rodada de esconderijo foi encerrada.',
-      created_at: new Date().toISOString()
-    });
-  },
-
-  // ---- CONTROLES PRIVADOS DO JOGADOR ----
-  openContextualModal() {
-    if (MesaApp.state && MesaApp.state.isMaster) {
-      this.openMasterModal();
-    } else if (MesaApp.state && MesaApp.state.myToken) {
-      this.openPlayerModal();
-    } else {
-      this.openMasterModal();
+    if (window.MesaChat && typeof MesaChat.receiveMessage === 'function') {
+      MesaChat.receiveMessage({
+        id: 'hiding_end_' + Date.now(),
+        sender_name: 'Mestre',
+        is_master: true,
+        content: '[PERSEGUIÇÃO]: A rodada de esconderijo foi encerrada.',
+        created_at: new Date().toISOString()
+      });
     }
-  },
-
-  exitHiding() {
-    this.closePlayerModal();
-    this.playerHidden = false;
-    this.playerSector = null;
-    const banner = document.getElementById('esconderijo-active-floating-banner');
-    if (banner && (!MesaApp.state || !MesaApp.state.isMaster)) {
-      banner.style.display = 'none';
-    }
-    MesaApp.showToast("Você abandonou o esconderijo.");
-  },
-
-  handleIncomingStart(payload) {
-    if (MesaApp.state && MesaApp.state.isMaster) return;
-
-    this.roomSides = payload.roomSides || 6;
-    this.roomName = payload.roomName || 'Sala Média';
-    this.playerSector = null;
-    this.playerCamouflage = 2;
-    this.playerHidden = true;
-    this.playerDiscovered = false;
-
-    const modal = document.getElementById('esconderijo-player-modal');
-    const phaseRoll = document.getElementById('player-esconderijo-phase-roll');
-    const phaseActive = document.getElementById('player-esconderijo-phase-active');
-    const alertEl = document.getElementById('player-search-alert');
-
-    if (modal) modal.classList.add('active');
-    if (phaseRoll) phaseRoll.style.display = 'block';
-    if (phaseActive) phaseActive.style.display = 'none';
-    if (alertEl) alertEl.style.display = 'none';
-
-    const btn = document.getElementById('btn-roll-secret-sector');
-    if (btn) {
-      btn.disabled = false;
-      btn.textContent = `Rolar Meu Setor Secreto (1d${this.roomSides})`;
-    }
-  },
-
-  playerRollSector() {
-    const btn = document.getElementById('btn-roll-secret-sector');
-    if (btn) {
-      btn.disabled = true;
-      btn.textContent = 'Rolando secretamente...';
-    }
-
-    setTimeout(() => {
-      this.playerSector = Math.floor(Math.random() * this.roomSides) + 1;
-
-      const phaseRoll = document.getElementById('player-esconderijo-phase-roll');
-      const phaseActive = document.getElementById('player-esconderijo-phase-active');
-      const sectorBadge = document.getElementById('player-sector-badge');
-
-      if (phaseRoll) phaseRoll.style.display = 'none';
-      if (phaseActive) phaseActive.style.display = 'flex';
-      if (sectorBadge) sectorBadge.textContent = `SETOR ${this.playerSector}`;
-
-      this.updatePlayerCamouflageUI();
-    }, 800);
-  },
-
-  updatePlayerCamouflageUI() {
-    const pipsContainer = document.getElementById('player-camouflage-pips');
-    const statusText = document.getElementById('camouflage-status-text');
-    if (!pipsContainer) return;
-
-    pipsContainer.innerHTML = '';
-    for (let i = 0; i < this.playerMaxCamouflage; i++) {
-      const pip = document.createElement('span');
-      pip.className = `camouflage-pip ${i >= this.playerCamouflage ? 'lost' : ''}`;
-      pip.title = `Ponto ${i + 1}`;
-      pipsContainer.appendChild(pip);
-    }
-
-    if (statusText) {
-      if (this.playerCamouflage <= 0) {
-        statusText.textContent = 'DESCOBERTO! O monstro te encontrou!';
-        statusText.style.color = '#ff1133';
-      } else {
-        statusText.textContent = `${this.playerCamouflage} Ponto(s) de Camuflagem restante(s)`;
-        statusText.style.color = 'var(--text-muted)';
-      }
-    }
-  },
-
-  handleIncomingSearch(payload) {
-    if (!this.playerHidden) return;
-    const sector = payload.sector;
-    const alertEl = document.getElementById('player-search-alert');
-    if (!alertEl) return;
-
-    alertEl.style.display = 'block';
-
-    if (this.playerSector === sector) {
-      const pName = (MesaApp.state && MesaApp.state.players && MesaApp.state.players[0] && MesaApp.state.players[0].nome) || 'Você';
-      this.showDiscoveryDramaticAlert(pName, sector);
-
-      this.playerCamouflage = Math.max(0, this.playerCamouflage - 1);
-      this.updatePlayerCamouflageUI();
-
-      const pips = document.querySelectorAll('#player-camouflage-pips .camouflage-pip');
-      if (pips && pips[this.playerCamouflage]) {
-        MesaDice.createDustVanishEffect(pips[this.playerCamouflage], '#ff1133');
-      }
-
-      alertEl.className = 'esconderijo-search-banner danger';
-      if (this.playerCamouflage === 0) {
-        this.playerDiscovered = true;
-        alertEl.innerHTML = `
-          <strong style="color:#ff1133; font-size:1.05rem;">VOCÊ FOI DESCOBERTO!</strong><br>
-          A criatura invadiu o <strong>Setor ${sector}</strong> e arrancou a porta do seu esconderijo! O combate direto começa imediatamente.
-        `;
-      } else {
-        alertEl.innerHTML = `
-          <strong style="color:#ff4d6d;">O PERSEGUIDOR ESTÁ NA SUA PORTA!</strong><br>
-          O monstro vasculhou exatamente o <strong>Setor ${sector}</strong>, farejou a fresta e arranhou seu esconderijo. Você perdeu 1 Ponto de Camuflagem!
-        `;
-      }
-    } else {
-      alertEl.className = 'esconderijo-search-banner safe';
-      alertEl.innerHTML = `
-        <strong>O monstro vasculhou o Setor ${sector}.</strong><br>
-        A criatura foi para outro canto e você continua oculto nas sombras.
-      `;
-    }
-  },
-
-  actionHoldBreath() {
-    if (this.playerCamouflage >= this.playerMaxCamouflage) {
-      alert("Você já está no limite máximo de camuflagem.");
-      return;
-    }
-    this.playerCamouflage++;
-    this.updatePlayerCamouflageUI();
-    const alertEl = document.getElementById('player-search-alert');
-    if (alertEl) {
-      alertEl.style.display = 'block';
-      alertEl.className = 'esconderijo-search-banner safe';
-      alertEl.innerHTML = `<strong>Manter a Respiração:</strong> Você controlou os batimentos e ganhou +1 Ponto de Camuflagem.`;
-    }
-  },
-
-  actionChangeHideout() {
-    const success = Math.random() > 0.35;
-    const alertEl = document.getElementById('player-search-alert');
-    if (success) {
-      this.playerSector = Math.floor(Math.random() * this.roomSides) + 1;
-      const sectorBadge = document.getElementById('player-sector-badge');
-      if (sectorBadge) sectorBadge.textContent = `SETOR ${this.playerSector}`;
-      if (alertEl) {
-        alertEl.style.display = 'block';
-        alertEl.className = 'esconderijo-search-banner safe';
-        alertEl.innerHTML = `<strong>Sucesso na Furtividade:</strong> Você rastejou pelas sombras e trocou para o novo Setor secreto.`;
-      }
-    } else {
-      this.playerCamouflage = Math.max(0, this.playerCamouflage - 1);
-      this.updatePlayerCamouflageUI();
-      const pips = document.querySelectorAll('#player-camouflage-pips .camouflage-pip');
-      if (pips && pips[this.playerCamouflage]) {
-        MesaDice.createDustVanishEffect(pips[this.playerCamouflage], '#ff1133');
-      }
-      if (alertEl) {
-        alertEl.style.display = 'block';
-        alertEl.className = 'esconderijo-search-banner danger';
-        alertEl.innerHTML = `<strong>Falha na Furtividade:</strong> Você fez barulho ao se mover e perdeu 1 Ponto de Camuflagem!`;
-      }
-    }
-  },
-
-  actionDistract() {
-    this.playerCamouflage = Math.max(0, this.playerCamouflage - 1);
-    this.updatePlayerCamouflageUI();
-    const pips = document.querySelectorAll('#player-camouflage-pips .camouflage-pip');
-    if (pips && pips[this.playerCamouflage]) {
-      MesaDice.createDustVanishEffect(pips[this.playerCamouflage], '#ff1133');
-    }
-    const alertEl = document.getElementById('player-search-alert');
-    if (alertEl) {
-      alertEl.style.display = 'block';
-      alertEl.className = 'esconderijo-search-banner safe';
-      alertEl.innerHTML = `<strong>Distração Criada:</strong> Você arremessou um objeto para longe. Perdeu 1 Ponto de Camuflagem para atrair a atenção do monstro.`;
-    }
-  },
-
-  handleIncomingStop() {
-    this.closePlayerModal();
-    this.playerHidden = false;
-    this.playerSector = null;
-    this.playerCamouflage = 2;
-    const banner = document.getElementById('esconderijo-active-floating-banner');
-    if (banner) banner.style.display = 'none';
-    MesaApp.showToast("O Modo Esconderijo foi encerrado pelo Mestre.");
-  },
-
-
+  }
 };
 window.MesaEsconderijo = MesaEsconderijo;

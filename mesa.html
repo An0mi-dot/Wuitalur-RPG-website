@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.3.4">
+  <link rel="stylesheet" href="css/mesa.css?v=2.3.5">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1273,9 +1273,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
 <script src="js/campaign-data.js?v=1.8.8"></script>
 
-<script src="js/mesa.js?v=2.3.4"></script>
+<script src="js/mesa.js?v=2.3.5"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.3.4</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.3.5</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -1965,7 +1965,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
             <button type="button" class="combat-ctrl-btn turn-nav-btn" onclick="MesaCombate.prevTurn()" title="Turno anterior">◀</button>
             <button type="button" class="combat-ctrl-btn turn-nav-btn turn-next-btn" onclick="MesaCombate.nextTurn()" title="Avançar para o próximo turno"><span>Próximo ▶</span></button>
           </div>
-          <button type="button" class="combat-ctrl-btn combat-ctrl-esconderijo-btn" onclick="MesaEsconderijo.openContextualModal()" title="Gerenciar Modo Esconderijo e Busca de Setores">
+          <button type="button" class="combat-ctrl-btn combat-ctrl-esconderijo-btn" onclick="MesaEsconderijo.toggleSurvivalPanel()" title="Painel Lateral de Esconderijo e Sobrevivência">
             <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
             <span id="combat-master-ctrl-esconderijo-label">Esconderijo</span>
           </button>
@@ -2326,206 +2326,111 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
   <!-- ========================================================================== -->
   <!-- MODAL DO MESTRE: CONTROLE DO MODO ESCONDERIJO (FIOS DO MEDO) -->
   <!-- ========================================================================== -->
-  <div id="esconderijo-master-modal" class="esconderijo-master-modal" onclick="if(event.target===this) MesaEsconderijo.closeMasterModal()">
-    <div class="esconderijo-panel-card">
-      <div class="esconderijo-panel-header">
-        <div class="esconderijo-panel-title">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff1133" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <span>MODO ESCONDERIJO • BUSCA DO PERSEGUIDOR</span>
-        </div>
-        <button type="button" class="mesa-modal-close" onclick="MesaEsconderijo.closeMasterModal()">&times;</button>
-      </div>
-
-      <div class="esconderijo-panel-body">
-        <div id="esconderijo-setup-view">
-          <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0 0 10px;">
-            Selecione o tamanho do recinto onde a presa tentará romper a linha de visão:
-          </p>
-          <div class="esconderijo-room-picker">
-            <button type="button" class="esconderijo-room-btn" id="room-opt-pequena" onclick="MesaEsconderijo.selectRoom('pequena')">
-              <span class="room-title">Pequena</span>
-              <span class="room-dice">4 Setores (1d4)</span>
-            </button>
-            <button type="button" class="esconderijo-room-btn selected" id="room-opt-media" onclick="MesaEsconderijo.selectRoom('media')">
-              <span class="room-title">Média</span>
-              <span class="room-dice">6 Setores (1d6)</span>
-            </button>
-            <button type="button" class="esconderijo-room-btn" id="room-opt-grande" onclick="MesaEsconderijo.selectRoom('grande')">
-              <span class="room-title">Grande</span>
-              <span class="room-dice">8 Setores (1d8)</span>
-            </button>
-          </div>
-          <button type="button" class="dispositivo-btn-primary" onclick="MesaEsconderijo.startHidingRound()" style="margin-top: 14px; background: #ff1133; border-color: #ff4d6d; width: 100%;">
-            Iniciar Rodada de Esconderijo
-          </button>
-        </div>
-
-        <div id="esconderijo-active-view" style="display: none;">
-          <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">
-            <span id="esconderijo-current-room-label" style="font-family: var(--font-heading); font-size: 0.9rem; font-weight: 800; color: #38bdf8;">SALA MÉDIA (6 SETORES)</span>
-            <span style="font-size: 0.75rem; color: #ff8093; text-transform: uppercase; font-weight: 700;">Turno do Perseguidor</span>
-          </div>
-
-          <div>
-            <div style="font-size: 0.82rem; color: var(--text-secondary); margin: 10px 0 6px;">
-              Escolha qual setor o monstro irá revirar:
-            </div>
-            <div id="esconderijo-sectors-grid" class="esconderijo-sectors-grid">
-              <!-- Renderizado dinamicamente -->
-            </div>
-          </div>
-
-          <div style="display: flex; gap: 8px; margin-top: 10px;">
-            <button type="button" class="dispositivo-btn-primary" onclick="MesaEsconderijo.rollRandomSearch()" style="flex: 1; background: rgba(255,255,255,0.06); border-color: var(--border-medium);">
-              Sortear no Dado
-            </button>
-            <button type="button" id="esconderijo-declare-btn" class="dispositivo-btn-primary" onclick="MesaEsconderijo.declareSearch()" style="flex: 2; background: #ff1133; border-color: #ff4d6d;">
-              Declarar Busca no Setor
-            </button>
-          </div>
-
-          <div class="esconderijo-history-box" id="esconderijo-history-box" style="margin-top: 10px;">
-            Nenhum setor declarado ainda nesta rodada.
-          </div>
-
-          <!-- PAINEL DE SIMULAÇÃO (TESTES DO MESTRE) -->
-          <div class="esconderijo-simulation-box" id="esconderijo-simulation-box">
-            <div class="simulation-header">
-              <span class="simulation-title">MODO DE SIMULAÇÃO DE PRESA</span>
-              <span class="simulation-badge" id="simulated-player-status">SEM PRESA</span>
-            </div>
-            <div class="simulation-desc">
-              Atribua um setor secreto a um personagem de teste e alterne para a visão do jogador para testar o ciclo.
-            </div>
-            <div class="simulation-actions-row">
-              <button type="button" class="simulation-btn" onclick="MesaEsconderijo.simulatePlayerSector()" id="btn-simular-jogador">
-                Simular Jogador no Setor ?
-              </button>
-              <button type="button" class="simulation-btn view-player-btn" onclick="MesaEsconderijo.openPlayerModalFromMaster()">
-                Alternar para Visão do Jogador
-              </button>
-            </div>
-          </div>
-
-          <button type="button" class="dispositivo-btn-stop" onclick="MesaEsconderijo.stopHidingRound()" style="width: 100%; margin-top: 10px;">
-            Encerrar Esconderijo
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  <!-- PAINEL LATERAL DE SOBREVIVÊNCIA: MODO ESCONDERIJO (FIOS DO MEDO) -->
   <!-- ========================================================================== -->
-  <!-- MODAL DO JOGADOR: ESCONDERIJO PRIVADO (FIOS DO MEDO) -->
-  <!-- ========================================================================== -->
-  <div id="esconderijo-player-modal" class="esconderijo-player-modal">
-    <div class="esconderijo-player-card">
-      <div class="esconderijo-player-header">
-        <div class="esconderijo-player-title">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff1133" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-          <span>SEU ESCONDERIJO • DINÂMICA DE SOMBRAS</span>
+  <aside id="combat-survival-panel" class="combat-survival-panel" aria-label="Painel Lateral de Sobrevivência e Esconderijo">
+    <div class="survival-panel-header">
+      <div class="survival-panel-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff1133" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+        <span>MODO ESCONDERIJO</span>
+      </div>
+      <button type="button" class="survival-close-btn" onclick="MesaEsconderijo.closeSurvivalPanel()" title="Fechar Painel">&times;</button>
+    </div>
+
+    <!-- Indicador de Fases do Ciclo de Turnos -->
+    <div class="survival-phase-card">
+      <div class="survival-phase-badge sobreviventes" id="survival-phase-badge">FASE DOS SOBREVIVENTES</div>
+      <p class="survival-phase-desc" id="survival-phase-desc">
+        Sobreviventes agem e declaram suas ações verbais primeiro. Em seguida, a vez passa ao Perseguidor.
+      </p>
+      <div class="survival-phase-actions master-item" id="survival-master-phase-actions">
+        <button type="button" class="survival-btn-secondary" onclick="MesaEsconderijo.advanceEsconderijoPhase()">
+          Alternar Fase
+        </button>
+      </div>
+    </div>
+
+    <div class="survival-panel-content">
+      <!-- SEÇÃO DO JOGADOR: CONTROLE DE SOBREVIVÊNCIA -->
+      <div class="survival-section" id="survival-player-section">
+        <div class="survival-section-header">
+          <span class="survival-section-title">SEU ESCONDERIJO (PRIVADO)</span>
         </div>
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <button type="button" id="player-return-to-master-btn" class="simulation-btn" onclick="MesaEsconderijo.returnToMasterModalFromPlayer()" style="display:none; padding: 4px 8px;" title="Retornar ao Painel do Mestre">
-            Painel do Mestre
+
+        <div class="survival-field">
+          <label class="survival-field-label">Setor Oculto:</label>
+          <div class="survival-sectors-row" id="survival-player-sectors-row">
+            <!-- Renderizado dinamicamente -->
+          </div>
+          <div class="survival-sector-selected-indicator" id="survival-player-sector-badge">
+            Nenhum setor definido
+          </div>
+        </div>
+
+        <div class="survival-field">
+          <div class="survival-field-header-row">
+            <label class="survival-field-label">Pontos de Camuflagem:</label>
+            <span class="survival-cam-count" id="survival-cam-count">2/4</span>
+          </div>
+          <div class="survival-pips-row" id="survival-cam-pips">
+            <!-- Renderizado dinamicamente -->
+          </div>
+          <div class="survival-pips-ctrls">
+            <button type="button" class="survival-pip-adj-btn" onclick="MesaEsconderijo.adjustCamouflage(-1)" title="Perder 1 Camuflagem">-1</button>
+            <button type="button" class="survival-pip-adj-btn" onclick="MesaEsconderijo.adjustCamouflage(1)" title="Recuperar 1 Camuflagem">+1</button>
+          </div>
+        </div>
+
+        <div class="survival-field">
+          <label class="survival-field-label">Dado de Pavor:</label>
+          <div class="survival-pavor-switch-box">
+            <label class="survival-switch-label">
+              <input type="checkbox" id="survival-pavor-toggle" onchange="MesaEsconderijo.togglePavorFromSurvival(this.checked)">
+              <span class="survival-switch-slider"></span>
+              <span class="survival-switch-text" id="survival-pavor-switch-text">Pavor Inativo</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO DO MESTRE: CONTROLE DO PERSEGUIDOR -->
+      <div class="survival-section master-item" id="survival-master-section">
+        <div class="survival-section-header">
+          <span class="survival-section-title">BUSCA DO PERSEGUIDOR (MESTRE)</span>
+        </div>
+
+        <div class="survival-field">
+          <label class="survival-field-label">Tamanho do Recinto:</label>
+          <div class="survival-room-picker">
+            <button type="button" class="survival-room-btn" id="srv-room-pequena" onclick="MesaEsconderijo.selectRoom('pequena')">4 Setores</button>
+            <button type="button" class="survival-room-btn selected" id="srv-room-media" onclick="MesaEsconderijo.selectRoom('media')">6 Setores</button>
+            <button type="button" class="survival-room-btn" id="srv-room-grande" onclick="MesaEsconderijo.selectRoom('grande')">8 Setores</button>
+          </div>
+        </div>
+
+        <div class="survival-field">
+          <label class="survival-field-label">Setor a Vasculhar:</label>
+          <div class="survival-sectors-grid" id="survival-master-sectors-grid">
+            <!-- Renderizado dinamicamente -->
+          </div>
+          <div class="survival-master-actions">
+            <button type="button" class="survival-btn-secondary" onclick="MesaEsconderijo.rollRandomSearch()">Sortear Dado</button>
+            <button type="button" id="survival-declare-btn" class="survival-btn-danger" onclick="MesaEsconderijo.declareSearch()" disabled>Declarar Busca</button>
+          </div>
+        </div>
+
+        <div class="survival-history-box" id="survival-history-box">
+          Nenhum setor revirado ainda.
+        </div>
+
+        <div style="margin-top: 8px;">
+          <button type="button" class="dispositivo-btn-stop" onclick="MesaEsconderijo.stopHidingRound()" style="width: 100%;">
+            Encerrar Modo Esconderijo
           </button>
-          <button type="button" class="mesa-modal-close" onclick="MesaEsconderijo.closePlayerModal()" title="Minimizar">&times;</button>
-        </div>
-      </div>
-
-      <div class="esconderijo-player-body">
-        <!-- Fase 1: Rolar Setor Secreto -->
-        <div id="player-esconderijo-phase-roll" style="text-align: center;">
-          <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 14px;">
-            O Perseguidor está vasculhando a área. Role o dado do cômodo para definir seu <strong>Setor Secreto</strong>. Esta rolagem ocorre somente na sua tela — o Mestre e os outros jogadores NÃO têm acesso ao resultado.
-          </p>
-          <button type="button" id="btn-roll-secret-sector" class="dispositivo-btn-primary" onclick="MesaEsconderijo.playerRollSector()" style="background: #38bdf8; border-color: #0284c7; padding: 12px 24px; font-size: 1rem; margin: 0 auto;">
-            Rolar Meu Setor Secreto
-          </button>
-        </div>
-
-        <!-- Fase 2: Painel de Ocultação Ativo -->
-        <div id="player-esconderijo-phase-active" style="display: none; flex-direction: column; gap: 14px;">
-          <!-- Setor Secreto -->
-          <div class="secret-sector-display-box">
-            <div style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em;">Seu Setor Secreto</div>
-            <div id="player-sector-badge" class="secret-sector-badge">SETOR ?</div>
-            <div class="secret-privacy-notice">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-              <span>Privado • Mestre não tem acesso</span>
-            </div>
-          </div>
-
-          <!-- Pontos de Camuflagem -->
-          <div class="camouflage-tracker-box">
-            <div>
-              <div style="font-family: var(--font-heading); font-size: 0.85rem; color: #fff; font-weight: 700;">PONTOS DE CAMUFLAGEM</div>
-              <div id="camouflage-status-text" style="font-size: 0.78rem; color: var(--text-muted);">Mantenha o silêncio para não ser descoberto</div>
-            </div>
-            <div class="camouflage-pips-container" id="player-camouflage-pips">
-              <span class="camouflage-pip"></span>
-              <span class="camouflage-pip"></span>
-            </div>
-          </div>
-
-          <!-- Alerta de Busca do Monstro -->
-          <div id="player-search-alert" class="esconderijo-search-banner safe" style="display: none;">
-            Aguardando a criatura vasculhar...
-          </div>
-
-          <!-- Ações do Personagem Escondido -->
-          <div>
-            <div style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; font-weight: 700;">Ações Disponíveis</div>
-            <div class="camouflage-actions-list">
-              <button type="button" class="camouflage-action-btn" onclick="MesaEsconderijo.actionHoldBreath()">
-                <span>Manter a Respiração</span>
-                <small>+1 Ponto de Camuflagem</small>
-              </button>
-              <button type="button" class="camouflage-action-btn" onclick="MesaEsconderijo.actionChangeHideout()">
-                <span>Trocar de Esconderijo</span>
-                <small>Rolar novo setor / perde 1 se falhar</small>
-              </button>
-              <button type="button" class="camouflage-action-btn" onclick="MesaEsconderijo.actionDistract()">
-                <span>Distrair Perseguidor</span>
-                <small>-1 Ponto de Camuflagem</small>
-              </button>
-            </div>
-            <button type="button" class="dispositivo-btn-stop" onclick="MesaEsconderijo.exitHiding()" style="width: 100%; margin-top: 10px; font-size: 0.8rem; padding: 6px 12px;">
-              Abandonar Esconderijo / Desativar
-            </button>
-          </div>
         </div>
       </div>
     </div>
-  </div>
-
-
-  <!-- ALERTA DRAMATICO DE PRESA ENCONTRADA COM DESINTEGRACAO EM POEIRA -->
-  <div id="esconderijo-discovery-banner" class="esconderijo-discovery-banner" style="display: none;">
-    <div class="discovery-backdrop"></div>
-    <div class="discovery-content" id="discovery-content-box">
-      <div class="discovery-danger-tag">PRESA LOCALIZADA</div>
-      <div class="discovery-details" id="discovery-details-card">
-        <span class="discovery-sector-label" id="discovery-sector-text">SETOR ?</span>
-        <span class="discovery-player-label" id="discovery-player-text">JOGADOR</span>
-      </div>
-      <div class="discovery-flavor-text" id="discovery-flavor-text">A protecao do esconderijo ruiu. O combate direto comeca imediatamente.</div>
-    </div>
-  </div>
-
-  <!-- BANNER FLUTUANTE DE ESCONDERIJO ATIVO (PERMITE DESATIVAR A QUALQUER MOMENTO) -->
-  <div id="esconderijo-active-floating-banner" class="esconderijo-active-floating-banner" style="display: none;">
-    <div class="esconderijo-banner-info">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff1133" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-      <span id="esconderijo-floating-label">MODO ESCONDERIJO ATIVO</span>
-    </div>
-    <button type="button" id="esconderijo-floating-open-btn" class="esconderijo-banner-btn-open" onclick="MesaEsconderijo.openContextualModal()">
-      Abrir Painel
-    </button>
-    <button type="button" class="esconderijo-banner-btn-stop" onclick="MesaEsconderijo.stopHidingRound()">
-      Desativar Modo
-    </button>
-  </div>
+  </aside>
 
   <!-- CONTAINER DE TOASTS DA MESA -->
   <div id="mesa-toast-container" class="mesa-toast-container"></div>
