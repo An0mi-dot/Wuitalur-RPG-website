@@ -1793,6 +1793,16 @@ const MesaApp = {
                 MesaFita1.triggerStop();
               }
             }
+            if (p1Attrs._sys_fita_2 && window.MesaFita2) {
+              const f2 = p1Attrs._sys_fita_2;
+              const ov = document.getElementById('fita-2-overlay');
+              const isActive = ov && ov.classList.contains('active');
+              if (f2.active && !isActive && (Date.now() - (f2.timestamp || 0) < 1800000)) {
+                MesaFita2.triggerStart(f2.timestamp);
+              } else if (!f2.active && isActive) {
+                MesaFita2.triggerStop();
+              }
+            }
             if (p1Attrs._sys_roll_log && window.MesaRollLog) {
               MesaRollLog.syncFromRemote(p1Attrs._sys_roll_log);
             }
@@ -1977,6 +1987,16 @@ const MesaApp = {
               MesaFita1.triggerStop();
             }
           }
+          if (attrs && attrs._sys_fita_2 && window.MesaFita2) {
+            const f2 = attrs._sys_fita_2;
+            const ov = document.getElementById('fita-2-overlay');
+            const isActive = ov && ov.classList.contains('active');
+            if (f2.active && !isActive && (Date.now() - (f2.timestamp || 0) < 1800000)) {
+              MesaFita2.triggerStart(f2.timestamp);
+            } else if (!f2.active && isActive) {
+              MesaFita2.triggerStop();
+            }
+          }
           if (attrs && attrs._sys_tv_estatica && window.MesaTvEstatica) {
             const tv = attrs._sys_tv_estatica;
             const ov = document.getElementById('tv-estatica-overlay');
@@ -2114,6 +2134,20 @@ const MesaApp = {
           MesaNotebookSara.activeCam = payload.payload.activeCam;
         }
         MesaNotebookSara.triggerStart(payload.payload && payload.payload.sessionStartTime);
+      }
+    });
+
+    channel.on('broadcast', { event: 'fita_2_start' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaFita2) {
+        MesaFita2.triggerStart(payload && payload.payload && payload.payload.timestamp);
+      }
+    });
+
+    channel.on('broadcast', { event: 'fita_2_stop' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaFita2) {
+        MesaFita2.triggerStop();
       }
     });
 
@@ -4443,7 +4477,7 @@ const MESA_AREAS = {
     "district": "Divisa entre a Mata do Norte e o Subúrbio • Fragktus",
     "dangerLevel": "Zona de Investigação / Perigo Baixo",
     "dangerLevelClass": "warning",
-    "ambience": "Um antigo anexo de reabilitação juvenil desativado há décadas, engolido pela vegetação densa na divisa entre a Mata do Norte e o subúrbio de Fragktus. Suas janelas quebradas e paredes de tijolos úmidos escondem um santuário clandestino onde jovens sem esperança eram doutrinados no escuro.\n\nCondições de Ambiente: Escuridão - Personagens que não possuem visão noturna, recebem -1 em testes de percepção e investigação.",
+    "ambience": "Um antigo anexo de reabilitação juvenil desativado há décadas, engolido pela vegetação densa na divisa entre a Mata do Norte e o subúrbio de Fragktus.\n\nCondições de Ambiente: Escuridão - Personagens que não possuem visão noturna, recebem -1 em testes de percepção e investigação.",
     "lore": "Desativado há décadas, o anexo serviu em segredo como santuário e centro de recrutamento clandestino. Jovens em desespero ou acometidos por enfermidades graves eram reunidos no escuro sob falsas promessas de descanso e salvação definitiva.",
     "rumor": "Dizem que dezenas de panfletos de desaparecimento de crianças e adolescentes foram arrancados dos postes da cidade para abafar as buscas e selecionar vítimas em segredo.",
     "requisitos_acesso": "Acessos do Pavilhão:\n• Janela Quebrada (Lateral): Entrada de emergência vinda da orla da floresta.\n• Porta Principal (Frente): Trancada por fora com correntes pesadas e cadeado enferrujado (Força DT 9 ou Crime DT 8 para abrir por dentro, mas faz muito barulho).\n• Galeria de Escoamento (Subsolo): Saída furtiva que dá acesso às tubulações de drenagem e leva de volta às ruas traseiras da cidade.",
@@ -8487,6 +8521,191 @@ const MesaFita1 = {
   }
 };
 window.MesaFita1 = MesaFita1;
+
+// ==========================================================================
+// DISPOSITIVO CINEMATOGRÁFICO: FITA_2 (VÍDEO EM TELA CHEIA COM FADE TO BLACK)
+// ==========================================================================
+const MesaFita2 = {
+  isActive: false,
+  _fadeTimeout: null,
+
+  play() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    const now = Date.now();
+
+    const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'fita_2_start',
+          payload: { timestamp: now }
+        });
+      } catch (e) {}
+    }
+
+    if (MesaApp.supabase) {
+      (async () => {
+        try {
+          const { data } = await MesaApp.supabase
+            .from('personagens')
+            .select('atributos')
+            .eq('id', 1)
+            .single();
+          const attrs = data && data.atributos
+            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+            : {};
+          attrs._sys_fita_2 = { active: true, timestamp: now };
+          await MesaApp.supabase
+            .from('personagens')
+            .update({ atributos: attrs })
+            .eq('id', 1);
+        } catch (e) {}
+      })();
+    }
+
+    this.triggerStart(now);
+  },
+
+  stop() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+
+    const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'fita_2_stop',
+          payload: {}
+        });
+      } catch (e) {}
+    }
+
+    if (MesaApp.supabase) {
+      (async () => {
+        try {
+          const { data } = await MesaApp.supabase
+            .from('personagens')
+            .select('atributos')
+            .eq('id', 1)
+            .single();
+          const attrs = data && data.atributos
+            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+            : {};
+          attrs._sys_fita_2 = { active: false, timestamp: Date.now() };
+          await MesaApp.supabase
+            .from('personagens')
+            .update({ atributos: attrs })
+            .eq('id', 1);
+        } catch (e) {}
+      })();
+    }
+
+    this.triggerStop();
+  },
+
+  triggerStart(startTime) {
+    this.isActive = true;
+    if (this._fadeTimeout) {
+      clearTimeout(this._fadeTimeout);
+      this._fadeTimeout = null;
+    }
+
+    const overlay = document.getElementById('fita-2-overlay');
+    const video = document.getElementById('fita-2-video');
+    if (!overlay || !video) return;
+
+    overlay.classList.add('active');
+    overlay.setAttribute('aria-hidden', 'false');
+
+    const badge = document.getElementById('fita2-status-badge');
+    if (badge) {
+      badge.textContent = 'Em Exibição';
+      badge.className = 'dispositivo-status-badge active';
+      badge.style.borderColor = '#f43f5e';
+      badge.style.color = '#fb7185';
+    }
+    const btnTransmit = document.getElementById('btn-transmit-fita2');
+    const btnStop = document.getElementById('btn-stop-fita2');
+    if (btnTransmit) btnTransmit.style.display = 'none';
+    if (btnStop) btnStop.style.display = 'inline-flex';
+
+    const now = Date.now();
+    const elapsed = startTime ? Math.max(0, (now - startTime) / 1000) : 0;
+
+    video.onended = () => {
+      if (MesaApp.state && MesaApp.state.isMaster) {
+        this.stop();
+      }
+    };
+
+    if (elapsed > 1.5) {
+      video.currentTime = elapsed;
+      video.classList.add('playing');
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          video.muted = true;
+          video.play().catch(() => {});
+        });
+      }
+    } else {
+      video.classList.remove('playing');
+      video.currentTime = 0;
+      this._fadeTimeout = setTimeout(() => {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            video.muted = true;
+            video.play().catch(() => {});
+          });
+        }
+        video.classList.add('playing');
+      }, 650);
+    }
+  },
+
+  triggerStop() {
+    this.isActive = false;
+    if (this._fadeTimeout) {
+      clearTimeout(this._fadeTimeout);
+      this._fadeTimeout = null;
+    }
+
+    const overlay = document.getElementById('fita-2-overlay');
+    const video = document.getElementById('fita-2-video');
+    if (video) {
+      video.classList.remove('playing');
+    }
+
+    if (overlay) {
+      overlay.classList.remove('active');
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+
+    setTimeout(() => {
+      if (!this.isActive && video) {
+        try {
+          video.pause();
+          video.currentTime = 0;
+        } catch (e) {}
+      }
+    }, 600);
+
+    const badge = document.getElementById('fita2-status-badge');
+    if (badge) {
+      badge.textContent = 'Pronto';
+      badge.className = 'dispositivo-status-badge ready';
+      badge.style.borderColor = '#f43f5e';
+      badge.style.color = '#fb7185';
+    }
+    const btnTransmit = document.getElementById('btn-transmit-fita2');
+    const btnStop = document.getElementById('btn-stop-fita2');
+    if (btnTransmit) btnTransmit.style.display = 'inline-flex';
+    if (btnStop) btnStop.style.display = 'none';
+  }
+};
+window.MesaFita2 = MesaFita2;
 
 // ==========================================================================
 // MESA DISPOSITIVOS: CONTROLE DO HUB LATERAL, FILTROS E PESQUISA
