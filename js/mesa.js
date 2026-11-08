@@ -1106,6 +1106,7 @@ const MesaApp = {
       st: 0, stMax: 32,
       stressPoints: 0,
       stressPointsMax: 6,
+      vidrilhos: 10,
       atributos: {
         'Saúde': 'd12',
         'Vigor': 'd16',
@@ -1141,6 +1142,7 @@ const MesaApp = {
       st: 0, stMax: 40,
       stressPoints: 0,
       stressPointsMax: 6,
+      vidrilhos: 15,
       atributos: {
         'Saúde': 'd8',
         'Vigor': 'd12',
@@ -1176,6 +1178,7 @@ const MesaApp = {
       st: 0, stMax: 44,
       stressPoints: 0,
       stressPointsMax: 6,
+      vidrilhos: 10,
       atributos: {
         'Mente': 'd16',
         'Saúde': 'd8',
@@ -1212,6 +1215,7 @@ const MesaApp = {
       st: 0, stMax: 24,
       stressPoints: 0,
       stressPointsMax: 6,
+      vidrilhos: 15,
       atributos: {
         'Mente': 'd4',
         'Saúde': 'd8',
@@ -1241,6 +1245,7 @@ const MesaApp = {
       st: 0, stMax: 28,
       stressPoints: 0,
       stressPointsMax: 6,
+      vidrilhos: 15,
       atributos: {
         'Saúde': 'd4',
         'Vigor': 'd16',
@@ -1276,6 +1281,7 @@ const MesaApp = {
       st: 0, stMax: 32,
       stressPoints: 0,
       stressPointsMax: 6,
+      vidrilhos: 15,
       atributos: {
         'Força': 'd16',
         'Mente': 'd12',
@@ -1311,6 +1317,7 @@ const MesaApp = {
       st: 0, stMax: 36,
       stressPoints: 0,
       stressPointsMax: 6,
+      vidrilhos: 15,
       atributos: {
         'Força': 'd16',
         'Mente': 'd12',
@@ -1346,6 +1353,7 @@ const MesaApp = {
       st: 0, stMax: 36,
       stressPoints: 0,
       stressPointsMax: 6,
+      vidrilhos: 15,
       atributos: {
         'Vigor': 'd12',
         'Saúde': 'd8',
@@ -1436,12 +1444,14 @@ const MesaApp = {
             vidrilhos: (() => {
               const parsed = typeof raw.atributos === 'string' ? JSON.parse(raw.atributos || '{}') : (raw.atributos || {});
               if (parsed && parsed.vidrilhos !== undefined && parsed.vidrilhos !== null) {
-                return Number(parsed.vidrilhos);
+                const num = Number(parsed.vidrilhos);
+                return num === 0 ? 15 : num;
               }
               if (raw.vidrilhos !== undefined && raw.vidrilhos !== null) {
-                return Number(raw.vidrilhos);
+                const num = Number(raw.vidrilhos);
+                return num === 0 ? 15 : num;
               }
-              return 0;
+              return 15;
             })(),
             atributos: (() => {
               const parsed = typeof raw.atributos === 'string' ? JSON.parse(raw.atributos || '{}') : (raw.atributos || {});
@@ -1583,7 +1593,7 @@ const MesaApp = {
       if (!this.state.players[0]) {
         this.state.players[0] = {
           id: 3, slot: 1, token: 'X7V2', nome: 'Thulita De La Benevidez', idade: '18 anos', altura: '1,40', raca: 'Dragão Anão', arquetipo: 'Popular', imagem: 'assets/thulita.png', avatar: 'assets/thulita_avatar.png',
-          hp: 14, hpMax: 14, pe: 10, peMax: 10, st: 0, stMax: 32, stressPoints: 0, stressPointsMax: 6,
+          hp: 14, hpMax: 14, pe: 10, peMax: 10, st: 0, stMax: 32, stressPoints: 0, stressPointsMax: 6, vidrilhos: 10,
           atributos: { 'Saúde': 'd12', 'Vigor': 'd16', 'Força': 'd4', 'Mente': 'd8' },
           bonus: [{ origem: 'Raça (Dragão Anão)', desc: '+d4 em testes de Mente' }, { origem: 'Arquétipo (Popular)', desc: '+d4 em Testes Sociais' }],
           pericias: ['Atletismo', 'Percepção', 'Acrobacia', 'Intuição'],
@@ -1599,7 +1609,7 @@ const MesaApp = {
         this.state.players[1] = {
           id: null, slot: 2, token: 'N3L8', nome: 'Sanguiminerva "Minerva" Qamari Von Adams', idade: '18 anos', altura: '1,78m', raca: 'Vampira', arquetipo: 'Nerd',
           imagem: 'assets/minerva.png?v=3', avatar: 'assets/minerva_avatar.png?v=3',
-          hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 40, stressPoints: 0, stressPointsMax: 6,
+          hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 40, stressPoints: 0, stressPointsMax: 6, vidrilhos: 15,
           atributos: { 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd4', 'Mente': 'd16' },
           bonus: [{ origem: 'Raça (Vampira)', desc: '+d4 em testes de Mente e Visão no Escuro (5B)' }, { origem: 'Arquétipo (Nerd)', desc: '+d4 em Testes de Mente' }],
           pericias: ['Furtividade', 'Intimidação', 'Investigação', 'Astúcia'],
@@ -1614,7 +1624,7 @@ const MesaApp = {
       if (!this.state.players[2]) {
         this.state.players[2] = {
           id: 1, slot: 3, token: 'R5K1', nome: 'Eric "Blade" Tepes Adams', idade: '17 anos', altura: '1,76', raca: 'Vampiro', arquetipo: 'Curioso', imagem: 'assets/eric.png', avatar: 'assets/eric_avatar.png',
-          hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 44, stressPoints: 0, stressPointsMax: 6,
+          hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 44, stressPoints: 0, stressPointsMax: 6, vidrilhos: 10,
           atributos: { 'Mente': 'd16', 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd4' },
           bonus: [{ origem: 'Raça (Vampiro)', desc: '+d4 em testes de Mente e Visão no Escuro (5B)' }, { origem: 'Arquétipo (Curioso)', desc: '+d4 em testes de Investigação' }],
           pericias: ['Investigação', 'Percepção', 'Disparada', 'Medicina'],
@@ -1629,7 +1639,7 @@ const MesaApp = {
       if (!this.state.players[3]) {
         this.state.players[3] = {
           id: null, slot: 4, token: 'H2Q9', nome: 'Pera Hylidae da Silva', idade: '18 anos', altura: '1,58m', raca: 'Animalesco', arquetipo: 'Rebelde', classe: 'Adivinha', imagem: 'assets/pera.png?v=1.5.1', avatar: 'assets/pera_avatar.png?v=1.5.1',
-          hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 24, stressPoints: 0, stressPointsMax: 6,
+          hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 24, stressPoints: 0, stressPointsMax: 6, vidrilhos: 15,
           atributos: { 'Mente': 'd4', 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd16' },
           bonus: [
             { origem: 'Raça (Animalesco)', desc: '+d4 em testes de Esquiva' },
@@ -1647,7 +1657,7 @@ const MesaApp = {
       if (!this.state.players[4]) {
         this.state.players[4] = {
           id: null, slot: 5, token: 'J8W4', nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão', imagem: 'assets/william.png?v=1.5.1', avatar: 'assets/william_avatar.png?v=1.5.1',
-          hp: 15, hpMax: 15, pe: 10, peMax: 10, st: 0, stMax: 28, stressPoints: 0, stressPointsMax: 6,
+          hp: 15, hpMax: 15, pe: 10, peMax: 10, st: 0, stMax: 28, stressPoints: 0, stressPointsMax: 6, vidrilhos: 15,
           atributos: { 'Saúde': 'd4', 'Vigor': 'd16', 'Força': 'd12', 'Mente': 'd8' },
           bonus: [
             { origem: 'Raça (Animalesco)', desc: '+d4 em testes de Esquiva' },
@@ -1665,7 +1675,7 @@ const MesaApp = {
       if (!this.state.players[5]) {
         this.state.players[5] = {
           id: null, slot: 6, token: 'T6D3', nome: 'John Doe', idade: '899 dias (Autômato)', altura: '2,20m', raca: 'E.X.O.s', arquetipo: 'Palhaço', imagem: 'assets/john.png', avatar: 'assets/john_avatar.png',
-          hp: 16, hpMax: 16, pe: 13, peMax: 13, st: 0, stMax: 32, stressPoints: 0, stressPointsMax: 6,
+          hp: 16, hpMax: 16, pe: 13, peMax: 13, st: 0, stMax: 32, stressPoints: 0, stressPointsMax: 6, vidrilhos: 15,
           atributos: { 'Força': 'd16', 'Mente': 'd12', 'Saúde': 'd8', 'Vigor': 'd4' },
           bonus: [
             { origem: 'Raça (E.X.O.s)', desc: 'Autorreparo passivo (recupera 1 PV por turno)' },
@@ -1684,7 +1694,7 @@ const MesaApp = {
         this.state.players[6] = {
           id: null, slot: 7, token: 'Y4M7', nome: 'Odara De La Benevidez', idade: '18 anos', altura: '1,42m', raca: 'Dragão Anão', arquetipo: 'Gótica',
           imagem: 'assets/odara.png?v=3', avatar: 'assets/odara_avatar.png?v=3',
-          hp: 14, hpMax: 14, pe: 10, peMax: 10, st: 0, stMax: 36, stressPoints: 0, stressPointsMax: 6,
+          hp: 14, hpMax: 14, pe: 10, peMax: 10, st: 0, stMax: 36, stressPoints: 0, stressPointsMax: 6, vidrilhos: 15,
           atributos: { 'Força': 'd16', 'Mente': 'd12', 'Saúde': 'd8', 'Vigor': 'd4' },
           bonus: [
             { origem: 'Raça (Dragão Anão)', desc: '+d4 em testes de Mente' },
@@ -1703,7 +1713,7 @@ const MesaApp = {
         this.state.players[7] = {
           id: null, slot: 8, token: 'F9C5', nome: "Canneth 'Blinko' Biloxi", idade: '18 anos', altura: '1,75m', raca: 'Animalesco', arquetipo: 'Teimoso',
           imagem: 'assets/blinko.png?v=2', avatar: 'assets/blinko_avatar.png',
-          hp: 17, hpMax: 17, pe: 10, peMax: 10, st: 0, stMax: 36, stressPoints: 0, stressPointsMax: 6,
+          hp: 17, hpMax: 17, pe: 10, peMax: 10, st: 0, stMax: 36, stressPoints: 0, stressPointsMax: 6, vidrilhos: 15,
           atributos: { 'Vigor': 'd12', 'Saúde': 'd8', 'Força': 'd4', 'Mente': 'd16' },
           bonus: [
             { origem: 'Raça (Animalesco)', desc: '+d4 em testes de Esquiva / Sentidos Aguçados' },
@@ -1748,6 +1758,13 @@ const MesaApp = {
           if (v.stMax !== undefined) p.stMax = v.stMax;
           if (v.stressPoints !== undefined) p.stressPoints = v.stressPoints;
           if (v.stressPointsMax !== undefined) p.stressPointsMax = v.stressPointsMax;
+          if (v.vidrilhos !== undefined && v.vidrilhos !== null) {
+            const vNum = Number(v.vidrilhos);
+            p.vidrilhos = vNum === 0 ? 15 : vNum;
+          }
+        }
+        if (p && (p.vidrilhos === 0 || p.vidrilhos == null)) {
+          p.vidrilhos = 15;
         }
       }
 
@@ -2705,6 +2722,7 @@ const MesaApp = {
       const cacheStr = localStorage.getItem('wu_mesa_vitals_cache');
       const cache = cacheStr ? JSON.parse(cacheStr) : {};
       cache[player.slot] = {
+        ...(cache[player.slot] || {}),
         hp: player.hp,
         hpMax: player.hpMax,
         pe: player.pe,
@@ -2712,7 +2730,8 @@ const MesaApp = {
         st: player.st,
         stMax: player.stMax,
         stressPoints: player.stressPoints,
-        stressPointsMax: player.stressPointsMax
+        stressPointsMax: player.stressPointsMax,
+        vidrilhos: player.vidrilhos
       };
       localStorage.setItem('wu_mesa_vitals_cache', JSON.stringify(cache));
     } catch(e) {}
@@ -2740,6 +2759,7 @@ const MesaApp = {
             : {};
           if (!currentAttrs._sys_players_vitals) currentAttrs._sys_players_vitals = {};
           currentAttrs._sys_players_vitals[player.slot] = {
+            ...(currentAttrs._sys_players_vitals[player.slot] || {}),
             hp: player.hp,
             hpMax: player.hpMax,
             pe: player.pe,
@@ -2747,7 +2767,8 @@ const MesaApp = {
             st: player.st,
             stMax: player.stMax,
             stressPoints: player.stressPoints,
-            stressPointsMax: player.stressPointsMax
+            stressPointsMax: player.stressPointsMax,
+            vidrilhos: player.vidrilhos
           };
           await this.supabase
             .from('personagens')
@@ -2762,25 +2783,55 @@ const MesaApp = {
 
   async savePlayerVidrilhos(slot, vidrilhos) {
     const player = this.state.players[slot - 1];
-    if (!player || !this.supabase || !player.id) return;
+    if (!player || !this.supabase) return;
 
     try {
-      const { data, error } = await this.supabase
+      // 1. Atualiza no cache local imediatamente
+      try {
+        const cacheStr = localStorage.getItem('wu_mesa_vitals_cache');
+        const cache = cacheStr ? JSON.parse(cacheStr) : {};
+        if (!cache[slot]) cache[slot] = {};
+        cache[slot].vidrilhos = vidrilhos;
+        localStorage.setItem('wu_mesa_vitals_cache', JSON.stringify(cache));
+      } catch(e) {}
+
+      // 2. Se for linha propria no banco (id 1 ou id 3), atualiza
+      if (player.id && (player.id === 1 || player.id === 3)) {
+        const { data } = await this.supabase
+          .from('personagens')
+          .select('atributos')
+          .eq('id', player.id)
+          .single();
+
+        let currentAttrs = {};
+        if (data && data.atributos) {
+          currentAttrs = typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos;
+        }
+        currentAttrs.vidrilhos = vidrilhos;
+
+        await this.supabase
+          .from('personagens')
+          .update({ atributos: currentAttrs })
+          .eq('id', player.id);
+      }
+
+      // 3. Persiste para todos os 8 slots no registro compartilhado de id: 1
+      const { data: mData } = await this.supabase
         .from('personagens')
         .select('atributos')
-        .eq('id', player.id)
+        .eq('id', 1)
         .single();
-
-      let currentAttrs = {};
-      if (data && data.atributos) {
-        currentAttrs = typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos;
-      }
-      currentAttrs.vidrilhos = vidrilhos;
+      const mAttrs = mData && mData.atributos
+        ? (typeof mData.atributos === 'string' ? JSON.parse(mData.atributos) : mData.atributos)
+        : {};
+      if (!mAttrs._sys_players_vitals) mAttrs._sys_players_vitals = {};
+      if (!mAttrs._sys_players_vitals[slot]) mAttrs._sys_players_vitals[slot] = {};
+      mAttrs._sys_players_vitals[slot].vidrilhos = vidrilhos;
 
       await this.supabase
         .from('personagens')
-        .update({ atributos: currentAttrs })
-        .eq('id', player.id);
+        .update({ atributos: mAttrs })
+        .eq('id', 1);
     } catch(err) {
       console.error("Erro ao salvar Vidrilhos no Supabase:", err);
     }
@@ -2857,6 +2908,7 @@ const MesaApp = {
       const cacheStr = localStorage.getItem('wu_mesa_vitals_cache');
       const cache = cacheStr ? JSON.parse(cacheStr) : {};
       cache[player.slot] = {
+        ...(cache[player.slot] || {}),
         hp: player.hp,
         hpMax: player.hpMax,
         pe: player.pe,
@@ -2864,7 +2916,8 @@ const MesaApp = {
         st: player.st,
         stMax: player.stMax,
         stressPoints: player.stressPoints,
-        stressPointsMax: player.stressPointsMax
+        stressPointsMax: player.stressPointsMax,
+        ...(data.vidrilhos !== undefined ? { vidrilhos: data.vidrilhos } : {})
       };
       localStorage.setItem('wu_mesa_vitals_cache', JSON.stringify(cache));
     } catch(e) {}
