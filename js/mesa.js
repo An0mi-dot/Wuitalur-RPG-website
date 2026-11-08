@@ -4794,6 +4794,119 @@ const MESA_AREAS = {
             "notas_mestre": "Ameaça Local (Encontro do PDI #06):\nRATO CARNICEIRO (PORTADOR DA PRAGA) [ Criatura Pequena / Besta Infectada ]\n• PV: 12 | Defesa: 6 | Iniciativa: Alta (Age primeiro na emboscada contra Minerva)\n• Passiva — Sangue Pestilento: O corpo do animal está tomado por caroços cinzentos e veias arroxeadas. Qualquer ataque corpo a corpo que o mate espalha sangue escuro e fétido no chão (sem efeito de contágio pelo ar, apenas por mordida direta).\n• Ação — Incisivos Pestilentos (Corpo a Corpo): Avança ferozmente no alvo mais próximo da grade (Minerva), causando 1d4 de dano perfurante e aplicando silenciosamente a condição oculta Portador da Praga (Incubação)."
       }
 ]
+  },
+  "galerias-escoamento": {
+    "id": "galerias-escoamento",
+    "name": "As Galerias de Escoamento (Esgoto de Fraguiktos)",
+    "shortName": "Galerias de Escoamento",
+    "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"></rect><path d=\"M3 9h18\"></path><path d=\"M3 15h18\"></path><path d=\"M9 3v18\"></path><path d=\"M15 3v18\"></path></svg>",
+    "themeClass": "area-galerias-escoamento",
+    "district": "Rede de Esgoto Pluvial e Sanitário • Subúrbio de Fraguiktos",
+    "dangerLevel": "Zona Subterrânea / Isolamento Fétido",
+    "dangerLevelClass": "danger",
+    "ambience": "Ao descerem pela grade quebrada, o cheiro pesado de esgoto, lodo podre e umidade velha atinge o nariz de vocês na hora. O túnel é baixo, abafado e escuro, feito de blocos de pedra sujos de limo preto. Pelo meio da galeria corre uma vala de água esverdeada, grossa e parada, cheia de lixo boiando e tábuas de madeira velhas jogadas por cima para servir de passagem. O único som é o pinga-pinga constante de infiltração no teto, o eco dos passos de vocês na pedra molhada e o barulho de água correndo nos canos enferrujados das paredes.\n\nCondições de Ambiente: Mau Cheiro Asfixiante e Escuridão - Testes que dependam de olfato ou concentração sofrem Desvantagem sem proteção nasal.",
+    "lore": "Um trecho comum, antigo e fétido da rede de esgoto pluvial e sanitário que passa por baixo do subúrbio de Fraguiktos, cujo isolamento completo e cheiro insuportável afastam qualquer pessoa normal dali.",
+    "rumor": "Presos nas grades enferrujadas e caixotes do esgoto, há vestígios de testes cirúrgicos prévios e prontuários médicos roubados das clínicas de Fraguiktos.",
+    "requisitos_acesso": "Acessos das Galerias:\n• Grade Quebrada do Pavilhão (Norte): Entrada subterrânea a partir do subsolo do Pavilhão de Acolhimento Abandonado.\n• Vala Central e Passarelas: Travessia sobre tábuas de madeira podre e concreto limoso.\n• Escada de Saída do Bueiro (Sul/Leste): Saída de emergência para as ruas do subúrbio a duas quadras do Pavilhão Abandonado.",
+    "conexoes_saida": [
+      {
+        "area_id": "pavilhao-abandonado",
+        "nome": "Pavilhão Abandonado",
+        "gancho": "Subida pela grade de drenagem quebrada."
+      },
+      {
+        "area_id": "casa-auguil",
+        "nome": "Casa Auguil",
+        "gancho": "Ruas traseiras do subúrbio de Fraguiktos após a saída do bueiro."
+      }
+    ],
+    "pois": [
+      {
+        "num": 1,
+        "title": "A Vala Central e o Cruzamento de Água Suja (Topo / Centro do Mapa)",
+        "cabecalho": {
+          "nome": "A Vala Central e o Cruzamento de Água Suja (Topo / Centro do Mapa)",
+          "descricao_publica": "Local no Mapa: O canal comprido de água esverdeada que desce do norte e corta o mapa até o sul, com passarelas estreitas de concreto nas bordas e tábuas de madeira podre atravessadas por cima.\n\nUm esgoto comum e imundo. A água turva carrega sacolas rasgadas, garrafas velhas, folhas apodrecidas vindas da mata e lama escura acumulada nos cantos."
+        },
+        "testes": [
+          {
+            "pericia": "Percepção ou Sobrevivência",
+            "ct_dt": 6,
+            "informacao_revelada": "• Pegadas no Lodo: No meio da sujeira comum do esgoto e do barro nas passarelas laterais, há pegadas recentes de sapatos que não são de trabalhadores de manutenção — alguém desce ali embaixo com frequência e caminha sempre na direção das salas laterais secas.\n\n• Cobaias Cirúrgicas: Presos numa grade enferrujada dentro da água suja do cruzamento, há restos de pequenos animais de rua (ratos e pombos) que não morreram afogados: estão abertos com cortes retos e limpos, como se alguém os tivesse usado para testar cortes cirúrgicos ali mesmo e jogado na vala."
+          }
+        ],
+        "notas_mestre": "Indica movimentação frequente no subterrâneo e os testes anatômicos prévios antes do abate ritual."
+      },
+      {
+        "num": 2,
+        "title": "A Sala de Tubulação (Sala Iluminada — Meio-Esquerda)",
+        "cabecalho": {
+          "nome": "A Sala de Tubulação (Sala Iluminada — Meio-Esquerda)",
+          "descricao_publica": "Local no Mapa: A plataforma quadrada de pedra à esquerda da vala, onde há um cano grosso na parede, alguns barris velhos de manutenção e uma lâmpada amarela/laranja fraca acesa perto de uma válvula vermelha.\n\nUma área técnica comum do esgoto, usada originalmente para controlar a pressão dos canos do bairro. O chão de cimento está seco, mas sujo de poeira e graxa. Alguém puxou um fio clandestino para manter a lâmpada da parede acesa e usou o topo dos barris enferrujados como mesa improvisada para deixar papéis e cadernos longe da água suja."
+        },
+        "testes": [
+          {
+            "pericia": "Investigação ou Ocultismo",
+            "ct_dt": 7,
+            "informacao_revelada": "Pistas Desbloqueadas (Os Cadernos de Estudo sobre \"Ele\"):\n\n• Por que comer a carne (Anotações em Tinta Roxa):\nDentro de uma pasta plástica suja em cima dos barris, há folhas escritas à mão (com a mesma caneta de tinta roxa do cartaz lá de cima). O texto trata o ritual de Sara de forma totalmente fria e calculista, explicando o verdadeiro motivo da ordem de devorar alguém:\n\n\"Anotação #14: Os jovens do Pavilhão abrem as Caixas facilmente porque já desistiram de viver, mas a doença e o sofrimento prolongado deixam suas almas fracas, quase sem Energia Astral. Quando passam pela Porta assim, Ele recebe muito pouco alimento.\"\n\n\"Anotação #19: A carne e o sangue de alguém saudável guardam energia astral limpa. Fazendo o escolhido matar uma vítima e engolir a carne quente antes de abrir a Porta, essa energia fica retida temporariamente dentro dele. Eles acreditam que estão cumprindo uma ordem sagrada Dele para merecer o descanso, sem saber que estão apenas engordando a própria energia interior para que Ele se alimente melhor quando atravessarem.\"\n\n• O Segredo da Caixa Negra:\nRascunhos mostram desenhos da Caixa Negra e Dourada e confirmam por que o grupo não conseguiu abri-la: a caixa não tem fechadura mecânica; ela só destranca quando tocada por alguém que carrega uma condenação real de morte no corpo e já perdeu qualquer esperança de futuro."
+          }
+        ],
+        "notas_mestre": "Revela a verdade perturbadora do culto: o rito canibal serve para 'cevar' a alma condenada com energia astral limpa antes da passagem para alimentar 'Ele'."
+      },
+      {
+        "num": 3,
+        "title": "O Depósito Velho de Manutenção (Sala de Madeira — Direita)",
+        "cabecalho": {
+          "nome": "O Depósito Velho de Manutenção (Sala de Madeira — Direita)",
+          "descricao_publica": "Local no Mapa: O cômodo grande com piso de tábuas de madeira velha à direita do canal, cheio de barris encostados nas paredes, caixas de papelão/madeira no meio e uma escada de madeira quebrada que dava para o andar de cima.\n\nUm depósito subterrâneo comum, cheio de teias de aranha, cheiro de madeira mofada e barris vazios que antigamente guardavam produtos de limpeza da rede de água. No meio das caixas velhas perto da escada quebrada, há pertences escondidos por quem usa o esgoto."
+        },
+        "testes": [
+          {
+            "pericia": "Investigação (Caixas Abertas)",
+            "ct_dt": 6,
+            "informacao_revelada": "• Fichas Médicas Roubadas: Uma caixa de arquivo contém prontuários médicos reais tirados de hospitais e clínicas de Fraguiktos — incluindo os exames de câncer da Sara Auguil e de outros adolescentes do círculo (como a Bia). Quem lidera o culto usa esses arquivos para escolher a dedo jovens que vão morrer em breve.\n\n• Máscaras Sujas: Enroladas num pano velho, há duas máscaras lisas trincadas, sujas de barro seco."
+          },
+          {
+            "pericia": "Crime (Estourar Cadeado)",
+            "ct_dt": 7,
+            "informacao_revelada": "• Itens Úteis (Na caixa com cadeado): Suprimentos guardados para emergências (2d4 Vidrilhos, kit de primeiros socorros básico ou lanterna/pilhas de reposição)."
+          }
+        ],
+        "notas_mestre": "Prova o vazamento criminoso de prontuários médicos para seleção de jovens vulneráveis e fornece suprimentos de sobrevivência."
+      },
+      {
+        "num": 4,
+        "title": "O Canto Desmoronado e a Estátua da Árvore (Canto Inferior Esquerdo)",
+        "cabecalho": {
+          "nome": "O Canto Desmoronado e a Estátua da Árvore (Canto Inferior Esquerdo)",
+          "descricao_publica": "Local no Mapa: A salinha torta no canto inferior esquerdo, depois de um corredor estreito e escuro que sai da sala dos canos; o fundo tem o piso quebrado em meia-lua com velas no chão e uma escultura em forma de árvore seca/raízes.\n\nUm fim de túnel sem saída do esgoto, onde parte do concreto antigo cedeu. Ao contrário do resto da galeria comum, alguém limpou a lama desse canto e montou um altar improvisado no escuro: no chão de pedra úmida, cercada por tocos de velas derretidas, há uma estátua estranha esculpida na forma de uma Árvore retorcida e sem folhas."
+        },
+        "testes": [
+          {
+            "pericia": "Ocultismo ou Investigação",
+            "ct_dt": 7,
+            "informacao_revelada": "Pistas Desbloqueadas (O Estudo sobre a Árvore e \"Ele\"):\n\n• O que é a Estátua: A árvore é feita de madeira escura velha misturada com ferro retorcido e fios laranjas amarrados nos galhos. Preso na base da estátua, há um caderno aberto cheio de anotações de estudo sobre a relação entre \"Ele\" e as árvores da mata:\n\n\"O que os jovens chamam de 'Jardim' nos seus delírios é a própria extensão Dele. Ele não habita um céu; Ele cresce como uma raiz parasita entre os planos. Toda vez que uma Caixa é usada nas árvores do bosque, a Porta não leva ninguém para descansar — ela usa o corpo e a energia acumulada da vítima como semente para que as vinhas Dele atravessem para o nosso lado.\"\n\n• Amostra nas Raízes (Conexão com o Jornal da Parte 4): Preso num pote de vidro sujo aos pés da estátua da árvore, há um pedaço ressecado e morto de uma vinha de cor prateada (exatamente igual às vinhas prateadas que aparecerão no plantão de TV horas depois nos cadáveres de Paládium). Uma etiqueta no vidro diz apenas: \"Amostra recolhida após o evento de Paládium — A semente responde à mesma entidade.\""
+          }
+        ],
+        "notas_mestre": "Conexão crucial com o horror biológico e cósmico: as caixas plantam vinhas prateadas parasitas nos corpos dos jovens para romper a barreira dimensional."
+      },
+      {
+        "num": 5,
+        "title": "A Escada de Saída do Bueiro (Corredor Superior Direito ou Final do Canal)",
+        "cabecalho": {
+          "nome": "A Escada de Saída do Bueiro (Corredor Superior Direito ou Final do Canal)",
+          "descricao_publica": "Local no Mapa: A escada de degraus de cimento no canto superior direito do mapa (ou a grade final no fim do canal de água lá embaixo).\n\nUma saída normal de manutenção do esgoto que sobe até uma tampa de bueiro pesada numa rua vazia a duas quadras do Pavilhão Abandonado, permitindo que o grupo saia do subterrâneo em segurança longe da Figura Mascarada."
+        },
+        "testes": [
+          {
+            "pericia": "Sem Teste / Ação de Saída",
+            "ct_dt": "-",
+            "informacao_revelada": "A tampa de ferro fundido dá acesso direto a um beco calmo na periferia de Fraguiktos. O ar fresco da noite alivia a náusea do esgoto e permite que o grupo reorganize seus passos após a fuga do subterrâneo."
+          }
+        ],
+        "notas_mestre": "Ponto de extração seguro que conclui a fuga subterrânea do episódio longe da Figura Mascarada."
+      }
+    ]
   }
 };
 
@@ -4915,6 +5028,13 @@ const MesaAreaManager = {
             glow: 'rgba(168, 85, 247, 0.75)',
             roadD: 'M 720 320 C 740 240, 750 180, 760 128',
             roadTwinD: 'M 728 320 C 748 240, 758 180, 768 128'
+          },
+          'galerias-escoamento': {
+            xPct: 90, yPct: 35,
+            color: '#059669',
+            glow: 'rgba(5, 150, 105, 0.75)',
+            roadD: 'M 760 128 C 820 140, 870 180, 900 224',
+            roadTwinD: 'M 768 128 C 828 140, 878 180, 908 224'
           }
     };
 

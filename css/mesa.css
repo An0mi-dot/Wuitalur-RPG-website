@@ -4395,6 +4395,17 @@ body.mesa-body.area-pavilhao-abandonado {
   --area-badge-bg: rgba(168, 85, 247, 0.15);
 }
 
+body.mesa-body.area-galerias-escoamento {
+  --area-ambient-1: #064e3b;
+  --area-ambient-2: #022c22;
+  --area-ambient-3: #011c15;
+  --area-ambient-dark: #000d09;
+  --area-accent: #059669;
+  --area-accent-trans: rgba(5, 150, 105, 0.4);
+  --area-glow: rgba(5, 150, 105, 0.45);
+  --area-badge-bg: rgba(5, 150, 105, 0.15);
+}
+
 body.mesa-body.area-refugio-gustavo {
   --area-ambient-1: #991b1b;
   --area-ambient-2: #7f1d1d;
