@@ -1582,7 +1582,7 @@ const MesaApp = {
       // Garante que Thulita (Slot 1), Minerva (Slot 2) e Eric (Slot 3) estejam presentes
       if (!this.state.players[0]) {
         this.state.players[0] = {
-          id: 2, slot: 1, token: 'X7V2', nome: 'Thulita De La Benevidez', idade: '18 anos', altura: '1,40', raca: 'Dragão Anão', arquetipo: 'Popular', imagem: 'assets/thulita.png', avatar: 'assets/thulita_avatar.png',
+          id: 3, slot: 1, token: 'X7V2', nome: 'Thulita De La Benevidez', idade: '18 anos', altura: '1,40', raca: 'Dragão Anão', arquetipo: 'Popular', imagem: 'assets/thulita.png', avatar: 'assets/thulita_avatar.png',
           hp: 14, hpMax: 14, pe: 10, peMax: 10, st: 0, stMax: 32, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Saúde': 'd12', 'Vigor': 'd16', 'Força': 'd4', 'Mente': 'd8' },
           bonus: [{ origem: 'Raça (Dragão Anão)', desc: '+d4 em testes de Mente' }, { origem: 'Arquétipo (Popular)', desc: '+d4 em Testes Sociais' }],
@@ -1597,7 +1597,7 @@ const MesaApp = {
 
       if (!this.state.players[1]) {
         this.state.players[1] = {
-          id: 3, slot: 2, token: 'N3L8', nome: 'Sanguiminerva "Minerva" Qamari Von Adams', idade: '18 anos', altura: '1,78m', raca: 'Vampira', arquetipo: 'Nerd',
+          id: null, slot: 2, token: 'N3L8', nome: 'Sanguiminerva "Minerva" Qamari Von Adams', idade: '18 anos', altura: '1,78m', raca: 'Vampira', arquetipo: 'Nerd',
           imagem: 'assets/minerva.png?v=3', avatar: 'assets/minerva_avatar.png?v=3',
           hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 40, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd4', 'Mente': 'd16' },
@@ -1628,7 +1628,7 @@ const MesaApp = {
 
       if (!this.state.players[3]) {
         this.state.players[3] = {
-          id: 4, slot: 4, token: 'H2Q9', nome: 'Pera Hylidae da Silva', idade: '18 anos', altura: '1,58m', raca: 'Animalesco', arquetipo: 'Rebelde', classe: 'Adivinha', imagem: 'assets/pera.png?v=1.5.1', avatar: 'assets/pera_avatar.png?v=1.5.1',
+          id: null, slot: 4, token: 'H2Q9', nome: 'Pera Hylidae da Silva', idade: '18 anos', altura: '1,58m', raca: 'Animalesco', arquetipo: 'Rebelde', classe: 'Adivinha', imagem: 'assets/pera.png?v=1.5.1', avatar: 'assets/pera_avatar.png?v=1.5.1',
           hp: 12, hpMax: 12, pe: 10, peMax: 10, st: 0, stMax: 24, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Mente': 'd4', 'Saúde': 'd8', 'Vigor': 'd12', 'Força': 'd16' },
           bonus: [
@@ -1646,7 +1646,7 @@ const MesaApp = {
 
       if (!this.state.players[4]) {
         this.state.players[4] = {
-          id: 5, slot: 5, token: 'J8W4', nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão', imagem: 'assets/william.png?v=1.5.1', avatar: 'assets/william_avatar.png?v=1.5.1',
+          id: null, slot: 5, token: 'J8W4', nome: 'Willian Kars', idade: '17 anos', altura: '1,86m', raca: 'Animalesco', arquetipo: 'Valentão', imagem: 'assets/william.png?v=1.5.1', avatar: 'assets/william_avatar.png?v=1.5.1',
           hp: 15, hpMax: 15, pe: 10, peMax: 10, st: 0, stMax: 28, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Saúde': 'd4', 'Vigor': 'd16', 'Força': 'd12', 'Mente': 'd8' },
           bonus: [
@@ -1664,7 +1664,7 @@ const MesaApp = {
 
       if (!this.state.players[5]) {
         this.state.players[5] = {
-          id: 6, slot: 6, token: 'T6D3', nome: 'John Doe', idade: '899 dias (Autômato)', altura: '2,20m', raca: 'E.X.O.s', arquetipo: 'Palhaço', imagem: 'assets/john.png', avatar: 'assets/john_avatar.png',
+          id: null, slot: 6, token: 'T6D3', nome: 'John Doe', idade: '899 dias (Autômato)', altura: '2,20m', raca: 'E.X.O.s', arquetipo: 'Palhaço', imagem: 'assets/john.png', avatar: 'assets/john_avatar.png',
           hp: 16, hpMax: 16, pe: 13, peMax: 13, st: 0, stMax: 32, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Força': 'd16', 'Mente': 'd12', 'Saúde': 'd8', 'Vigor': 'd4' },
           bonus: [
@@ -1682,7 +1682,7 @@ const MesaApp = {
 
       if (!this.state.players[6]) {
         this.state.players[6] = {
-          id: 7, slot: 7, token: 'Y4M7', nome: 'Odara De La Benevidez', idade: '18 anos', altura: '1,42m', raca: 'Dragão Anão', arquetipo: 'Gótica',
+          id: null, slot: 7, token: 'Y4M7', nome: 'Odara De La Benevidez', idade: '18 anos', altura: '1,42m', raca: 'Dragão Anão', arquetipo: 'Gótica',
           imagem: 'assets/odara.png?v=3', avatar: 'assets/odara_avatar.png?v=3',
           hp: 14, hpMax: 14, pe: 10, peMax: 10, st: 0, stMax: 36, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Força': 'd16', 'Mente': 'd12', 'Saúde': 'd8', 'Vigor': 'd4' },
@@ -1701,7 +1701,7 @@ const MesaApp = {
 
       if (!this.state.players[7]) {
         this.state.players[7] = {
-          id: 8, slot: 8, token: 'F9C5', nome: "Canneth 'Blinko' Biloxi", idade: '18 anos', altura: '1,75m', raca: 'Animalesco', arquetipo: 'Teimoso',
+          id: null, slot: 8, token: 'F9C5', nome: "Canneth 'Blinko' Biloxi", idade: '18 anos', altura: '1,75m', raca: 'Animalesco', arquetipo: 'Teimoso',
           imagem: 'assets/blinko.png?v=2', avatar: 'assets/blinko_avatar.png',
           hp: 17, hpMax: 17, pe: 10, peMax: 10, st: 0, stMax: 36, stressPoints: 0, stressPointsMax: 6,
           atributos: { 'Vigor': 'd12', 'Saúde': 'd8', 'Força': 'd4', 'Mente': 'd16' },
@@ -1718,10 +1718,43 @@ const MesaApp = {
         };
       }
       
-      // Sincroniza estados do sistema gravados no slot 1 (área, coletáveis, notebook e abertura)
-      if (data && data[0] && data[0].atributos) {
+      // Extrai os atributos compartilhados da linha mestra (id: 1)
+      const row1 = (data || []).find(r => Number(r.id) === 1) || (data && data[0]);
+      let sysVitals = {};
+      try {
+        const cachedStr = localStorage.getItem('wu_mesa_vitals_cache');
+        if (cachedStr) sysVitals = JSON.parse(cachedStr) || {};
+      } catch(e) {}
+
+      if (row1 && row1.atributos) {
         try {
-          const p1Attrs = typeof data[0].atributos === 'string' ? JSON.parse(data[0].atributos) : data[0].atributos;
+          const p1Attrs = typeof row1.atributos === 'string' ? JSON.parse(row1.atributos) : row1.atributos;
+          if (p1Attrs && p1Attrs._sys_players_vitals) {
+            sysVitals = { ...sysVitals, ...p1Attrs._sys_players_vitals };
+          }
+        } catch(e) {}
+      }
+
+      // Aplica os status salvos no banco para cada um dos 8 jogadores
+      for (let i = 0; i < 8; i++) {
+        const p = this.state.players[i];
+        if (p && sysVitals && sysVitals[p.slot]) {
+          const v = sysVitals[p.slot];
+          if (v.hp !== undefined) p.hp = v.hp;
+          if (v.hpMax !== undefined) p.hpMax = v.hpMax;
+          if (v.pe !== undefined) p.pe = v.pe;
+          if (v.peMax !== undefined) p.peMax = v.peMax;
+          if (v.st !== undefined) p.st = v.st;
+          if (v.stMax !== undefined) p.stMax = v.stMax;
+          if (v.stressPoints !== undefined) p.stressPoints = v.stressPoints;
+          if (v.stressPointsMax !== undefined) p.stressPointsMax = v.stressPointsMax;
+        }
+      }
+
+      // Sincroniza estados do sistema gravados na linha mestra (área, coletáveis, notebook e abertura)
+      if (row1 && row1.atributos) {
+        try {
+          const p1Attrs = typeof row1.atributos === 'string' ? JSON.parse(row1.atributos) : row1.atributos;
           if (p1Attrs) {
             if (Array.isArray(p1Attrs._sys_coletaveis) && p1Attrs._sys_coletaveis.length > 0 && window.MesaColetaveis) {
               const { items: merged, changed } = MesaColetaveis.mergeCanonical(p1Attrs._sys_coletaveis);
@@ -2667,16 +2700,63 @@ const MesaApp = {
       });
     }
 
-    // 3. Sincroniza persistentemente com o Supabase
-    if (this.supabase && player.id) {
-      try {
-        await this.supabase
-          .from('personagens')
-          .update(patchData)
-          .eq('id', player.id);
-      } catch(err) {
-        console.error("Erro ao salvar status no Supabase:", err);
-      }
+    // 3. Salva no cache local imediato
+    try {
+      const cacheStr = localStorage.getItem('wu_mesa_vitals_cache');
+      const cache = cacheStr ? JSON.parse(cacheStr) : {};
+      cache[player.slot] = {
+        hp: player.hp,
+        hpMax: player.hpMax,
+        pe: player.pe,
+        peMax: player.peMax,
+        st: player.st,
+        stMax: player.stMax,
+        stressPoints: player.stressPoints,
+        stressPointsMax: player.stressPointsMax
+      };
+      localStorage.setItem('wu_mesa_vitals_cache', JSON.stringify(cache));
+    } catch(e) {}
+
+    // 4. Sincroniza persistentemente com o Supabase (para todos os jogadores)
+    if (this.supabase) {
+      (async () => {
+        try {
+          // Se for linha direta existente no banco (ex: id 1 ou id 3), atualiza colunas nativas
+          if (player.id && (player.id === 1 || player.id === 3)) {
+            await this.supabase
+              .from('personagens')
+              .update(patchData)
+              .eq('id', player.id);
+          }
+
+          // Persiste os status de todos os 8 slots no registro compartilhado de id: 1
+          const { data } = await this.supabase
+            .from('personagens')
+            .select('atributos')
+            .eq('id', 1)
+            .single();
+          const currentAttrs = data && data.atributos
+            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+            : {};
+          if (!currentAttrs._sys_players_vitals) currentAttrs._sys_players_vitals = {};
+          currentAttrs._sys_players_vitals[player.slot] = {
+            hp: player.hp,
+            hpMax: player.hpMax,
+            pe: player.pe,
+            peMax: player.peMax,
+            st: player.st,
+            stMax: player.stMax,
+            stressPoints: player.stressPoints,
+            stressPointsMax: player.stressPointsMax
+          };
+          await this.supabase
+            .from('personagens')
+            .update({ atributos: currentAttrs })
+            .eq('id', 1);
+        } catch(err) {
+          console.error("Erro ao salvar status no Supabase:", err);
+        }
+      })();
     }
   },
 
@@ -2771,6 +2851,24 @@ const MesaApp = {
     if (data.stMax !== undefined) player.stMax = data.stMax;
     if (data.stressPoints !== undefined) player.stressPoints = data.stressPoints;
     if (data.stressPointsMax !== undefined) player.stressPointsMax = data.stressPointsMax;
+
+    // Cache no localStorage
+    try {
+      const cacheStr = localStorage.getItem('wu_mesa_vitals_cache');
+      const cache = cacheStr ? JSON.parse(cacheStr) : {};
+      cache[player.slot] = {
+        hp: player.hp,
+        hpMax: player.hpMax,
+        pe: player.pe,
+        peMax: player.peMax,
+        st: player.st,
+        stMax: player.stMax,
+        stressPoints: player.stressPoints,
+        stressPointsMax: player.stressPointsMax
+      };
+      localStorage.setItem('wu_mesa_vitals_cache', JSON.stringify(cache));
+    } catch(e) {}
+
     if (data.vidrilhos !== undefined) {
       player.vidrilhos = data.vidrilhos;
       if (window.MesaIgrisShop && MesaIgrisShop.isOpen) {
@@ -2921,9 +3019,9 @@ const MesaApp = {
             <span class="ficha-badge-tag">${player.idade || 'N/A'}</span>
             <span class="ficha-badge-tag">${player.altura || 'N/A'}</span>
             ${isMaster ? `
-              <button type="button" class="ficha-pavor-toggle-btn \${player.dadoDePavor ? 'active' : ''}" onclick="MesaApp.toggleDadoDePavor(\${player.slot})" title="Alternar Dado de Pavor">
+              <button type="button" class="ficha-pavor-toggle-btn ${player.dadoDePavor ? 'active' : ''}" onclick="MesaApp.toggleDadoDePavor(${player.slot})" title="Alternar Dado de Pavor">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="M16 8h.01"/><path d="M8 8h.01"/><path d="M8 16h.01"/><path d="M16 16h.01"/><path d="M12 12h.01"/></svg>
-                <span>\${player.dadoDePavor ? 'Dado de Pavor Ativo' : 'Ativar Pavor'}</span>
+                <span>${player.dadoDePavor ? 'Dado de Pavor Ativo' : 'Ativar Pavor'}</span>
               </button>
             ` : (player.dadoDePavor ? `
               <span class="ficha-pavor-toggle-btn active" style="cursor: default; pointer-events: none;" title="Dado de Pavor ativo pelo Mestre">
@@ -11720,7 +11818,7 @@ const MesaCombate = {
             <span class="combat-card-name">${p.nome}</span>
             <div style="display: flex; align-items: center; gap: 4px;">
               ${MesaApp.state && MesaApp.state.isMaster ? `
-                <button type="button" class="combat-pavor-toggle-btn \${p.dadoDePavor ? 'active' : ''}" onclick="event.stopPropagation(); MesaApp.toggleDadoDePavor(\${slotNum});" title="\${p.dadoDePavor ? 'Desativar Dado de Pavor' : 'Ativar Dado de Pavor'}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg><span>\${p.dadoDePavor ? 'PAVOR ATIVO' : '+ PAVOR'}</span></button>
+                <button type="button" class="combat-pavor-toggle-btn ${p.dadoDePavor ? 'active' : ''}" onclick="event.stopPropagation(); MesaApp.toggleDadoDePavor(${slotNum});" title="${p.dadoDePavor ? 'Desativar Dado de Pavor' : 'Ativar Dado de Pavor'}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg><span>${p.dadoDePavor ? 'PAVOR ATIVO' : '+ PAVOR'}</span></button>
               ` : ''}
               <span class="combat-card-slot-badge">S${slotNum}</span>
             </div>
