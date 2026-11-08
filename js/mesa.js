@@ -10561,10 +10561,10 @@ window.MesaIgrisShop = MesaIgrisShop;
 const MesaCombate = {
   isActive: false,
   lastLocalUpdate: 0,
-  opponentId: 'ratos',
-  opponentName: 'Ratos',
-  videoUrl: 'assets/videos/rato_cinematica.mp4?v=3',
-  selectedPresetId: 'ratos',
+  opponentId: 'assasino',
+  opponentName: '???',
+  videoUrl: 'assets/videos/assasino1.mp4',
+  selectedPresetId: 'assasino',
   turnCycle: null,
   playerHpCache: {},
   _audioCtx: null,
@@ -10579,6 +10579,13 @@ const MesaCombate = {
 
   presets: [
     {
+      id: 'assasino',
+      name: '???',
+      video: 'assets/videos/assasino1.mp4',
+      videoEsconderijo: 'assets/videos/assasino1_vermelho.mp4',
+      desc: 'Oponente misterioso com variação carmesim no esconderijo'
+    },
+    {
       id: 'ratos',
       name: 'Ratos',
       video: 'assets/videos/rato_cinematica.mp4?v=3',
@@ -10586,7 +10593,7 @@ const MesaCombate = {
     },
     {
       id: 'unknown',
-      name: '??? (Inimigo Antigo)',
+      name: 'Inimigo Antigo',
       video: 'assets/videos/inimigo_antigo.mp4',
       desc: 'Arquivo do oponente anterior guardado'
     }
@@ -10779,7 +10786,7 @@ const MesaCombate = {
     this.isActive = true;
     this.lastLocalUpdate = Date.now();
     this.opponentId = data.opponentId || 'unknown';
-    this.opponentName = (data.opponentName && data.opponentName !== '???') ? data.opponentName : (this.opponentName || 'Ratos');
+    this.opponentName = (data.opponentName !== undefined && data.opponentName !== null && data.opponentName !== '') ? data.opponentName : (this.opponentName || '???');
     this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=3');
 
     // Reseta cache de PV dos personagens
@@ -10954,7 +10961,13 @@ const MesaCombate = {
       fallbackLabel.textContent = this.opponentName || 'ÁREA DE COMBATE';
     }
 
-    const trimmedUrl = (url && url.trim()) || '';
+    let trimmedUrl = (url && url.trim()) || '';
+    const isEsconderijoNow = document.body.classList.contains('esconderijo-active');
+    if ((trimmedUrl.includes('assasino1') || this.opponentName === '???') && isEsconderijoNow) {
+      trimmedUrl = 'assets/videos/assasino1_vermelho.mp4';
+    } else if (trimmedUrl.includes('assasino1') && !isEsconderijoNow) {
+      trimmedUrl = 'assets/videos/assasino1.mp4';
+    }
     if (trimmedUrl) {
       const currentSrc = video.getAttribute('src') || '';
       if (currentSrc === trimmedUrl && !video.paused && video.readyState >= 2) {
@@ -11860,6 +11873,32 @@ const MesaCombate = {
     this._rampWaveRaf = requestAnimationFrame(loop);
   },
 
+  updateVideoVariant(isEsconderijo) {
+    const video = document.getElementById('combat-bg-video');
+    if (!video) return;
+
+    const currentSrc = video.getAttribute('src') || '';
+    const isAssasino = currentSrc.includes('assasino1') || (this.videoUrl && this.videoUrl.includes('assasino1')) || this.opponentName === '???';
+    if (!isAssasino) return;
+
+    const targetUrl = isEsconderijo ? 'assets/videos/assasino1_vermelho.mp4' : 'assets/videos/assasino1.mp4';
+    if (currentSrc.includes(targetUrl)) return;
+
+    const prevTime = video.currentTime || 0;
+    video.style.transition = 'none';
+    video.src = targetUrl;
+    video.load();
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        if (prevTime > 0) {
+          try { video.currentTime = prevTime; } catch(e) {}
+        }
+        video.classList.add('playing');
+      }).catch(() => {});
+    }
+  },
+
   stopRampWave() {
     if (this._rampWaveRaf) {
       cancelAnimationFrame(this._rampWaveRaf);
@@ -12270,6 +12309,7 @@ const MesaEsconderijo = {
         panel.classList.add('active');
         if (toggleBtn) toggleBtn.classList.add('active');
         document.body.classList.add('esconderijo-active');
+        if (window.MesaCombate && typeof MesaCombate.updateVideoVariant === 'function') MesaCombate.updateVideoVariant(true);
         this.startPanelWave();
         this.renderSurvivalPanel();
       } else {
@@ -12277,6 +12317,7 @@ const MesaEsconderijo = {
         if (toggleBtn) toggleBtn.classList.remove('active');
         if (!this.isMasterActive) {
           document.body.classList.remove('esconderijo-active');
+          if (window.MesaCombate && typeof MesaCombate.updateVideoVariant === 'function') MesaCombate.updateVideoVariant(false);
         }
         this.stopPanelWave();
       }
@@ -12305,6 +12346,7 @@ const MesaEsconderijo = {
       if (toggleBtn) toggleBtn.classList.remove('active');
       if (!this.isMasterActive) {
         document.body.classList.remove('esconderijo-active');
+        if (window.MesaCombate && typeof MesaCombate.updateVideoVariant === 'function') MesaCombate.updateVideoVariant(false);
       }
       this.stopPanelWave();
     }
@@ -12485,7 +12527,7 @@ const MesaEsconderijo = {
     }
     if (badge) {
       if (this.playerSector) {
-        badge.textContent = `Setor ${this.playerSector} Definido (Privado)`;
+        badge.textContent = `Setor ${this.playerSector} Definido`;
         badge.className = 'survival-sector-selected-indicator active';
       } else {
         badge.textContent = 'Nenhum setor definido';
@@ -12677,6 +12719,7 @@ const MesaEsconderijo = {
     this.playerHidden = true;
     this.isMasterActive = true;
     document.body.classList.add('esconderijo-active');
+    if (window.MesaCombate && typeof MesaCombate.updateVideoVariant === 'function') MesaCombate.updateVideoVariant(true);
     this.openSurvivalPanel();
   },
 
@@ -12685,6 +12728,7 @@ const MesaEsconderijo = {
     this.playerSector = null;
     this.isMasterActive = false;
     document.body.classList.remove('esconderijo-active');
+    if (window.MesaCombate && typeof MesaCombate.updateVideoVariant === 'function') MesaCombate.updateVideoVariant(false);
     this.closeSurvivalPanel();
   },
 
