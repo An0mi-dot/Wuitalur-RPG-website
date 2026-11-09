@@ -177,6 +177,72 @@
       segredo_util: "Ela é a pessoa mascarada que lidera a roda do Pavilhão Abandonado e a autora de todas as anotações escritas com tinta roxa.",
       gatilho_revelacao: "Percepção ou Investigação DT 7 para notar a caneta roxa no bolso e o odor de formol sob o perfume; ou Intuição DT 8 ao confrontá-la sobre Minerva para notar seu fascínio clínico em vez de piedade.",
       notas_mestre: "Circula livremente pela clínica e áreas públicas. O objetivo é gerar impotência social nos jogadores ao verem uma assassina protegida pelo prestígio público, além de tentar manipular Minerva após o diagnóstico da Praga."
+    },
+    {
+      id: "figura-mascarada",
+      nome: "???",
+      ilustracao: null,
+      papel: "A Figura Mascarada; predador silencioso da Mata do Norte e condutor dos ritos no Pavilhão Abandonado",
+      pv: 16,
+      pe: 4,
+      deslocamento: "6B",
+      atributos: { Vigor: "d12", Força: "d12", Saúde: "d12", Mente: "d16" },
+      equipamento: [
+        "Máscara lisa e pálida sem feições",
+        "Faca de caça pesada (1d8 cortante/perfurante)",
+        "Chaves e correntes enferrujadas do Pavilhão"
+      ],
+      pericias: [
+        "Furtividade",
+        "Disparada",
+        "Atletismo",
+        "Percepção",
+        "Intimidação",
+        "Medicina",
+        "Sobrevivência"
+      ],
+      habilidades: [
+        {
+          nome: "Obsessão pela Chave",
+          tipo: "Passiva",
+          efeito: "A figura sente a presença da Caixa Negra e Dourada no escuro, sabendo sempre quem a está carregando. Ignora provocações ou distrações de outros alvos se houver caminho até o portador da caixa e recebe vantagem em testes de Percepção e Sobrevivência para rastreá-lo."
+        },
+        {
+          nome: "Talho Cirúrgico",
+          tipo: "Ação Padrão (1 PE)",
+          efeito: "Desfere um golpe frio e calculado com a faca de caça mirando pontos vitais e tendões. Causa o dano da arma mais 1d4 adicional e exige que o alvo passe em um teste de Saúde (DT 7) para não sofrer sangramento contínuo até ser enfaixado."
+        },
+        {
+          nome: "Lâmina de Sigilos Dourados",
+          tipo: "Ação Padrão (1 PE)",
+          efeito: "A figura solta a faca de caça no ar, fazendo-a flutuar cercada por sigilos dourados brilhantes antes de disparar em linha reta contra um alvo em alcance médio. O ataque usa Mente (d16) e causa 1d8 + 2 de dano perfurante. Se houver outro personagem adjacente ou alinhado ao alvo principal, a lâmina atravessa e perfura o segundo alvo também (causando 1d6 de dano perfurante) antes de retornar flutuando para a mão de \"???\"."
+        },
+        {
+          nome: "Clarão de Vedação",
+          tipo: "Reação (1 PE)",
+          efeito: "Sempre que um personagem tentar agarrar, golpear ou arrancar a máscara de \"???\", as frestas da máscara explodem instantaneamente em um feixe violento de luz ofuscante. A tentativa falha automaticamente e o atacante deve passar em um teste de Vigor ou Saúde (DT 8); se falhar, sofre 1d4 de dano mental/luminoso e fica Atordoado e Cego por 1 rodada."
+        },
+        {
+          nome: "Passo na Fuligem",
+          tipo: "Reação (1 PE)",
+          efeito: "Ao sofrer dano pesado ou ouvir a aproximação de autoridades externas, a figura se envolve em uma nuvem densa de fumaça cor de ferrugem e fios laranjas, recuando imediatamente para a escuridão sem provocar ataques de oportunidade."
+        }
+      ],
+      personalidade: "Completamente muda e implacável durante perseguições ou combates. Caminha sem emitir som, inclinando a cabeça de forma lenta e inumana para observar o desespero de suas presas. Só utiliza a voz durante os ritos fechados de doutrinação, onde assume um sussurro gélido, solene e desprovido de qualquer calor humano, soando como um eco antigo que guia mentes quebradas.",
+      historia_resumida: "Uma presença obscura e anônima que assombra os limites da Mata do Norte e os subterrâneos de Fraguiktos. É a entidade física responsável por entregar as Caixas Negras aos jovens desenganados, conduzir a lavagem cerebral no Pavilhão Abandonado e caçar implacavelmente qualquer um que tente roubar os artefatos destinados à abertura das Portas para \"Ele\".",
+      o_que_sabe: [
+        "Localização da Caixa: A localização exata da Caixa Negra e Dourada roubada da Casa Auguil e o rastro deixado pelos adolescentes na lama da floresta.",
+        "Rotas Subterrâneas: Todos os caminhos ocultos, trancas e passagens que conectam a Mata do Norte, o Pavilhão Abandonado e as galerias de esgoto.",
+        "O Ritual de Sangue: O ritual completo exigido pela entidade \"Ele\" para que uma Porta seja aberta através do sacrifício e consumo da carne na floresta."
+      ],
+      o_que_nao_sabe: [
+        "Empatia e Heroísmo: Não compreende laços de empatia ou heroísmo entre o grupo, assumindo que qualquer adolescente acuado acabará cedendo ao medo ou entregando o portador da Caixa para salvar a própria pele.",
+        "A Vigilância de Isaque: Não sabe que um arqueiro mascarado (Isaque) tem vigiado os arredores do culto no escuro e conhece rotas seguras pelas galerias."
+      ],
+      informacao_livre: "Nenhuma. Fora do círculo de doutrinação dos escolhidos, a figura não dialoga, não responde a perguntas e não negocia, comunicando sua intenção apenas através do arranhar da lâmina no metal e do avanço silencioso.",
+      segredo_util: "Por trás dos buracos escuros da máscara lisa não há um olhar comum, mas feixes de fios alaranjados acesos como brasas e sigilos ocultos que parecem costurar a própria máscara à carne, impedindo que seu rosto seja revelado à força.",
+      gatilho_revelacao: "Percepção ou Medicina (DT 7) durante um confronto próximo para notar que seus golpes não são de um assassino descontrolado, mas cortes cirúrgicos perfeitos de quem conhece anatomia profundamente; ou Investigação (DT 8) para enxergar os fios laranjas e sigilos dourados pulsando por dentro das frestas da máscara.",
+      notas_mestre: "Atua como a ameaça física inexorável da campanha nas áreas isoladas e escuras. O objetivo dramático de suas aparições é manter a sensação constante de caça e claustrofobia, forçando os jogadores a fugirem para lugares cada vez mais profundos (como o Pavilhão e o esgoto) para protegerem a Caixa Negra."
     }
   ];
 

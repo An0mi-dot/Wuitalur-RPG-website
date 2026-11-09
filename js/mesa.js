@@ -5862,7 +5862,8 @@ const MesaAreaManager = {
     if (npcsList.length === 0) return;
 
     const targetId = npcId || npcsList[0].id;
-    const npc = npcsList.find(n => n.id === targetId) || npcsList[0];
+    const cleanTarget = String(targetId).trim().toLowerCase();
+    const npc = npcsList.find(n => n.id === targetId || n.id === cleanTarget || ((cleanTarget === '???' || cleanTarget === 'interrogacao') && n.id === 'figura-mascarada')) || npcsList[0];
     if (!npc) return;
 
     const content = document.getElementById('npc-dossier-content');
@@ -10332,6 +10333,7 @@ const MesaCenterArtwork = {
     if (clean === 'elias') return 'elias-ribeiro';
     if (clean === 'isaque') return 'isaque-valente';
     if (clean === 'constança' || clean === 'constanca') return 'constanca';
+    if (clean === '???' || clean === 'interrogacao' || clean === 'figura-mascarada') return 'figura-mascarada';
     return clean;
   },
 
