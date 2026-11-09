@@ -5868,85 +5868,262 @@ const MesaAreaManager = {
     const content = document.getElementById('npc-dossier-content');
     if (!content) return;
 
-    // Seletor rapido de NPCs no topo se houver mais de 1
-    let npcTabsHtml = '';
-    if (npcsList.length > 1) {
-      const tabsBtns = npcsList.map(n => {
-        const isSelected = n.id === npc.id;
-        const shortName = n.nome.split('•')[0].trim();
-        return `<button type="button" class="npc-switch-btn ${isSelected ? 'active' : ''}" onclick="MesaAreaManager.openNpcModal('${n.id}')">${shortName}</button>`;
-      }).join('');
-      npcTabsHtml = `<div class="npc-switch-row">${tabsBtns}</div>`;
-    }
-
     const roleName = npc.papel || (npc.ligacao_misterio ? npc.ligacao_misterio.split('.')[0] : 'Personagem Local');
-    const fieldRow = (label, text) => `
-      <div class="npc-field">
-        <span class="npc-field-label">${label}</span>
-        <p class="npc-field-text">${text || ''}</p>
-      </div>`;
 
-    let attrHtml = '';
-    if (npc.atributos) {
-      const keys = Object.keys(npc.atributos);
-      if (keys.length > 0) {
-        const boxes = keys.map(k => {
-          return `<div style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid var(--ink-edge-soft); padding: 8px; border-radius: 6px; text-align: center; min-width: 60px;">
-            <div style="font-size: 0.65rem; color: var(--ink-text-dim); text-transform: uppercase; margin-bottom: 4px;">${k}</div>
-            <div style="font-size: 1.1rem; font-weight: bold; color: var(--ink-text); font-family: var(--font-heading, 'Cinzel', serif);">${npc.atributos[k]}</div>
-          </div>`;
-        }).join('');
-        attrHtml = `<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;">${boxes}</div>`;
-      }
-    }
+    // 1. Sidebar Items (Coluna Lateral de Selecao)
+    const sidebarItemsHtml = npcsList.map(n => {
+      const isSelected = n.id === npc.id;
+      const thumb = n.ilustracao || (n.id === 'elias-ribeiro' ? 'assets/npcs/elias-ribeiro.png' : (n.id === 'isaque-valente' ? 'assets/npcs/isaque-valente.png' : ''));
+      const shortRole = n.papel ? n.papel.split('•')[0].trim() : 'NPC';
+      return `
+        <button type="button" class="npc-sidebar-item ${isSelected ? 'active' : ''}" onclick="MesaAreaManager.openNpcModal('${n.id}')">
+          <div class="npc-sidebar-thumb">
+            ${thumb ? `<img src="${thumb}" alt="${n.nome}">` : `<span class="npc-thumb-fallback">${n.nome.charAt(0)}</span>`}
+          </div>
+          <div class="npc-sidebar-details">
+            <span class="npc-sidebar-item-name">${n.nome}</span>
+            <span class="npc-sidebar-item-role">${shortRole}</span>
+          </div>
+        </button>
+      `;
+    }).join('');
 
+    // 2. Ilustracao e Botao de Exibicao Central
     const ilustracao = npc.ilustracao || (npc.id === 'elias-ribeiro' ? 'assets/npcs/elias-ribeiro.png' : (npc.id === 'isaque-valente' ? 'assets/npcs/isaque-valente.png' : null));
     const isDisplayed = Boolean(window.MesaCenterArtwork && MesaCenterArtwork.active && (MesaCenterArtwork.npcId === npc.id || MesaCenterArtwork.imgUrl === ilustracao));
 
-    const artworkHtml = ilustracao ? `
-      <div class="npc-artwork-section">
-        <div class="npc-artwork-preview">
-          <img src="${ilustracao}" alt="${npc.nome}" />
+    const artworkHeaderHtml = ilustracao ? `
+      <div class="npc-header-artwork-box">
+        <div class="npc-header-thumb-preview">
+          <img src="${ilustracao}" alt="${npc.nome}">
         </div>
         <button type="button" class="npc-display-btn ${isDisplayed ? 'active' : ''}" data-npc-id="${npc.id}" onclick="MesaCenterArtwork.toggleNpc('${npc.id}')">
-          ${isDisplayed ? 'Remover da Mesa Virtual' : 'Exibir Ilustração no Centro da Mesa'}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px; height:13px;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+          <span>${isDisplayed ? 'Remover da Mesa Virtual' : 'Exibir Ilustração no Centro da Mesa'}</span>
         </button>
       </div>
     ` : '';
 
+    // 3. Atributos
+    let attrsHtml = '';
+    if (npc.atributos) {
+      const keys = Object.keys(npc.atributos);
+      attrsHtml = keys.map(k => `
+        <div class="npc-attr-card">
+          <span class="npc-attr-label">${k}</span>
+          <span class="npc-attr-value">${npc.atributos[k]}</span>
+        </div>
+      `).join('');
+    }
+
+    // 4. Equipamento como tags simples
+    let equipHtml = '';
+    if (Array.isArray(npc.equipamento) && npc.equipamento.length > 0) {
+      const tags = npc.equipamento.map(eq => `<span class="npc-pill-tag npc-pill-equip">${eq}</span>`).join('');
+      equipHtml = `
+        <div class="npc-tactical-sub">
+          <span class="npc-sub-label">Equipamento & Itens</span>
+          <div class="npc-tags-container">${tags}</div>
+        </div>
+      `;
+    }
+
+    // 5. Pericias Treinadas (nomes puros das regras)
+    let periciasHtml = '';
+    if (Array.isArray(npc.pericias) && npc.pericias.length > 0) {
+      const tags = npc.pericias.map(p => `<span class="npc-pill-tag npc-pill-pericia">${p}</span>`).join('');
+      periciasHtml = `
+        <div class="npc-tactical-sub">
+          <span class="npc-sub-label">Perícias Treinadas <span class="npc-caption-dim">(Vantagem Automática)</span></span>
+          <div class="npc-tags-container">${tags}</div>
+        </div>
+      `;
+    }
+
+    // 6. Habilidades com custos em PE
+    let habilidadesHtml = '';
+    if (Array.isArray(npc.habilidades) && npc.habilidades.length > 0) {
+      const cards = npc.habilidades.map(h => `
+        <div class="npc-ability-card">
+          <div class="npc-ability-header">
+            <span class="npc-ability-name">${h.nome}</span>
+            <span class="npc-ability-type-badge">${h.tipo}</span>
+          </div>
+          <p class="npc-ability-effect">${h.efeito}</p>
+        </div>
+      `).join('');
+      habilidadesHtml = `
+        <div class="npc-tactical-sub">
+          <span class="npc-sub-label">Habilidades</span>
+          <div class="npc-abilities-grid">${cards}</div>
+        </div>
+      `;
+    }
+
+    // 7. O Que Ele Sabe (Topicos de revelacoes e pistas)
+    let oQueSabeHtml = '';
+    if (Array.isArray(npc.o_que_sabe) && npc.o_que_sabe.length > 0) {
+      const items = npc.o_que_sabe.map(topic => {
+        const sepIdx = topic.indexOf(':');
+        if (sepIdx > 0 && sepIdx < 45) {
+          const title = topic.substring(0, sepIdx);
+          const text = topic.substring(sepIdx + 1);
+          return `<li class="npc-info-item npc-know-item">
+            <strong class="npc-info-lead">${title}:</strong>
+            <span class="npc-info-body">${text}</span>
+          </li>`;
+        }
+        return `<li class="npc-info-item npc-know-item"><span class="npc-info-body">${topic}</span></li>`;
+      }).join('');
+
+      oQueSabeHtml = `
+        <div class="npc-investigation-box npc-box-know">
+          <div class="npc-box-heading">
+            <svg class="npc-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <h4>O Que Ele Sabe <span class="npc-box-subtag">Revelações & Pistas</span></h4>
+          </div>
+          <ul class="npc-investigation-list">${items}</ul>
+        </div>
+      `;
+    }
+
+    // 8. O Que Ele NÃO Sabe (Limites narrativos com aviso para o Mestre)
+    let oQueNaoSabeHtml = '';
+    if (Array.isArray(npc.o_que_nao_sabe) && npc.o_que_nao_sabe.length > 0) {
+      const items = npc.o_que_nao_sabe.map(topic => {
+        const sepIdx = topic.indexOf(':');
+        if (sepIdx > 0 && sepIdx < 45) {
+          const title = topic.substring(0, sepIdx);
+          const text = topic.substring(sepIdx + 1);
+          return `<li class="npc-info-item npc-dont-know-item">
+            <strong class="npc-info-lead">${title}:</strong>
+            <span class="npc-info-body">${text}</span>
+          </li>`;
+        }
+        return `<li class="npc-info-item npc-dont-know-item"><span class="npc-info-body">${topic}</span></li>`;
+      }).join('');
+
+      oQueNaoSabeHtml = `
+        <div class="npc-investigation-box npc-box-dont-know">
+          <div class="npc-box-heading">
+            <svg class="npc-box-icon warning-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            <h4>O Que Ele NÃO Sabe <span class="npc-box-subtag warn-tag">Limites Narrativos do Mestre</span></h4>
+          </div>
+          <p class="npc-narrative-warning">Aviso ao Mestre: Este personagem desconhece as informações abaixo. Evite revelá-las durante a interpretação ou diálogos com ele.</p>
+          <ul class="npc-investigation-list">${items}</ul>
+        </div>
+      `;
+    }
+
     content.innerHTML = `
-      ${npcTabsHtml}
+      <div class="npc-dossier-layout">
+        <!-- Coluna Lateral de Seleção -->
+        <aside class="npc-dossier-sidebar">
+          <div class="npc-sidebar-head">
+            <span class="npc-sidebar-title">Personagens</span>
+            <span class="npc-sidebar-count">${npcsList.length}</span>
+          </div>
+          <div class="npc-sidebar-list">
+            ${sidebarItemsHtml}
+          </div>
+        </aside>
 
-      <div class="npc-sheet-head" style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; margin-bottom: 20px;">
-        <h2 class="npc-sheet-name" style="margin: 0;">${npc.nome}</h2>
-        <span class="npc-role-tag" style="margin: 0;">${roleName}</span>
-        ${npc.pv !== undefined ? `<span class="npc-pv-tag" style="background:#16a34a; color:#fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">PV: ${npc.pv}</span>` : ''}
+        <!-- Coluna Principal de Leitura -->
+        <main class="npc-dossier-main">
+          <!-- Cabeçalho -->
+          <div class="npc-main-header">
+            <div class="npc-main-header-info">
+              <div class="npc-main-name-row">
+                <h2 class="npc-main-name">${npc.nome}</h2>
+                <div class="npc-vitals-wrap">
+                  ${npc.pv !== undefined ? `<span class="npc-vital-pill npc-pill-pv" title="Pontos de Vida"><strong class="pill-k">PV</strong> <span class="pill-v">${npc.pv}</span></span>` : ''}
+                  ${npc.pe !== undefined ? `<span class="npc-vital-pill npc-pill-pe" title="Pontos de Esforço"><strong class="pill-k">PE</strong> <span class="pill-v">${npc.pe}</span></span>` : ''}
+                  ${npc.deslocamento ? `<span class="npc-vital-pill npc-pill-desloc" title="Deslocamento"><strong class="pill-k">DESL</strong> <span class="pill-v">${npc.deslocamento}</span></span>` : ''}
+                </div>
+              </div>
+              <div class="npc-main-role">${roleName}</div>
+            </div>
+            
+            ${artworkHeaderHtml}
+          </div>
+
+          <!-- Bloco Tático -->
+          <section class="npc-section-block npc-tactical-block">
+            <div class="npc-section-heading">
+              <h3 class="npc-section-title">Bloco Tático</h3>
+              <span class="npc-section-badge">Combate & Ficha</span>
+            </div>
+
+            <!-- Atributos -->
+            <div class="npc-tactical-sub">
+              <span class="npc-sub-label">Atributos</span>
+              <div class="npc-attributes-row">
+                ${attrsHtml}
+              </div>
+            </div>
+
+            <!-- Equipamento -->
+            ${equipHtml}
+
+            <!-- Perícias Treinadas -->
+            ${periciasHtml}
+
+            <!-- Habilidades -->
+            ${habilidadesHtml}
+          </section>
+
+          <!-- Módulo de Investigação -->
+          <section class="npc-section-block npc-investigation-block">
+            <div class="npc-section-heading">
+              <h3 class="npc-section-title">Módulo de Investigação</h3>
+              <span class="npc-section-badge">Pistas & Condução</span>
+            </div>
+
+            <!-- 1. Perfil e Postura -->
+            <div class="npc-investigative-subblock">
+              <div class="npc-profile-card">
+                <span class="npc-field-tag">Perfil e Postura</span>
+                <p class="npc-field-text">${npc.personalidade || 'Sem registro de personalidade.'}</p>
+              </div>
+              <div class="npc-profile-card">
+                <span class="npc-field-tag">História Resumida</span>
+                <p class="npc-field-text">${npc.historia_resumida || 'Sem histórico registrado.'}</p>
+              </div>
+            </div>
+
+            <!-- 2. O Que Ele Sabe -->
+            ${oQueSabeHtml}
+
+            <!-- 3. O Que Ele NÃO Sabe -->
+            ${oQueNaoSabeHtml}
+
+            <!-- 4. Interrogatório e Gatilhos -->
+            <div class="npc-interrogatorio-wrap">
+              <div class="npc-callout-card npc-callout-casual">
+                <span class="npc-callout-tag">Informação Livre (Conversa Casual)</span>
+                <p>${npc.informacao_livre || 'Nenhuma informação casual.'}</p>
+              </div>
+
+              <div class="npc-callout-card npc-callout-secret">
+                <span class="npc-callout-tag">Segredo Útil</span>
+                <p>${npc.segredo_util || 'Nenhum segredo útil registrado.'}</p>
+              </div>
+
+              <div class="npc-callout-card npc-callout-trigger">
+                <span class="npc-callout-tag">Gatilhos de Revelação (Testes & Dificuldades)</span>
+                <p>${npc.gatilho_revelacao || 'Sem gatilhos específicos.'}</p>
+              </div>
+
+              ${npc.notas_mestre ? `
+                <div class="npc-callout-card npc-callout-master">
+                  <span class="npc-callout-tag">Notas do Mestre</span>
+                  <p>${npc.notas_mestre.replace(/\n/g, '<br><br>')}</p>
+                </div>
+              ` : ''}
+            </div>
+          </section>
+        </main>
       </div>
-      
-      ${artworkHtml}
-
-      ${attrHtml}
-
-      <div class="npc-fields">
-        ${fieldRow('Personalidade e postura', npc.personalidade)}
-        ${fieldRow('História resumida', npc.historia_resumida)}
-        ${fieldRow('Informação livre (conversa casual)', npc.informacao_livre)}
-
-        <div class="npc-callout npc-callout-secret">
-          <span class="npc-callout-label">Segredo útil</span>
-          <p>${npc.segredo_util || ''}</p>
-        </div>
-
-        <div class="npc-callout npc-callout-trigger">
-          <span class="npc-callout-label">Gatilho de revelação</span>
-          <p>${npc.gatilho_revelacao || ''}</p>
-        </div>
-          ${npc.notas_mestre ? `
-          <div class="npc-callout" style="border-left-color: #f59e0b; background: rgba(245, 158, 11, 0.05);">
-            <span class="npc-callout-label" style="color: #f59e0b;">Notas do Mestre</span>
-            <p>${npc.notas_mestre.replace(/\n/g, '<br><br>')}</p>
-          </div>` : ''}
-        </div>
     `;
 
     document.body.classList.add('npc-drawer-open');

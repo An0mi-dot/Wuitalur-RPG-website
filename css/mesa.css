@@ -5863,7 +5863,7 @@ body.mesa-body.area-refugio-gustavo {
 .npc-dossier-drawer {
   --frame-bw: 3px;
   --frame-edge: var(--ink-hot);
-  --frame-shadow: -14px 0 40px rgba(0, 0, 0, 0.85);
+  --frame-shadow: 0 0 34px rgba(255, 85, 0, 0.28), 0 28px 70px rgba(0, 0, 0, 0.92);
 }
 
 .backstage-panel-card,
@@ -6271,27 +6271,34 @@ body.npc-drawer-open .npc-drawer-backdrop {
 
 .npc-dossier-drawer {
   position: fixed;
-  top: 0;
-  right: -100%;
-  width: 440px;
-  max-width: 100vw;
-  height: 100vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.96);
+  width: min(1200px, 94vw);
+  height: min(88vh, 880px);
+  max-width: 1200px;
+  max-height: 90vh;
   z-index: 2600 !important;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: rgba(13, 14, 18, 0.98);
-  border-left: 2px solid var(--ink-hot);
-  box-shadow: -14px 0 40px rgba(0, 0, 0, 0.85);
+  background: #0d0e12;
+  border-radius: 8px;
   color: var(--ink-text);
   font-family: var(--font-body, 'Inter', sans-serif);
-  transition: right 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.22s ease;
   box-sizing: border-box;
   user-select: text;
 }
 
 body.npc-drawer-open .npc-dossier-drawer {
-  right: 0 !important;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .npc-dossier-drawer-header {
@@ -6299,8 +6306,8 @@ body.npc-drawer-open .npc-dossier-drawer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 22px 14px;
-  background: transparent;
+  padding: 16px 24px;
+  background: rgba(0, 0, 0, 0.35);
   border-bottom: 1px dashed var(--ink-edge-soft);
 }
 
@@ -6368,88 +6375,284 @@ body.npc-drawer-open .npc-dossier-drawer {
 .npc-dossier-drawer-body {
   flex: 1;
   min-height: 0;
-  padding: 20px 24px 28px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--ink-hot) transparent;
-}
-
-.npc-switch-row {
+  padding: 0 !important;
+  overflow: hidden !important;
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 18px;
-  padding-bottom: 12px;
-  border-bottom: 1px dashed var(--ink-line);
 }
 
-.npc-switch-btn {
-  padding: 5px 12px;
-  background: transparent;
-  border: 1.5px solid var(--ink-edge-soft);
-  border-radius: 0;
-  color: var(--ink-text-dim);
-  font-family: inherit;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-}
-
-.npc-switch-btn:hover {
-  border-color: var(--ink-hot);
-  color: #fff;
-}
-
-.npc-switch-btn.active {
-  background: var(--ink-red);
-  border-color: var(--ink-hot);
-  color: #fff;
-}
-
-/* Ilustracao de NPC no Dossie */
-.npc-artwork-section {
+/* Layout em Duas Colunas do Dossie */
+.npc-dossier-layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
   width: 100%;
-  margin-bottom: 20px;
-  background: rgba(255, 255, 255, 0.02);
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Coluna Lateral de Selecao */
+.npc-dossier-sidebar {
+  width: 290px;
+  flex-shrink: 0;
+  background: rgba(5, 5, 8, 0.65);
+  border-right: 1px solid var(--ink-edge-soft);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.npc-sidebar-head {
+  padding: 14px 18px 12px;
+  border-bottom: 1px dashed var(--ink-line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.npc-sidebar-title {
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--ink-text-dim);
+  text-transform: uppercase;
+}
+
+.npc-sidebar-count {
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--ink-edge-soft);
-  padding: 10px;
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--ink-amber);
+}
+
+.npc-sidebar-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-edge-soft) transparent;
+}
+
+.npc-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1.5px solid var(--ink-edge-soft);
+  border-radius: 6px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.18s ease;
   box-sizing: border-box;
 }
 
-.npc-artwork-preview {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 11 / 6;
-  background: #050100;
-  border: 1px dashed var(--ink-edge-soft);
+.npc-sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--ink-hot);
+  transform: translateX(2px);
+}
+
+.npc-sidebar-item.active {
+  background: rgba(217, 58, 18, 0.14);
+  border-color: var(--ink-hot);
+  box-shadow: inset 3px 0 0 var(--ink-hot);
+}
+
+.npc-sidebar-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 4px;
+  border: 1px solid var(--ink-edge-soft);
   overflow: hidden;
-  margin-bottom: 10px;
+  flex-shrink: 0;
+  background: #050100;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.npc-artwork-preview img {
+.npc-sidebar-thumb img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: center;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.npc-thumb-fallback {
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--ink-amber);
+}
+
+.npc-sidebar-details {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.npc-sidebar-item-name {
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--ink-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.npc-sidebar-item-role {
+  font-size: 0.7rem;
+  color: var(--ink-amber);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 3px;
+}
+
+/* Coluna Principal de Leitura */
+.npc-dossier-main {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  overflow-y: auto;
+  padding: 26px 32px 44px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-hot) transparent;
+}
+
+/* Cabecalho Principal */
+.npc-main-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--ink-hot);
+  margin-bottom: 24px;
+}
+
+.npc-main-header-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.npc-main-name-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.npc-main-name {
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--ink-text);
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+.npc-vitals-wrap {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.npc-vital-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 4px;
+  font-size: 0.76rem;
+  font-family: var(--font-mono, monospace);
+  font-weight: 800;
+  border: 1px solid transparent;
+}
+
+.npc-vital-pill .pill-k {
+  opacity: 0.8;
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+}
+
+.npc-pill-pv {
+  background: rgba(22, 163, 74, 0.18);
+  border-color: #22c55e;
+  color: #86efac;
+}
+
+.npc-pill-pe {
+  background: rgba(147, 51, 234, 0.18);
+  border-color: #a855f7;
+  color: #d8b4fe;
+}
+
+.npc-pill-desloc {
+  background: rgba(2, 132, 199, 0.18);
+  border-color: #38bdf8;
+  color: #7dd3fc;
+}
+
+.npc-main-role {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink-amber);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.npc-header-artwork-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.npc-header-thumb-preview {
+  width: 140px;
+  height: 95px;
+  border-radius: 4px;
+  border: 1px solid var(--ink-edge-soft);
+  overflow: hidden;
+  background: #050100;
+}
+
+.npc-header-thumb-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .npc-display-btn {
-  width: 100%;
-  padding: 9px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
   font-family: var(--font-body, 'Inter', sans-serif);
   font-size: 0.72rem;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  background: rgba(2, 132, 199, 0.18);
+  background: rgba(2, 132, 199, 0.16);
   border: 1.5px solid #38bdf8;
   color: #38bdf8;
+  border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -6470,76 +6673,390 @@ body.npc-drawer-open .npc-dossier-drawer {
   color: #fff;
 }
 
-.npc-sheet-head {
-  margin-bottom: 20px;
-  padding-bottom: 14px;
-  border-bottom: 2px solid var(--ink-hot);
+/* Blocos de Secao */
+.npc-section-block {
+  margin-bottom: 28px;
+  padding: 18px 22px;
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid var(--ink-edge-soft);
+  border-radius: 6px;
 }
 
-.npc-role-tag {
-  display: inline-block;
-  margin-bottom: 8px;
-  padding: 2px 8px;
-  border: 1px solid var(--ink-amber);
-  color: var(--ink-amber);
-  font-size: 0.66rem;
+.npc-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--ink-line);
+}
+
+.npc-section-title {
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--ink-text);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.npc-section-badge {
+  font-size: 0.64rem;
   font-weight: 800;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.npc-sheet-name {
-  margin: 0;
-  font-family: var(--font-heading, 'Cinzel', serif);
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  line-height: 1.25;
-  color: var(--ink-text);
-}
-
-.npc-fields {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.npc-field-label,
-.npc-callout-label {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
   color: var(--ink-amber);
+  text-transform: uppercase;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  padding: 2px 7px;
+  border-radius: 3px;
 }
 
-.npc-field-text,
-.npc-callout p {
+/* Bloco Tatico */
+.npc-tactical-sub {
+  margin-bottom: 16px;
+}
+
+.npc-tactical-sub:last-child {
+  margin-bottom: 0;
+}
+
+.npc-sub-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--ink-text-dim);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.npc-caption-dim {
+  font-size: 0.65rem;
+  color: var(--ink-amber);
+  font-weight: 600;
+}
+
+.npc-attributes-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.npc-attr-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--ink-edge-soft);
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.npc-attr-label {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--ink-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.npc-attr-value {
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffb199;
+}
+
+.npc-tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.npc-pill-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 11px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.npc-pill-equip {
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  color: #cbd5e1;
+}
+
+.npc-pill-pericia {
+  background: rgba(217, 58, 18, 0.12);
+  border: 1px solid rgba(217, 58, 18, 0.4);
+  color: #ff9f80;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.npc-abilities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.npc-ability-card {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--ink-edge-soft);
+  border-left: 3px solid var(--ink-hot);
+  border-radius: 4px;
+  padding: 12px 14px;
+}
+
+.npc-ability-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.npc-ability-name {
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--ink-text);
+  letter-spacing: 0.04em;
+}
+
+.npc-ability-type-badge {
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.12);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  padding: 2px 6px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.npc-ability-effect {
   margin: 0;
-  font-size: 0.92rem;
-  line-height: 1.7;
+  font-size: 0.82rem;
+  line-height: 1.6;
   color: var(--ink-text-dim);
 }
 
-.npc-callout {
-  padding: 12px 16px;
-  border-left: 3px solid var(--ink-red);
-  background: rgba(217, 58, 18, 0.1);
+/* Modulo de Investigacao */
+.npc-investigative-subblock {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
-.npc-callout p {
+.npc-profile-card {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--ink-edge-soft);
+  padding: 12px 15px;
+  border-radius: 4px;
+}
+
+.npc-field-tag {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--ink-amber);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.npc-field-text {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.65;
   color: var(--ink-text);
 }
 
-.npc-callout-secret .npc-callout-label {
-  color: #ff9a7d;
+.npc-investigation-box {
+  padding: 16px 18px;
+  border-radius: 6px;
+  margin-bottom: 18px;
+  border: 1px solid transparent;
+}
+
+.npc-box-know {
+  background: rgba(14, 116, 144, 0.08);
+  border-color: rgba(6, 182, 212, 0.35);
+  border-left: 4px solid #06b6d4;
+}
+
+.npc-box-dont-know {
+  background: rgba(185, 28, 28, 0.08);
+  border-color: rgba(239, 68, 68, 0.35);
+  border-left: 4px solid #ef4444;
+}
+
+.npc-box-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.npc-box-heading h4 {
+  margin: 0;
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--ink-text);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.npc-box-icon {
+  width: 18px;
+  height: 18px;
+  color: #06b6d4;
+  flex-shrink: 0;
+}
+
+.npc-box-icon.warning-icon {
+  color: #ef4444;
+}
+
+.npc-box-subtag {
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 2px 7px;
+  border-radius: 3px;
+  background: rgba(6, 182, 212, 0.15);
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  color: #67e8f9;
+}
+
+.npc-box-subtag.warn-tag {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+.npc-narrative-warning {
+  margin: 0 0 12px;
+  font-size: 0.78rem;
+  font-style: italic;
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.08);
+  padding: 6px 10px;
+  border-radius: 4px;
+  border-left: 2px solid #ef4444;
+}
+
+.npc-investigation-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.npc-info-item {
+  padding: 9px 13px;
+  background: rgba(0, 0, 0, 0.28);
+  border-radius: 4px;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.npc-know-item {
+  border-left: 2px solid #06b6d4;
+}
+
+.npc-dont-know-item {
+  border-left: 2px solid #ef4444;
+}
+
+.npc-info-lead {
+  color: #ffb199;
+  font-weight: 700;
+  margin-right: 5px;
+}
+
+.npc-info-body {
+  color: var(--ink-text-dim);
+}
+
+/* Interrogatorio e Gatilhos */
+.npc-interrogatorio-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.npc-callout-card {
+  padding: 12px 16px;
+  border-radius: 4px;
+  border: 1px solid var(--ink-edge-soft);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.npc-callout-card p {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.65;
+  color: var(--ink-text-dim);
+}
+
+.npc-callout-tag {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.npc-callout-casual {
+  border-left: 3px solid #38bdf8;
+}
+
+.npc-callout-casual .npc-callout-tag {
+  color: #38bdf8;
+}
+
+.npc-callout-secret {
+  border-left: 3px solid #e11d48;
+  background: rgba(225, 29, 72, 0.08);
+}
+
+.npc-callout-secret .npc-callout-tag {
+  color: #fb7185;
 }
 
 .npc-callout-trigger {
-  border-left-color: var(--ink-amber);
-  background: rgba(255, 178, 107, 0.08);
+  border-left: 3px solid #f59e0b;
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.npc-callout-trigger .npc-callout-tag {
+  color: #fbbf24;
+}
+
+.npc-callout-master {
+  border-left: 3px solid #a855f7;
+  background: rgba(168, 85, 247, 0.08);
+}
+
+.npc-callout-master .npc-callout-tag {
+  color: #c084fc;
 }
 
 /* --------------------------------------------------------------------------
@@ -7452,7 +7969,58 @@ body.npc-drawer-open .npc-dossier-drawer {
     display: none;
   }
 
-  .npc-dossier-drawer,
+  .npc-dossier-drawer {
+    width: 96vw !important;
+    height: 94vh !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    border-radius: 4px !important;
+  }
+
+  .npc-dossier-layout {
+    flex-direction: column !important;
+  }
+
+  .npc-dossier-sidebar {
+    width: 100% !important;
+    max-height: 140px !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--ink-edge-soft) !important;
+  }
+
+  .npc-sidebar-list {
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+  }
+
+  .npc-sidebar-item {
+    min-width: 220px !important;
+  }
+
+  .npc-dossier-main {
+    padding: 16px !important;
+  }
+
+  .npc-main-header {
+    flex-direction: column !important;
+  }
+
+  .npc-header-artwork-box {
+    align-items: stretch !important;
+    width: 100% !important;
+  }
+
+  .npc-header-thumb-preview {
+    width: 100% !important;
+    height: 130px !important;
+  }
+
+  .npc-attributes-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
   .dispositivos-drawer {
     width: 100vw;
   }

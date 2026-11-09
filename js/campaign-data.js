@@ -11,36 +11,116 @@
   // ============================================================
   // 1. BANCO DE DADOS DE NPCS (SCHEMA PADRONIZADO)
   // ============================================================
-    const CAMPAIGN_NPCS = [
+  const CAMPAIGN_NPCS = [
     {
       id: "isaque-valente",
       nome: "Isaque Valente",
       ilustracao: "assets/npcs/isaque-valente.png",
-      papel: "Ex-namorado de Sara / Aluno do Colégio Primórdio",
-      pv: 12,
+      papel: "O Arqueiro Observador • Ex-namorado de Sara / Aluno do Colégio Primórdio",
+      pv: 14,
+      pe: 4,
+      deslocamento: "6B",
       atributos: { Vigor: "d16", Força: "d12", Saúde: "d8", Mente: "d4" },
-      personalidade: "Defensivo, vaidoso e um pouco arrogante para esconder a culpa. Tenta agir como se o sumiço de Sara não fosse problema dele, ficando irritado facilmente se for pressionado pelos investigadores.",
-      historia_resumida: "Namorou com a Sara durante quase um ano. É o típico jovem de família rica de Mina de Prata. Terminou o relacionamento há poucos meses porque não suportava a \"obsessão\" de Sara pelo desaparecimento da irmã (Trisha). Ele queria uma namorada normal para ir às festas, e não alguém que passava as madrugadas a chorar, visivelmente doente e a investigar mapas da floresta.",
-      informacao_livre: "Se os jogadores perguntarem casualmente, ele revira os olhos e diz que a Sara estava a \"ficar maluca\". Reclama que ela estava obcecada com a irmã e passava o tempo todo trancada no Café da Névoa a falar sozinha ou a desenhar rabiscos assustadores em vez de lhe dar atenção.",
-      segredo_util: "Na noite em que terminaram o namoro (dentro do carro dele), a Sara teve uma crise de dor e deixou cair um item debaixo do banco: um caderno de rascunhos onde ela desenhou a silhueta da entidade \"Ele\" na floresta e anotou as promessas de que a dor ia acabar. Ele tem esse caderno escondido na mochila escolar porque teve muito medo de o entregar à polícia e se envolver.",
-      gatilho_revelacao: "Para o fazer entregar o caderno, os jogadores precisam de um Sucesso em Intimidação DT 7 (encurralando-o e chamando-o de covarde por a ter abandonado) ou Diplomacia/Empatia DT 6 (apelando à culpa que ele sente no fundo por ela ter desaparecido).",
-      ligacao_misterio: "Testemunha. Ele presenciou a deterioração mental e física de Sara nas semanas anteriores ao contato com a entidade, mas preferiu fugir a ajudar.",
-      notas_mestre: "Onde encontrá-lo: Como o dia na escola será um \"dia de esportes\", os jogadores podem encontrar Isaque na quadra, perto dos vestiários. Isso cria uma ponte direta para eles irem investigar os bancos onde Sara escondia os remédios.\nO Papel Narrativo: Isaque serve para causar raiva nos jogadores. Ele é o retrato da superficialidade do Colégio Primórdio. A atitude dele vai fazer com que o grupo sinta pena de Sara e perceba o quão sozinha e vulnerável ela estava quando a entidade do gato a abordou."
+      equipamento: [
+        "Arco de caça reforçado",
+        "Faca de combate com serrilha",
+        "Máscara respiratória com filtro"
+      ],
+      pericias: [
+        "Pontaria",
+        "Disparada",
+        "Furtividade",
+        "Atletismo",
+        "Intimidação"
+      ],
+      habilidades: [
+        {
+          nome: "Disparo Furtivo de Caçador",
+          tipo: "Ação Padrão (1 PE)",
+          efeito: "Ao disparar oculto ou sob cobertura, sobe Vigor em 1 degrau e ignora cobertura leve do alvo, mantendo-se parcialmente camuflado."
+        },
+        {
+          nome: "Retirada com Lâmina Curta",
+          tipo: "Reação (1 PE)",
+          efeito: "Quando um inimigo entra a 1B dele, desfere um golpe de faca e recua 2B sem sofrer ataque livre, retomando distância para o arco."
+        },
+        {
+          nome: "Foco Cego Contra o Pesadelo",
+          tipo: "Ação Bônus (1 PE)",
+          efeito: "Fecha os olhos e luta apenas ouvindo o som ambiente. Fica imune a dano de Estresse por visões de anomalias do Pesadelo por 1 rodada."
+        }
+      ],
+      personalidade: "Defensivo, desconfiado e ríspido para esconder a culpa e o terror. Anda com a mão rente às armas temendo agentes do culto.",
+      historia_resumida: "Namorou Sara por quase um ano. Quando ela começou a adoecer e terminou friamente, ele percebeu que era fingimento para afastá-lo e passou a vigiá-la, descobrindo o horror do culto.",
+      o_que_sabe: [
+        "A Mudança e o Término: Sara começou a ter sangramentos nasais e terminou fingindo grosseria para afastá-lo das ameaças que sofria.",
+        "O Pavilhão de Acolhimento: Descobriu o prédio abandonado na borda da Mata do Norte onde uma figura adulta mascarada reúne jovens em noites específicas.",
+        "O Perfil dos Alvos: Todos os adolescentes acolhidos têm laudos de doenças terminais ou abandono familiar grave; a seita promete um suposto Jardim sem dor.",
+        "A Regra das Caixas Negras: Cada jovem ganha uma caixa preta e dourada que só se abre sozinha nas mãos de quem aceitou a morte e desistiu de viver.",
+        "O Rito de Sangue: Para atravessar a Porta na floresta, o jovem deve antes cometer um abate sangrento nos limites da mata e ingerir a carne quente da vítima.",
+        "O Resgate de Bia: Na noite do sumiço de Sara, foi à mata com seu arco mas chegou tarde. Encontrou sangue, névoa laranja e resgatou Bia desacordada, levando-a à clínica.",
+        "As Distorções no Esgoto: Mapeou os túneis sob o pavilhão e aprendeu que eles se expandem sob o Pesadelo, aprendendo a lutar de olhos fechados contra as Amálgamas."
+      ],
+      o_que_nao_sabe: [
+        "A Identidade da Líder: Nunca viu o rosto por trás da máscara e não sabe que se trata da Diretora Constança Montenegro.",
+        "A Entidade Ele: Desconhece a origem cósmica da entidade adorada pelo culto e a ligação com as vinhas prateadas.",
+        "O Que Bia Viu no Clímax: Como encontrou Bia já desacordada e em choque, não sabe o que aconteceu no momento exato em que a Porta da mata se abriu.",
+        "A Senha do Notebook: Não sabe a senha exata do notebook de Sara, mas se o grupo ler a dica da tela para ele, ele recorda a lembrança do namoro que destrava o aparelho."
+      ],
+      informacao_livre: "Afirma com desdém defensivo que Sara estava maluca, falando sozinha e desenhando horrores no Café da Névoa.",
+      segredo_util: "Esconde na mochila o caderno de rascunhos que Sara derrubou no carro dele com desenhos da criatura da mata e frases de desespero.",
+      gatilho_revelacao: "Intimidação DT 7 (acusando-o de covardia) ou Diplomacia DT 6 (mostrando que querem salvar Bia e vingar Sara).",
+      notas_mestre: "Pode ser encontrado na quadra de esportes do Colégio Primórdio perto dos vestiários. Representa a solidão e o desespero que cercavam Sara."
     },
     {
       id: "elias-ribeiro",
       nome: "Elias Ribeiro",
       ilustracao: "assets/npcs/elias-ribeiro.png",
-      papel: "Funcionário e Barista do Café da Névoa",
+      papel: "Barista do Café da Névoa • Civil Comum e Testemunha Chave",
       pv: 10,
+      pe: 2,
+      deslocamento: "6B",
       atributos: { Saúde: "d16", Força: "d12", Mente: "d8", Vigor: "d4" },
-      personalidade: "Assustado, supersticioso e profundamente cansado. Fala em um tom baixo, esfregando as mãos nervosamente no avental sujo de pó de café. Tem um olhar culpado de quem viu algo que não devia e decidiu fingir que não aconteceu por puro instinto de sobrevivência.",
-      historia_resumida: "Elias é um homem na casa dos 40 anos que trabalhava no Café da Névoa desde a época em que Trisha administrava o local. Quando Trisha sumiu, ele ajudou a jovem Sara a manter o negócio a funcionar para que ela não perdesse a única fonte de rendimento. Ele foi a pessoa que passou mais tempo com Sara nos últimos meses e viu de perto a degradação física dela, mas não tinha dinheiro nem autoridade para forçá-la a procurar um hospital de verdade fora de Mina de Prata.",
-      informacao_livre: "Se abordado perto do Café (que está fechado) ou no bairro, ele lamenta a perda. Conta que Sara mal conseguia ficar em pé nas últimas semanas e que a Clínica Renovare parou de mandar médicos para avaliá-la, enviando apenas os laudos pelo correio. Ele diz que ela andava muito depressiva e passava horas no beco dos fundos a fumar ou a olhar para o nada.",
-      segredo_util: "Ele estava no Café na noite em que a entidade \"Ele\" fez o primeiro contato. Elias foi jogar o lixo no beco e viu Sara ajoelhada a conversar com um gato preto. O terror de Elias começou quando ele ouviu o gato responder com uma voz distorcida e ecoante, prometendo curá-la. No entanto, o mais bizarro foi a reação de Sara: em vez de gritar ou entrar em pânico, ela agiu de forma assustadoramente natural. Ela simplesmente suspirou, pegou na mochila, olhou para o Elias pálido e disse: \"Podes fechar o caixa por hoje, Elias. Até amanhã.\" Ela foi para casa com a maior naturalidade do mundo, deixando-o para trás a tremer de medo. Ele guardou o molho de chaves da Casa dos Auguil que ela deixou no balcão e não contou nada à polícia.\nAlém disso, ele se recorda de, enquanto sara falava com ele, ele viu os olhos dela brilharem em várias cores bem rápido, mas ele acredita que deve ter sido as luzes dos postes ou algo do tipo.",
-      gatilho_revelacao: "Para ele contar o que viu no beco e entregar as chaves da casa, os jogadores precisam de um Sucesso em Intimidação DT 8 (ameaçando denunciá-lo à polícia por ocultação de provas de um desaparecimento) ou Ocultismo/Religião DT 6 (mostrando que os jogadores entendem do sobrenatural e não o acharão louco se ele contar que ouviu um animal falar).",
-      ligacao_misterio: "Testemunha Ocular Acidental. Ele é a prova de que a entidade fez o primeiro contato no Café, mas a verdadeira manipulação e a possessão ocorreram mais tarde, dentro da própria casa de Sara, para onde o gato a seguiu.",
-      notas_mestre: "Onde encontrá-lo: Ele pode estar a varrer a calçada na frente do Café da Névoa fechado, ou pode ser encontrado em algum lugar público do bairro a fumar um cigarro, visivelmente tenso.\nO Papel Narrativo: Elias é a \"ponte\" que entrega as chaves da Casa Auguil aos jogadores. O relato dele serve para criar um contraste perturbador: o horror não foi a Sara ter sido atacada no beco, mas sim ela ter aceitado a presença da entidade com tanta apatia e naturalidade que preferiu ir para casa dormir como se nada tivesse acontecido. Isso prepara os jogadores para a ideia de que, quando chegarem à Casa de Sara, vão encontrar os vestígios da verdadeira madrugada de horrores onde o gato concluiu o seu trabalho."
+      equipamento: [
+        "Avental de pano de trabalho",
+        "Molho de chaves da Casa dos Auguil",
+        "Isqueiro de metal e maço de cigarros"
+      ],
+      pericias: [
+        "Percepção",
+        "Intuição",
+        "Engenharia"
+      ],
+      habilidades: [
+        {
+          nome: "Instinto de Preservação",
+          tipo: "Reação (1 PE)",
+          efeito: "Ao presenciar violência extrema ou ameaça sobrenatural, encolhe-se e busca cobertura a até 2B, ganhando Vantagem em Esquiva enquanto não atacar."
+        },
+        {
+          nome: "Resistência de Trabalhador",
+          tipo: "Passiva",
+          efeito: "Acostumado à lida pesada e a noites mal dormidas, ignora a primeira penalidade de fadiga ou cansaço físico comum graças à sua Saúde d16."
+        }
+      ],
+      personalidade: "Assustado, supersticioso e profundamente cansado. Fala baixo, esfrega as mãos no avental e carrega a culpa de quem fingiu não ver o sobrenatural.",
+      historia_resumida: "Trabalhava no Café da Névoa desde a época de Trisha. Quando ela sumiu, ajudou Sara a manter o local aberto. Foi a pessoa mais próxima dela nos últimos meses e testemunhou sua degradação física.",
+      o_que_sabe: [
+        "O Descaso da Renovare: Sara mal parava em pé nas últimas semanas e a Clínica Renovare parou de mandar médicos, enviando laudos apenas pelo correio.",
+        "O Contato com o Gato no Beco: Ao jogar lixo no beco, viu Sara conversando com um gato preto que respondia com uma voz distorcida prometendo curá-la.",
+        "A Reação Perturbadora de Sara: Ela não entrou em pânico; apenas suspirou, pegou a mochila, mandou Elias fechar o caixa e foi para casa com calma assustadora.",
+        "O Brilho nos Olhos de Sara: Enquanto falava com o animal, os olhos dela piscaram em várias cores rapidamente antes de voltar ao normal.",
+        "As Chaves da Casa Auguil: Ficou com o molho de chaves que Sara esqueceu no balcão e escondeu no avental com medo da polícia."
+      ],
+      o_que_nao_sabe: [
+        "A Madrugada Seguinte na Residência: Elias foi para casa aterrorizado e não viu o massacre que o gato concluiu na casa de Sara durante a madrugada.",
+        "A Existência do Culto e Caixas Negras: Não sabe sobre o galpão abandonado, o sacrifício de sangue ou a seita da floresta.",
+        "Quem é Ele: Não compreende o que era a entidade e acredita apenas que a cidade está amaldiçoada."
+      ],
+      informacao_livre: "Lamenta o sumiço de Sara e conta que ela passava horas no beco dos fundos fumando e olhando para o vazio em depressão profunda.",
+      segredo_util: "Testemunhou o gato falante no beco e guarda o molho de chaves da Casa dos Auguil no bolso do avental.",
+      gatilho_revelacao: "Intimidação DT 8 (ameaçando prendê-lo por ocultação de provas) ou Ocultismo/Religião DT 6 (mostrando que acreditam no sobrenatural sem julgá-lo louco).",
+      notas_mestre: "Encontrado varrendo a calçada em frente ao Café fechado ou fumando tenso no bairro. É a ponte que entrega as chaves da casa de Sara ao grupo."
     }
   ];
 
