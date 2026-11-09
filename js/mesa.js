@@ -1800,6 +1800,7 @@ const MesaApp = {
         try {
           const p1Attrs = typeof row1.atributos === 'string' ? JSON.parse(row1.atributos) : row1.atributos;
           if (p1Attrs) {
+            this.state.rawRow1Atributos = p1Attrs;
             if (Array.isArray(p1Attrs._sys_coletaveis) && p1Attrs._sys_coletaveis.length > 0 && window.MesaColetaveis) {
               const { items: merged, changed } = MesaColetaveis.mergeCanonical(p1Attrs._sys_coletaveis);
               const remoteStr = JSON.stringify(merged);
@@ -2241,6 +2242,10 @@ const MesaApp = {
         const { items: merged } = MesaColetaveis.mergeCanonical(data.items);
         MesaColetaveis.items = merged;
         localStorage.setItem('wu_coletaveis_v2', JSON.stringify(merged));
+        if (this.state) {
+          if (!this.state.rawRow1Atributos) this.state.rawRow1Atributos = {};
+          this.state.rawRow1Atributos._sys_coletaveis = merged;
+        }
         MesaColetaveis.render();
         if (typeof MesaColetaveis.renderFicha === 'function') MesaColetaveis.renderFicha();
       }
@@ -6354,12 +6359,19 @@ const MesaColetaveis = {
     const canonical = window.CAMPAIGN_COLETAVEIS || window.MESA_COLETAVEIS || [];
 
     // Prioridade 1: Sincronização canônica remota do Supabase
-    if (MesaApp && MesaApp.state && MesaApp.state.players && MesaApp.state.players[0] && MesaApp.state.players[0].atributos) {
+    const raw = (MesaApp && MesaApp.state && (MesaApp.state.rawRow1Atributos || (MesaApp.state.players && MesaApp.state.players[0] && MesaApp.state.players[0].atributos)));
+    if (raw) {
       try {
-        const raw = MesaApp.state.players[0].atributos;
         const attrs = typeof raw === 'string' ? JSON.parse(raw) : raw;
         if (attrs && Array.isArray(attrs._sys_coletaveis) && attrs._sys_coletaveis.length > 0) {
           const { items: merged, changed } = this.mergeCanonical(attrs._sys_coletaveis);
+          if (Array.isArray(this.items) && this.items.length > 0) {
+            this.items.forEach(it => {
+              if (it && it.id && !merged.some(m => m.id === it.id)) {
+                merged.push(it);
+              }
+            });
+          }
           this.items = merged;
           localStorage.setItem('wu_coletaveis_v2', JSON.stringify(this.items));
           if (changed && MesaApp && MesaApp.state && MesaApp.state.isMaster) {
@@ -6376,6 +6388,13 @@ const MesaColetaveis = {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
           const { items: merged } = this.mergeCanonical(parsed);
+          if (Array.isArray(this.items) && this.items.length > 0) {
+            this.items.forEach(it => {
+              if (it && it.id && !merged.some(m => m.id === it.id)) {
+                merged.push(it);
+              }
+            });
+          }
           this.items = merged;
         } else {
           this.items = canonical.map(it => ({ ...it, desbloqueado: it.desbloqueado === true, posse: it.posse || null }));
@@ -11268,8 +11287,8 @@ const MesaIgrisShop = {
           id: `slot_${slotNum}`,
           slot: slotNum,
           name: displayName,
-          image: null,
-          initial: displayName.trim().charAt(0).toUpperCase(),
+          image: p.avatar || p.imagem || (slotNum === 3 ? 'assets/eric_avatar.png' : null),
+          initial: (slotNum === 3 ? 'E' : displayName.trim().charAt(0).toUpperCase()),
           isMaster: false
         };
       }
@@ -11279,16 +11298,17 @@ const MesaIgrisShop = {
         id: 'slot_3',
         slot: 3,
         name: 'Eric "Blade" Tepes Adams',
-        image: null,
+        image: 'assets/eric_avatar.png',
         initial: 'E',
         isMaster: false
       };
     }
     return {
-      id: identifier,
-      name: `Jogador ${identifier}`,
+      id: identifier || 'desconhecido',
+      slot: slotNum,
+      name: slotNum ? `Slot ${slotNum}` : `Jogador ${identifier}`,
       image: null,
-      initial: '?',
+      initial: slotNum ? `${slotNum}` : '?',
       isMaster: false
     };
   },
@@ -11743,12 +11763,16 @@ const MesaIgrisShop = {
   },
 
   renderInterestAvatars(itemId) {
-    const list = this.interests[itemId] || [];
+    let list = this.interests[itemId] || [];
     if (!list || list.length === 0) return '';
+
+    // Mestre nunca compra itens na tenda de igris
+    list = list.filter(id => id !== 'master');
+    if (list.length === 0) return '';
 
     const shopItem = this.items.find(x => String(x.id) === String(itemId));
     const isInfinite = shopItem && (shopItem.isInfinite || shopItem.quantidade === Infinity || shopItem.isDefault || shopItem.categoria === 'padrao' || String(shopItem.id).includes('fruta'));
-    const availableQty = (shopItem && shopItem.quantidade !== undefined && shopItem.quantidade !== Infinity) ? shopItem.quantidade : 1;
+    const availableQty = isInfinite ? Infinity : ((shopItem && shopItem.quantidade !== undefined && shopItem.quantidade !== Infinity) ? shopItem.quantidade : 1);
     const isDisputed = !isInfinite && list.length > availableQty;
 
     let html = '';
@@ -11764,13 +11788,17 @@ const MesaIgrisShop = {
       const participant = this.getParticipantDisplay(identifier);
       const isMe = (myId && participant.id === myId);
       const canRemove = isMe || isMasterViewer;
-      const titleAttr = `Interessado: ${participant.name}${participant.isMaster ? ' (Mestre)' : ''}${canRemove ? ' — Clique para desmarcar' : ''}`;
+      const titleAttr = `Interessado: ${participant.name}${canRemove ? ' — Clique para desmarcar' : ''}`;
+
+      const avatarContent = participant.image
+        ? `<img src="${participant.image}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" alt="${participant.name}" onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-block';" /><span class="igris-interest-initial" style="display:none;">${participant.initial}</span>`
+        : `<span class="igris-interest-initial">${participant.initial}</span>`;
 
       html += `
-        <div class="igris-interest-avatar ${isMe ? 'is-my-slot' : ''} ${participant.isMaster ? 'is-master' : ''} ${canRemove ? 'is-removable' : ''}" 
+        <div class="igris-interest-avatar ${isMe ? 'is-my-slot' : ''} ${canRemove ? 'is-removable' : ''}" 
              title="${titleAttr}"
              ${canRemove ? `onclick="event.stopPropagation(); MesaIgrisShop.removeParticipant('${itemId}', '${identifier}')"` : ''}>
-          <span class="igris-interest-initial">${participant.initial}</span>
+          ${avatarContent}
         </div>
       `;
     });
@@ -12179,8 +12207,12 @@ const MesaIgrisShop = {
     const allItemIds = Object.keys(this.interests);
 
     allItemIds.forEach(itemId => {
-      const interested = this.interests[itemId] || [];
+      let interested = this.interests[itemId] || [];
       if (!interested || interested.length === 0) return;
+
+      // Filtra qualquer identificador master acidental
+      interested = interested.filter(id => id !== 'master');
+      if (interested.length === 0) return;
 
       const shopItem = (this.items && this.items.find(x => String(x.id) === String(itemId))) || null;
       const itemName = shopItem ? shopItem.nome : `Artefato ${itemId}`;
@@ -12198,41 +12230,14 @@ const MesaIgrisShop = {
           slotNum = targetId;
         }
 
-        deliveries.push({
-          itemId: itemId,
-          slot: slotNum,
-          item: shopItem,
-          itemName: itemName,
-          targetId: targetId
-        });
-
-        // Se o slot foi identificado, atribui a posse no acervo de coletaveis do jogo
-        if (slotNum && window.MesaColetaveis) {
-          // Cria id unico para a copia entregue ao jogador caso seja um item padrao repetivel
-          const grantedId = (shopItem && (shopItem.isDefault || isInfinite)) ? `${itemId}_${slotNum}_${Date.now()}` : itemId;
-          let colItem = MesaColetaveis.items.find(x => String(x.id) === String(grantedId));
-          if (!colItem && shopItem) {
-            const fearDetail = (shopItem.beneficio && shopItem.prejuizo)
-              ? `Benefício: ${shopItem.beneficio}\n\nPrejuízo: ${shopItem.prejuizo}`
-              : (shopItem.efeito || shopItem.descricao || '');
-
-            colItem = {
-              id: grantedId,
-              nome: shopItem.nome || `Artefato ${itemId}`,
-              tipo: shopItem.tipo || 'Consumível',
-              peso: shopItem.peso !== undefined ? shopItem.peso : 1,
-              resumo: shopItem.descricao || '',
-              detalhe: fearDetail,
-              campo_tipo: (shopItem.ladoBom || shopItem.efeito) ? 'Efeito' : 'Detalhe',
-              imagem: shopItem.imagem || null,
-              desbloqueado: true,
-              posse: slotNum
-            };
-            MesaColetaveis.items.push(colItem);
-          } else if (colItem) {
-            colItem.posse = slotNum;
-            colItem.desbloqueado = true;
-          }
+        if (slotNum) {
+          deliveries.push({
+            itemId: itemId,
+            slot: slotNum,
+            item: shopItem,
+            itemName: itemName,
+            targetId: targetId
+          });
         }
       });
     });
@@ -12242,7 +12247,7 @@ const MesaIgrisShop = {
       return;
     }
 
-    // 1. Verifica se todos os jogadores possuem saldo suficiente de Vidrilhos
+    // 1. Deduz o custo em Vidrilhos do saldo de cada jogador
     const playerTotals = {};
     deliveries.forEach(d => {
       if (d.slot) {
@@ -12251,44 +12256,127 @@ const MesaIgrisShop = {
       }
     });
 
-    const insufficientFunds = [];
-    Object.entries(playerTotals).forEach(([slotStr, totalCost]) => {
-      const slotNum = parseInt(slotStr, 10);
-      const player = window.MesaApp && MesaApp.state.players[slotNum - 1];
-      const balance = (player && player.vidrilhos != null) ? player.vidrilhos : 0;
-      if (balance < totalCost) {
-        insufficientFunds.push(`${player ? player.nome : `Slot ${slotNum}`}: possui ${balance} Vidrilhos, mas o custo total é ${totalCost}`);
-      }
-    });
-
-    if (insufficientFunds.length > 0) {
-      alert(`Não é possível concluir a entrega. Saldo insuficiente de Vidrilhos:\n- ${insufficientFunds.join('\n- ')}`);
-      return;
-    }
-
-    // 2. Deduz o custo em Vidrilhos do saldo de cada jogador
     for (const [slotStr, totalCost] of Object.entries(playerTotals)) {
       const slotNum = parseInt(slotStr, 10);
       if (window.MesaApp && typeof MesaApp.updateVidrilhos === 'function') {
-        await MesaApp.updateVidrilhos(slotNum, -totalCost);
+        try {
+          await MesaApp.updateVidrilhos(slotNum, -totalCost);
+        } catch(e) {
+          console.warn('Erro ao debitar Vidrilhos do slot', slotNum, e);
+        }
       }
     }
 
-    // Salva e sincroniza os coletaveis no Supabase e fichas
+    // 2. Concede e registra os itens no acervo de coletáveis
     if (window.MesaColetaveis) {
-      MesaColetaveis.saveAndSync();
-      MesaColetaveis.renderFicha();
+      if (!Array.isArray(MesaColetaveis.items)) MesaColetaveis.items = [];
+
+      deliveries.forEach(d => {
+        const shopItem = d.item;
+        const itemId = d.itemId;
+        const slotNum = d.slot;
+        const isInfinite = shopItem && (shopItem.isInfinite || shopItem.quantidade === Infinity || shopItem.isDefault || shopItem.categoria === 'padrao' || String(shopItem.id).includes('fruta'));
+        const grantedId = (shopItem && (shopItem.isDefault || isInfinite))
+          ? `${itemId}_${slotNum}_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`
+          : itemId;
+
+        let colItem = MesaColetaveis.items.find(x => String(x.id) === String(grantedId));
+        if (!colItem && shopItem) {
+          const fearDetail = (shopItem.beneficio && shopItem.prejuizo)
+            ? `Benefício: ${shopItem.beneficio}\n\nPrejuízo: ${shopItem.prejuizo}`
+            : (shopItem.efeito || shopItem.descricao || '');
+
+          colItem = {
+            id: grantedId,
+            nome: shopItem.nome || `Artefato ${itemId}`,
+            tipo: shopItem.tipo || 'Consumível',
+            peso: shopItem.peso !== undefined ? shopItem.peso : 1,
+            resumo: shopItem.descricao || '',
+            detalhe: fearDetail,
+            campo_tipo: (shopItem.ladoBom || shopItem.efeito) ? 'Efeito' : 'Detalhe',
+            imagem: shopItem.imagem || null,
+            desbloqueado: true,
+            posse: slotNum
+          };
+          MesaColetaveis.items.push(colItem);
+        } else if (colItem) {
+          colItem.posse = slotNum;
+          colItem.desbloqueado = true;
+        }
+      });
+
+      localStorage.setItem('wu_coletaveis_v2', JSON.stringify(MesaColetaveis.items));
     }
 
-    // Transmite evento de concessao de itens
+    // 3. Limpa selecoes da loja localmente
+    this.interests = {};
+    this.renderShowcase();
+    this.updateUserChip();
+    this.updateMasterControls();
+
+    // 4. PERSISTÊNCIA ATÔMICA NO SUPABASE (MesaColetaveis + MesaIgrisShop unificados sem race condition)
+    if (window.MesaApp && MesaApp.supabase && MesaApp.state && MesaApp.state.isMaster) {
+      try {
+        const { data } = await MesaApp.supabase
+          .from('personagens')
+          .select('atributos')
+          .eq('id', 1)
+          .single();
+
+        const attrs = (data && data.atributos)
+          ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+          : {};
+
+        if (window.MesaColetaveis) {
+          attrs._sys_coletaveis = MesaColetaveis.items;
+        }
+        attrs._sys_igris_shop = {
+          isOpen: this.isOpen,
+          interests: {},
+          updatedAt: Date.now(),
+          merchantImage: this.merchantImage
+        };
+
+        await MesaApp.supabase
+          .from('personagens')
+          .update({ atributos: attrs })
+          .eq('id', 1);
+
+        if (MesaApp.state) {
+          MesaApp.state.rawRow1Atributos = attrs;
+        }
+      } catch (err) {
+        console.error("Erro ao persistir entrega no Supabase:", err);
+      }
+    }
+
+    // 5. Atualiza a ficha aberta
+    if (window.MesaColetaveis) {
+      if (typeof MesaColetaveis.renderFicha === 'function') MesaColetaveis.renderFicha();
+      if (typeof MesaColetaveis.render === 'function') MesaColetaveis.render();
+    }
+
+    // 6. Transmite coletaveis_sync e igris_items_granted para todas as telas remotas
     const chan = this.getChannel();
     if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'coletaveis_sync',
+          payload: {
+            items: window.MesaColetaveis ? MesaColetaveis.items : [],
+            _senderId: (window.MesaApp && MesaApp.clientId) || null
+          }
+        });
+      } catch(e) {}
+
       try {
         chan.send({
           type: 'broadcast',
           event: 'igris_items_granted',
           payload: {
             deliveries,
+            coletaveis: window.MesaColetaveis ? MesaColetaveis.items : [],
             _senderId: (window.MesaApp && MesaApp.clientId) || null
           }
         });
@@ -12297,7 +12385,7 @@ const MesaIgrisShop = {
       }
     }
 
-    // Envia aviso no chat
+    // 7. Envia aviso no chat
     if (window.MesaChat && MesaChat.channel) {
       try {
         const summary = deliveries.map(d => {
@@ -12320,26 +12408,30 @@ const MesaIgrisShop = {
       } catch(e) {}
     }
 
-    // Limpa os interesses mantendo os itens padroes da loja sempre presentes
-    this.interests = {};
-    this.renderShowcase();
-    this.updateUserChip();
-    this.updateMasterControls();
-    this.saveStateToSupabase();
-
     alert(`Acordo concluído! ${deliveries.length} artefato(s) transferido(s) com sucesso aos inventários dos jogadores.`);
   },
 
   // Recebe notificacao de itens entregues
   handleItemsGranted(payload) {
-    if (!payload || !payload.deliveries) return;
+    if (!payload) return;
     this.interests = {};
     this.renderShowcase();
     this.updateMasterControls();
 
     if (window.MesaColetaveis) {
-      MesaColetaveis.init();
-      MesaColetaveis.renderFicha();
+      if (payload.coletaveis && Array.isArray(payload.coletaveis)) {
+        const { items: merged } = MesaColetaveis.mergeCanonical(payload.coletaveis);
+        MesaColetaveis.items = merged;
+        localStorage.setItem('wu_coletaveis_v2', JSON.stringify(merged));
+      } else {
+        MesaColetaveis.init();
+      }
+      if (typeof MesaColetaveis.render === 'function') MesaColetaveis.render();
+      if (typeof MesaColetaveis.renderFicha === 'function') MesaColetaveis.renderFicha();
+    }
+
+    if (window.MesaApp && typeof MesaApp.showToast === 'function') {
+      MesaApp.showToast('[TENDA DO IGRIS] O Mestre concluiu o acordo e os itens foram entregues à sua ficha.');
     }
   },
 
