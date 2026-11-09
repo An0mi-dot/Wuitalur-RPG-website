@@ -12531,6 +12531,17 @@ body:not(.is-master) .igris-floating-close-btn {
   line-height: 1;
 }
 
+.igris-interest-avatar.is-removable {
+  cursor: pointer;
+  position: relative;
+}
+
+.igris-interest-avatar.is-removable:hover {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.9) !important;
+  transform: scale(1.28);
+}
+
 .igris-interest-avatar:hover {
   transform: scale(1.2);
   z-index: 20;

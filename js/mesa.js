@@ -1499,6 +1499,9 @@ const MesaApp = {
 
           // Garantir que Eric (Slot 3 / Token B8T3) tenha apenas as 3 habilidades corretas
           if (p.token === 'R5K1' || p.slot === 3) {
+            if (!p.nome || p.nome === 'Mestre') {
+              p.nome = 'Eric "Blade" Tepes Adams';
+            }
             if (p.atributos && typeof p.atributos === 'object') {
               p.atributos['Saúde'] = 'd8';
               p.atributos['Força'] = 'd4';
@@ -11257,15 +11260,29 @@ const MesaIgrisShop = {
     if (slotNum && window.MesaApp && MesaApp.state && MesaApp.state.players) {
       const p = MesaApp.state.players[slotNum - 1];
       if (p) {
+        let displayName = p.nome || `Jogador ${slotNum}`;
+        if (slotNum === 3 && (displayName === 'Mestre' || !displayName)) {
+          displayName = 'Eric "Blade" Tepes Adams';
+        }
         return {
           id: `slot_${slotNum}`,
           slot: slotNum,
-          name: p.nome || `Jogador ${slotNum}`,
+          name: displayName,
           image: null,
-          initial: (p.nome ? p.nome.trim().charAt(0) : `${slotNum}`).toUpperCase(),
+          initial: displayName.trim().charAt(0).toUpperCase(),
           isMaster: false
         };
       }
+    }
+    if (slotNum === 3) {
+      return {
+        id: 'slot_3',
+        slot: 3,
+        name: 'Eric "Blade" Tepes Adams',
+        image: null,
+        initial: 'E',
+        isMaster: false
+      };
     }
     return {
       id: identifier,
@@ -11729,23 +11746,30 @@ const MesaIgrisShop = {
     const list = this.interests[itemId] || [];
     if (!list || list.length === 0) return '';
 
-    const user = this.getCurrentUserIdentity();
-    const myId = user ? user.id : null;
-    const isDisputed = list.length > 1;
+    const shopItem = this.items.find(x => String(x.id) === String(itemId));
+    const isInfinite = shopItem && (shopItem.isInfinite || shopItem.quantidade === Infinity || shopItem.isDefault || shopItem.categoria === 'padrao' || String(shopItem.id).includes('fruta'));
+    const availableQty = (shopItem && shopItem.quantidade !== undefined && shopItem.quantidade !== Infinity) ? shopItem.quantidade : 1;
+    const isDisputed = !isInfinite && list.length > availableQty;
 
     let html = '';
     if (isDisputed) {
       html += `<span class="igris-dispute-badge" title="Múltiplos interessados em disputa!">Disputa (${list.length})</span>`;
     }
 
+    const user = this.getCurrentUserIdentity();
+    const myId = user ? user.id : null;
+    const isMasterViewer = Boolean(user && user.isMaster);
+
     list.forEach(identifier => {
       const participant = this.getParticipantDisplay(identifier);
       const isMe = (myId && participant.id === myId);
-      const titleAttr = `Interessado: ${participant.name}${participant.isMaster ? ' (Mestre)' : ''}`;
+      const canRemove = isMe || isMasterViewer;
+      const titleAttr = `Interessado: ${participant.name}${participant.isMaster ? ' (Mestre)' : ''}${canRemove ? ' — Clique para desmarcar' : ''}`;
 
       html += `
-        <div class="igris-interest-avatar ${isMe ? 'is-my-slot' : ''} ${participant.isMaster ? 'is-master' : ''}" 
-             title="${titleAttr}">
+        <div class="igris-interest-avatar ${isMe ? 'is-my-slot' : ''} ${participant.isMaster ? 'is-master' : ''} ${canRemove ? 'is-removable' : ''}" 
+             title="${titleAttr}"
+             ${canRemove ? `onclick="event.stopPropagation(); MesaIgrisShop.removeParticipant('${itemId}', '${identifier}')"` : ''}>
           <span class="igris-interest-initial">${participant.initial}</span>
         </div>
       `;
@@ -11766,6 +11790,40 @@ const MesaIgrisShop = {
 
     if (!this.interests[itemId]) {
       this.interests[itemId] = [];
+    }
+
+    // Se for o Mestre interagindo com o cartao:
+    if (user.isMaster) {
+      // O Mestre nao compra itens para si proprio.
+      // Clicar em um cartao com interessados desmarca o ultimo participante com seguranca.
+      if (this.interests[itemId].length > 0) {
+        const removedId = this.interests[itemId].pop();
+        this.lastLocalUpdate = Date.now();
+        this.updateCardInterestsUI(itemId);
+        this.updateUserChip();
+        this.updateMasterControls();
+        const chan = this.getChannel();
+        if (chan) {
+          try {
+            chan.send({
+              type: 'broadcast',
+              event: 'igris_interest_sync',
+              payload: {
+                itemId: itemId,
+                interests: this.interests[itemId],
+                allInterests: this.interests,
+                _senderId: (window.MesaApp && MesaApp.clientId) || null
+              }
+            });
+          } catch(e) {}
+        }
+        this.saveStateToSupabase(false);
+      } else {
+        if (window.MesaApp && typeof MesaApp.showToast === 'function') {
+          MesaApp.showToast('O Mestre não seleciona itens para si próprio. Os jogadores escolhem suas relíquias.');
+        }
+      }
+      return;
     }
 
     this.lastLocalUpdate = Date.now();
@@ -11828,6 +11886,37 @@ const MesaIgrisShop = {
         });
       } catch (e) {
         console.warn('Erro ao transmitir interesse:', e);
+      }
+    }
+
+    this.saveStateToSupabase(false);
+  },
+
+  // Remove cirurgicamente um participante de um item (pelo proprio jogador ou pelo Mestre)
+  removeParticipant(itemId, participantId) {
+    if (!this.interests[itemId]) return;
+    this.interests[itemId] = this.interests[itemId].filter(id => id !== participantId);
+    this.lastLocalUpdate = Date.now();
+
+    this.updateCardInterestsUI(itemId);
+    this.updateUserChip();
+    this.updateMasterControls();
+
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'igris_interest_sync',
+          payload: {
+            itemId: itemId,
+            interests: this.interests[itemId],
+            allInterests: this.interests,
+            _senderId: (window.MesaApp && MesaApp.clientId) || null
+          }
+        });
+      } catch (e) {
+        console.warn('Erro ao transmitir desmarcacao:', e);
       }
     }
 
