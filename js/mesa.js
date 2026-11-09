@@ -1011,6 +1011,17 @@ const MesaApp = {
       if (menuEsconderijoBtn) menuEsconderijoBtn.style.display = 'flex';
       const mobileEsconderijo = document.getElementById('mobile-esconderijo-item');
       if (mobileEsconderijo) mobileEsconderijo.style.display = 'flex';
+
+      const navDispositivosBtn = document.getElementById('nav-dispositivos-btn');
+      if (navDispositivosBtn) navDispositivosBtn.style.display = 'inline-flex';
+      const menuDispositivosBtn = document.getElementById('menu-dispositivos-btn');
+      if (menuDispositivosBtn) menuDispositivosBtn.style.display = 'flex';
+      const mobileDispositivos = document.getElementById('mobile-dispositivos-item');
+      if (mobileDispositivos) mobileDispositivos.style.display = 'flex';
+      const menuMediaBtn = document.getElementById('menu-media-btn');
+      if (menuMediaBtn) menuMediaBtn.style.display = 'flex';
+      const mobileMediaItem = document.getElementById('mobile-media-item');
+      if (mobileMediaItem) mobileMediaItem.style.display = 'flex';
     } else if (this.state.myToken) {
       if (tokenLabel) {
         tokenLabel.textContent = this.state.myPlayerSlot ? `Slot ${this.state.myPlayerSlot} Conectado` : 'Token Ativo';
@@ -1037,6 +1048,17 @@ const MesaApp = {
       if (menuEsconderijoBtn) menuEsconderijoBtn.style.display = 'none';
       const mobileEsconderijo = document.getElementById('mobile-esconderijo-item');
       if (mobileEsconderijo) mobileEsconderijo.style.display = 'none';
+
+      const navDispositivosBtn = document.getElementById('nav-dispositivos-btn');
+      if (navDispositivosBtn) navDispositivosBtn.style.display = 'none';
+      const menuDispositivosBtn = document.getElementById('menu-dispositivos-btn');
+      if (menuDispositivosBtn) menuDispositivosBtn.style.display = 'none';
+      const mobileDispositivos = document.getElementById('mobile-dispositivos-item');
+      if (mobileDispositivos) mobileDispositivos.style.display = 'none';
+      const menuMediaBtn = document.getElementById('menu-media-btn');
+      if (menuMediaBtn) menuMediaBtn.style.display = 'none';
+      const mobileMediaItem = document.getElementById('mobile-media-item');
+      if (mobileMediaItem) mobileMediaItem.style.display = 'none';
     } else {
       if (tokenLabel) tokenLabel.textContent = 'Token';
       if (alertBadge) alertBadge.style.display = 'flex';
@@ -1061,6 +1083,17 @@ const MesaApp = {
       if (menuEsconderijoBtn) menuEsconderijoBtn.style.display = 'none';
       const mobileEsconderijo = document.getElementById('mobile-esconderijo-item');
       if (mobileEsconderijo) mobileEsconderijo.style.display = 'none';
+
+      const navDispositivosBtn = document.getElementById('nav-dispositivos-btn');
+      if (navDispositivosBtn) navDispositivosBtn.style.display = 'none';
+      const menuDispositivosBtn = document.getElementById('menu-dispositivos-btn');
+      if (menuDispositivosBtn) menuDispositivosBtn.style.display = 'none';
+      const mobileDispositivos = document.getElementById('mobile-dispositivos-item');
+      if (mobileDispositivos) mobileDispositivos.style.display = 'none';
+      const menuMediaBtn = document.getElementById('menu-media-btn');
+      if (menuMediaBtn) menuMediaBtn.style.display = 'none';
+      const mobileMediaItem = document.getElementById('mobile-media-item');
+      if (mobileMediaItem) mobileMediaItem.style.display = 'none';
     }
 
     this.updateAuthChip();
@@ -1798,11 +1831,11 @@ const MesaApp = {
                 if (ig.interests) MesaIgrisShop.interests = ig.interests;
                 if (ig.merchantImage) MesaIgrisShop.setMerchantImage(ig.merchantImage);
               }
-              if (!isMaster) {
-                if (ig.isOpen && !MesaIgrisShop.isOpen) {
+              if (!isMaster && typeof ig.isOpen === 'boolean') {
+                if (ig.isOpen === true && !MesaIgrisShop.isOpen) {
                   MesaIgrisShop.open(false);
-                } else if (!ig.isOpen && MesaIgrisShop.isOpen) {
-                  MesaIgrisShop.close(false);
+                } else if (ig.isOpen === false && MesaIgrisShop.isOpen) {
+                  MesaIgrisShop.close(true);
                 }
               }
             }
@@ -2002,11 +2035,11 @@ const MesaApp = {
               }
               if (ig.merchantImage) MesaIgrisShop.setMerchantImage(ig.merchantImage);
             }
-            if (!isMaster) {
-              if (ig.isOpen && !MesaIgrisShop.isOpen) {
+            if (!isMaster && typeof ig.isOpen === 'boolean') {
+              if (ig.isOpen === true && !MesaIgrisShop.isOpen) {
                 MesaIgrisShop.open(false);
-              } else if (!ig.isOpen && MesaIgrisShop.isOpen) {
-                MesaIgrisShop.close(false);
+              } else if (ig.isOpen === false && MesaIgrisShop.isOpen) {
+                MesaIgrisShop.close(true);
               }
             }
           }
@@ -2360,7 +2393,7 @@ const MesaApp = {
     channel.on('broadcast', { event: 'igris_shop_close' }, (payload) => {
       if (isFromSelf(payload)) return;
       if (window.MesaIgrisShop) {
-        MesaIgrisShop.close(false);
+        MesaIgrisShop.close(true);
       }
     });
 
@@ -8159,7 +8192,12 @@ window.MesaMediaPlayer = MesaMediaPlayer;
 // --- MESA ABERTURA ---
 const MesaAbertura = {
   play() {
-    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    if (!MesaApp.state || !MesaApp.state.isMaster) {
+      if (window.MesaApp && typeof MesaApp.showToast === 'function') {
+        MesaApp.showToast('Autentique seu Token de Mestre para transmitir a cena.');
+      }
+      return;
+    }
     
     const now = Date.now();
 
@@ -8300,7 +8338,12 @@ const MesaPerseguicaoFloresta = {
   _ambientNodes: null,
 
   play() {
-    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    if (!MesaApp.state || !MesaApp.state.isMaster) {
+      if (window.MesaApp && typeof MesaApp.showToast === 'function') {
+        MesaApp.showToast('Autentique seu Token de Mestre para transmitir a cena.');
+      }
+      return;
+    }
     const now = Date.now();
 
     const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
@@ -8511,7 +8554,12 @@ const MesaTvEstatica = {
   _canvasRaf: null,
 
   play() {
-    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    if (!MesaApp.state || !MesaApp.state.isMaster) {
+      if (window.MesaApp && typeof MesaApp.showToast === 'function') {
+        MesaApp.showToast('Autentique seu Token de Mestre para transmitir a cena.');
+      }
+      return;
+    }
     const now = Date.now();
 
     const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
@@ -8755,7 +8803,12 @@ const MesaTvEstatica2 = {
   _canvasRaf: null,
 
   play() {
-    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    if (!MesaApp.state || !MesaApp.state.isMaster) {
+      if (window.MesaApp && typeof MesaApp.showToast === 'function') {
+        MesaApp.showToast('Autentique seu Token de Mestre para transmitir a cena.');
+      }
+      return;
+    }
     const now = Date.now();
 
     const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
@@ -8995,7 +9048,12 @@ const MesaFita1 = {
   _fadeTimeout: null,
 
   play() {
-    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    if (!MesaApp.state || !MesaApp.state.isMaster) {
+      if (window.MesaApp && typeof MesaApp.showToast === 'function') {
+        MesaApp.showToast('Autentique seu Token de Mestre para transmitir a cena.');
+      }
+      return;
+    }
     const now = Date.now();
 
     const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
@@ -9182,7 +9240,12 @@ const MesaFita2 = {
   _fadeTimeout: null,
 
   play() {
-    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    if (!MesaApp.state || !MesaApp.state.isMaster) {
+      if (window.MesaApp && typeof MesaApp.showToast === 'function') {
+        MesaApp.showToast('Autentique seu Token de Mestre para transmitir a cena.');
+      }
+      return;
+    }
     const now = Date.now();
 
     const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
@@ -10080,7 +10143,12 @@ const MesaNotebookSara = {
   },
 
   play() {
-    if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    if (!MesaApp.state || !MesaApp.state.isMaster) {
+      if (window.MesaApp && typeof MesaApp.showToast === 'function') {
+        MesaApp.showToast('Autentique seu Token de Mestre para transmitir a cena.');
+      }
+      return;
+    }
     this.isActive = true;
     this.stage = 'boot';
     this.signalLost = false;
@@ -11130,10 +11198,13 @@ const MesaIgrisShop = {
     this.updateMasterControls();
   },
 
-  // Fecha a interface localmente com fade-out suave
-  close(broadcast = false) {
+  // Fecha a interface localmente com fade-out suave (apenas o Mestre pode fechar)
+  close(forceOrBroadcast = false) {
     const isMaster = !!(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
-    const shouldBroadcast = broadcast || isMaster;
+    // Jogador normal NAO tem permissao para fechar a loja por conta propria
+    if (!isMaster && !forceOrBroadcast) {
+      return;
+    }
     const overlay = document.getElementById('igris-shop-overlay');
     const doClose = () => {
       this.isOpen = false;
@@ -11162,7 +11233,7 @@ const MesaIgrisShop = {
       doClose();
     }
 
-    if (shouldBroadcast && isMaster) {
+    if (isMaster) {
       const chan = this.getChannel();
       if (chan) {
         try {
@@ -11179,6 +11250,12 @@ const MesaIgrisShop = {
 
   // Transmite a abertura da tenda para todos os jogadores na mesa
   broadcastOpen() {
+    if (!window.MesaApp || !MesaApp.state || !MesaApp.state.isMaster) {
+      if (window.MesaApp && typeof MesaApp.showToast === 'function') {
+        MesaApp.showToast('Autentique seu Token de Mestre para transmitir A Tenda de Igris.');
+      }
+      return;
+    }
     this.open(false);
     const chan = this.getChannel();
     if (chan) {
