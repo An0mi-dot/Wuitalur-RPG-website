@@ -13885,14 +13885,18 @@ body.esconderijo-active::after {
 body.esconderijo-active .mesa-black-board,
 body.esconderijo-active .mesa-board-container,
 body.esconderijo-active .board-inner,
-body.esconderijo-active .combat-black-ramp,
-body.esconderijo-active .combat-dock-container,
-body.esconderijo-active .combat-players-dock,
 body.esconderijo-active .combat-player-card,
 body.esconderijo-active .player-slot {
   background: #000000 !important;
   background-color: #000000 !important;
   border-color: #ff1133 !important;
+}
+
+body.esconderijo-active .combat-black-ramp,
+body.esconderijo-active .combat-dock-container,
+body.esconderijo-active .combat-players-dock {
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
 body.esconderijo-active .mesa-black-board {
