@@ -15216,3 +15216,12 @@ body.esconderijo-active .combat-ctrl-btn.combat-ctrl-esconderijo-btn {
   border-color: rgba(239, 68, 68, 0.4);
   background: rgba(239, 68, 68, 0.12);
 }
+
+@keyframes spinTape {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1858,7 +1858,10 @@ const MesaApp = {
               if (pf.active && !isActive && (Date.now() - (pf.timestamp || 0) < 1800000)) {
                 MesaPerseguicaoFloresta.triggerStart();
               } else if (!pf.active && isActive) {
-                MesaPerseguicaoFloresta.triggerStop();
+                const timeSinceLocal = Date.now() - (MesaPerseguicaoFloresta.localStartTime || 0);
+                if (timeSinceLocal > 6000) {
+                  MesaPerseguicaoFloresta.triggerStop();
+                }
               }
             }
             if (p1Attrs._sys_tv_estatica && window.MesaTvEstatica) {
@@ -1885,20 +1888,30 @@ const MesaApp = {
               const f1 = p1Attrs._sys_fita_1;
               const ov = document.getElementById('fita-1-overlay');
               const isActive = ov && ov.classList.contains('active');
-              if (f1.active && !isActive && (Date.now() - (f1.timestamp || 0) < 1800000)) {
-                MesaFita1.triggerStart(f1.timestamp);
+              const now = Date.now();
+              const elapsed = (now - (f1.timestamp || 0)) / 1000;
+              if (f1.active && !isActive && elapsed >= 0 && elapsed < 70) {
+                MesaFita1.triggerStart(f1.timestamp, false);
               } else if (!f1.active && isActive) {
-                MesaFita1.triggerStop();
+                const timeSinceLocal = now - (MesaFita1.localStartTime || 0);
+                if (timeSinceLocal > 6000) {
+                  MesaFita1.triggerStop();
+                }
               }
             }
             if (p1Attrs._sys_fita_2 && window.MesaFita2) {
               const f2 = p1Attrs._sys_fita_2;
               const ov = document.getElementById('fita-2-overlay');
               const isActive = ov && ov.classList.contains('active');
-              if (f2.active && !isActive && (Date.now() - (f2.timestamp || 0) < 1800000)) {
-                MesaFita2.triggerStart(f2.timestamp);
+              const now = Date.now();
+              const elapsed = (now - (f2.timestamp || 0)) / 1000;
+              if (f2.active && !isActive && elapsed >= 0 && elapsed < 276) {
+                MesaFita2.triggerStart(f2.timestamp, false);
               } else if (!f2.active && isActive) {
-                MesaFita2.triggerStop();
+                const timeSinceLocal = now - (MesaFita2.localStartTime || 0);
+                if (timeSinceLocal > 6000) {
+                  MesaFita2.triggerStop();
+                }
               }
             }
             if (p1Attrs._sys_roll_log && window.MesaRollLog) {
@@ -2087,20 +2100,30 @@ const MesaApp = {
             const f1 = attrs._sys_fita_1;
             const ov = document.getElementById('fita-1-overlay');
             const isActive = ov && ov.classList.contains('active');
-            if (f1.active && !isActive && (Date.now() - (f1.timestamp || 0) < 1800000)) {
-              MesaFita1.triggerStart(f1.timestamp);
+            const now = Date.now();
+            const elapsed = (now - (f1.timestamp || 0)) / 1000;
+            if (f1.active && !isActive && elapsed >= 0 && elapsed < 70) {
+              MesaFita1.triggerStart(f1.timestamp, false);
             } else if (!f1.active && isActive) {
-              MesaFita1.triggerStop();
+              const timeSinceLocal = now - (MesaFita1.localStartTime || 0);
+              if (timeSinceLocal > 6000) {
+                MesaFita1.triggerStop();
+              }
             }
           }
           if (attrs && attrs._sys_fita_2 && window.MesaFita2) {
             const f2 = attrs._sys_fita_2;
             const ov = document.getElementById('fita-2-overlay');
             const isActive = ov && ov.classList.contains('active');
-            if (f2.active && !isActive && (Date.now() - (f2.timestamp || 0) < 1800000)) {
-              MesaFita2.triggerStart(f2.timestamp);
+            const now = Date.now();
+            const elapsed = (now - (f2.timestamp || 0)) / 1000;
+            if (f2.active && !isActive && elapsed >= 0 && elapsed < 276) {
+              MesaFita2.triggerStart(f2.timestamp, false);
             } else if (!f2.active && isActive) {
-              MesaFita2.triggerStop();
+              const timeSinceLocal = now - (MesaFita2.localStartTime || 0);
+              if (timeSinceLocal > 6000) {
+                MesaFita2.triggerStop();
+              }
             }
           }
           if (attrs && attrs._sys_tv_estatica && window.MesaTvEstatica) {
@@ -2130,7 +2153,10 @@ const MesaApp = {
             if (pf.active && !isActive && (Date.now() - (pf.timestamp || 0) < 1800000)) {
               MesaPerseguicaoFloresta.triggerStart();
             } else if (!pf.active && isActive) {
-              MesaPerseguicaoFloresta.triggerStop();
+              const timeSinceLocal = Date.now() - (MesaPerseguicaoFloresta.localStartTime || 0);
+              if (timeSinceLocal > 6000) {
+                MesaPerseguicaoFloresta.triggerStop();
+              }
             }
           }
 
@@ -2256,7 +2282,7 @@ const MesaApp = {
     channel.on('broadcast', { event: 'fita_2_start' }, (payload) => {
       if (isFromSelf(payload)) return;
       if (window.MesaFita2) {
-        MesaFita2.triggerStart(payload && payload.payload && payload.payload.timestamp);
+        MesaFita2.triggerStart(0, true);
       }
     });
 
@@ -2270,7 +2296,7 @@ const MesaApp = {
     channel.on('broadcast', { event: 'fita_1_start' }, (payload) => {
       if (isFromSelf(payload)) return;
       if (window.MesaFita1) {
-        MesaFita1.triggerStart(payload && payload.payload && payload.payload.timestamp);
+        MesaFita1.triggerStart(0, true);
       }
     });
 
@@ -2312,6 +2338,7 @@ const MesaApp = {
     channel.on('broadcast', { event: 'perseguicao_floresta_start' }, (payload) => {
       if (isFromSelf(payload)) return;
       if (window.MesaPerseguicaoFloresta) {
+        MesaPerseguicaoFloresta.localStartTime = Date.now();
         MesaPerseguicaoFloresta.triggerStart();
       }
     });
@@ -6308,7 +6335,7 @@ const MesaColetaveis = {
           merged[idx].posse = can.posse !== undefined ? can.posse : null;
           changed = true;
         }
-        if (['col_notebook_sara', 'col_livro_viajante_terra', 'col_caixa_negra_dourada'].includes(can.id)) {
+        if (['col_notebook_sara', 'col_livro_viajante_terra', 'col_caixa_negra_dourada', 'col_fita_01', 'col_fita_02'].includes(can.id)) {
           if (!merged[idx].desbloqueado) {
             merged[idx].desbloqueado = true;
             changed = true;
@@ -6726,9 +6753,10 @@ const MesaColetaveis = {
           const isNotebook = it.id === 'col_notebook_sara';
           const isCartaz = it.id === 'col_cartaz_desaparecido' || it.id === 'col_panfleto_anotado_kali';
           const isGravador = it.id === 'col_gravador_fita_01' || it.id === 'col_gravador_bolso_02';
-          const isClickable = isBook || isDiario || isCaixa || isNotebook || isCartaz || isGravador;
-          const clickAction = isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : (isCartaz ? `MesaLivroReader.open('col_cartaz_desaparecido')` : (isGravador ? `MesaLivroReader.open('${it.id}')` : '')))));
-          const clickTitle = isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : (isCartaz ? 'Clique para examinar o cartaz e ler o verso' : ''))));
+          const isFita = it.id === 'col_fita_01' || it.id === 'col_fita_02';
+          const isClickable = isBook || isDiario || isCaixa || isNotebook || isCartaz || isGravador || isFita;
+          const clickAction = isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : (isCartaz ? `MesaLivroReader.open('col_cartaz_desaparecido')` : ((isGravador || isFita) ? `MesaLivroReader.open('${it.id}')` : '')))));
+          const clickTitle = isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : (isCartaz ? 'Clique para examinar o cartaz e ler o verso' : (isFita ? 'Clique para ouvir os ecos da fita espectral' : '')))));
 
           return `
             <div class="coletavel-card ${isClickable ? 'clickable-item' : ''}" style="padding: 12px 14px;" ${isClickable ? `onclick="${clickAction}" title="${clickTitle}"` : ''}>
@@ -6793,16 +6821,10 @@ const MesaColetaveis = {
                   <span>Ouvir e Ler Transcrição da Fita</span>
                 </button>
               ` : ''}
-              ${isCartaz ? `
-                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_cartaz_desaparecido');" style="background: rgba(168, 85, 247, 0.16); border-color: rgba(168, 85, 247, 0.45); color: #c084fc;">
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-                  <span>Examinar Cartaz (Frente e Verso)</span>
-                </button>
-              ` : ''}
-              ${isGravador ? `
-                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('${it.id}');" style="background: rgba(245, 158, 11, 0.16); border-color: rgba(245, 158, 11, 0.45); color: #fbbf24;">
+              ${isFita ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('${it.id}');" style="background: rgba(249, 115, 22, 0.16); border-color: rgba(249, 115, 22, 0.55); color: #fb923c;">
                   <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
-                  <span>Ouvir e Ler Transcrição da Fita</span>
+                  <span>Ouvir Ecos da Fita Espectral</span>
                 </button>
               ` : ''}
               ${isMaster ? `
@@ -6874,9 +6896,10 @@ const MesaColetaveis = {
           const isNotebook = it.id === 'col_notebook_sara';
           const isCartaz = it.id === 'col_cartaz_desaparecido' || it.id === 'col_panfleto_anotado_kali';
           const isGravador = it.id === 'col_gravador_fita_01' || it.id === 'col_gravador_bolso_02';
-          const isClickable = isBook || isDiario || isCaixa || isNotebook || isCartaz || isGravador;
-          const clickAction = isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : (isCartaz ? `MesaLivroReader.open('col_cartaz_desaparecido')` : (isGravador ? `MesaLivroReader.open('${it.id}')` : '')))));
-          const clickTitle = isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : (isCartaz ? 'Clique para examinar o cartaz e ler o verso' : ''))));
+          const isFita = it.id === 'col_fita_01' || it.id === 'col_fita_02';
+          const isClickable = isBook || isDiario || isCaixa || isNotebook || isCartaz || isGravador || isFita;
+          const clickAction = isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : (isCartaz ? `MesaLivroReader.open('col_cartaz_desaparecido')` : ((isGravador || isFita) ? `MesaLivroReader.open('${it.id}')` : '')))));
+          const clickTitle = isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : (isCartaz ? 'Clique para examinar o cartaz e ler o verso' : (isFita ? 'Clique para ouvir os ecos da fita espectral' : '')))));
 
           return `
             <div class="coletavel-card ${isMaster ? (it.desbloqueado ? 'master-unlocked' : 'master-locked') : ''} ${isClickable ? 'clickable-item' : ''}" ${isClickable ? `onclick="${clickAction}" title="${clickTitle}"` : ''}>
@@ -6930,6 +6953,25 @@ const MesaColetaveis = {
                   <span>Acesso Rápido: Câmeras de Segurança</span>
                 </button>
               ` : ''}
+              ${isCartaz ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_cartaz_desaparecido');" style="background: rgba(168, 85, 247, 0.16); border-color: rgba(168, 85, 247, 0.45); color: #c084fc;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                  <span>Examinar Cartaz (Frente e Verso)</span>
+                </button>
+              ` : ''}
+              ${isGravador ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('${it.id}');" style="background: rgba(245, 158, 11, 0.16); border-color: rgba(245, 158, 11, 0.45); color: #fbbf24;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                  <span>Ouvir e Ler Transcrição da Fita</span>
+                </button>
+              ` : ''}
+              ${isFita ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('${it.id}');" style="background: rgba(249, 115, 22, 0.16); border-color: rgba(249, 115, 22, 0.55); color: #fb923c;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                  <span>Ouvir Ecos da Fita Espectral</span>
+                </button>
+              ` : ''}
+
               ${isMaster ? `
                 <div class="coletavel-assign-row" onclick="event.stopPropagation();">
                   <span class="coletavel-assign-label">Posse:</span>
@@ -7226,6 +7268,128 @@ const MesaLivroReader = {
                 <p style="margin: 0 0 12px;"><strong style="color: #a7f3d0;">— Bia</strong> (levantando do caixote devagar e batendo a poeira da calça): "Eu sei. Vai dar tudo certo amanhã no bosque, Sara. Tomara que esse Jardim seja bom mesmo... Se eu não aguentar mais essa situação aqui fora, qualquer dia desses eu abro a próxima caixa e vou atrás de você. Boa sorte lá."</p>
                 <p style="margin: 0 0 12px;"><strong style="color: #60a5fa;">— Sara</strong> (num sopro quase inaudível): "...Tchau, Bia."</p>
                 <p style="margin: 0; color: #9ca3af; font-style: italic;">[Som dos passos calmos de Bia saindo na chuva. A fita continua rodando no escuro com o barulho constante da cadeira da Sara rangendo — nhec, nhec — até o áudio cortar]</p>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      return;
+    }
+
+    // MODO RELÍQUIA ESPECTRAL: FITA ESPECTRAL #01
+    if (this.currentDocId === 'col_fita_01') {
+      if (badge) {
+        badge.textContent = 'RELÍQUIA ESPECTRAL • FITA CASSETE #01';
+        badge.style.display = 'inline-block';
+        badge.style.borderColor = '#f97316';
+        badge.style.color = '#fb923c';
+      }
+      if (title) title.textContent = 'FITA ESPECTRAL #01: ECOS DA TRAVESSIA';
+      if (subtitle) {
+        subtitle.textContent = 'Pavilhão de Acolhimento Abandonado • Artefato Translúcido Âmbar';
+        subtitle.style.display = 'block';
+      }
+      if (controls) controls.style.display = 'none';
+      if (note) note.textContent = 'Fita cassete alaranjada e translúcida oscilando entre os planos. O carretel magnético gira sozinho no ar sem reprodutor mecânico, emanando sussurros e estática fria.';
+      if (container) {
+        const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+        container.innerHTML = `
+          <div class="livro-single-doc-wrap" style="display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 6px 4px;">
+            <div style="width: 100%; max-width: 640px; background: radial-gradient(circle at 50% 10%, rgba(249, 115, 22, 0.12), rgba(12, 10, 16, 0.98) 70%); border: 1.5px solid rgba(249, 115, 22, 0.55); border-radius: 6px; padding: 22px 24px; box-shadow: 0 10px 40px rgba(249, 115, 22, 0.15), 0 8px 32px rgba(0,0,0,0.9); position: relative; overflow: hidden;">
+              
+              <!-- Moldura Visual da Fita Cassete Espectral Alaranjada -->
+              <div style="background: rgba(249, 115, 22, 0.08); border: 1.5px dashed rgba(249, 115, 22, 0.4); border-radius: 8px; padding: 16px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; box-shadow: inset 0 0 20px rgba(249, 115, 22, 0.08);">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                  <div style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid rgba(249, 115, 22, 0.8); background: radial-gradient(circle, rgba(249, 115, 22, 0.35) 0%, rgba(0,0,0,0.8) 70%); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 14px rgba(249, 115, 22, 0.5);">
+                    <div style="width: 16px; height: 16px; border: 2px dashed #fb923c; border-radius: 50%; animation: spinTape 4s linear infinite;"></div>
+                  </div>
+                  <div>
+                    <div style="font-family: 'Cinzel', serif; font-size: 0.95rem; font-weight: 700; color: #fdba74; letter-spacing: 1px;">CASSETE ESPECTRAL ALARANJADA</div>
+                    <div style="font-size: 0.75rem; color: #f97316; font-family: monospace;">CARRETEL MAGNÉTICO EM ROTAÇÃO AUTÔNOMA</div>
+                  </div>
+                </div>
+                ${isMaster ? `
+                  <button type="button" onclick="MesaFita1.play(); MesaLivroReader.close();" style="background: #9f1239; border: 1px solid #f43f5e; color: #fff1f2; font-size: 0.78rem; font-weight: 700; padding: 6px 12px; border-radius: 3px; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(244, 63, 94, 0.35);">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
+                    <span>Transmitir Cena</span>
+                  </button>
+                ` : ''}
+              </div>
+
+              <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(249, 115, 22, 0.3); padding-bottom: 8px; margin-bottom: 14px;">
+                <span style="font-size: 0.82rem; font-weight: 800; color: #fb923c; letter-spacing: 1.5px; font-family: monospace;">FREQUÊNCIA RESIDUAL • ÁUDIO ESPECTRAL</span>
+                <span style="font-size: 0.72rem; color: #fdba74; font-family: monospace;">RESSONÂNCIA ATIVA</span>
+              </div>
+
+              <div style="font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 0.92rem; line-height: 1.7; color: #fed7aa;">
+                <p style="margin: 0 0 10px; color: #ea580c; font-style: italic;">[A fita flutua levemente a poucos centímetros da mesa. Uma névoa translúcida alaranjada emana das bobinas. Não há alto-falante, mas as vozes ressoam diretamente na mente dos presentes]</p>
+                <p style="margin: 0 0 10px;"><strong style="color: #fb923c;">— Ecos do Passado</strong>: Som de passos apressados e pesados pisando em lodo frio e água acumulada. O arfar de quem corre desesperado pela escuridão de um galpão.</p>
+                <p style="margin: 0 0 10px;"><strong style="color: #fdba74;">— Voz Feminina Firme</strong> (instruindo com solenidade glacial): "Não vacile agora. As árvores já sentiram a sua aproximação. O sangue que você carrega é a única chave que as raízes reconhecem."</p>
+                <p style="margin: 0 0 10px;"><strong style="color: #fed7aa;">— Voz Arfante</strong> (quase sem fôlego): "Tem alguém atrás de mim... eu vi a lanterna piscando na cerca do ferro-velho..."</p>
+                <p style="margin: 0 0 10px;"><strong style="color: #fdba74;">— Voz Feminina Firme</strong>: "Não olhe para trás. Seja lá o que você ouvir nos arbustos, a travessia começou. Se você hesitar por um segundo sequer, o solo vai engolir você antes da cerca."</p>
+                <p style="margin: 0 0 12px;"><strong style="color: #ea580c;">— Sussurro Sobreposto</strong> (ecoando em várias direções com estática âmbar): "...não olhe para trás... a travessia começou... não olhe para trás..."</p>
+                <p style="margin: 0; color: #ea580c; font-style: italic;">[A estática alaranjada pulsa em ondas lentas de calor, deixando no ar um odor metálico de ozônio e terra molhada]</p>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      return;
+    }
+
+    // MODO RELÍQUIA ESPECTRAL: FITA ESPECTRAL #02
+    if (this.currentDocId === 'col_fita_02') {
+      if (badge) {
+        badge.textContent = 'RELÍQUIA ESPECTRAL • FITA CASSETE #02';
+        badge.style.display = 'inline-block';
+        badge.style.borderColor = '#ea580c';
+        badge.style.color = '#f97316';
+      }
+      if (title) title.textContent = 'FITA ESPECTRAL #02: BATIMENTOS DO VAZIO';
+      if (subtitle) {
+        subtitle.textContent = 'Pavilhão de Acolhimento Abandonado • Artefato Translúcido Âmbar';
+        subtitle.style.display = 'block';
+      }
+      if (controls) controls.style.display = 'none';
+      if (note) note.textContent = 'Segunda fita alaranjada translúcida. Seu brilho pulsa como um coração distante e transmite fragmentos nítidos de diálogos e interferências cósmicas.';
+      if (container) {
+        const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+        container.innerHTML = `
+          <div class="livro-single-doc-wrap" style="display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 6px 4px;">
+            <div style="width: 100%; max-width: 640px; background: radial-gradient(circle at 50% 10%, rgba(234, 88, 12, 0.14), rgba(12, 10, 16, 0.98) 70%); border: 1.5px solid rgba(234, 88, 12, 0.55); border-radius: 6px; padding: 22px 24px; box-shadow: 0 10px 40px rgba(234, 88, 12, 0.18), 0 8px 32px rgba(0,0,0,0.9); position: relative; overflow: hidden;">
+              
+              <!-- Moldura Visual da Fita Cassete Espectral Alaranjada #02 -->
+              <div style="background: rgba(234, 88, 12, 0.08); border: 1.5px dashed rgba(234, 88, 12, 0.4); border-radius: 8px; padding: 16px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; box-shadow: inset 0 0 20px rgba(234, 88, 12, 0.08);">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                  <div style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid rgba(234, 88, 12, 0.85); background: radial-gradient(circle, rgba(234, 88, 12, 0.4) 0%, rgba(0,0,0,0.8) 70%); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 14px rgba(234, 88, 12, 0.55);">
+                    <div style="width: 16px; height: 16px; border: 2px dashed #f97316; border-radius: 50%; animation: spinTape 3s linear infinite;"></div>
+                  </div>
+                  <div>
+                    <div style="font-family: 'Cinzel', serif; font-size: 0.95rem; font-weight: 700; color: #fdba74; letter-spacing: 1px;">CASSETE ESPECTRAL ALARANJADA #02</div>
+                    <div style="font-size: 0.75rem; color: #ea580c; font-family: monospace;">PULSAÇÃO RÍTMICA CÓSMICA</div>
+                  </div>
+                </div>
+                ${isMaster ? `
+                  <button type="button" onclick="MesaFita2.play(); MesaLivroReader.close();" style="background: #9f1239; border: 1px solid #f43f5e; color: #fff1f2; font-size: 0.78rem; font-weight: 700; padding: 6px 12px; border-radius: 3px; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(244, 63, 94, 0.35);">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
+                    <span>Transmitir Cena</span>
+                  </button>
+                ` : ''}
+              </div>
+
+              <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(234, 88, 12, 0.3); padding-bottom: 8px; margin-bottom: 14px;">
+                <span style="font-size: 0.82rem; font-weight: 800; color: #f97316; letter-spacing: 1.5px; font-family: monospace;">DIÁLOGOS VAZADOS • FREQUÊNCIA PROFUNDA</span>
+                <span style="font-size: 0.72rem; color: #fdba74; font-family: monospace;">INTERFERÊNCIA GRAVADA</span>
+              </div>
+
+              <div style="font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 0.92rem; line-height: 1.7; color: #fed7aa;">
+                <p style="margin: 0 0 10px; color: #ea580c; font-style: italic;">[Ruído seco de fita antiga se desgastando. Uma estática mais cortante e rítmica reverbera, sincronizada com batimentos cardíacos lentos]</p>
+                <p style="margin: 0 0 10px;"><strong style="color: #f97316;">— Ruídos Ambientais</strong>: Galhos secos estalando na mata densa. Uma respiração sufocada e rápida.</p>
+                <p style="margin: 0 0 10px;"><strong style="color: #60a5fa;">— Sara</strong> (em transe hipnótico, com voz sobreposta que ecoa em duas afinações distintas): "...Quatro, nove, sete... Não pertence ao vale. Três graus ao norte do poço de calcário..."</p>
+                <p style="margin: 0 0 10px;"><strong style="color: #fdba74;">— Segunda Voz</strong> (distorcida, filtrada como através de um rádio militar valvulado): "O sinal está preso entre as frequências. Se as pedras começarem a sangrar, não interrompa o circuito."</p>
+                <p style="margin: 0 0 10px;"><strong style="color: #60a5fa;">— Sara</strong>: "...A carne ainda está quente. O cordeiro não gritou. Eu fiz exatamente o que Ele mandou..."</p>
+                <p style="margin: 0 0 12px;"><strong style="color: #ea580c;">— Estática Cósmica</strong> (um zumbido de baixa frequência preenche o ambiente por cinco segundos, modulando como se respirasse): "...estamos esperando do outro lado..."</p>
+                <p style="margin: 0; color: #ea580c; font-style: italic;">[O som se desvanece gradualmente em um estalo seco, mantendo o brilho alaranjado da fita pulsando suavemente no escuro]</p>
               </div>
             </div>
           </div>
@@ -8345,6 +8509,7 @@ const MesaPerseguicaoFloresta = {
       return;
     }
     const now = Date.now();
+    this.localStartTime = now;
 
     const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
     if (chan) {
@@ -8561,6 +8726,7 @@ const MesaTvEstatica = {
       return;
     }
     const now = Date.now();
+    this.localStartTime = now;
 
     const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
     if (chan) {
@@ -8810,6 +8976,7 @@ const MesaTvEstatica2 = {
       return;
     }
     const now = Date.now();
+    this.localStartTime = now;
 
     const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
     if (chan) {
@@ -9055,6 +9222,7 @@ const MesaFita1 = {
       return;
     }
     const now = Date.now();
+    this.localStartTime = now;
 
     const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
     if (chan) {
@@ -9062,7 +9230,7 @@ const MesaFita1 = {
         chan.send({
           type: 'broadcast',
           event: 'fita_1_start',
-          payload: { timestamp: now }
+          payload: { timestamp: now, isLive: true }
         });
       } catch (e) {}
     }
@@ -9087,7 +9255,7 @@ const MesaFita1 = {
       })();
     }
 
-    this.triggerStart(now);
+    this.triggerStart(0, true);
   },
 
   stop() {
@@ -9127,8 +9295,9 @@ const MesaFita1 = {
     this.triggerStop();
   },
 
-  triggerStart(startTime) {
+  triggerStart(startTime = 0, isLive = false) {
     this.isActive = true;
+    this.localStartTime = Date.now();
     if (this._fadeTimeout) {
       clearTimeout(this._fadeTimeout);
       this._fadeTimeout = null;
@@ -9153,17 +9322,30 @@ const MesaFita1 = {
     if (btnTransmit) btnTransmit.style.display = 'none';
     if (btnStop) btnStop.style.display = 'inline-flex';
 
-    const now = Date.now();
-    const elapsed = startTime ? Math.max(0, (now - startTime) / 1000) : 0;
+    let elapsed = 0;
+    if (!isLive && startTime) {
+      const diff = (Date.now() - startTime) / 1000;
+      if (diff > 1.5 && diff < 70) {
+        elapsed = diff;
+      } else if (diff >= 70) {
+        this.triggerStop();
+        return;
+      }
+    }
 
     video.onended = () => {
+      if (video.duration && video.currentTime < video.duration - 1.5) {
+        console.warn('onended prematuro ignorado em fita 1. Retomando playback.');
+        video.play().catch(() => {});
+        return;
+      }
+      this.triggerStop();
       if (MesaApp.state && MesaApp.state.isMaster) {
         this.stop();
       }
     };
 
     if (elapsed > 1.5) {
-      // Conexao ou recarregamento no meio do video
       video.currentTime = elapsed;
       video.classList.add('playing');
       const playPromise = video.play();
@@ -9174,9 +9356,8 @@ const MesaFita1 = {
         });
       }
     } else {
-      // Sequencia cinematografica: tela preta primeiro, fade in do video em seguida
       video.classList.remove('playing');
-      video.currentTime = 0;
+      try { video.currentTime = 0; } catch (e) {}
       this._fadeTimeout = setTimeout(() => {
         const playPromise = video.play();
         if (playPromise !== undefined) {
@@ -9247,6 +9428,7 @@ const MesaFita2 = {
       return;
     }
     const now = Date.now();
+    this.localStartTime = now;
 
     const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
     if (chan) {
@@ -9254,7 +9436,7 @@ const MesaFita2 = {
         chan.send({
           type: 'broadcast',
           event: 'fita_2_start',
-          payload: { timestamp: now }
+          payload: { timestamp: now, isLive: true }
         });
       } catch (e) {}
     }
@@ -9279,7 +9461,7 @@ const MesaFita2 = {
       })();
     }
 
-    this.triggerStart(now);
+    this.triggerStart(0, true);
   },
 
   stop() {
@@ -9319,8 +9501,9 @@ const MesaFita2 = {
     this.triggerStop();
   },
 
-  triggerStart(startTime) {
+  triggerStart(startTime = 0, isLive = false) {
     this.isActive = true;
+    this.localStartTime = Date.now();
     if (this._fadeTimeout) {
       clearTimeout(this._fadeTimeout);
       this._fadeTimeout = null;
@@ -9345,10 +9528,24 @@ const MesaFita2 = {
     if (btnTransmit) btnTransmit.style.display = 'none';
     if (btnStop) btnStop.style.display = 'inline-flex';
 
-    const now = Date.now();
-    const elapsed = startTime ? Math.max(0, (now - startTime) / 1000) : 0;
+    let elapsed = 0;
+    if (!isLive && startTime) {
+      const diff = (Date.now() - startTime) / 1000;
+      if (diff > 1.5 && diff < 276) {
+        elapsed = diff;
+      } else if (diff >= 276) {
+        this.triggerStop();
+        return;
+      }
+    }
 
     video.onended = () => {
+      if (video.duration && video.currentTime < video.duration - 1.5) {
+        console.warn('onended prematuro ignorado em fita 2. Retomando playback.');
+        video.play().catch(() => {});
+        return;
+      }
+      this.triggerStop();
       if (MesaApp.state && MesaApp.state.isMaster) {
         this.stop();
       }
@@ -9366,7 +9563,7 @@ const MesaFita2 = {
       }
     } else {
       video.classList.remove('playing');
-      video.currentTime = 0;
+      try { video.currentTime = 0; } catch (e) {}
       this._fadeTimeout = setTimeout(() => {
         const playPromise = video.play();
         if (playPromise !== undefined) {
@@ -11193,6 +11390,11 @@ const MesaIgrisShop = {
       void overlay.offsetWidth;
       overlay.classList.add('active');
     }
+    const isMaster = !!(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    const closeBtn = document.querySelector('.igris-floating-close-btn');
+    if (closeBtn) {
+      closeBtn.style.display = isMaster ? 'flex' : 'none';
+    }
     this.updateUserChip();
     this.renderShowcase();
     this.updateMasterControls();
@@ -11205,30 +11407,32 @@ const MesaIgrisShop = {
     if (!isMaster && !forceOrBroadcast) {
       return;
     }
+    this.isOpen = false;
+    document.body.classList.remove('igris-shop-open');
+
+    if (this.speechTimer) {
+      clearTimeout(this.speechTimer);
+      this.speechTimer = null;
+    }
+    if (this.speechFadeTimer) {
+      clearTimeout(this.speechFadeTimer);
+      this.speechFadeTimer = null;
+    }
+    const dBox = document.getElementById('igris-dialogue-box');
+    if (dBox) dBox.classList.remove('active', 'fading-out');
+    const dText = document.getElementById('igris-dialogue-text');
+    if (dText) dText.innerHTML = '';
+
     const overlay = document.getElementById('igris-shop-overlay');
     const doClose = () => {
-      this.isOpen = false;
-      document.body.classList.remove('igris-shop-open');
       if (overlay) {
         overlay.classList.remove('active', 'igris-closing');
       }
-      if (this.speechTimer) {
-        clearTimeout(this.speechTimer);
-        this.speechTimer = null;
-      }
-      if (this.speechFadeTimer) {
-        clearTimeout(this.speechFadeTimer);
-        this.speechFadeTimer = null;
-      }
-      const dBox = document.getElementById('igris-dialogue-box');
-      if (dBox) dBox.classList.remove('active', 'fading-out');
-      const dText = document.getElementById('igris-dialogue-text');
-      if (dText) dText.innerHTML = '';
     };
 
     if (overlay && overlay.classList.contains('active')) {
       overlay.classList.add('igris-closing');
-      setTimeout(doClose, 400);
+      setTimeout(doClose, 350);
     } else {
       doClose();
     }

@@ -1066,6 +1066,28 @@
       imagem: "assets/caixa.png",
       resumo: "Uma pequena caixa pesada de material desconhecido, negra como obsidiana e contornada por filetes de ouro puro que formam padrões geométricos.",
       detalhe: "A caixa encontra-se completamente selada. Qualquer tentativa de impacto, uso de força bruta, lâminas ou ferramentas de arrombamento falha automaticamente, sem deixar um único arranhão na superfície."
+    },
+    {
+      id: "col_fita_01",
+      nome: "Fita Espectral #01",
+      peso: 0,
+      tipo: "Relíquia Espectral",
+      campo_tipo: "Áudio / Espectral",
+      area: "Pavilhão de Acolhimento Abandonado",
+      desbloqueado: true,
+      resumo: "Uma fita cassete alaranjada, translúcida e espectral, que parece oscilar entre a realidade e o vazio. Ao aproximar o ouvido, sussurros frios e ecos de conversas passadas reverberam sem a necessidade de qualquer aparelho reprodutor.",
+      detalhe: "A fita não tem peso físico e emite uma luminescência âmbar oscilante. O carretel magnético gira lentamente no ar mesmo sem qualquer gravador por perto. Vozes sobrepostas emergem da estática alaranjada: passos apressados no lodo, o som distante de uma mulher dando instruções solenes e sussurros apavorados repetindo: '...não olhe para trás, a travessia começou...'."
+    },
+    {
+      id: "col_fita_02",
+      nome: "Fita Espectral #02",
+      peso: 0,
+      tipo: "Relíquia Espectral",
+      campo_tipo: "Áudio / Espectral",
+      area: "Pavilhão de Acolhimento Abandonado",
+      desbloqueado: true,
+      resumo: "A segunda fita cassete alaranjada e transparente. Seu brilho espectral pulsa no ritmo de batimentos cardíacos distantes. Fragmentos nítidos de diálogos e interferências cósmicas vazam da fita sem que nenhum botão precise ser acionado.",
+      detalhe: "A estática desta fita é mais agressiva, pontuada por estalos secos de interferência analógica. Entre os ruídos, ouve-se a respiração ofegante de quem foge pela mata fechada, galhos estalando e a voz de Sara num transe hipnótico sussurrando códigos e coordenadas que não pertencem ao mapa de Fraguiktos."
     }
   ];
 
