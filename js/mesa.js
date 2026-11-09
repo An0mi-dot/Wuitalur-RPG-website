@@ -10331,6 +10331,7 @@ const MesaCenterArtwork = {
     const clean = npcId.trim().toLowerCase();
     if (clean === 'elias') return 'elias-ribeiro';
     if (clean === 'isaque') return 'isaque-valente';
+    if (clean === 'constança' || clean === 'constanca') return 'constanca';
     return clean;
   },
 

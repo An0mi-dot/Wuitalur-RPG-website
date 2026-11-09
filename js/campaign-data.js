@@ -121,6 +121,62 @@
       segredo_util: "Testemunhou o gato falante no beco e guarda o molho de chaves da Casa dos Auguil no bolso do avental.",
       gatilho_revelacao: "Intimidação DT 8 (ameaçando prendê-lo por ocultação de provas) ou Ocultismo/Religião DT 6 (mostrando que acreditam no sobrenatural sem julgá-lo louco).",
       notas_mestre: "Encontrado varrendo a calçada em frente ao Café fechado ou fumando tenso no bairro. É a ponte que entrega as chaves da casa de Sara ao grupo."
+    },
+    {
+      id: "constanca",
+      nome: "Constança",
+      ilustracao: null,
+      papel: "Profissional de Saúde • Líder Oculta do Pavilhão Abandonado",
+      pv: 12,
+      pe: 4,
+      deslocamento: "6B",
+      atributos: { Vigor: "d8", Força: "d4", Saúde: "d8", Mente: "d16" },
+      equipamento: [
+        "Caneta-tinteiro de tinta roxa",
+        "Bisturi cirúrgico oculto",
+        "Chaves de acesso restrito e prontuários médicos"
+      ],
+      pericias: [
+        "Medicina",
+        "Diplomacia",
+        "Astúcia",
+        "Intuição",
+        "Investigação",
+        "História",
+        "Furtividade"
+      ],
+      habilidades: [
+        {
+          nome: "Fachada Impecável",
+          tipo: "Passiva",
+          efeito: "Recebe vantagem em testes de Diplomacia e Astúcia para manter sua reputação pública, manipular autoridades locais ou desacreditar acusações sem provas materiais diretas."
+        },
+        {
+          nome: "Voz da Desistência",
+          tipo: "Ação Padrão (1 PE)",
+          efeito: "Usa palavras acolhedoras para expor a dor ou falta de futuro de um alvo a alcance curto. O alvo deve passar em Mente DT 8 ou perde 1 PE e fica impedido de realizar ações agressivas contra ela na próxima rodada."
+        },
+        {
+          nome: "Corte Anestésico",
+          tipo: "Ação Padrão (1 PE)",
+          efeito: "Ataque corpo a corpo com bisturi mirando nervos e tendões. Causa 1d4 de dano e o alvo deve passar em Saúde DT 7 ou tem seu deslocamento reduzido pela metade até o fim da cena."
+        }
+      ],
+      personalidade: "Voz extremamente calma, polida, maternal e acolhedora. Nunca eleva o tom, mantém postura ereta e sorriso sereno que não alcança os olhos. Sob pressão trata ameaças como delírios de jovens estressados. Usa perfume floral forte para disfarçar o odor de formol e terra úmida.",
+      historia_resumida: "Figura respeitada no sistema de acolhimento e saúde de Fraguiktos. Após estudar os fenômenos de Paládium e a entidade Ele, passou a usar prontuários médicos para recrutar jovens desenganados ou traumatizados, doutrinando-os no Pavilhão Abandonado para abrirem as Caixas Negras na mata.",
+      o_que_sabe: [
+        "A Mecânica das Caixas Negras: Elas só destrancam nas mãos de alguém cujo tempo de vida está condenado e que já aceitou o próprio fim.",
+        "O Propósito do Canibalismo: Consumir a carne quente de uma vítima saudável serve para acumular Energia Astral extra no espírito do jovem condenado, nutrindo melhor a entidade Ele durante a travessia.",
+        "Os Membros da Roda: Sabe a identidade de todos os jovens do Pavilhão, o quadro clínico de Bia e o diagnóstico recente da Praga em Minerva."
+      ],
+      o_que_nao_sabe: [
+        "As Fitas do Pesadelo: Não sabe que os investigadores recuperaram as fitas no pavilhão nem que descobriram seu laboratório secreto no esgoto.",
+        "A Investigação de Isaque: Desconhece que Isaque segue seus passos pelas sombras e ignora que foi ele quem resgatou Bia na mata."
+      ],
+      informacao_livre: "Demonstra profunda compaixão pelo desaparecimento de Sara e pelo estado de Bia, comentando como enfermidades graves abalam as famílias e deixam adolescentes propensos a fugas.",
+      segredo_util: "Ela é a pessoa mascarada que lidera a roda do Pavilhão Abandonado e a autora de todas as anotações escritas com tinta roxa.",
+      gatilho_revelacao: "Percepção ou Investigação DT 7 para notar a caneta roxa no bolso e o odor de formol sob o perfume; ou Intuição DT 8 ao confrontá-la sobre Minerva para notar seu fascínio clínico em vez de piedade.",
+      notas_mestre: "Circula livremente pela clínica e áreas públicas. O objetivo é gerar impotência social nos jogadores ao verem uma assassina protegida pelo prestígio público, além de tentar manipular Minerva após o diagnóstico da Praga."
     }
   ];
 
