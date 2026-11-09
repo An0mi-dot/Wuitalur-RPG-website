@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.3.1';
+const MESA_VERSION = 'v2.3.9';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -2406,7 +2406,7 @@ const MesaApp = {
         if (payload.payload && payload.payload.merchantImage) {
           MesaIgrisShop.setMerchantImage(payload.payload.merchantImage);
         }
-        MesaIgrisShop.open();
+        MesaIgrisShop.open(false);
       }
     });
 
@@ -8517,7 +8517,10 @@ const MesaPerseguicaoFloresta = {
         chan.send({
           type: 'broadcast',
           event: 'perseguicao_floresta_start',
-          payload: { timestamp: now }
+          payload: {
+            timestamp: now,
+            _senderId: (window.MesaApp && MesaApp.clientId) || null
+          }
         });
       } catch (e) {}
     }
@@ -9230,7 +9233,11 @@ const MesaFita1 = {
         chan.send({
           type: 'broadcast',
           event: 'fita_1_start',
-          payload: { timestamp: now, isLive: true }
+          payload: {
+            timestamp: now,
+            isLive: true,
+            _senderId: (window.MesaApp && MesaApp.clientId) || null
+          }
         });
       } catch (e) {}
     }
@@ -9436,7 +9443,11 @@ const MesaFita2 = {
         chan.send({
           type: 'broadcast',
           event: 'fita_2_start',
-          payload: { timestamp: now, isLive: true }
+          payload: {
+            timestamp: now,
+            isLive: true,
+            _senderId: (window.MesaApp && MesaApp.clientId) || null
+          }
         });
       } catch (e) {}
     }
@@ -11382,13 +11393,20 @@ const MesaIgrisShop = {
       this.broadcastOpen();
       return;
     }
+    const overlay = document.getElementById('igris-shop-overlay');
+    if (this.isOpen && overlay && overlay.classList.contains('active')) {
+      this.updateUserChip();
+      this.renderShowcase();
+      this.updateMasterControls();
+      return;
+    }
     this.isOpen = true;
     document.body.classList.add('igris-shop-open');
-    const overlay = document.getElementById('igris-shop-overlay');
     if (overlay) {
-      overlay.classList.remove('active', 'igris-closing');
-      void overlay.offsetWidth;
-      overlay.classList.add('active');
+      overlay.classList.remove('igris-closing');
+      if (!overlay.classList.contains('active')) {
+        overlay.classList.add('active');
+      }
     }
     const isMaster = !!(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
     const closeBtn = document.querySelector('.igris-floating-close-btn');
@@ -11444,7 +11462,9 @@ const MesaIgrisShop = {
           chan.send({
             type: 'broadcast',
             event: 'igris_shop_close',
-            payload: {}
+            payload: {
+              _senderId: (window.MesaApp && MesaApp.clientId) || null
+            }
           });
         } catch(e) {}
       }
@@ -11469,7 +11489,8 @@ const MesaIgrisShop = {
           event: 'igris_shop_open',
           payload: {
             interests: this.interests,
-            merchantImage: this.merchantImage
+            merchantImage: this.merchantImage,
+            _senderId: (window.MesaApp && MesaApp.clientId) || null
           }
         });
       } catch (e) {
@@ -11801,7 +11822,8 @@ const MesaIgrisShop = {
           payload: {
             itemId: itemId,
             interests: this.interests[itemId],
-            allInterests: this.interests
+            allInterests: this.interests,
+            _senderId: (window.MesaApp && MesaApp.clientId) || null
           }
         });
       } catch (e) {
@@ -11963,7 +11985,8 @@ const MesaIgrisShop = {
             itemId: conflict.id,
             itemName: conflict.nome,
             participants: participants,
-            winnerId: winnerId
+            winnerId: winnerId,
+            _senderId: (window.MesaApp && MesaApp.clientId) || null
           }
         });
       } catch(e) {
@@ -12175,7 +12198,10 @@ const MesaIgrisShop = {
         chan.send({
           type: 'broadcast',
           event: 'igris_items_granted',
-          payload: { deliveries }
+          payload: {
+            deliveries,
+            _senderId: (window.MesaApp && MesaApp.clientId) || null
+          }
         });
       } catch(e) {
         console.warn('Erro ao transmitir concessao de itens:', e);
@@ -12344,30 +12370,20 @@ const MesaCombate = {
   },
 
   isLocalEnvironment() {
-    try {
-      const h = window.location.hostname;
-      return h === 'localhost' || h === '127.0.0.1' || h === '' || window.location.protocol === 'file:';
-    } catch(e) {
-      return false;
-    }
+    return false;
   },
 
-  forceRemoteSync: false,
+  forceRemoteSync: true,
 
   canBroadcast() {
-    if (this.isLocalEnvironment() && !this.forceRemoteSync) {
-      return false;
-    }
     return true;
   },
 
   getChannel() {
-    if (!this.canBroadcast()) return null;
     return (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel) || null;
   },
 
   saveCombatStateDebounced() {
-    if (!this.canBroadcast()) return;
     if (this._saveCombatTimeout) {
       clearTimeout(this._saveCombatTimeout);
     }
@@ -12377,7 +12393,6 @@ const MesaCombate = {
   },
 
   async saveCombatStateToSupabase() {
-    if (!this.canBroadcast()) return;
     if (!window.MesaApp || !MesaApp.supabase || !MesaApp.state || !MesaApp.state.isMaster) return;
     try {
       const { data } = await MesaApp.supabase
