@@ -1815,15 +1815,7 @@ const MesaApp = {
               }
             }
             if (p1Attrs._sys_notebook && window.MesaNotebookSara) {
-              const nb = p1Attrs._sys_notebook;
-              if (nb.active && !MesaNotebookSara.isActive) {
-                if (nb.camImages) MesaNotebookSara.camImages = nb.camImages;
-                MesaNotebookSara.activeCam = nb.activeCam || 1;
-                MesaNotebookSara.triggerStart(nb.sessionStartTime);
-                if (nb.stage === 'cctv') MesaNotebookSara.showCctvStage(nb.activeCam || 1);
-              } else if (!nb.active && MesaNotebookSara.isActive) {
-                MesaNotebookSara.triggerStop();
-              }
+              MesaNotebookSara.syncFromRemote(p1Attrs._sys_notebook);
             }
             if (p1Attrs._sys_igris_shop && window.MesaIgrisShop) {
               const ig = p1Attrs._sys_igris_shop;
@@ -1859,7 +1851,7 @@ const MesaApp = {
               const pf = p1Attrs._sys_perseguicao;
               const ov = document.getElementById('perseguicao-floresta-overlay');
               const isActive = ov && ov.classList.contains('active');
-              if (pf.active && !isActive && (Date.now() - (pf.timestamp || 0) < 1800000)) {
+              if (pf.active && !isActive) {
                 MesaPerseguicaoFloresta.triggerStart();
               } else if (!pf.active && isActive) {
                 const timeSinceLocal = Date.now() - (MesaPerseguicaoFloresta.localStartTime || 0);
@@ -1872,20 +1864,26 @@ const MesaApp = {
               const tv = p1Attrs._sys_tv_estatica;
               const ov = document.getElementById('tv-estatica-overlay');
               const isActive = ov && ov.classList.contains('active');
-              if (tv.active && !isActive && (Date.now() - (tv.timestamp || 0) < 1800000)) {
+              if (tv.active && !isActive) {
                 MesaTvEstatica.triggerStart();
               } else if (!tv.active && isActive) {
-                MesaTvEstatica.triggerStop();
+                const timeSinceLocal = Date.now() - (MesaTvEstatica.localStartTime || 0);
+                if (timeSinceLocal > 6000) {
+                  MesaTvEstatica.triggerStop();
+                }
               }
             }
             if (p1Attrs._sys_tv_estatica_2 && window.MesaTvEstatica2) {
               const tv2 = p1Attrs._sys_tv_estatica_2;
               const ov2 = document.getElementById('tv-estatica-2-overlay');
               const isActive2 = ov2 && ov2.classList.contains('active');
-              if (tv2.active && !isActive2 && (Date.now() - (tv2.timestamp || 0) < 1800000)) {
+              if (tv2.active && !isActive2) {
                 MesaTvEstatica2.triggerStart();
               } else if (!tv2.active && isActive2) {
-                MesaTvEstatica2.triggerStop();
+                const timeSinceLocal = Date.now() - (MesaTvEstatica2.localStartTime || 0);
+                if (timeSinceLocal > 6000) {
+                  MesaTvEstatica2.triggerStop();
+                }
               }
             }
             if (p1Attrs._sys_fita_1 && window.MesaFita1) {
@@ -2012,44 +2010,9 @@ const MesaApp = {
             }
           }
 
-          // 3. Sincronização do Notebook da Sara (Transmissão em tempo real)
+          // 3. Sincronizacao do Notebook da Sara (Espelhamento Completo Mestre -> Jogadores)
           if (attrs && attrs._sys_notebook && window.MesaNotebookSara) {
-            const nb = attrs._sys_notebook;
-            if (nb.active) {
-              if (!MesaNotebookSara.isActive) {
-                if (nb.camImages) MesaNotebookSara.camImages = nb.camImages;
-                MesaNotebookSara.activeCam = nb.activeCam || 1;
-                MesaNotebookSara.triggerStart(nb.sessionStartTime);
-              }
-              if (nb.stage && nb.stage !== MesaNotebookSara.stage) {
-                if (nb.stage === 'desktop') {
-                  MesaNotebookSara.showDesktopStage();
-                } else if (nb.stage === 'cctv') {
-                  const lockStage = document.getElementById('notebook-lock-stage');
-                  const cctvStage = document.getElementById('notebook-cctv-stage');
-                  if (lockStage) lockStage.style.display = 'none';
-                  if (cctvStage) cctvStage.style.display = 'flex';
-                  MesaNotebookSara.stage = 'cctv';
-                  MesaNotebookSara.switchCamera(nb.activeCam || 1, false);
-                } else if (nb.stage === 'lock') {
-                  MesaNotebookSara.showLockScreen();
-                }
-              }
-              if (nb.activeCam && MesaNotebookSara.stage === 'cctv' && MesaNotebookSara.activeCam !== nb.activeCam) {
-                MesaNotebookSara.switchCamera(nb.activeCam, false);
-              }
-              if (nb.signalLost !== undefined && nb.signalLost !== MesaNotebookSara.signalLost) {
-                if (nb.signalLost) {
-                  MesaNotebookSara.signalLost = true;
-                  const lostEl = document.getElementById('cctv-signal-lost');
-                  if (lostEl) lostEl.style.display = 'flex';
-                } else {
-                  MesaNotebookSara.restoreSignal();
-                }
-              }
-            } else if (!nb.active && MesaNotebookSara.isActive) {
-              MesaNotebookSara.triggerStop();
-            }
+            MesaNotebookSara.syncFromRemote(attrs._sys_notebook);
           }
 
           // 3.1 Sincronização da Tenda do Igris
@@ -2149,27 +2112,33 @@ const MesaApp = {
             const tv = attrs._sys_tv_estatica;
             const ov = document.getElementById('tv-estatica-overlay');
             const isActive = ov && ov.classList.contains('active');
-            if (tv.active && !isActive && (Date.now() - (tv.timestamp || 0) < 1800000)) {
+            if (tv.active && !isActive) {
               MesaTvEstatica.triggerStart();
             } else if (!tv.active && isActive) {
-              MesaTvEstatica.triggerStop();
+              const timeSinceLocal = Date.now() - (MesaTvEstatica.localStartTime || 0);
+              if (timeSinceLocal > 6000) {
+                MesaTvEstatica.triggerStop();
+              }
             }
           }
           if (attrs && attrs._sys_tv_estatica_2 && window.MesaTvEstatica2) {
             const tv2 = attrs._sys_tv_estatica_2;
             const ov2 = document.getElementById('tv-estatica-2-overlay');
             const isActive2 = ov2 && ov2.classList.contains('active');
-            if (tv2.active && !isActive2 && (Date.now() - (tv2.timestamp || 0) < 1800000)) {
+            if (tv2.active && !isActive2) {
               MesaTvEstatica2.triggerStart();
             } else if (!tv2.active && isActive2) {
-              MesaTvEstatica2.triggerStop();
+              const timeSinceLocal = Date.now() - (MesaTvEstatica2.localStartTime || 0);
+              if (timeSinceLocal > 6000) {
+                MesaTvEstatica2.triggerStop();
+              }
             }
           }
           if (attrs && attrs._sys_perseguicao && window.MesaPerseguicaoFloresta) {
             const pf = attrs._sys_perseguicao;
             const ov = document.getElementById('perseguicao-floresta-overlay');
             const isActive = ov && ov.classList.contains('active');
-            if (pf.active && !isActive && (Date.now() - (pf.timestamp || 0) < 1800000)) {
+            if (pf.active && !isActive) {
               MesaPerseguicaoFloresta.triggerStart();
             } else if (!pf.active && isActive) {
               const timeSinceLocal = Date.now() - (MesaPerseguicaoFloresta.localStartTime || 0);
@@ -2300,14 +2269,8 @@ const MesaApp = {
     // 5. Notebook da Sara (Dispositivos da Campanha)
     channel.on('broadcast', { event: 'notebook_start' }, (payload) => {
       if (isFromSelf(payload)) return;
-      if (window.MesaNotebookSara) {
-        if (payload.payload && payload.payload.camImages) {
-          MesaNotebookSara.camImages = payload.payload.camImages;
-        }
-        if (payload.payload && payload.payload.activeCam) {
-          MesaNotebookSara.activeCam = payload.payload.activeCam;
-        }
-        MesaNotebookSara.triggerStart(payload.payload && payload.payload.sessionStartTime);
+      if (window.MesaNotebookSara && payload.payload) {
+        MesaNotebookSara.syncFromRemote({ active: true, ...payload.payload });
       }
     });
 
@@ -8731,6 +8694,9 @@ const MesaPerseguicaoFloresta = {
     }
     const now = Date.now();
     this.localStartTime = now;
+    if (MesaApp.state && MesaApp.state.rawRow1Atributos) {
+      MesaApp.state.rawRow1Atributos._sys_perseguicao = { active: true, timestamp: now };
+    }
 
     const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
     if (chan) {
@@ -8808,6 +8774,7 @@ const MesaPerseguicaoFloresta = {
 
   triggerStart() {
     this.isActive = true;
+    this.localStartTime = Date.now();
     const overlay = document.getElementById('perseguicao-floresta-overlay');
     if (overlay) {
       overlay.classList.add('active');
@@ -8938,6 +8905,7 @@ const MesaPerseguicaoFloresta = {
     }
   }
 };
+window.MesaPerseguicaoFloresta = MesaPerseguicaoFloresta;
 
 
 
@@ -9034,6 +9002,7 @@ const MesaTvEstatica = {
 
   triggerStart() {
     this.isActive = true;
+    this.localStartTime = Date.now();
     const overlay = document.getElementById('tv-estatica-overlay');
     if (overlay) {
       overlay.classList.add('active');
@@ -9197,6 +9166,7 @@ const MesaTvEstatica = {
     }
   }
 };
+window.MesaTvEstatica = MesaTvEstatica;
 
 
 
@@ -9293,6 +9263,7 @@ const MesaTvEstatica2 = {
 
   triggerStart() {
     this.isActive = true;
+    this.localStartTime = Date.now();
     const overlay = document.getElementById('tv-estatica-2-overlay');
     if (overlay) {
       overlay.classList.add('active');
@@ -9457,6 +9428,7 @@ const MesaTvEstatica2 = {
     }
   }
 };
+window.MesaTvEstatica2 = MesaTvEstatica2;
 
 // ==========================================================================
 // DISPOSITIVO CINEMATOGRÁFICO: FITA_1 (VÍDEO EM TELA CHEIA COM FADE TO BLACK)
@@ -10600,19 +10572,33 @@ window.closeNpcDrawer = () => {
 // ==========================================================================
 
 // ==========================================================================
-// MESA NOTEBOOK DA SARA: SISTEMA OPERACIONAL DOMESTICO (EXPANSAO REALISTA)
+// MESA NOTEBOOK DA SARA: SISTEMA OPERACIONAL DOMESTICO E SINCRONIZADO
 // ==========================================================================
 const MesaSaraDesktop = {
   initialized: false,
-  activeApp: null,
   activeFolder: 'Estudos_Primordio',
   pendingLockedFile: null,
-  browserView: 'home', // 'home' | 'results' | 'subreddit' | 'topic' | 'sheet_music'
-  currentTopicId: null,
-  browserHistoryStack: ['home'],
-  browserHistoryIdx: 0,
+  lockedModalOpen: false,
+  lockedError: false,
+  startMenuOpen: false,
+  historyModalOpen: false,
+  focusedWindow: null,
+  openWindows: { explorer: false, trash: false, viewer: false, browser: false },
+  maximizedWindows: { explorer: false, trash: false, viewer: false, browser: false },
+  viewerFileRef: null, // { source: 'folder'|'trash'|'locked', folder, id }
 
-  // 1. Arquivos das Pastas
+  browserView: 'home', // 'home' | 'results' | 'subreddit' | 'topic' | 'sheet_music' | 'youtube' | 'yt_watch' | 'article'
+  searchQuery: '',
+  currentTopicId: null,
+  ytQuery: '',
+  ytVideoId: null,
+  currentArticle: null,
+  currentUrl: 'https://fragsearch.net',
+  browserBackStack: [],
+  browserForwardStack: [],
+  _lastScrollSync: 0,
+
+  // 1. Pastas e Arquivos Domesticos
   folders: {
     'Estudos_Primordio': [
       {
@@ -10627,10 +10613,8 @@ const MesaSaraDesktop = {
           <div class="pdf-body-text">
             <h3>1. Estrutura Celular e Membrana Plasmática</h3>
             <p>A célula eucariótica apresenta compartimentalização interna que viabiliza reações metabólicas complexas. A membrana plasmática atua como barreira seletiva semipermeável, regulando a entrada de nutrientes e o descarte de resíduos por difusão facilitada e transporte ativo mediado por ATP.</p>
-            
             <h3>2. O Ciclo Celular e Apoptose</h3>
             <p>O ciclo celular divide-se em Interfase (G1, S, G2) e Mitose (Prófase, Metáfase, Anáfase e Telófase). Durante o ponto de checagem G2/M, a integridade do DNA é minuciosamente avaliada por complexos enzimáticos. Células que acumulam danos irreversíveis no genoma ativam rotas intrínsecas de apoptose (morte celular programada), prevenindo a proliferação anormal no tecido.</p>
-            
             <h3>3. Falhas nos Mecanismos de Controle e Tecidos Anormais</h3>
             <p>Quando mutações silenciam genes supressores de tumor ou ativam proto-oncogenes, o tecido perde o controle de divisão celular. O acúmulo contínuo de células anormais pode invadir tecidos vizinhos e comprometer órgãos vitais através de metástases hematogênicas ou linfáticas, exigindo terapias direcionadas de contenção e ressecção cirúrgica.</p>
           </div>
@@ -10648,10 +10632,8 @@ const MesaSaraDesktop = {
           <div class="pdf-body-text">
             <h3>1. Origens e Ciclo Madeireiro (Década de 1940 - 1970)</h3>
             <p>O subúrbio de Fraguiktos surgiu no início da década de 1940 a partir de assentamentos de trabalhadores atraídos pela instalação das primeiras serrarias a vapor na periferia da Mata do Norte. A abundância de madeira de lei e a proximidade com o rio impulsionaram um rápido crescimento demográfico desordenado.</p>
-            
             <h3>2. A Expansão Urbana e a Borda Florestal</h3>
-            <p>Com o declínio da indústria madereira nos anos 1980, os bairros setentrionais sofreram com o isolamento econômico. O crescimento urbano avançou sobre antigas trilhas de extração, criando uma fronteira difusa entre os blocos residenciais e a mata densa. As construções mais antigas, como o Pavilhão Municipal de Acolhimento, testemunharam a transição do vilarejo para um subúrbio industrial periférico.</p>
-            
+            <p>Com o declínio da indústria madeireira nos anos 1980, os bairros setentrionais sofreram com o isolamento econômico. O crescimento urbano avançou sobre antigas trilhas de extração, criando uma fronteira difusa entre os blocos residenciais e a mata densa. As construções mais antigas, como o Pavilhão Municipal de Acolhimento, testemunharam a transição do vilarejo para um subúrbio industrial periférico.</p>
             <h3>3. O Relacionamento com as Cidades Vizinhas</h3>
             <p>Historicamente dependente da malha ferroviária que ligava a capital à região de Paládium, Fraguiktos manteve um perfil pacato, marcado por cooperativas locais, comércios tradicionais e uma cultura de vizinhança reservada e desconfiada em relação a interferências externas.</p>
           </div>
@@ -10675,7 +10657,6 @@ const MesaSaraDesktop = {
               Yv = f(3) = -2(9) + 36 - 10 = -18 + 26 = 8<br>
               Vértice = (3, 8). Decrescente para x > 3.
             </p>
-            
             <h3>Questão 2:</h3>
             <p>Resolva a equação logarítmica: log₂(x - 4) + log₂(x) = 5. Lembre-se de verificar a condição de existência das raízes reais.</p>
             <p style="font-family: monospace; color: #475569; background: #f8fafc; padding: 6px 10px; border-left: 2px solid #94a3b8;">
@@ -10684,7 +10665,6 @@ const MesaSaraDesktop = {
               log₂[x(x - 4)] = 5 => x² - 4x = 32 => x² - 4x - 32 = 0<br>
               (x - 8)(x + 4) = 0 => x = 8 (pois x = -4 viola a C.E.)
             </p>
-
             <h3>Questão 3:</h3>
             <p>Um modelo de decaimento populacional de micro-organismos segue a lei N(t) = N₀ · e^(-kt). Calcule o tempo necessário para que a amostra se reduza a 25% do volume original...</p>
             <p style="font-family: monospace; color: #94a3b8; font-style: italic; padding: 6px 10px;">
@@ -10838,10 +10818,8 @@ O engraçado de ficar completamente vazia é que o frio da rua não incomoda mai
         <div class="pdf-body-text">
           <p><strong>Paciente:</strong> Sara Auguil &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Idade:</strong> 17 anos &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Data da Coleta:</strong> 12/07/2061</p>
           <p><strong>Médico Responsável:</strong> Dr. Valério G. (CRM/REG 4190)</p>
-          
           <h3>Exame Realizado: Biópsia Citopatológica e Tomografia por Contraste</h3>
           <p>Material colhido de gânglios cervicais profundos e região retroperitoneal. Análise histológica revela densa proliferação celular indiferenciada com padrão infiltrativo avançado, invasão vascular e necrose tecidual difusa.</p>
-          
           <h3>Conclusão Diagnóstica:</h3>
           <p>Quadro histopatológico compatível com neoplasia linfoide agressiva / síndrome degenerativa sistêmica em estágio terminal irreversível. Refratariedade completa às abordagens terapêuticas conservadoras anteriores.</p>
           <p><strong>Recomendação:</strong> Descontinuação de protocolos invasivos fúteis. Encaminhamento imediato para cuidados paliativos domiciliares e suporte de acolhimento social.</p>
@@ -10862,16 +10840,16 @@ O engraçado de ficar completamente vazia é que o frio da rua não incomoda mai
     }
   ],
 
-  // 3. Histórico de Navegação Realista (16 Entradas)
+  // 3. Historico de Navegacao
   historyEntries: [
     { time: 'Ontem - 03:45', action: 'Pesquisa', query: 'como tirar mancha escura de lamina de aço sem estragar o fio' },
     { time: 'Ontem - 03:12', action: 'Pesquisa', query: 'resina ou cola branca forte para vedar trincado em louça lisa' },
     { time: '3 dias atrás - 02:50', action: 'Pesquisa', query: 'pontos de tendão pulso e tornozelo anatomia' },
     { time: '5 dias atrás - 23:20', action: 'Pesquisa', query: 'horarios ronda policial suburbio norte fraguiktos' },
     { time: '6 dias atrás - 14:15', action: 'Pesquisa', query: 'trilha lateral bosque norte movimento tarde' },
-    { time: '8 dias atrás - 22:30', action: 'Acessou', query: 'readit.net/r/Conspiracoes/topico_14_o_parasita_de_mundos', topicId: 14 },
+    { time: '8 dias atrás - 22:30', action: 'Acessou', query: 'readit.net/r/Conspiracoes/topico_14_predador_cosmico', topicId: 14 },
     { time: '9 dias atrás - 21:15', action: 'Pesquisa', query: 'entidade antiga que devora mundos raizes entre planos' },
-    { time: '10 dias atrás - 20:05', action: 'Pesquisa', query: 'o que significa sonhar com fios laranjas e cheiro de ferrugem' },
+    { time: '10 dias atrás - 20:05', action: 'Pesquisa', query: 'youtube clair de lune debussy piano tutorial' },
     { time: '11 dias atrás - 19:00', action: 'Pesquisa', query: 'terremoto paladium corpos com vinhas nos olhos' },
     { time: '14 dias atrás - 03:10', action: 'Pesquisa', query: 'por que não consigo mais sentir prazer em tocar musica depressao' },
     { time: '15 dias atrás - 18:20', action: 'Pesquisa', query: 'pavilhao abandonado norte grupo de apoio' },
@@ -10882,55 +10860,57 @@ O engraçado de ficar completamente vazia é que o frio da rua não incomoda mai
     { time: '28 dias atrás - 15:00', action: 'Pesquisa', query: 'resumo biologia celular ensino medio' }
   ],
 
-  // 4. Os 20 Tópicos do ReadIt
+  // 4. Forum ReadIt (Somente os 4 topicos solicitados + postagens cotidianas comuns)
   readItTopics: [
     {
       id: 1,
-      subreddit: 'r/Conspiracoes',
-      author: 'u/mod_global',
-      time: 'Há 1 mês',
-      votes: 1840,
-      commentsCount: 94,
-      title: '[Fixado] Aviso da Moderação: Tópicos com fotos vazadas do necrotério de Paládium serão banidos.',
-      content: `Aviso oficial para todos os membros da comunidade:
+      subreddit: 'r/Fraguiktos',
+      author: 'u/mod_fraguiktos',
+      time: 'Fixado • Há 2 meses',
+      votes: 412,
+      commentsCount: 19,
+      title: '[Fixado] Regras da comunidade: Mantenham o respeito nos comentários e usem as tags corretas.',
+      content: `Bem-vindos ao subfórum comunitário de moradores de Fraguiktos e redondezas.
 
-Recebemos notificações formais de instâncias regulatórias federais informando que registros fotográficos e relatórios periciais não autorizados das instalações de contenção médica em Paládium estão sob sigilo de segurança.
-
-Qualquer usuário que fizer upload de imagens de cadáveres recuperados nas fendas ou de amostras de tecidos biológicos anômalos terá a conta permanentemente banida e os dados repassados às autoridades. Respeitem as diretrizes do fórum.`,
+1. Evitem spam comercial ou correntes de boatos sem fonte.
+2. Assuntos sobre ônibus, comércios, receitas e pets vão na tag r/Fraguiktos.
+3. Teorias aleatórias ou histórias de madrugada vão na tag r/Conspiracoes.
+4. Respeitem os vizinhos nos comentários.`,
       comments: [
-        { author: 'u/furo_jornalistico', time: 'Há 28 dias', text: 'Engraçado como quando é vazamento de corrupção política ninguém bane, mas quando envolve corpos com vinhas saindo da órbita ocular a censura vem em meia hora.' },
-        { author: 'u/ceticista_99', time: 'Há 26 dias', text: 'Regra básica da internet: se o governo tá ameaçando banir quem posta foto, é porque a foto é real.' }
+        { author: 'u/gamer_sem_sinal', time: 'Há 1 mês', text: 'Alguém sabe se dá pra pedir ajuda aqui quando o caminhão do lixo pula a nossa rua?' },
+        { author: 'u/mod_fraguiktos', time: 'Há 1 mês', text: 'Pode postar sim, só não coloque endereço residencial completo por segurança.' }
       ]
     },
     {
       id: 2,
       subreddit: 'r/Fraguiktos',
-      author: 'u/insonia_frag',
-      time: 'Há 4 dias',
-      votes: 312,
-      commentsCount: 48,
-      title: 'Mais alguém ouvindo um barulho de galhos secos arranhando a janela de madrugada, mesmo morando longe de árvores?',
-      content: `Moro no terceiro andar de um prédio na Avenida das Acácias, a pelo menos quatro quadras de qualquer árvore grande. Já é a terceira noite seguida que, exatamente entre 2h30 e 4h da manhã, começo a escutar um som como se fossem galhos grossos e secos sendo esfregados devagar contra o vidro do quarto.
+      author: 'u/dona_mimi',
+      time: 'Há 2 dias',
+      votes: 284,
+      commentsCount: 31,
+      title: 'Meu gato aprendeu a abrir a porta do armário da cozinha de madrugada e agora derruba todo o macarrão.',
+      content: `Sério, eu já coloquei até fita crepe na porta do armário de baixo, mas o Biscoito simplesmente fica em pé nas duas patinhas, puxa a fita com o dente e abre a portinha. Hoje acordei com meio pacote de espaguete espalhado pelo chão e ele deitado bem em cima olhando pra minha cara como se nada tivesse acontecido.
 
-Quando acendo a luz ou puxo a cortina, não tem nada na calçada nem na parede externa, só um vento frio com cheiro de terra molhada e ferrugem. Mais alguém na região do norte tá escutando isso?`,
+Mais alguém tem um gato laranja completamente caótico assim ou eu adotei um guaxinim disfarçado.`,
       comments: [
-        { author: 'u/morador_bloco_c', time: 'Há 3 dias', text: 'Eu moro no Bloco C e ouço isso desde a semana passada. Meus cachorros ficam travados olhando pro teto e não latem, só tremem.' },
-        { author: 'u/vigia_noturno', time: 'Há 2 dias', text: 'Não recomendo abrir a janela pra olhar pra fora nesse horário. Tranque o trinco e durma com a luz do corredor acesa.' }
+        { author: 'u/larica_noturna', time: 'Há 2 dias', text: 'Gato laranja compartilha um único neurônio com todos os outros gatos laranjas do planeta. Trava de armário de bebê resolve.' },
+        { author: 'u/cozinha_simples', time: 'Há 1 dia', text: 'O meu aprendeu a ligar a torneira do banheiro e deixa pingando a tarde inteira.' }
       ]
     },
     {
       id: 3,
-      subreddit: 'r/Conspiracoes',
-      author: 'u/bio_oculto',
-      time: 'Há 12 dias',
-      votes: 620,
-      commentsCount: 82,
-      title: 'Teoria: A "Praga" que matou a Heroína Eleonor não é uma doença da Terra.',
-      content: `Analisei os poucos prontuários que vazaram da época da contenção de Eleonor. A literatura médica padrão classifica aquilo como uma infecção virulenta desconhecida ou necrose fulminante. Mas o padrão celular não bate com nada que a biologia terrestre conhece:
+      subreddit: 'r/Fraguiktos',
+      author: 'u/entomologia_amadora',
+      time: 'Há 3 dias',
+      votes: 147,
+      commentsCount: 22,
+      title: 'Achei esse besouro grande com carapaça verde metálica no muro do quintal hoje, alguém sabe a espécie?',
+      content: `Fui recolher a roupa do varal agora no fim da tarde e vi um inseto do tamanho de um polegar parado perto da lâmpada externa. Ele tem as costas todas verdes bem brilhantes, quase furta-cor, e umas anteninhas curtas em formato de leque.
 
-As células não morrem por apoptose ou lise bacteriana; elas sofrem uma dessecação cinzenta, como se todo o líquido intracelular fosse drenado e substituído por uma matriz fibrosa sem circulação de sangue. É como se a carne humana não estivesse morrendo, mas sendo lentamente "preparada" para servir de condutor para outra coisa. Nenhum antibiótico ou antifúngico sequer desacelerou o processo.`,
+Deixei ele quieto numa folha de jornal e coloquei perto do canteiro, não quis matar. Será que é aquele besouro-de-maio comum ou algum besouro que come planta?`,
       comments: [
-        { author: 'u/analista_defesa', time: 'Há 11 dias', text: 'Se você reparar na história antiga, toda vez que essa necrose cinzenta aparece na fronteira de um império, a floresta ao redor cresce o dobro no ano seguinte.' }
+        { author: 'u/planta_em_vaso', time: 'Há 3 dias', text: 'Parece ser um escaravelho verde comum de jardim mesmo. Eles aparecem bastante perto de luz branca depois de chuva, são totalmente inofensivos.' },
+        { author: 'u/dona_mimi', time: 'Há 2 dias', text: 'Aqui aparece um monte desses em agosto, meu gato tenta pegar todos.' }
       ]
     },
     {
@@ -10945,7 +10925,8 @@ As células não morrem por apoptose ou lise bacteriana; elas sofrem uma desseca
 
 Jovens andando sozinhos ou em duplas pela trilha de cascalho às 2h da madrugada. Eles não carregam lanterna nem falam alto, andam com uma postura rígida e cabeça baixa. Do prédio abandonado sobe um cheiro forte, enjoativo, uma mistura de terra recém-cavada com ferro e perfume floral doce. Já chamei a polícia duas vezes, mas a viatura nunca passa por aquela estrada de terra. Não cheguem perto daquele portão enferrujado.`,
       comments: [
-        { author: 'u/insonia_frag', time: 'Há 14 dias', text: 'Tem uma senhora de casaco escuro que costuma levar mantimentos pra lá no fim da tarde. Dizem que é assistência comunitária, mas ninguém da igreja local conhece ela.' }
+        { author: 'u/spam_bloqueado', time: 'Há 14 dias', text: 'Tem uma mulher de casaco escuro que leva sacolas pra lá no fim da tarde às vezes. Pessoal aqui diz que é gente de assistência social antiga ou coisa assim.' },
+        { author: 'u/trabalhador_cansado', time: 'Há 13 dias', text: 'Aquele lugar tá caindo aos pedaços desde 2050, melhor nem chegar perto por causa de telha solta.' }
       ]
     },
     {
@@ -10962,24 +10943,23 @@ Segundo ele, a versão do tremor de terra é uma fraude completa para acalmar o 
 
 Lá embaixo, nos níveis inferiores da mina, eles encontraram os corpos dos trabalhadores soterrados intactos, sem ossos quebrados. Porém, todos tinham vinhas prateadas ultrafinas crescendo por baixo das pálpebras, e quando miravam as lanternas nos olhos deles, havia reflexos fosforescentes de luz ciano, rosa e verde correndo pelas pupilas, como se a mente deles ainda estivesse conectada a um circuito invisível.`,
       comments: [
-        { author: 'u/erudito_abissal', time: 'Há 17 dias', text: 'As vinhas prateadas são o micélio da semente estelar. Quem olha muito tempo para a cratera começa a escutar o zumbido das raízes.' }
+        { author: 'u/ceticista_99', time: 'Há 17 dias', text: 'Mais uma fanfic de terremoto sem nenhuma foto nem registro de jornal. Povo acredita em tudo.' },
+        { author: 'u/observador_do_vazio', time: 'Há 16 dias', text: 'Procurem os documentos arquivados de vazamento mineral de Paládium antes que apaguem do servidor.' }
       ]
     },
     {
       id: 6,
       subreddit: 'r/Fraguiktos',
-      author: 'u/arquivo_urbano',
-      time: 'Há 22 dias',
-      votes: 540,
-      commentsCount: 88,
-      title: 'Por que tantas pessoas desaparecem perto da Mata do Norte há anos e a polícia nunca acha os corpos?',
-      content: `Fiz um levantamento dos boletins de ocorrência arquivados da comarca de Fraguiktos nos últimos 5 anos. Há um padrão bizarro que ninguém na prefeitura quer admitir:
+      author: 'u/trabalhador_cansado',
+      time: 'Há 4 dias',
+      votes: 196,
+      commentsCount: 28,
+      title: 'Ônibus da linha 402 (Centro - Bairro Norte) atrasando 40 minutos todo santo dia essa semana.',
+      content: `Eu saio do turno às 18h10 no centro e fico plantado no ponto da Praça Velha até quase 19h esperando o 402 passar. Quando passa, vem lotado até a porta e metade das janelas não fecha direito nesse frio.
 
-Pelo menos 14 jovens entre 16 e 22 anos desapareceram no raio de 3 quilômetros da orla da floresta. Dois casos aconteceram há quase dois anos (duas estudantes que sumiram no mesmo trimestre sem deixar rastro de fuga ou celular), e agora recentemente tivemos o caso da menina Kali perto da ponte.
-
-Nenhuma pegada de luta, nenhuma roupa rasgada, nenhum cão farejador que consiga manter o rastro depois da linha das árvores velhas. É como se as pessoas simplesmente chegassem na borda da mata e fossem apagadas do mapa.`,
+Alguém sabe se teve obra interditando a avenida de novo ou se a viação só tirou carro de circulação mesmo?`,
       comments: [
-        { author: 'u/busca_local', time: 'Há 21 dias', text: 'A família da menina Kali ainda tá procurando respostas na delegacia, mas o delegado disse que não tem verba pra buscas na mata fechada.' }
+        { author: 'u/quero_dormir', time: 'Há 4 dias', text: 'Ontem o motorista disse que dois ônibus da linha quebraram na garagem e não tem peça de reposição até sexta.' }
       ]
     },
     {
@@ -10994,103 +10974,87 @@ Nenhuma pegada de luta, nenhuma roupa rasgada, nenhum cão farejador que consiga
 
 Os roedores lá embaixo estão do tamanho de gatos grandes, mas o pior não é o tamanho: eles têm nódulos cinzentos e duros crescendo nas costas e na base do crânio. E eles não fogem da luz da lanterna como ratos normais; eles param, ficam encarando em bando com os olhos opacos e avançam nas galochas se a gente der um passo pra frente. Tem algo contaminando a água profunda da drenagem que vem da mata.`,
       comments: [
-        { author: 'u/morador_bloco_c', time: 'Há 8 dias', text: 'Ouço guinchos horríveis vindos dos bueiros da calçada perto da meia-noite. Tá insalubre morar aqui.' }
+        { author: 'u/esquecido_sempre', time: 'Há 8 dias', text: 'Isso explica os barulhos horríveis que estavam saindo da boca de lobo aqui da esquina ontem à noite.' }
       ]
     },
     {
       id: 8,
-      subreddit: 'r/Conspiracoes',
-      author: 'u/erudito_abissal',
-      time: 'Há 24 dias',
-      votes: 980,
-      commentsCount: 110,
-      title: 'Tradução dos fragmentos pré-históricos: O "Rei sob a Casca" e a Semente que veio das estrelas.',
-      content: `Consegui acesso fotográfico às tabuletas de argila negra resgatadas das escavações das cavernas do sul de Paládium.
-
-O texto pré-diluviano não descreve deuses com feições humanas, nem guerreiros celestes. As gravuras representam um esporo disforme que desceu do vazio interestelar quando a Terra ainda era jovem. Os antigos o chamavam de "Aquele que repousa sob a Casca".
-
-O texto adverte que Ele não precisa de exércitos: Ele semeia parasitas sutis na biosfera. Ele dorme nas raízes mais antigas da terra aguardando que as civilizações fiquem maduras, doentes e cansadas. Quando a agonia coletiva atinge o ápice, a floresta abre suas fauces para sugar o que resta da consciência humana.`,
+      subreddit: 'r/Fraguiktos',
+      author: 'u/larica_noturna',
+      time: 'Há 5 dias',
+      votes: 76,
+      commentsCount: 15,
+      title: 'Recomendação de alguma pizzaria aberta depois das 23h que entregue perto da Praça Velha?',
+      content: `Cheguei tarde em casa sem nada pronto na geladeira e todas as lanchonetes do aplicativo já fecharam. Alguma dica de telefone de pizzaria de bairro que entrega até mais tarde de quarta-feira?`,
       comments: [
-        { author: 'u/observador_do_vazio', time: 'Há 23 dias', text: 'Essa tradução coincide perfeitamente com os alinhamentos astronômicos das ruínas. Ele não é uma metáfora, é uma entidade física que se alimenta de biomassa e almas esgotadas.' }
+        { author: 'u/gamer_sem_sinal', time: 'Há 5 dias', text: 'Pizzaria Forno de Pedra fica aberta até 00h30, a meia calabresa com catupiry deles salva demais.' }
       ]
     },
     {
       id: 9,
       subreddit: 'r/Fraguiktos',
-      author: 'u/colecionador_rua',
-      time: 'Há 16 dias',
-      votes: 380,
-      commentsCount: 53,
-      title: 'Alguém já comprou coisas daquele mercador bizarro que pede "vidrilhos" em vez de dinheiro?',
-      content: `Estava voltando do trabalho tarde e peguei o atalho pelo beco das oficinas velhas. Tinha uma tenda improvisada de pano escuro e um lampião de querosene âmbar aceso. Um homem alto, de manto e voz sussurrada chamado Igris me ofereceu um frasco de óleo e frutas de casca verde simétrica.
+      author: 'u/cozinha_simples',
+      time: 'Há 6 dias',
+      votes: 215,
+      commentsCount: 24,
+      title: 'Receita de bolo de cenoura fofinho que não sola no meio (testada 3 vezes).',
+      content: `Muita gente reclama que o bolo de cenoura fica pesado ou solado por causa da quantidade errada de cenoura. O segredo é pesar ou usar só 2 cenouras médias picadas no liquidificador com 3 ovos e meia xícara de óleo, depois misturar as 2 xícaras de farinha de trigo peneiradas à mão bem devagar sem bater no liquidificador.
 
-Tirei a carteira com notas de dinheiro, mas ele empurrou minha mão rindo baixinho. Disse que papel-moeda de governo não vale nada onde ele anda, e que só aceitava "vidrilhos polidos" ou artefatos que já tivessem tocado a morte. No dia seguinte voltei lá ao meio-dia e o beco estava completamente trancado com cadeados enferrujados há anos.`,
+Fica bem amarelo, fofo e assa em 38 minutos a 180 graus.`,
       comments: [
-        { author: 'u/antiquario_cinza', time: 'Há 15 dias', text: 'Cuidado com mercadores de relíquias. Eles cobram com moedas que você só percebe que perdeu depois que a alma foi embora.' }
+        { author: 'u/dona_mimi', time: 'Há 5 dias', text: 'Fiz agora à tarde com calda de chocolate de achocolatado e deu super certo, finalmente não afundou no meio.' }
       ]
     },
     {
       id: 10,
-      subreddit: 'r/Conspiracoes',
-      author: 'u/sono_pesado',
-      time: 'Há 10 dias',
-      votes: 715,
-      commentsCount: 97,
-      title: 'Sonhos repetitivos com linhas laranjas costurando a pele.',
-      content: `Preciso saber se mais alguém tá passando por isso. Há pelo menos dez noites acordo de sobressalto no meio da madrugada com o mesmo pesadelo vívido:
-
-Eu estou deitado numa clareira de folhas secas e o céu tem uma cor escura, arroxeada. Do alto das copas das árvores descem centenas de fios incandescentes, brilhando em laranja vivo como brasas de forja. Esses fios entram pelos meus pulsos e costuram meus tendões até o peito. Não dói, mas sinto um calor sufocante e acordo com os dois braços dormentes e um gosto amargo de ferrugem na língua.`,
+      subreddit: 'r/Fraguiktos',
+      author: 'u/esquecido_sempre',
+      time: 'Há 7 dias',
+      votes: 64,
+      commentsCount: 8,
+      title: 'Alguém encontrou um molho de chaves com chaveiro de tartaruga perto da Padaria Pão Quente?',
+      content: `Devo ter deixado cair do bolso da jaqueta quando fui comprar pão ontem por volta das 17h. Tem duas chaves prateadas pequenas, uma chave dourada de portão e um chaveiro de borracha verde em formato de tartaruga meio gasto. Se alguém achou ou deixou no balcão da padaria, me manda mensagem por aqui.`,
       comments: [
-        { author: 'u/bio_oculto', time: 'Há 9 dias', text: 'Fios laranjas são o sinal de ancoramento. É o rito de drenagem preparando o recipiente antes do corte final.' }
+        { author: 'u/bazar_bairro', time: 'Há 7 dias', text: 'Passa lá na padaria agora cedo porque o seu Antônio costuma guardar tudo numa caixinha embaixo do caixa.' }
       ]
     },
     {
       id: 11,
-      subreddit: 'r/Conspiracoes',
-      author: 'u/analista_defesa',
-      time: 'Há 20 dias',
-      votes: 830,
-      commentsCount: 75,
-      title: 'O sumiço do General Zael em Paládium tem ligação com as vinhas prateadas?',
-      content: `O Ministério da Defesa insiste que o General Zael faleceu em decorrência do colapso estrutural das fundações durante a operação de resgate nas ruínas de Paládium.
-
-Porém, um membro da escolta de infantaria revelou que o general foi visto caminhando voluntariamente para dentro da câmara mais profunda horas após o término do terremoto. Ele não carregava armamento, estava descalço e repetia em voz baixa que "o ciclo precisava ser concluído". Desde então, nenhum pertence pessoal ou placa de identificação foi entregue à família.`,
+      subreddit: 'r/Fraguiktos',
+      author: 'u/gamer_sem_sinal',
+      time: 'Há 10 dias',
+      votes: 112,
+      commentsCount: 19,
+      title: 'Internet da fibra óptica caindo toda vez que garoa mais forte ou é só aqui no Bloco B?',
+      content: `Toda vez que fecha o tempo o ping vai pra 900ms e a luz vermelha do roteador pisca por cinco minutos. O suporte da operadora diz que está tudo normal na central, mas tá impossível terminar qualquer coisa assim.`,
       comments: [
-        { author: 'u/mod_global', time: 'Há 19 dias', text: 'Mantenham o debate nos limites teóricos. Não citem nomes de militares da ativa.' }
+        { author: 'u/foco_vestibular', time: 'Há 9 dias', text: 'Aqui perto do colégio também fica oscilando de noite quando chove, acho que entra umidade na caixa do poste.' }
       ]
     },
     {
       id: 12,
       subreddit: 'r/Fraguiktos',
-      author: 'u/explorador_sub',
-      time: 'Há 7 dias',
-      votes: 490,
-      commentsCount: 61,
-      title: 'Relato de Urbex: Entramos no esgoto abaixo do bairro norte e o túnel não tinha fim.',
-      content: `Eu e dois amigos descemos na galeria pluvial desativada perto da linha do trem velho. Estávamos com lanternas táticas e botas impermeáveis para gravar um vídeo de exploração urbana.
-
-Depois de uns 40 minutos de caminhada contra o fluxo da água, percebemos que o túnel não seguia mais o traçado das ruas do mapa: a alvenaria de concreto sumiu e virou uma passagem esculpida em pedra escura e raízes petrificadas.
-
-O ar cheirava a ferro velho e vinagre. Mais na frente, na escuridão onde a lanterna não alcançava, escutamos um barulho rastejante de algo muito pesado sendo arrastado na lama. No momento em que apontei a luz pra frente, senti uma queimação súbita atrás dos olhos e um pânico irracional, daqueles de querer arrancar a própria pele. Saímos correndo desesperados e nunca mais descemos naquele bueiro.`,
+      author: 'u/quero_dormir',
+      time: 'Há 11 dias',
+      votes: 330,
+      commentsCount: 41,
+      title: 'O galo do vizinho começa a cantar às 04h40 da manhã em ponto, estou enlouquecendo.',
+      content: `Eu entendo que moramos perto de área rural, mas faz duas semanas que esse bicho acorda antes do sol nascer e não para até às 07h. Já comprei protetor auricular de espuma mas parece que ele canta do lado da minha janela.`,
       comments: [
-        { author: 'u/saneamento_04', time: 'Há 6 dias', text: 'Eu avisei no outro post que aquela galeria tá interditada por um motivo. Vocês deram sorte de voltar inteiros.' }
+        { author: 'u/nostalgia_poeira', time: 'Há 10 dias', text: 'Pelo menos você nunca mais perde a hora do trabalho.' }
       ]
     },
     {
       id: 13,
-      subreddit: 'r/Conspiracoes',
-      author: 'u/antiquario_cinza',
-      time: 'Há 13 dias',
-      votes: 1150,
-      commentsCount: 134,
-      title: 'Objetos de madeira preta sem fechadura encontrados em espólios de pessoas com doenças terminais.',
-      content: `Trabalho avaliando espólios e leilões residenciais há mais de trinta anos. Nos últimos três anos, em pelo menos quatro casas de pacientes que faleceram de doenças degenerativas crônicas ou que desapareceram sem explicação, encontrei o mesmo artefato:
-
-Uma caixinha retangular de madeira negra polida com detalhes em metal dourado fosco. Não tem fechadura, nem dobradiça visível, nem parafuso. Se você tentar forçar com uma alavanca de aço, a madeira não arranha e a madeira absorve o impacto sem fazer barulho.
-
-O rumor entre os coveiros antigos é que essas caixas não são feitas para serem arrombadas: elas só reagem e destrancam sozinhas quando são seguradas pelas mãos de alguém que já foi condenado pela medicina e que já aceitou completamente o fim da própria vida.`,
+      subreddit: 'r/Fraguiktos',
+      author: 'u/planta_em_vaso',
+      time: 'Há 12 dias',
+      votes: 89,
+      commentsCount: 11,
+      title: 'Dicas para cuidar de suculentas dentro de apartamento sem muito sol direto?',
+      content: `Comprei três vasinhos bonitinhos na feira de sábado, mas as folhas de baixo estão ficando moles e meio transparentes mesmo eu regando só duas vezes na semana.`,
       comments: [
-        { author: 'u/erudito_abissal', time: 'Há 12 dias', text: 'São as chaves de vedação dos portais. A madeira negra só ressoa com frequências de entropia humana terminal.' }
+        { author: 'u/entomologia_amadora', time: 'Há 12 dias', text: 'Se fica mole e transparente é excesso de água mesmo. No inverno sem sol direto pode regar uma vez a cada 12 dias só.' }
       ]
     },
     {
@@ -11100,8 +11064,7 @@ O rumor entre os coveiros antigos é que essas caixas não são feitas para sere
       time: 'Há 14 dias',
       votes: 2490,
       commentsCount: 312,
-      isFavorited: true,
-      title: '★ [FAVORITADO PELA SARA] A Verdade sobre "Ele": Não é um espírito da floresta, é um Predador Cósmico de biosferas.',
+      title: 'A Verdade sobre "Ele": Não é um espírito da floresta, é um Predador Cósmico de biosferas.',
       content: `Pare de tentar entender os cultos da mata como religião. Olhem para o padrão astronômico e para o que aconteceu em Paládium. Aquilo que os antigos chamavam apenas de "Ele" é uma entidade cósmica parasitária que viaja pelo vazio devorando mundos inteiros.
 
 Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como um micélio ou raiz invisível e espera. Como Ele é vasto demais para atravessar direto para a nossa realidade física, Ele precisa que os próprios habitantes abram "Portas" pelo lado de dentro.
@@ -11115,7 +11078,6 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
         },
         {
           author: 'u/s_auguil',
-          isSara: true,
           time: 'Há 9 dias',
           text: 'Se a pessoa já vai morrer no escuro de qualquer jeito, qual é a diferença entre apodrecer numa cama ou dormir nesse Jardim? Pelo menos lá dentro o barulho para.'
         }
@@ -11123,100 +11085,85 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
     },
     {
       id: 15,
-      subreddit: 'r/Conspiracoes',
-      author: 'u/foto_subterranea',
-      time: 'Há 11 dias',
-      votes: 560,
-      commentsCount: 47,
-      title: 'Estátuas de árvores secas encontradas em túneis abandonados.',
-      content: `Em uma incursão fotográfica nas galerias subterrâneas desativadas que passam por baixo da linha do trem, registramos pequenas estruturas cônicas montadas com galhos entrelaçados, pedaços de ferro enferrujado e fios laranjas brilhantes.
-
-Ao redor de cada estrutura havia marcas circulares no chão de terra batida, como se várias pessoas tivessem se ajoelhado ali em círculo por horas. O ambiente parecia estranhamente quente em comparação com o resto do túnel úmido.`,
+      subreddit: 'r/Fraguiktos',
+      author: 'u/teclas_velhas',
+      time: 'Há 16 dias',
+      votes: 92,
+      commentsCount: 13,
+      title: 'Alguém conhece um técnico confiável para afinar piano vertical antigo sem cobrar um absurdo?',
+      content: `O piano antigo aqui da sala está com o Dó central e algumas notas graves bem fora de tom por causa da umidade desse mês. Queria o contato de alguém que atenda aqui no bairro mesmo.`,
       comments: [
-        { author: 'u/vigia_noturno', time: 'Há 10 dias', text: 'São altares de ancoragem. Quem monta isso tá chamando as raízes pra superfície.' }
+        { author: 'u/fotografia_rua', time: 'Há 15 dias', text: 'Tem o Seu Roberto ali perto do conservatório municipal, cobra justo e entende bem de mecânica antiga.' }
       ]
     },
     {
       id: 16,
-      subreddit: 'r/Conspiracoes',
-      author: 'u/radio_amador',
-      time: 'Há 8 dias',
-      votes: 430,
-      commentsCount: 52,
-      title: 'Anomalias no rádio AM: Sussurros gravados em fitas cassete velhas perto do bosque.',
-      content: `Faço captação de frequências AM em ondas curtas como hobby de radioamadorismo. Montei meu receptor num barracão perto da orla da mata.
-
-Quando deixo gravadores de fita magnética rodando de madrugada na frequência 610 kHz, as fitas registram ruídos polifônicos: são dezenas de vozes sobrepostas falando ao mesmo tempo numa cadência monocórdica. Uma das fitas esquentou tanto durante a gravação que o plástico derreteu e soltou uma fumaça fina avermelhada com cheiro de ferrugem.`,
+      subreddit: 'r/Fraguiktos',
+      author: 'u/nostalgia_poeira',
+      time: 'Há 19 dias',
+      votes: 158,
+      commentsCount: 27,
+      title: 'Limpei o sótão da minha avó ontem e achei caixas de fitas VHS antigas com desenhos gravados da TV.',
+      content: `Tem comerciais antigos, filmes de domingo gravados em cima de novela e até um jornal local de 1998. Pena que o videocassete queimou a fonte há anos, senão ia passar o fim de semana inteiro digitalizando tudo.`,
       comments: [
-        { author: 'u/insonia_frag', time: 'Há 7 dias', text: 'Eu sintonizei 610 kHz no rádio de pilha do meu avô e escutei meu próprio nome sendo soletrado. Desliguei na hora e tirei as pilhas.' }
+        { author: 'u/bazar_bairro', time: 'Há 18 dias', text: 'Na galeria do centro tem uma loja de eletrônica que ainda faz conversão de VHS pra pen drive baratinho.' }
       ]
     },
     {
       id: 17,
       subreddit: 'r/Fraguiktos',
-      author: 'u/morador_bloco_c',
-      time: 'Há 5 dias',
-      votes: 395,
-      commentsCount: 64,
-      title: 'Pequenos animais encontrados abertos com cortes cirúrgicos perfeitos perto da grade do esgoto.',
-      content: `Quem tem animal de estimação no bairro norte, mantenha preso dentro de casa.
-
-Encontraram três lebres e dois gatos mortos perto do bueiro da curva da mata. Não foi ataque de cachorro nem atropelamento: os animais foram abertos em linha reta no peito com cortes precisos de bisturi cirúrgico, sem dilaceração de tecidos, e todo o sangue do corpo havia sido drenado de forma limpa. Quem tá fazendo isso tem formação médica ou treinamento anatômico rigoroso.`,
+      author: 'u/spam_bloqueado',
+      time: 'Há 21 dias',
+      votes: 245,
+      commentsCount: 36,
+      title: 'Mais alguém recebendo 15 ligações por dia de números aleatórios que desligam em 2 segundos?',
+      content: `Já bloqueei uns trinta números diferentes esta semana. Atende, fica um silêncio mudo por dois segundos e cai a ligação. Insuportável.`,
       comments: [
-        { author: 'u/residente_clinica', time: 'Há 4 dias', text: 'Esse tipo de incisão exige pinça hemostática e lâmina número 11. Não é coisa de moleque fazendo vandalismo, é procedimento de laboratório.' }
+        { author: 'u/mod_fraguiktos', time: 'Há 20 dias', text: 'É discador automático de telemarketing testando se a linha tá ativa, não atenda número desconhecido por uns dias que diminui.' }
       ]
     },
     {
       id: 18,
-      subreddit: 'r/Conspiracoes',
-      author: 'u/residente_clinica',
-      time: 'Há 6 dias',
-      votes: 890,
-      commentsCount: 92,
-      title: 'O fenômeno da "Anestesia Cinzenta": Pacientes terminais que param de sentir dor do dia para a noite.',
-      content: `Sou residente em enfermagem oncológica. Há um padrão clínico inexplicável que já presenciei em pelo menos três pacientes desenganados nas últimas semanas:
-
-Pessoas que estavam há meses sob doses pesadas de morfina, chorando de dor dia e noite, de repente acordam completamente serenas. A dor desaparece de forma total e inexplicável, a frequência cardíaca cai para 45 bpm e os olhos perdem qualquer expressão de angústia.
-
-Eles ficam absolutamente calmos, apáticos, e começam a falar em tom suave que "o frio não machuca mais" e que "a caixa preta finalmente destrancou". Poucos dias depois dessa mudança súbita, os três fugiram de suas casas durante a noite e nunca mais foram localizados.`,
+      subreddit: 'r/Fraguiktos',
+      author: 'u/fotografia_rua',
+      time: 'Há 23 dias',
+      votes: 410,
+      commentsCount: 18,
+      title: 'Pôr do sol hoje visto da passarela da estação de trem sem nenhum filtro.',
+      content: `O céu ficou num tom roxo e laranja bem forte por uns dez minutos antes de escurecer tudo. Às vezes até um fim de dia comum aqui em Fraguiktos rende uma vista bonita.`,
       comments: [
-        { author: 'u/antiquario_cinza', time: 'Há 5 dias', text: 'A anestesia é o último estágio de drenagem. A mente já foi desprendida do corpo; o que sobra andando pela casa é só uma marionete.' }
+        { author: 'u/foco_vestibular', time: 'Há 22 dias', text: 'Saindo da aula passei pela ponte nessa mesma hora, tava muito bonito mesmo.' }
       ]
     },
     {
       id: 19,
-      subreddit: 'r/Conspiracoes',
-      author: 'u/folclore_local',
-      time: 'Há 16 dias',
-      votes: 770,
-      commentsCount: 84,
-      title: 'A lenda do Canibalismo Ritual nas matas antigas de Fraguiktos.',
-      content: `Pesquisando os manuscritos etnográficos da virada do século XX sobre os antigos colonos da região, me deparei com uma doutrina ritualística perturbadora:
-
-Segundo os fragmentos, as entidades que habitam o solo profundo das florestas consideram a alma de quem está morrendo ou deprimido como "fraca e estéril" para alimentar os portais. Para que a passagem de um doente seja aceita pelo Rei sob a Casca, o suplicante precisava oferecer um tributo de energia vital fresca: era necessário consumir a carne ainda quente de uma vítima jovem e saudável para acender o fogo interior antes de cruzar o umbral das árvores.`,
+      subreddit: 'r/Fraguiktos',
+      author: 'u/foco_vestibular',
+      time: 'Há 25 dias',
+      votes: 118,
+      commentsCount: 14,
+      title: 'Playlists instrumentais ou sons de chuva bons para estudar pro vestibular de madrugada?',
+      content: `Preciso revisar biologia celular e história regional até sexta, mas música cantada me distrai muito. O que vocês escutam para manter o foco?`,
       comments: [
-        { author: 'u/erudito_abissal', time: 'Há 15 dias', text: 'O rito de sangue não é crueldade por sadismo; na lógica parasitária, é uma transfusão forçada de vitalidade para que o portador aguente a carga dimensional da Porta.' }
+        { author: 'u/teclas_velhas', time: 'Há 24 dias', text: 'Debussy e Satie no YouTube ajudam bastante, bem calmo e sem letra.' }
       ]
     },
     {
       id: 20,
       subreddit: 'r/Fraguiktos',
-      author: 'u/busca_local',
-      time: 'Há 3 dias',
-      votes: 680,
-      commentsCount: 115,
-      title: 'Alguém viu uma garota andando sozinha perto da ponte velha às 14:15?',
-      content: `Amigos de Fraguiktos, estamos desesperados atrás de qualquer informação sobre a menina Kali.
-
-Ela foi vista pela última vez na tarde de quinta-feira, por volta das 14h15, caminhando pela estrada vicinal que leva à ponte velha de madeira perto da borda do bosque. Ela vestia um casaco cinza e usava um laço rosa no cabelo. Quem tiver qualquer pista ou tiver visto algum veículo estranho na região da ponte, por favor entre em contato com a família ou na delegacia local.`,
+      author: 'u/bazar_bairro',
+      time: 'Há 27 dias',
+      votes: 45,
+      commentsCount: 6,
+      title: 'Vendendo luminária de mesa articulada usada, R$ 35 - retirar perto do mercado central.',
+      content: `Funciona perfeitamente, vai com lâmpada LED branca fria instalada. Só estou desapegando porque troquei por uma menor para a escrivaninha.`,
       comments: [
-        { author: 'u/vigia_noturno', time: 'Há 2 dias', text: 'Eu vi a bicicleta dela jogada na sarjeta perto da curva às 16h, mas não tinha ninguém por perto. Já repassei isso aos parentes.' },
-        { author: 'u/morador_bloco_c', time: 'Há 1 dia', text: 'Deus conforte a família. Mais uma história triste que a polícia vai fingir que não viu.' }
+        { author: 'u/larica_noturna', time: 'Há 26 dias', text: 'Ainda está disponível? Consigo buscar no sábado cedo.' }
       ]
     }
   ],
 
-  // 5. Partituras Clássicas
+  // 5. Partituras Classicas
   sheetMusicPieces: [
     { title: 'Clair de Lune', composer: 'Claude Debussy (1890)', key: 'Ré Bemol Maior', difficulty: 'Avançado', pages: '6 Páginas', format: 'PDF Partitura' },
     { title: 'Valsa em Lá Menor Op. 34 No. 2', composer: 'Frédéric Chopin (1831)', key: 'Lá Menor', difficulty: 'Intermediário', pages: '4 Páginas', format: 'PDF Partitura' },
@@ -11224,15 +11171,167 @@ Ela foi vista pela última vez na tarde de quinta-feira, por volta das 14h15, ca
     { title: 'Canção Antiga de Ninar', composer: 'Folclore Regional / Domínio Público', key: 'Mi Menor', difficulty: 'Iniciante', pages: '2 Páginas', format: 'Cifra & Partitura' }
   ],
 
+  // 6. Diretorio de Videos YouTube Simulados
+  youtubeVideos: [
+    {
+      id: 'clair_de_lune',
+      title: 'Debussy - Clair de Lune (Tutorial Piano Passo a Passo Compassos 15-30)',
+      channel: 'Canal Piano Clássico',
+      views: '240 mil visualizações',
+      date: 'há 2 anos',
+      duration: '14:22',
+      thumbColor: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
+      description: 'Aula detalhada focada na transição lenta e nos arpejos de mão esquerda entre os compassos 15 e 30 de Clair de Lune.',
+      comments: [
+        { author: '@estudante_musica', text: 'Finalmente consegui destravar o compasso 19 assistindo em 0.75x.' }
+      ]
+    },
+    {
+      id: 'isaque_arco',
+      title: 'Treino Arco Recurvo 30m - Ajuste de Mira e Agrupamento',
+      channel: 'Isaque Valente',
+      views: '42 visualizações',
+      date: 'há 3 semanas',
+      duration: '06:18',
+      thumbColor: 'linear-gradient(135deg, #14532d 0%, #052e16 100%)',
+      description: 'Testando novas pontas de flecha no alvo do clube depois das aulas do Primórdio.',
+      comments: [
+        { author: '@marcos_tiro', text: 'Agrupamento bom demais cara, parabéns.' }
+      ]
+    },
+    {
+      id: 'chuva_janela',
+      title: 'Chuva Fraca na Janela para Dormir ou Estudar (Sem Propaganda - 3 Horas)',
+      channel: 'Sons da Noite',
+      views: '1,2 mi visualizações',
+      date: 'há 1 ano',
+      duration: '3:00:00',
+      thumbColor: 'linear-gradient(135deg, #0f172a 0%, #020617 100%)',
+      description: 'Áudio ambiente contínuo de chuva suave em telhado de vidro para mascarar ruídos noturnos.',
+      comments: [
+        { author: '@insonia_frag', text: 'Unica coisa que ajuda quando a casa fica quieta demais de madrugada.' }
+      ]
+    },
+    {
+      id: 'paladium_plantao',
+      title: 'Plantão Regional: Tremor de Terra e Interdição do Setor Minerário em Paládium',
+      channel: 'TV Fraguiktos Hoje',
+      views: '89 mil visualizações',
+      date: 'há 3 semanas',
+      duration: '04:51',
+      thumbColor: 'linear-gradient(135deg, #450a0a 0%, #090d16 100%)',
+      description: 'Autoridades isolam área central de Paládium após afundamento súbito de solo nas antigas galerias subterrâneas.',
+      comments: [
+        { author: '@morador_centro', text: 'Estranho isolarem quatro quarteirões inteiros só por causa de um desabamento pequeno.' }
+      ]
+    },
+    {
+      id: 'bolo_cenoura',
+      title: 'Bolo de Cenoura Bem Fofinho - Receita Fácil de Liquidificador',
+      channel: 'Cozinha da Ana',
+      views: '510 mil visualizações',
+      date: 'há 4 meses',
+      duration: '08:12',
+      thumbColor: 'linear-gradient(135deg, #7c2d12 0%, #1c1917 100%)',
+      description: 'Passo a passo simples para fazer um bolo macio com cobertura cremosa de chocolate.',
+      comments: [
+        { author: '@cozinha_simples', text: 'Receita infalível, faço toda semana aqui.' }
+      ]
+    },
+    {
+      id: 'gato_laranja',
+      title: 'Gato Laranja Brigando com a Própria Sombra no Corredor',
+      channel: 'Bichos da Casa',
+      views: '3,4 mi visualizações',
+      date: 'há 8 meses',
+      duration: '01:05',
+      thumbColor: 'linear-gradient(135deg, #78350f 0%, #18181b 100%)',
+      description: 'Ele passou dez minutos tentando caçar a sombra da própria orelha na parede.',
+      comments: [
+        { author: '@dona_mimi', text: 'Idêntico ao meu aqui de casa.' }
+      ]
+    }
+  ],
+
+  // 7. Paginas Web Diretas e Enciclopedia (FragPedia / Clima / Noticias)
+  webArticles: {
+    'fragpedia_fraguiktos': {
+      domain: 'pt.fragpedia.org/wiki/Fraguiktos',
+      url: 'https://pt.fragpedia.org/wiki/Fraguiktos',
+      title: 'Fraguiktos - Enciclopédia Livre',
+      paragraphs: [
+        'Fraguiktos é um distrito e subúrbio periférico situado na extremidade norte da região metropolitana, diretamente adjacente à reserva florestal conhecida como Mata do Norte.',
+        'Fundada originalmente na década de 1940 em torno de serrarias madeireiras e do ramal ferroviário para Paládium, a localidade possui cerca de 48 mil habitantes. Entre suas instituições conhecidas estão o Colégio Estadual Primórdio, o Mercado Central e o antigo Pavilhão Municipal de Acolhimento (desativado na década passada).'
+      ]
+    },
+    'fragpedia_paladium': {
+      domain: 'pt.fragpedia.org/wiki/Paladium',
+      url: 'https://pt.fragpedia.org/wiki/Paladium',
+      title: 'Paládium - Enciclopédia Livre',
+      paragraphs: [
+        'Paládium é uma cidade histórica situada no vale mineral vizinho a Fraguiktos, famosa por sua arquitetura de pedra escura e minas profundas de quartzo e ferro exploradas desde o século XIX.',
+        'Recentemente, um colapso geológico de causas ainda não inteiramente esclarecidas formou uma fenda profunda na região central, levando ao isolamento de todo o distrito antigo por equipes de contenção federal.'
+      ]
+    },
+    'clima_fraguiktos': {
+      domain: 'clima.fraguiktos.net',
+      url: 'https://clima.fraguiktos.net',
+      title: 'Previsão do Tempo - Fraguiktos e Subúrbio Norte',
+      paragraphs: [
+        'Terça-feira, 04 de Agosto de 2061 — Atualizado às 22:00',
+        'Temperatura atual: 14°C • Sensação térmica: 12°C • Vento Leste: 11 km/h • Umidade do ar: 89%.',
+        'Condição para a madrugada: Céu parcialmente encoberto com formação de neblina densa próxima às áreas de mata e vales entre 02h00 e 06h00. Sem previsão de chuva forte até quinta-feira.'
+      ]
+    },
+    'noticias_fraguiktos': {
+      domain: 'noticias.fraguiktos.net',
+      url: 'https://noticias.fraguiktos.net',
+      title: 'Jornal Local de Fraguiktos - Edição Digital',
+      paragraphs: [
+        'Prefeitura adia novamente reforma da iluminação pública nas travessas próximas ao bosque norte.',
+        'Atrasos na linha 402 voltam a gerar filas na Praça Velha durante o horário de pico.',
+        'Clínica Geral amplia horário de atendimento ambulatorial na ala oeste a partir da próxima segunda-feira.'
+      ]
+    }
+  },
+
   // =========================================================================
-  // MÉTODOS DE CONTROLE DA ÁREA DE TRABALHO E JANELAS
+  // CONTROLE DE PERMISSAO E SINCRONIZACAO MESTRE -> JOGADORES
   // =========================================================================
+  _canControl() {
+    if (window.MesaNotebookSara && MesaNotebookSara._applyingRemote) return true;
+    return !!(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+  },
+
+  _notifySync() {
+    if (window.MesaNotebookSara && !MesaNotebookSara._applyingRemote && MesaApp.state && MesaApp.state.isMaster) {
+      MesaNotebookSara.syncNow();
+    }
+  },
+
   init() {
     if (this.initialized) return;
     this.initialized = true;
 
-    // Vincula clique fora para fechar menu iniciar
+    // Sincronizacao de rolagem para que jogadores vejam exatamente o trecho lido pelo Mestre
+    const viewerBody = document.getElementById('sara-viewer-content');
+    const browserViewport = document.getElementById('sara-browser-viewport');
+    const handleScrollSync = () => {
+      if (!window.MesaApp || !MesaApp.state || !MesaApp.state.isMaster) return;
+      if (window.MesaNotebookSara && MesaNotebookSara._applyingRemote) return;
+      const now = Date.now();
+      if (now - this._lastScrollSync < 180) return;
+      this._lastScrollSync = now;
+      if (window.MesaNotebookSara) {
+        MesaNotebookSara.syncScrollOnly();
+      }
+    };
+    if (viewerBody) viewerBody.addEventListener('scroll', handleScrollSync, { passive: true });
+    if (browserViewport) browserViewport.addEventListener('scroll', handleScrollSync, { passive: true });
+
+    // Fecha Menu Iniciar ao clicar fora (somente Mestre)
     document.addEventListener('click', (e) => {
+      if (!window.MesaApp || !MesaApp.state || !MesaApp.state.isMaster) return;
       const menu = document.getElementById('sara-start-menu');
       const btn = document.querySelector('.sara-start-btn');
       if (menu && menu.style.display !== 'none' && !menu.contains(e.target) && (!btn || !btn.contains(e.target))) {
@@ -11243,69 +11342,203 @@ Ela foi vista pela última vez na tarde de quinta-feira, por volta das 14h15, ca
     this.renderFolderFiles(this.activeFolder);
     this.renderTrashFiles();
     this.renderHistoryList();
-    this.goFragSearchHome();
+    this.renderFragSearchHome(false);
+  },
+
+  getSyncState() {
+    const viewerBody = document.getElementById('sara-viewer-content');
+    const browserViewport = document.getElementById('sara-browser-viewport');
+    return {
+      openWindows: { ...this.openWindows },
+      maximizedWindows: { ...this.maximizedWindows },
+      focusedWindow: this.focusedWindow,
+      activeFolder: this.activeFolder,
+      viewerFileRef: this.viewerFileRef ? { ...this.viewerFileRef } : null,
+      lockedModalOpen: !!this.lockedModalOpen,
+      lockedError: !!this.lockedError,
+      startMenuOpen: !!this.startMenuOpen,
+      historyModalOpen: !!this.historyModalOpen,
+      browser: {
+        view: this.browserView || 'home',
+        query: this.searchQuery || '',
+        topicId: this.currentTopicId || null,
+        ytVideoId: this.ytVideoId || null,
+        ytQuery: this.ytQuery || '',
+        article: this.currentArticle ? { ...this.currentArticle } : null,
+        url: this.currentUrl || 'https://fragsearch.net'
+      },
+      scroll: {
+        viewerTop: viewerBody ? viewerBody.scrollTop : 0,
+        browserTop: browserViewport ? browserViewport.scrollTop : 0
+      }
+    };
+  },
+
+  applySyncState(state) {
+    if (!state) return;
+    this.init();
+
+    // 1. Janelas abertas e estado maximizado
+    const ow = state.openWindows || {};
+    this.openWindows = {
+      explorer: !!ow.explorer,
+      trash: !!ow.trash,
+      viewer: !!ow.viewer,
+      browser: !!ow.browser
+    };
+
+    const mw = state.maximizedWindows || {};
+    ['explorer', 'trash', 'viewer', 'browser'].forEach(app => {
+      const win = document.getElementById(`sara-win-${app}`);
+      if (!win) return;
+      win.style.display = this.openWindows[app] ? 'flex' : 'none';
+      this.maximizedWindows[app] = !!mw[app];
+      if (this.maximizedWindows[app]) {
+        win.dataset.isMaximized = 'true';
+        win.style.width = '100vw';
+        win.style.height = 'calc(100vh - 44px)';
+        win.style.top = '0';
+        win.style.borderRadius = '0';
+      } else {
+        win.dataset.isMaximized = 'false';
+        win.style.width = '';
+        win.style.height = '';
+        win.style.top = '40px';
+        win.style.borderRadius = '8px';
+      }
+      if (state.focusedWindow === app) {
+        this.focusedWindow = app;
+        win.style.zIndex = '55';
+      } else {
+        win.style.zIndex = '50';
+      }
+    });
+
+    // Atualiza botoes ativos na taskbar
+    const btnExp = document.getElementById('task-btn-explorer');
+    const btnBrw = document.getElementById('task-btn-browser');
+    if (btnExp) btnExp.classList.toggle('active', !!this.openWindows.explorer);
+    if (btnBrw) btnBrw.classList.toggle('active', !!this.openWindows.browser);
+
+    // 2. Pasta selecionada no Explorer
+    const targetFolder = state.activeFolder || 'Estudos_Primordio';
+    if (targetFolder !== this.activeFolder || this.openWindows.explorer) {
+      this._renderFolderState(targetFolder);
+    }
+
+    // 3. Lixeira
+    if (this.openWindows.trash) {
+      this.renderTrashFiles();
+    }
+
+    // 4. Visualizador de Documentos
+    if (this.openWindows.viewer && state.viewerFileRef) {
+      const newRefStr = JSON.stringify(state.viewerFileRef);
+      const oldRefStr = JSON.stringify(this.viewerFileRef);
+      if (newRefStr !== oldRefStr) {
+        this.viewerFileRef = { ...state.viewerFileRef };
+        this._openViewerByRef(state.viewerFileRef);
+      }
+    } else if (!this.openWindows.viewer) {
+      this.viewerFileRef = null;
+    }
+
+    // 5. Modal de senha de arquivo protegido
+    this.lockedModalOpen = !!state.lockedModalOpen;
+    this.lockedError = !!state.lockedError;
+    const lockedModal = document.getElementById('sara-locked-modal');
+    const lockedErr = document.getElementById('sara-file-password-error');
+    if (lockedModal) lockedModal.style.display = this.lockedModalOpen ? 'flex' : 'none';
+    if (lockedErr) lockedErr.style.display = this.lockedError ? 'block' : 'none';
+
+    // 6. Menu Iniciar e Historico
+    this.startMenuOpen = !!state.startMenuOpen;
+    const startMenu = document.getElementById('sara-start-menu');
+    if (startMenu) startMenu.style.display = this.startMenuOpen ? 'block' : 'none';
+
+    this.historyModalOpen = !!state.historyModalOpen;
+    const histModal = document.getElementById('sara-history-modal');
+    if (histModal) histModal.style.display = this.historyModalOpen ? 'flex' : 'none';
+
+    // 7. Navegador Web
+    if (state.browser) {
+      const b = state.browser;
+      const sig = JSON.stringify(b);
+      if (sig !== this._lastAppliedBrowserSig) {
+        this._lastAppliedBrowserSig = sig;
+        if (b.view === 'home') this.renderFragSearchHome(false);
+        else if (b.view === 'results') this.renderFragSearchResults(b.query || '');
+        else if (b.view === 'subreddit') this.renderReadItSubreddit();
+        else if (b.view === 'topic') this.renderReadItTopic(b.topicId || 14);
+        else if (b.view === 'sheet_music') this.renderSheetMusicPage();
+        else if (b.view === 'youtube') this.renderYouTubeHome(b.ytQuery || '');
+        else if (b.view === 'yt_watch') this.renderYouTubeWatch(b.ytVideoId);
+        else if (b.view === 'article' && b.article) this.renderWebArticle(b.article);
+      }
+      if (b.url) this.setBrowserUrl(b.url);
+    }
+
+    // 8. Posicao de rolagem
+    if (state.scroll) {
+      const viewerBody = document.getElementById('sara-viewer-content');
+      const browserViewport = document.getElementById('sara-browser-viewport');
+      if (viewerBody && typeof state.scroll.viewerTop === 'number') {
+        viewerBody.scrollTop = state.scroll.viewerTop;
+      }
+      if (browserViewport && typeof state.scroll.browserTop === 'number') {
+        browserViewport.scrollTop = state.scroll.browserTop;
+      }
+    }
   },
 
   openApp(appName) {
+    if (!this._canControl()) return;
     this.init();
-    this.activeApp = appName;
 
-    // Atualiza botoes na taskbar
+    if (appName === 'cameras') {
+      if (window.MesaNotebookSara) {
+        MesaNotebookSara.openCameras();
+      }
+      return;
+    }
+
+    if (this.openWindows.hasOwnProperty(appName)) {
+      this.openWindows[appName] = true;
+      this.focusedWindow = appName;
+      const win = document.getElementById(`sara-win-${appName}`);
+      if (win) {
+        win.style.display = 'flex';
+        this.bringWindowToFront(win, appName);
+      }
+      if (appName === 'explorer') this._renderFolderState(this.activeFolder || 'Estudos_Primordio');
+      if (appName === 'trash') this.renderTrashFiles();
+      if (appName === 'browser' && !this.browserView) this.renderFragSearchHome(false);
+    }
+
     const btnExp = document.getElementById('task-btn-explorer');
     const btnBrw = document.getElementById('task-btn-browser');
-    const btnCam = document.getElementById('task-btn-cameras');
-    if (btnExp) btnExp.classList.toggle('active', appName === 'explorer');
-    if (btnBrw) btnBrw.classList.toggle('active', appName === 'browser');
-    if (btnCam) btnCam.classList.toggle('active', appName === 'cameras');
+    if (btnExp) btnExp.classList.toggle('active', !!this.openWindows.explorer);
+    if (btnBrw) btnBrw.classList.toggle('active', !!this.openWindows.browser);
 
-    if (appName === 'explorer') {
-      const win = document.getElementById('sara-win-explorer');
-      if (win) {
-        win.style.display = 'flex';
-        this.bringWindowToFront(win);
-      }
-      this.switchFolder(this.activeFolder || 'Estudos_Primordio');
-    } else if (appName === 'trash') {
-      const win = document.getElementById('sara-win-trash');
-      if (win) {
-        win.style.display = 'flex';
-        this.bringWindowToFront(win);
-      }
-      this.renderTrashFiles();
-    } else if (appName === 'browser') {
-      const win = document.getElementById('sara-win-browser');
-      if (win) {
-        win.style.display = 'flex';
-        this.bringWindowToFront(win);
-      }
-    } else if (appName === 'cameras') {
-      if (window.MesaNotebookSara) {
-        MesaNotebookSara.showCctvStage(MesaNotebookSara.activeCam || 1);
-      }
-    }
+    this._notifySync();
   },
 
   closeApp(appName) {
-    if (appName === 'explorer') {
-      const win = document.getElementById('sara-win-explorer');
-      if (win) win.style.display = 'none';
-      const btn = document.getElementById('task-btn-explorer');
-      if (btn) btn.classList.remove('active');
-    } else if (appName === 'trash') {
-      const win = document.getElementById('sara-win-trash');
-      if (win) win.style.display = 'none';
-    } else if (appName === 'browser') {
-      const win = document.getElementById('sara-win-browser');
-      if (win) win.style.display = 'none';
-      const btn = document.getElementById('task-btn-browser');
-      if (btn) btn.classList.remove('active');
-    } else if (appName === 'viewer') {
-      const win = document.getElementById('sara-win-viewer');
+    if (!this._canControl()) return;
+    if (this.openWindows.hasOwnProperty(appName)) {
+      this.openWindows[appName] = false;
+      const win = document.getElementById(`sara-win-${appName}`);
       if (win) win.style.display = 'none';
     }
-    if (this.activeApp === appName) {
-      this.activeApp = null;
+    if (appName === 'viewer') {
+      this.viewerFileRef = null;
     }
+    const btnExp = document.getElementById('task-btn-explorer');
+    const btnBrw = document.getElementById('task-btn-browser');
+    if (btnExp) btnExp.classList.toggle('active', !!this.openWindows.explorer);
+    if (btnBrw) btnBrw.classList.toggle('active', !!this.openWindows.browser);
+
+    this._notifySync();
   },
 
   minimizeApp(appName) {
@@ -11313,43 +11546,55 @@ Ela foi vista pela última vez na tarde de quinta-feira, por volta das 14h15, ca
   },
 
   maximizeApp(appName) {
+    if (!this._canControl()) return;
     const win = document.getElementById(`sara-win-${appName}`);
     if (!win) return;
-    if (win.dataset.isMaximized === 'true') {
-      win.dataset.isMaximized = 'false';
-      win.style.width = '';
-      win.style.height = '';
-      win.style.top = '40px';
-      win.style.borderRadius = '8px';
-    } else {
+    const next = !this.maximizedWindows[appName];
+    this.maximizedWindows[appName] = next;
+    if (next) {
       win.dataset.isMaximized = 'true';
       win.style.width = '100vw';
       win.style.height = 'calc(100vh - 44px)';
       win.style.top = '0';
       win.style.borderRadius = '0';
+    } else {
+      win.dataset.isMaximized = 'false';
+      win.style.width = '';
+      win.style.height = '';
+      win.style.top = '40px';
+      win.style.borderRadius = '8px';
     }
+    this._notifySync();
   },
 
-  bringWindowToFront(win) {
+  bringWindowToFront(win, appName = null) {
     document.querySelectorAll('.sara-window').forEach(w => w.style.zIndex = '50');
     win.style.zIndex = '55';
+    if (appName) this.focusedWindow = appName;
   },
 
   toggleStartMenu() {
+    if (!this._canControl()) return;
     const menu = document.getElementById('sara-start-menu');
     if (!menu) return;
-    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+    this.startMenuOpen = !this.startMenuOpen;
+    menu.style.display = this.startMenuOpen ? 'block' : 'none';
+    this._notifySync();
   },
 
   closeStartMenu() {
+    if (!this._canControl()) return;
+    if (!this.startMenuOpen) return;
+    this.startMenuOpen = false;
     const menu = document.getElementById('sara-start-menu');
     if (menu) menu.style.display = 'none';
+    this._notifySync();
   },
 
   // =========================================================================
-  // EXPLORADOR DE ARQUIVOS
+  // EXPLORADOR DE ARQUIVOS & LIXEIRA
   // =========================================================================
-  switchFolder(folderName) {
+  _renderFolderState(folderName) {
     this.activeFolder = folderName;
     const pathEl = document.getElementById('explorer-current-path');
     if (pathEl) {
@@ -11364,6 +11609,12 @@ Ela foi vista pela última vez na tarde de quinta-feira, por volta das 14h15, ca
     if (btnPessoal) btnPessoal.classList.toggle('active', folderName === 'Pessoal');
 
     this.renderFolderFiles(folderName);
+  },
+
+  switchFolder(folderName) {
+    if (!this._canControl()) return;
+    this._renderFolderState(folderName);
+    this._notifySync();
   },
 
   renderFolderFiles(folderName) {
@@ -11419,7 +11670,30 @@ Ela foi vista pela última vez na tarde de quinta-feira, por volta das 14h15, ca
     container.innerHTML = html;
   },
 
+  _openViewerByRef(ref) {
+    if (!ref) return;
+    if (ref.source === 'trash') {
+      const file = this.trashFiles.find(f => f.id === ref.id);
+      if (file) this.renderDocumentViewer(file);
+    } else if (ref.source === 'locked') {
+      const list = this.folders['Pessoal'] || [];
+      const file = list.find(f => f.id === ref.id);
+      if (file) {
+        this.renderDocumentViewer({
+          name: file.unlockedTitle || 'particular.txt',
+          type: 'txt',
+          content: file.content
+        });
+      }
+    } else if (ref.source === 'folder') {
+      const list = this.folders[ref.folder] || [];
+      const file = list.find(f => f.id === ref.id);
+      if (file) this.renderDocumentViewer(file);
+    }
+  },
+
   openFile(folderName, fileId) {
+    if (!this._canControl()) return;
     const list = this.folders[folderName] || [];
     const file = list.find(f => f.id === fileId);
     if (!file) return;
@@ -11430,13 +11704,20 @@ Ela foi vista pela última vez na tarde de quinta-feira, por volta das 14h15, ca
       return;
     }
 
+    this.viewerFileRef = { source: 'folder', folder: folderName, id: fileId };
+    this.openWindows.viewer = true;
     this.renderDocumentViewer(file);
+    this._notifySync();
   },
 
   openTrashFile(fileId) {
+    if (!this._canControl()) return;
     const file = this.trashFiles.find(f => f.id === fileId);
     if (!file) return;
+    this.viewerFileRef = { source: 'trash', folder: 'Lixeira', id: fileId };
+    this.openWindows.viewer = true;
     this.renderDocumentViewer(file);
+    this._notifySync();
   },
 
   renderDocumentViewer(file) {
@@ -11461,17 +11742,18 @@ Ela foi vista pela última vez na tarde de quinta-feira, por volta das 14h15, ca
         </div>
       `;
     } else {
-      contentEl.innerHTML = `
-        <div class="sara-txt-content">${file.content}</div>
-      `;
+      contentEl.innerHTML = `<div class="sara-txt-content">${file.content}</div>`;
     }
 
+    contentEl.scrollTop = 0;
     win.style.display = 'flex';
-    this.bringWindowToFront(win);
+    this.bringWindowToFront(win, 'viewer');
   },
 
-  // Modal de Senha para Arquivo Protegido
   openLockedPrompt() {
+    if (!this._canControl()) return;
+    this.lockedModalOpen = true;
+    this.lockedError = false;
     const modal = document.getElementById('sara-locked-modal');
     const input = document.getElementById('sara-file-password-input');
     const err = document.getElementById('sara-file-password-error');
@@ -11479,51 +11761,89 @@ Ela foi vista pela última vez na tarde de quinta-feira, por volta das 14h15, ca
     if (err) err.style.display = 'none';
     if (input) {
       input.value = '';
-      setTimeout(() => input.focus(), 80);
+      if (window.MesaApp && MesaApp.state && MesaApp.state.isMaster) {
+        setTimeout(() => input.focus(), 80);
+      }
     }
+    this._notifySync();
   },
 
   closeLockedPrompt() {
+    if (!this._canControl()) return;
+    this.lockedModalOpen = false;
+    this.lockedError = false;
     const modal = document.getElementById('sara-locked-modal');
     if (modal) modal.style.display = 'none';
     this.pendingLockedFile = null;
+    this._notifySync();
   },
 
   submitFilePassword() {
+    if (!this._canControl()) return;
     const input = document.getElementById('sara-file-password-input');
     const err = document.getElementById('sara-file-password-error');
     const val = input ? input.value.trim() : '';
 
     if (val === '1415' || val === '0408') {
-      const file = this.pendingLockedFile;
-      this.closeLockedPrompt();
+      const file = this.pendingLockedFile || (this.folders['Pessoal'] || []).find(f => f.id === 'ultimo_registro');
+      this.lockedModalOpen = false;
+      this.lockedError = false;
+      this.pendingLockedFile = null;
+      const modal = document.getElementById('sara-locked-modal');
+      if (modal) modal.style.display = 'none';
+
       if (file) {
+        this.viewerFileRef = { source: 'locked', folder: 'Pessoal', id: file.id };
+        this.openWindows.viewer = true;
         this.renderDocumentViewer({
           name: file.unlockedTitle || 'particular.txt',
           type: 'txt',
           content: file.content
         });
       }
+      this._notifySync();
       return;
     }
 
+    this.lockedError = true;
     if (err) err.style.display = 'block';
     if (input) {
       input.value = '';
       input.focus();
     }
+    this._notifySync();
   },
 
   // =========================================================================
-  // NAVEGADOR WEB (FRAGSEARCH & READIT)
+  // NAVEGADOR WEB REALISTA (FRAGSEARCH, YOUTUBE, FRAGPEDIA & READIT)
   // =========================================================================
   setBrowserUrl(url) {
+    this.currentUrl = url;
     const input = document.getElementById('sara-browser-url-input');
     if (input) input.value = url;
   },
 
-  goFragSearchHome() {
+  _pushHistory(entry) {
+    this.browserBackStack.push(entry);
+    if (this.browserBackStack.length > 25) this.browserBackStack.shift();
+    this.browserForwardStack = [];
+  },
+
+  _getCurrentNavSnapshot() {
+    return {
+      view: this.browserView,
+      query: this.searchQuery,
+      topicId: this.currentTopicId,
+      ytVideoId: this.ytVideoId,
+      ytQuery: this.ytQuery,
+      article: this.currentArticle ? { ...this.currentArticle } : null,
+      url: this.currentUrl
+    };
+  },
+
+  renderFragSearchHome(clearStacks = false) {
     this.browserView = 'home';
+    this.searchQuery = '';
     this.setBrowserUrl('https://fragsearch.net');
     const viewport = document.getElementById('sara-browser-viewport');
     if (!viewport) return;
@@ -11536,108 +11856,273 @@ Ela foi vista pela última vez na tarde de quinta-feira, por volta das 14h15, ca
         <div class="fragsearch-form">
           <div class="fragsearch-input-box">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#64748b" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <input type="text" id="fragsearch-main-input" class="fragsearch-input" placeholder="Pesquisar em Fraguiktos e na web..." autocomplete="off" onkeydown="if(event.key==='Enter') MesaSaraDesktop.execFragSearch(this.value)">
+            <input type="text" id="fragsearch-main-input" class="fragsearch-input" placeholder="Pesquisar no FragSearch ou digitar um URL..." autocomplete="off" onkeydown="if(event.key==='Enter') MesaSaraDesktop.execFragSearch(this.value)">
           </div>
           <div class="fragsearch-buttons">
             <button type="button" class="fragsearch-btn" onclick="MesaSaraDesktop.execFragSearch(document.getElementById('fragsearch-main-input').value)">Pesquisa FragSearch</button>
-            <button type="button" class="fragsearch-btn" onclick="MesaSaraDesktop.openReadItTopic(14)">Estou com Sorte</button>
+            <button type="button" class="fragsearch-btn" onclick="MesaSaraDesktop.openWebPage('youtube')">YouTube</button>
           </div>
         </div>
       </div>
     `;
+    viewport.scrollTop = 0;
+  },
+
+  goFragSearchHome() {
+    if (!this._canControl()) return;
+    if (this.browserView && this.browserView !== 'home') {
+      this._pushHistory(this._getCurrentNavSnapshot());
+    }
+    this.renderFragSearchHome(false);
+    this._notifySync();
+  },
+
+  navigateFromAddressBar(rawInput) {
+    if (!this._canControl()) return;
+    const val = (rawInput || '').trim();
+    if (!val) {
+      this.goFragSearchHome();
+      return;
+    }
+    const lower = val.toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '');
+    if (lower === 'fragsearch.net' || lower === 'google.com') {
+      this.goFragSearchHome();
+      return;
+    }
+    if (lower === 'youtube.com' || lower.startsWith('youtube.com/')) {
+      this.openWebPage('youtube');
+      return;
+    }
+    if (lower.startsWith('readit.net/r/conspiracoes/topico_14') || lower.includes('topico_14')) {
+      this.openReadItTopic(14);
+      return;
+    }
+    if (lower === 'readit.net' || lower.startsWith('readit.net/')) {
+      this.openReadItSubreddit();
+      return;
+    }
+    if (lower.includes('partituras')) {
+      this.openSheetMusicPage();
+      return;
+    }
+    if (lower.includes('clima.fraguiktos')) {
+      this.openWebArticle(this.webArticles.clima_fraguiktos);
+      return;
+    }
+    if (lower.includes('noticias.fraguiktos')) {
+      this.openWebArticle(this.webArticles.noticias_fraguiktos);
+      return;
+    }
+    if (lower.includes('fragpedia')) {
+      this.openWebArticle(this.webArticles.fragpedia_fraguiktos);
+      return;
+    }
+    this.execFragSearch(val);
   },
 
   execFragSearch(query) {
+    if (!this._canControl()) return;
     if (!query || !query.trim()) {
       this.goFragSearchHome();
       return;
     }
-    const cleanQ = query.trim().toLowerCase();
+    this._pushHistory(this._getCurrentNavSnapshot());
+    this.renderFragSearchResults(query);
+    this._notifySync();
+  },
+
+  renderFragSearchResults(query) {
     this.browserView = 'results';
+    this.searchQuery = query;
+    const cleanQ = query.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     this.setBrowserUrl(`https://fragsearch.net/search?q=${encodeURIComponent(query)}`);
 
-    // Busca tópicos correspondentes no fórum ReadIt
-    const matched = this.readItTopics.filter(t => {
-      const full = (t.title + ' ' + t.content + ' ' + t.author).toLowerCase();
-      const terms = cleanQ.split(/\s+/);
-      return terms.some(term => full.includes(term));
+    const results = [];
+
+    // 1. Portais reais simulados (YouTube, ReadIt, FragPedia, Clima, Noticias, Partituras)
+    if (cleanQ.includes('youtube') || cleanQ.includes('video') || cleanQ.includes('musica') || cleanQ.includes('chuva')) {
+      results.push({
+        url: 'https://www.youtube.com',
+        title: 'YouTube',
+        snippet: 'Aproveite os vídeos e a música que você ama, envie conteúdo original e compartilhe tudo com amigos, familiares e o mundo no YouTube.',
+        onclick: `MesaSaraDesktop.openWebPage('youtube')`
+      });
+    }
+
+    this.youtubeVideos.forEach(v => {
+      const hay = (v.title + ' ' + v.channel + ' ' + v.description).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      const terms = cleanQ.split(/\s+/).filter(t => t.length >= 3);
+      if (terms.some(t => hay.includes(t))) {
+        results.push({
+          url: `https://www.youtube.com/watch?v=${v.id}`,
+          title: `${v.title} - YouTube`,
+          snippet: `${v.channel} • ${v.views} • ${v.description}`,
+          onclick: `MesaSaraDesktop.openYouTubeVideo('${v.id}')`
+        });
+      }
     });
+
+    if (cleanQ.includes('partitura') || cleanQ.includes('piano') || cleanQ.includes('debussy') || cleanQ.includes('chopin') || cleanQ.includes('satie')) {
+      results.push({
+        url: 'https://partituras-classicas.art/acervo',
+        title: 'Acervo de Partituras Clássicas - Biblioteca Digital',
+        snippet: 'Download de partituras em PDF e cifras para piano clássico e popular em domínio público: Debussy, Chopin, Erik Satie e estudos.',
+        onclick: `MesaSaraDesktop.openSheetMusicPage()`
+      });
+    }
+
+    if (cleanQ.includes('clima') || cleanQ.includes('tempo') || cleanQ.includes('temperatura') || cleanQ.includes('previsao') || cleanQ.includes('neblina')) {
+      results.push({
+        url: this.webArticles.clima_fraguiktos.url,
+        title: this.webArticles.clima_fraguiktos.title,
+        snippet: 'Previsão horária para Fraguiktos e Subúrbio Norte. Mínima 12°C, neblina densa prevista durante a madrugada.',
+        onclick: `MesaSaraDesktop.openWebArticleByKey('clima_fraguiktos')`
+      });
+    }
+
+    if (cleanQ.includes('fraguiktos') || cleanQ.includes('wikipedia') || cleanQ.includes('fragpedia') || cleanQ.includes('primordio') || cleanQ.includes('historia')) {
+      results.push({
+        url: this.webArticles.fragpedia_fraguiktos.url,
+        title: this.webArticles.fragpedia_fraguiktos.title,
+        snippet: this.webArticles.fragpedia_fraguiktos.paragraphs[0],
+        onclick: `MesaSaraDesktop.openWebArticleByKey('fragpedia_fraguiktos')`
+      });
+    }
+
+    if (cleanQ.includes('paladium') || cleanQ.includes('terremoto') || cleanQ.includes('cratera')) {
+      results.push({
+        url: this.webArticles.fragpedia_paladium.url,
+        title: this.webArticles.fragpedia_paladium.title,
+        snippet: this.webArticles.fragpedia_paladium.paragraphs[0],
+        onclick: `MesaSaraDesktop.openWebArticleByKey('fragpedia_paladium')`
+      });
+    }
+
+    if (cleanQ.includes('readit') || cleanQ.includes('reddit') || cleanQ.includes('forum')) {
+      results.push({
+        url: 'https://readit.net/r/Conspiracoes+Fraguiktos',
+        title: 'ReadIt: r/Conspiracoes & r/Fraguiktos - Comunidade Local',
+        snippet: 'Discussões de moradores, utilidade pública, relatos do subúrbio norte e fórum aberto de teorias da região.',
+        onclick: `MesaSaraDesktop.openReadItSubreddit()`
+      });
+    }
+
+    // 2. Topicos do ReadIt correspondentes aos termos pesquisados
+    const terms = cleanQ.split(/\s+/).filter(t => t.length >= 2);
+    this.readItTopics.forEach(t => {
+      const full = (t.title + ' ' + t.content + ' ' + t.author + ' ' + t.subreddit).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      if (terms.some(term => full.includes(term))) {
+        results.push({
+          url: `https://readit.net/${t.subreddit}/topico_${t.id}`,
+          title: `${t.title} : ${t.subreddit}`,
+          snippet: t.content.substring(0, 185).replace(/\n+/g, ' ') + '...',
+          onclick: `MesaSaraDesktop.openReadItTopic(${t.id})`
+        });
+      }
+    });
+
+    // 3. Geracao dinamica realista se a busca for sobre qualquer outro tema geral da web
+    if (results.length === 0) {
+      const encoded = encodeURIComponent(query.trim());
+      const domainSlug = cleanQ.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'busca';
+      results.push(
+        {
+          url: `https://pt.fragpedia.org/wiki/${domainSlug}`,
+          title: `${query.trim()} - FragPédia, a enciclopédia livre`,
+          snippet: `Artigo e referências gerais sobre "${query.trim()}": definições técnicas, contexto histórico e informações públicas indexadas.`,
+          onclick: `MesaSaraDesktop.openDynamicArticle('${query.replace(/'/g, "\\'")}', 'wiki')`
+        },
+        {
+          url: `https://www.youtube.com/results?search_query=${encoded}`,
+          title: `Vídeos relacionados a "${query.trim()}" - YouTube`,
+          snippet: `Assista a vídeos, tutoriais e gravações enviados por usuários relacionados a ${query.trim()} no YouTube.`,
+          onclick: `MesaSaraDesktop.openWebPage('youtube', '${query.replace(/'/g, "\\'")}')`
+        },
+        {
+          url: `https://readit.net/search?q=${encoded}`,
+          title: `Resultados da comunidade em ReadIt para "${query.trim()}"`,
+          snippet: `Veja o que moradores de Fraguiktos estão comentando recentemente em tópicos locais sobre o assunto.`,
+          onclick: `MesaSaraDesktop.openReadItSubreddit()`
+        },
+        {
+          url: `https://noticias.fraguiktos.net/arquivo?q=${encoded}`,
+          title: `Arquivo de Notas Regionais: "${query.trim()}"`,
+          snippet: `Consulte boletins antigos da região metropolitana de Fraguiktos e Paládium relacionados à pesquisa.`,
+          onclick: `MesaSaraDesktop.openWebArticleByKey('noticias_fraguiktos')`
+        }
+      );
+    }
 
     const viewport = document.getElementById('sara-browser-viewport');
     if (!viewport) return;
 
-    let resultsHtml = '';
-    if (matched.length === 0) {
-      resultsHtml = `
-        <div class="search-result-item">
-          <div class="result-title" style="color: #cbd5e1; cursor: default;">Nenhum resultado local exato encontrado para "${query}".</div>
-          <div class="result-snippet">Tente palavras-chave como <em>deus, ele, porta, floresta, praga, paladium, desaparecidos, esgoto, caixa, cosmos, partituras</em>.</div>
-        </div>
-      `;
-    } else {
-      matched.forEach(t => {
-        resultsHtml += `
-          <div class="search-result-item">
-            <div class="result-url">readit.net > ${t.subreddit} > topico_${t.id}</div>
-            <a class="result-title" onclick="MesaSaraDesktop.openReadItTopic(${t.id})">${t.title}</a>
-            <div class="result-snippet">${t.content.substring(0, 190)}...</div>
-          </div>
-        `;
-      });
-    }
+    const resultsHtml = results.map(r => `
+      <div class="search-result-item">
+        <div class="result-url">${r.url}</div>
+        <a class="result-title" onclick="${r.onclick}">${r.title}</a>
+        <div class="result-snippet">${r.snippet}</div>
+      </div>
+    `).join('');
 
     viewport.innerHTML = `
       <div class="fragsearch-results-page">
-        <div class="results-stats">Aproximadamente ${matched.length} resultados encontrados para "${query}"</div>
-        ${resultsHtml}
-        <div style="margin-top: 32px; padding-top: 16px; border-top: 1px solid #1e293b;">
-          <a class="result-title" style="font-size: 13px;" onclick="MesaSaraDesktop.openReadItSubreddit()">
-            &rarr; Ver todos os 20 tópicos no fórum ReadIt (r/Conspiracoes &amp; r/Fraguiktos)
-          </a>
+        <div style="display:flex; gap:10px; align-items:center; margin-bottom:18px; padding-bottom:14px; border-bottom:1px solid #1e293b;">
+          <div class="fragsearch-logo" style="font-size:20px; margin:0; cursor:pointer;" onclick="MesaSaraDesktop.goFragSearchHome()">
+            <span class="logo-f1">F</span><span class="logo-r">r</span><span class="logo-a">a</span><span class="logo-g">g</span><span class="logo-s">S</span><span class="logo-e">e</span><span class="logo-a2">a</span><span class="logo-r2">r</span><span class="logo-c">c</span><span class="logo-h">h</span>
+          </div>
+          <div class="fragsearch-input-box" style="height:36px; flex:1; max-width:520px;">
+            <input type="text" id="fragsearch-top-input" class="fragsearch-input" value="${query.replace(/"/g, '&quot;')}" autocomplete="off" onkeydown="if(event.key==='Enter') MesaSaraDesktop.execFragSearch(this.value)">
+          </div>
+          <button type="button" class="fragsearch-btn" onclick="MesaSaraDesktop.execFragSearch(document.getElementById('fragsearch-top-input').value)">Buscar</button>
         </div>
+        <div class="results-stats">Aproximadamente ${results.length} resultados (0,14 segundos)</div>
+        ${resultsHtml}
       </div>
     `;
+    viewport.scrollTop = 0;
   },
 
   openReadItSubreddit() {
+    if (!this._canControl()) return;
+    this._pushHistory(this._getCurrentNavSnapshot());
+    this.renderReadItSubreddit();
+    this._notifySync();
+  },
+
+  renderReadItSubreddit() {
     this.browserView = 'subreddit';
     this.setBrowserUrl('https://readit.net/r/Conspiracoes+Fraguiktos');
     const viewport = document.getElementById('sara-browser-viewport');
     if (!viewport) return;
 
-    let postsHtml = '';
-    this.readItTopics.forEach(t => {
-      const isFav = !!t.isFavorited;
-      postsHtml += `
-        <div class="readit-post-card ${isFav ? 'favorited-post' : ''}" onclick="MesaSaraDesktop.openReadItTopic(${t.id})">
-          <div class="readit-vote-column">
-            <span class="vote-arrow">&#9650;</span>
-            <span>${t.votes}</span>
-            <span class="vote-arrow">&#9660;</span>
+    const postsHtml = this.readItTopics.map(t => `
+      <div class="readit-post-card" onclick="MesaSaraDesktop.openReadItTopic(${t.id})">
+        <div class="readit-vote-column">
+          <span class="vote-arrow">&#9650;</span>
+          <span>${t.votes}</span>
+          <span class="vote-arrow">&#9660;</span>
+        </div>
+        <div class="readit-post-main">
+          <div class="post-meta">
+            <span>${t.subreddit}</span> • <span class="post-author">${t.author}</span> • <span>${t.time}</span>
           </div>
-          <div class="readit-post-main">
-            <div class="post-meta">
-              <span>${t.subreddit}</span> • <span class="post-author">${t.author}</span> • <span>${t.time}</span>
-              ${isFav ? '<span style="color:#f59e0b; font-weight:bold;">★ FAVORITO</span>' : ''}
-            </div>
-            <div class="post-title">${t.title}</div>
-            <div class="post-preview-text">${t.content.substring(0, 160)}...</div>
-            <div class="post-footer-stats">
-              <span>&#128172; ${t.commentsCount || (t.comments ? t.comments.length : 0)} comentários</span>
-              <span>Compartilhar</span>
-              <span>Salvar</span>
-            </div>
+          <div class="post-title">${t.title}</div>
+          <div class="post-preview-text">${t.content.substring(0, 160)}...</div>
+          <div class="post-footer-stats">
+            <span>${t.commentsCount || (t.comments ? t.comments.length : 0)} comentários</span>
+            <span>Compartilhar</span>
+            <span>Salvar</span>
           </div>
         </div>
-      `;
-    });
+      </div>
+    `).join('');
 
     viewport.innerHTML = `
       <div class="readit-container">
         <div class="readit-subreddit-header">
           <div>
-            <div class="subreddit-info-title">r/Conspiracoes &bull; r/Fraguiktos</div>
-            <div class="subreddit-info-desc">Comunidade local de investigações urbanas, teorias e relatos não confirmados da Mata do Norte e Paládium.</div>
+            <div class="subreddit-info-title">r/Fraguiktos &bull; r/Conspiracoes</div>
+            <div class="subreddit-info-desc">Comunidade local do subúrbio norte: utilidade pública, cotidiano do bairro e discussões abertas.</div>
           </div>
           <div style="font-size: 11px; color: #64748b;">42.8k membros</div>
         </div>
@@ -11646,9 +12131,17 @@ Ela foi vista pela última vez na tarde de quinta-feira, por volta das 14h15, ca
         </div>
       </div>
     `;
+    viewport.scrollTop = 0;
   },
 
   openReadItTopic(topicId) {
+    if (!this._canControl()) return;
+    this._pushHistory(this._getCurrentNavSnapshot());
+    this.renderReadItTopic(topicId);
+    this._notifySync();
+  },
+
+  renderReadItTopic(topicId) {
     const topic = this.readItTopics.find(t => t.id === Number(topicId));
     if (!topic) return;
 
@@ -11661,16 +12154,14 @@ Ela foi vista pela última vez na tarde de quinta-feira, por volta das 14h15, ca
 
     let commentsHtml = '';
     if (topic.comments && topic.comments.length > 0) {
-      topic.comments.forEach(c => {
-        commentsHtml += `
-          <div class="comment-card">
-            <div class="comment-meta">
-              <span class="comment-author ${c.isSara ? 'sara-author' : ''}">${c.author}</span> • <span>${c.time}</span>
-            </div>
-            <div class="comment-text">${c.text}</div>
+      commentsHtml = topic.comments.map(c => `
+        <div class="comment-card">
+          <div class="comment-meta">
+            <span class="comment-author">${c.author}</span> • <span>${c.time}</span>
           </div>
-        `;
-      });
+          <div class="comment-text">${c.text}</div>
+        </div>
+      `).join('');
     } else {
       commentsHtml = `
         <div class="comment-card">
@@ -11683,11 +12174,10 @@ Ela foi vista pela última vez na tarde de quinta-feira, por volta das 14h15, ca
       <div class="readit-container">
         <div class="readit-topic-view">
           <button type="button" class="topic-back-btn" onclick="MesaSaraDesktop.openReadItSubreddit()">
-            &larr; Voltar para r/Conspiracoes &amp; r/Fraguiktos
+            &larr; Voltar para r/Fraguiktos &amp; r/Conspiracoes
           </button>
           <div class="topic-header-meta">
             <span>${topic.subreddit}</span> • <span class="post-author">${topic.author}</span> • <span>${topic.time}</span> • <span>${topic.votes} votos</span>
-            ${topic.isFavorited ? '<span style="color:#f59e0b; font-weight:bold; margin-left:8px;">★ FAVORITADO PELA SARA</span>' : ''}
           </div>
           <div class="topic-full-title">${topic.title}</div>
           <div class="topic-full-body">
@@ -11700,27 +12190,32 @@ Ela foi vista pela última vez na tarde de quinta-feira, por volta das 14h15, ca
         </div>
       </div>
     `;
+    viewport.scrollTop = 0;
   },
 
   openSheetMusicPage() {
+    if (!this._canControl()) return;
+    this._pushHistory(this._getCurrentNavSnapshot());
+    this.renderSheetMusicPage();
+    this._notifySync();
+  },
+
+  renderSheetMusicPage() {
     this.browserView = 'sheet_music';
     this.setBrowserUrl('https://partituras-classicas.art/acervo');
 
     const viewport = document.getElementById('sara-browser-viewport');
     if (!viewport) return;
 
-    let piecesHtml = '';
-    this.sheetMusicPieces.forEach(p => {
-      piecesHtml += `
-        <div class="sheet-music-card">
-          <div>
-            <div class="sheet-info-name">${p.title}</div>
-            <div class="sheet-info-composer">${p.composer} • Tom: ${p.key} • Dificuldade: ${p.difficulty}</div>
-          </div>
-          <div class="sheet-badge">${p.pages}</div>
+    const piecesHtml = this.sheetMusicPieces.map(p => `
+      <div class="sheet-music-card">
+        <div>
+          <div class="sheet-info-name">${p.title}</div>
+          <div class="sheet-info-composer">${p.composer} • Tom: ${p.key} • Dificuldade: ${p.difficulty}</div>
         </div>
-      `;
-    });
+        <div class="sheet-badge">${p.pages}</div>
+      </div>
+    `).join('');
 
     viewport.innerHTML = `
       <div class="sheet-music-page">
@@ -11731,27 +12226,185 @@ Ela foi vista pela última vez na tarde de quinta-feira, por volta das 14h15, ca
         </div>
       </div>
     `;
+    viewport.scrollTop = 0;
   },
 
-  // Modal de Histórico de Navegação
+  openWebPage(pageType, query = '') {
+    if (!this._canControl()) return;
+    this._pushHistory(this._getCurrentNavSnapshot());
+    if (pageType === 'youtube') {
+      this.renderYouTubeHome(query || '');
+    }
+    this._notifySync();
+  },
+
+  renderYouTubeHome(filterQuery = '') {
+    this.browserView = 'youtube';
+    this.ytQuery = filterQuery;
+    this.setBrowserUrl(filterQuery ? `https://www.youtube.com/results?search_query=${encodeURIComponent(filterQuery)}` : 'https://www.youtube.com');
+
+    const viewport = document.getElementById('sara-browser-viewport');
+    if (!viewport) return;
+
+    const cleanFilter = (filterQuery || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    let list = this.youtubeVideos;
+    if (cleanFilter) {
+      const terms = cleanFilter.split(/\s+/).filter(t => t.length >= 2);
+      const filtered = list.filter(v => {
+        const hay = (v.title + ' ' + v.channel + ' ' + v.description).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        return terms.some(t => hay.includes(t));
+      });
+      if (filtered.length > 0) list = filtered;
+    }
+
+    const cardsHtml = list.map(v => `
+      <div class="yt-video-card" onclick="MesaSaraDesktop.openYouTubeVideo('${v.id}')">
+        <div class="yt-thumb" style="background: ${v.thumbColor};">
+          <svg viewBox="0 0 24 24" width="38" height="38" fill="rgba(255,255,255,0.85)"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          <span class="yt-duration">${v.duration}</span>
+        </div>
+        <div class="yt-video-title">${v.title}</div>
+        <div class="yt-video-meta">${v.channel}<br>${v.views} • ${v.date}</div>
+      </div>
+    `).join('');
+
+    viewport.innerHTML = `
+      <div class="yt-shell">
+        <div class="yt-topbar">
+          <div class="yt-logo" onclick="MesaSaraDesktop.openWebPage('youtube')">
+            <span class="yt-logo-badge">YT</span>
+            <span>YouTube</span>
+          </div>
+          <div class="yt-search-wrap">
+            <input type="text" id="yt-search-bar" class="yt-search-input" value="${(filterQuery || '').replace(/"/g, '&quot;')}" placeholder="Pesquisar no YouTube" autocomplete="off" onkeydown="if(event.key==='Enter') MesaSaraDesktop.openWebPage('youtube', this.value)">
+            <button type="button" class="yt-search-btn" onclick="MesaSaraDesktop.openWebPage('youtube', document.getElementById('yt-search-bar').value)">Ir</button>
+          </div>
+          <div style="font-size:11px; color:#94a3b8;">s_auguil</div>
+        </div>
+        <div class="yt-grid">
+          ${cardsHtml}
+        </div>
+      </div>
+    `;
+    viewport.scrollTop = 0;
+  },
+
+  openYouTubeVideo(vidId) {
+    if (!this._canControl()) return;
+    this._pushHistory(this._getCurrentNavSnapshot());
+    this.renderYouTubeWatch(vidId);
+    this._notifySync();
+  },
+
+  renderYouTubeWatch(vidId) {
+    const video = this.youtubeVideos.find(v => v.id === vidId) || this.youtubeVideos[0];
+    if (!video) return;
+
+    this.browserView = 'yt_watch';
+    this.ytVideoId = video.id;
+    this.setBrowserUrl(`https://www.youtube.com/watch?v=${video.id}`);
+
+    const viewport = document.getElementById('sara-browser-viewport');
+    if (!viewport) return;
+
+    const commentsHtml = (video.comments || []).map(c => `
+      <div class="comment-card" style="background:#181818; border-color:#272727;">
+        <div class="comment-meta"><span class="comment-author">${c.author}</span></div>
+        <div class="comment-text">${c.text}</div>
+      </div>
+    `).join('');
+
+    viewport.innerHTML = `
+      <div class="yt-shell">
+        <div class="yt-topbar">
+          <div class="yt-logo" onclick="MesaSaraDesktop.openWebPage('youtube')">
+            <span class="yt-logo-badge">YT</span>
+            <span>YouTube</span>
+          </div>
+          <button type="button" class="fragsearch-btn" onclick="MesaSaraDesktop.openWebPage('youtube')">&larr; Início do YouTube</button>
+        </div>
+        <div class="yt-watch-page">
+          <div class="yt-player-screen" style="background: ${video.thumbColor};">
+            <div class="yt-play-circle">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="#fff"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
+            </div>
+            <div style="font-size:12px; color:#cbd5e1;">Reprodução de áudio desativada no player embutido (${video.duration})</div>
+          </div>
+          <div class="yt-watch-title">${video.title}</div>
+          <div class="yt-video-meta">${video.channel} • ${video.views} • ${video.date}</div>
+          <div class="yt-watch-desc">${video.description}</div>
+          <div class="topic-comments-title" style="color:#f1f1f1;">Comentários (${(video.comments || []).length})</div>
+          <div class="topic-comments-list">${commentsHtml}</div>
+        </div>
+      </div>
+    `;
+    viewport.scrollTop = 0;
+  },
+
+  openWebArticleByKey(key) {
+    const art = this.webArticles[key];
+    if (art) this.openWebArticle(art);
+  },
+
+  openDynamicArticle(query, kind) {
+    const art = {
+      domain: kind === 'wiki' ? 'pt.fragpedia.org' : 'web.fraguiktos.net',
+      url: `https://pt.fragpedia.org/wiki/${encodeURIComponent(query)}`,
+      title: `${query} - FragPédia`,
+      paragraphs: [
+        `Página de referência geral sobre "${query}".`,
+        `Informações detalhadas e tópicos externos completos requerem conexão externa fora da intranet local de Fraguiktos. Use o fórum ReadIt ou a busca de arquivos locais para consultas regionais.`
+      ]
+    };
+    this.openWebArticle(art);
+  },
+
+  openWebArticle(article) {
+    if (!this._canControl()) return;
+    this._pushHistory(this._getCurrentNavSnapshot());
+    this.renderWebArticle(article);
+    this._notifySync();
+  },
+
+  renderWebArticle(article) {
+    if (!article) return;
+    this.browserView = 'article';
+    this.currentArticle = article;
+    this.setBrowserUrl(article.url || 'https://fragsearch.net');
+    const viewport = document.getElementById('sara-browser-viewport');
+    if (!viewport) return;
+
+    viewport.innerHTML = `
+      <div class="web-article-shell">
+        <button type="button" class="topic-back-btn" onclick="MesaSaraDesktop.goFragSearchHome()">&larr; Voltar para FragSearch</button>
+        <div class="web-article-domain">${article.domain || ''}</div>
+        <div class="web-article-title">${article.title || ''}</div>
+        <div class="web-article-body">
+          ${(article.paragraphs || []).map(p => `<p>${p}</p>`).join('')}
+        </div>
+      </div>
+    `;
+    viewport.scrollTop = 0;
+  },
+
+  // Modal de Historico de Navegacao
   renderHistoryList() {
     const container = document.getElementById('sara-history-list');
     if (!container) return;
 
-    let html = '';
-    this.historyEntries.forEach(item => {
-      html += `
-        <div class="history-entry-row" onclick="MesaSaraDesktop.handleHistoryClick('${item.query.replace(/'/g, "\\'")}', ${item.topicId || 'null'})">
-          <span class="history-time-badge">${item.time}</span>
-          <span class="history-query-text"><strong>${item.action}:</strong> "${item.query}"</span>
-        </div>
-      `;
-    });
-    container.innerHTML = html;
+    container.innerHTML = this.historyEntries.map(item => `
+      <div class="history-entry-row" onclick="MesaSaraDesktop.handleHistoryClick('${item.query.replace(/'/g, "\\'")}', ${item.topicId || 'null'})">
+        <span class="history-time-badge">${item.time}</span>
+        <span class="history-query-text"><strong>${item.action}:</strong> "${item.query}"</span>
+      </div>
+    `).join('');
   },
 
   handleHistoryClick(query, topicId) {
-    this.toggleHistoryModal();
+    if (!this._canControl()) return;
+    this.historyModalOpen = false;
+    const modal = document.getElementById('sara-history-modal');
+    if (modal) modal.style.display = 'none';
     if (topicId) {
       this.openReadItTopic(topicId);
     } else {
@@ -11760,42 +12413,67 @@ Ela foi vista pela última vez na tarde de quinta-feira, por volta das 14h15, ca
   },
 
   toggleHistoryModal() {
+    if (!this._canControl()) return;
     const modal = document.getElementById('sara-history-modal');
     if (!modal) return;
-    modal.style.display = modal.style.display === 'none' ? 'flex' : 'none';
+    this.historyModalOpen = !this.historyModalOpen;
+    modal.style.display = this.historyModalOpen ? 'flex' : 'none';
+    this._notifySync();
   },
 
   browserBack() {
-    if (this.browserView === 'topic') {
-      this.openReadItSubreddit();
-    } else {
+    if (!this._canControl()) return;
+    if (this.browserBackStack.length > 0) {
+      this.browserForwardStack.push(this._getCurrentNavSnapshot());
+      const prev = this.browserBackStack.pop();
+      this._restoreNavSnapshot(prev);
+      this._notifySync();
+    } else if (this.browserView !== 'home') {
       this.goFragSearchHome();
     }
   },
 
   browserForward() {
-    if (this.browserView === 'subreddit' && this.currentTopicId) {
-      this.openReadItTopic(this.currentTopicId);
+    if (!this._canControl()) return;
+    if (this.browserForwardStack.length > 0) {
+      this.browserBackStack.push(this._getCurrentNavSnapshot());
+      const next = this.browserForwardStack.pop();
+      this._restoreNavSnapshot(next);
+      this._notifySync();
     }
   },
 
+  _restoreNavSnapshot(snap) {
+    if (!snap) return;
+    if (snap.view === 'home') this.renderFragSearchHome(false);
+    else if (snap.view === 'results') this.renderFragSearchResults(snap.query || '');
+    else if (snap.view === 'subreddit') this.renderReadItSubreddit();
+    else if (snap.view === 'topic') this.renderReadItTopic(snap.topicId || 14);
+    else if (snap.view === 'sheet_music') this.renderSheetMusicPage();
+    else if (snap.view === 'youtube') this.renderYouTubeHome(snap.ytQuery || '');
+    else if (snap.view === 'yt_watch') this.renderYouTubeWatch(snap.ytVideoId);
+    else if (snap.view === 'article') this.renderWebArticle(snap.article);
+  },
+
   browserReload() {
-    if (this.browserView === 'home') this.goFragSearchHome();
-    else if (this.browserView === 'subreddit') this.openReadItSubreddit();
-    else if (this.browserView === 'topic' && this.currentTopicId) this.openReadItTopic(this.currentTopicId);
-    else if (this.browserView === 'sheet_music') this.openSheetMusicPage();
-    else this.goFragSearchHome();
+    if (!this._canControl()) return;
+    this._restoreNavSnapshot(this._getCurrentNavSnapshot());
+    this._notifySync();
   }
 };
 window.MesaSaraDesktop = MesaSaraDesktop;
 
+// ==========================================================================
+// MESA NOTEBOOK DA SARA (SISTEMA OPERACIONAL E CFTV - SINCRONIZACAO REALTIME)
+// ==========================================================================
 const MesaNotebookSara = {
   isActive: false,
-  stage: 'boot', // 'boot' | 'lock' | 'cctv'
+  stage: 'boot', // 'boot' | 'lock' | 'desktop' | 'cctv'
   activeCam: 1,
   signalLost: false,
   isGlitching: false,
   sessionStartTime: null,
+  localStartTime: 0,
   camImages: {
     1: '',
     2: '',
@@ -11805,37 +12483,95 @@ const MesaNotebookSara = {
   glitchTimeout: null,
   staticAnimId: null,
   clockInterval: null,
+  _applyingRemote: false,
+  _saveTimer: null,
+  _scrollSyncTimer: null,
+  _lastRemoteUpdatedAt: 0,
 
   getChannel() {
     return (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel) || null;
   },
 
-  async saveNotebookStateToSupabase() {
+  buildSyncSnapshot() {
+    return {
+      active: !!this.isActive,
+      stage: this.stage || 'boot',
+      activeCam: this.activeCam || 1,
+      signalLost: !!this.signalLost,
+      glitch: !!this.isGlitching,
+      sessionStartTime: this.sessionStartTime || Date.now(),
+      camImages: this.camImages || {},
+      desktopState: window.MesaSaraDesktop ? MesaSaraDesktop.getSyncState() : null,
+      updatedAt: Date.now()
+    };
+  },
+
+  syncNow(immediatePersist = true) {
+    if (!window.MesaApp || !MesaApp.state || !MesaApp.state.isMaster) return;
+    const snap = this.buildSyncSnapshot();
+    if (MesaApp.state.rawRow1Atributos) {
+      MesaApp.state.rawRow1Atributos._sys_notebook = snap;
+    }
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'notebook_sync',
+          payload: snap
+        });
+      } catch(e) {}
+    }
+    this.saveNotebookStateToSupabase(immediatePersist);
+  },
+
+  syncScrollOnly() {
+    if (!window.MesaApp || !MesaApp.state || !MesaApp.state.isMaster) return;
+    const snap = this.buildSyncSnapshot();
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'notebook_sync',
+          payload: snap
+        });
+      } catch(e) {}
+    }
+    clearTimeout(this._scrollSyncTimer);
+    this._scrollSyncTimer = setTimeout(() => {
+      this.saveNotebookStateToSupabase(false);
+    }, 350);
+  },
+
+  saveNotebookStateToSupabase(immediate = false) {
     if (!window.MesaApp || !MesaApp.supabase || !MesaApp.state || !MesaApp.state.isMaster) return;
-    try {
-      const { data } = await MesaApp.supabase
-        .from('personagens')
-        .select('atributos')
-        .eq('id', 1)
-        .single();
-      const attrs = data && data.atributos 
-        ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos) 
-        : {};
-      attrs._sys_notebook = {
-        active: !!this.isActive,
-        stage: this.stage || 'boot',
-        activeCam: this.activeCam || 1,
-        signalLost: !!this.signalLost,
-        sessionStartTime: this.sessionStartTime || Date.now(),
-        camImages: this.camImages || {},
-        updatedAt: Date.now()
-      };
-      await MesaApp.supabase
-        .from('personagens')
-        .update({ atributos: attrs })
-        .eq('id', 1);
-    } catch(e) {
-      console.warn("Erro ao persistir notebook no Supabase:", e);
+    const runSave = async () => {
+      try {
+        const { data } = await MesaApp.supabase
+          .from('personagens')
+          .select('atributos')
+          .eq('id', 1)
+          .single();
+        const attrs = data && data.atributos
+          ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+          : {};
+        // Le sempre o estado mais recente no momento exato da escrita
+        attrs._sys_notebook = this.buildSyncSnapshot();
+        await MesaApp.supabase
+          .from('personagens')
+          .update({ atributos: attrs })
+          .eq('id', 1);
+      } catch(e) {
+        console.warn("Erro ao persistir notebook no Supabase:", e);
+      }
+    };
+
+    clearTimeout(this._saveTimer);
+    if (immediate) {
+      runSave();
+    } else {
+      this._saveTimer = setTimeout(runSave, 220);
     }
   },
 
@@ -11851,29 +12587,31 @@ const MesaNotebookSara = {
     this.signalLost = false;
     this.isGlitching = false;
     this.sessionStartTime = Date.now();
+    this.localStartTime = this.sessionStartTime;
 
-    // Broadcast para todos os jogadores
+    const snap = this.buildSyncSnapshot();
+    if (MesaApp.state.rawRow1Atributos) {
+      MesaApp.state.rawRow1Atributos._sys_notebook = snap;
+    }
+
     const chan = this.getChannel();
     if (chan) {
       try {
         chan.send({
           type: 'broadcast',
           event: 'notebook_start',
-          payload: {
-            activeCam: this.activeCam,
-            camImages: this.camImages,
-            sessionStartTime: this.sessionStartTime
-          }
+          payload: snap
         });
       } catch(e) {}
     }
 
-    this.saveNotebookStateToSupabase();
+    this.saveNotebookStateToSupabase(true);
     this.triggerStart(this.sessionStartTime);
   },
 
   stop() {
     if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    this.isActive = false;
     const chan = this.getChannel();
     if (chan) {
       try {
@@ -11884,17 +12622,19 @@ const MesaNotebookSara = {
         });
       } catch(e) {}
     }
-    this.isActive = false;
-    this.saveNotebookStateToSupabase();
+    if (MesaApp.state.rawRow1Atributos) {
+      MesaApp.state.rawRow1Atributos._sys_notebook = { active: false, updatedAt: Date.now() };
+    }
+    this.saveNotebookStateToSupabase(true);
     this.triggerStop();
   },
 
-  triggerStart(sessionStartTime) {
+  triggerStart(sessionStartTime, targetStage = null) {
     const overlay = document.getElementById('notebook-sara-overlay');
     if (!overlay) return;
 
     this.isActive = true;
-    this.stage = 'boot';
+    this.localStartTime = Date.now();
     this.signalLost = false;
     this.isGlitching = false;
     this.sessionStartTime = sessionStartTime || this.sessionStartTime || Date.now();
@@ -11902,7 +12642,6 @@ const MesaNotebookSara = {
     const isMaster = !!(MesaApp.state && MesaApp.state.isMaster);
     overlay.classList.toggle('viewer-only', !isMaster);
 
-    // Atualiza status no drawer do Mestre
     const badge = document.getElementById('notebook-status-badge');
     const btnPlay = document.getElementById('btn-transmit-notebook');
     const btnStop = document.getElementById('btn-stop-notebook');
@@ -11913,26 +12652,36 @@ const MesaNotebookSara = {
     if (btnPlay) btnPlay.style.display = 'none';
     if (btnStop) btnStop.style.display = 'flex';
 
-    // Mostra estágio de boot
+    overlay.classList.add('active');
+    this.startClock();
+
+    clearTimeout(this.bootTimeout);
+    if (targetStage && targetStage !== 'boot') {
+      if (targetStage === 'desktop') this.showDesktopStage();
+      else if (targetStage === 'cctv') this.showCctvStage(this.activeCam || 1);
+      else this.showLockScreen();
+      return;
+    }
+
+    this.stage = 'boot';
     const bootStage = document.getElementById('notebook-boot-stage');
     const lockStage = document.getElementById('notebook-lock-stage');
     const cctvStage = document.getElementById('notebook-cctv-stage');
+    const desktopStage = document.getElementById('notebook-desktop-stage');
     if (bootStage) bootStage.style.display = 'flex';
     if (lockStage) lockStage.style.display = 'none';
     if (cctvStage) cctvStage.style.display = 'none';
+    if (desktopStage) desktopStage.style.display = 'none';
 
-    overlay.classList.add('active');
-
-    this.startClock();
-
-    // Transiciona do boot para o lock screen após ~2.4s
-    clearTimeout(this.bootTimeout);
     this.bootTimeout = setTimeout(() => {
-      this.showLockScreen();
+      if (this.isActive && this.stage === 'boot') {
+        this.showLockScreen();
+      }
     }, 2400);
   },
 
   triggerStop() {
+    this.isActive = false;
     const overlay = document.getElementById('notebook-sara-overlay');
     if (overlay) {
       overlay.classList.remove('active');
@@ -11945,7 +12694,6 @@ const MesaNotebookSara = {
     clearInterval(this.clockInterval);
     this.sessionStartTime = null;
 
-    // Atualiza status no drawer do Mestre
     const badge = document.getElementById('notebook-status-badge');
     const btnPlay = document.getElementById('btn-transmit-notebook');
     const btnStop = document.getElementById('btn-stop-notebook');
@@ -11957,17 +12705,17 @@ const MesaNotebookSara = {
     if (btnStop) btnStop.style.display = 'none';
 
     setTimeout(() => {
-      this.isActive = false;
+      if (this.isActive) return;
       this.stage = 'boot';
       this.signalLost = false;
       this.isGlitching = false;
       const bootStage = document.getElementById('notebook-boot-stage');
       const lockStage = document.getElementById('notebook-lock-stage');
       const cctvStage = document.getElementById('notebook-cctv-stage');
+      const desktopStage = document.getElementById('notebook-desktop-stage');
       if (bootStage) bootStage.style.display = 'flex';
       if (lockStage) lockStage.style.display = 'none';
       if (cctvStage) cctvStage.style.display = 'none';
-      const desktopStage = document.getElementById('notebook-desktop-stage');
       if (desktopStage) desktopStage.style.display = 'none';
       const staticCanvas = document.getElementById('cctv-static-canvas');
       if (staticCanvas) staticCanvas.style.display = 'none';
@@ -11982,11 +12730,10 @@ const MesaNotebookSara = {
       this.sessionStartTime = Date.now();
     }
     const update = () => {
-      const elapsedMs = Date.now() - this.sessionStartTime;
+      const elapsedMs = Math.max(0, Date.now() - this.sessionStartTime);
       const elapsedSec = Math.floor(elapsedMs / 1000);
 
-      // Inicia a partir das 22:30:00 da noite
-      const baseSec = (22 * 60 + 30) * 60; // 81000 segundos
+      const baseSec = (22 * 60 + 30) * 60;
       const currentSecTotal = baseSec + elapsedSec;
 
       const hrs = String(Math.floor(currentSecTotal / 3600) % 24).padStart(2, '0');
@@ -11999,6 +12746,12 @@ const MesaNotebookSara = {
 
       const dateEl = document.getElementById('windows-lock-date');
       if (dateEl) dateEl.textContent = 'terça-feira, 4 de agosto de 2061';
+
+      const deskTimeEl = document.getElementById('sara-desktop-clock');
+      if (deskTimeEl) deskTimeEl.textContent = `${hrs}:${mins}`;
+
+      const deskDateEl = document.getElementById('sara-desktop-date');
+      if (deskDateEl) deskDateEl.textContent = '04/08/2061';
 
       const cctvTime = document.getElementById('cctv-timestamp');
       if (cctvTime) {
@@ -12015,14 +12768,15 @@ const MesaNotebookSara = {
   },
 
   showLockScreen() {
+    clearTimeout(this.bootTimeout);
     this.stage = 'lock';
     const bootStage = document.getElementById('notebook-boot-stage');
     const lockStage = document.getElementById('notebook-lock-stage');
     const cctvStage = document.getElementById('notebook-cctv-stage');
+    const desktopStage = document.getElementById('notebook-desktop-stage');
     if (bootStage) bootStage.style.display = 'none';
     if (lockStage) lockStage.style.display = 'flex';
     if (cctvStage) cctvStage.style.display = 'none';
-    const desktopStage = document.getElementById('notebook-desktop-stage');
     if (desktopStage) desktopStage.style.display = 'none';
 
     const isMaster = !!(MesaApp.state && MesaApp.state.isMaster);
@@ -12061,28 +12815,13 @@ const MesaNotebookSara = {
     const input = document.getElementById('notebook-password-input');
     const val = input ? input.value.trim() : '';
 
-    // Senhas aceitas para destravar o notebook da Sara: 1415 ou 0408
     if (val === '1415' || val === '0408') {
       if (wrapper) wrapper.classList.remove('has-error', 'shake-error');
       if (err) err.style.display = 'none';
       if (input) input.value = '';
 
       this.showDesktopStage();
-
-      const chan = this.getChannel();
-      if (chan) {
-        try {
-          chan.send({
-            type: 'broadcast',
-            event: 'notebook_sync',
-            payload: {
-              stage: 'desktop',
-              activeApp: this.activeApp || null
-            }
-          });
-        } catch(e) {}
-      }
-      this.saveNotebookStateToSupabase();
+      this.syncNow(true);
       return;
     }
 
@@ -12100,6 +12839,7 @@ const MesaNotebookSara = {
   },
 
   showDesktopStage() {
+    clearTimeout(this.bootTimeout);
     this.stage = 'desktop';
     const bootStage = document.getElementById('notebook-boot-stage');
     const lockStage = document.getElementById('notebook-lock-stage');
@@ -12117,149 +12857,57 @@ const MesaNotebookSara = {
   },
 
   lockSystem() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) return;
     this.showLockScreen();
-    const chan = this.getChannel();
-    if (chan) {
-      try {
-        chan.send({
-          type: 'broadcast',
-          event: 'notebook_sync',
-          payload: { stage: 'lock' }
-        });
-      } catch(e) {}
-    }
-    this.saveNotebookStateToSupabase();
+    this.syncNow(true);
   },
 
-  openApp(app) {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.openApp(app);
-  },
-
-  closeApp(app) {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.closeApp(app);
-  },
-
-  minimizeApp(app) {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.minimizeApp(app);
-  },
-
-  maximizeApp(app) {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.maximizeApp(app);
-  },
-
-  toggleStartMenu() {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.toggleStartMenu();
-  },
-
-  closeStartMenu() {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.closeStartMenu();
-  },
-
-  switchFolder(f) {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.switchFolder(f);
-  },
-
-  openFile(f, id) {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.openFile(f, id);
-  },
-
-  openTrashFile(id) {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.openTrashFile(id);
-  },
-
-  submitFilePassword() {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.submitFilePassword();
-  },
-
-  closeLockedPrompt() {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.closeLockedPrompt();
-  },
-
-  goFragSearchHome() {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.goFragSearchHome();
-  },
-
-  execFragSearch(q) {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.execFragSearch(q);
-  },
-
-  openReadItSubreddit() {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.openReadItSubreddit();
-  },
-
-  openReadItTopic(id) {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.openReadItTopic(id);
-  },
-
-  openSheetMusicPage() {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.openSheetMusicPage();
-  },
-
-  toggleHistoryModal() {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.toggleHistoryModal();
-  },
-
-  browserBack() {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.browserBack();
-  },
-
-  browserForward() {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.browserForward();
-  },
-
-  browserReload() {
-    if (window.MesaSaraDesktop) MesaSaraDesktop.browserReload();
-  },
-
+  openApp(app) { if (window.MesaSaraDesktop) MesaSaraDesktop.openApp(app); },
+  closeApp(app) { if (window.MesaSaraDesktop) MesaSaraDesktop.closeApp(app); },
+  minimizeApp(app) { if (window.MesaSaraDesktop) MesaSaraDesktop.minimizeApp(app); },
+  maximizeApp(app) { if (window.MesaSaraDesktop) MesaSaraDesktop.maximizeApp(app); },
+  toggleStartMenu() { if (window.MesaSaraDesktop) MesaSaraDesktop.toggleStartMenu(); },
+  closeStartMenu() { if (window.MesaSaraDesktop) MesaSaraDesktop.closeStartMenu(); },
+  switchFolder(f) { if (window.MesaSaraDesktop) MesaSaraDesktop.switchFolder(f); },
+  openFile(f, id) { if (window.MesaSaraDesktop) MesaSaraDesktop.openFile(f, id); },
+  openTrashFile(id) { if (window.MesaSaraDesktop) MesaSaraDesktop.openTrashFile(id); },
+  submitFilePassword() { if (window.MesaSaraDesktop) MesaSaraDesktop.submitFilePassword(); },
+  closeLockedPrompt() { if (window.MesaSaraDesktop) MesaSaraDesktop.closeLockedPrompt(); },
+  goFragSearchHome() { if (window.MesaSaraDesktop) MesaSaraDesktop.goFragSearchHome(); },
+  execFragSearch(q) { if (window.MesaSaraDesktop) MesaSaraDesktop.execFragSearch(q); },
+  openReadItSubreddit() { if (window.MesaSaraDesktop) MesaSaraDesktop.openReadItSubreddit(); },
+  openReadItTopic(id) { if (window.MesaSaraDesktop) MesaSaraDesktop.openReadItTopic(id); },
+  openSheetMusicPage() { if (window.MesaSaraDesktop) MesaSaraDesktop.openSheetMusicPage(); },
+  openWebPage(p, q) { if (window.MesaSaraDesktop) MesaSaraDesktop.openWebPage(p, q); },
+  toggleHistoryModal() { if (window.MesaSaraDesktop) MesaSaraDesktop.toggleHistoryModal(); },
+  browserBack() { if (window.MesaSaraDesktop) MesaSaraDesktop.browserBack(); },
+  browserForward() { if (window.MesaSaraDesktop) MesaSaraDesktop.browserForward(); },
+  browserReload() { if (window.MesaSaraDesktop) MesaSaraDesktop.browserReload(); },
 
   showCctvStage(camNum = 1) {
+    clearTimeout(this.bootTimeout);
     this.stage = 'cctv';
     const bootStage = document.getElementById('notebook-boot-stage');
     const lockStage = document.getElementById('notebook-lock-stage');
     const cctvStage = document.getElementById('notebook-cctv-stage');
+    const desktopStage = document.getElementById('notebook-desktop-stage');
     if (bootStage) bootStage.style.display = 'none';
     if (lockStage) lockStage.style.display = 'none';
     if (cctvStage) cctvStage.style.display = 'flex';
+    if (desktopStage) desktopStage.style.display = 'none';
     this.switchCamera(camNum, false);
   },
 
   openCameras() {
     if (!MesaApp.state || !MesaApp.state.isMaster) return;
     this.showCctvStage(this.activeCam || 1);
-
-    const chan = this.getChannel();
-    if (chan) {
-      try {
-        chan.send({
-          type: 'broadcast',
-          event: 'notebook_sync',
-          payload: {
-            stage: 'cctv',
-            activeCam: this.activeCam,
-            signalLost: this.signalLost
-          }
-        });
-      } catch(e) {}
-    }
-    this.saveNotebookStateToSupabase();
+    this.syncNow(true);
   },
 
   returnToLock() {
     if (!MesaApp.state || !MesaApp.state.isMaster) return;
     this.showLockScreen();
-    const chan = this.getChannel();
-    if (chan) {
-      try {
-        chan.send({
-          type: 'broadcast',
-          event: 'notebook_sync',
-          payload: {
-            stage: 'lock'
-          }
-        });
-      } catch(e) {}
-    }
-    this.saveNotebookStateToSupabase();
+    this.syncNow(true);
   },
 
   switchCamera(camNum, shouldSync = true) {
@@ -12267,18 +12915,11 @@ const MesaNotebookSara = {
     if (this.signalLost && shouldSync) return;
     this.activeCam = camNum;
 
-    // Atualiza tabs do CFTV
     [1, 2, 3].forEach(n => {
       const tab = document.getElementById(`cctv-tab-${n}`);
-      if (tab) {
-        if (n === camNum) tab.classList.add('active');
-        else tab.classList.remove('active');
-      }
+      if (tab) tab.classList.toggle('active', n === camNum);
       const ctrlBtn = document.getElementById(`disp-ctrl-cam-${n}`);
-      if (ctrlBtn) {
-        if (n === camNum) ctrlBtn.classList.add('active');
-        else ctrlBtn.classList.remove('active');
-      }
+      if (ctrlBtn) ctrlBtn.classList.toggle('active', n === camNum);
     });
 
     const camNames = {
@@ -12299,21 +12940,7 @@ const MesaNotebookSara = {
     this.renderCameraFeed();
 
     if (shouldSync) {
-      const chan = this.getChannel();
-      if (chan) {
-        try {
-          chan.send({
-            type: 'broadcast',
-            event: 'notebook_sync',
-            payload: {
-              stage: 'cctv',
-              activeCam: this.activeCam,
-              signalLost: this.signalLost
-            }
-          });
-        } catch(e) {}
-      }
-      this.saveNotebookStateToSupabase();
+      this.syncNow(true);
     }
   },
 
@@ -12330,68 +12957,9 @@ const MesaNotebookSara = {
     const imgEl = document.getElementById('cctv-feed-img');
     const procEl = document.getElementById('cctv-feed-procedural');
     const svgEl = document.getElementById('cctv-procedural-svg');
-
-    // Todas as câmeras exibem tela preta
     if (imgEl) imgEl.style.display = 'none';
     if (procEl) procEl.style.display = 'none';
     if (svgEl) svgEl.innerHTML = '';
-  },
-
-  getProceduralSceneSVG(camNum) {
-    if (camNum === 1) {
-      return `
-        <rect width="800" height="450" fill="#040507" />
-        <polygon points="0,320 800,320 800,450 0,450" fill="#0a0c10" />
-        <line x1="0" y1="320" x2="800" y2="320" stroke="#1f242d" stroke-width="2" />
-        <rect x="520" y="60" width="160" height="200" fill="#0e131b" stroke="#252f3e" stroke-width="2" />
-        <line x1="520" y1="90" x2="680" y2="90" stroke="#171e28" stroke-width="1.5" />
-        <line x1="520" y1="120" x2="680" y2="120" stroke="#171e28" stroke-width="1.5" />
-        <line x1="520" y1="150" x2="680" y2="150" stroke="#171e28" stroke-width="1.5" />
-        <line x1="520" y1="180" x2="680" y2="180" stroke="#171e28" stroke-width="1.5" />
-        <line x1="520" y1="210" x2="680" y2="210" stroke="#171e28" stroke-width="1.5" />
-        <line x1="520" y1="240" x2="680" y2="240" stroke="#171e28" stroke-width="1.5" />
-        <rect x="120" y="260" width="280" height="80" rx="4" fill="#0e1117" stroke="#1c212a" stroke-width="2" />
-        <rect x="100" y="280" width="35" height="60" rx="3" fill="#0b0e13" stroke="#1a1e26" stroke-width="1.5" />
-        <rect x="385" y="280" width="35" height="60" rx="3" fill="#0b0e13" stroke="#1a1e26" stroke-width="1.5" />
-        <rect x="145" y="240" width="110" height="40" rx="2" fill="#12161f" />
-        <rect x="265" y="240" width="110" height="40" rx="2" fill="#12161f" />
-        <rect x="180" y="360" width="160" height="45" fill="#0c0e13" stroke="#222834" stroke-width="1.5" />
-        <rect x="250" y="345" width="14" height="18" fill="#1e293b" />
-        <text x="30" y="420" fill="#64748b" font-family="monospace" font-size="14" letter-spacing="2">CAM 01 // RESIDÊNCIA AUGUIL - SALA DE ESTAR [TÉRREO]</text>
-      `;
-    } else if (camNum === 2) {
-      return `
-        <rect width="800" height="450" fill="#030406" />
-        <polygon points="120,450 680,450 640,400 160,400" fill="#0c0f14" stroke="#1c212b" stroke-width="1.5" />
-        <polygon points="160,400 640,400 600,350 200,350" fill="#0a0c10" stroke="#1c212b" stroke-width="1.5" />
-        <polygon points="200,350 600,350 560,300 240,300" fill="#080a0e" stroke="#1a1e26" stroke-width="1.5" />
-        <polygon points="240,300 560,300 520,250 280,250" fill="#07080c" stroke="#171b23" stroke-width="1.5" />
-        <polygon points="280,250 520,250 480,200 320,200" fill="#050609" stroke="#14171e" stroke-width="1.5" />
-        <polygon points="320,200 480,200 450,150 350,150" fill="#040507" stroke="#11141a" stroke-width="1.5" />
-        <polygon points="350,150 450,150 420,100 380,100" fill="#020304" />
-        <line x1="120" y1="410" x2="380" y2="70" stroke="#252e3d" stroke-width="6" />
-        <line x1="180" y1="430" x2="180" y2="350" stroke="#18202b" stroke-width="3" />
-        <line x1="240" y1="380" x2="240" y2="300" stroke="#18202b" stroke-width="3" />
-        <line x1="300" y1="330" x2="300" y2="250" stroke="#18202b" stroke-width="3" />
-        <line x1="360" y1="280" x2="360" y2="200" stroke="#18202b" stroke-width="3" />
-        <text x="30" y="420" fill="#64748b" font-family="monospace" font-size="14" letter-spacing="2">CAM 02 // RESIDÊNCIA AUGUIL - ESCADARIA PRINCIPAL</text>
-      `;
-    } else {
-      return `
-        <rect width="800" height="450" fill="#030405" />
-        <polygon points="0,450 800,450 460,225 340,225" fill="#0b0d12" stroke="#191e27" stroke-width="1" />
-        <polygon points="0,0 800,0 460,225 340,225" fill="#06070a" stroke="#161a22" stroke-width="1" />
-        <polygon points="0,0 0,450 340,225" fill="#080a0e" stroke="#141820" stroke-width="1" />
-        <polygon points="800,0 800,450 460,225" fill="#080a0e" stroke="#141820" stroke-width="1" />
-        <rect x="340" y="210" width="120" height="60" fill="#000000" />
-        <polygon points="80,120 180,165 180,360 80,410" fill="#050608" stroke="#1e2531" stroke-width="2" />
-        <polygon points="220,180 280,205 280,300 220,325" fill="#020305" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,3" />
-        <polygon points="720,120 620,165 620,360 720,410" fill="#050608" stroke="#1e2531" stroke-width="2" />
-        <circle cx="400" cy="110" r="12" fill="#1e293b" />
-        <line x1="400" y1="0" x2="400" y2="100" stroke="#0f172a" stroke-width="2" />
-        <text x="30" y="420" fill="#64748b" font-family="monospace" font-size="14" letter-spacing="2">CAM 03 // RESIDÊNCIA AUGUIL - CORREDOR DO 2º ANDAR [ÁREA DOS QUARTOS]</text>
-      `;
-    }
   },
 
   setCustomCamImage(camNum, url) {
@@ -12400,19 +12968,7 @@ const MesaNotebookSara = {
     if (this.activeCam === camNum) {
       this.renderCameraFeed();
     }
-    const chan = this.getChannel();
-    if (chan) {
-      try {
-        chan.send({
-          type: 'broadcast',
-          event: 'notebook_sync',
-          payload: {
-            camImages: this.camImages
-          }
-        });
-      } catch(e) {}
-    }
-    this.saveNotebookStateToSupabase();
+    this.syncNow(true);
   },
 
   triggerGlitch() {
@@ -12426,9 +12982,7 @@ const MesaNotebookSara = {
         chan.send({
           type: 'broadcast',
           event: 'notebook_sync',
-          payload: {
-            glitch: true
-          }
+          payload: { ...this.buildSyncSnapshot(), glitch: true }
         });
       } catch(e) {}
     }
@@ -12438,10 +12992,17 @@ const MesaNotebookSara = {
       this.stopStaticNoise();
       this.signalLost = true;
       this.isGlitching = false;
+      this._applySignalLostUI(true);
+      this.syncNow(true);
+    }, 2500);
+  },
 
-      const lostEl = document.getElementById('cctv-signal-lost');
-      if (lostEl) {
-        lostEl.style.display = 'flex';
+  _applySignalLostUI(lost) {
+    this.signalLost = !!lost;
+    const lostEl = document.getElementById('cctv-signal-lost');
+    if (lostEl) {
+      lostEl.style.display = this.signalLost ? 'flex' : 'none';
+      if (this.signalLost) {
         const camNames = {
           1: 'CAM 01 - SALA DE ESTAR',
           2: 'CAM 02 - ESCADARIA',
@@ -12450,58 +13011,23 @@ const MesaNotebookSara = {
         const lostCamTag = document.getElementById('signal-lost-cam-name');
         if (lostCamTag) lostCamTag.textContent = camNames[this.activeCam] || `CAM 0${this.activeCam}`;
       }
-
-      [1, 2, 3].forEach(n => {
-        const btn = document.getElementById(`cctv-tab-${n}`);
-        if (btn) btn.classList.add('disabled');
-      });
-
-      const ch = this.getChannel();
-      if (ch) {
-        try {
-          ch.send({
-            type: 'broadcast',
-            event: 'notebook_sync',
-            payload: {
-              signalLost: true
-            }
-          });
-        } catch(e) {}
-      }
-      this.saveNotebookStateToSupabase();
-    }, 2500);
+    }
+    [1, 2, 3].forEach(n => {
+      const btn = document.getElementById(`cctv-tab-${n}`);
+      if (btn) btn.classList.toggle('disabled', this.signalLost);
+    });
+    if (!this.signalLost) {
+      this.renderCameraFeed();
+    }
   },
 
   restoreSignal() {
     if (!MesaApp.state || !MesaApp.state.isMaster) return;
-    this.signalLost = false;
     this.isGlitching = false;
     this.stopStaticNoise();
-
-    const lostEl = document.getElementById('cctv-signal-lost');
-    if (lostEl) lostEl.style.display = 'none';
-
-    [1, 2, 3].forEach(n => {
-      const btn = document.getElementById(`cctv-tab-${n}`);
-      if (btn) btn.classList.remove('disabled');
-    });
-
+    this._applySignalLostUI(false);
     this.switchCamera(this.activeCam, false);
-
-    const chan = this.getChannel();
-    if (chan) {
-      try {
-        chan.send({
-          type: 'broadcast',
-          event: 'notebook_sync',
-          payload: {
-            signalLost: false,
-            activeCam: this.activeCam
-          }
-        });
-      } catch(e) {}
-    }
-    this.saveNotebookStateToSupabase();
+    this.syncNow(true);
   },
 
   startStaticNoise() {
@@ -12520,13 +13046,10 @@ const MesaNotebookSara = {
         buffer[i] = (255 << 24) | (shade << 16) | (shade << 8) | shade;
       }
       ctx.putImageData(imgData, 0, 0);
-
-      // Linhas aleatórias de interferência de sinal
       for (let j = 0; j < 3; j++) {
         ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.4})`;
         ctx.fillRect(0, Math.random() * canvas.height, canvas.width, Math.random() * 6);
       }
-
       this.staticAnimId = requestAnimationFrame(render);
     };
     render();
@@ -12541,55 +13064,74 @@ const MesaNotebookSara = {
     if (canvas) canvas.style.display = 'none';
   },
 
+  syncFromRemote(nb) {
+    if (!nb) return;
+    const isMaster = !!(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    // Se for o Mestre mexendo localmente agora mesmo, ignora polling antigo
+    if (isMaster && this.isActive && nb.updatedAt && nb.updatedAt <= (this.localStartTime || 0)) {
+      return;
+    }
+
+    if (nb.active === false) {
+      if (this.isActive) {
+        const timeSinceLocal = Date.now() - (this.localStartTime || 0);
+        if (!isMaster && timeSinceLocal > 6000) {
+          this.triggerStop();
+        }
+      }
+      return;
+    }
+
+    if (nb.active && !this.isActive) {
+      if (nb.camImages) this.camImages = nb.camImages;
+      this.activeCam = nb.activeCam || 1;
+      this.triggerStart(nb.sessionStartTime, nb.stage || 'boot');
+    }
+
+    this.handleIncomingSync(nb);
+  },
+
   handleIncomingSync(data) {
     if (!data) return;
-    if (data.camImages) {
-      this.camImages = data.camImages;
-      this.renderCameraFeed();
-    }
-    if (data.stage === 'lock') {
-      this.showLockScreen();
-    } else if (data.stage === 'cctv') {
-      this.showCctvStage(data.activeCam || this.activeCam || 1);
-    }
-
-    if (data.activeCam && this.stage === 'cctv') {
-      this.switchCamera(data.activeCam, false);
-    }
-
-    if (data.glitch) {
-      this.isGlitching = true;
-      this.startStaticNoise();
-      setTimeout(() => {
-        this.stopStaticNoise();
-      }, 2500);
-    }
-
-    if (data.signalLost !== undefined) {
-      this.signalLost = data.signalLost;
-      const lostEl = document.getElementById('cctv-signal-lost');
-      if (lostEl) {
-        lostEl.style.display = this.signalLost ? 'flex' : 'none';
-        if (this.signalLost) {
-          const camNames = {
-            1: 'CAM 01 - SALA DE ESTAR',
-            2: 'CAM 02 - ESCADARIA',
-            3: 'CAM 03 - CORREDOR DO 2º ANDAR'
-          };
-          const lostCamTag = document.getElementById('signal-lost-cam-name');
-          if (lostCamTag) lostCamTag.textContent = camNames[this.activeCam] || `CAM 0${this.activeCam}`;
-        }
-      }
-      [1, 2, 3].forEach(n => {
-        const btn = document.getElementById(`cctv-tab-${n}`);
-        if (btn) {
-          if (this.signalLost) btn.classList.add('disabled');
-          else btn.classList.remove('disabled');
-        }
-      });
-      if (!this.signalLost) {
+    this._applyingRemote = true;
+    try {
+      if (data.camImages) {
+        this.camImages = data.camImages;
         this.renderCameraFeed();
       }
+
+      if (data.stage && data.stage !== this.stage) {
+        if (data.stage === 'desktop') {
+          this.showDesktopStage();
+        } else if (data.stage === 'cctv') {
+          this.showCctvStage(data.activeCam || this.activeCam || 1);
+        } else if (data.stage === 'lock') {
+          this.showLockScreen();
+        }
+      }
+
+      if (data.activeCam && this.stage === 'cctv' && data.activeCam !== this.activeCam) {
+        this.switchCamera(data.activeCam, false);
+      }
+
+      if (data.glitch && !this.isGlitching) {
+        this.isGlitching = true;
+        this.startStaticNoise();
+        setTimeout(() => {
+          this.isGlitching = false;
+          this.stopStaticNoise();
+        }, 2500);
+      }
+
+      if (data.signalLost !== undefined && data.signalLost !== this.signalLost) {
+        this._applySignalLostUI(!!data.signalLost);
+      }
+
+      if (data.desktopState && this.stage === 'desktop' && window.MesaSaraDesktop) {
+        MesaSaraDesktop.applySyncState(data.desktopState);
+      }
+    } finally {
+      this._applyingRemote = false;
     }
   }
 };

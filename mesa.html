@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.4.0.0">
+  <link rel="stylesheet" href="css/mesa.css?v=2.4.0.1">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1325,11 +1325,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=2.4.0.0"></script>
+<script src="js/campaign-data.js?v=2.4.0.1"></script>
 
-<script src="js/mesa.js?v=2.4.0.0"></script>
+<script src="js/mesa.js?v=2.4.0.1"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.4.0</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.4.1</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -2134,8 +2134,8 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
               <button type="button" class="browser-btn" onclick="MesaNotebookSara.goFragSearchHome()" title="Pagina Inicial">&#8962;</button>
             </div>
             <div class="browser-url-bar">
-              <span class="url-lock-icon">&#128274;</span>
-              <input type="text" id="sara-browser-url-input" class="sara-browser-url-input" value="https://fragsearch.net" readonly>
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#64748b" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <input type="text" id="sara-browser-url-input" class="sara-browser-url-input" value="https://fragsearch.net" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter') MesaSaraDesktop.navigateFromAddressBar(this.value)">
             </div>
             <div class="browser-tools">
               <button type="button" class="browser-history-btn" onclick="MesaNotebookSara.toggleHistoryModal()" title="Historico de Navegacao">
@@ -2146,16 +2146,16 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
           <!-- Barra de Favoritos -->
           <div class="sara-browser-bookmarks">
             <button type="button" class="bookmark-item" onclick="MesaNotebookSara.openReadItSubreddit()">
-              <span class="bm-icon">&#128392;</span>
-              <span>ReadIt - Comunidades (r/Conspiracoes &amp; r/Fraguiktos)</span>
+              <span>ReadIt - r/Fraguiktos &amp; Conspiracoes</span>
             </button>
-            <button type="button" class="bookmark-item highlight" onclick="MesaNotebookSara.openReadItTopic(14)">
-              <span class="bm-star">&#9733;</span>
-              <span>[Favorito] ReadIt: Teoria sobre o Devorador Cosmico e as Portas</span>
+            <button type="button" class="bookmark-item" onclick="MesaNotebookSara.openReadItTopic(14)">
+              <span>ReadIt: A Verdade sobre &quot;Ele&quot;</span>
             </button>
             <button type="button" class="bookmark-item" onclick="MesaNotebookSara.openSheetMusicPage()">
-              <span class="bm-icon">&#127925;</span>
               <span>Acervo de Partituras Classicas</span>
+            </button>
+            <button type="button" class="bookmark-item" onclick="MesaNotebookSara.openWebPage('youtube')">
+              <span>YouTube</span>
             </button>
           </div>
           <!-- Viewport do Navegador -->
