@@ -810,7 +810,36 @@ const MesaApp = {
   },
 
   supabase: null,
-  
+  _row1UpdateChain: Promise.resolve(),
+  _lastPlayersVisualSig: null,
+
+  queueRow1Update(mutatorFn) {
+    if (!this.supabase || !this.state || !this.state.isMaster) return Promise.resolve();
+    this._row1UpdateChain = this._row1UpdateChain.then(async () => {
+      try {
+        const { data } = await this.supabase
+          .from('personagens')
+          .select('atributos')
+          .eq('id', 1)
+          .single();
+        const attrs = data && data.atributos
+          ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
+          : {};
+        mutatorFn(attrs);
+        if (this.state) {
+          this.state.rawRow1Atributos = attrs;
+        }
+        await this.supabase
+          .from('personagens')
+          .update({ atributos: attrs })
+          .eq('id', 1);
+      } catch (e) {
+        console.warn('[SYNC QUEUE] Erro ao atualizar row 1:', e);
+      }
+    });
+    return this._row1UpdateChain;
+  },
+
   state: {
     players: new Array(8).fill(null),
     myToken: localStorage.getItem('wu_user_token') || localStorage.getItem('mesa_token') || null,
@@ -1851,12 +1880,15 @@ const MesaApp = {
               const pf = p1Attrs._sys_perseguicao;
               const ov = document.getElementById('perseguicao-floresta-overlay');
               const isActive = ov && ov.classList.contains('active');
-              if (pf.active && !isActive) {
-                MesaPerseguicaoFloresta.triggerStart();
-              } else if (!pf.active && isActive) {
-                const timeSinceLocal = Date.now() - (MesaPerseguicaoFloresta.localStartTime || 0);
-                if (timeSinceLocal > 6000) {
-                  MesaPerseguicaoFloresta.triggerStop();
+              const isMaster = Boolean(this.state && this.state.isMaster);
+              if (!(isMaster && MesaPerseguicaoFloresta.localActionTime)) {
+                if (pf.active && !isActive) {
+                  MesaPerseguicaoFloresta.triggerStart();
+                } else if (!pf.active && isActive) {
+                  const timeSinceLocal = Date.now() - (MesaPerseguicaoFloresta.localStartTime || 0);
+                  if (timeSinceLocal > 6000) {
+                    MesaPerseguicaoFloresta.triggerStop();
+                  }
                 }
               }
             }
@@ -1864,12 +1896,15 @@ const MesaApp = {
               const tv = p1Attrs._sys_tv_estatica;
               const ov = document.getElementById('tv-estatica-overlay');
               const isActive = ov && ov.classList.contains('active');
-              if (tv.active && !isActive) {
-                MesaTvEstatica.triggerStart();
-              } else if (!tv.active && isActive) {
-                const timeSinceLocal = Date.now() - (MesaTvEstatica.localStartTime || 0);
-                if (timeSinceLocal > 6000) {
-                  MesaTvEstatica.triggerStop();
+              const isMaster = Boolean(this.state && this.state.isMaster);
+              if (!(isMaster && MesaTvEstatica.localActionTime)) {
+                if (tv.active && !isActive) {
+                  MesaTvEstatica.triggerStart();
+                } else if (!tv.active && isActive) {
+                  const timeSinceLocal = Date.now() - (MesaTvEstatica.localStartTime || 0);
+                  if (timeSinceLocal > 6000) {
+                    MesaTvEstatica.triggerStop();
+                  }
                 }
               }
             }
@@ -1877,12 +1912,15 @@ const MesaApp = {
               const tv2 = p1Attrs._sys_tv_estatica_2;
               const ov2 = document.getElementById('tv-estatica-2-overlay');
               const isActive2 = ov2 && ov2.classList.contains('active');
-              if (tv2.active && !isActive2) {
-                MesaTvEstatica2.triggerStart();
-              } else if (!tv2.active && isActive2) {
-                const timeSinceLocal = Date.now() - (MesaTvEstatica2.localStartTime || 0);
-                if (timeSinceLocal > 6000) {
-                  MesaTvEstatica2.triggerStop();
+              const isMaster = Boolean(this.state && this.state.isMaster);
+              if (!(isMaster && MesaTvEstatica2.localActionTime)) {
+                if (tv2.active && !isActive2) {
+                  MesaTvEstatica2.triggerStart();
+                } else if (!tv2.active && isActive2) {
+                  const timeSinceLocal = Date.now() - (MesaTvEstatica2.localStartTime || 0);
+                  if (timeSinceLocal > 6000) {
+                    MesaTvEstatica2.triggerStop();
+                  }
                 }
               }
             }
@@ -1925,7 +1963,7 @@ const MesaApp = {
               const cb = p1Attrs._sys_combate;
               const remoteTime = cb.updatedAt || 0;
               const localTime = MesaCombate.lastLocalUpdate || 0;
-              if (remoteTime >= localTime) {
+              if (remoteTime > localTime) {
                 if (cb.active && !MesaCombate.isActive) {
                   MesaCombate.startCombat(cb, false);
                 } else if (!cb.active && MesaCombate.isActive) {
@@ -1959,7 +1997,14 @@ const MesaApp = {
         } catch(eSync) {}
       }
 
-      this.renderMesa();
+      const visualSig = JSON.stringify((this.state.players || []).map(p => p ? [
+        p.id, p.slot, p.nome, p.hp, p.hpMax, p.pe, p.peMax, p.st, p.stMax,
+        p.stressPoints, p.stressPointsMax, p.vidrilhos, p.dadoDePavor, p.imagem, p.avatar
+      ] : null));
+      if (visualSig !== this._lastPlayersVisualSig) {
+        this._lastPlayersVisualSig = visualSig;
+        this.renderMesa();
+      }
 
       // Se a ficha de alguém estiver aberta, atualiza SOMENTE os valores sem re-animar
       if (this.state.activeViewingPlayer) {
@@ -2060,7 +2105,7 @@ const MesaApp = {
             const cb = attrs._sys_combate;
             const remoteTime = cb.updatedAt || 0;
             const localTime = MesaCombate.lastLocalUpdate || 0;
-            if (remoteTime >= localTime) {
+            if (remoteTime > localTime) {
               if (cb.active && !MesaCombate.isActive) {
                 MesaCombate.startCombat(cb, false);
               } else if (!cb.active && MesaCombate.isActive) {
@@ -2112,12 +2157,15 @@ const MesaApp = {
             const tv = attrs._sys_tv_estatica;
             const ov = document.getElementById('tv-estatica-overlay');
             const isActive = ov && ov.classList.contains('active');
-            if (tv.active && !isActive) {
-              MesaTvEstatica.triggerStart();
-            } else if (!tv.active && isActive) {
-              const timeSinceLocal = Date.now() - (MesaTvEstatica.localStartTime || 0);
-              if (timeSinceLocal > 6000) {
-                MesaTvEstatica.triggerStop();
+            const isMaster = Boolean(this.state && this.state.isMaster);
+            if (!(isMaster && MesaTvEstatica.localActionTime)) {
+              if (tv.active && !isActive) {
+                MesaTvEstatica.triggerStart();
+              } else if (!tv.active && isActive) {
+                const timeSinceLocal = Date.now() - (MesaTvEstatica.localStartTime || 0);
+                if (timeSinceLocal > 6000) {
+                  MesaTvEstatica.triggerStop();
+                }
               }
             }
           }
@@ -2125,12 +2173,15 @@ const MesaApp = {
             const tv2 = attrs._sys_tv_estatica_2;
             const ov2 = document.getElementById('tv-estatica-2-overlay');
             const isActive2 = ov2 && ov2.classList.contains('active');
-            if (tv2.active && !isActive2) {
-              MesaTvEstatica2.triggerStart();
-            } else if (!tv2.active && isActive2) {
-              const timeSinceLocal = Date.now() - (MesaTvEstatica2.localStartTime || 0);
-              if (timeSinceLocal > 6000) {
-                MesaTvEstatica2.triggerStop();
+            const isMaster = Boolean(this.state && this.state.isMaster);
+            if (!(isMaster && MesaTvEstatica2.localActionTime)) {
+              if (tv2.active && !isActive2) {
+                MesaTvEstatica2.triggerStart();
+              } else if (!tv2.active && isActive2) {
+                const timeSinceLocal = Date.now() - (MesaTvEstatica2.localStartTime || 0);
+                if (timeSinceLocal > 6000) {
+                  MesaTvEstatica2.triggerStop();
+                }
               }
             }
           }
@@ -2138,12 +2189,15 @@ const MesaApp = {
             const pf = attrs._sys_perseguicao;
             const ov = document.getElementById('perseguicao-floresta-overlay');
             const isActive = ov && ov.classList.contains('active');
-            if (pf.active && !isActive) {
-              MesaPerseguicaoFloresta.triggerStart();
-            } else if (!pf.active && isActive) {
-              const timeSinceLocal = Date.now() - (MesaPerseguicaoFloresta.localStartTime || 0);
-              if (timeSinceLocal > 6000) {
-                MesaPerseguicaoFloresta.triggerStop();
+            const isMaster = Boolean(this.state && this.state.isMaster);
+            if (!(isMaster && MesaPerseguicaoFloresta.localActionTime)) {
+              if (pf.active && !isActive) {
+                MesaPerseguicaoFloresta.triggerStart();
+              } else if (!pf.active && isActive) {
+                const timeSinceLocal = Date.now() - (MesaPerseguicaoFloresta.localStartTime || 0);
+                if (timeSinceLocal > 6000) {
+                  MesaPerseguicaoFloresta.triggerStop();
+                }
               }
             }
           }
@@ -8694,9 +8748,7 @@ const MesaPerseguicaoFloresta = {
     }
     const now = Date.now();
     this.localStartTime = now;
-    if (MesaApp.state && MesaApp.state.rawRow1Atributos) {
-      MesaApp.state.rawRow1Atributos._sys_perseguicao = { active: true, timestamp: now };
-    }
+    this.localActionTime = now;
 
     const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
     if (chan) {
@@ -8712,24 +8764,10 @@ const MesaPerseguicaoFloresta = {
       } catch (e) {}
     }
 
-    if (MesaApp.supabase) {
-      (async () => {
-        try {
-          const { data } = await MesaApp.supabase
-            .from('personagens')
-            .select('atributos')
-            .eq('id', 1)
-            .single();
-          const attrs = data && data.atributos
-            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
-            : {};
-          attrs._sys_perseguicao = { active: true, timestamp: now };
-          await MesaApp.supabase
-            .from('personagens')
-            .update({ atributos: attrs })
-            .eq('id', 1);
-        } catch (e) {}
-      })();
+    if (typeof MesaApp.queueRow1Update === 'function') {
+      MesaApp.queueRow1Update((attrs) => {
+        attrs._sys_perseguicao = { active: true, timestamp: now };
+      });
     }
 
     this.triggerStart();
@@ -8737,6 +8775,7 @@ const MesaPerseguicaoFloresta = {
 
   stop() {
     if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    this.localActionTime = Date.now();
 
     const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
     if (chan) {
@@ -8749,24 +8788,10 @@ const MesaPerseguicaoFloresta = {
       } catch (e) {}
     }
 
-    if (MesaApp.supabase) {
-      (async () => {
-        try {
-          const { data } = await MesaApp.supabase
-            .from('personagens')
-            .select('atributos')
-            .eq('id', 1)
-            .single();
-          const attrs = data && data.atributos
-            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
-            : {};
-          attrs._sys_perseguicao = { active: false, timestamp: Date.now() };
-          await MesaApp.supabase
-            .from('personagens')
-            .update({ atributos: attrs })
-            .eq('id', 1);
-        } catch (e) {}
-      })();
+    if (typeof MesaApp.queueRow1Update === 'function') {
+      MesaApp.queueRow1Update((attrs) => {
+        attrs._sys_perseguicao = { active: false, timestamp: Date.now() };
+      });
     }
 
     this.triggerStop();
@@ -8940,24 +8965,10 @@ const MesaTvEstatica = {
       } catch (e) {}
     }
 
-    if (MesaApp.supabase) {
-      (async () => {
-        try {
-          const { data } = await MesaApp.supabase
-            .from('personagens')
-            .select('atributos')
-            .eq('id', 1)
-            .single();
-          const attrs = data && data.atributos
-            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
-            : {};
-          attrs._sys_tv_estatica = { active: true, timestamp: now };
-          await MesaApp.supabase
-            .from('personagens')
-            .update({ atributos: attrs })
-            .eq('id', 1);
-        } catch (e) {}
-      })();
+    if (typeof MesaApp.queueRow1Update === 'function') {
+      MesaApp.queueRow1Update((attrs) => {
+        attrs._sys_tv_estatica = { active: true, timestamp: now };
+      });
     }
 
     this.triggerStart();
@@ -8965,6 +8976,7 @@ const MesaTvEstatica = {
 
   stop() {
     if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    this.localActionTime = Date.now();
 
     const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
     if (chan) {
@@ -8977,24 +8989,10 @@ const MesaTvEstatica = {
       } catch (e) {}
     }
 
-    if (MesaApp.supabase) {
-      (async () => {
-        try {
-          const { data } = await MesaApp.supabase
-            .from('personagens')
-            .select('atributos')
-            .eq('id', 1)
-            .single();
-          const attrs = data && data.atributos
-            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
-            : {};
-          attrs._sys_tv_estatica = { active: false, timestamp: Date.now() };
-          await MesaApp.supabase
-            .from('personagens')
-            .update({ atributos: attrs })
-            .eq('id', 1);
-        } catch (e) {}
-      })();
+    if (typeof MesaApp.queueRow1Update === 'function') {
+      MesaApp.queueRow1Update((attrs) => {
+        attrs._sys_tv_estatica = { active: false, timestamp: Date.now() };
+      });
     }
 
     this.triggerStop();
@@ -9189,6 +9187,7 @@ const MesaTvEstatica2 = {
     }
     const now = Date.now();
     this.localStartTime = now;
+    this.localActionTime = now;
 
     const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
     if (chan) {
@@ -9201,24 +9200,10 @@ const MesaTvEstatica2 = {
       } catch (e) {}
     }
 
-    if (MesaApp.supabase) {
-      (async () => {
-        try {
-          const { data } = await MesaApp.supabase
-            .from('personagens')
-            .select('atributos')
-            .eq('id', 1)
-            .single();
-          const attrs = data && data.atributos
-            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
-            : {};
-          attrs._sys_tv_estatica_2 = { active: true, timestamp: now };
-          await MesaApp.supabase
-            .from('personagens')
-            .update({ atributos: attrs })
-            .eq('id', 1);
-        } catch (e) {}
-      })();
+    if (typeof MesaApp.queueRow1Update === 'function') {
+      MesaApp.queueRow1Update((attrs) => {
+        attrs._sys_tv_estatica_2 = { active: true, timestamp: now };
+      });
     }
 
     this.triggerStart();
@@ -9226,6 +9211,7 @@ const MesaTvEstatica2 = {
 
   stop() {
     if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    this.localActionTime = Date.now();
 
     const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
     if (chan) {
@@ -9238,24 +9224,10 @@ const MesaTvEstatica2 = {
       } catch (e) {}
     }
 
-    if (MesaApp.supabase) {
-      (async () => {
-        try {
-          const { data } = await MesaApp.supabase
-            .from('personagens')
-            .select('atributos')
-            .eq('id', 1)
-            .single();
-          const attrs = data && data.atributos
-            ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
-            : {};
-          attrs._sys_tv_estatica_2 = { active: false, timestamp: Date.now() };
-          await MesaApp.supabase
-            .from('personagens')
-            .update({ atributos: attrs })
-            .eq('id', 1);
-        } catch (e) {}
-      })();
+    if (typeof MesaApp.queueRow1Update === 'function') {
+      MesaApp.queueRow1Update((attrs) => {
+        attrs._sys_tv_estatica_2 = { active: false, timestamp: Date.now() };
+      });
     }
 
     this.triggerStop();
@@ -10700,10 +10672,10 @@ Não consigo terminar isso. Escrever sobre daqui a dez anos parece uma piada de 
         date: '02/06/2061 17:15',
         content: `[CRONOGRAMA DE ESTUDO - PIANO]
 
-- Clair de Lune (Debussy) - estudar compasso 15 ao 30 (mão esquerda muito dura nos arpejos)
-- Valsa em Lá Menor Op. 34 No. 2 (Chopin) - memorizar tema principal
+- Clair de Lune - estudar compasso 15 ao 30 (mão esquerda muito dura nos arpejos)
+- Valsa em Lá Menor - memorizar tema principal
 - Música antiga da família (a que a mãe cantava) - tentar tirar de ouvido o refrão
-- Exercícios de Hanon 1 a 5 (aquecimento 15 min)`
+- Exercícios de escala 1 a 5 (aquecimento 15 min)`
       },
       {
         id: 'cifra_incompleta',
@@ -10847,9 +10819,9 @@ O engraçado de ficar completamente vazia é que o frio da rua não incomoda mai
     { time: '3 dias atrás - 02:50', action: 'Pesquisa', query: 'pontos de tendão pulso e tornozelo anatomia' },
     { time: '5 dias atrás - 23:20', action: 'Pesquisa', query: 'horarios ronda policial suburbio norte fraguiktos' },
     { time: '6 dias atrás - 14:15', action: 'Pesquisa', query: 'trilha lateral bosque norte movimento tarde' },
-    { time: '8 dias atrás - 22:30', action: 'Acessou', query: 'readit.net/r/Conspiracoes/topico_14_predador_cosmico', topicId: 14 },
-    { time: '9 dias atrás - 21:15', action: 'Pesquisa', query: 'entidade antiga que devora mundos raizes entre planos' },
-    { time: '10 dias atrás - 20:05', action: 'Pesquisa', query: 'youtube clair de lune debussy piano tutorial' },
+    { time: '8 dias atrás - 22:30', action: 'Acessou', query: 'readit.net/r/Conspiracoes/as_raizes_de_ghorvaelis', topicId: 14 },
+    { time: '9 dias atrás - 21:15', action: 'Pesquisa', query: 'livro as raizes de ghorvaelis autor sebo' },
+    { time: '10 dias atrás - 20:05', action: 'Pesquisa', query: 'youtube clair de lune piano tutorial compassos' },
     { time: '11 dias atrás - 19:00', action: 'Pesquisa', query: 'terremoto paladium corpos com vinhas nos olhos' },
     { time: '14 dias atrás - 03:10', action: 'Pesquisa', query: 'por que não consigo mais sentir prazer em tocar musica depressao' },
     { time: '15 dias atrás - 18:20', action: 'Pesquisa', query: 'pavilhao abandonado norte grupo de apoio' },
@@ -10943,7 +10915,7 @@ Segundo ele, a versão do tremor de terra é uma fraude completa para acalmar o 
 
 Lá embaixo, nos níveis inferiores da mina, eles encontraram os corpos dos trabalhadores soterrados intactos, sem ossos quebrados. Porém, todos tinham vinhas prateadas ultrafinas crescendo por baixo das pálpebras, e quando miravam as lanternas nos olhos deles, havia reflexos fosforescentes de luz ciano, rosa e verde correndo pelas pupilas, como se a mente deles ainda estivesse conectada a um circuito invisível.`,
       comments: [
-        { author: 'u/ceticista_99', time: 'Há 17 dias', text: 'Mais uma fanfic de terremoto sem nenhuma foto nem registro de jornal. Povo acredita em tudo.' },
+        { author: 'u/ceticista_99', time: 'Há 17 dias', text: 'Mais uma invenção de terremoto sem nenhuma foto nem registro de jornal. Povo acredita em tudo.' },
         { author: 'u/observador_do_vazio', time: 'Há 16 dias', text: 'Procurem os documentos arquivados de vazamento mineral de Paládium antes que apaguem do servidor.' }
       ]
     },
@@ -11061,25 +11033,34 @@ Fica bem amarelo, fofo e assa em 38 minutos a 180 graus.`,
       id: 14,
       subreddit: 'r/Conspiracoes',
       author: 'u/observador_do_vazio',
-      time: 'Há 14 dias',
+      time: 'Há 2 meses',
       votes: 2490,
       commentsCount: 312,
-      title: 'A Verdade sobre "Ele": Não é um espírito da floresta, é um Predador Cósmico de biosferas.',
-      content: `Pare de tentar entender os cultos da mata como religião. Olhem para o padrão astronômico e para o que aconteceu em Paládium. Aquilo que os antigos chamavam apenas de "Ele" é uma entidade cósmica parasitária que viaja pelo vazio devorando mundos inteiros.
+      title: 'Alguém mais já leu "As Raízes de Ghor\'vaelis"? Aquele livro de horror cósmico não parece ficção.',
+      content: `Achei uma edição velha e sem capa desse livro num sebo anos atrás e nunca consegui tirar a história da cabeça. Muita gente acha que o autor estava só escrevendo ficção científica misturada com ocultismo sobre um monstro espacial, mas a forma como ele descreve o ciclo de alimentação da criatura é assustadoramente específica.
 
-Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como um micélio ou raiz invisível e espera. Como Ele é vasto demais para atravessar direto para a nossa realidade física, Ele precisa que os próprios habitantes abram "Portas" pelo lado de dentro.
+No livro, Ghor'vaelis não é um deus nem um demônio local, mas um predador cósmico de biosferas — um organismo astronômico que viaja pelo vazio devorando planetas e civilizações inteiras. O mais bizarro é o método: ele não destrói mundos com guerra ou fogo. Ele cai silencioso e se infiltra na camada invisível do planeta como um micélio ou uma raiz subterrânea gigantesca, esperando.
 
-É por isso que Ele atrai quem está morrendo ou em depressão profunda. Uma mente saudável tem defesas naturais, mas quem já perdeu a esperança está com a alma aberta. No momento em que a pessoa aceita o fim, cumpre o rito de sangue para concentrar energia vital fresca e abre a Porta nas árvores, a mente dela é presa numa ilusão perfeita — um "Jardim" colorido onde não existe dor — enquanto, no mundo real, a entidade devora sua alma e usa seu corpo para espalhar raízes prateadas pela Terra. Ele já transformou mundos inteiros em cascas mortas exatamente assim.`,
+Segundo o autor, como Ghor'vaelis é vasto demais para forçar a entrada na realidade física sozinho, ele precisa que os próprios nativos abram 'Portas' pelo lado de dentro. E quem ele usa como chave? Pessoas que estão morrendo ou afundadas em depressão terminal. Uma mente saudável tem defesas naturais contra o chamado do parasita, mas quem já perdeu toda a esperança de futuro está com a alma rachada.
+
+No clímax da história, os escolhidos precisam consumir a carne ainda quente de outra vida para concentrar energia vital fresca dentro de si antes de destrancarem a passagem nas árvores. Quando a Porta finalmente se abre, Ghor'vaelis prende a consciência da vítima numa alucinação perfeita e colorida — um suposto paraíso onde nenhuma dor existe — enquanto, no mundo real, o monstro suga a alma da pessoa e usa o corpo vazio como adubo para espalhar vinhas prateadas pelo solo. No fim do livro, o planeta inteiro vira uma casca morta sem que ninguém perceba a invasão a tempo.
+
+Alguém sabe quem escreveu isso de verdade? Porque olhando pras notícias estranhas que vêm saindo nas cidades vizinhas ultimamente, parece menos um romance de terror e mais um aviso.`,
       comments: [
         {
-          author: 'u/ceticista_99',
-          time: 'Há 12 dias',
-          text: 'Ótima creepypasta, nota 8/10. Mas falando sério, a galera precisa parar de misturar luto e depressão com ficção científica lovecraftiana.'
+          author: 'u/leitor_cetic0',
+          time: 'Há 2 meses',
+          text: 'Clássico terror barato de revista antiga. O autor só pegou o conceito de fungos parasitas que controlam formigas na natureza e aumentou pra escala planetária. Muito bem escrito, mas é só ficção, cara.'
+        },
+        {
+          author: 'u/ratos_no_muro',
+          time: 'Há 1 mês',
+          text: 'O bizarro é que eu tentei procurar esse livro na biblioteca municipal semana passada e o registro consta como \'recolhido\'. A parte das vinhas saindo dos olhos que tem no capítulo 4 me deu pesadelo por dias.'
         },
         {
           author: 'u/s_auguil',
           time: 'Há 9 dias',
-          text: 'Se a pessoa já vai morrer no escuro de qualquer jeito, qual é a diferença entre apodrecer numa cama ou dormir nesse Jardim? Pelo menos lá dentro o barulho para.'
+          text: 'Se a pessoa do livro já ia morrer sofrendo de qualquer jeito, qual é o problema de escolher ficar presa no sonho colorido? Pelo menos lá dentro não dói.'
         }
       ]
     },
@@ -11145,7 +11126,7 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
       title: 'Playlists instrumentais ou sons de chuva bons para estudar pro vestibular de madrugada?',
       content: `Preciso revisar biologia celular e história regional até sexta, mas música cantada me distrai muito. O que vocês escutam para manter o foco?`,
       comments: [
-        { author: 'u/teclas_velhas', time: 'Há 24 dias', text: 'Debussy e Satie no YouTube ajudam bastante, bem calmo e sem letra.' }
+        { author: 'u/teclas_velhas', time: 'Há 24 dias', text: 'Peças lentas de piano clássico no YouTube ajudam bastante, bem calmo e sem letra.' }
       ]
     },
     {
@@ -11155,7 +11136,7 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
       time: 'Há 27 dias',
       votes: 45,
       commentsCount: 6,
-      title: 'Vendendo luminária de mesa articulada usada, R$ 35 - retirar perto do mercado central.',
+      title: 'Vendendo luminária de mesa articulada usada, 35 créditos - retirar perto do mercado central.',
       content: `Funciona perfeitamente, vai com lâmpada LED branca fria instalada. Só estou desapegando porque troquei por uma menor para a escrivaninha.`,
       comments: [
         { author: 'u/larica_noturna', time: 'Há 26 dias', text: 'Ainda está disponível? Consigo buscar no sábado cedo.' }
@@ -11163,92 +11144,152 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
     }
   ],
 
-  // 5. Partituras Classicas
+  // 5. Partituras Classicas (Sem nomes do mundo real)
   sheetMusicPieces: [
-    { title: 'Clair de Lune', composer: 'Claude Debussy (1890)', key: 'Ré Bemol Maior', difficulty: 'Avançado', pages: '6 Páginas', format: 'PDF Partitura' },
-    { title: 'Valsa em Lá Menor Op. 34 No. 2', composer: 'Frédéric Chopin (1831)', key: 'Lá Menor', difficulty: 'Intermediário', pages: '4 Páginas', format: 'PDF Partitura' },
-    { title: 'Gymnopédie No. 1', composer: 'Erik Satie (1888)', key: 'Ré Maior', difficulty: 'Fácil / Médio', pages: '3 Páginas', format: 'PDF Partitura' },
-    { title: 'Canção Antiga de Ninar', composer: 'Folclore Regional / Domínio Público', key: 'Mi Menor', difficulty: 'Iniciante', pages: '2 Páginas', format: 'Cifra & Partitura' }
+    { title: 'Clair de Lune (Arranjo Conservatório)', composer: 'Conservatório Central de Paládium', key: 'Ré Bemol Maior', difficulty: 'Avançado', pages: '6 Páginas', format: 'PDF Partitura' },
+    { title: 'Valsa em Lá Menor', composer: 'Acervo Clássico Municipal', key: 'Lá Menor', difficulty: 'Intermediário', pages: '4 Páginas', format: 'PDF Partitura' },
+    { title: 'Estudo Noturno No. 1', composer: 'Domínio Público Regional', key: 'Ré Maior', difficulty: 'Fácil / Médio', pages: '3 Páginas', format: 'PDF Partitura' },
+    { title: 'Canção Antiga de Ninar', composer: 'Folclore Regional de Fraguiktos', key: 'Mi Menor', difficulty: 'Iniciante', pages: '2 Páginas', format: 'Cifra & Partitura' }
   ],
 
-  // 6. Diretorio de Videos YouTube Simulados
+  // 6. Diretorio de Videos YouTube Simulados (Autentico sem Login)
   youtubeVideos: [
     {
       id: 'clair_de_lune',
-      title: 'Debussy - Clair de Lune (Tutorial Piano Passo a Passo Compassos 15-30)',
+      category: 'Piano',
+      title: 'Clair de Lune - Tutorial Piano Passo a Passo (Compassos 15-30)',
       channel: 'Canal Piano Clássico',
+      subs: '184 mil inscritos',
+      avatarColor: '#2563eb',
       views: '240 mil visualizações',
       date: 'há 2 anos',
       duration: '14:22',
-      thumbColor: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
-      description: 'Aula detalhada focada na transição lenta e nos arpejos de mão esquerda entre os compassos 15 e 30 de Clair de Lune.',
+      likes: '12 mil',
+      description: 'Aula detalhada focada na transição lenta e nos arpejos de mão esquerda entre os compassos 15 e 30.',
+      sceneType: 'piano',
       comments: [
-        { author: '@estudante_musica', text: 'Finalmente consegui destravar o compasso 19 assistindo em 0.75x.' }
+        { author: '@estudante_musica', time: 'há 8 meses', text: 'Finalmente consegui destravar o compasso 19 assistindo em velocidade reduzida.' },
+        { author: '@teclas_velhas', time: 'há 3 meses', text: 'Didática excelente, ajudou muito na mão esquerda.' }
       ]
     },
     {
       id: 'isaque_arco',
+      category: 'Esportes',
       title: 'Treino Arco Recurvo 30m - Ajuste de Mira e Agrupamento',
       channel: 'Isaque Valente',
+      subs: '38 inscritos',
+      avatarColor: '#15803d',
       views: '42 visualizações',
       date: 'há 3 semanas',
       duration: '06:18',
-      thumbColor: 'linear-gradient(135deg, #14532d 0%, #052e16 100%)',
+      likes: '11',
       description: 'Testando novas pontas de flecha no alvo do clube depois das aulas do Primórdio.',
+      sceneType: 'archery',
       comments: [
-        { author: '@marcos_tiro', text: 'Agrupamento bom demais cara, parabéns.' }
+        { author: '@marcos_tiro', time: 'há 2 semanas', text: 'Agrupamento bom demais cara, parabéns.' }
       ]
     },
     {
       id: 'chuva_janela',
+      category: 'Música',
       title: 'Chuva Fraca na Janela para Dormir ou Estudar (Sem Propaganda - 3 Horas)',
       channel: 'Sons da Noite',
+      subs: '910 mil inscritos',
+      avatarColor: '#334155',
       views: '1,2 mi visualizações',
       date: 'há 1 ano',
       duration: '3:00:00',
-      thumbColor: 'linear-gradient(135deg, #0f172a 0%, #020617 100%)',
-      description: 'Áudio ambiente contínuo de chuva suave em telhado de vidro para mascarar ruídos noturnos.',
+      likes: '48 mil',
+      description: 'Áudio ambiente contínuo de chuva suave em vidro noturno para ajudar na leitura e no sono.',
+      sceneType: 'rain',
       comments: [
-        { author: '@insonia_frag', text: 'Unica coisa que ajuda quando a casa fica quieta demais de madrugada.' }
+        { author: '@insonia_frag', time: 'há 1 mês', text: 'Única coisa que ajuda quando a casa fica quieta demais de madrugada.' }
       ]
     },
     {
       id: 'paladium_plantao',
+      category: 'Notícias',
       title: 'Plantão Regional: Tremor de Terra e Interdição do Setor Minerário em Paládium',
       channel: 'TV Fraguiktos Hoje',
+      subs: '112 mil inscritos',
+      avatarColor: '#b91c1c',
       views: '89 mil visualizações',
       date: 'há 3 semanas',
       duration: '04:51',
-      thumbColor: 'linear-gradient(135deg, #450a0a 0%, #090d16 100%)',
-      description: 'Autoridades isolam área central de Paládium após afundamento súbito de solo nas antigas galerias subterrâneas.',
+      likes: '3,1 mil',
+      description: 'Autoridades isolam a área central de Paládium após afundamento súbito de solo nas antigas galerias subterrâneas.',
+      sceneType: 'news',
       comments: [
-        { author: '@morador_centro', text: 'Estranho isolarem quatro quarteirões inteiros só por causa de um desabamento pequeno.' }
+        { author: '@morador_centro', time: 'há 2 semanas', text: 'Estranho isolarem quatro quarteirões inteiros só por causa de um desabamento pequeno.' },
+        { author: '@furo_jornalistico', time: 'há 1 semana', text: 'Ninguém da prefeitura quis mostrar as fotos do fundo da cratera até hoje.' }
       ]
     },
     {
       id: 'bolo_cenoura',
+      category: 'Culinária',
       title: 'Bolo de Cenoura Bem Fofinho - Receita Fácil de Liquidificador',
       channel: 'Cozinha da Ana',
+      subs: '430 mil inscritos',
+      avatarColor: '#c2410c',
       views: '510 mil visualizações',
       date: 'há 4 meses',
       duration: '08:12',
-      thumbColor: 'linear-gradient(135deg, #7c2d12 0%, #1c1917 100%)',
+      likes: '29 mil',
       description: 'Passo a passo simples para fazer um bolo macio com cobertura cremosa de chocolate.',
+      sceneType: 'cake',
       comments: [
-        { author: '@cozinha_simples', text: 'Receita infalível, faço toda semana aqui.' }
+        { author: '@cozinha_simples', time: 'há 1 mês', text: 'Receita infalível, faço toda semana aqui.' }
       ]
     },
     {
       id: 'gato_laranja',
+      category: 'Animais',
       title: 'Gato Laranja Brigando com a Própria Sombra no Corredor',
       channel: 'Bichos da Casa',
+      subs: '620 mil inscritos',
+      avatarColor: '#b45309',
       views: '3,4 mi visualizações',
       date: 'há 8 meses',
       duration: '01:05',
-      thumbColor: 'linear-gradient(135deg, #78350f 0%, #18181b 100%)',
+      likes: '190 mil',
       description: 'Ele passou dez minutos tentando caçar a sombra da própria orelha na parede.',
+      sceneType: 'cat',
       comments: [
-        { author: '@dona_mimi', text: 'Idêntico ao meu aqui de casa.' }
+        { author: '@dona_mimi', time: 'há 2 meses', text: 'Idêntico ao meu aqui de casa.' }
+      ]
+    },
+    {
+      id: 'besouro_jardim',
+      category: 'Natureza',
+      title: 'Insetos Comuns de Jardim: Como Identificar Besouros Verdes de Casca Lisa',
+      channel: 'Caderno de Campo',
+      subs: '54 mil inscritos',
+      avatarColor: '#047857',
+      views: '38 mil visualizações',
+      date: 'há 1 mês',
+      duration: '07:40',
+      likes: '2,4 mil',
+      description: 'Guia prático sobre escaravelhos inofensivos encontrados perto de postes de luz após chuvas de agosto.',
+      sceneType: 'beetle',
+      comments: [
+        { author: '@entomologia_amadora', time: 'há 2 dias', text: 'Achei um exatamente igual a esse no muro ontem.' }
+      ]
+    },
+    {
+      id: 'pecas_lentas_piano',
+      category: 'Piano',
+      title: 'Peças Lentas de Piano para Estudar Biologia à Noite (Áudio Limpo)',
+      channel: 'Conservatório Aberto',
+      subs: '205 mil inscritos',
+      avatarColor: '#4338ca',
+      views: '670 mil visualizações',
+      date: 'há 6 meses',
+      duration: '45:10',
+      likes: '31 mil',
+      description: 'Compilado instrumental de valsas lentas e peças noturnas sem letra para leitura focada.',
+      sceneType: 'piano_night',
+      comments: [
+        { author: '@foco_vestibular', time: 'há 3 semanas', text: 'Salvou minhas madrugadas de revisão pro Primórdio.' }
       ]
     }
   ],
@@ -11296,8 +11337,15 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
   },
 
   // =========================================================================
-  // CONTROLE DE PERMISSAO E SINCRONIZACAO MESTRE -> JOGADORES
+  // CONTROLE DE PERMISSAO, DIFFING E SINCRONIZACAO RAPIDA
   // =========================================================================
+  ytCategory: 'Tudo',
+  ytSidebarCollapsed: false,
+  ytIsPlaying: false,
+  _lastRenderedFolder: null,
+  _trashRendered: false,
+  _lastAppliedBrowserSig: null,
+
   _canControl() {
     if (window.MesaNotebookSara && MesaNotebookSara._applyingRemote) return true;
     return !!(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
@@ -11313,14 +11361,13 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
     if (this.initialized) return;
     this.initialized = true;
 
-    // Sincronizacao de rolagem para que jogadores vejam exatamente o trecho lido pelo Mestre
     const viewerBody = document.getElementById('sara-viewer-content');
     const browserViewport = document.getElementById('sara-browser-viewport');
     const handleScrollSync = () => {
       if (!window.MesaApp || !MesaApp.state || !MesaApp.state.isMaster) return;
       if (window.MesaNotebookSara && MesaNotebookSara._applyingRemote) return;
       const now = Date.now();
-      if (now - this._lastScrollSync < 180) return;
+      if (now - this._lastScrollSync < 160) return;
       this._lastScrollSync = now;
       if (window.MesaNotebookSara) {
         MesaNotebookSara.syncScrollOnly();
@@ -11329,7 +11376,6 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
     if (viewerBody) viewerBody.addEventListener('scroll', handleScrollSync, { passive: true });
     if (browserViewport) browserViewport.addEventListener('scroll', handleScrollSync, { passive: true });
 
-    // Fecha Menu Iniciar ao clicar fora (somente Mestre)
     document.addEventListener('click', (e) => {
       if (!window.MesaApp || !MesaApp.state || !MesaApp.state.isMaster) return;
       const menu = document.getElementById('sara-start-menu');
@@ -11340,7 +11386,9 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
     });
 
     this.renderFolderFiles(this.activeFolder);
+    this._lastRenderedFolder = this.activeFolder;
     this.renderTrashFiles();
+    this._trashRendered = true;
     this.renderHistoryList();
     this.renderFragSearchHome(false);
   },
@@ -11364,6 +11412,9 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
         topicId: this.currentTopicId || null,
         ytVideoId: this.ytVideoId || null,
         ytQuery: this.ytQuery || '',
+        ytCategory: this.ytCategory || 'Tudo',
+        ytSidebarCollapsed: !!this.ytSidebarCollapsed,
+        ytIsPlaying: !!this.ytIsPlaying,
         article: this.currentArticle ? { ...this.currentArticle } : null,
         url: this.currentUrl || 'https://fragsearch.net'
       },
@@ -11378,7 +11429,6 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
     if (!state) return;
     this.init();
 
-    // 1. Janelas abertas e estado maximizado
     const ow = state.openWindows || {};
     this.openWindows = {
       explorer: !!ow.explorer,
@@ -11391,20 +11441,26 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
     ['explorer', 'trash', 'viewer', 'browser'].forEach(app => {
       const win = document.getElementById(`sara-win-${app}`);
       if (!win) return;
-      win.style.display = this.openWindows[app] ? 'flex' : 'none';
-      this.maximizedWindows[app] = !!mw[app];
-      if (this.maximizedWindows[app]) {
-        win.dataset.isMaximized = 'true';
-        win.style.width = '100vw';
-        win.style.height = 'calc(100vh - 44px)';
-        win.style.top = '0';
-        win.style.borderRadius = '0';
-      } else {
-        win.dataset.isMaximized = 'false';
-        win.style.width = '';
-        win.style.height = '';
-        win.style.top = '40px';
-        win.style.borderRadius = '8px';
+      const shouldShow = !!this.openWindows[app];
+      if ((win.style.display === 'flex') !== shouldShow) {
+        win.style.display = shouldShow ? 'flex' : 'none';
+      }
+      const nextMax = !!mw[app];
+      if (this.maximizedWindows[app] !== nextMax) {
+        this.maximizedWindows[app] = nextMax;
+        if (nextMax) {
+          win.dataset.isMaximized = 'true';
+          win.style.width = '100vw';
+          win.style.height = 'calc(100vh - 44px)';
+          win.style.top = '0';
+          win.style.borderRadius = '0';
+        } else {
+          win.dataset.isMaximized = 'false';
+          win.style.width = '';
+          win.style.height = '';
+          win.style.top = '40px';
+          win.style.borderRadius = '8px';
+        }
       }
       if (state.focusedWindow === app) {
         this.focusedWindow = app;
@@ -11414,24 +11470,21 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
       }
     });
 
-    // Atualiza botoes ativos na taskbar
     const btnExp = document.getElementById('task-btn-explorer');
     const btnBrw = document.getElementById('task-btn-browser');
     if (btnExp) btnExp.classList.toggle('active', !!this.openWindows.explorer);
     if (btnBrw) btnBrw.classList.toggle('active', !!this.openWindows.browser);
 
-    // 2. Pasta selecionada no Explorer
     const targetFolder = state.activeFolder || 'Estudos_Primordio';
-    if (targetFolder !== this.activeFolder || this.openWindows.explorer) {
+    if (targetFolder !== this._lastRenderedFolder) {
       this._renderFolderState(targetFolder);
     }
 
-    // 3. Lixeira
-    if (this.openWindows.trash) {
+    if (this.openWindows.trash && !this._trashRendered) {
       this.renderTrashFiles();
+      this._trashRendered = true;
     }
 
-    // 4. Visualizador de Documentos
     if (this.openWindows.viewer && state.viewerFileRef) {
       const newRefStr = JSON.stringify(state.viewerFileRef);
       const oldRefStr = JSON.stringify(this.viewerFileRef);
@@ -11443,7 +11496,6 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
       this.viewerFileRef = null;
     }
 
-    // 5. Modal de senha de arquivo protegido
     this.lockedModalOpen = !!state.lockedModalOpen;
     this.lockedError = !!state.lockedError;
     const lockedModal = document.getElementById('sara-locked-modal');
@@ -11451,7 +11503,6 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
     if (lockedModal) lockedModal.style.display = this.lockedModalOpen ? 'flex' : 'none';
     if (lockedErr) lockedErr.style.display = this.lockedError ? 'block' : 'none';
 
-    // 6. Menu Iniciar e Historico
     this.startMenuOpen = !!state.startMenuOpen;
     const startMenu = document.getElementById('sara-start-menu');
     if (startMenu) startMenu.style.display = this.startMenuOpen ? 'block' : 'none';
@@ -11460,12 +11511,14 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
     const histModal = document.getElementById('sara-history-modal');
     if (histModal) histModal.style.display = this.historyModalOpen ? 'flex' : 'none';
 
-    // 7. Navegador Web
     if (state.browser) {
       const b = state.browser;
       const sig = JSON.stringify(b);
       if (sig !== this._lastAppliedBrowserSig) {
         this._lastAppliedBrowserSig = sig;
+        this.ytCategory = b.ytCategory || 'Tudo';
+        this.ytSidebarCollapsed = !!b.ytSidebarCollapsed;
+        this.ytIsPlaying = !!b.ytIsPlaying;
         if (b.view === 'home') this.renderFragSearchHome(false);
         else if (b.view === 'results') this.renderFragSearchResults(b.query || '');
         else if (b.view === 'subreddit') this.renderReadItSubreddit();
@@ -11478,14 +11531,13 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
       if (b.url) this.setBrowserUrl(b.url);
     }
 
-    // 8. Posicao de rolagem
     if (state.scroll) {
       const viewerBody = document.getElementById('sara-viewer-content');
       const browserViewport = document.getElementById('sara-browser-viewport');
-      if (viewerBody && typeof state.scroll.viewerTop === 'number') {
+      if (viewerBody && typeof state.scroll.viewerTop === 'number' && Math.abs(viewerBody.scrollTop - state.scroll.viewerTop) > 4) {
         viewerBody.scrollTop = state.scroll.viewerTop;
       }
-      if (browserViewport && typeof state.scroll.browserTop === 'number') {
+      if (browserViewport && typeof state.scroll.browserTop === 'number' && Math.abs(browserViewport.scrollTop - state.scroll.browserTop) > 4) {
         browserViewport.scrollTop = state.scroll.browserTop;
       }
     }
@@ -11494,6 +11546,13 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
   openApp(appName) {
     if (!this._canControl()) return;
     this.init();
+
+    // Fecha menu iniciar silenciosamente antes do sync unico
+    if (this.startMenuOpen) {
+      this.startMenuOpen = false;
+      const menu = document.getElementById('sara-start-menu');
+      if (menu) menu.style.display = 'none';
+    }
 
     if (appName === 'cameras') {
       if (window.MesaNotebookSara) {
@@ -11510,9 +11569,16 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
         win.style.display = 'flex';
         this.bringWindowToFront(win, appName);
       }
-      if (appName === 'explorer') this._renderFolderState(this.activeFolder || 'Estudos_Primordio');
-      if (appName === 'trash') this.renderTrashFiles();
-      if (appName === 'browser' && !this.browserView) this.renderFragSearchHome(false);
+      if (appName === 'explorer' && this._lastRenderedFolder !== (this.activeFolder || 'Estudos_Primordio')) {
+        this._renderFolderState(this.activeFolder || 'Estudos_Primordio');
+      }
+      if (appName === 'trash' && !this._trashRendered) {
+        this.renderTrashFiles();
+        this._trashRendered = true;
+      }
+      if (appName === 'browser' && !this.browserView) {
+        this.renderFragSearchHome(false);
+      }
     }
 
     const btnExp = document.getElementById('task-btn-explorer');
@@ -11596,6 +11662,7 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
   // =========================================================================
   _renderFolderState(folderName) {
     this.activeFolder = folderName;
+    this._lastRenderedFolder = folderName;
     const pathEl = document.getElementById('explorer-current-path');
     if (pathEl) {
       pathEl.textContent = `Este Computador > Documentos > ${folderName}`;
@@ -11613,6 +11680,7 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
 
   switchFolder(folderName) {
     if (!this._canControl()) return;
+    if (this._lastRenderedFolder === folderName) return;
     this._renderFolderState(folderName);
     this._notifySync();
   },
@@ -11815,7 +11883,104 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
   },
 
   // =========================================================================
-  // NAVEGADOR WEB REALISTA (FRAGSEARCH, YOUTUBE, FRAGPEDIA & READIT)
+  // MINIATURAS ILUSTRADAS DO YOUTUBE (SVG CENARIOS REALISTAS 16:9)
+  // =========================================================================
+  _getYouTubeThumbSVG(sceneType, overlayTag = '') {
+    if (sceneType === 'piano') {
+      return `<svg class="yt-scene-svg" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
+        <defs><linearGradient id="ytpg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1e293b"/><stop offset="100%" stop-color="#020617"/></linearGradient></defs>
+        <rect width="320" height="180" fill="url(#ytpg1)"/>
+        <g transform="translate(30,75)">
+          ${[0,1,2,3,4,5,6,7,8,9,10,11].map(i => `<rect x="${i*22}" y="0" width="20" height="82" rx="2" fill="#e2e8f0" stroke="#94a3b8" stroke-width="0.8"/>`).join('')}
+          ${[0,1,3,4,5,7,8,10].map(i => `<rect x="${i*22+14}" y="0" width="12" height="50" rx="1" fill="#0f172a"/>`).join('')}
+        </g>
+        <circle cx="245" cy="40" r="24" fill="rgba(148,163,184,0.12)"/>
+        <text x="20" y="34" fill="#f8fafc" font-size="14" font-weight="bold" font-family="sans-serif">CLAIR DE LUNE</text>
+        <text x="20" y="52" fill="#93c5fd" font-size="10" font-family="sans-serif">TUTORIAL PIANO • COMPASSOS 15-30</text>
+      </svg>`;
+    }
+    if (sceneType === 'archery') {
+      return `<svg class="yt-scene-svg" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
+        <rect width="320" height="180" fill="#062814"/>
+        <ellipse cx="160" cy="180" rx="180" ry="70" fill="#0c3d20"/>
+        <circle cx="215" cy="86" r="46" fill="#f8fafc"/>
+        <circle cx="215" cy="86" r="35" fill="#1e293b"/>
+        <circle cx="215" cy="86" r="24" fill="#2563eb"/>
+        <circle cx="215" cy="86" r="14" fill="#dc2626"/>
+        <circle cx="215" cy="86" r="5" fill="#facc15"/>
+        <line x1="85" y1="110" x2="212" y2="86" stroke="#e2e8f0" stroke-width="2"/>
+        <path d="M75,30 Q105,90 75,150" fill="none" stroke="#92400e" stroke-width="4"/>
+        <text x="18" y="34" fill="#ecfdf5" font-size="12" font-weight="bold" font-family="sans-serif">ARCO RECURVO 30M</text>
+      </svg>`;
+    }
+    if (sceneType === 'rain') {
+      return `<svg class="yt-scene-svg" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
+        <rect width="320" height="180" fill="#09111f"/>
+        <rect x="60" y="18" width="200" height="144" fill="#0f1b2e" stroke="#1e293b" stroke-width="6"/>
+        <line x1="160" y1="18" x2="160" y2="162" stroke="#1e293b" stroke-width="4"/>
+        <line x1="60" y1="90" x2="260" y2="90" stroke="#1e293b" stroke-width="4"/>
+        <circle cx="115" cy="120" r="12" fill="rgba(251,191,36,0.18)"/>
+        <circle cx="215" cy="128" r="16" fill="rgba(56,189,248,0.12)"/>
+        ${[0,1,2,3,4,5,6,7,8,9,10,11].map(i => `<line x1="${75+i*15}" y1="${24+(i%3)*20}" x2="${68+i*15}" y2="${52+(i%3)*20}" stroke="rgba(148,163,184,0.35)" stroke-width="1.2"/>`).join('')}
+        <text x="84" y="148" fill="#cbd5e1" font-size="10" font-family="sans-serif">CHUVA NOTURNA NA JANELA</text>
+      </svg>`;
+    }
+    if (sceneType === 'news') {
+      return `<svg class="yt-scene-svg" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
+        <rect width="320" height="180" fill="#180a0a"/>
+        <polygon points="0,120 95,65 160,110 235,55 320,120 320,180 0,180" fill="#291212"/>
+        <rect x="0" y="128" width="320" height="32" fill="#b91c1c"/>
+        <rect x="0" y="160" width="320" height="20" fill="#0f172a"/>
+        <text x="14" y="149" fill="#ffffff" font-size="12" font-weight="bold" font-family="sans-serif">PLANTÃO REGIONAL: FENDA EM PALÁDIUM</text>
+        <text x="14" y="173" fill="#cbd5e1" font-size="9" font-family="sans-serif">TV FRAGUIKTOS HOJE • ÁREA CENTRAL ISOLADA</text>
+      </svg>`;
+    }
+    if (sceneType === 'cake') {
+      return `<svg class="yt-scene-svg" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
+        <rect width="320" height="180" fill="#431407"/>
+        <ellipse cx="160" cy="142" rx="95" ry="18" fill="#e2e8f0"/>
+        <path d="M90,136 L220,136 L220,90 L90,90 Z" fill="#f97316"/>
+        <path d="M88,90 Q120,76 155,82 Q190,74 222,90 L222,102 Q205,112 195,98 Q175,118 160,100 Q140,116 125,98 Q105,114 88,100 Z" fill="#3f1d0b"/>
+        <text x="20" y="34" fill="#ffedd5" font-size="13" font-weight="bold" font-family="sans-serif">BOLO DE CENOURA FOFINHO</text>
+      </svg>`;
+    }
+    if (sceneType === 'cat') {
+      return `<svg class="yt-scene-svg" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
+        <rect width="320" height="180" fill="#27272a"/>
+        <rect x="0" y="125" width="320" height="55" fill="#3f3f46"/>
+        <ellipse cx="185" cy="115" rx="34" ry="26" fill="#09090b" opacity="0.5"/>
+        <circle cx="115" cy="95" r="24" fill="#ea580c"/>
+        <polygon points="94,82 98,58 112,74" fill="#ea580c"/>
+        <polygon points="118,74 132,58 136,82" fill="#ea580c"/>
+        <ellipse cx="115" cy="130" rx="26" ry="20" fill="#f97316"/>
+        <circle cx="107" cy="92" r="3" fill="#fef08a"/>
+        <circle cx="123" cy="92" r="3" fill="#fef08a"/>
+      </svg>`;
+    }
+    if (sceneType === 'beetle') {
+      return `<svg class="yt-scene-svg" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
+        <rect width="320" height="180" fill="#064e3b"/>
+        <path d="M20,140 Q160,40 300,150 Q160,175 20,140 Z" fill="#047857"/>
+        <ellipse cx="165" cy="95" rx="34" ry="24" fill="#10b981" stroke="#022c22" stroke-width="2"/>
+        <line x1="165" y1="71" x2="165" y2="119" stroke="#064e3b" stroke-width="2"/>
+        <circle cx="132" cy="95" r="10" fill="#065f46"/>
+        <line x1="150" y1="74" x2="140" y2="55" stroke="#022c22" stroke-width="2"/>
+        <line x1="175" y1="74" x2="185" y2="55" stroke="#022c22" stroke-width="2"/>
+        <line x1="150" y1="116" x2="140" y2="135" stroke="#022c22" stroke-width="2"/>
+        <line x1="175" y1="116" x2="185" y2="135" stroke="#022c22" stroke-width="2"/>
+      </svg>`;
+    }
+    return `<svg class="yt-scene-svg" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
+      <rect width="320" height="180" fill="#1e1b4b"/>
+      <rect x="40" y="95" width="240" height="85" fill="#0f172a"/>
+      ${[0,1,2,3,4,5,6,7,8,9].map(i => `<rect x="${50+i*22}" y="102" width="18" height="60" fill="#cbd5e1"/>`).join('')}
+      <text x="20" y="38" fill="#e0e7ff" font-size="12" font-weight="bold" font-family="sans-serif">PEÇAS LENTAS DE PIANO</text>
+      <text x="20" y="56" fill="#a5b4fc" font-size="10" font-family="sans-serif">NOITES CHUVOSAS • ÁUDIO LIMPO</text>
+    </svg>`;
+  },
+
+  // =========================================================================
+  // NAVEGADOR WEB REALISTA (FRAGSEARCH, YOUTUBE IDENTICO, FRAGPEDIA & READIT)
   // =========================================================================
   setBrowserUrl(url) {
     this.currentUrl = url;
@@ -11836,6 +12001,9 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
       topicId: this.currentTopicId,
       ytVideoId: this.ytVideoId,
       ytQuery: this.ytQuery,
+      ytCategory: this.ytCategory,
+      ytSidebarCollapsed: this.ytSidebarCollapsed,
+      ytIsPlaying: this.ytIsPlaying,
       article: this.currentArticle ? { ...this.currentArticle } : null,
       url: this.currentUrl
     };
@@ -11885,7 +12053,7 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
       return;
     }
     const lower = val.toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '');
-    if (lower === 'fragsearch.net' || lower === 'google.com') {
+    if (lower === 'fragsearch.net') {
       this.goFragSearchHome();
       return;
     }
@@ -11893,7 +12061,7 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
       this.openWebPage('youtube');
       return;
     }
-    if (lower.startsWith('readit.net/r/conspiracoes/topico_14') || lower.includes('topico_14')) {
+    if (lower.startsWith('readit.net/r/conspiracoes/topico_14') || lower.includes('ghorvaelis') || lower.includes('topico_14')) {
       this.openReadItTopic(14);
       return;
     }
@@ -11939,18 +12107,17 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
 
     const results = [];
 
-    // 1. Portais reais simulados (YouTube, ReadIt, FragPedia, Clima, Noticias, Partituras)
     if (cleanQ.includes('youtube') || cleanQ.includes('video') || cleanQ.includes('musica') || cleanQ.includes('chuva')) {
       results.push({
         url: 'https://www.youtube.com',
         title: 'YouTube',
-        snippet: 'Aproveite os vídeos e a música que você ama, envie conteúdo original e compartilhe tudo com amigos, familiares e o mundo no YouTube.',
+        snippet: 'Aproveite os vídeos e a música que você ama, compartilhe vídeos com amigos e assista a canais da rede no YouTube.',
         onclick: `MesaSaraDesktop.openWebPage('youtube')`
       });
     }
 
     this.youtubeVideos.forEach(v => {
-      const hay = (v.title + ' ' + v.channel + ' ' + v.description).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      const hay = (v.title + ' ' + v.channel + ' ' + v.description + ' ' + v.category).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       const terms = cleanQ.split(/\s+/).filter(t => t.length >= 3);
       if (terms.some(t => hay.includes(t))) {
         results.push({
@@ -11962,11 +12129,11 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
       }
     });
 
-    if (cleanQ.includes('partitura') || cleanQ.includes('piano') || cleanQ.includes('debussy') || cleanQ.includes('chopin') || cleanQ.includes('satie')) {
+    if (cleanQ.includes('partitura') || cleanQ.includes('piano') || cleanQ.includes('clair')) {
       results.push({
         url: 'https://partituras-classicas.art/acervo',
         title: 'Acervo de Partituras Clássicas - Biblioteca Digital',
-        snippet: 'Download de partituras em PDF e cifras para piano clássico e popular em domínio público: Debussy, Chopin, Erik Satie e estudos.',
+        snippet: 'Download de partituras em PDF e cifras para piano clássico e popular em domínio público.',
         onclick: `MesaSaraDesktop.openSheetMusicPage()`
       });
     }
@@ -11980,7 +12147,7 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
       });
     }
 
-    if (cleanQ.includes('fraguiktos') || cleanQ.includes('wikipedia') || cleanQ.includes('fragpedia') || cleanQ.includes('primordio') || cleanQ.includes('historia')) {
+    if (cleanQ.includes('fraguiktos') || cleanQ.includes('fragpedia') || cleanQ.includes('primordio') || cleanQ.includes('historia')) {
       results.push({
         url: this.webArticles.fragpedia_fraguiktos.url,
         title: this.webArticles.fragpedia_fraguiktos.title,
@@ -11998,16 +12165,15 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
       });
     }
 
-    if (cleanQ.includes('readit') || cleanQ.includes('reddit') || cleanQ.includes('forum')) {
+    if (cleanQ.includes('readit') || cleanQ.includes('forum')) {
       results.push({
         url: 'https://readit.net/r/Conspiracoes+Fraguiktos',
-        title: 'ReadIt: r/Conspiracoes & r/Fraguiktos - Comunidade Local',
+        title: 'ReadIt: r/Fraguiktos & r/Conspiracoes - Comunidade Local',
         snippet: 'Discussões de moradores, utilidade pública, relatos do subúrbio norte e fórum aberto de teorias da região.',
         onclick: `MesaSaraDesktop.openReadItSubreddit()`
       });
     }
 
-    // 2. Topicos do ReadIt correspondentes aos termos pesquisados
     const terms = cleanQ.split(/\s+/).filter(t => t.length >= 2);
     this.readItTopics.forEach(t => {
       const full = (t.title + ' ' + t.content + ' ' + t.author + ' ' + t.subreddit).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -12021,7 +12187,6 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
       }
     });
 
-    // 3. Geracao dinamica realista se a busca for sobre qualquer outro tema geral da web
     if (results.length === 0) {
       const encoded = encodeURIComponent(query.trim());
       const domainSlug = cleanQ.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'busca';
@@ -12035,7 +12200,7 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
         {
           url: `https://www.youtube.com/results?search_query=${encoded}`,
           title: `Vídeos relacionados a "${query.trim()}" - YouTube`,
-          snippet: `Assista a vídeos, tutoriais e gravações enviados por usuários relacionados a ${query.trim()} no YouTube.`,
+          snippet: `Assista a vídeos e gravações relacionadas a ${query.trim()} no YouTube.`,
           onclick: `MesaSaraDesktop.openWebPage('youtube', '${query.replace(/'/g, "\\'")}')`
         },
         {
@@ -12229,10 +12394,86 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
     viewport.scrollTop = 0;
   },
 
+  // =========================================================================
+  // YOUTUBE IDENTICO AO REAL (SEM LOGIN)
+  // =========================================================================
+  _renderYouTubeMasthead(filterQuery = '') {
+    return `
+      <div class="yt-masthead">
+        <div class="yt-masthead-left">
+          <button type="button" class="yt-icon-btn" onclick="MesaSaraDesktop.toggleYouTubeSidebar()" title="Menu">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+          <button type="button" class="yt-logo-btn" onclick="MesaSaraDesktop.openWebPage('youtube')">
+            <svg viewBox="0 0 28 20" width="28" height="20">
+              <rect x="0" y="0" width="28" height="20" rx="5" fill="#ff0000"></rect>
+              <polygon points="11,5 11,15 20,10" fill="#ffffff"></polygon>
+            </svg>
+            <span>YouTube</span>
+          </button>
+        </div>
+        <div class="yt-masthead-center">
+          <div class="yt-search-form">
+            <div class="yt-search-box">
+              <input type="text" id="yt-search-bar" class="yt-search-input" value="${(filterQuery || '').replace(/"/g, '&quot;')}" placeholder="Pesquisar" autocomplete="off" onkeydown="if(event.key==='Enter') MesaSaraDesktop.openWebPage('youtube', this.value)">
+            </div>
+            <button type="button" class="yt-search-submit" onclick="MesaSaraDesktop.openWebPage('youtube', document.getElementById('yt-search-bar').value)" title="Pesquisar">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </button>
+          </div>
+          <button type="button" class="yt-mic-btn" title="Pesquisar por voz">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a1 1 0 1 0-2 0 3 3 0 0 1-6 0 1 1 0 1 0-2 0 5 5 0 0 0 4 4.9V19H9a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2h-2v-3.1A5 5 0 0 0 17 11z"/></svg>
+          </button>
+        </div>
+        <div class="yt-masthead-right">
+          <button type="button" class="yt-icon-btn" title="Configurações">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><circle cx="12" cy="5" r="1.5"></circle><circle cx="12" cy="12" r="1.5"></circle><circle cx="12" cy="19" r="1.5"></circle></svg>
+          </button>
+          <button type="button" class="yt-signin-pill">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="9" r="3"></circle><path d="M6.5 18.5a6.5 6.5 0 0 1 11 0"></path></svg>
+            <span>Fazer login</span>
+          </button>
+        </div>
+      </div>
+    `;
+  },
+
+  toggleYouTubeSidebar() {
+    if (!this._canControl()) return;
+    this.ytSidebarCollapsed = !this.ytSidebarCollapsed;
+    const sb = document.querySelector('.yt-sidebar');
+    if (sb) sb.classList.toggle('collapsed', this.ytSidebarCollapsed);
+    this._notifySync();
+  },
+
+  selectYouTubeCategory(cat) {
+    if (!this._canControl()) return;
+    this.ytCategory = cat;
+    this.renderYouTubeHome(this.ytQuery || '');
+    this._notifySync();
+  },
+
+  toggleYouTubePlay() {
+    if (!this._canControl()) return;
+    this.ytIsPlaying = !this.ytIsPlaying;
+    const btn = document.getElementById('yt-play-toggle-icon');
+    const fill = document.getElementById('yt-progress-fill');
+    if (btn) {
+      btn.innerHTML = this.ytIsPlaying
+        ? '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>'
+        : '<polygon points="6 4 20 12 6 20 6 4"></polygon>';
+    }
+    if (fill) {
+      fill.style.width = this.ytIsPlaying ? '34%' : '18%';
+    }
+    this._notifySync();
+  },
+
   openWebPage(pageType, query = '') {
     if (!this._canControl()) return;
     this._pushHistory(this._getCurrentNavSnapshot());
     if (pageType === 'youtube') {
+      this.ytCategory = 'Tudo';
       this.renderYouTubeHome(query || '');
     }
     this._notifySync();
@@ -12248,41 +12489,84 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
 
     const cleanFilter = (filterQuery || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     let list = this.youtubeVideos;
+    if (this.ytCategory && this.ytCategory !== 'Tudo') {
+      list = list.filter(v => v.category === this.ytCategory);
+    }
     if (cleanFilter) {
       const terms = cleanFilter.split(/\s+/).filter(t => t.length >= 2);
       const filtered = list.filter(v => {
-        const hay = (v.title + ' ' + v.channel + ' ' + v.description).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const hay = (v.title + ' ' + v.channel + ' ' + v.description + ' ' + v.category).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         return terms.some(t => hay.includes(t));
       });
       if (filtered.length > 0) list = filtered;
     }
 
+    const chips = ['Tudo', 'Música', 'Piano', 'Notícias', 'Natureza', 'Culinária', 'Animais', 'Esportes'];
+    const chipsHtml = chips.map(c => `
+      <button type="button" class="yt-chip ${(this.ytCategory || 'Tudo') === c ? 'active' : ''}" onclick="MesaSaraDesktop.selectYouTubeCategory('${c}')">${c}</button>
+    `).join('');
+
     const cardsHtml = list.map(v => `
       <div class="yt-video-card" onclick="MesaSaraDesktop.openYouTubeVideo('${v.id}')">
-        <div class="yt-thumb" style="background: ${v.thumbColor};">
-          <svg viewBox="0 0 24 24" width="38" height="38" fill="rgba(255,255,255,0.85)"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        <div class="yt-thumb">
+          ${this._getYouTubeThumbSVG(v.sceneType)}
           <span class="yt-duration">${v.duration}</span>
         </div>
-        <div class="yt-video-title">${v.title}</div>
-        <div class="yt-video-meta">${v.channel}<br>${v.views} • ${v.date}</div>
+        <div class="yt-card-info">
+          <div class="yt-channel-avatar" style="background: ${v.avatarColor};">${v.channel.charAt(0).toUpperCase()}</div>
+          <div class="yt-card-text">
+            <div class="yt-video-title">${v.title}</div>
+            <div class="yt-video-meta">${v.channel}<br>${v.views} • ${v.date}</div>
+          </div>
+        </div>
       </div>
     `).join('');
 
     viewport.innerHTML = `
       <div class="yt-shell">
-        <div class="yt-topbar">
-          <div class="yt-logo" onclick="MesaSaraDesktop.openWebPage('youtube')">
-            <span class="yt-logo-badge">YT</span>
-            <span>YouTube</span>
-          </div>
-          <div class="yt-search-wrap">
-            <input type="text" id="yt-search-bar" class="yt-search-input" value="${(filterQuery || '').replace(/"/g, '&quot;')}" placeholder="Pesquisar no YouTube" autocomplete="off" onkeydown="if(event.key==='Enter') MesaSaraDesktop.openWebPage('youtube', this.value)">
-            <button type="button" class="yt-search-btn" onclick="MesaSaraDesktop.openWebPage('youtube', document.getElementById('yt-search-bar').value)">Ir</button>
-          </div>
-          <div style="font-size:11px; color:#94a3b8;">s_auguil</div>
-        </div>
-        <div class="yt-grid">
-          ${cardsHtml}
+        ${this._renderYouTubeMasthead(filterQuery)}
+        <div class="yt-body-layout">
+          <aside class="yt-sidebar ${this.ytSidebarCollapsed ? 'collapsed' : ''}">
+            <button type="button" class="yt-nav-item active" onclick="MesaSaraDesktop.selectYouTubeCategory('Tudo')">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+              <span class="yt-nav-label">Início</span>
+            </button>
+            <button type="button" class="yt-nav-item">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <span class="yt-nav-label">Shorts</span>
+            </button>
+            <button type="button" class="yt-nav-item">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="14" rx="2"/><line x1="6" y1="3" x2="18" y2="3"/></svg>
+              <span class="yt-nav-label">Inscrições</span>
+            </button>
+            <div class="yt-sidebar-divider"></div>
+            <button type="button" class="yt-nav-item">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span class="yt-nav-label">Histórico</span>
+            </button>
+            <div class="yt-sidebar-divider"></div>
+            <div class="yt-sidebar-login-box">
+              <span>Faça login para curtir vídeos, comentar e se inscrever.</span>
+              <button type="button" class="yt-signin-pill">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="9" r="3"></circle><path d="M6.5 18.5a6.5 6.5 0 0 1 11 0"></path></svg>
+                <span>Fazer login</span>
+              </button>
+            </div>
+            <div class="yt-sidebar-divider"></div>
+            <div class="yt-sidebar-section-title">Explorar</div>
+            <button type="button" class="yt-nav-item" onclick="MesaSaraDesktop.selectYouTubeCategory('Música')">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              <span class="yt-nav-label">Música</span>
+            </button>
+            <button type="button" class="yt-nav-item" onclick="MesaSaraDesktop.selectYouTubeCategory('Notícias')">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/></svg>
+              <span class="yt-nav-label">Notícias</span>
+            </button>
+          </aside>
+          <main class="yt-main-area">
+            <div class="yt-chips-bar">${chipsHtml}</div>
+            <div class="yt-grid">${cardsHtml}</div>
+          </main>
         </div>
       </div>
     `;
@@ -12292,6 +12576,7 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
   openYouTubeVideo(vidId) {
     if (!this._canControl()) return;
     this._pushHistory(this._getCurrentNavSnapshot());
+    this.ytIsPlaying = true;
     this.renderYouTubeWatch(vidId);
     this._notifySync();
   },
@@ -12308,33 +12593,99 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
     if (!viewport) return;
 
     const commentsHtml = (video.comments || []).map(c => `
-      <div class="comment-card" style="background:#181818; border-color:#272727;">
-        <div class="comment-meta"><span class="comment-author">${c.author}</span></div>
-        <div class="comment-text">${c.text}</div>
+      <div class="yt-comment-item">
+        <div class="yt-comment-avatar">${c.author.replace('@', '').charAt(0).toUpperCase()}</div>
+        <div class="yt-comment-body">
+          <div class="yt-comment-author">${c.author} <span style="color:#aaaaaa; font-weight:400; margin-left:6px;">${c.time || 'há 2 semanas'}</span></div>
+          <div class="yt-comment-text">${c.text}</div>
+        </div>
+      </div>
+    `).join('');
+
+    const upNextHtml = this.youtubeVideos.filter(v => v.id !== video.id).map(v => `
+      <div class="yt-next-card" onclick="MesaSaraDesktop.openYouTubeVideo('${v.id}')">
+        <div class="yt-next-thumb">
+          ${this._getYouTubeThumbSVG(v.sceneType)}
+          <span class="yt-duration">${v.duration}</span>
+        </div>
+        <div class="yt-next-info">
+          <div class="yt-next-title">${v.title}</div>
+          <div class="yt-next-meta">${v.channel}<br>${v.views} • ${v.date}</div>
+        </div>
       </div>
     `).join('');
 
     viewport.innerHTML = `
       <div class="yt-shell">
-        <div class="yt-topbar">
-          <div class="yt-logo" onclick="MesaSaraDesktop.openWebPage('youtube')">
-            <span class="yt-logo-badge">YT</span>
-            <span>YouTube</span>
-          </div>
-          <button type="button" class="fragsearch-btn" onclick="MesaSaraDesktop.openWebPage('youtube')">&larr; Início do YouTube</button>
-        </div>
-        <div class="yt-watch-page">
-          <div class="yt-player-screen" style="background: ${video.thumbColor};">
-            <div class="yt-play-circle">
-              <svg viewBox="0 0 24 24" width="26" height="26" fill="#fff"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
+        ${this._renderYouTubeMasthead(this.ytQuery || '')}
+        <div class="yt-watch-layout">
+          <div class="yt-watch-primary">
+            <div class="yt-player-frame" onclick="MesaSaraDesktop.toggleYouTubePlay()">
+              <div class="yt-player-visual">${this._getYouTubeThumbSVG(video.sceneType)}</div>
+              <button type="button" class="yt-player-center-btn">
+                <svg id="yt-play-toggle-icon" viewBox="0 0 24 24" width="28" height="28" fill="#fff">
+                  ${this.ytIsPlaying ? '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>' : '<polygon points="6 4 20 12 6 20 6 4"></polygon>'}
+                </svg>
+              </button>
+              <div class="yt-player-controls">
+                <div class="yt-progress-track">
+                  <div id="yt-progress-fill" class="yt-progress-fill" style="width:${this.ytIsPlaying ? '34%' : '18%'};"></div>
+                </div>
+                <div class="yt-controls-row">
+                  <div class="yt-controls-left">
+                    <button type="button" class="yt-ctrl-btn"><svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><polygon points="6 4 19 12 6 20 6 4"/></svg></button>
+                    <button type="button" class="yt-ctrl-btn"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
+                    <span>0:48 / ${video.duration}</span>
+                  </div>
+                  <div class="yt-controls-right">
+                    <span style="border:1px solid #fff; font-size:9px; padding:1px 4px; border-radius:2px;">CC</span>
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 1 1 0 4h-.09c-.66 0-1.25.4-1.51 1z"/></svg>
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div style="font-size:12px; color:#cbd5e1;">Reprodução de áudio desativada no player embutido (${video.duration})</div>
+
+            <div class="yt-watch-title">${video.title}</div>
+
+            <div class="yt-watch-actions-bar">
+              <div class="yt-channel-row">
+                <div class="yt-channel-avatar" style="background: ${video.avatarColor};">${video.channel.charAt(0).toUpperCase()}</div>
+                <div>
+                  <div style="font-size:14px; font-weight:600; color:#f1f1f1;">${video.channel}</div>
+                  <div style="font-size:11px; color:#aaaaaa;">${video.subs || '120 mil inscritos'}</div>
+                </div>
+                <button type="button" class="yt-subscribe-btn">Inscrever-se</button>
+              </div>
+              <div class="yt-action-pills">
+                <button type="button" class="yt-pill-btn">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+                  <span>${video.likes || '1,2 mil'}</span>
+                </button>
+                <button type="button" class="yt-pill-btn">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                  <span>Compartilhar</span>
+                </button>
+                <button type="button" class="yt-pill-btn">Salvar</button>
+              </div>
+            </div>
+
+            <div class="yt-watch-desc">
+              <div style="font-weight:600; margin-bottom:6px;">${video.views} &nbsp;&bull;&nbsp; ${video.date}</div>
+              <div>${video.description}</div>
+            </div>
+
+            <div class="yt-comments-header">
+              <span>${(video.comments || []).length} comentários</span>
+              <span style="font-size:12px; font-weight:500; color:#aaaaaa;">Faça login para comentar</span>
+            </div>
+            <div>${commentsHtml}</div>
           </div>
-          <div class="yt-watch-title">${video.title}</div>
-          <div class="yt-video-meta">${video.channel} • ${video.views} • ${video.date}</div>
-          <div class="yt-watch-desc">${video.description}</div>
-          <div class="topic-comments-title" style="color:#f1f1f1;">Comentários (${(video.comments || []).length})</div>
-          <div class="topic-comments-list">${commentsHtml}</div>
+
+          <aside class="yt-watch-secondary">
+            <div style="font-size:13px; font-weight:600; color:#f1f1f1; margin-bottom:4px;">Próximos vídeos</div>
+            ${upNextHtml}
+          </aside>
         </div>
       </div>
     `;
@@ -12387,7 +12738,6 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
     viewport.scrollTop = 0;
   },
 
-  // Modal de Historico de Navegacao
   renderHistoryList() {
     const container = document.getElementById('sara-history-list');
     if (!container) return;
@@ -12445,6 +12795,7 @@ Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como u
 
   _restoreNavSnapshot(snap) {
     if (!snap) return;
+    if (snap.ytCategory) this.ytCategory = snap.ytCategory;
     if (snap.view === 'home') this.renderFragSearchHome(false);
     else if (snap.view === 'results') this.renderFragSearchResults(snap.query || '');
     else if (snap.view === 'subreddit') this.renderReadItSubreddit();
@@ -12486,7 +12837,8 @@ const MesaNotebookSara = {
   _applyingRemote: false,
   _saveTimer: null,
   _scrollSyncTimer: null,
-  _lastRemoteUpdatedAt: 0,
+  _lastLocalActionAt: 0,
+  _lastAppliedRemoteSig: null,
 
   getChannel() {
     return (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel) || null;
@@ -12508,6 +12860,7 @@ const MesaNotebookSara = {
 
   syncNow(immediatePersist = true) {
     if (!window.MesaApp || !MesaApp.state || !MesaApp.state.isMaster) return;
+    this._lastLocalActionAt = Date.now();
     const snap = this.buildSyncSnapshot();
     if (MesaApp.state.rawRow1Atributos) {
       MesaApp.state.rawRow1Atributos._sys_notebook = snap;
@@ -12527,6 +12880,7 @@ const MesaNotebookSara = {
 
   syncScrollOnly() {
     if (!window.MesaApp || !MesaApp.state || !MesaApp.state.isMaster) return;
+    this._lastLocalActionAt = Date.now();
     const snap = this.buildSyncSnapshot();
     const chan = this.getChannel();
     if (chan) {
@@ -12541,29 +12895,16 @@ const MesaNotebookSara = {
     clearTimeout(this._scrollSyncTimer);
     this._scrollSyncTimer = setTimeout(() => {
       this.saveNotebookStateToSupabase(false);
-    }, 350);
+    }, 300);
   },
 
   saveNotebookStateToSupabase(immediate = false) {
     if (!window.MesaApp || !MesaApp.supabase || !MesaApp.state || !MesaApp.state.isMaster) return;
-    const runSave = async () => {
-      try {
-        const { data } = await MesaApp.supabase
-          .from('personagens')
-          .select('atributos')
-          .eq('id', 1)
-          .single();
-        const attrs = data && data.atributos
-          ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
-          : {};
-        // Le sempre o estado mais recente no momento exato da escrita
-        attrs._sys_notebook = this.buildSyncSnapshot();
-        await MesaApp.supabase
-          .from('personagens')
-          .update({ atributos: attrs })
-          .eq('id', 1);
-      } catch(e) {
-        console.warn("Erro ao persistir notebook no Supabase:", e);
+    const runSave = () => {
+      if (typeof MesaApp.queueRow1Update === 'function') {
+        MesaApp.queueRow1Update((attrs) => {
+          attrs._sys_notebook = this.buildSyncSnapshot();
+        });
       }
     };
 
@@ -12571,7 +12912,7 @@ const MesaNotebookSara = {
     if (immediate) {
       runSave();
     } else {
-      this._saveTimer = setTimeout(runSave, 220);
+      this._saveTimer = setTimeout(runSave, 180);
     }
   },
 
@@ -12588,6 +12929,7 @@ const MesaNotebookSara = {
     this.isGlitching = false;
     this.sessionStartTime = Date.now();
     this.localStartTime = this.sessionStartTime;
+    this._lastLocalActionAt = this.sessionStartTime;
 
     const snap = this.buildSyncSnapshot();
     if (MesaApp.state.rawRow1Atributos) {
@@ -12611,6 +12953,7 @@ const MesaNotebookSara = {
 
   stop() {
     if (!MesaApp.state || !MesaApp.state.isMaster) return;
+    this._lastLocalActionAt = Date.now();
     this.isActive = false;
     const chan = this.getChannel();
     if (chan) {
@@ -13067,10 +13410,15 @@ const MesaNotebookSara = {
   syncFromRemote(nb) {
     if (!nb) return;
     const isMaster = !!(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
-    // Se for o Mestre mexendo localmente agora mesmo, ignora polling antigo
-    if (isMaster && this.isActive && nb.updatedAt && nb.updatedAt <= (this.localStartTime || 0)) {
+    // Enquanto o Mestre estiver em sessao ativa, o polling nao sobrescreve sua tela local
+    if (isMaster && this._lastLocalActionAt > 0) {
       return;
     }
+    const sig = JSON.stringify(nb);
+    if (sig === this._lastAppliedRemoteSig) {
+      return;
+    }
+    this._lastAppliedRemoteSig = sig;
 
     if (nb.active === false) {
       if (this.isActive) {
