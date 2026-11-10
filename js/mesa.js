@@ -2022,7 +2022,9 @@ const MesaApp = {
                 MesaNotebookSara.triggerStart(nb.sessionStartTime);
               }
               if (nb.stage && nb.stage !== MesaNotebookSara.stage) {
-                if (nb.stage === 'cctv') {
+                if (nb.stage === 'desktop') {
+                  MesaNotebookSara.showDesktopStage();
+                } else if (nb.stage === 'cctv') {
                   const lockStage = document.getElementById('notebook-lock-stage');
                   const cctvStage = document.getElementById('notebook-cctv-stage');
                   if (lockStage) lockStage.style.display = 'none';
@@ -5893,15 +5895,12 @@ const MesaAreaManager = {
     const ilustracao = npc.ilustracao || (npc.id === 'elias-ribeiro' ? 'assets/npcs/elias-ribeiro.png' : (npc.id === 'isaque-valente' ? 'assets/npcs/isaque-valente.png' : null));
     const isDisplayed = Boolean(window.MesaCenterArtwork && MesaCenterArtwork.active && (MesaCenterArtwork.npcId === npc.id || MesaCenterArtwork.imgUrl === ilustracao));
 
+    // BACKUP: Botao central desativado conforme solicitacao do Mestre
     const artworkHeaderHtml = ilustracao ? `
       <div class="npc-header-artwork-box">
         <div class="npc-header-thumb-preview">
           <img src="${ilustracao}" alt="${npc.nome}">
         </div>
-        <button type="button" class="npc-display-btn ${isDisplayed ? 'active' : ''}" data-npc-id="${npc.id}" onclick="MesaCenterArtwork.toggleNpc('${npc.id}')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px; height:13px;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-          <span>${isDisplayed ? 'Remover da Mesa Virtual' : 'Exibir Ilustração no Centro da Mesa'}</span>
-        </button>
       </div>
     ` : '';
 
@@ -8812,6 +8811,15 @@ const MesaPerseguicaoFloresta = {
     const overlay = document.getElementById('perseguicao-floresta-overlay');
     if (overlay) {
       overlay.classList.add('active');
+      if (!this._overlayUnlockBound) {
+        this._overlayUnlockBound = () => {
+          if (this._audioCtx && this._audioCtx.state === 'suspended') {
+            this._audioCtx.resume().catch(() => {});
+          }
+        };
+        overlay.addEventListener('click', this._overlayUnlockBound);
+        overlay.addEventListener('pointerdown', this._overlayUnlockBound);
+      }
     }
     const badge = document.getElementById('perseguicao-status-badge');
     if (badge) {
@@ -8857,7 +8865,7 @@ const MesaPerseguicaoFloresta = {
         this._audioCtx = new AudioCtx();
       }
       if (this._audioCtx.state === 'suspended') {
-        this._audioCtx.resume();
+        this._audioCtx.resume().catch(() => {});
       }
       this.stopAmbientAudio();
 
@@ -9029,6 +9037,15 @@ const MesaTvEstatica = {
     const overlay = document.getElementById('tv-estatica-overlay');
     if (overlay) {
       overlay.classList.add('active');
+      if (!this._overlayUnlockBound) {
+        this._overlayUnlockBound = () => {
+          if (this._audioCtx && this._audioCtx.state === 'suspended') {
+            this._audioCtx.resume().catch(() => {});
+          }
+        };
+        overlay.addEventListener('click', this._overlayUnlockBound);
+        overlay.addEventListener('pointerdown', this._overlayUnlockBound);
+      }
     }
     const badge = document.getElementById('tv-status-badge');
     if (badge) {
@@ -9279,6 +9296,15 @@ const MesaTvEstatica2 = {
     const overlay = document.getElementById('tv-estatica-2-overlay');
     if (overlay) {
       overlay.classList.add('active');
+      if (!this._overlayUnlockBound) {
+        this._overlayUnlockBound = () => {
+          if (this._audioCtx && this._audioCtx.state === 'suspended') {
+            this._audioCtx.resume().catch(() => {});
+          }
+        };
+        overlay.addEventListener('click', this._overlayUnlockBound);
+        overlay.addEventListener('pointerdown', this._overlayUnlockBound);
+      }
     }
     const badge = document.getElementById('tv2-status-badge');
     if (badge) {
@@ -10488,16 +10514,22 @@ const MesaCenterArtwork = {
   },
 
   render() {
+    // BACKUP: Exibicao central da ilustracao desativada conforme solicitacao do Mestre
     const container = document.getElementById('board-center-artwork');
     const imgEl = document.getElementById('board-center-artwork-img');
     const tagEl = document.getElementById('board-center-artwork-tag');
     const clearBtn = document.getElementById('board-center-artwork-clear-btn');
     const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
 
-    if (container && imgEl) {
+    if (container) {
+      container.style.display = 'none';
+      container.classList.remove('active');
+    }
+
+    if (false && container && imgEl) {
       if (this.active && this.imgUrl) {
         imgEl.src = this.imgUrl;
-        imgEl.alt = this.title || 'Ilustração';
+        imgEl.alt = this.title || 'Ilustracao';
         container.style.display = 'flex';
         void container.offsetWidth;
         container.classList.add('active');
@@ -10566,6 +10598,1197 @@ window.closeNpcDrawer = () => {
 // ==========================================================================
 // MESA NOTEBOOK DA SARA (SISTEMA OPERACIONAL E CFTV)
 // ==========================================================================
+
+// ==========================================================================
+// MESA NOTEBOOK DA SARA: SISTEMA OPERACIONAL DOMESTICO (EXPANSAO REALISTA)
+// ==========================================================================
+const MesaSaraDesktop = {
+  initialized: false,
+  activeApp: null,
+  activeFolder: 'Estudos_Primordio',
+  pendingLockedFile: null,
+  browserView: 'home', // 'home' | 'results' | 'subreddit' | 'topic' | 'sheet_music'
+  currentTopicId: null,
+  browserHistoryStack: ['home'],
+  browserHistoryIdx: 0,
+
+  // 1. Arquivos das Pastas
+  folders: {
+    'Estudos_Primordio': [
+      {
+        id: 'biologia_celular',
+        name: 'Apostila_Biologia_Celular.pdf',
+        type: 'pdf',
+        size: '1.4 MB',
+        date: '28/07/2061 14:22',
+        title: 'Apostila de Biologia Celular - 2º Ano - Colégio Primórdio',
+        subtitle: 'Prof. Marcos V. • Módulo 03: Ciclo Celular e Mitose',
+        content: `
+          <div class="pdf-body-text">
+            <h3>1. Estrutura Celular e Membrana Plasmática</h3>
+            <p>A célula eucariótica apresenta compartimentalização interna que viabiliza reações metabólicas complexas. A membrana plasmática atua como barreira seletiva semipermeável, regulando a entrada de nutrientes e o descarte de resíduos por difusão facilitada e transporte ativo mediado por ATP.</p>
+            
+            <h3>2. O Ciclo Celular e Apoptose</h3>
+            <p>O ciclo celular divide-se em Interfase (G1, S, G2) e Mitose (Prófase, Metáfase, Anáfase e Telófase). Durante o ponto de checagem G2/M, a integridade do DNA é minuciosamente avaliada por complexos enzimáticos. Células que acumulam danos irreversíveis no genoma ativam rotas intrínsecas de apoptose (morte celular programada), prevenindo a proliferação anormal no tecido.</p>
+            
+            <h3>3. Falhas nos Mecanismos de Controle e Tecidos Anormais</h3>
+            <p>Quando mutações silenciam genes supressores de tumor ou ativam proto-oncogenes, o tecido perde o controle de divisão celular. O acúmulo contínuo de células anormais pode invadir tecidos vizinhos e comprometer órgãos vitais através de metástases hematogênicas ou linfáticas, exigindo terapias direcionadas de contenção e ressecção cirúrgica.</p>
+          </div>
+        `
+      },
+      {
+        id: 'historia_fraguiktos',
+        name: 'Resumo_Historia_Fraguiktos.pdf',
+        type: 'pdf',
+        size: '890 KB',
+        date: '24/07/2061 16:05',
+        title: 'Resumo de História Regional: A Fundação de Fraguiktos',
+        subtitle: 'Colégio Primórdio • Material de Apoio para Avaliação Bimestral',
+        content: `
+          <div class="pdf-body-text">
+            <h3>1. Origens e Ciclo Madeireiro (Década de 1940 - 1970)</h3>
+            <p>O subúrbio de Fraguiktos surgiu no início da década de 1940 a partir de assentamentos de trabalhadores atraídos pela instalação das primeiras serrarias a vapor na periferia da Mata do Norte. A abundância de madeira de lei e a proximidade com o rio impulsionaram um rápido crescimento demográfico desordenado.</p>
+            
+            <h3>2. A Expansão Urbana e a Borda Florestal</h3>
+            <p>Com o declínio da indústria madereira nos anos 1980, os bairros setentrionais sofreram com o isolamento econômico. O crescimento urbano avançou sobre antigas trilhas de extração, criando uma fronteira difusa entre os blocos residenciais e a mata densa. As construções mais antigas, como o Pavilhão Municipal de Acolhimento, testemunharam a transição do vilarejo para um subúrbio industrial periférico.</p>
+            
+            <h3>3. O Relacionamento com as Cidades Vizinhas</h3>
+            <p>Historicamente dependente da malha ferroviária que ligava a capital à região de Paládium, Fraguiktos manteve um perfil pacato, marcado por cooperativas locais, comércios tradicionais e uma cultura de vizinhança reservada e desconfiada em relação a interferências externas.</p>
+          </div>
+        `
+      },
+      {
+        id: 'matematica_exercicios',
+        name: 'Lista_Exercicios_Matematica.pdf',
+        type: 'pdf',
+        size: '512 KB',
+        date: '20/07/2061 11:30',
+        title: 'Lista de Exercícios 04 - Funções Quadráticas e Logaritmos',
+        subtitle: 'Colégio Primórdio • Profª Helena R. • Entrega até 05/08',
+        content: `
+          <div class="pdf-body-text">
+            <h3>Questão 1:</h3>
+            <p>Dada a função quadrática f(x) = -2x² + 12x - 10, determine as coordenadas do vértice (Xv, Yv) e o intervalo em que a função é estritamente decrescente.</p>
+            <p style="font-family: monospace; color: #475569; background: #f8fafc; padding: 6px 10px; border-left: 2px solid #94a3b8;">
+              Rascunho:<br>
+              Xv = -b / 2a = -12 / (2 * -2) = 3<br>
+              Yv = f(3) = -2(9) + 36 - 10 = -18 + 26 = 8<br>
+              Vértice = (3, 8). Decrescente para x > 3.
+            </p>
+            
+            <h3>Questão 2:</h3>
+            <p>Resolva a equação logarítmica: log₂(x - 4) + log₂(x) = 5. Lembre-se de verificar a condição de existência das raízes reais.</p>
+            <p style="font-family: monospace; color: #475569; background: #f8fafc; padding: 6px 10px; border-left: 2px solid #94a3b8;">
+              Rascunho:<br>
+              C.E.: x > 4<br>
+              log₂[x(x - 4)] = 5 => x² - 4x = 32 => x² - 4x - 32 = 0<br>
+              (x - 8)(x + 4) = 0 => x = 8 (pois x = -4 viola a C.E.)
+            </p>
+
+            <h3>Questão 3:</h3>
+            <p>Um modelo de decaimento populacional de micro-organismos segue a lei N(t) = N₀ · e^(-kt). Calcule o tempo necessário para que a amostra se reduza a 25% do volume original...</p>
+            <p style="font-family: monospace; color: #94a3b8; font-style: italic; padding: 6px 10px;">
+              [questão não respondida - sem rascunho]
+            </p>
+          </div>
+        `
+      },
+      {
+        id: 'redacao_rascunho',
+        name: 'Redacao_Rascunho.txt',
+        type: 'txt',
+        size: '1.2 KB',
+        date: '19/07/2061 21:40',
+        content: `Tema: O Amanhã e Nossas Escolhas
+Aluna: Sara Auguil
+Turma: 2º B - Ensino Médio
+
+Pensar no futuro sempre foi tratado pelos adultos como um exercício natural de planejamento. Dizem que as escolhas que fazemos aos dezesseis ou dezessete anos determinam quem seremos diante do mundo e qual legado deixaremos para a nossa comunidade.
+
+No entanto, projetar os próximos dez anos exige uma certeza prévia que nem sempre está disponível: a certeza de que haverá um amanhã para onde caminhar. Quando o chão sob os nossos pés deixa de ser firme e o presente se torna uma sala vazia, todo plano vira apenas um rascunho de papel que o vento...
+
+Não consigo terminar isso. Escrever sobre daqui a dez anos parece uma piada de mau gosto quando a casa tá em silêncio há tanto tempo.`
+      }
+    ],
+
+    'Piani_e_Partituras': [
+      {
+        id: 'repertorio_treino',
+        name: 'Repertorio_Treino.txt',
+        type: 'txt',
+        size: '840 B',
+        date: '02/06/2061 17:15',
+        content: `[CRONOGRAMA DE ESTUDO - PIANO]
+
+- Clair de Lune (Debussy) - estudar compasso 15 ao 30 (mão esquerda muito dura nos arpejos)
+- Valsa em Lá Menor Op. 34 No. 2 (Chopin) - memorizar tema principal
+- Música antiga da família (a que a mãe cantava) - tentar tirar de ouvido o refrão
+- Exercícios de Hanon 1 a 5 (aquecimento 15 min)`
+      },
+      {
+        id: 'cifra_incompleta',
+        name: 'Cifra_Incompleta.txt',
+        type: 'txt',
+        size: '980 B',
+        date: '28/06/2061 23:10',
+        content: `Tentativa de tirar de ouvido - Melodia Antiga
+
+Introdução:
+[ Ré - Fá - Lá - Sol - Mi... ] [errado]
+[ Ré - Fá# - Lá - Sol - Ré... ] [não soa assim]
+[ Lá - Dó - Mi - Ré - Si... ] [muito agudo, o tom original era mais triste]
+
+Tentei tocar aquela música de novo hoje. Meus dedos sabem onde apertar, mas parece que eu tô batendo em pedaço de madeira morta. O som sai, mas eu não sinto mais nada.`
+      },
+      {
+        id: 'tentativa_comp_01',
+        name: 'tentativa_composicao_01.txt',
+        type: 'txt',
+        size: '720 B',
+        date: '12/04/2061 22:04',
+        content: `Data: 12 de Abril - Noite
+
+Comecei a rascunhar uma progressão nova no piano da sala.
+Compasso 3/4 bem lento, tentando puxar um clima mais suave.
+Quero terminar essa parte da introdução até o fim de semana. O Isaque disse que vem aqui em casa no sábado à tarde depois do treino de tiro com arco, aí posso mostrar pra ele como ficou. Tomara que ele goste da modulação pro refrão.`
+      },
+      {
+        id: 'tentativa_comp_04',
+        name: 'tentativa_composicao_04.txt',
+        type: 'txt',
+        size: '640 B',
+        date: '16/07/2061 03:22',
+        content: `Data: 16 de Julho
+
+Faz três horas que eu tô sentada na frente do piano no escuro. A casa inteira tá muda desde que a minha irmã sumiu, e agora parece que o silêncio entrou dentro de mim também. Acho que a vontade de tocar morreu antes do resto do meu corpo.`
+      }
+    ],
+
+    'Pessoal': [
+      {
+        id: 'contas_da_casa',
+        name: 'contas_da_casa.txt',
+        type: 'txt',
+        size: '560 B',
+        date: '01/08/2061 10:14',
+        content: `Contas Agosto / Pendências:
+- Luz: 85,00 - atrasada (aviso de corte na caixa de correio)
+- Água: 40,00
+- Mercado: 120,00 (arroz, bolacha, chá, sabão)
+- Farmácia: 310,00 (analgésicos e xarope pra tosse)
+- Fundo de reserva: 45,00 restante`
+      },
+      {
+        id: 'notas_soltas_1',
+        name: 'notas_soltas_1.txt',
+        type: 'txt',
+        size: '620 B',
+        date: '10/06/2061 02:40',
+        content: `10 de Junho
+
+Quase dois anos que ela desapareceu e a porta da frente continua trancada do mesmo jeito. Às vezes eu deixo a TV ligada na sala só pra fingir que tem mais alguém respirando nessa casa além de mim.`
+      },
+      {
+        id: 'notas_soltas_2',
+        name: 'notas_soltas_2.txt',
+        type: 'txt',
+        size: '810 B',
+        date: '18/07/2061 04:12',
+        content: `18 de Julho
+
+Deixei o Isaque terminar tudo ontem. Não tentei explicar nem pedi pra ele ficar. Ele tem uma mania boba de querer consertar tudo, e não dá pra consertar alguém que já tá apodrecendo por dentro. É melhor ele guardar só o eco daquele vídeo do piano do que ver o que vai sobrar de mim.`
+      },
+      {
+        id: 'notas_soltas_3',
+        name: 'notas_soltas_3.txt',
+        type: 'txt',
+        size: '790 B',
+        date: '25/07/2061 05:08',
+        content: `25 de Julho
+
+Acordei com sangue no travesseiro de novo. Nem doeu. Olhei pro espelho do banheiro e não reconheci a cara que tava lá. A moça do galpão tem razão sobre uma coisa: a dor vai comendo a gente por dentro até sobrar só a casca vazia. Eu tô tão cansada de esperar.`
+      },
+      {
+        id: 'ultimo_registro',
+        name: 'ultimo_registro.locked',
+        type: 'locked',
+        size: '1.8 KB',
+        date: '31/07/2061 03:55',
+        unlockedTitle: 'particular.txt',
+        content: `Quando você passa quase dois anos esperando alguém voltar pela porta, você aprende que algumas coisas simplesmente são engolidas pelo escuro e não voltam mais. Minha irmã foi primeiro. Agora sou eu.
+
+Eu achei que ia ter medo quando a hora chegasse, mas não tem medo nenhum. Só um silêncio muito grande e um barulho de folhas secas atrás dos olhos.
+
+O engraçado de ficar completamente vazia é que o frio da rua não incomoda mais. As mãos não tremem mais. Até o corte fica limpo quando a gente não sente pena.`
+      }
+    ]
+  },
+
+  // 2. Arquivos da Lixeira
+  trashFiles: [
+    {
+      id: 'laudo_clinica',
+      name: 'laudo_laboratorio_clinica.pdf',
+      type: 'pdf',
+      size: '2.1 MB',
+      date: '15/07/2061 14:10',
+      title: 'Clínica de Diagnóstico e Saúde de Fraguiktos',
+      subtitle: 'Departamento de Patologia e Oncologia Clínica • Prontuário: #FR-58190-SA',
+      content: `
+        <div class="pdf-body-text">
+          <p><strong>Paciente:</strong> Sara Auguil &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Idade:</strong> 17 anos &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Data da Coleta:</strong> 12/07/2061</p>
+          <p><strong>Médico Responsável:</strong> Dr. Valério G. (CRM/REG 4190)</p>
+          
+          <h3>Exame Realizado: Biópsia Citopatológica e Tomografia por Contraste</h3>
+          <p>Material colhido de gânglios cervicais profundos e região retroperitoneal. Análise histológica revela densa proliferação celular indiferenciada com padrão infiltrativo avançado, invasão vascular e necrose tecidual difusa.</p>
+          
+          <h3>Conclusão Diagnóstica:</h3>
+          <p>Quadro histopatológico compatível com neoplasia linfoide agressiva / síndrome degenerativa sistêmica em estágio terminal irreversível. Refratariedade completa às abordagens terapêuticas conservadoras anteriores.</p>
+          <p><strong>Recomendação:</strong> Descontinuação de protocolos invasivos fúteis. Encaminhamento imediato para cuidados paliativos domiciliares e suporte de acolhimento social.</p>
+        </div>
+        <div class="pdf-clinic-stamp">
+          <div>Validação Eletrônica: SIG-SAUDE-FRAG-7728</div>
+          <div class="pdf-stamp-box">Assistência Social / Encaminhamento: Constança</div>
+        </div>
+      `
+    },
+    {
+      id: 'rascunho_descartado',
+      name: 'rascunho_descartado.txt',
+      type: 'txt',
+      size: '480 B',
+      date: '29/07/2061 02:18',
+      content: `Não sei pra quem eu tô escrevendo isso se não tem ninguém em casa pra ler. Se entrarem aqui depois que eu for pro mato, podem ficar com o piano. A música já não tava lá dentro mesmo.`
+    }
+  ],
+
+  // 3. Histórico de Navegação Realista (16 Entradas)
+  historyEntries: [
+    { time: 'Ontem - 03:45', action: 'Pesquisa', query: 'como tirar mancha escura de lamina de aço sem estragar o fio' },
+    { time: 'Ontem - 03:12', action: 'Pesquisa', query: 'resina ou cola branca forte para vedar trincado em louça lisa' },
+    { time: '3 dias atrás - 02:50', action: 'Pesquisa', query: 'pontos de tendão pulso e tornozelo anatomia' },
+    { time: '5 dias atrás - 23:20', action: 'Pesquisa', query: 'horarios ronda policial suburbio norte fraguiktos' },
+    { time: '6 dias atrás - 14:15', action: 'Pesquisa', query: 'trilha lateral bosque norte movimento tarde' },
+    { time: '8 dias atrás - 22:30', action: 'Acessou', query: 'readit.net/r/Conspiracoes/topico_14_o_parasita_de_mundos', topicId: 14 },
+    { time: '9 dias atrás - 21:15', action: 'Pesquisa', query: 'entidade antiga que devora mundos raizes entre planos' },
+    { time: '10 dias atrás - 20:05', action: 'Pesquisa', query: 'o que significa sonhar com fios laranjas e cheiro de ferrugem' },
+    { time: '11 dias atrás - 19:00', action: 'Pesquisa', query: 'terremoto paladium corpos com vinhas nos olhos' },
+    { time: '14 dias atrás - 03:10', action: 'Pesquisa', query: 'por que não consigo mais sentir prazer em tocar musica depressao' },
+    { time: '15 dias atrás - 18:20', action: 'Pesquisa', query: 'pavilhao abandonado norte grupo de apoio' },
+    { time: '18 dias atrás - 16:05', action: 'Pesquisa', query: 'remedio forte para enjoo e tosse com sangue sem receita' },
+    { time: '20 dias atrás - 14:00', action: 'Pesquisa', query: 'tempo de vida linfoma avançado sem tratamento' },
+    { time: '23 dias atrás - 01:15', action: 'Pesquisa', query: 'pessoas desaparecidas fraguiktos dois anos atras registros' },
+    { time: '25 dias atrás - 19:30', action: 'Pesquisa', query: 'partitura piano musica antiga facil pdf' },
+    { time: '28 dias atrás - 15:00', action: 'Pesquisa', query: 'resumo biologia celular ensino medio' }
+  ],
+
+  // 4. Os 20 Tópicos do ReadIt
+  readItTopics: [
+    {
+      id: 1,
+      subreddit: 'r/Conspiracoes',
+      author: 'u/mod_global',
+      time: 'Há 1 mês',
+      votes: 1840,
+      commentsCount: 94,
+      title: '[Fixado] Aviso da Moderação: Tópicos com fotos vazadas do necrotério de Paládium serão banidos.',
+      content: `Aviso oficial para todos os membros da comunidade:
+
+Recebemos notificações formais de instâncias regulatórias federais informando que registros fotográficos e relatórios periciais não autorizados das instalações de contenção médica em Paládium estão sob sigilo de segurança.
+
+Qualquer usuário que fizer upload de imagens de cadáveres recuperados nas fendas ou de amostras de tecidos biológicos anômalos terá a conta permanentemente banida e os dados repassados às autoridades. Respeitem as diretrizes do fórum.`,
+      comments: [
+        { author: 'u/furo_jornalistico', time: 'Há 28 dias', text: 'Engraçado como quando é vazamento de corrupção política ninguém bane, mas quando envolve corpos com vinhas saindo da órbita ocular a censura vem em meia hora.' },
+        { author: 'u/ceticista_99', time: 'Há 26 dias', text: 'Regra básica da internet: se o governo tá ameaçando banir quem posta foto, é porque a foto é real.' }
+      ]
+    },
+    {
+      id: 2,
+      subreddit: 'r/Fraguiktos',
+      author: 'u/insonia_frag',
+      time: 'Há 4 dias',
+      votes: 312,
+      commentsCount: 48,
+      title: 'Mais alguém ouvindo um barulho de galhos secos arranhando a janela de madrugada, mesmo morando longe de árvores?',
+      content: `Moro no terceiro andar de um prédio na Avenida das Acácias, a pelo menos quatro quadras de qualquer árvore grande. Já é a terceira noite seguida que, exatamente entre 2h30 e 4h da manhã, começo a escutar um som como se fossem galhos grossos e secos sendo esfregados devagar contra o vidro do quarto.
+
+Quando acendo a luz ou puxo a cortina, não tem nada na calçada nem na parede externa, só um vento frio com cheiro de terra molhada e ferrugem. Mais alguém na região do norte tá escutando isso?`,
+      comments: [
+        { author: 'u/morador_bloco_c', time: 'Há 3 dias', text: 'Eu moro no Bloco C e ouço isso desde a semana passada. Meus cachorros ficam travados olhando pro teto e não latem, só tremem.' },
+        { author: 'u/vigia_noturno', time: 'Há 2 dias', text: 'Não recomendo abrir a janela pra olhar pra fora nesse horário. Tranque o trinco e durma com a luz do corredor acesa.' }
+      ]
+    },
+    {
+      id: 3,
+      subreddit: 'r/Conspiracoes',
+      author: 'u/bio_oculto',
+      time: 'Há 12 dias',
+      votes: 620,
+      commentsCount: 82,
+      title: 'Teoria: A "Praga" que matou a Heroína Eleonor não é uma doença da Terra.',
+      content: `Analisei os poucos prontuários que vazaram da época da contenção de Eleonor. A literatura médica padrão classifica aquilo como uma infecção virulenta desconhecida ou necrose fulminante. Mas o padrão celular não bate com nada que a biologia terrestre conhece:
+
+As células não morrem por apoptose ou lise bacteriana; elas sofrem uma dessecação cinzenta, como se todo o líquido intracelular fosse drenado e substituído por uma matriz fibrosa sem circulação de sangue. É como se a carne humana não estivesse morrendo, mas sendo lentamente "preparada" para servir de condutor para outra coisa. Nenhum antibiótico ou antifúngico sequer desacelerou o processo.`,
+      comments: [
+        { author: 'u/analista_defesa', time: 'Há 11 dias', text: 'Se você reparar na história antiga, toda vez que essa necrose cinzenta aparece na fronteira de um império, a floresta ao redor cresce o dobro no ano seguinte.' }
+      ]
+    },
+    {
+      id: 4,
+      subreddit: 'r/Fraguiktos',
+      author: 'u/vigia_noturno',
+      time: 'Há 15 dias',
+      votes: 485,
+      commentsCount: 67,
+      title: 'Cuidado ao andar perto do Pavilhão Juvenil abandonado na borda da Mata do Norte.',
+      content: `Faço ronda noturna no galpão de ferramentas da prefeitura que fica a 300 metros daquele pavilhão de acolhimento desativado. Nas últimas semanas vi movimentação estranha:
+
+Jovens andando sozinhos ou em duplas pela trilha de cascalho às 2h da madrugada. Eles não carregam lanterna nem falam alto, andam com uma postura rígida e cabeça baixa. Do prédio abandonado sobe um cheiro forte, enjoativo, uma mistura de terra recém-cavada com ferro e perfume floral doce. Já chamei a polícia duas vezes, mas a viatura nunca passa por aquela estrada de terra. Não cheguem perto daquele portão enferrujado.`,
+      comments: [
+        { author: 'u/insonia_frag', time: 'Há 14 dias', text: 'Tem uma senhora de casaco escuro que costuma levar mantimentos pra lá no fim da tarde. Dizem que é assistência comunitária, mas ninguém da igreja local conhece ela.' }
+      ]
+    },
+    {
+      id: 5,
+      subreddit: 'r/Conspiracoes',
+      author: 'u/furo_jornalistico',
+      time: 'Há 18 dias',
+      votes: 1420,
+      commentsCount: 156,
+      title: 'O que realmente encontraram na cratera do "Grande Terremoto" em Paládium?',
+      content: `Conversei com um socorrista da equipe de contenção que trabalhou na fenda central de Paládium. Ele foi aposentado compulsoriamente e hoje vive sob medicação controlada.
+
+Segundo ele, a versão do tremor de terra é uma fraude completa para acalmar o público. As fundações da cidade não cederam por falha geológica; a terra se abriu porque algo colossal no subsolo se remexeu.
+
+Lá embaixo, nos níveis inferiores da mina, eles encontraram os corpos dos trabalhadores soterrados intactos, sem ossos quebrados. Porém, todos tinham vinhas prateadas ultrafinas crescendo por baixo das pálpebras, e quando miravam as lanternas nos olhos deles, havia reflexos fosforescentes de luz ciano, rosa e verde correndo pelas pupilas, como se a mente deles ainda estivesse conectada a um circuito invisível.`,
+      comments: [
+        { author: 'u/erudito_abissal', time: 'Há 17 dias', text: 'As vinhas prateadas são o micélio da semente estelar. Quem olha muito tempo para a cratera começa a escutar o zumbido das raízes.' }
+      ]
+    },
+    {
+      id: 6,
+      subreddit: 'r/Fraguiktos',
+      author: 'u/arquivo_urbano',
+      time: 'Há 22 dias',
+      votes: 540,
+      commentsCount: 88,
+      title: 'Por que tantas pessoas desaparecem perto da Mata do Norte há anos e a polícia nunca acha os corpos?',
+      content: `Fiz um levantamento dos boletins de ocorrência arquivados da comarca de Fraguiktos nos últimos 5 anos. Há um padrão bizarro que ninguém na prefeitura quer admitir:
+
+Pelo menos 14 jovens entre 16 e 22 anos desapareceram no raio de 3 quilômetros da orla da floresta. Dois casos aconteceram há quase dois anos (duas estudantes que sumiram no mesmo trimestre sem deixar rastro de fuga ou celular), e agora recentemente tivemos o caso da menina Kali perto da ponte.
+
+Nenhuma pegada de luta, nenhuma roupa rasgada, nenhum cão farejador que consiga manter o rastro depois da linha das árvores velhas. É como se as pessoas simplesmente chegassem na borda da mata e fossem apagadas do mapa.`,
+      comments: [
+        { author: 'u/busca_local', time: 'Há 21 dias', text: 'A família da menina Kali ainda tá procurando respostas na delegacia, mas o delegado disse que não tem verba pra buscas na mata fechada.' }
+      ]
+    },
+    {
+      id: 7,
+      subreddit: 'r/Fraguiktos',
+      author: 'u/saneamento_04',
+      time: 'Há 9 dias',
+      votes: 290,
+      commentsCount: 42,
+      title: 'Os ratos das galerias pluviais estão ficando enormes e com tumores cinzas.',
+      content: `Trabalho na manutenção das galerias pluviais e esgotos do quadrante norte. O pessoal da nossa equipe já se recusou a descer duas vezes esta semana.
+
+Os roedores lá embaixo estão do tamanho de gatos grandes, mas o pior não é o tamanho: eles têm nódulos cinzentos e duros crescendo nas costas e na base do crânio. E eles não fogem da luz da lanterna como ratos normais; eles param, ficam encarando em bando com os olhos opacos e avançam nas galochas se a gente der um passo pra frente. Tem algo contaminando a água profunda da drenagem que vem da mata.`,
+      comments: [
+        { author: 'u/morador_bloco_c', time: 'Há 8 dias', text: 'Ouço guinchos horríveis vindos dos bueiros da calçada perto da meia-noite. Tá insalubre morar aqui.' }
+      ]
+    },
+    {
+      id: 8,
+      subreddit: 'r/Conspiracoes',
+      author: 'u/erudito_abissal',
+      time: 'Há 24 dias',
+      votes: 980,
+      commentsCount: 110,
+      title: 'Tradução dos fragmentos pré-históricos: O "Rei sob a Casca" e a Semente que veio das estrelas.',
+      content: `Consegui acesso fotográfico às tabuletas de argila negra resgatadas das escavações das cavernas do sul de Paládium.
+
+O texto pré-diluviano não descreve deuses com feições humanas, nem guerreiros celestes. As gravuras representam um esporo disforme que desceu do vazio interestelar quando a Terra ainda era jovem. Os antigos o chamavam de "Aquele que repousa sob a Casca".
+
+O texto adverte que Ele não precisa de exércitos: Ele semeia parasitas sutis na biosfera. Ele dorme nas raízes mais antigas da terra aguardando que as civilizações fiquem maduras, doentes e cansadas. Quando a agonia coletiva atinge o ápice, a floresta abre suas fauces para sugar o que resta da consciência humana.`,
+      comments: [
+        { author: 'u/observador_do_vazio', time: 'Há 23 dias', text: 'Essa tradução coincide perfeitamente com os alinhamentos astronômicos das ruínas. Ele não é uma metáfora, é uma entidade física que se alimenta de biomassa e almas esgotadas.' }
+      ]
+    },
+    {
+      id: 9,
+      subreddit: 'r/Fraguiktos',
+      author: 'u/colecionador_rua',
+      time: 'Há 16 dias',
+      votes: 380,
+      commentsCount: 53,
+      title: 'Alguém já comprou coisas daquele mercador bizarro que pede "vidrilhos" em vez de dinheiro?',
+      content: `Estava voltando do trabalho tarde e peguei o atalho pelo beco das oficinas velhas. Tinha uma tenda improvisada de pano escuro e um lampião de querosene âmbar aceso. Um homem alto, de manto e voz sussurrada chamado Igris me ofereceu um frasco de óleo e frutas de casca verde simétrica.
+
+Tirei a carteira com notas de dinheiro, mas ele empurrou minha mão rindo baixinho. Disse que papel-moeda de governo não vale nada onde ele anda, e que só aceitava "vidrilhos polidos" ou artefatos que já tivessem tocado a morte. No dia seguinte voltei lá ao meio-dia e o beco estava completamente trancado com cadeados enferrujados há anos.`,
+      comments: [
+        { author: 'u/antiquario_cinza', time: 'Há 15 dias', text: 'Cuidado com mercadores de relíquias. Eles cobram com moedas que você só percebe que perdeu depois que a alma foi embora.' }
+      ]
+    },
+    {
+      id: 10,
+      subreddit: 'r/Conspiracoes',
+      author: 'u/sono_pesado',
+      time: 'Há 10 dias',
+      votes: 715,
+      commentsCount: 97,
+      title: 'Sonhos repetitivos com linhas laranjas costurando a pele.',
+      content: `Preciso saber se mais alguém tá passando por isso. Há pelo menos dez noites acordo de sobressalto no meio da madrugada com o mesmo pesadelo vívido:
+
+Eu estou deitado numa clareira de folhas secas e o céu tem uma cor escura, arroxeada. Do alto das copas das árvores descem centenas de fios incandescentes, brilhando em laranja vivo como brasas de forja. Esses fios entram pelos meus pulsos e costuram meus tendões até o peito. Não dói, mas sinto um calor sufocante e acordo com os dois braços dormentes e um gosto amargo de ferrugem na língua.`,
+      comments: [
+        { author: 'u/bio_oculto', time: 'Há 9 dias', text: 'Fios laranjas são o sinal de ancoramento. É o rito de drenagem preparando o recipiente antes do corte final.' }
+      ]
+    },
+    {
+      id: 11,
+      subreddit: 'r/Conspiracoes',
+      author: 'u/analista_defesa',
+      time: 'Há 20 dias',
+      votes: 830,
+      commentsCount: 75,
+      title: 'O sumiço do General Zael em Paládium tem ligação com as vinhas prateadas?',
+      content: `O Ministério da Defesa insiste que o General Zael faleceu em decorrência do colapso estrutural das fundações durante a operação de resgate nas ruínas de Paládium.
+
+Porém, um membro da escolta de infantaria revelou que o general foi visto caminhando voluntariamente para dentro da câmara mais profunda horas após o término do terremoto. Ele não carregava armamento, estava descalço e repetia em voz baixa que "o ciclo precisava ser concluído". Desde então, nenhum pertence pessoal ou placa de identificação foi entregue à família.`,
+      comments: [
+        { author: 'u/mod_global', time: 'Há 19 dias', text: 'Mantenham o debate nos limites teóricos. Não citem nomes de militares da ativa.' }
+      ]
+    },
+    {
+      id: 12,
+      subreddit: 'r/Fraguiktos',
+      author: 'u/explorador_sub',
+      time: 'Há 7 dias',
+      votes: 490,
+      commentsCount: 61,
+      title: 'Relato de Urbex: Entramos no esgoto abaixo do bairro norte e o túnel não tinha fim.',
+      content: `Eu e dois amigos descemos na galeria pluvial desativada perto da linha do trem velho. Estávamos com lanternas táticas e botas impermeáveis para gravar um vídeo de exploração urbana.
+
+Depois de uns 40 minutos de caminhada contra o fluxo da água, percebemos que o túnel não seguia mais o traçado das ruas do mapa: a alvenaria de concreto sumiu e virou uma passagem esculpida em pedra escura e raízes petrificadas.
+
+O ar cheirava a ferro velho e vinagre. Mais na frente, na escuridão onde a lanterna não alcançava, escutamos um barulho rastejante de algo muito pesado sendo arrastado na lama. No momento em que apontei a luz pra frente, senti uma queimação súbita atrás dos olhos e um pânico irracional, daqueles de querer arrancar a própria pele. Saímos correndo desesperados e nunca mais descemos naquele bueiro.`,
+      comments: [
+        { author: 'u/saneamento_04', time: 'Há 6 dias', text: 'Eu avisei no outro post que aquela galeria tá interditada por um motivo. Vocês deram sorte de voltar inteiros.' }
+      ]
+    },
+    {
+      id: 13,
+      subreddit: 'r/Conspiracoes',
+      author: 'u/antiquario_cinza',
+      time: 'Há 13 dias',
+      votes: 1150,
+      commentsCount: 134,
+      title: 'Objetos de madeira preta sem fechadura encontrados em espólios de pessoas com doenças terminais.',
+      content: `Trabalho avaliando espólios e leilões residenciais há mais de trinta anos. Nos últimos três anos, em pelo menos quatro casas de pacientes que faleceram de doenças degenerativas crônicas ou que desapareceram sem explicação, encontrei o mesmo artefato:
+
+Uma caixinha retangular de madeira negra polida com detalhes em metal dourado fosco. Não tem fechadura, nem dobradiça visível, nem parafuso. Se você tentar forçar com uma alavanca de aço, a madeira não arranha e a madeira absorve o impacto sem fazer barulho.
+
+O rumor entre os coveiros antigos é que essas caixas não são feitas para serem arrombadas: elas só reagem e destrancam sozinhas quando são seguradas pelas mãos de alguém que já foi condenado pela medicina e que já aceitou completamente o fim da própria vida.`,
+      comments: [
+        { author: 'u/erudito_abissal', time: 'Há 12 dias', text: 'São as chaves de vedação dos portais. A madeira negra só ressoa com frequências de entropia humana terminal.' }
+      ]
+    },
+    {
+      id: 14,
+      subreddit: 'r/Conspiracoes',
+      author: 'u/observador_do_vazio',
+      time: 'Há 14 dias',
+      votes: 2490,
+      commentsCount: 312,
+      isFavorited: true,
+      title: '★ [FAVORITADO PELA SARA] A Verdade sobre "Ele": Não é um espírito da floresta, é um Predador Cósmico de biosferas.',
+      content: `Pare de tentar entender os cultos da mata como religião. Olhem para o padrão astronômico e para o que aconteceu em Paládium. Aquilo que os antigos chamavam apenas de "Ele" é uma entidade cósmica parasitária que viaja pelo vazio devorando mundos inteiros.
+
+Ele não destrói planetas com fogo; Ele se infiltra na camada espiritual como um micélio ou raiz invisível e espera. Como Ele é vasto demais para atravessar direto para a nossa realidade física, Ele precisa que os próprios habitantes abram "Portas" pelo lado de dentro.
+
+É por isso que Ele atrai quem está morrendo ou em depressão profunda. Uma mente saudável tem defesas naturais, mas quem já perdeu a esperança está com a alma aberta. No momento em que a pessoa aceita o fim, cumpre o rito de sangue para concentrar energia vital fresca e abre a Porta nas árvores, a mente dela é presa numa ilusão perfeita — um "Jardim" colorido onde não existe dor — enquanto, no mundo real, a entidade devora sua alma e usa seu corpo para espalhar raízes prateadas pela Terra. Ele já transformou mundos inteiros em cascas mortas exatamente assim.`,
+      comments: [
+        {
+          author: 'u/ceticista_99',
+          time: 'Há 12 dias',
+          text: 'Ótima creepypasta, nota 8/10. Mas falando sério, a galera precisa parar de misturar luto e depressão com ficção científica lovecraftiana.'
+        },
+        {
+          author: 'u/s_auguil',
+          isSara: true,
+          time: 'Há 9 dias',
+          text: 'Se a pessoa já vai morrer no escuro de qualquer jeito, qual é a diferença entre apodrecer numa cama ou dormir nesse Jardim? Pelo menos lá dentro o barulho para.'
+        }
+      ]
+    },
+    {
+      id: 15,
+      subreddit: 'r/Conspiracoes',
+      author: 'u/foto_subterranea',
+      time: 'Há 11 dias',
+      votes: 560,
+      commentsCount: 47,
+      title: 'Estátuas de árvores secas encontradas em túneis abandonados.',
+      content: `Em uma incursão fotográfica nas galerias subterrâneas desativadas que passam por baixo da linha do trem, registramos pequenas estruturas cônicas montadas com galhos entrelaçados, pedaços de ferro enferrujado e fios laranjas brilhantes.
+
+Ao redor de cada estrutura havia marcas circulares no chão de terra batida, como se várias pessoas tivessem se ajoelhado ali em círculo por horas. O ambiente parecia estranhamente quente em comparação com o resto do túnel úmido.`,
+      comments: [
+        { author: 'u/vigia_noturno', time: 'Há 10 dias', text: 'São altares de ancoragem. Quem monta isso tá chamando as raízes pra superfície.' }
+      ]
+    },
+    {
+      id: 16,
+      subreddit: 'r/Conspiracoes',
+      author: 'u/radio_amador',
+      time: 'Há 8 dias',
+      votes: 430,
+      commentsCount: 52,
+      title: 'Anomalias no rádio AM: Sussurros gravados em fitas cassete velhas perto do bosque.',
+      content: `Faço captação de frequências AM em ondas curtas como hobby de radioamadorismo. Montei meu receptor num barracão perto da orla da mata.
+
+Quando deixo gravadores de fita magnética rodando de madrugada na frequência 610 kHz, as fitas registram ruídos polifônicos: são dezenas de vozes sobrepostas falando ao mesmo tempo numa cadência monocórdica. Uma das fitas esquentou tanto durante a gravação que o plástico derreteu e soltou uma fumaça fina avermelhada com cheiro de ferrugem.`,
+      comments: [
+        { author: 'u/insonia_frag', time: 'Há 7 dias', text: 'Eu sintonizei 610 kHz no rádio de pilha do meu avô e escutei meu próprio nome sendo soletrado. Desliguei na hora e tirei as pilhas.' }
+      ]
+    },
+    {
+      id: 17,
+      subreddit: 'r/Fraguiktos',
+      author: 'u/morador_bloco_c',
+      time: 'Há 5 dias',
+      votes: 395,
+      commentsCount: 64,
+      title: 'Pequenos animais encontrados abertos com cortes cirúrgicos perfeitos perto da grade do esgoto.',
+      content: `Quem tem animal de estimação no bairro norte, mantenha preso dentro de casa.
+
+Encontraram três lebres e dois gatos mortos perto do bueiro da curva da mata. Não foi ataque de cachorro nem atropelamento: os animais foram abertos em linha reta no peito com cortes precisos de bisturi cirúrgico, sem dilaceração de tecidos, e todo o sangue do corpo havia sido drenado de forma limpa. Quem tá fazendo isso tem formação médica ou treinamento anatômico rigoroso.`,
+      comments: [
+        { author: 'u/residente_clinica', time: 'Há 4 dias', text: 'Esse tipo de incisão exige pinça hemostática e lâmina número 11. Não é coisa de moleque fazendo vandalismo, é procedimento de laboratório.' }
+      ]
+    },
+    {
+      id: 18,
+      subreddit: 'r/Conspiracoes',
+      author: 'u/residente_clinica',
+      time: 'Há 6 dias',
+      votes: 890,
+      commentsCount: 92,
+      title: 'O fenômeno da "Anestesia Cinzenta": Pacientes terminais que param de sentir dor do dia para a noite.',
+      content: `Sou residente em enfermagem oncológica. Há um padrão clínico inexplicável que já presenciei em pelo menos três pacientes desenganados nas últimas semanas:
+
+Pessoas que estavam há meses sob doses pesadas de morfina, chorando de dor dia e noite, de repente acordam completamente serenas. A dor desaparece de forma total e inexplicável, a frequência cardíaca cai para 45 bpm e os olhos perdem qualquer expressão de angústia.
+
+Eles ficam absolutamente calmos, apáticos, e começam a falar em tom suave que "o frio não machuca mais" e que "a caixa preta finalmente destrancou". Poucos dias depois dessa mudança súbita, os três fugiram de suas casas durante a noite e nunca mais foram localizados.`,
+      comments: [
+        { author: 'u/antiquario_cinza', time: 'Há 5 dias', text: 'A anestesia é o último estágio de drenagem. A mente já foi desprendida do corpo; o que sobra andando pela casa é só uma marionete.' }
+      ]
+    },
+    {
+      id: 19,
+      subreddit: 'r/Conspiracoes',
+      author: 'u/folclore_local',
+      time: 'Há 16 dias',
+      votes: 770,
+      commentsCount: 84,
+      title: 'A lenda do Canibalismo Ritual nas matas antigas de Fraguiktos.',
+      content: `Pesquisando os manuscritos etnográficos da virada do século XX sobre os antigos colonos da região, me deparei com uma doutrina ritualística perturbadora:
+
+Segundo os fragmentos, as entidades que habitam o solo profundo das florestas consideram a alma de quem está morrendo ou deprimido como "fraca e estéril" para alimentar os portais. Para que a passagem de um doente seja aceita pelo Rei sob a Casca, o suplicante precisava oferecer um tributo de energia vital fresca: era necessário consumir a carne ainda quente de uma vítima jovem e saudável para acender o fogo interior antes de cruzar o umbral das árvores.`,
+      comments: [
+        { author: 'u/erudito_abissal', time: 'Há 15 dias', text: 'O rito de sangue não é crueldade por sadismo; na lógica parasitária, é uma transfusão forçada de vitalidade para que o portador aguente a carga dimensional da Porta.' }
+      ]
+    },
+    {
+      id: 20,
+      subreddit: 'r/Fraguiktos',
+      author: 'u/busca_local',
+      time: 'Há 3 dias',
+      votes: 680,
+      commentsCount: 115,
+      title: 'Alguém viu uma garota andando sozinha perto da ponte velha às 14:15?',
+      content: `Amigos de Fraguiktos, estamos desesperados atrás de qualquer informação sobre a menina Kali.
+
+Ela foi vista pela última vez na tarde de quinta-feira, por volta das 14h15, caminhando pela estrada vicinal que leva à ponte velha de madeira perto da borda do bosque. Ela vestia um casaco cinza e usava um laço rosa no cabelo. Quem tiver qualquer pista ou tiver visto algum veículo estranho na região da ponte, por favor entre em contato com a família ou na delegacia local.`,
+      comments: [
+        { author: 'u/vigia_noturno', time: 'Há 2 dias', text: 'Eu vi a bicicleta dela jogada na sarjeta perto da curva às 16h, mas não tinha ninguém por perto. Já repassei isso aos parentes.' },
+        { author: 'u/morador_bloco_c', time: 'Há 1 dia', text: 'Deus conforte a família. Mais uma história triste que a polícia vai fingir que não viu.' }
+      ]
+    }
+  ],
+
+  // 5. Partituras Clássicas
+  sheetMusicPieces: [
+    { title: 'Clair de Lune', composer: 'Claude Debussy (1890)', key: 'Ré Bemol Maior', difficulty: 'Avançado', pages: '6 Páginas', format: 'PDF Partitura' },
+    { title: 'Valsa em Lá Menor Op. 34 No. 2', composer: 'Frédéric Chopin (1831)', key: 'Lá Menor', difficulty: 'Intermediário', pages: '4 Páginas', format: 'PDF Partitura' },
+    { title: 'Gymnopédie No. 1', composer: 'Erik Satie (1888)', key: 'Ré Maior', difficulty: 'Fácil / Médio', pages: '3 Páginas', format: 'PDF Partitura' },
+    { title: 'Canção Antiga de Ninar', composer: 'Folclore Regional / Domínio Público', key: 'Mi Menor', difficulty: 'Iniciante', pages: '2 Páginas', format: 'Cifra & Partitura' }
+  ],
+
+  // =========================================================================
+  // MÉTODOS DE CONTROLE DA ÁREA DE TRABALHO E JANELAS
+  // =========================================================================
+  init() {
+    if (this.initialized) return;
+    this.initialized = true;
+
+    // Vincula clique fora para fechar menu iniciar
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('sara-start-menu');
+      const btn = document.querySelector('.sara-start-btn');
+      if (menu && menu.style.display !== 'none' && !menu.contains(e.target) && (!btn || !btn.contains(e.target))) {
+        this.closeStartMenu();
+      }
+    });
+
+    this.renderFolderFiles(this.activeFolder);
+    this.renderTrashFiles();
+    this.renderHistoryList();
+    this.goFragSearchHome();
+  },
+
+  openApp(appName) {
+    this.init();
+    this.activeApp = appName;
+
+    // Atualiza botoes na taskbar
+    const btnExp = document.getElementById('task-btn-explorer');
+    const btnBrw = document.getElementById('task-btn-browser');
+    const btnCam = document.getElementById('task-btn-cameras');
+    if (btnExp) btnExp.classList.toggle('active', appName === 'explorer');
+    if (btnBrw) btnBrw.classList.toggle('active', appName === 'browser');
+    if (btnCam) btnCam.classList.toggle('active', appName === 'cameras');
+
+    if (appName === 'explorer') {
+      const win = document.getElementById('sara-win-explorer');
+      if (win) {
+        win.style.display = 'flex';
+        this.bringWindowToFront(win);
+      }
+      this.switchFolder(this.activeFolder || 'Estudos_Primordio');
+    } else if (appName === 'trash') {
+      const win = document.getElementById('sara-win-trash');
+      if (win) {
+        win.style.display = 'flex';
+        this.bringWindowToFront(win);
+      }
+      this.renderTrashFiles();
+    } else if (appName === 'browser') {
+      const win = document.getElementById('sara-win-browser');
+      if (win) {
+        win.style.display = 'flex';
+        this.bringWindowToFront(win);
+      }
+    } else if (appName === 'cameras') {
+      if (window.MesaNotebookSara) {
+        MesaNotebookSara.showCctvStage(MesaNotebookSara.activeCam || 1);
+      }
+    }
+  },
+
+  closeApp(appName) {
+    if (appName === 'explorer') {
+      const win = document.getElementById('sara-win-explorer');
+      if (win) win.style.display = 'none';
+      const btn = document.getElementById('task-btn-explorer');
+      if (btn) btn.classList.remove('active');
+    } else if (appName === 'trash') {
+      const win = document.getElementById('sara-win-trash');
+      if (win) win.style.display = 'none';
+    } else if (appName === 'browser') {
+      const win = document.getElementById('sara-win-browser');
+      if (win) win.style.display = 'none';
+      const btn = document.getElementById('task-btn-browser');
+      if (btn) btn.classList.remove('active');
+    } else if (appName === 'viewer') {
+      const win = document.getElementById('sara-win-viewer');
+      if (win) win.style.display = 'none';
+    }
+    if (this.activeApp === appName) {
+      this.activeApp = null;
+    }
+  },
+
+  minimizeApp(appName) {
+    this.closeApp(appName);
+  },
+
+  maximizeApp(appName) {
+    const win = document.getElementById(`sara-win-${appName}`);
+    if (!win) return;
+    if (win.dataset.isMaximized === 'true') {
+      win.dataset.isMaximized = 'false';
+      win.style.width = '';
+      win.style.height = '';
+      win.style.top = '40px';
+      win.style.borderRadius = '8px';
+    } else {
+      win.dataset.isMaximized = 'true';
+      win.style.width = '100vw';
+      win.style.height = 'calc(100vh - 44px)';
+      win.style.top = '0';
+      win.style.borderRadius = '0';
+    }
+  },
+
+  bringWindowToFront(win) {
+    document.querySelectorAll('.sara-window').forEach(w => w.style.zIndex = '50');
+    win.style.zIndex = '55';
+  },
+
+  toggleStartMenu() {
+    const menu = document.getElementById('sara-start-menu');
+    if (!menu) return;
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+  },
+
+  closeStartMenu() {
+    const menu = document.getElementById('sara-start-menu');
+    if (menu) menu.style.display = 'none';
+  },
+
+  // =========================================================================
+  // EXPLORADOR DE ARQUIVOS
+  // =========================================================================
+  switchFolder(folderName) {
+    this.activeFolder = folderName;
+    const pathEl = document.getElementById('explorer-current-path');
+    if (pathEl) {
+      pathEl.textContent = `Este Computador > Documentos > ${folderName}`;
+    }
+
+    const btnEstudos = document.getElementById('btn-folder-estudos');
+    const btnPiano = document.getElementById('btn-folder-piano');
+    const btnPessoal = document.getElementById('btn-folder-pessoal');
+    if (btnEstudos) btnEstudos.classList.toggle('active', folderName === 'Estudos_Primordio');
+    if (btnPiano) btnPiano.classList.toggle('active', folderName === 'Piani_e_Partituras');
+    if (btnPessoal) btnPessoal.classList.toggle('active', folderName === 'Pessoal');
+
+    this.renderFolderFiles(folderName);
+  },
+
+  renderFolderFiles(folderName) {
+    const container = document.getElementById('sara-explorer-file-list');
+    if (!container) return;
+
+    const list = this.folders[folderName] || [];
+    let html = '';
+
+    list.forEach(file => {
+      let iconSvg = '';
+      if (file.type === 'pdf') {
+        iconSvg = `<svg viewBox="0 0 24 24" width="36" height="36" fill="#ef4444"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8" fill="#fca5a5"></polyline><text x="7" y="18" fill="#fff" font-size="6" font-family="sans-serif" font-weight="bold">PDF</text></svg>`;
+      } else if (file.type === 'locked') {
+        iconSvg = `<svg viewBox="0 0 24 24" width="36" height="36" fill="#f59e0b"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4" fill="none" stroke="#f59e0b" stroke-width="2"></path></svg>`;
+      } else {
+        iconSvg = `<svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#94a3b8" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>`;
+      }
+
+      html += `
+        <div class="sara-file-item" onclick="MesaSaraDesktop.openFile('${folderName}', '${file.id}')" title="${file.name}">
+          <div class="sara-file-icon">${iconSvg}</div>
+          <div class="sara-file-name">${file.name}</div>
+          <div class="sara-file-meta">${file.size || ''}</div>
+        </div>
+      `;
+    });
+
+    container.innerHTML = html;
+  },
+
+  renderTrashFiles() {
+    const container = document.getElementById('sara-trash-file-list');
+    if (!container) return;
+
+    let html = '';
+    this.trashFiles.forEach(file => {
+      let iconSvg = '';
+      if (file.type === 'pdf') {
+        iconSvg = `<svg viewBox="0 0 24 24" width="36" height="36" fill="#ef4444"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8" fill="#fca5a5"></polyline><text x="7" y="18" fill="#fff" font-size="6" font-family="sans-serif" font-weight="bold">PDF</text></svg>`;
+      } else {
+        iconSvg = `<svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#94a3b8" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>`;
+      }
+
+      html += `
+        <div class="sara-file-item" onclick="MesaSaraDesktop.openTrashFile('${file.id}')" title="${file.name}">
+          <div class="sara-file-icon">${iconSvg}</div>
+          <div class="sara-file-name">${file.name}</div>
+          <div class="sara-file-meta">${file.size || ''}</div>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+  },
+
+  openFile(folderName, fileId) {
+    const list = this.folders[folderName] || [];
+    const file = list.find(f => f.id === fileId);
+    if (!file) return;
+
+    if (file.type === 'locked') {
+      this.pendingLockedFile = file;
+      this.openLockedPrompt();
+      return;
+    }
+
+    this.renderDocumentViewer(file);
+  },
+
+  openTrashFile(fileId) {
+    const file = this.trashFiles.find(f => f.id === fileId);
+    if (!file) return;
+    this.renderDocumentViewer(file);
+  },
+
+  renderDocumentViewer(file) {
+    const win = document.getElementById('sara-win-viewer');
+    const filenameEl = document.getElementById('sara-viewer-filename');
+    const contentEl = document.getElementById('sara-viewer-content');
+    if (!win || !contentEl) return;
+
+    if (filenameEl) filenameEl.textContent = file.name || file.unlockedTitle || 'documento';
+
+    if (file.type === 'pdf') {
+      contentEl.innerHTML = `
+        <div class="sara-pdf-paper">
+          <div class="pdf-header">
+            <div>
+              <div class="pdf-header-title">${file.title || file.name}</div>
+              <div class="pdf-header-sub">${file.subtitle || ''}</div>
+            </div>
+            <div class="pdf-badge">PDF • PÁG 1/1</div>
+          </div>
+          ${file.content}
+        </div>
+      `;
+    } else {
+      contentEl.innerHTML = `
+        <div class="sara-txt-content">${file.content}</div>
+      `;
+    }
+
+    win.style.display = 'flex';
+    this.bringWindowToFront(win);
+  },
+
+  // Modal de Senha para Arquivo Protegido
+  openLockedPrompt() {
+    const modal = document.getElementById('sara-locked-modal');
+    const input = document.getElementById('sara-file-password-input');
+    const err = document.getElementById('sara-file-password-error');
+    if (modal) modal.style.display = 'flex';
+    if (err) err.style.display = 'none';
+    if (input) {
+      input.value = '';
+      setTimeout(() => input.focus(), 80);
+    }
+  },
+
+  closeLockedPrompt() {
+    const modal = document.getElementById('sara-locked-modal');
+    if (modal) modal.style.display = 'none';
+    this.pendingLockedFile = null;
+  },
+
+  submitFilePassword() {
+    const input = document.getElementById('sara-file-password-input');
+    const err = document.getElementById('sara-file-password-error');
+    const val = input ? input.value.trim() : '';
+
+    if (val === '1415' || val === '0408') {
+      const file = this.pendingLockedFile;
+      this.closeLockedPrompt();
+      if (file) {
+        this.renderDocumentViewer({
+          name: file.unlockedTitle || 'particular.txt',
+          type: 'txt',
+          content: file.content
+        });
+      }
+      return;
+    }
+
+    if (err) err.style.display = 'block';
+    if (input) {
+      input.value = '';
+      input.focus();
+    }
+  },
+
+  // =========================================================================
+  // NAVEGADOR WEB (FRAGSEARCH & READIT)
+  // =========================================================================
+  setBrowserUrl(url) {
+    const input = document.getElementById('sara-browser-url-input');
+    if (input) input.value = url;
+  },
+
+  goFragSearchHome() {
+    this.browserView = 'home';
+    this.setBrowserUrl('https://fragsearch.net');
+    const viewport = document.getElementById('sara-browser-viewport');
+    if (!viewport) return;
+
+    viewport.innerHTML = `
+      <div class="fragsearch-home">
+        <div class="fragsearch-logo">
+          <span class="logo-f1">F</span><span class="logo-r">r</span><span class="logo-a">a</span><span class="logo-g">g</span><span class="logo-s">S</span><span class="logo-e">e</span><span class="logo-a2">a</span><span class="logo-r2">r</span><span class="logo-c">c</span><span class="logo-h">h</span>
+        </div>
+        <div class="fragsearch-form">
+          <div class="fragsearch-input-box">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#64748b" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="fragsearch-main-input" class="fragsearch-input" placeholder="Pesquisar em Fraguiktos e na web..." autocomplete="off" onkeydown="if(event.key==='Enter') MesaSaraDesktop.execFragSearch(this.value)">
+          </div>
+          <div class="fragsearch-buttons">
+            <button type="button" class="fragsearch-btn" onclick="MesaSaraDesktop.execFragSearch(document.getElementById('fragsearch-main-input').value)">Pesquisa FragSearch</button>
+            <button type="button" class="fragsearch-btn" onclick="MesaSaraDesktop.openReadItTopic(14)">Estou com Sorte</button>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  execFragSearch(query) {
+    if (!query || !query.trim()) {
+      this.goFragSearchHome();
+      return;
+    }
+    const cleanQ = query.trim().toLowerCase();
+    this.browserView = 'results';
+    this.setBrowserUrl(`https://fragsearch.net/search?q=${encodeURIComponent(query)}`);
+
+    // Busca tópicos correspondentes no fórum ReadIt
+    const matched = this.readItTopics.filter(t => {
+      const full = (t.title + ' ' + t.content + ' ' + t.author).toLowerCase();
+      const terms = cleanQ.split(/\s+/);
+      return terms.some(term => full.includes(term));
+    });
+
+    const viewport = document.getElementById('sara-browser-viewport');
+    if (!viewport) return;
+
+    let resultsHtml = '';
+    if (matched.length === 0) {
+      resultsHtml = `
+        <div class="search-result-item">
+          <div class="result-title" style="color: #cbd5e1; cursor: default;">Nenhum resultado local exato encontrado para "${query}".</div>
+          <div class="result-snippet">Tente palavras-chave como <em>deus, ele, porta, floresta, praga, paladium, desaparecidos, esgoto, caixa, cosmos, partituras</em>.</div>
+        </div>
+      `;
+    } else {
+      matched.forEach(t => {
+        resultsHtml += `
+          <div class="search-result-item">
+            <div class="result-url">readit.net > ${t.subreddit} > topico_${t.id}</div>
+            <a class="result-title" onclick="MesaSaraDesktop.openReadItTopic(${t.id})">${t.title}</a>
+            <div class="result-snippet">${t.content.substring(0, 190)}...</div>
+          </div>
+        `;
+      });
+    }
+
+    viewport.innerHTML = `
+      <div class="fragsearch-results-page">
+        <div class="results-stats">Aproximadamente ${matched.length} resultados encontrados para "${query}"</div>
+        ${resultsHtml}
+        <div style="margin-top: 32px; padding-top: 16px; border-top: 1px solid #1e293b;">
+          <a class="result-title" style="font-size: 13px;" onclick="MesaSaraDesktop.openReadItSubreddit()">
+            &rarr; Ver todos os 20 tópicos no fórum ReadIt (r/Conspiracoes &amp; r/Fraguiktos)
+          </a>
+        </div>
+      </div>
+    `;
+  },
+
+  openReadItSubreddit() {
+    this.browserView = 'subreddit';
+    this.setBrowserUrl('https://readit.net/r/Conspiracoes+Fraguiktos');
+    const viewport = document.getElementById('sara-browser-viewport');
+    if (!viewport) return;
+
+    let postsHtml = '';
+    this.readItTopics.forEach(t => {
+      const isFav = !!t.isFavorited;
+      postsHtml += `
+        <div class="readit-post-card ${isFav ? 'favorited-post' : ''}" onclick="MesaSaraDesktop.openReadItTopic(${t.id})">
+          <div class="readit-vote-column">
+            <span class="vote-arrow">&#9650;</span>
+            <span>${t.votes}</span>
+            <span class="vote-arrow">&#9660;</span>
+          </div>
+          <div class="readit-post-main">
+            <div class="post-meta">
+              <span>${t.subreddit}</span> • <span class="post-author">${t.author}</span> • <span>${t.time}</span>
+              ${isFav ? '<span style="color:#f59e0b; font-weight:bold;">★ FAVORITO</span>' : ''}
+            </div>
+            <div class="post-title">${t.title}</div>
+            <div class="post-preview-text">${t.content.substring(0, 160)}...</div>
+            <div class="post-footer-stats">
+              <span>&#128172; ${t.commentsCount || (t.comments ? t.comments.length : 0)} comentários</span>
+              <span>Compartilhar</span>
+              <span>Salvar</span>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    viewport.innerHTML = `
+      <div class="readit-container">
+        <div class="readit-subreddit-header">
+          <div>
+            <div class="subreddit-info-title">r/Conspiracoes &bull; r/Fraguiktos</div>
+            <div class="subreddit-info-desc">Comunidade local de investigações urbanas, teorias e relatos não confirmados da Mata do Norte e Paládium.</div>
+          </div>
+          <div style="font-size: 11px; color: #64748b;">42.8k membros</div>
+        </div>
+        <div class="readit-posts-list">
+          ${postsHtml}
+        </div>
+      </div>
+    `;
+  },
+
+  openReadItTopic(topicId) {
+    const topic = this.readItTopics.find(t => t.id === Number(topicId));
+    if (!topic) return;
+
+    this.browserView = 'topic';
+    this.currentTopicId = topic.id;
+    this.setBrowserUrl(`https://readit.net/${topic.subreddit}/topico_${topic.id}`);
+
+    const viewport = document.getElementById('sara-browser-viewport');
+    if (!viewport) return;
+
+    let commentsHtml = '';
+    if (topic.comments && topic.comments.length > 0) {
+      topic.comments.forEach(c => {
+        commentsHtml += `
+          <div class="comment-card">
+            <div class="comment-meta">
+              <span class="comment-author ${c.isSara ? 'sara-author' : ''}">${c.author}</span> • <span>${c.time}</span>
+            </div>
+            <div class="comment-text">${c.text}</div>
+          </div>
+        `;
+      });
+    } else {
+      commentsHtml = `
+        <div class="comment-card">
+          <div class="comment-text" style="color: #64748b;">Nenhum comentário adicional neste tópico.</div>
+        </div>
+      `;
+    }
+
+    viewport.innerHTML = `
+      <div class="readit-container">
+        <div class="readit-topic-view">
+          <button type="button" class="topic-back-btn" onclick="MesaSaraDesktop.openReadItSubreddit()">
+            &larr; Voltar para r/Conspiracoes &amp; r/Fraguiktos
+          </button>
+          <div class="topic-header-meta">
+            <span>${topic.subreddit}</span> • <span class="post-author">${topic.author}</span> • <span>${topic.time}</span> • <span>${topic.votes} votos</span>
+            ${topic.isFavorited ? '<span style="color:#f59e0b; font-weight:bold; margin-left:8px;">★ FAVORITADO PELA SARA</span>' : ''}
+          </div>
+          <div class="topic-full-title">${topic.title}</div>
+          <div class="topic-full-body">
+            ${topic.content.split('\n\n').map(p => `<p>${p}</p>`).join('')}
+          </div>
+          <div class="topic-comments-title">Comentários (${topic.comments ? topic.comments.length : 0})</div>
+          <div class="topic-comments-list">
+            ${commentsHtml}
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  openSheetMusicPage() {
+    this.browserView = 'sheet_music';
+    this.setBrowserUrl('https://partituras-classicas.art/acervo');
+
+    const viewport = document.getElementById('sara-browser-viewport');
+    if (!viewport) return;
+
+    let piecesHtml = '';
+    this.sheetMusicPieces.forEach(p => {
+      piecesHtml += `
+        <div class="sheet-music-card">
+          <div>
+            <div class="sheet-info-name">${p.title}</div>
+            <div class="sheet-info-composer">${p.composer} • Tom: ${p.key} • Dificuldade: ${p.difficulty}</div>
+          </div>
+          <div class="sheet-badge">${p.pages}</div>
+        </div>
+      `;
+    });
+
+    viewport.innerHTML = `
+      <div class="sheet-music-page">
+        <div class="sheet-music-title">Acervo de Partituras Clássicas</div>
+        <div class="sheet-music-sub">Biblioteca digital de partituras e estudos para piano de domínio público.</div>
+        <div class="sheet-music-grid">
+          ${piecesHtml}
+        </div>
+      </div>
+    `;
+  },
+
+  // Modal de Histórico de Navegação
+  renderHistoryList() {
+    const container = document.getElementById('sara-history-list');
+    if (!container) return;
+
+    let html = '';
+    this.historyEntries.forEach(item => {
+      html += `
+        <div class="history-entry-row" onclick="MesaSaraDesktop.handleHistoryClick('${item.query.replace(/'/g, "\\'")}', ${item.topicId || 'null'})">
+          <span class="history-time-badge">${item.time}</span>
+          <span class="history-query-text"><strong>${item.action}:</strong> "${item.query}"</span>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+  },
+
+  handleHistoryClick(query, topicId) {
+    this.toggleHistoryModal();
+    if (topicId) {
+      this.openReadItTopic(topicId);
+    } else {
+      this.execFragSearch(query);
+    }
+  },
+
+  toggleHistoryModal() {
+    const modal = document.getElementById('sara-history-modal');
+    if (!modal) return;
+    modal.style.display = modal.style.display === 'none' ? 'flex' : 'none';
+  },
+
+  browserBack() {
+    if (this.browserView === 'topic') {
+      this.openReadItSubreddit();
+    } else {
+      this.goFragSearchHome();
+    }
+  },
+
+  browserForward() {
+    if (this.browserView === 'subreddit' && this.currentTopicId) {
+      this.openReadItTopic(this.currentTopicId);
+    }
+  },
+
+  browserReload() {
+    if (this.browserView === 'home') this.goFragSearchHome();
+    else if (this.browserView === 'subreddit') this.openReadItSubreddit();
+    else if (this.browserView === 'topic' && this.currentTopicId) this.openReadItTopic(this.currentTopicId);
+    else if (this.browserView === 'sheet_music') this.openSheetMusicPage();
+    else this.goFragSearchHome();
+  }
+};
+window.MesaSaraDesktop = MesaSaraDesktop;
+
 const MesaNotebookSara = {
   isActive: false,
   stage: 'boot', // 'boot' | 'lock' | 'cctv'
@@ -10744,6 +11967,8 @@ const MesaNotebookSara = {
       if (bootStage) bootStage.style.display = 'flex';
       if (lockStage) lockStage.style.display = 'none';
       if (cctvStage) cctvStage.style.display = 'none';
+      const desktopStage = document.getElementById('notebook-desktop-stage');
+      if (desktopStage) desktopStage.style.display = 'none';
       const staticCanvas = document.getElementById('cctv-static-canvas');
       if (staticCanvas) staticCanvas.style.display = 'none';
       const signalLostEl = document.getElementById('cctv-signal-lost');
@@ -10797,6 +12022,8 @@ const MesaNotebookSara = {
     if (bootStage) bootStage.style.display = 'none';
     if (lockStage) lockStage.style.display = 'flex';
     if (cctvStage) cctvStage.style.display = 'none';
+    const desktopStage = document.getElementById('notebook-desktop-stage');
+    if (desktopStage) desktopStage.style.display = 'none';
 
     const isMaster = !!(MesaApp.state && MesaApp.state.isMaster);
     const wrapper = document.getElementById('windows-input-wrapper');
@@ -10832,9 +12059,35 @@ const MesaNotebookSara = {
     const wrapper = document.getElementById('windows-input-wrapper');
     const err = document.getElementById('notebook-password-error');
     const input = document.getElementById('notebook-password-input');
+    const val = input ? input.value.trim() : '';
+
+    // Senhas aceitas para destravar o notebook da Sara: 1415 ou 0408
+    if (val === '1415' || val === '0408') {
+      if (wrapper) wrapper.classList.remove('has-error', 'shake-error');
+      if (err) err.style.display = 'none';
+      if (input) input.value = '';
+
+      this.showDesktopStage();
+
+      const chan = this.getChannel();
+      if (chan) {
+        try {
+          chan.send({
+            type: 'broadcast',
+            event: 'notebook_sync',
+            payload: {
+              stage: 'desktop',
+              activeApp: this.activeApp || null
+            }
+          });
+        } catch(e) {}
+      }
+      this.saveNotebookStateToSupabase();
+      return;
+    }
 
     if (wrapper) {
-      wrapper.classList.add('has-error');
+      wrapper.classList.add('has-error', 'shake-error');
     }
     if (err) {
       err.textContent = 'Senha incorreta';
@@ -10845,6 +12098,119 @@ const MesaNotebookSara = {
       input.focus();
     }
   },
+
+  showDesktopStage() {
+    this.stage = 'desktop';
+    const bootStage = document.getElementById('notebook-boot-stage');
+    const lockStage = document.getElementById('notebook-lock-stage');
+    const cctvStage = document.getElementById('notebook-cctv-stage');
+    const desktopStage = document.getElementById('notebook-desktop-stage');
+
+    if (bootStage) bootStage.style.display = 'none';
+    if (lockStage) lockStage.style.display = 'none';
+    if (cctvStage) cctvStage.style.display = 'none';
+    if (desktopStage) desktopStage.style.display = 'block';
+
+    if (window.MesaSaraDesktop) {
+      MesaSaraDesktop.init();
+    }
+  },
+
+  lockSystem() {
+    this.showLockScreen();
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'notebook_sync',
+          payload: { stage: 'lock' }
+        });
+      } catch(e) {}
+    }
+    this.saveNotebookStateToSupabase();
+  },
+
+  openApp(app) {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.openApp(app);
+  },
+
+  closeApp(app) {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.closeApp(app);
+  },
+
+  minimizeApp(app) {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.minimizeApp(app);
+  },
+
+  maximizeApp(app) {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.maximizeApp(app);
+  },
+
+  toggleStartMenu() {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.toggleStartMenu();
+  },
+
+  closeStartMenu() {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.closeStartMenu();
+  },
+
+  switchFolder(f) {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.switchFolder(f);
+  },
+
+  openFile(f, id) {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.openFile(f, id);
+  },
+
+  openTrashFile(id) {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.openTrashFile(id);
+  },
+
+  submitFilePassword() {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.submitFilePassword();
+  },
+
+  closeLockedPrompt() {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.closeLockedPrompt();
+  },
+
+  goFragSearchHome() {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.goFragSearchHome();
+  },
+
+  execFragSearch(q) {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.execFragSearch(q);
+  },
+
+  openReadItSubreddit() {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.openReadItSubreddit();
+  },
+
+  openReadItTopic(id) {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.openReadItTopic(id);
+  },
+
+  openSheetMusicPage() {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.openSheetMusicPage();
+  },
+
+  toggleHistoryModal() {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.toggleHistoryModal();
+  },
+
+  browserBack() {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.browserBack();
+  },
+
+  browserForward() {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.browserForward();
+  },
+
+  browserReload() {
+    if (window.MesaSaraDesktop) MesaSaraDesktop.browserReload();
+  },
+
 
   showCctvStage(camNum = 1) {
     this.stage = 'cctv';
@@ -15375,3 +16741,24 @@ const MesaRollLog = {
   }
 };
 window.MesaRollLog = MesaRollLog;
+
+
+// ==========================================================================
+// DESBLOQUEADOR GLOBAL DE AUDIOCONTEXT PARA DISPOSITIVOS DA MESA
+// ==========================================================================
+(function() {
+  const resumeSuspendedAudio = () => {
+    if (window.MesaPerseguicaoFloresta && MesaPerseguicaoFloresta._audioCtx && MesaPerseguicaoFloresta._audioCtx.state === 'suspended') {
+      MesaPerseguicaoFloresta._audioCtx.resume().catch(() => {});
+    }
+    if (window.MesaTvEstatica && MesaTvEstatica._audioCtx && MesaTvEstatica._audioCtx.state === 'suspended') {
+      MesaTvEstatica._audioCtx.resume().catch(() => {});
+    }
+    if (window.MesaTvEstatica2 && MesaTvEstatica2._audioCtx && MesaTvEstatica2._audioCtx.state === 'suspended') {
+      MesaTvEstatica2._audioCtx.resume().catch(() => {});
+    }
+  };
+  ['pointerdown', 'click', 'keydown', 'touchstart'].forEach(ev => {
+    window.addEventListener(ev, resumeSuspendedAudio, { passive: true });
+  });
+})();

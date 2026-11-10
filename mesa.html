@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.3.9.8">
+  <link rel="stylesheet" href="css/mesa.css?v=2.4.0.0">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -332,12 +332,14 @@
     <div class="mesa-board-container" id="mesa-board-container">
         <!-- O Quadrado Preto com borda de nanquim artesanal -->
         <div class="mesa-black-board">
-          <!-- Camada de Ilustração Central de Cena / NPC -->
+          <!-- BACKUP: board-center-artwork (Desativado conforme solicitacao do Mestre)
+<!-- Camada de Ilustração Central de Cena / NPC -->
           <div id="board-center-artwork" class="board-center-artwork" style="display: none;">
             <img id="board-center-artwork-img" class="board-center-artwork-img" src="" alt="Ilustração da Cena" />
             <div id="board-center-artwork-tag" class="board-center-artwork-tag" style="display: none;"></div>
             <button id="board-center-artwork-clear-btn" type="button" class="board-artwork-clear-btn" onclick="MesaCenterArtwork.clearArtwork()" title="Ocultar Ilustração da Mesa">&times; Ocultar da Mesa</button>
           </div>
+          -->
 
           <div class="board-ink-inner-border"></div>
           <div class="board-crosshair-c"></div>
@@ -1323,11 +1325,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=2.3.9.8"></script>
+<script src="js/campaign-data.js?v=2.4.0.0"></script>
 
-<script src="js/mesa.js?v=2.3.9.8"></script>
+<script src="js/mesa.js?v=2.4.0.0"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.3.9</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.4.0</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -1957,6 +1959,291 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
               <div class="tech-row"><span>CÓDIGO:</span><span>ERR_0x004F_SYNC_FAILURE</span></div>
             </div>
             <div class="signal-lost-footer">VERIFIQUE A FIAÇÃO COAXIAL OU O ALIMENTADOR DA CÂMERA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. SISTEMA OPERACIONAL: DESKTOP DA SARA AUGUIL -->
+    <div id="notebook-desktop-stage" class="notebook-stage notebook-desktop-stage" style="display: none;">
+      <!-- Wallpaper e Efeito Vignette -->
+      <div class="sara-desktop-wallpaper"></div>
+      <div class="sara-desktop-vignette"></div>
+
+      <!-- Icones da Area de Trabalho -->
+      <div class="sara-desktop-icons">
+        <div class="sara-desktop-icon" onclick="MesaNotebookSara.openApp('explorer')" title="Meus Arquivos">
+          <div class="desktop-icon-img-box folder-icon">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="#f59e0b" stroke="#b45309" stroke-width="1.2">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </div>
+          <span class="desktop-icon-label">Meus Arquivos</span>
+        </div>
+
+        <div class="sara-desktop-icon" onclick="MesaNotebookSara.openApp('trash')" title="Lixeira">
+          <div class="desktop-icon-img-box trash-icon">
+            <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#94a3b8" stroke-width="1.8">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              <line x1="10" y1="11" x2="10" y2="17"></line>
+              <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+          </div>
+          <span class="desktop-icon-label">Lixeira</span>
+        </div>
+
+        <div class="sara-desktop-icon" onclick="MesaNotebookSara.openApp('browser')" title="FragSearch (Navegador)">
+          <div class="desktop-icon-img-box browser-icon">
+            <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#38bdf8" stroke-width="1.8">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+          </div>
+          <span class="desktop-icon-label">FragSearch</span>
+        </div>
+
+        <div class="sara-desktop-icon" onclick="MesaNotebookSara.openApp('cameras')" title="Cameras CFTV">
+          <div class="desktop-icon-img-box cameras-icon">
+            <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#ef4444" stroke-width="1.8">
+              <path d="M23 7l-7 5 7 5V7z"></path>
+              <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+            </svg>
+          </div>
+          <span class="desktop-icon-label">Cameras CFTV</span>
+        </div>
+      </div>
+
+      <!-- Area de Janelas do Desktop -->
+      <div id="sara-windows-container" class="sara-windows-container">
+        <!-- 1. Janela: Explorador de Arquivos -->
+        <div id="sara-win-explorer" class="sara-window" style="display: none;">
+          <div class="sara-win-titlebar">
+            <div class="sara-win-title">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+              <span>Explorador de Arquivos - Meus Arquivos</span>
+            </div>
+            <div class="sara-win-controls">
+              <button type="button" class="sara-win-ctrl-btn minimize" onclick="MesaNotebookSara.minimizeApp('explorer')">&#8722;</button>
+              <button type="button" class="sara-win-ctrl-btn maximize" onclick="MesaNotebookSara.maximizeApp('explorer')">&#9633;</button>
+              <button type="button" class="sara-win-ctrl-btn close" onclick="MesaNotebookSara.closeApp('explorer')">&times;</button>
+            </div>
+          </div>
+          <div class="sara-explorer-addressbar">
+            <span class="explorer-path" id="explorer-current-path">Este Computador &gt; Documentos &gt; Estudos_Primordio</span>
+          </div>
+          <div class="sara-explorer-body">
+            <aside class="sara-explorer-sidebar">
+              <div class="sidebar-section-title">Pastas Rapidas</div>
+              <button type="button" class="sidebar-folder-btn active" id="btn-folder-estudos" onclick="MesaNotebookSara.switchFolder('Estudos_Primordio')">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="#f59e0b"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                <span>Estudos_Primordio</span>
+              </button>
+              <button type="button" class="sidebar-folder-btn" id="btn-folder-piano" onclick="MesaNotebookSara.switchFolder('Piani_e_Partituras')">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="#f59e0b"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                <span>Piani_e_Partituras</span>
+              </button>
+              <button type="button" class="sidebar-folder-btn" id="btn-folder-pessoal" onclick="MesaNotebookSara.switchFolder('Pessoal')">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="#f59e0b"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                <span>Pessoal</span>
+              </button>
+            </aside>
+            <main class="sara-explorer-files" id="sara-explorer-file-list">
+              <!-- Renderizado dinamicamente -->
+            </main>
+          </div>
+        </div>
+
+        <!-- 2. Janela: Lixeira -->
+        <div id="sara-win-trash" class="sara-window" style="display: none;">
+          <div class="sara-win-titlebar">
+            <div class="sara-win-title">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#94a3b8" stroke-width="1.8"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              <span>Lixeira</span>
+            </div>
+            <div class="sara-win-controls">
+              <button type="button" class="sara-win-ctrl-btn close" onclick="MesaNotebookSara.closeApp('trash')">&times;</button>
+            </div>
+          </div>
+          <div class="sara-explorer-addressbar">
+            <span class="explorer-path">Lixeira (2 itens)</span>
+          </div>
+          <div class="sara-trash-body" id="sara-trash-file-list">
+            <!-- Renderizado dinamicamente -->
+          </div>
+        </div>
+
+        <!-- 3. Janela: Leitor de Documento / PDF / Bloco de Notas -->
+        <div id="sara-win-viewer" class="sara-window" style="display: none;">
+          <div class="sara-win-titlebar">
+            <div class="sara-win-title" id="sara-viewer-title">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+              <span id="sara-viewer-filename">documento.txt</span>
+            </div>
+            <div class="sara-win-controls">
+              <button type="button" class="sara-win-ctrl-btn close" onclick="MesaNotebookSara.closeApp('viewer')">&times;</button>
+            </div>
+          </div>
+          <div class="sara-viewer-body" id="sara-viewer-content">
+            <!-- Conteudo do texto ou PDF renderizado aqui -->
+          </div>
+        </div>
+
+        <!-- 4. Modal: Arquivo Protegido (Senha para ultimo_registro.locked) -->
+        <div id="sara-locked-modal" class="sara-locked-modal" style="display: none;">
+          <div class="sara-locked-dialog">
+            <div class="sara-locked-header">
+              <span>Arquivo Protegido</span>
+              <button type="button" class="sara-win-ctrl-btn close" onclick="MesaNotebookSara.closeLockedPrompt()">&times;</button>
+            </div>
+            <div class="sara-locked-body">
+              <div class="locked-icon-box">
+                <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#f59e0b" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              </div>
+              <div class="locked-fields">
+                <label for="sara-file-password-input">Senha:</label>
+                <input type="password" id="sara-file-password-input" class="sara-file-password-input" autocomplete="off" onkeydown="if(event.key==='Enter') MesaNotebookSara.submitFilePassword()">
+                <div id="sara-file-password-error" class="sara-password-err-msg" style="display: none;">Senha incorreta</div>
+              </div>
+            </div>
+            <div class="sara-locked-footer">
+              <button type="button" class="sara-dialog-btn primary" onclick="MesaNotebookSara.submitFilePassword()">OK</button>
+              <button type="button" class="sara-dialog-btn" onclick="MesaNotebookSara.closeLockedPrompt()">Cancelar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Janela: Navegador Web (FragSearch & ReadIt) -->
+        <div id="sara-win-browser" class="sara-window sara-browser-window" style="display: none;">
+          <div class="sara-win-titlebar">
+            <div class="sara-win-title">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#38bdf8" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              <span id="sara-browser-title">FragSearch - O Buscador de Fraguiktos</span>
+            </div>
+            <div class="sara-win-controls">
+              <button type="button" class="sara-win-ctrl-btn close" onclick="MesaNotebookSara.closeApp('browser')">&times;</button>
+            </div>
+          </div>
+          <!-- Barra de Navegacao e URL -->
+          <div class="sara-browser-nav-bar">
+            <div class="browser-nav-buttons">
+              <button type="button" class="browser-btn" onclick="MesaNotebookSara.browserBack()" title="Voltar">&#8592;</button>
+              <button type="button" class="browser-btn" onclick="MesaNotebookSara.browserForward()" title="Avancar">&#8594;</button>
+              <button type="button" class="browser-btn" onclick="MesaNotebookSara.browserReload()" title="Atualizar">&#8635;</button>
+              <button type="button" class="browser-btn" onclick="MesaNotebookSara.goFragSearchHome()" title="Pagina Inicial">&#8962;</button>
+            </div>
+            <div class="browser-url-bar">
+              <span class="url-lock-icon">&#128274;</span>
+              <input type="text" id="sara-browser-url-input" class="sara-browser-url-input" value="https://fragsearch.net" readonly>
+            </div>
+            <div class="browser-tools">
+              <button type="button" class="browser-history-btn" onclick="MesaNotebookSara.toggleHistoryModal()" title="Historico de Navegacao">
+                <span>Historico</span>
+              </button>
+            </div>
+          </div>
+          <!-- Barra de Favoritos -->
+          <div class="sara-browser-bookmarks">
+            <button type="button" class="bookmark-item" onclick="MesaNotebookSara.openReadItSubreddit()">
+              <span class="bm-icon">&#128392;</span>
+              <span>ReadIt - Comunidades (r/Conspiracoes &amp; r/Fraguiktos)</span>
+            </button>
+            <button type="button" class="bookmark-item highlight" onclick="MesaNotebookSara.openReadItTopic(14)">
+              <span class="bm-star">&#9733;</span>
+              <span>[Favorito] ReadIt: Teoria sobre o Devorador Cosmico e as Portas</span>
+            </button>
+            <button type="button" class="bookmark-item" onclick="MesaNotebookSara.openSheetMusicPage()">
+              <span class="bm-icon">&#127925;</span>
+              <span>Acervo de Partituras Classicas</span>
+            </button>
+          </div>
+          <!-- Viewport do Navegador -->
+          <div class="sara-browser-viewport" id="sara-browser-viewport">
+            <!-- Views: FragSearch Home, Search Results, ReadIt Forum, ReadIt Topic, Sheet Music Page -->
+          </div>
+        </div>
+
+        <!-- Modal de Historico de Navegacao -->
+        <div id="sara-history-modal" class="sara-history-modal" style="display: none;">
+          <div class="sara-history-dialog">
+            <div class="history-dialog-header">
+              <span>Historico de Navegacao</span>
+              <button type="button" class="sara-win-ctrl-btn close" onclick="MesaNotebookSara.toggleHistoryModal()">&times;</button>
+            </div>
+            <div class="history-dialog-body" id="sara-history-list">
+              <!-- Renderizado dinamicamente -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de Tarefas (Taskbar) -->
+      <div class="sara-taskbar">
+        <div class="sara-taskbar-left">
+          <button type="button" class="sara-start-btn" onclick="MesaNotebookSara.toggleStartMenu()" title="Iniciar">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+              <rect x="2" y="2" width="9" height="9"></rect>
+              <rect x="13" y="2" width="9" height="9"></rect>
+              <rect x="2" y="13" width="9" height="9"></rect>
+              <rect x="13" y="13" width="9" height="9"></rect>
+            </svg>
+          </button>
+          <div class="sara-taskbar-search" onclick="MesaNotebookSara.openApp('browser')">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>Pesquisar</span>
+          </div>
+          <div class="sara-taskbar-apps">
+            <button type="button" class="sara-task-btn" id="task-btn-explorer" onclick="MesaNotebookSara.openApp('explorer')" title="Meus Arquivos">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+            </button>
+            <button type="button" class="sara-task-btn" id="task-btn-browser" onclick="MesaNotebookSara.openApp('browser')" title="FragSearch">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#38bdf8" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            </button>
+            <button type="button" class="sara-task-btn" id="task-btn-cameras" onclick="MesaNotebookSara.openApp('cameras')" title="Cameras CFTV">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#ef4444" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+            </button>
+          </div>
+        </div>
+        <div class="sara-taskbar-right">
+          <button type="button" class="sara-tray-btn" onclick="MesaNotebookSara.lockSystem()" title="Bloquear Sistema">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          </button>
+          <div class="sara-tray-clock">
+            <span id="sara-desktop-clock">22:30</span>
+            <span id="sara-desktop-date">04/08/2061</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Menu Iniciar do Windows -->
+      <div id="sara-start-menu" class="sara-start-menu" style="display: none;">
+        <div class="sara-start-header">
+          <div class="sara-start-user">
+            <div class="sara-start-avatar"></div>
+            <span>Sara Auguil</span>
+          </div>
+          <button type="button" class="sara-start-lock-btn" onclick="MesaNotebookSara.lockSystem()" title="Bloquear">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span>Bloquear</span>
+          </button>
+        </div>
+        <div class="sara-start-items">
+          <div class="sara-start-item" onclick="MesaNotebookSara.openApp('explorer'); MesaNotebookSara.closeStartMenu();">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+            <span>Meus Arquivos</span>
+          </div>
+          <div class="sara-start-item" onclick="MesaNotebookSara.openApp('trash'); MesaNotebookSara.closeStartMenu();">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#94a3b8" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            <span>Lixeira</span>
+          </div>
+          <div class="sara-start-item" onclick="MesaNotebookSara.openApp('browser'); MesaNotebookSara.closeStartMenu();">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#38bdf8" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            <span>FragSearch</span>
+          </div>
+          <div class="sara-start-item" onclick="MesaNotebookSara.openApp('cameras'); MesaNotebookSara.closeStartMenu();">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#ef4444" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+            <span>Cameras CFTV</span>
           </div>
         </div>
       </div>
