@@ -4490,10 +4490,19 @@ const Mesa3DDice = {
       ctx.restore();
     }
 
+    const frac = (inst.fracture && inst.fracture.active) ? inst.fracture : null;
+    const fracP = frac ? frac.progress : 0;
+
+    let jitterX = 0, jitterY = 0;
+    if (fracP > 0) {
+      jitterX = (Math.random() - 0.5) * 6.5 * fracP;
+      jitterY = (Math.random() - 0.5) * 6.5 * fracP;
+    }
+
     const rotVerts = solid.verts.map(v => this._rotateVec(v, cx, sx, cy, sy, cz, sz));
     const projVerts = rotVerts.map(p => {
       const s = focal / (focal - p[2]);
-      return { x: half + p[0] * baseRadius * s, y: half - p[1] * baseRadius * s };
+      return { x: half + p[0] * baseRadius * s + jitterX, y: half - p[1] * baseRadius * s + jitterY };
     });
 
     const lightMain = [-0.42, 0.56, 0.71];
@@ -4515,7 +4524,17 @@ const Mesa3DDice = {
 
     for (let vi = 0; vi < visibleFaces.length; vi++) {
       const { fi, f, rn } = visibleFaces[vi];
-      const pts = f.indices.map(idx => projVerts[idx]);
+      const faceDisplace = fracP * 0.088;
+      const pts = f.indices.map(idx => {
+        if (faceDisplace > 0.001) {
+          const v = rotVerts[idx];
+          const vOut = [v[0] + rn[0] * faceDisplace, v[1] + rn[1] * faceDisplace, v[2] + rn[2] * faceDisplace];
+          const s = focal / (focal - vOut[2]);
+          return { x: half + vOut[0] * baseRadius * s + jitterX, y: half - vOut[1] * baseRadius * s + jitterY };
+        }
+        return projVerts[idx];
+      });
+      visibleFaces[vi].pts = pts;
 
       const diff = Math.max(0, this._vecDot(rn, lightMain));
       const spec = Math.pow(Math.max(0, this._vecDot(rn, halfVec)), 18) * 0.42;
@@ -4595,12 +4614,12 @@ const Mesa3DDice = {
         const sC = focal / (focal - pC3[2]);
         const sU = focal / (focal - pU3[2]);
         const sV = focal / (focal - pV3[2]);
-        const xC = half + pC3[0] * baseRadius * sC;
-        const yC = half - pC3[1] * baseRadius * sC;
-        const dux = (half + pU3[0] * baseRadius * sU) - xC;
-        const duy = (half - pU3[1] * baseRadius * sU) - yC;
-        const dvx = (half + pV3[0] * baseRadius * sV) - xC;
-        const dvy = (half - pV3[1] * baseRadius * sV) - yC;
+        const xC = half + pC3[0] * baseRadius * sC + jitterX;
+        const yC = half - pC3[1] * baseRadius * sC + jitterY;
+        const dux = (half + pU3[0] * baseRadius * sU + jitterX) - xC;
+        const duy = (half - pU3[1] * baseRadius * sU + jitterY) - yC;
+        const dvx = (half + pV3[0] * baseRadius * sV + jitterX) - xC;
+        const dvy = (half - pV3[1] * baseRadius * sV + jitterY) - yC;
 
         const det = dux * dvy - duy * dvx;
         if (det > 1.5) {
@@ -4636,6 +4655,117 @@ const Mesa3DDice = {
           }
         }
       }
+    }
+
+    // Se o dado estiver em estado de fratura (Pavor Superado), desenha rachaduras 3D diretamente no poliedro
+    if (fracP > 0.02) {
+      ctx.save();
+
+      // 1. Rachaduras ao longo das bordas das faces 3D (seams se abrindo)
+      ctx.beginPath();
+      for (let vi = 0; vi < visibleFaces.length; vi++) {
+        const { pts } = visibleFaces[vi];
+        if (pts.length < 3) continue;
+        ctx.moveTo(pts[0].x, pts[0].y);
+        for (let p = 1; p < pts.length; p++) ctx.lineTo(pts[p].x, pts[p].y);
+        ctx.closePath();
+      }
+      ctx.strokeStyle = `rgba(74, 222, 128, ${Math.min(1, 0.45 + fracP * 0.55)})`;
+      ctx.lineWidth = 1.6 + fracP * 2.2;
+      ctx.shadowColor = '#22c55e';
+      ctx.shadowBlur = 8 + fracP * 12;
+      ctx.stroke();
+
+      // 2. Fissuras ramificadas diretamente na face frontal (face 0 com o valor 1)
+      const frontFace = visibleFaces.find(vf => vf.fi === 0);
+      if (frontFace && frontFace.pts.length >= 3) {
+        let fcx = 0, fcy = 0;
+        for (let p = 0; p < frontFace.pts.length; p++) {
+          fcx += frontFace.pts[p].x;
+          fcy += frontFace.pts[p].y;
+        }
+        fcx /= frontFace.pts.length;
+        fcy /= frontFace.pts.length;
+
+        const nPts = frontFace.pts.length;
+        const pA = frontFace.pts[0];
+        const pB = frontFace.pts[Math.floor(nPts / 2)];
+
+        const drawBranch = (x1, y1, x2, y2, seed, maxW, pProg) => {
+          if (pProg <= 0.05) return;
+          const steps = 6;
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          for (let s = 1; s <= steps; s++) {
+            const t = s / steps;
+            if (t > pProg) {
+              const curX = x1 + (x2 - x1) * pProg;
+              const curY = y1 + (y2 - y1) * pProg;
+              ctx.lineTo(curX, curY);
+              break;
+            }
+            const jx = Math.sin(s * 7.1 + seed) * (1 - Math.abs(t - 0.5) * 1.5) * 6;
+            const jy = Math.cos(s * 8.3 + seed) * (1 - Math.abs(t - 0.5) * 1.5) * 6;
+            ctx.lineTo(x1 + (x2 - x1) * t + jx, y1 + (y2 - y1) * t + jy);
+          }
+          // Camada externa brilhante verde
+          ctx.strokeStyle = '#22c55e';
+          ctx.lineWidth = maxW;
+          ctx.shadowColor = '#4ade80';
+          ctx.shadowBlur = 10 + fracP * 10;
+          ctx.stroke();
+          // Nucleo interno branco incandescente
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = Math.max(1, maxW * 0.35);
+          ctx.shadowColor = '#86efac';
+          ctx.shadowBlur = 3;
+          ctx.stroke();
+        };
+
+        // Fissura mestra central cortando a face e o numero 1
+        drawBranch(pA.x, pA.y, pB.x, pB.y, 1.3, 3.2 + fracP * 2.2, Math.min(1, 0.25 + fracP * 0.75));
+
+        // Ramificacoes do centro para cada vertice 3D da face
+        frontFace.pts.forEach((pt, idx) => {
+          const branchSeed = idx * 2.7 + 0.5;
+          const branchProg = Math.min(1, 0.15 + fracP * 0.85);
+          drawBranch(fcx, fcy, pt.x, pt.y, branchSeed, 2.2 + fracP * 1.6, branchProg);
+        });
+
+        // Fissuras secundarias nas faces adjacentes
+        if (fracP > 0.15) {
+          visibleFaces.filter(vf => vf.fi !== 0).forEach((vf, vfi) => {
+            if (vf.pts.length < 3) return;
+            let afcx = 0, afcy = 0;
+            vf.pts.forEach(p => { afcx += p.x; afcy += p.y; });
+            afcx /= vf.pts.length;
+            afcy /= vf.pts.length;
+            const edgeMid = {
+              x: (vf.pts[0].x + vf.pts[1].x) * 0.5,
+              y: (vf.pts[0].y + vf.pts[1].y) * 0.5
+            };
+            drawBranch(edgeMid.x, edgeMid.y, afcx, afcy, vfi * 3.1, 1.8 + fracP * 1.2, Math.min(1, 0.1 + fracP * 0.9));
+          });
+        }
+      }
+
+      // 3. Fagulhas de energia verde espirrando ao redor do dado
+      if (frac && frac.sparks) {
+        frac.sparks.forEach(sp => {
+          const sparkDist = (logicalSize * 0.38) * (0.1 + fracP * 0.9);
+          const sx = half + sp.vx * sparkDist;
+          const sy = half + sp.vy * sparkDist;
+          const alpha = Math.max(0, sp.alpha * (1 - fracP * 0.35));
+          ctx.fillStyle = `rgba(134, 239, 172, ${alpha})`;
+          ctx.shadowColor = '#22c55e';
+          ctx.shadowBlur = 7;
+          ctx.beginPath();
+          ctx.arc(sx, sy, sp.size * (0.8 + fracP * 0.4), 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+
+      ctx.restore();
     }
   },
 
@@ -4687,21 +4817,76 @@ const Mesa3DDice = {
       inst.labels[0] = String(targetVal);
     }
     if (theme) inst.theme = theme;
+    if (inst.fracture) inst.fracture.active = false;
     inst.settled = true;
     this._renderDie(inst, inst.solid.endTilt.rx, inst.solid.endTilt.ry, 0, 1);
+  },
+
+  startSuperadoFracture(canvas, durationMs = 1000) {
+    if (!canvas) return;
+    const inst = this._instances.get(canvas);
+    if (!inst) return;
+    inst.settled = false;
+    const sparks = [];
+    for (let i = 0; i < 22; i++) {
+      const ang = Math.random() * Math.PI * 2;
+      const speed = 0.4 + Math.random() * 0.9;
+      sparks.push({
+        vx: Math.cos(ang) * speed,
+        vy: Math.sin(ang) * speed,
+        size: 1.4 + Math.random() * 2.6,
+        alpha: 0.8 + Math.random() * 0.2
+      });
+    }
+    inst.fracture = {
+      active: true,
+      startTime: performance.now(),
+      durationMs: Math.max(200, Number(durationMs) || 1000),
+      progress: 0.08,
+      sparks
+    };
+    this._renderDie(inst, inst.solid.endTilt.rx, inst.solid.endTilt.ry, 0, 1);
+    this._ensureLoop();
+  },
+
+  stopFracture(canvas) {
+    if (!canvas) return;
+    const inst = this._instances.get(canvas);
+    if (!inst) return;
+    if (inst.fracture) inst.fracture.active = false;
+    inst.settled = true;
   },
 
   _ensureLoop() {
     if (this._rafId) return;
     const step = (now) => {
       let hasActive = false;
+      const curTime = performance.now();
       this._instances.forEach((inst, canvas) => {
         if (!canvas.isConnected) {
           this._instances.delete(canvas);
           return;
         }
-        if (inst.settled) return;
+        if (inst.settled && (!inst.fracture || !inst.fracture.active)) return;
         hasActive = true;
+
+        if (inst.fracture && inst.fracture.active) {
+          const elapsed = curTime - inst.fracture.startTime;
+          const p = Math.min(1, Math.max(0.08, elapsed / inst.fracture.durationMs));
+          inst.fracture.progress = p;
+          const jMag = 0.08 + 0.16 * p;
+          const rx = inst.solid.endTilt.rx + (Math.random() - 0.5) * jMag;
+          const ry = inst.solid.endTilt.ry + (Math.random() - 0.5) * jMag;
+          const rz = (Math.random() - 0.5) * (jMag * 0.9);
+          const bounce = 1 + p * 0.08;
+          this._renderDie(inst, rx, ry, rz, bounce);
+          if (p >= 1) {
+            inst.fracture.active = false;
+            inst.settled = true;
+          }
+          return;
+        }
+
         const elapsed = now - inst.startTime;
         const rawT = Math.min(1, Math.max(0, elapsed / inst.durationMs));
         const rem = Math.pow(1 - rawT, inst.easePower);
@@ -5372,6 +5557,11 @@ const MesaDice = {
               if (this._rollGen !== rollGen) return;
               pavorEl.classList.add('pavor-superado-shake');
 
+              // Ativa rachaduras 3D em tempo real diretamente no modelo poliedrico
+              if (pavorCanvas && window.Mesa3DDice) {
+                Mesa3DDice.startSuperadoFracture(pavorCanvas, 1000);
+              }
+
               // Injeta fissuras de rachadura verdes/carmesins sobre o dado
               const crackOverlay = document.createElement('div');
               crackOverlay.className = 'pavor-crack-fissures';
@@ -5385,6 +5575,10 @@ const MesaDice = {
               // 4. Após 950ms de tremor e rachadura, ele quebra com explosão de poeira e partículas
               setTimeout(() => {
                 if (this._rollGen !== rollGen) return;
+
+                if (pavorCanvas && window.Mesa3DDice) {
+                  Mesa3DDice.stopFracture(pavorCanvas);
+                }
 
                 // Efeito de fragmentação / estilhaço
                 this.createDustVanishEffect(pavorEl, '#22c55e', 45);
