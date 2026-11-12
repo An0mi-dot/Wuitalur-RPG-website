@@ -10213,12 +10213,15 @@ body.combat-active .player-slot {
 }
 
 .combat-bg-video {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center 25%;
-  display: none;
-  opacity: 0;
+  display: block;
+  opacity: 1;
+  z-index: 3;
   transition: none !important;
 }
 
@@ -10242,6 +10245,7 @@ body.combat-active .player-slot {
 .combat-bg-video.playing {
   display: block;
   opacity: 1;
+  z-index: 5;
 }
 
 .combat-video-fallback {
@@ -10249,6 +10253,7 @@ body.combat-active .player-slot {
   inset: 0;
   width: 100%;
   height: 100%;
+  z-index: 4;
   background: radial-gradient(circle at 50% 32%, #181828 0%, #080810 65%, #000000 100%);
   display: flex;
   flex-direction: column;
@@ -15015,48 +15020,105 @@ body.esconderijo-active .combat-ctrl-btn.combat-ctrl-esconderijo-btn {
   font-weight: 600;
 }
 
-/* Pontos de Camuflagem: cada ponto e uma caixa solida; ao se dissipar, ela some totalmente */
+/* Pontos de Camuflagem: quadrados carmesins com o numero do setor logo abaixo */
 .survival-pips-row {
   display: flex;
-  gap: 6px;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-start;
+  min-height: 46px;
+}
+
+.survival-cam-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  min-height: 24px;
+  gap: 4px;
+  min-width: 28px;
+}
+
+.survival-cam-empty {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.72rem;
+  color: #64748b;
+  padding: 6px 0;
 }
 
 .survival-pip {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border: 1.5px solid #ff1133;
   background: #ff1133;
   box-shadow: 0 0 8px rgba(255, 17, 51, 0.7);
-  cursor: pointer;
   transition: transform 0.15s ease, opacity 0.2s ease;
   box-sizing: border-box;
 }
 
-.survival-pip:hover {
-  transform: scale(1.1);
+.survival-pip-sector {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.50rem;
+  color: #ffffff;
+  text-shadow: 0 0 6px rgba(255, 17, 51, 0.85);
+  line-height: 1;
+  user-select: none;
+}
+
+.survival-pip-remove {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 15px;
+  height: 15px;
+  padding: 0;
+  background: #000000;
+  border: 1px solid #ff4d6d;
+  color: #ff8093;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.survival-pip-remove:hover {
+  background: #ff1133;
+  color: #000000;
+  border-color: #ffffff;
 }
 
 .survival-pips-ctrls {
   display: flex;
   gap: 6px;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
-.survival-pip-adj-btn {
+.survival-keep-breathing-btn {
+  width: 100%;
   background: #000000;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #fff;
+  border: 1.5px solid #ff1133;
+  color: #ff8093;
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.48rem;
-  padding: 4px 10px;
+  font-size: 0.46rem;
+  padding: 8px 10px;
   cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.survival-pip-adj-btn:hover {
-  background: #fff;
-  color: #000;
+.survival-keep-breathing-btn:hover:not(:disabled) {
+  background: #ff1133;
+  color: #000000;
+  box-shadow: 0 0 12px rgba(255, 17, 51, 0.65);
+}
+
+.survival-keep-breathing-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .survival-pavor-switch-box {
@@ -18031,4 +18093,153 @@ body.esconderijo-active .combat-ctrl-btn.combat-ctrl-esconderijo-btn {
   line-height: 1.7;
   margin-bottom: 14px;
   color: #cbd5e1;
+}
+
+/* ============================================================
+   OCULTAÇÃO ESTRITA DE CONTROLES EXCLUSIVOS NO PAINEL ESCONDERIJO
+   ============================================================ */
+.survival-section.master-item,
+.survival-phase-actions.master-item {
+  display: none !important;
+}
+
+body.is-master .survival-section.master-item,
+body.is-master .survival-phase-actions.master-item {
+  display: flex !important;
+}
+
+body.is-master #survival-camouflage-block {
+  display: none !important;
+}
+
+/* ============================================================
+   ENQUADRAMENTO DESKTOP QUANDO O PAINEL DO ESCONDERIJO ESTÁ ABERTO
+   ============================================================ */
+@media (min-width: 769px) {
+  body.esconderijo-panel-open:not(.combat-active) .mesa-floating-nav {
+    top: 10px;
+    left: 12px;
+    right: 356px;
+    gap: 4px;
+    flex-wrap: wrap;
+    row-gap: 4px;
+  }
+
+  body.esconderijo-panel-open:not(.combat-active) .mesa-actions {
+    max-width: 100%;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  body.esconderijo-panel-open:not(.combat-active) .mesa-floating-nav .ink-tag,
+  body.esconderijo-panel-open:not(.combat-active) .mesa-floating-nav .nav-auth-chip {
+    height: 27px;
+    min-height: 27px;
+    padding: 0 7px;
+    font-size: 0.58rem;
+    gap: 4px;
+  }
+
+  body.esconderijo-panel-open:not(.combat-active) .mesa-floating-nav .nav-auth-chip {
+    max-width: 195px;
+    overflow: hidden;
+  }
+
+  body.esconderijo-panel-open:not(.combat-active) .mesa-floating-nav .nav-auth-chip .nav-auth-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  body.esconderijo-panel-open:not(.combat-active) .mesa-board-container {
+    left: calc((100vw - 352px) / 2);
+    top: 53%;
+    width: min(calc(100vw - 352px - 190px), 780px);
+    height: min(46vh, 420px);
+  }
+
+  body.esconderijo-panel-open.combat-active .combat-header {
+    left: 0;
+    width: calc(100vw - 348px);
+  }
+
+  body.esconderijo-panel-open.combat-active .combat-top-nav-group {
+    right: 360px;
+  }
+
+  body.esconderijo-panel-open.combat-active .combat-master-controls {
+    max-width: calc(100vw - 540px);
+  }
+
+  body.esconderijo-panel-open.combat-active .combat-dock-container {
+    left: calc((100vw - 348px) / 2);
+    max-width: calc(100vw - 368px);
+  }
+
+  body.esconderijo-panel-open.combat-active .combat-players-dock {
+    max-width: calc(100vw - 368px);
+    grid-template-columns: repeat(var(--combat-cols, 4), clamp(132px, calc((100vw - 440px) / var(--combat-cols, 4)), 184px)) !important;
+  }
+
+  body.esconderijo-panel-open.combat-active .combat-player-card {
+    width: 100%;
+    min-width: 132px;
+    max-width: 184px;
+  }
+}
+
+/* ============================================================
+   PALCO LOCAL DOS DADOS DE CAMUFLAGEM (ESCONDERIJO)
+   ============================================================ */
+.esconderijo-dice-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 2500;
+  background: rgba(8, 0, 2, 0.65);
+  backdrop-filter: blur(3px);
+  pointer-events: none;
+}
+
+.esconderijo-dice-stage.active {
+  pointer-events: all;
+}
+
+.dice-roller-badge.esconderijo-badge {
+  background: #990015;
+  border: 1.5px solid #ff1133;
+  box-shadow: 0 0 18px rgba(255, 17, 51, 0.7);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.62rem;
+  padding: 8px 14px;
+  transform: none;
+}
+
+.dice-tumble-box.esconderijo-die-box {
+  background: #0d0003;
+  border: 2.5px solid #ff1133;
+  box-shadow: 0 0 24px rgba(255, 17, 51, 0.65), inset 0 0 12px rgba(0, 0, 0, 0.95);
+  filter: none;
+}
+
+.dice-tumble-box.esconderijo-die-box .dice-tumble-val {
+  color: #ffffff;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.45rem;
+  font-weight: 900;
+  text-shadow: 0 0 10px #ff1133;
+}
+
+.dice-tumble-box.esconderijo-die-box .dice-tumble-type {
+  color: #ff8093;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.45rem;
+  margin-top: 6px;
+}
+
+.esconderijo-roll-sub {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.54rem;
+  color: #ff8093;
+  text-shadow: 0 2px 8px #000000;
+  letter-spacing: 0.06em;
+  text-align: center;
 }

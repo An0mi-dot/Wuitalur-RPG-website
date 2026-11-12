@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.4.6';
+const MESA_VERSION = 'v2.4.7';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -2534,6 +2534,13 @@ const MesaApp = {
       if (isFromSelf(payload)) return;
       if (window.MesaEsconderijo) {
         MesaEsconderijo.handleIncomingPhase(payload.payload);
+      }
+    });
+
+    channel.on('broadcast', { event: 'esconderijo_evaporou' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaEsconderijo) {
+        MesaEsconderijo.handleIncomingEvaporation(payload.payload);
       }
     });
 
@@ -15069,10 +15076,11 @@ const MesaCombate = {
   _lastAppliedRemoteTs: 0,
   _pendingSyncCount: 0,
   _videoStallTimer: null,
+  _videoRevealTimers: [],
   _videoRetryCount: 0,
   opponentId: 'assasino',
   opponentName: '???',
-  videoUrl: 'assets/videos/assasino1.mp4?v=2.4.6',
+  videoUrl: 'assets/videos/assasino1.mp4?v=2.4.7',
   selectedPresetId: 'assasino',
   turnCycle: null,
   playerHpCache: {},
@@ -15090,8 +15098,8 @@ const MesaCombate = {
     {
       id: 'assasino',
       name: '???',
-      video: 'assets/videos/assasino1.mp4?v=2.4.6',
-      videoEsconderijo: 'assets/videos/assasino1_vermelho.mp4?v=2.4.6',
+      video: 'assets/videos/assasino1.mp4?v=2.4.7',
+      videoEsconderijo: 'assets/videos/assasino1_vermelho.mp4?v=2.4.7',
       desc: 'Oponente misterioso com variação carmesim no esconderijo'
     },
     {
@@ -15103,7 +15111,7 @@ const MesaCombate = {
     {
       id: 'unknown',
       name: 'Inimigo Antigo',
-      video: 'assets/videos/inimigo_antigo.mp4?v=2.4.6',
+      video: 'assets/videos/inimigo_antigo.mp4?v=2.4.7',
       desc: 'Arquivo do oponente anterior guardado'
     }
   ],
@@ -15119,8 +15127,8 @@ const MesaCombate = {
     const trimmed = String(url || '').trim();
     if (!this.isAssasinoOpponent(trimmed)) return trimmed;
     return isEsconderijo
-      ? 'assets/videos/assasino1_vermelho.mp4?v=2.4.6'
-      : 'assets/videos/assasino1.mp4?v=2.4.6';
+      ? 'assets/videos/assasino1_vermelho.mp4?v=2.4.7'
+      : 'assets/videos/assasino1.mp4?v=2.4.7';
   },
 
   /** Synchronizes combat overlay, opponent video, and turn cycle from Supabase row 1 without local clock skew bugs. */
@@ -15219,7 +15227,7 @@ const MesaCombate = {
     const now = Date.now();
     this._lastSentTs = Math.max(this._lastSentTs || 0, now);
     const isEsc = document.body.classList.contains('esconderijo-active');
-    const currentVid = this.resolveVideoVariantUrl(this.videoUrl || 'assets/videos/assasino1.mp4?v=2.4.6', isEsc);
+    const currentVid = this.resolveVideoVariantUrl(this.videoUrl || 'assets/videos/assasino1.mp4?v=2.4.7', isEsc);
     const payload = {
       active: !!this.isActive,
       opponentId: this.opponentId || 'assasino',
@@ -15265,7 +15273,7 @@ const MesaCombate = {
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
     if (nameInput) nameInput.value = this.opponentName || '???';
-    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/assasino1.mp4?v=2.4.6';
+    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/assasino1.mp4?v=2.4.7';
 
     const localNotice = document.getElementById('combat-local-badge');
     if (localNotice) {
@@ -15319,7 +15327,7 @@ const MesaCombate = {
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
     const name = (nameInput && nameInput.value.trim()) || this.opponentName || '???';
-    const video = (videoInput && videoInput.value.trim()) || this.videoUrl || 'assets/videos/assasino1.mp4?v=2.4.6';
+    const video = (videoInput && videoInput.value.trim()) || this.videoUrl || 'assets/videos/assasino1.mp4?v=2.4.7';
 
     this.closeSelectModal();
 
@@ -15532,6 +15540,22 @@ const MesaCombate = {
       clearTimeout(this._videoStallTimer);
       this._videoStallTimer = null;
     }
+    if (Array.isArray(this._videoRevealTimers) && this._videoRevealTimers.length) {
+      this._videoRevealTimers.forEach(t => clearTimeout(t));
+      this._videoRevealTimers = [];
+    }
+  },
+
+  /** Checks whether the combat video has decoded frame data and reveals it above the fallback. */
+  _revealVideoIfReady(video) {
+    if (!video || !this.isActive) return false;
+    const fallback = document.getElementById('combat-video-fallback');
+    if (video.getAttribute('src') && !video.error && (video.readyState >= 2 || video.currentTime > 0 || video.videoWidth > 0)) {
+      video.classList.add('playing');
+      if (fallback) fallback.style.display = 'none';
+      return true;
+    }
+    return false;
   },
 
   /** Binds one-time lifecycle handlers on the combat background video to reveal decoded frames and recover from stalls. */
@@ -15539,14 +15563,7 @@ const MesaCombate = {
     if (!video || video._mesaBound) return;
     video._mesaBound = true;
 
-    const revealIfReady = () => {
-      const fallback = document.getElementById('combat-video-fallback');
-      if (!this.isActive) return;
-      if (video.getAttribute('src') && !video.error && video.readyState >= 2) {
-        video.classList.add('playing');
-        if (fallback) fallback.style.display = 'none';
-      }
-    };
+    const revealIfReady = () => this._revealVideoIfReady(video);
 
     const scheduleStallRecovery = () => {
       this._clearVideoStallTimer();
@@ -15568,6 +15585,7 @@ const MesaCombate = {
       }, 2500);
     };
 
+    video.addEventListener('loadedmetadata', revealIfReady);
     video.addEventListener('loadeddata', () => {
       this._clearVideoStallTimer();
       this._videoRetryCount = 0;
@@ -15586,6 +15604,7 @@ const MesaCombate = {
       this._videoRetryCount = 0;
       revealIfReady();
     });
+    video.addEventListener('timeupdate', revealIfReady);
     video.addEventListener('waiting', scheduleStallRecovery);
     video.addEventListener('stalled', scheduleStallRecovery);
     video.addEventListener('error', () => {
@@ -15648,20 +15667,17 @@ const MesaCombate = {
       };
 
       if (attrSrc === trimmedUrl && !video.error) {
-        if (video.readyState >= 2) {
-          video.classList.add('playing');
-          if (fallback) fallback.style.display = 'none';
-          if (video.paused) video.play().catch(() => {});
-        } else {
-          if (video.paused) video.play().catch(() => {});
+        if (!this._revealVideoIfReady(video)) {
+          if (fallback) fallback.style.display = 'flex';
         }
+        if (video.paused) video.play().catch(() => {});
         return;
       }
 
       this._clearVideoStallTimer();
       this._videoRetryCount = 0;
 
-      // Mantem o fallback visivel ate que o primeiro frame real esteja decodificado (evita tela preta durante buffering)
+      // Mantem o <video> renderizado abaixo do fallback ate ter frame decodificado
       video.classList.remove('playing');
       if (fallback) fallback.style.display = 'flex';
 
@@ -15673,28 +15689,25 @@ const MesaCombate = {
       video.setAttribute('src', trimmedUrl);
       video.load();
 
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          if (video.readyState >= 2) {
-            video.classList.add('playing');
-            if (fallback) fallback.style.display = 'none';
-          }
-        }).catch((err) => {
-          console.warn('Playback inicial bloqueado pelo navegador, forcando muted:', err);
-          video.muted = true;
-          video.play().then(() => {
-            if (video.readyState >= 2) {
-              video.classList.add('playing');
-              if (fallback) fallback.style.display = 'none';
-            }
-          }).catch((err2) => {
-            console.error('Falha irrecuperavel ao reproduzir video de combate:', err2);
-            video.classList.remove('playing');
-            if (fallback) fallback.style.display = 'flex';
+      const attemptPlay = () => {
+        video.muted = true;
+        const p = video.play();
+        if (p && typeof p.then === 'function') {
+          p.then(() => {
+            this._revealVideoIfReady(video);
+          }).catch(() => {
+            video.muted = true;
           });
-        });
-      }
+        }
+      };
+      attemptPlay();
+
+      this._videoRevealTimers = [250, 900].map((delay) => setTimeout(() => {
+        if (!this.isActive || video.getAttribute('src') !== trimmedUrl) return;
+        if (!this._revealVideoIfReady(video) && video.paused) {
+          attemptPlay();
+        }
+      }, delay));
     } else {
       this._clearVideoStallTimer();
       video.classList.remove('playing');
@@ -16585,7 +16598,7 @@ const MesaCombate = {
       return;
     }
 
-    const targetUrl = this.resolveVideoVariantUrl('assets/videos/assasino1.mp4?v=2.4.6', isEsconderijo);
+    const targetUrl = this.resolveVideoVariantUrl('assets/videos/assasino1.mp4?v=2.4.7', isEsconderijo);
     const prevTime = (!isNaN(video.currentTime) && video.currentTime > 0) ? video.currentTime : 0;
     video.style.transition = 'none';
     this.loadVideo(targetUrl, { preserveTime: prevTime });
@@ -16996,6 +17009,8 @@ const MesaEsconderijo = {
   roomName: 'Sala Média',
   isMasterActive: false,
   isPanelOpen: false,
+  currentRoundId: null,
+  lastSearch: null,
   lastLocalActionTs: 0,
   _lastSentTs: 0,
   _lastAppliedRemoteTs: 0,
@@ -17004,11 +17019,15 @@ const MesaEsconderijo = {
   declaredSectors: [],
   selectedSector: null,
 
-  // Estado privado do jogador / personagem
-  playerSector: null,
-  playerCamouflage: 2,
+  // Estado privado dos dados de camuflagem (exclusivo dos jogadores)
+  playerCamouflageDice: [],
   playerMaxCamouflage: 4,
-  playerHidden: false,
+  _rolledRoundId: null,
+  _roundJoinedAt: 0,
+  _processedSearchIds: new Set(),
+  _isRollingDice: false,
+  _diceRollTimer: null,
+  _diceHideTimer: null,
 
   _panelWaveRaf: null,
   _panelWaveStartTime: 0,
@@ -17017,8 +17036,208 @@ const MesaEsconderijo = {
     this.renderSurvivalPanel();
   },
 
+  _isMasterUser() {
+    return Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+  },
+
+  _randomSector(sides) {
+    const maxSides = Math.max(2, Number(sides) || 6);
+    if (window.MesaDice && typeof MesaDice.cryptoRandomInt === 'function') {
+      return MesaDice.cryptoRandomInt(1, maxSides);
+    }
+    return Math.floor(Math.random() * maxSides) + 1;
+  },
+
+  _getStorageKey(roundId) {
+    return roundId ? `wu_esconderijo_round_${roundId}` : null;
+  },
+
+  _savePlayerRoundState() {
+    if (this._isMasterUser() || !this._rolledRoundId) return;
+    const key = this._getStorageKey(this._rolledRoundId);
+    if (!key) return;
+    try {
+      sessionStorage.setItem(key, JSON.stringify({
+        dice: this.playerCamouflageDice,
+        joinedAt: this._roundJoinedAt || Date.now(),
+        processedSearchIds: Array.from(this._processedSearchIds || [])
+      }));
+    } catch (e) {}
+  },
+
+  _restorePlayerRoundState(roundId) {
+    const key = this._getStorageKey(roundId);
+    if (!key) return false;
+    try {
+      const raw = sessionStorage.getItem(key);
+      if (!raw) return false;
+      const parsed = JSON.parse(raw);
+      if (!parsed || !Array.isArray(parsed.dice)) return false;
+      this.playerCamouflageDice = parsed.dice
+        .filter(d => d && Number(d.sector) >= 1)
+        .slice(0, this.playerMaxCamouflage)
+        .map((d, idx) => ({
+          id: String(d.id || `cam_${roundId}_${idx}`),
+          sector: Number(d.sector)
+        }));
+      this._roundJoinedAt = Number(parsed.joinedAt) || Date.now();
+      this._processedSearchIds = new Set(Array.isArray(parsed.processedSearchIds) ? parsed.processedSearchIds : []);
+      this._rolledRoundId = roundId;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  },
+
+  _clearStoredRoundState(roundId) {
+    const key = this._getStorageKey(roundId);
+    if (!key) return;
+    try { sessionStorage.removeItem(key); } catch (e) {}
+  },
+
+  _clearDiceTimers() {
+    if (this._diceRollTimer) {
+      clearInterval(this._diceRollTimer);
+      this._diceRollTimer = null;
+    }
+    if (this._diceHideTimer) {
+      clearTimeout(this._diceHideTimer);
+      this._diceHideTimer = null;
+    }
+  },
+
+  _hideDiceStage() {
+    this._clearDiceTimers();
+    this._isRollingDice = false;
+    const stage = document.getElementById('esconderijo-dice-stage');
+    if (stage) {
+      stage.classList.remove('active');
+      stage.innerHTML = '';
+    }
+    this.renderCamouflagePips();
+  },
+
+  _resetRoundState() {
+    if (this._rolledRoundId) this._clearStoredRoundState(this._rolledRoundId);
+    if (this.currentRoundId) this._clearStoredRoundState(this.currentRoundId);
+    this.currentRoundId = null;
+    this.lastSearch = null;
+    this.playerCamouflageDice = [];
+    this._rolledRoundId = null;
+    this._roundJoinedAt = 0;
+    this._processedSearchIds = new Set();
+    this._hideDiceTimersSafe();
+  },
+
+  _hideDiceTimersSafe() {
+    this._hideDiceStage();
+  },
+
+  /** Plays a local crimson dice roll exclusively on the current player's screen and binds results to camouflage points. */
+  playLocalCamouflageRoll(count, sides, badgeLabel, onComplete) {
+    if (this._isMasterUser()) return;
+    const dieCount = Math.max(1, Math.min(this.playerMaxCamouflage, Number(count) || 1));
+    const maxSides = Math.max(4, Number(sides) || this.roomSides || 6);
+    const stage = document.getElementById('esconderijo-dice-stage');
+
+    const rolledValues = [];
+    for (let i = 0; i < dieCount; i++) {
+      rolledValues.push(this._randomSector(maxSides));
+    }
+
+    this._clearDiceTimers();
+    this._isRollingDice = true;
+    this.renderCamouflagePips();
+
+    const commitResults = () => {
+      const stamp = Date.now();
+      rolledValues.forEach((val, idx) => {
+        if (this.playerCamouflageDice.length < this.playerMaxCamouflage) {
+          this.playerCamouflageDice.push({
+            id: `cam_${stamp}_${idx}_${Math.random().toString(36).slice(2, 6)}`,
+            sector: val
+          });
+        }
+      });
+      this._savePlayerRoundState();
+      this.renderCamouflagePips();
+      if (typeof onComplete === 'function') onComplete(rolledValues);
+    };
+
+    if (!stage) {
+      this._isRollingDice = false;
+      commitResults();
+      return;
+    }
+
+    stage.innerHTML = `
+      <div class="dice-roller-badge esconderijo-badge">${badgeLabel} (d${maxSides})</div>
+      <div class="dice-tumbling-arena">
+        ${rolledValues.map((_, i) => `
+          <div id="esc-die-box-${i}" class="dice-tumble-box esconderijo-die-box rolling">
+            <span class="dice-tumble-val">?</span>
+            <span class="dice-tumble-type">d${maxSides}</span>
+          </div>
+        `).join('')}
+      </div>
+      <div class="esconderijo-roll-sub" id="esc-roll-sub">Sorteando setor de camuflagem...</div>
+    `;
+    stage.classList.add('active');
+
+    let ticks = 0;
+    const totalTicks = 11;
+    this._diceRollTimer = setInterval(() => {
+      ticks++;
+      for (let i = 0; i < rolledValues.length; i++) {
+        const valEl = stage.querySelector(`#esc-die-box-${i} .dice-tumble-val`);
+        if (valEl) valEl.textContent = String(this._randomSector(maxSides));
+      }
+      if (ticks >= totalTicks) {
+        this._clearDiceTimers();
+        for (let i = 0; i < rolledValues.length; i++) {
+          const box = stage.querySelector(`#esc-die-box-${i}`);
+          const valEl = stage.querySelector(`#esc-die-box-${i} .dice-tumble-val`);
+          if (box) {
+            box.classList.remove('rolling');
+            box.classList.add('settled');
+          }
+          if (valEl) valEl.textContent = String(rolledValues[i]);
+        }
+        const subEl = stage.querySelector('#esc-roll-sub');
+        if (subEl) {
+          subEl.textContent = `Setor(es) vinculados: ${rolledValues.join(' • ')}`;
+        }
+        this._isRollingDice = false;
+        commitResults();
+
+        this._diceHideTimer = setTimeout(() => {
+          stage.classList.remove('active');
+          stage.innerHTML = '';
+        }, 900);
+      }
+    }, 65);
+  },
+
+  /** Triggers the initial 2-dice camouflage roll once per hiding round on non-Master clients. */
+  maybeInitializeRoundDice(roundId, sides) {
+    if (this._isMasterUser()) return;
+    const rid = roundId || 'active';
+    if (this._rolledRoundId === rid) return;
+    if (this._restorePlayerRoundState(rid)) {
+      this.renderCamouflagePips();
+      return;
+    }
+
+    this._rolledRoundId = rid;
+    this._roundJoinedAt = Date.now();
+    this._processedSearchIds = new Set();
+    this.playerCamouflageDice = [];
+    this._savePlayerRoundState();
+    this.playLocalCamouflageRoll(2, sides || this.roomSides, 'DADOS DE CAMUFLAGEM INICIAIS');
+  },
+
   toggleSurvivalPanel(shouldBroadcast = true) {
-    const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    const isMaster = this._isMasterUser();
     if (this.isPanelOpen) {
       if (isMaster && shouldBroadcast) {
         this.stopHidingRound(false);
@@ -17032,14 +17251,23 @@ const MesaEsconderijo = {
 
   openSurvivalPanel(shouldBroadcast = false) {
     this.isPanelOpen = true;
-    const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    const isMaster = this._isMasterUser();
     const panel = document.getElementById('combat-survival-panel');
     const toggleBtn = document.getElementById('combat-survival-toggle-btn');
+
+    if (isMaster && !this.currentRoundId) {
+      this.currentRoundId = Date.now();
+      this.lastSearch = null;
+    }
+
     if (panel) {
       panel.classList.add('active');
       if (toggleBtn) toggleBtn.classList.add('active');
-      document.body.classList.add('esconderijo-active');
-      if (window.MesaCombate && typeof MesaCombate.updateVideoVariant === 'function') MesaCombate.updateVideoVariant(true);
+      document.body.classList.add('esconderijo-active', 'esconderijo-panel-open');
+      if (window.MesaCombate) {
+        MesaCombate._cachedMetricsTime = 0;
+        if (typeof MesaCombate.updateVideoVariant === 'function') MesaCombate.updateVideoVariant(true);
+      }
       this.startPanelWave();
       this.renderSurvivalPanel();
     }
@@ -17054,7 +17282,7 @@ const MesaEsconderijo = {
   },
 
   closeSurvivalPanel(shouldBroadcast = false) {
-    const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    const isMaster = this._isMasterUser();
     // Se o Mestre fechar pelo botao X enquanto a rodada esta ativa, encerra globalmente para nao reabrir no polling
     if (isMaster && (shouldBroadcast || this.isMasterActive || document.body.classList.contains('esconderijo-active'))) {
       this.stopHidingRound(!shouldBroadcast);
@@ -17062,6 +17290,9 @@ const MesaEsconderijo = {
     }
 
     this.isPanelOpen = false;
+    document.body.classList.remove('esconderijo-panel-open');
+    if (window.MesaCombate) MesaCombate._cachedMetricsTime = 0;
+
     const panel = document.getElementById('combat-survival-panel');
     const toggleBtn = document.getElementById('combat-survival-toggle-btn');
     if (panel) {
@@ -17088,10 +17319,11 @@ const MesaEsconderijo = {
           event: 'esconderijo_iniciar',
           payload: {
             active: true,
+            roundId: this.currentRoundId || timestamp,
             roomSides: this.roomSides,
             roomName: this.roomName,
             phase: this.currentPhase,
-            videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.4.6',
+            videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.4.7',
             timestamp
           }
         });
@@ -17108,7 +17340,7 @@ const MesaEsconderijo = {
           event: 'esconderijo_encerrar',
           payload: {
             active: false,
-            videoUrl: 'assets/videos/assasino1.mp4?v=2.4.6',
+            videoUrl: 'assets/videos/assasino1.mp4?v=2.4.7',
             timestamp
           }
         });
@@ -17124,14 +17356,18 @@ const MesaEsconderijo = {
 
     const payload = isActive ? {
       active: true,
+      roundId: this.currentRoundId || now,
       roomSides: this.roomSides,
       roomName: this.roomName,
       phase: this.currentPhase,
-      videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.4.6',
+      lastSearch: this.lastSearch || null,
+      videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.4.7',
       timestamp: now
     } : {
       active: false,
-      videoUrl: 'assets/videos/assasino1.mp4?v=2.4.6',
+      roundId: null,
+      lastSearch: null,
+      videoUrl: 'assets/videos/assasino1.mp4?v=2.4.7',
       timestamp: now
     };
 
@@ -17154,7 +17390,7 @@ const MesaEsconderijo = {
   /** Applies remote _sys_esconderijo snapshots idempotently without fighting in-flight Master actions. */
   syncFromRemote(esc) {
     if (!esc || typeof esc !== 'object') return;
-    const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    const isMaster = this._isMasterUser();
     const remoteTs = Number(esc.timestamp) || 0;
 
     if (isMaster) {
@@ -17165,12 +17401,22 @@ const MesaEsconderijo = {
       if (remoteTs && remoteTs < (this._lastAppliedRemoteTs || 0)) return;
     }
 
-    if (remoteTs && remoteTs === this._lastAppliedRemoteTs) return;
-    if (remoteTs) this._lastAppliedRemoteTs = remoteTs;
+    const isSameTs = Boolean(remoteTs && remoteTs === this._lastAppliedRemoteTs);
+    if (!isSameTs && remoteTs) {
+      this._lastAppliedRemoteTs = remoteTs;
+    }
 
     if (esc.active) {
-      this.handleIncomingStart(esc);
-    } else {
+      if (!isSameTs) {
+        this.handleIncomingStart(esc);
+      }
+      if (!isMaster && esc.lastSearch && esc.lastSearch.searchId && esc.lastSearch.sector) {
+        const searchTs = Number(esc.lastSearch.timestamp) || 0;
+        if (!this._roundJoinedAt || searchTs >= (this._roundJoinedAt - 1500)) {
+          this.handleIncomingSearch(esc.lastSearch);
+        }
+      }
+    } else if (!isSameTs) {
       if (this.isPanelOpen || this.isMasterActive || document.body.classList.contains('esconderijo-active')) {
         this.handleIncomingStop(esc);
       }
@@ -17222,7 +17468,6 @@ const MesaEsconderijo = {
     const numSteps = Math.ceil(h / pixelSize);
 
     ctx.save();
-    // 1. Preenche a lateral direita com preto absoluto para emendar perfeitamente no fundo da janela
     ctx.fillStyle = '#000000';
     ctx.beginPath();
     for (let i = 0; i <= numSteps; i++) {
@@ -17241,7 +17486,6 @@ const MesaEsconderijo = {
     ctx.closePath();
     ctx.fill();
 
-    // 2. Traco pixelado da onda em carmesim (#ff1133)
     ctx.fillStyle = '#ff1133';
     let prevX = null;
     for (let i = 0; i <= numSteps; i++) {
@@ -17268,11 +17512,14 @@ const MesaEsconderijo = {
   },
 
   advanceEsconderijoPhase(shouldBroadcast = true) {
+    if (shouldBroadcast && !this._isMasterUser()) return;
     this.currentPhase = (this.currentPhase === 'sobreviventes') ? 'perseguidor' : 'sobreviventes';
     this.updatePhaseUI();
-    const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    const isMaster = this._isMasterUser();
     const now = Date.now();
     if (shouldBroadcast) {
+      this.lastLocalActionTs = now;
+      this._lastSentTs = Math.max(this._lastSentTs || 0, now);
       const chan = this.getChannel();
       if (chan) {
         try {
@@ -17319,6 +17566,7 @@ const MesaEsconderijo = {
   },
 
   selectRoom(roomType) {
+    if (!this._isMasterUser()) return;
     this.room = roomType;
     if (roomType === 'pequena') {
       this.roomSides = 4;
@@ -17333,106 +17581,144 @@ const MesaEsconderijo = {
     document.querySelectorAll('.survival-room-btn').forEach(b => b.classList.remove('selected'));
     const btn = document.getElementById(`srv-room-${roomType}`);
     if (btn) btn.classList.add('selected');
-    this.renderPlayerSectors();
+    this.selectedSector = null;
     this.renderMasterSectors();
 
-    const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
-    if (isMaster && this.isPanelOpen) {
-      this.broadcastStart();
-      this.syncStateToSupabase(true);
+    if (this.isPanelOpen) {
+      const now = Date.now();
+      this.lastLocalActionTs = now;
+      this._lastSentTs = Math.max(this._lastSentTs || 0, now);
+      this.broadcastStart(now);
+      this.syncStateToSupabase(true, now);
     }
   },
 
   renderSurvivalPanel() {
+    const isMaster = this._isMasterUser();
+    const phaseActionsEl = document.getElementById('survival-master-phase-actions');
+    const masterSectionEl = document.getElementById('survival-master-section');
+    const camBlockEl = document.getElementById('survival-camouflage-block');
+    const playerSectionTitleEl = document.getElementById('survival-player-section-title');
+
+    if (phaseActionsEl) phaseActionsEl.style.display = isMaster ? 'flex' : 'none';
+    if (masterSectionEl) masterSectionEl.style.display = isMaster ? 'flex' : 'none';
+    if (camBlockEl) camBlockEl.style.display = isMaster ? 'none' : 'flex';
+    if (playerSectionTitleEl) {
+      playerSectionTitleEl.textContent = isMaster ? 'CONTROLES DA MESA' : 'SEU ESCONDERIJO';
+    }
+
     this.updatePhaseUI();
-    this.renderPlayerSectors();
     this.renderCamouflagePips();
     this.updatePavorToggleUI();
-    this.renderMasterSectors();
-    this.updateHistoryBox();
+    if (isMaster) {
+      this.renderMasterSectors();
+      this.updateHistoryBox();
+    }
   },
 
-  renderPlayerSectors() {
-    const container = document.getElementById('survival-player-sectors-row');
-    const badge = document.getElementById('survival-player-sector-badge');
-    if (!container) return;
-    container.innerHTML = '';
-    for (let i = 1; i <= this.roomSides; i++) {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = `survival-sector-btn ${this.playerSector === i ? 'selected' : ''}`;
-      btn.textContent = `S${i}`;
-      btn.title = `Esconder no Setor ${i}`;
-      btn.onclick = () => this.selectPlayerSector(i);
-      container.appendChild(btn);
-    }
-    if (badge) {
-      if (this.playerSector) {
-        badge.textContent = `Setor ${this.playerSector} Definido`;
-        badge.className = 'survival-sector-selected-indicator active';
-      } else {
-        badge.textContent = 'Nenhum setor definido';
-        badge.className = 'survival-sector-selected-indicator';
+  /** Rolls 1 die matching roomSides exclusively on the player's screen to add +1 sector-bound camouflage point. */
+  keepBreathing() {
+    if (this._isMasterUser()) return;
+    if (this._isRollingDice) return;
+    if (this.playerCamouflageDice.length >= this.playerMaxCamouflage) {
+      if (window.MesaApp && typeof MesaApp.showToast === 'function') {
+        MesaApp.showToast('Limite máximo de 4 pontos de camuflagem atingido.');
       }
+      return;
     }
+    this.playLocalCamouflageRoll(1, this.roomSides, 'MANTER A RESPIRAÇÃO');
   },
 
-  selectPlayerSector(num) {
-    this.playerSector = num;
-    this.playerHidden = true;
-    this.renderPlayerSectors();
-    if (window.MesaApp && typeof MesaApp.showToast === 'function') {
-      MesaApp.showToast(`Setor secreto definido: Setor ${num}`);
+  /** Removes a single specific camouflage die by ID with a dust disintegration effect. */
+  removeCamouflageDie(dieId) {
+    if (this._isMasterUser()) return;
+    const idx = this.playerCamouflageDice.findIndex(d => d && d.id === dieId);
+    if (idx === -1) return;
+
+    const itemEl = document.querySelector(`.survival-cam-item[data-cam-die-id="${dieId}"]`);
+    const pipEl = itemEl ? itemEl.querySelector('.survival-pip') : null;
+    if (pipEl && window.MesaDice && typeof MesaDice.createDustVanishEffect === 'function') {
+      MesaDice.createDustVanishEffect(pipEl, '#ff1133', 22);
     }
-  },
+    if (itemEl) {
+      itemEl.style.pointerEvents = 'none';
+      itemEl.style.opacity = '0';
+      itemEl.style.transform = 'scale(0.2)';
+    }
 
-  setCamouflage(val) {
-    this.playerCamouflage = Math.max(0, Math.min(this.playerMaxCamouflage, val));
-    this.renderCamouflagePips();
-  },
-
-  adjustCamouflage(delta) {
-    if (delta < 0 && this.playerCamouflage > 0) {
-      const pips = document.querySelectorAll('#survival-cam-pips .survival-pip');
-      const lastPip = pips[pips.length - 1];
-      if (lastPip) {
-        if (window.MesaDice && typeof MesaDice.createDustVanishEffect === 'function') {
-          MesaDice.createDustVanishEffect(lastPip, '#ff1133', 25);
-        }
-        lastPip.style.pointerEvents = 'none';
-        lastPip.style.opacity = '0';
-        lastPip.style.transform = 'scale(0.2)';
-      }
-      this.playerCamouflage = Math.max(0, this.playerCamouflage - 1);
-      setTimeout(() => {
-        this.renderCamouflagePips();
-      }, 160);
-    } else if (delta > 0) {
-      this.playerCamouflage = Math.min(this.playerMaxCamouflage, this.playerCamouflage + 1);
+    this.playerCamouflageDice.splice(idx, 1);
+    this._savePlayerRoundState();
+    setTimeout(() => {
       this.renderCamouflagePips();
+    }, 150);
+  },
+
+  /** Compatibility fallback wrapper. */
+  adjustCamouflage(delta) {
+    if (this._isMasterUser()) return;
+    if (delta > 0) {
+      this.keepBreathing();
+    } else if (delta < 0 && this.playerCamouflageDice.length > 0) {
+      const last = this.playerCamouflageDice[this.playerCamouflageDice.length - 1];
+      if (last) this.removeCamouflageDie(last.id);
     }
   },
 
   renderCamouflagePips() {
     const container = document.getElementById('survival-cam-pips');
     const countEl = document.getElementById('survival-cam-count');
-    if (countEl) countEl.textContent = `${this.playerCamouflage}/${this.playerMaxCamouflage}`;
+    const breatheBtn = document.getElementById('survival-keep-breathing-btn');
+    const currentCount = this.playerCamouflageDice.length;
+
+    if (countEl) countEl.textContent = `${currentCount}/${this.playerMaxCamouflage}`;
+    if (breatheBtn) {
+      breatheBtn.disabled = this._isRollingDice || currentCount >= this.playerMaxCamouflage;
+    }
     if (!container) return;
     container.innerHTML = '';
-    // Renderiza apenas os quadrados existentes. Ao se dissipar, some junto com o quadrado!
-    for (let i = 0; i < this.playerCamouflage; i++) {
+
+    if (currentCount === 0) {
+      const empty = document.createElement('span');
+      empty.className = 'survival-cam-empty';
+      empty.textContent = this._isRollingDice ? 'Rolando dados de camuflagem...' : 'Nenhum ponto de camuflagem ativo.';
+      container.appendChild(empty);
+      return;
+    }
+
+    this.playerCamouflageDice.forEach((die) => {
+      const item = document.createElement('div');
+      item.className = 'survival-cam-item';
+      item.dataset.camDieId = die.id;
+
       const pip = document.createElement('span');
       pip.className = 'survival-pip filled';
-      pip.title = `Ponto de Camuflagem ${i + 1} (Clique para dissipar)`;
-      pip.onclick = () => this.adjustCamouflage(-1);
-      container.appendChild(pip);
-    }
+      pip.title = `Ponto de Camuflagem no Setor ${die.sector}`;
+
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'survival-pip-remove';
+      removeBtn.textContent = '×';
+      removeBtn.title = `Remover camuflagem do Setor ${die.sector}`;
+      removeBtn.onclick = (e) => {
+        e.stopPropagation();
+        this.removeCamouflageDie(die.id);
+      };
+
+      const sectorNum = document.createElement('span');
+      sectorNum.className = 'survival-pip-sector';
+      sectorNum.textContent = String(die.sector);
+
+      item.appendChild(removeBtn);
+      item.appendChild(pip);
+      item.appendChild(sectorNum);
+      container.appendChild(item);
+    });
   },
 
   updatePavorToggleUI() {
     const toggle = document.getElementById('survival-pavor-toggle');
     const label = document.getElementById('survival-pavor-switch-text');
-    const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    const isMaster = this._isMasterUser();
     const activePlayer = (window.MesaApp && MesaApp.state && MesaApp.state.myPlayerSlot && MesaApp.state.players[MesaApp.state.myPlayerSlot - 1])
       || (window.MesaApp && MesaApp.state && MesaApp.state.players && MesaApp.state.players[0]);
     const hasPavor = activePlayer ? Boolean(activePlayer.dadoDePavor) : false;
@@ -17447,8 +17733,8 @@ const MesaEsconderijo = {
     }
   },
 
-  togglePavorFromSurvival(isChecked) {
-    if (!window.MesaApp || !MesaApp.state || !MesaApp.state.isMaster) {
+  togglePavorFromSurvival() {
+    if (!this._isMasterUser()) {
       if (window.MesaApp && typeof MesaApp.showToast === 'function') {
         MesaApp.showToast("Apenas o Mestre pode alterar o Dado de Pavor.");
       }
@@ -17482,35 +17768,52 @@ const MesaEsconderijo = {
   },
 
   selectMasterSector(num) {
+    if (!this._isMasterUser()) return;
     this.selectedSector = num;
     this.renderMasterSectors();
   },
 
   rollRandomSearch() {
-    this.selectedSector = Math.floor(Math.random() * this.roomSides) + 1;
+    if (!this._isMasterUser()) return;
+    this.selectedSector = this._randomSector(this.roomSides);
     this.renderMasterSectors();
   },
 
   declareSearch() {
-    if (!this.selectedSector) return;
+    if (!this._isMasterUser() || !this.selectedSector) return;
+    const now = Date.now();
     const sector = this.selectedSector;
+    const searchId = `srv_${now}_${Math.random().toString(36).slice(2, 6)}`;
+
+    this.lastLocalActionTs = now;
+    this._lastSentTs = Math.max(this._lastSentTs || 0, now);
+    this.lastSearch = { sector, searchId, timestamp: now };
     this.declaredSectors.push(sector);
     this.updateHistoryBox();
 
-    // Verifica correspondência direta com jogadores
-    this.checkSectorMatch(sector);
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'esconderijo_busca',
+          payload: {
+            sector,
+            searchId,
+            roundId: this.currentRoundId,
+            timestamp: now
+          }
+        });
+      } catch (e) {}
+    }
 
-    if (window.MesaChat && MesaChat.channel) {
-      MesaChat.channel.send({
-        type: 'broadcast',
-        event: 'esconderijo_busca',
-        payload: { sector: sector, timestamp: Date.now() }
-      });
+    if (this.isPanelOpen) {
+      this.syncStateToSupabase(true, now);
     }
 
     if (window.MesaChat && typeof MesaChat.receiveMessage === 'function') {
       MesaChat.receiveMessage({
-        id: 'hiding_search_' + Date.now(),
+        id: 'hiding_search_' + now,
         sender_name: 'Perseguidor',
         is_master: true,
         content: `[BUSCA]: A criatura vasculhou o SETOR ${sector}.`,
@@ -17522,31 +17825,63 @@ const MesaEsconderijo = {
     this.renderMasterSectors();
   },
 
-  checkSectorMatch(sector) {
-    // 1. Verifica se o jogador local esta no setor
-    if (this.playerHidden && this.playerSector === sector) {
-      const mySlot = (window.MesaApp && MesaApp.state && MesaApp.state.myPlayerSlot) || 1;
-      this.revealPlayerCardSector(mySlot, sector);
-      this.adjustCamouflage(-1);
+  /** Evaporates every local player camouflage die bound to the searched sector. */
+  evaporateMatchingDice(sector) {
+    if (this._isMasterUser()) return 0;
+    const targetSector = Number(sector);
+    const matches = this.playerCamouflageDice.filter(d => Number(d.sector) === targetSector);
+    if (matches.length === 0) return 0;
+
+    matches.forEach((die) => {
+      const itemEl = document.querySelector(`.survival-cam-item[data-cam-die-id="${die.id}"]`);
+      const pipEl = itemEl ? itemEl.querySelector('.survival-pip') : null;
+      if (pipEl && window.MesaDice && typeof MesaDice.createDustVanishEffect === 'function') {
+        MesaDice.createDustVanishEffect(pipEl, '#ff1133', 28);
+      }
+      if (itemEl) {
+        itemEl.style.pointerEvents = 'none';
+        itemEl.style.opacity = '0';
+        itemEl.style.transform = 'scale(0.2)';
+      }
+    });
+
+    this.playerCamouflageDice = this.playerCamouflageDice.filter(d => Number(d.sector) !== targetSector);
+    this._savePlayerRoundState();
+
+    const mySlot = (window.MesaApp && MesaApp.state && MesaApp.state.myPlayerSlot) || 1;
+    this.revealPlayerCardSector(mySlot, targetSector);
+
+    if (window.MesaApp && typeof MesaApp.showToast === 'function') {
+      MesaApp.showToast(`Perseguidor vasculhou Setor ${targetSector}. ${matches.length} ponto(s) de camuflagem evaporou.`);
     }
 
-    // 2. No modo Mestre, verifica se algum personagem da mesa esta no setor
-    if (window.MesaApp && MesaApp.state && MesaApp.state.isMaster && MesaApp.state.players) {
-      MesaApp.state.players.forEach((p, idx) => {
-        if (!p) return;
-        const slotNum = p.slot || (idx + 1);
-        if (p.secretSector === sector || (slotNum === 1 && this.playerSector === sector)) {
-          this.revealPlayerCardSector(slotNum, sector);
-        }
-      });
+    const chan = this.getChannel();
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'esconderijo_evaporou',
+          payload: {
+            slot: mySlot,
+            sector: targetSector,
+            lostCount: matches.length,
+            timestamp: Date.now()
+          }
+        });
+      } catch (e) {}
     }
+
+    setTimeout(() => {
+      this.renderCamouflagePips();
+    }, 170);
+
+    return matches.length;
   },
 
   revealPlayerCardSector(slotNum, sector) {
     const card = document.getElementById(`combat-player-card-${slotNum}`);
     if (!card) return;
 
-    // Remove badge antigo se existir
     const existing = card.querySelector('.card-revealed-sector-badge');
     if (existing) existing.remove();
 
@@ -17555,7 +17890,6 @@ const MesaEsconderijo = {
     badge.textContent = `SETOR ${sector}`;
     card.appendChild(badge);
 
-    // Efeito de desintegracao em poeira apos 1.2 segundos
     setTimeout(() => {
       if (window.MesaDice && typeof MesaDice.createDustVanishEffect === 'function') {
         MesaDice.createDustVanishEffect(badge, '#ff1133', 30);
@@ -17565,10 +17899,18 @@ const MesaEsconderijo = {
     }, 1200);
   },
 
+  handleIncomingEvaporation(payload) {
+    if (!payload || !payload.slot || !payload.sector) return;
+    this.revealPlayerCardSector(Number(payload.slot), Number(payload.sector));
+  },
+
   handleIncomingSearch(payload) {
-    if (!payload || !payload.sector) return;
-    const sector = payload.sector;
-    this.checkSectorMatch(sector);
+    if (!payload || !payload.sector || this._isMasterUser()) return;
+    const searchId = payload.searchId ? String(payload.searchId) : `s_${payload.sector}_${payload.timestamp || 0}`;
+    if (this._processedSearchIds.has(searchId)) return;
+    this._processedSearchIds.add(searchId);
+    this._savePlayerRoundState();
+    this.evaporateMatchingDice(Number(payload.sector));
   },
 
   handleIncomingStart(payload) {
@@ -17578,16 +17920,22 @@ const MesaEsconderijo = {
     if (ts) this._lastAppliedRemoteTs = ts;
 
     if (payload.roomSides) {
-      this.roomSides = payload.roomSides;
-      this.room = payload.roomSides === 4 ? 'pequena' : (payload.roomSides === 8 ? 'grande' : 'media');
+      this.roomSides = Number(payload.roomSides) || 6;
+      this.room = this.roomSides === 4 ? 'pequena' : (this.roomSides === 8 ? 'grande' : 'media');
     }
     if (payload.roomName) this.roomName = payload.roomName;
     if (payload.phase) this.currentPhase = payload.phase;
-    this.playerHidden = true;
+
+    const incomingRoundId = payload.roundId || ts || 'active';
+    if (this.currentRoundId !== incomingRoundId) {
+      this.currentRoundId = incomingRoundId;
+    }
+
     this.isMasterActive = true;
     document.body.classList.add('esconderijo-active');
     if (window.MesaCombate && typeof MesaCombate.updateVideoVariant === 'function') MesaCombate.updateVideoVariant(true);
     this.openSurvivalPanel(false);
+    this.maybeInitializeRoundDice(this.currentRoundId, this.roomSides);
   },
 
   handleIncomingStop(payload) {
@@ -17595,11 +17943,13 @@ const MesaEsconderijo = {
     if (ts && ts < (this._lastAppliedRemoteTs || 0)) return;
     if (ts) this._lastAppliedRemoteTs = ts;
 
-    this.playerHidden = false;
-    this.playerSector = null;
+    this._resetRoundState();
     this.isMasterActive = false;
-    document.body.classList.remove('esconderijo-active');
-    if (window.MesaCombate && typeof MesaCombate.updateVideoVariant === 'function') MesaCombate.updateVideoVariant(false);
+    document.body.classList.remove('esconderijo-active', 'esconderijo-panel-open');
+    if (window.MesaCombate) {
+      MesaCombate._cachedMetricsTime = 0;
+      if (typeof MesaCombate.updateVideoVariant === 'function') MesaCombate.updateVideoVariant(false);
+    }
     this.closeSurvivalPanel(false);
   },
 
@@ -17619,8 +17969,7 @@ const MesaEsconderijo = {
     this._lastSentTs = Math.max(this._lastSentTs || 0, now);
     this.declaredSectors = [];
     this.selectedSector = null;
-    this.playerHidden = false;
-    this.playerSector = null;
+    this._resetRoundState();
     this.isMasterActive = false;
     this.isPanelOpen = false;
 
@@ -17628,11 +17977,14 @@ const MesaEsconderijo = {
     const toggleBtn = document.getElementById('combat-survival-toggle-btn');
     if (panel) panel.classList.remove('active');
     if (toggleBtn) toggleBtn.classList.remove('active');
-    document.body.classList.remove('esconderijo-active');
+    document.body.classList.remove('esconderijo-active', 'esconderijo-panel-open');
     this.stopPanelWave();
 
-    if (window.MesaCombate && typeof MesaCombate.updateVideoVariant === 'function') {
-      MesaCombate.updateVideoVariant(false);
+    if (window.MesaCombate) {
+      MesaCombate._cachedMetricsTime = 0;
+      if (typeof MesaCombate.updateVideoVariant === 'function') {
+        MesaCombate.updateVideoVariant(false);
+      }
     }
     this.broadcastStop(now);
     this.syncStateToSupabase(false, now);

@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.4.6">
+  <link rel="stylesheet" href="css/mesa.css?v=2.4.7">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1325,11 +1325,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=2.4.6"></script>
+<script src="js/campaign-data.js?v=2.4.7"></script>
 
-<script src="js/mesa.js?v=2.4.6"></script>
+<script src="js/mesa.js?v=2.4.7"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.4.6</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.4.7</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -2900,34 +2900,23 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- SEÇÃO DO JOGADOR: CONTROLE DE SOBREVIVÊNCIA -->
       <div class="survival-section" id="survival-player-section">
         <div class="survival-section-header">
-          <span class="survival-section-title">SEU ESCONDERIJO</span>
+          <span class="survival-section-title" id="survival-player-section-title">SEU ESCONDERIJO</span>
         </div>
 
-        <div class="survival-field">
-          <label class="survival-field-label">Setor Oculto:</label>
-          <div class="survival-sectors-row" id="survival-player-sectors-row">
-            <!-- Renderizado dinamicamente -->
-          </div>
-          <div class="survival-sector-selected-indicator" id="survival-player-sector-badge">
-            Nenhum setor definido
-          </div>
-        </div>
-
-        <div class="survival-field">
+        <div class="survival-field" id="survival-camouflage-block">
           <div class="survival-field-header-row">
             <label class="survival-field-label">Pontos de Camuflagem:</label>
-            <span class="survival-cam-count" id="survival-cam-count">2/4</span>
+            <span class="survival-cam-count" id="survival-cam-count">0/4</span>
           </div>
           <div class="survival-pips-row" id="survival-cam-pips">
-            <!-- Renderizado dinamicamente -->
+            <!-- Renderizado dinamicamente com dados atrelados a setores -->
           </div>
           <div class="survival-pips-ctrls">
-            <button type="button" class="survival-pip-adj-btn" onclick="MesaEsconderijo.adjustCamouflage(-1)" title="Perder 1 Camuflagem">-1</button>
-            <button type="button" class="survival-pip-adj-btn" onclick="MesaEsconderijo.adjustCamouflage(1)" title="Recuperar 1 Camuflagem">+1</button>
+            <button type="button" id="survival-keep-breathing-btn" class="survival-keep-breathing-btn" onclick="MesaEsconderijo.keepBreathing()" title="Rolar 1 dado para ganhar +1 Ponto de Camuflagem">Manter a Respiração</button>
           </div>
         </div>
 
-        <div class="survival-field">
+        <div class="survival-field" id="survival-pavor-field">
           <label class="survival-field-label">Dado de Pavor:</label>
           <div class="survival-pavor-switch-box">
             <label class="survival-switch-label">
@@ -2977,6 +2966,9 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       </div>
     </div>
   </aside>
+
+  <!-- PALCO LOCAL DE DADOS DE CAMUFLAGEM (EXCLUSIVO DOS JOGADORES NO ESCONDERIJO) -->
+  <div id="esconderijo-dice-stage" class="dice-stage esconderijo-dice-stage"></div>
 
   <!-- CONTAINER DE TOASTS DA MESA -->
   <div id="mesa-toast-container" class="mesa-toast-container"></div>
