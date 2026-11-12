@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.3.9';
+const MESA_VERSION = 'v2.4.5';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
