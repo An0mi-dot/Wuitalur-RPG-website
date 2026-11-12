@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.4.9';
+const MESA_VERSION = 'v2.5.0';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -4154,16 +4154,10 @@ const MesaDice = {
     return min + (randomVal % range);
   },
 
-  // Sorteio secreto com vies para valores baixos no Dado de Pavor
+  // Sorteio criptograficamente uniforme no Dado de Pavor (totalmente aleatorio, sem vies)
   cryptoRandomPavor(sides) {
     if (!sides || sides <= 1) return 1;
-    const r1 = this.cryptoRandomInt(1, sides);
-    const r2 = this.cryptoRandomInt(1, sides);
-    if (sides >= 12 && r1 > sides / 2 && r2 > sides / 2) {
-      const r3 = this.cryptoRandomInt(1, sides);
-      return Math.min(r1, r2, r3);
-    }
-    return Math.min(r1, r2);
+    return this.cryptoRandomInt(1, sides);
   },
 
   openModal() {
@@ -4467,6 +4461,102 @@ const MesaDice = {
     }
   },
 
+  /** Returns polygon outline and inner facet SVG paths matching the die face count. */
+  getDieShapeSpec(sides) {
+    const s = Number(sides) || 20;
+    const shapes = {
+      4: {
+        outline: '50,6 95,86 5,86',
+        upperShade: '50,6 95,86 50,58',
+        facets: 'M50,6 L50,58 M95,86 L50,58 M5,86 L50,58',
+        shapeKey: 'd4'
+      },
+      6: {
+        outline: '14,14 86,14 86,86 14,86',
+        upperShade: '14,14 86,14 75,25 25,25',
+        facets: 'M25,25 L75,25 L75,75 L25,75 Z M14,14 L25,25 M86,14 L75,25 M86,86 L75,75 M14,86 L25,75',
+        shapeKey: 'd6'
+      },
+      8: {
+        outline: '50,4 93,50 50,96 7,50',
+        upperShade: '50,4 93,50 7,50',
+        facets: 'M50,18 L80,66 L20,66 Z M50,4 L50,18 M7,50 L20,66 M93,50 L80,66 M50,96 L20,66 M50,96 L80,66',
+        shapeKey: 'd8'
+      },
+      10: {
+        outline: '50,4 92,43 50,96 8,43',
+        upperShade: '50,4 70,45 50,70 30,45',
+        facets: 'M50,4 L70,45 L50,70 L30,45 Z M8,43 L30,45 M92,43 L70,45 M50,70 L50,96 M8,43 L50,70 M92,43 L50,70',
+        shapeKey: 'd10'
+      },
+      12: {
+        outline: '50,5 77,14 93,36 93,64 77,86 50,95 23,86 7,64 7,36 23,14',
+        upperShade: '50,24 75,42 65,71 35,71 25,42',
+        facets: 'M50,24 L75,42 L65,71 L35,71 L25,42 Z M50,5 L50,24 M93,36 L75,42 M77,86 L65,71 M23,86 L35,71 M7,36 L25,42',
+        shapeKey: 'd12'
+      },
+      16: {
+        outline: '50,5 81,18 95,50 81,82 50,95 19,82 5,50 19,18',
+        upperShade: '50,5 81,18 50,50 19,18',
+        facets: 'M50,19 L72,28 L81,50 L72,72 L50,81 L28,72 L19,50 L28,28 Z M50,5 L50,19 M81,18 L72,28 M95,50 L81,50 M81,82 L72,72 M50,95 L50,81 M19,82 L28,72 M5,50 L19,50 M19,18 L28,28',
+        shapeKey: 'd16'
+      },
+      20: {
+        outline: '50,5 90,27 90,73 50,95 10,73 10,27',
+        upperShade: '50,5 90,27 74,67 26,67 10,27',
+        facets: 'M50,22 L74,67 L26,67 Z M50,5 L50,22 M50,5 L10,27 M50,5 L90,27 M10,27 L26,67 M90,27 L74,67 M10,27 L50,22 M90,27 L50,22 M10,73 L26,67 M90,73 L74,67 M50,95 L26,67 M50,95 L74,67',
+        shapeKey: 'd20'
+      },
+      100: {
+        outline: '50,4 92,43 50,96 8,43',
+        upperShade: '50,4 70,45 50,70 30,45',
+        facets: 'M50,4 L70,45 L50,70 L30,45 Z M8,43 L30,45 M92,43 L70,45 M50,70 L50,96 M50,13 L83,43 L50,86 L17,43 Z',
+        shapeKey: 'd100'
+      }
+    };
+    if (shapes[s]) return shapes[s];
+    return { ...shapes[20], shapeKey: `d${s}` };
+  },
+
+  /** Builds a faceted polyhedral die element matching the die sides and theme. */
+  buildPolyhedralDieHtml({
+    id = '',
+    sides = 20,
+    valId = '',
+    initialVal = '?',
+    boxClass = 'rolling',
+    valClass = '',
+    title = '',
+    topTagHtml = '',
+    bottomTagHtml = '',
+    showType = true
+  } = {}) {
+    const s = Number(sides) || 20;
+    const spec = this.getDieShapeSpec(s);
+    const idAttr = id ? `id="${id}"` : '';
+    const titleAttr = title ? `title="${title}"` : '';
+    const valIdAttr = valId ? `id="${valId}"` : '';
+    const valClasses = valClass ? `dice-tumble-val ${valClass}` : 'dice-tumble-val';
+    return `
+      <div ${idAttr} class="dice-tumble-box ${boxClass}" data-die-sides="${spec.shapeKey}" ${titleAttr}>
+        ${topTagHtml}
+        <div class="die-poly-rotor">
+          <svg class="die-poly-svg" viewBox="0 0 100 100" aria-hidden="true">
+            <polygon class="die-poly-body" points="${spec.outline}" />
+            <polygon class="die-poly-shade" points="${spec.upperShade}" />
+            <path class="die-poly-facets" d="${spec.facets}" />
+            <polygon class="die-poly-rim" points="${spec.outline}" />
+          </svg>
+          <div class="die-poly-face-content">
+            ${showType ? `<span class="dice-tumble-type">d${s}</span>` : ''}
+            <span ${valIdAttr} class="${valClasses}">${initialVal}</span>
+          </div>
+        </div>
+        ${bottomTagHtml}
+      </div>
+    `;
+  },
+
   playRollAnimation(data) {
     const isCombat = document.body.classList.contains('combat-active');
     const stage = (isCombat && document.getElementById('combat-dice-stage'))
@@ -4475,6 +4565,8 @@ const MesaDice = {
     if (!stage) return;
 
     if (this.rollTimeout) clearTimeout(this.rollTimeout);
+    if (this._commonInterval) clearInterval(this._commonInterval);
+    const rollGen = (this._rollGen = (this._rollGen || 0) + 1);
 
     // Trava global ativa enquanto a rolagem ocorre no palco
     this.isGlobalRolling = true;
@@ -4491,12 +4583,13 @@ const MesaDice = {
         ${data.rollerName} está rolando...
       </div>
       <div id="dice-tumbling-arena" class="dice-tumbling-arena">
-        ${data.results.map((d, i) => `
-          <div id="dice-box-${i}" class="dice-tumble-box rolling">
-            <span class="dice-tumble-type">d${d.sides}</span>
-            <span id="dice-val-${i}" class="dice-tumble-val">?</span>
-          </div>
-        `).join('')}
+        ${data.results.map((d, i) => this.buildPolyhedralDieHtml({
+          id: `dice-box-${i}`,
+          sides: d.sides,
+          valId: `dice-val-${i}`,
+          initialVal: '?',
+          boxClass: 'rolling'
+        })).join('')}
       </div>
       <div id="dice-total-box" class="dice-total-banner" style="display:none;"></div>
     `;
@@ -4505,6 +4598,10 @@ const MesaDice = {
 
     // Rola dados comuns
     const commonInterval = setInterval(() => {
+      if (this._rollGen !== rollGen) {
+        clearInterval(commonInterval);
+        return;
+      }
       data.results.forEach((d, i) => {
         const valEl = stage.querySelector(`#dice-val-${i}`);
         if (valEl) {
@@ -4512,10 +4609,12 @@ const MesaDice = {
         }
       });
     }, 45);
+    this._commonInterval = commonInterval;
 
-    // Fim da Etapa 1: Estabiliza dados comuns após 1.1s e exibe o total parcial
+    // Fim da Etapa 1: Estabiliza dados comuns após 1.15s e exibe o total parcial
     setTimeout(() => {
       clearInterval(commonInterval);
+      if (this._rollGen !== rollGen) return;
 
       data.results.forEach((d, i) => {
         const box = stage.querySelector(`#dice-box-${i}`);
@@ -4568,18 +4667,21 @@ const MesaDice = {
 
       // Etapa 2: Após suspense de 900ms, o Dado de Pavor surge no palco e rola com desaceleração tensa
       setTimeout(() => {
-        if (!arena) return;
+        if (this._rollGen !== rollGen || !arena) return;
 
-        const pavorEl = document.createElement('div');
-        pavorEl.id = 'dice-pavor-box';
-        pavorEl.className = 'dice-tumble-box pavor-box pavor-entrance rolling';
-        pavorEl.title = 'Dado de Pavor (Fios do Medo)';
-        pavorEl.innerHTML = `
-          <span class="pavor-box-top-tag">PAVOR</span>
-          <span class="dice-tumble-type">d${data.pavorResult.sides}</span>
-          <span id="dice-pavor-val" class="dice-tumble-val pavor-number">?</span>
-          <span class="pavor-box-sub">SUBTRAI</span>
-        `;
+        const pavorTemp = document.createElement('div');
+        pavorTemp.innerHTML = this.buildPolyhedralDieHtml({
+          id: 'dice-pavor-box',
+          sides: data.pavorResult.sides,
+          valId: 'dice-pavor-val',
+          initialVal: '?',
+          boxClass: 'pavor-box pavor-entrance rolling',
+          valClass: 'pavor-number',
+          title: 'Dado de Pavor (Fios do Medo)',
+          topTagHtml: '<span class="pavor-box-top-tag">PAVOR</span>',
+          bottomTagHtml: '<span class="pavor-box-sub">SUBTRAI</span>'
+        }).trim();
+        const pavorEl = pavorTemp.firstElementChild;
         arena.appendChild(pavorEl);
 
         // Agenda progressiva (~2.75s): rápida no início e mais lenta ao final para gerar tensão
@@ -4602,6 +4704,7 @@ const MesaDice = {
 
           // Após desintegração, substitui pelo novo total já subtraído em destaque carmesim
           setTimeout(() => {
+            if (this._rollGen !== rollGen) return;
             if (totalBox) {
               let formulaParts = data.results.length > 1
                 ? `${commonDiceBreakdown} [${commonSum}] <span class="pavor-breakdown-minus">− PAVOR (${data.pavorResult.val})</span>${modStr} =`
@@ -4638,7 +4741,7 @@ const MesaDice = {
 
         const tickPavor = () => {
           const pVal = stage.querySelector('#dice-pavor-val');
-          if (!pVal || !stage.classList.contains('active')) return;
+          if (this._rollGen !== rollGen || !pVal || !stage.classList.contains('active')) return;
           if (pStep < pavorDelays.length) {
             pVal.textContent = this.cryptoRandomInt(1, data.pavorResult.sides);
             const wait = pavorDelays[pStep++];
@@ -4656,6 +4759,7 @@ const MesaDice = {
     // Mantém na tela e retorna ao estado de repouso liberando a trava global
     const totalDuration = hasPavor ? 10200 : 5000;
     this.rollTimeout = setTimeout(() => {
+      if (this._rollGen !== rollGen) return;
       stage.classList.remove('active');
       stage.innerHTML = '';
       this.isGlobalRolling = false;
@@ -15097,7 +15201,7 @@ const MesaCombate = {
   _videoRetryCount: 0,
   opponentId: 'assasino',
   opponentName: '???',
-  videoUrl: 'assets/videos/assasino1.mp4?v=2.4.9',
+  videoUrl: 'assets/videos/assasino1.mp4?v=2.5.0',
   selectedPresetId: 'assasino',
   turnCycle: null,
   playerHpCache: {},
@@ -15115,20 +15219,20 @@ const MesaCombate = {
     {
       id: 'assasino',
       name: '???',
-      video: 'assets/videos/assasino1.mp4?v=2.4.9',
-      videoEsconderijo: 'assets/videos/assasino1_vermelho.mp4?v=2.4.9',
+      video: 'assets/videos/assasino1.mp4?v=2.5.0',
+      videoEsconderijo: 'assets/videos/assasino1_vermelho.mp4?v=2.5.0',
       desc: 'Oponente misterioso com variação carmesim no esconderijo'
     },
     {
       id: 'ratos',
       name: 'Ratos',
-      video: 'assets/videos/rato_cinematica.mp4?v=2.4.9',
+      video: 'assets/videos/rato_cinematica.mp4?v=2.5.0',
       desc: 'Infestação voraz de roedores carniceiros na escuridão'
     },
     {
       id: 'unknown',
       name: 'Inimigo Antigo',
-      video: 'assets/videos/inimigo_antigo.mp4?v=2.4.9',
+      video: 'assets/videos/inimigo_antigo.mp4?v=2.5.0',
       desc: 'Arquivo do oponente anterior guardado'
     }
   ],
@@ -15144,8 +15248,8 @@ const MesaCombate = {
     const trimmed = String(url || '').trim();
     if (!this.isAssasinoOpponent(trimmed)) return trimmed;
     return isEsconderijo
-      ? 'assets/videos/assasino1_vermelho.mp4?v=2.4.9'
-      : 'assets/videos/assasino1.mp4?v=2.4.9';
+      ? 'assets/videos/assasino1_vermelho.mp4?v=2.5.0'
+      : 'assets/videos/assasino1.mp4?v=2.5.0';
   },
 
   /** Synchronizes combat overlay, opponent video, and turn cycle from Supabase row 1 without local clock skew bugs. */
@@ -15220,10 +15324,10 @@ const MesaCombate = {
     const ctrl = typeof AbortController === 'function' ? new AbortController() : null;
     this._preloadAbort = ctrl;
     const urls = [
-      'assets/videos/assasino1.mp4?v=2.4.9',
-      'assets/videos/assasino1_vermelho.mp4?v=2.4.9',
-      'assets/videos/rato_cinematica.mp4?v=2.4.9',
-      'assets/videos/inimigo_antigo.mp4?v=2.4.9'
+      'assets/videos/assasino1.mp4?v=2.5.0',
+      'assets/videos/assasino1_vermelho.mp4?v=2.5.0',
+      'assets/videos/rato_cinematica.mp4?v=2.5.0',
+      'assets/videos/inimigo_antigo.mp4?v=2.5.0'
     ];
     for (const u of urls) {
       if (this.isActive || (ctrl && ctrl.signal.aborted)) break;
@@ -15278,7 +15382,7 @@ const MesaCombate = {
     const now = Date.now();
     this._lastSentTs = Math.max(this._lastSentTs || 0, now);
     const isEsc = document.body.classList.contains('esconderijo-active');
-    const currentVid = this.resolveVideoVariantUrl(this.videoUrl || 'assets/videos/assasino1.mp4?v=2.4.9', isEsc);
+    const currentVid = this.resolveVideoVariantUrl(this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.0', isEsc);
     const payload = {
       active: !!this.isActive,
       opponentId: this.opponentId || 'assasino',
@@ -15324,7 +15428,7 @@ const MesaCombate = {
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
     if (nameInput) nameInput.value = this.opponentName || '???';
-    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/assasino1.mp4?v=2.4.9';
+    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.0';
 
     const localNotice = document.getElementById('combat-local-badge');
     if (localNotice) {
@@ -15378,7 +15482,7 @@ const MesaCombate = {
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
     const name = (nameInput && nameInput.value.trim()) || this.opponentName || '???';
-    const video = (videoInput && videoInput.value.trim()) || this.videoUrl || 'assets/videos/assasino1.mp4?v=2.4.9';
+    const video = (videoInput && videoInput.value.trim()) || this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.0';
 
     this.closeSelectModal();
 
@@ -15402,7 +15506,7 @@ const MesaCombate = {
     }
     this.opponentId = data.opponentId || 'unknown';
     this.opponentName = (data.opponentName !== undefined && data.opponentName !== null && data.opponentName !== '') ? data.opponentName : (this.opponentName || '???');
-    this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=2.4.9');
+    this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=2.5.0');
 
     // Reseta cache de PV dos personagens
     this.playerHpCache = {};
@@ -16673,7 +16777,7 @@ const MesaCombate = {
       return;
     }
 
-    const targetUrl = this.resolveVideoVariantUrl('assets/videos/assasino1.mp4?v=2.4.9', isEsconderijo);
+    const targetUrl = this.resolveVideoVariantUrl('assets/videos/assasino1.mp4?v=2.5.0', isEsconderijo);
     const prevTime = (!isNaN(video.currentTime) && video.currentTime > 0) ? video.currentTime : 0;
     video.style.transition = 'none';
     this.loadVideo(targetUrl, { preserveTime: prevTime });
@@ -17249,12 +17353,20 @@ const MesaEsconderijo = {
     stage.innerHTML = `
       <div class="dice-roller-badge esconderijo-badge">${badgeLabel} (d${maxSides})</div>
       <div class="dice-tumbling-arena">
-        ${rolledValues.map((_, i) => `
-          <div id="esc-die-box-${i}" class="dice-tumble-box esconderijo-die-box rolling">
-            <span class="dice-tumble-val">?</span>
-            <span class="dice-tumble-type">d${maxSides}</span>
-          </div>
-        `).join('')}
+        ${rolledValues.map((_, i) => (window.MesaDice && typeof MesaDice.buildPolyhedralDieHtml === 'function')
+          ? MesaDice.buildPolyhedralDieHtml({
+              id: `esc-die-box-${i}`,
+              sides: maxSides,
+              initialVal: '?',
+              boxClass: 'esconderijo-die-box rolling'
+            })
+          : `
+            <div id="esc-die-box-${i}" class="dice-tumble-box esconderijo-die-box rolling" data-die-sides="d${maxSides}">
+              <span class="dice-tumble-val">?</span>
+              <span class="dice-tumble-type">d${maxSides}</span>
+            </div>
+          `
+        ).join('')}
       </div>
       <div class="esconderijo-roll-sub" id="esc-roll-sub">Sorteando setor de camuflagem...</div>
     `;
@@ -17406,7 +17518,7 @@ const MesaEsconderijo = {
             roomSides: this.roomSides,
             roomName: this.roomName,
             phase: this.currentPhase,
-            videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.4.9',
+            videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.5.0',
             timestamp
           }
         });
@@ -17423,7 +17535,7 @@ const MesaEsconderijo = {
           event: 'esconderijo_encerrar',
           payload: {
             active: false,
-            videoUrl: 'assets/videos/assasino1.mp4?v=2.4.9',
+            videoUrl: 'assets/videos/assasino1.mp4?v=2.5.0',
             timestamp
           }
         });
@@ -17444,13 +17556,13 @@ const MesaEsconderijo = {
       roomName: this.roomName,
       phase: this.currentPhase,
       lastSearch: this.lastSearch || null,
-      videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.4.9',
+      videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.5.0',
       timestamp: now
     } : {
       active: false,
       roundId: null,
       lastSearch: null,
-      videoUrl: 'assets/videos/assasino1.mp4?v=2.4.9',
+      videoUrl: 'assets/videos/assasino1.mp4?v=2.5.0',
       timestamp: now
     };
 
@@ -17972,12 +18084,20 @@ const MesaEsconderijo = {
     stage.innerHTML = `
       <div class="dice-roller-badge esconderijo-badge danger">SETOR ${sector} ENCONTRADO</div>
       <div class="dice-tumbling-arena">
-        ${Array.from({ length: count }).map((_, i) => `
-          <div id="esc-found-die-${i}" class="dice-tumble-box esconderijo-die-box shaking">
-            <span class="dice-tumble-val">${sector}</span>
-            <span class="dice-tumble-type">d${maxSides}</span>
-          </div>
-        `).join('')}
+        ${Array.from({ length: count }).map((_, i) => (window.MesaDice && typeof MesaDice.buildPolyhedralDieHtml === 'function')
+          ? MesaDice.buildPolyhedralDieHtml({
+              id: `esc-found-die-${i}`,
+              sides: maxSides,
+              initialVal: String(sector),
+              boxClass: 'esconderijo-die-box shaking'
+            })
+          : `
+            <div id="esc-found-die-${i}" class="dice-tumble-box esconderijo-die-box shaking" data-die-sides="d${maxSides}">
+              <span class="dice-tumble-val">${sector}</span>
+              <span class="dice-tumble-type">d${maxSides}</span>
+            </div>
+          `
+        ).join('')}
       </div>
       <div class="esconderijo-roll-sub danger">Camuflagem comprometida...</div>
     `;
