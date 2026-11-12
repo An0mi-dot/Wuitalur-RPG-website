@@ -14652,20 +14652,22 @@ body:has(#notebook-sara-overlay.active) .mesa-version {
 }
 
 .dice-tumble-box.pavor-box.pavor-superado-shake {
-  animation: pavorSuperadoViolentShake 0.065s linear infinite !important;
+  animation: pavorSuperadoViolentShake 0.05s linear infinite !important;
   will-change: transform;
 }
 
 @keyframes pavorSuperadoViolentShake {
-  0%   { transform: scale(1.48) translate3d(0px, -6px, 0) rotate(0deg); }
-  12%  { transform: scale(1.51) translate3d(-9px, -4px, 0) rotate(-4.5deg); }
-  25%  { transform: scale(1.44) translate3d(10px, -9px, 0) rotate(5deg); }
-  37%  { transform: scale(1.52) translate3d(-11px, -7px, 0) rotate(-6deg); }
-  50%  { transform: scale(1.43) translate3d(9px, -3px, 0) rotate(5deg); }
-  62%  { transform: scale(1.50) translate3d(-10px, -8px, 0) rotate(-4.5deg); }
-  75%  { transform: scale(1.45) translate3d(11px, -5px, 0) rotate(6deg); }
-  87%  { transform: scale(1.51) translate3d(-8px, -9px, 0) rotate(-3.5deg); }
-  100% { transform: scale(1.48) translate3d(0px, -6px, 0) rotate(0deg); }
+  0%   { transform: scale(1.48) translate3d(0px, -6px, 0); }
+  10%  { transform: scale(1.49) translate3d(-2px, -8px, 0); }
+  20%  { transform: scale(1.47) translate3d(2px, -5px, 0); }
+  30%  { transform: scale(1.48) translate3d(-1px, -7px, 0); }
+  40%  { transform: scale(1.49) translate3d(2px, -4px, 0); }
+  50%  { transform: scale(1.47) translate3d(-2px, -6px, 0); }
+  60%  { transform: scale(1.48) translate3d(1px, -7px, 0); }
+  70%  { transform: scale(1.49) translate3d(-2px, -5px, 0); }
+  80%  { transform: scale(1.47) translate3d(2px, -7px, 0); }
+  90%  { transform: scale(1.48) translate3d(-1px, -6px, 0); }
+  100% { transform: scale(1.48) translate3d(0px, -6px, 0); }
 }
 
 .pavor-crack-fissures {

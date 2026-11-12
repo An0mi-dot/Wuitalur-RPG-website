@@ -4874,10 +4874,10 @@ const Mesa3DDice = {
           const elapsed = curTime - inst.fracture.startTime;
           const p = Math.min(1, Math.max(0.08, elapsed / inst.fracture.durationMs));
           inst.fracture.progress = p;
-          const jMag = 0.08 + 0.16 * p;
+          const jMag = 0.03 + 0.05 * p;
           const rx = inst.solid.endTilt.rx + (Math.random() - 0.5) * jMag;
           const ry = inst.solid.endTilt.ry + (Math.random() - 0.5) * jMag;
-          const rz = (Math.random() - 0.5) * (jMag * 0.9);
+          const rz = 0;
           const bounce = 1 + p * 0.08;
           this._renderDie(inst, rx, ry, rz, bounce);
           if (p >= 1) {
