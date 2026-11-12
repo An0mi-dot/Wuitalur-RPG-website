@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.4.8">
+  <link rel="stylesheet" href="css/mesa.css?v=2.4.9">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1325,11 +1325,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=2.4.8"></script>
+<script src="js/campaign-data.js?v=2.4.9"></script>
 
-<script src="js/mesa.js?v=2.4.8"></script>
+<script src="js/mesa.js?v=2.4.9"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.4.8</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.4.9</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -2378,7 +2378,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
   <!-- ABERTURA OVERLAY -->
   <div id="abertura-overlay" class="abertura-overlay">
-    <video id="abertura-video" src="assets/videos/abertura.mp4" playsinline preload="auto"></video>
+    <video id="abertura-video" src="assets/videos/abertura.mp4" playsinline preload="none"></video>
     <button id="abertura-skip-btn" class="abertura-skip-btn" onclick="MesaAbertura.stop()" title="Parar Abertura">&times;</button>
   </div>
 
@@ -2448,7 +2448,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
   <!-- ========================================================================== -->
   <div id="fita-1-overlay" class="fita-1-overlay" aria-hidden="true">
     <div id="fita-1-blackout" class="fita-1-blackout"></div>
-    <video id="fita-1-video" class="fita-1-video" src="assets/videos/fita_solo1.mp4" playsinline preload="auto"></video>
+    <video id="fita-1-video" class="fita-1-video" src="assets/videos/fita_solo1.mp4" playsinline preload="none"></video>
     <!-- Botao de Fechar Exclusivo do Mestre -->
     <button type="button" id="fita-1-close-btn" class="dispositivo-floating-close-btn master-item" onclick="MesaFita1.stop()" title="Encerrar Fita 1">&times;</button>
   </div>
@@ -2458,7 +2458,7 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
   <!-- ========================================================================== -->
   <div id="fita-2-overlay" class="fita-1-overlay fita-2-overlay" aria-hidden="true">
     <div id="fita-2-blackout" class="fita-1-blackout fita-2-blackout"></div>
-    <video id="fita-2-video" class="fita-1-video fita-2-video" src="assets/videos/fita_solo2.mp4" playsinline preload="auto"></video>
+    <video id="fita-2-video" class="fita-1-video fita-2-video" src="assets/videos/fita_solo2.mp4" playsinline preload="none"></video>
     <!-- Botao de Fechar Exclusivo do Mestre -->
     <button type="button" id="fita-2-close-btn" class="dispositivo-floating-close-btn master-item" onclick="MesaFita2.stop()" title="Encerrar Fita 2">&times;</button>
   </div>

@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.4.8';
+const MESA_VERSION = 'v2.4.9';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -841,6 +841,26 @@ const MesaApp = {
       }
     });
     return this._row1UpdateChain;
+  },
+
+  /** Seeks a media element safely even when preload="none" has not loaded metadata yet. */
+  seekVideoWhenReady(video, targetSec) {
+    if (!video) return;
+    const sec = Number(targetSec) > 0 ? Number(targetSec) : 0;
+    const applySeek = () => {
+      try {
+        if (video.duration && !isNaN(video.duration)) {
+          video.currentTime = Math.min(sec, Math.max(0, video.duration - 0.25));
+        } else {
+          video.currentTime = sec;
+        }
+      } catch (e) {}
+    };
+    if (video.readyState >= 1) {
+      applySeek();
+    } else if (sec > 0) {
+      video.addEventListener('loadedmetadata', applySeek, { once: true });
+    }
   },
 
   state: {
@@ -8794,11 +8814,8 @@ const MesaAbertura = {
     
     if (overlay && video) {
       video.muted = false;
-      if (typeof startTime === 'number' && startTime > 0 && startTime < 46) {
-        try { video.currentTime = startTime; } catch(e) {}
-      } else {
-        try { video.currentTime = 0; } catch(e) {}
-      }
+      const startOffset = (typeof startTime === 'number' && startTime > 0 && startTime < 46) ? startTime : 0;
+      MesaApp.seekVideoWhenReady(video, startOffset);
       overlay.classList.add('active');
       
       const playPromise = video.play();
@@ -9663,11 +9680,7 @@ const MesaFita1 = {
       console.error('Erro de reproducao no video da fita 1:', video.error);
     };
 
-    if (elapsed > 1.5) {
-      try { video.currentTime = elapsed; } catch (e) {}
-    } else {
-      try { video.currentTime = 0; } catch (e) {}
-    }
+    MesaApp.seekVideoWhenReady(video, elapsed > 1.5 ? elapsed : 0);
 
     video.classList.add('playing');
     video.muted = false;
@@ -9894,11 +9907,7 @@ const MesaFita2 = {
       console.error('Erro de reproducao no video da fita 2:', video.error);
     };
 
-    if (elapsed > 1.5) {
-      try { video.currentTime = elapsed; } catch (e) {}
-    } else {
-      try { video.currentTime = 0; } catch (e) {}
-    }
+    MesaApp.seekVideoWhenReady(video, elapsed > 1.5 ? elapsed : 0);
 
     video.classList.add('playing');
     video.muted = false;
@@ -15088,7 +15097,7 @@ const MesaCombate = {
   _videoRetryCount: 0,
   opponentId: 'assasino',
   opponentName: '???',
-  videoUrl: 'assets/videos/assasino1.mp4?v=2.4.8',
+  videoUrl: 'assets/videos/assasino1.mp4?v=2.4.9',
   selectedPresetId: 'assasino',
   turnCycle: null,
   playerHpCache: {},
@@ -15106,20 +15115,20 @@ const MesaCombate = {
     {
       id: 'assasino',
       name: '???',
-      video: 'assets/videos/assasino1.mp4?v=2.4.8',
-      videoEsconderijo: 'assets/videos/assasino1_vermelho.mp4?v=2.4.8',
+      video: 'assets/videos/assasino1.mp4?v=2.4.9',
+      videoEsconderijo: 'assets/videos/assasino1_vermelho.mp4?v=2.4.9',
       desc: 'Oponente misterioso com variação carmesim no esconderijo'
     },
     {
       id: 'ratos',
       name: 'Ratos',
-      video: 'assets/videos/rato_cinematica.mp4?v=2.4.8',
+      video: 'assets/videos/rato_cinematica.mp4?v=2.4.9',
       desc: 'Infestação voraz de roedores carniceiros na escuridão'
     },
     {
       id: 'unknown',
       name: 'Inimigo Antigo',
-      video: 'assets/videos/inimigo_antigo.mp4?v=2.4.8',
+      video: 'assets/videos/inimigo_antigo.mp4?v=2.4.9',
       desc: 'Arquivo do oponente anterior guardado'
     }
   ],
@@ -15135,8 +15144,8 @@ const MesaCombate = {
     const trimmed = String(url || '').trim();
     if (!this.isAssasinoOpponent(trimmed)) return trimmed;
     return isEsconderijo
-      ? 'assets/videos/assasino1_vermelho.mp4?v=2.4.8'
-      : 'assets/videos/assasino1.mp4?v=2.4.8';
+      ? 'assets/videos/assasino1_vermelho.mp4?v=2.4.9'
+      : 'assets/videos/assasino1.mp4?v=2.4.9';
   },
 
   /** Synchronizes combat overlay, opponent video, and turn cycle from Supabase row 1 without local clock skew bugs. */
@@ -15192,25 +15201,40 @@ const MesaCombate = {
         this.closeMobileMasterMenu();
       }
     });
-    setTimeout(() => this.preloadVideos(), 1800);
+    setTimeout(() => this.preloadVideos(), 2800);
   },
 
-  /** Pre-warms combat video URLs sequentially into browser disk cache so opponent switches start instantly. */
+  /** Aborts any background combat video prefetch so an active video gets full bandwidth immediately. */
+  abortPreloadVideos() {
+    if (this._preloadAbort) {
+      try { this._preloadAbort.abort(); } catch (e) {}
+      this._preloadAbort = null;
+    }
+  },
+
+  /** Pre-warms combat video URLs sequentially when idle without locking active combat playback. */
   async preloadVideos() {
-    if (this._videosPreloaded) return;
+    if (this._videosPreloaded || this.isActive) return;
+    if (navigator.connection && navigator.connection.saveData) return;
     this._videosPreloaded = true;
+    const ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    this._preloadAbort = ctrl;
     const urls = [
-      'assets/videos/assasino1.mp4?v=2.4.8',
-      'assets/videos/assasino1_vermelho.mp4?v=2.4.8',
-      'assets/videos/rato_cinematica.mp4?v=2.4.8',
-      'assets/videos/inimigo_antigo.mp4?v=2.4.8'
+      'assets/videos/assasino1.mp4?v=2.4.9',
+      'assets/videos/assasino1_vermelho.mp4?v=2.4.9',
+      'assets/videos/rato_cinematica.mp4?v=2.4.9',
+      'assets/videos/inimigo_antigo.mp4?v=2.4.9'
     ];
     for (const u of urls) {
+      if (this.isActive || (ctrl && ctrl.signal.aborted)) break;
       try {
-        const res = await fetch(u, { cache: 'default' });
+        const res = await fetch(u, { cache: 'default', signal: ctrl ? ctrl.signal : undefined });
         if (res && res.ok) await res.blob();
-      } catch (e) {}
+      } catch (e) {
+        if (ctrl && ctrl.signal.aborted) break;
+      }
     }
+    if (this._preloadAbort === ctrl) this._preloadAbort = null;
   },
 
   toggleMobileMasterMenu(e) {
@@ -15254,7 +15278,7 @@ const MesaCombate = {
     const now = Date.now();
     this._lastSentTs = Math.max(this._lastSentTs || 0, now);
     const isEsc = document.body.classList.contains('esconderijo-active');
-    const currentVid = this.resolveVideoVariantUrl(this.videoUrl || 'assets/videos/assasino1.mp4?v=2.4.8', isEsc);
+    const currentVid = this.resolveVideoVariantUrl(this.videoUrl || 'assets/videos/assasino1.mp4?v=2.4.9', isEsc);
     const payload = {
       active: !!this.isActive,
       opponentId: this.opponentId || 'assasino',
@@ -15300,7 +15324,7 @@ const MesaCombate = {
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
     if (nameInput) nameInput.value = this.opponentName || '???';
-    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/assasino1.mp4?v=2.4.8';
+    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/assasino1.mp4?v=2.4.9';
 
     const localNotice = document.getElementById('combat-local-badge');
     if (localNotice) {
@@ -15354,7 +15378,7 @@ const MesaCombate = {
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
     const name = (nameInput && nameInput.value.trim()) || this.opponentName || '???';
-    const video = (videoInput && videoInput.value.trim()) || this.videoUrl || 'assets/videos/assasino1.mp4?v=2.4.8';
+    const video = (videoInput && videoInput.value.trim()) || this.videoUrl || 'assets/videos/assasino1.mp4?v=2.4.9';
 
     this.closeSelectModal();
 
@@ -15378,7 +15402,7 @@ const MesaCombate = {
     }
     this.opponentId = data.opponentId || 'unknown';
     this.opponentName = (data.opponentName !== undefined && data.opponentName !== null && data.opponentName !== '') ? data.opponentName : (this.opponentName || '???');
-    this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=2.4.8');
+    this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=2.4.9');
 
     // Reseta cache de PV dos personagens
     this.playerHpCache = {};
@@ -15420,7 +15444,7 @@ const MesaCombate = {
     }
 
     // Carrega o vídeo ou ativa o fallback atmosférico
-    this.loadVideo(this.videoUrl);
+    this.loadVideo(this.videoUrl, { preserveCrimson: !shouldBroadcast });
 
     // Renderiza os cards dos personagens com estética Undertale
     this.renderPlayers();
@@ -15483,7 +15507,7 @@ const MesaCombate = {
       this.updateTurnUI();
     }
 
-    this.loadVideo(this.videoUrl);
+    this.loadVideo(this.videoUrl, { preserveCrimson: !shouldBroadcast });
 
     if (shouldBroadcast) {
       const chan = this.getChannel();
@@ -15662,9 +15686,23 @@ const MesaCombate = {
       video.classList.remove('playing');
       if (fallback) fallback.style.display = 'flex';
     });
+
+    if (!document._combatVideoUnlockBound) {
+      document._combatVideoUnlockBound = true;
+      const resumeIfPaused = () => {
+        const bgVid = document.getElementById('combat-bg-video');
+        if (this.isActive && bgVid && bgVid.getAttribute('src') && bgVid.paused && !bgVid.ended) {
+          bgVid.muted = true;
+          bgVid.play().catch(() => {});
+        }
+      };
+      document.addEventListener('pointerdown', resumeIfPaused, { passive: true });
+      document.addEventListener('keydown', resumeIfPaused, { passive: true });
+    }
   },
 
   loadVideo(url, opts = {}) {
+    this.abortPreloadVideos();
     const video = document.getElementById('combat-bg-video');
     const fallback = document.getElementById('combat-video-fallback');
     const fallbackLabel = document.getElementById('combat-fallback-label');
@@ -15676,7 +15714,8 @@ const MesaCombate = {
       fallbackLabel.textContent = this.opponentName || 'ÁREA DE COMBATE';
     }
 
-    const isEsconderijoNow = document.body.classList.contains('esconderijo-active');
+    const isEsconderijoNow = document.body.classList.contains('esconderijo-active')
+      || Boolean(opts && opts.preserveCrimson && String(url || '').includes('_vermelho'));
     const isAssasinoVideo = this.isAssasinoOpponent(url);
     video.classList.toggle('video-assasino', isAssasinoVideo);
 
@@ -16634,7 +16673,7 @@ const MesaCombate = {
       return;
     }
 
-    const targetUrl = this.resolveVideoVariantUrl('assets/videos/assasino1.mp4?v=2.4.8', isEsconderijo);
+    const targetUrl = this.resolveVideoVariantUrl('assets/videos/assasino1.mp4?v=2.4.9', isEsconderijo);
     const prevTime = (!isNaN(video.currentTime) && video.currentTime > 0) ? video.currentTime : 0;
     video.style.transition = 'none';
     this.loadVideo(targetUrl, { preserveTime: prevTime });
@@ -17367,7 +17406,7 @@ const MesaEsconderijo = {
             roomSides: this.roomSides,
             roomName: this.roomName,
             phase: this.currentPhase,
-            videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.4.8',
+            videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.4.9',
             timestamp
           }
         });
@@ -17384,7 +17423,7 @@ const MesaEsconderijo = {
           event: 'esconderijo_encerrar',
           payload: {
             active: false,
-            videoUrl: 'assets/videos/assasino1.mp4?v=2.4.8',
+            videoUrl: 'assets/videos/assasino1.mp4?v=2.4.9',
             timestamp
           }
         });
@@ -17405,13 +17444,13 @@ const MesaEsconderijo = {
       roomName: this.roomName,
       phase: this.currentPhase,
       lastSearch: this.lastSearch || null,
-      videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.4.8',
+      videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.4.9',
       timestamp: now
     } : {
       active: false,
       roundId: null,
       lastSearch: null,
-      videoUrl: 'assets/videos/assasino1.mp4?v=2.4.8',
+      videoUrl: 'assets/videos/assasino1.mp4?v=2.4.9',
       timestamp: now
     };
 
