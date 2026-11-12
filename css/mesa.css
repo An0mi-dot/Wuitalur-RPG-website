@@ -18243,3 +18243,30 @@ body.is-master #survival-camouflage-block {
   letter-spacing: 0.06em;
   text-align: center;
 }
+
+.dice-tumble-box.esconderijo-die-box.shaking {
+  animation: diceViolentShake 0.09s infinite linear;
+  border-color: #ffffff;
+  box-shadow: 0 0 32px rgba(255, 17, 51, 0.95), inset 0 0 14px rgba(255, 17, 51, 0.5);
+}
+
+.dice-roller-badge.esconderijo-badge.danger {
+  background: #ff1133;
+  color: #000000;
+  border-color: #ffffff;
+  box-shadow: 0 0 26px rgba(255, 17, 51, 0.9);
+}
+
+.esconderijo-roll-sub.danger {
+  color: #ffffff;
+  text-shadow: 0 0 10px #ff1133;
+}
+
+@keyframes diceViolentShake {
+  0%   { transform: translate(0, 0) rotate(0deg) scale(1.04); }
+  20%  { transform: translate(-5px, 3px) rotate(-6deg) scale(1.08); }
+  40%  { transform: translate(5px, -4px) rotate(6deg) scale(1.05); }
+  60%  { transform: translate(-4px, -3px) rotate(-5deg) scale(1.09); }
+  80%  { transform: translate(5px, 4px) rotate(5deg) scale(1.06); }
+  100% { transform: translate(0, 0) rotate(0deg) scale(1.04); }
+}
