@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.4';
+const MESA_VERSION = 'v2.5.7';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -899,6 +899,10 @@ const MesaApp = {
     MesaReactions.init();
     MesaDice.init();
     MesaAreaManager.init();
+    const badge = document.getElementById('mesa-version-badge');
+    if (badge) {
+      badge.textContent = MESA_VERSION;
+    }
     if (window.MesaRollLog) {
       MesaRollLog.init();
     }
@@ -18276,7 +18280,6 @@ const MesaEsconderijo = {
 
   /** Plays a local crimson dice roll exclusively on the current player's screen and binds results to camouflage points. */
   playLocalCamouflageRoll(count, sides, badgeLabel, onComplete) {
-    if (this._isMasterUser()) return;
     const dieCount = Math.max(1, Math.min(this.playerMaxCamouflage, Number(count) || 1));
     const maxSides = Math.max(4, Number(sides) || this.roomSides || 6);
     const stage = document.getElementById('esconderijo-dice-stage');
@@ -18398,8 +18401,8 @@ const MesaEsconderijo = {
     if (this.isPanelOpen) {
       if (isMaster && shouldBroadcast) {
         this.stopHidingRound(false);
-      } else {
-        this.closeSurvivalPanel(false);
+      } else if (isMaster) {
+        this.closeSurvivalPanel(false, true);
       }
     } else {
       this.openSurvivalPanel(shouldBroadcast);
@@ -18438,8 +18441,12 @@ const MesaEsconderijo = {
     }
   },
 
-  closeSurvivalPanel(shouldBroadcast = false) {
+  closeSurvivalPanel(shouldBroadcast = false, force = false) {
     const isMaster = this._isMasterUser();
+    // Jogadores nao podem fechar a aba de esconderijo voluntariamente
+    if (!isMaster && !force && (this.isPanelOpen || document.body.classList.contains('esconderijo-active'))) {
+      return;
+    }
     // Se o Mestre fechar pelo botao X enquanto a rodada esta ativa, encerra globalmente para nao reabrir no polling
     if (isMaster && (shouldBroadcast || this.isMasterActive || document.body.classList.contains('esconderijo-active'))) {
       this.stopHidingRound(!shouldBroadcast);
@@ -19040,7 +19047,6 @@ const MesaEsconderijo = {
 
   /** Displays only the discovered camouflage die(s) at the center of the player's screen, shakes them, and disintegrates into dust without text notices. */
   playCamouflageFoundDestruction(sector, lostCount = 1) {
-    if (this._isMasterUser()) return;
     const stage = document.getElementById('esconderijo-dice-stage');
     if (!stage) return;
 
@@ -19176,7 +19182,7 @@ const MesaEsconderijo = {
       MesaCombate._cachedMetricsTime = 0;
       if (typeof MesaCombate.updateVideoVariant === 'function') MesaCombate.updateVideoVariant(false);
     }
-    this.closeSurvivalPanel(false);
+    this.closeSurvivalPanel(false, true);
   },
 
   updateHistoryBox() {

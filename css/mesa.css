@@ -18773,13 +18773,26 @@ body:not(.is-master) .dice-pavor-card {
    OCULTAÇÃO ESTRITA DE CONTROLES EXCLUSIVOS NO PAINEL ESCONDERIJO
    ============================================================ */
 .survival-section.master-item,
-.survival-phase-actions.master-item {
+.survival-phase-actions.master-item,
+.survival-close-btn.master-item,
+body:not(.is-master) .survival-close-btn {
   display: none !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
 }
 
 body.is-master .survival-section.master-item,
 body.is-master .survival-phase-actions.master-item {
   display: flex !important;
+}
+
+body.is-master .survival-close-btn,
+body.is-master .survival-close-btn.master-item {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  pointer-events: all !important;
+  visibility: visible !important;
 }
 
 body.is-master #survival-camouflage-block {
@@ -18864,17 +18877,29 @@ body.is-master #survival-camouflage-block {
 /* ============================================================
    PALCO LOCAL DOS DADOS DE CAMUFLAGEM (ESCONDERIJO)
    ============================================================ */
+#esconderijo-dice-stage,
 .esconderijo-dice-stage {
-  position: fixed;
-  inset: 0;
-  z-index: 2500;
-  background: rgba(8, 0, 2, 0.65);
-  backdrop-filter: blur(3px);
-  pointer-events: none;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 99999 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 20px 24px !important;
+  background: rgba(8, 0, 2, 0.68) !important;
+  backdrop-filter: blur(3px) !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: opacity 0.3s ease, visibility 0.3s ease !important;
 }
 
+#esconderijo-dice-stage.active,
 .esconderijo-dice-stage.active {
-  pointer-events: all;
+  pointer-events: all !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .esconderijo-dice-stage.destruction-only .dice-tumbling-arena {
