@@ -18317,6 +18317,10 @@ body.is-master #survival-camouflage-block {
   pointer-events: all;
 }
 
+.esconderijo-dice-stage.destruction-only .dice-tumbling-arena {
+  margin-bottom: 0;
+}
+
 .dice-roller-badge.esconderijo-badge {
   background: #990015;
   border: 1.5px solid #ff1133;

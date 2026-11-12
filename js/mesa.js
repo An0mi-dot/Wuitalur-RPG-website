@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.0';
+const MESA_VERSION = 'v2.5.1';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -15201,7 +15201,7 @@ const MesaCombate = {
   _videoRetryCount: 0,
   opponentId: 'assasino',
   opponentName: '???',
-  videoUrl: 'assets/videos/assasino1.mp4?v=2.5.0',
+  videoUrl: 'assets/videos/assasino1.mp4?v=2.5.1',
   selectedPresetId: 'assasino',
   turnCycle: null,
   playerHpCache: {},
@@ -15219,20 +15219,20 @@ const MesaCombate = {
     {
       id: 'assasino',
       name: '???',
-      video: 'assets/videos/assasino1.mp4?v=2.5.0',
-      videoEsconderijo: 'assets/videos/assasino1_vermelho.mp4?v=2.5.0',
+      video: 'assets/videos/assasino1.mp4?v=2.5.1',
+      videoEsconderijo: 'assets/videos/assasino1_vermelho.mp4?v=2.5.1',
       desc: 'Oponente misterioso com variação carmesim no esconderijo'
     },
     {
       id: 'ratos',
       name: 'Ratos',
-      video: 'assets/videos/rato_cinematica.mp4?v=2.5.0',
+      video: 'assets/videos/rato_cinematica.mp4?v=2.5.1',
       desc: 'Infestação voraz de roedores carniceiros na escuridão'
     },
     {
       id: 'unknown',
       name: 'Inimigo Antigo',
-      video: 'assets/videos/inimigo_antigo.mp4?v=2.5.0',
+      video: 'assets/videos/inimigo_antigo.mp4?v=2.5.1',
       desc: 'Arquivo do oponente anterior guardado'
     }
   ],
@@ -15248,8 +15248,8 @@ const MesaCombate = {
     const trimmed = String(url || '').trim();
     if (!this.isAssasinoOpponent(trimmed)) return trimmed;
     return isEsconderijo
-      ? 'assets/videos/assasino1_vermelho.mp4?v=2.5.0'
-      : 'assets/videos/assasino1.mp4?v=2.5.0';
+      ? 'assets/videos/assasino1_vermelho.mp4?v=2.5.1'
+      : 'assets/videos/assasino1.mp4?v=2.5.1';
   },
 
   /** Synchronizes combat overlay, opponent video, and turn cycle from Supabase row 1 without local clock skew bugs. */
@@ -15324,10 +15324,10 @@ const MesaCombate = {
     const ctrl = typeof AbortController === 'function' ? new AbortController() : null;
     this._preloadAbort = ctrl;
     const urls = [
-      'assets/videos/assasino1.mp4?v=2.5.0',
-      'assets/videos/assasino1_vermelho.mp4?v=2.5.0',
-      'assets/videos/rato_cinematica.mp4?v=2.5.0',
-      'assets/videos/inimigo_antigo.mp4?v=2.5.0'
+      'assets/videos/assasino1.mp4?v=2.5.1',
+      'assets/videos/assasino1_vermelho.mp4?v=2.5.1',
+      'assets/videos/rato_cinematica.mp4?v=2.5.1',
+      'assets/videos/inimigo_antigo.mp4?v=2.5.1'
     ];
     for (const u of urls) {
       if (this.isActive || (ctrl && ctrl.signal.aborted)) break;
@@ -15382,7 +15382,7 @@ const MesaCombate = {
     const now = Date.now();
     this._lastSentTs = Math.max(this._lastSentTs || 0, now);
     const isEsc = document.body.classList.contains('esconderijo-active');
-    const currentVid = this.resolveVideoVariantUrl(this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.0', isEsc);
+    const currentVid = this.resolveVideoVariantUrl(this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.1', isEsc);
     const payload = {
       active: !!this.isActive,
       opponentId: this.opponentId || 'assasino',
@@ -15428,7 +15428,7 @@ const MesaCombate = {
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
     if (nameInput) nameInput.value = this.opponentName || '???';
-    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.0';
+    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.1';
 
     const localNotice = document.getElementById('combat-local-badge');
     if (localNotice) {
@@ -15482,7 +15482,7 @@ const MesaCombate = {
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
     const name = (nameInput && nameInput.value.trim()) || this.opponentName || '???';
-    const video = (videoInput && videoInput.value.trim()) || this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.0';
+    const video = (videoInput && videoInput.value.trim()) || this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.1';
 
     this.closeSelectModal();
 
@@ -15506,7 +15506,7 @@ const MesaCombate = {
     }
     this.opponentId = data.opponentId || 'unknown';
     this.opponentName = (data.opponentName !== undefined && data.opponentName !== null && data.opponentName !== '') ? data.opponentName : (this.opponentName || '???');
-    this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=2.5.0');
+    this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=2.5.1');
 
     // Reseta cache de PV dos personagens
     this.playerHpCache = {};
@@ -16777,7 +16777,7 @@ const MesaCombate = {
       return;
     }
 
-    const targetUrl = this.resolveVideoVariantUrl('assets/videos/assasino1.mp4?v=2.5.0', isEsconderijo);
+    const targetUrl = this.resolveVideoVariantUrl('assets/videos/assasino1.mp4?v=2.5.1', isEsconderijo);
     const prevTime = (!isNaN(video.currentTime) && video.currentTime > 0) ? video.currentTime : 0;
     video.style.transition = 'none';
     this.loadVideo(targetUrl, { preserveTime: prevTime });
@@ -17227,6 +17227,32 @@ const MesaEsconderijo = {
     return Math.floor(Math.random() * maxSides) + 1;
   },
 
+  /** Picks unique sector numbers in [1..maxSides] avoiding duplicates within the batch and existing camouflage dice. */
+  _pickUniqueSectors(count, sides) {
+    const maxSides = Math.max(2, Number(sides) || this.roomSides || 6);
+    const used = new Set(
+      (Array.isArray(this.playerCamouflageDice) ? this.playerCamouflageDice : [])
+        .map(d => Number(d && d.sector))
+        .filter(n => Number.isFinite(n) && n >= 1 && n <= maxSides)
+    );
+    const available = [];
+    for (let s = 1; s <= maxSides; s++) {
+      if (!used.has(s)) available.push(s);
+    }
+    const picked = [];
+    for (let i = 0; i < count; i++) {
+      if (available.length > 0) {
+        const idx = (window.MesaDice && typeof MesaDice.cryptoRandomInt === 'function')
+          ? MesaDice.cryptoRandomInt(0, available.length - 1)
+          : Math.floor(Math.random() * available.length);
+        picked.push(available.splice(idx, 1)[0]);
+      } else {
+        picked.push(this._randomSector(maxSides));
+      }
+    }
+    return picked;
+  },
+
   _getStorageKey(roundId) {
     return roundId ? `wu_esconderijo_round_${roundId}` : null;
   },
@@ -17291,7 +17317,7 @@ const MesaEsconderijo = {
     this._isRollingDice = false;
     const stage = document.getElementById('esconderijo-dice-stage');
     if (stage) {
-      stage.classList.remove('active');
+      stage.classList.remove('active', 'destruction-only');
       stage.innerHTML = '';
     }
     this.renderCamouflagePips();
@@ -17320,10 +17346,7 @@ const MesaEsconderijo = {
     const maxSides = Math.max(4, Number(sides) || this.roomSides || 6);
     const stage = document.getElementById('esconderijo-dice-stage');
 
-    const rolledValues = [];
-    for (let i = 0; i < dieCount; i++) {
-      rolledValues.push(this._randomSector(maxSides));
-    }
+    const rolledValues = this._pickUniqueSectors(dieCount, maxSides);
 
     this._clearDiceTimers();
     this._isRollingDice = true;
@@ -17350,6 +17373,7 @@ const MesaEsconderijo = {
       return;
     }
 
+    stage.classList.remove('destruction-only');
     stage.innerHTML = `
       <div class="dice-roller-badge esconderijo-badge">${badgeLabel} (d${maxSides})</div>
       <div class="dice-tumbling-arena">
@@ -17379,9 +17403,18 @@ const MesaEsconderijo = {
     ];
     let step = 0;
     const tick = () => {
+      const frameUsed = new Set();
       for (let i = 0; i < rolledValues.length; i++) {
+        let v = this._randomSector(maxSides);
+        if (maxSides >= rolledValues.length) {
+          let guard = 0;
+          while (frameUsed.has(v) && guard++ < 12) {
+            v = this._randomSector(maxSides);
+          }
+          frameUsed.add(v);
+        }
         const valEl = stage.querySelector(`#esc-die-box-${i} .dice-tumble-val`);
-        if (valEl) valEl.textContent = String(this._randomSector(maxSides));
+        if (valEl) valEl.textContent = String(v);
       }
       if (step < rollDelays.length) {
         const wait = rollDelays[step++];
@@ -17518,7 +17551,7 @@ const MesaEsconderijo = {
             roomSides: this.roomSides,
             roomName: this.roomName,
             phase: this.currentPhase,
-            videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.5.0',
+            videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.5.1',
             timestamp
           }
         });
@@ -17535,7 +17568,7 @@ const MesaEsconderijo = {
           event: 'esconderijo_encerrar',
           payload: {
             active: false,
-            videoUrl: 'assets/videos/assasino1.mp4?v=2.5.0',
+            videoUrl: 'assets/videos/assasino1.mp4?v=2.5.1',
             timestamp
           }
         });
@@ -17556,13 +17589,13 @@ const MesaEsconderijo = {
       roomName: this.roomName,
       phase: this.currentPhase,
       lastSearch: this.lastSearch || null,
-      videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.5.0',
+      videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.5.1',
       timestamp: now
     } : {
       active: false,
       roundId: null,
       lastSearch: null,
-      videoUrl: 'assets/videos/assasino1.mp4?v=2.5.0',
+      videoUrl: 'assets/videos/assasino1.mp4?v=2.5.1',
       timestamp: now
     };
 
@@ -18070,7 +18103,7 @@ const MesaEsconderijo = {
     return matches.length;
   },
 
-  /** Displays the discovered camouflage die(s) at the center of the player's screen, shakes them, and disintegrates into dust. */
+  /** Displays only the discovered camouflage die(s) at the center of the player's screen, shakes them, and disintegrates into dust without text notices. */
   playCamouflageFoundDestruction(sector, lostCount = 1) {
     if (this._isMasterUser()) return;
     const stage = document.getElementById('esconderijo-dice-stage');
@@ -18081,8 +18114,8 @@ const MesaEsconderijo = {
 
     const count = Math.max(1, Number(lostCount) || 1);
     const maxSides = Math.max(4, Number(this.roomSides) || 6);
+    stage.classList.add('destruction-only');
     stage.innerHTML = `
-      <div class="dice-roller-badge esconderijo-badge danger">SETOR ${sector} ENCONTRADO</div>
       <div class="dice-tumbling-arena">
         ${Array.from({ length: count }).map((_, i) => (window.MesaDice && typeof MesaDice.buildPolyhedralDieHtml === 'function')
           ? MesaDice.buildPolyhedralDieHtml({
@@ -18099,7 +18132,6 @@ const MesaEsconderijo = {
           `
         ).join('')}
       </div>
-      <div class="esconderijo-roll-sub danger">Camuflagem comprometida...</div>
     `;
     stage.classList.add('active');
 
@@ -18117,7 +18149,7 @@ const MesaEsconderijo = {
         }
       }
       this._diceHideTimer = setTimeout(() => {
-        stage.classList.remove('active');
+        stage.classList.remove('active', 'destruction-only');
         stage.innerHTML = '';
       }, 780);
     }, 880);
