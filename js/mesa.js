@@ -786,8 +786,8 @@ const MesaSecurity = {
 };
 
 
-// Símbolo circular canônico do Conclave (SVG sem emoji)
-const CONCLAVE_TOTEM_SVG = `<svg class="totem-conclave-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="4.5"></circle><path d="M12 3v3M12 18v3M3 12h3M18 12h3"></path><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"></circle></svg>`;
+// Símbolo de Totem com selo circular do Conclave (SVG sem emoji)
+const CONCLAVE_TOTEM_SVG = `<svg class="totem-conclave-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10.75" stroke="currentColor" stroke-width="1.35" opacity="0.65"></circle><path d="M5 9.2L8.5 8.2V7.2L12 4.4L15.5 7.2V8.2L19 9.2L17.6 11.4L15.5 10.9V18.8H17.2V20.5H6.8V18.8H8.5V10.9L6.4 11.4Z" fill="currentColor"></path><circle cx="10.3" cy="9.2" r="0.95" fill="#180808"></circle><circle cx="13.7" cy="9.2" r="0.95" fill="#180808"></circle><path d="M9.2 12.6H14.8M9.2 15.7H14.8" stroke="#180808" stroke-width="1.25" stroke-linecap="round"></path></svg>`;
 
 // ---- 3. MESA APP (GERENCIADOR DE ESTADO, SUPABASE E TOKENS SEGUROS) ----
 const MesaApp = {

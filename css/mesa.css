@@ -13654,8 +13654,8 @@ body:not(.is-master) .igris-floating-close-btn {
    RECURSO: TOTENS DO CONCLAVE (FICHA DE PERSONAGEM & BARRA DO INVENTÁRIO)
    ========================================================================== */
 .totem-conclave-icon {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   display: inline-block;
   flex-shrink: 0;
   color: #f87171;
