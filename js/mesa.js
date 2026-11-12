@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.4.5';
+const MESA_VERSION = 'v2.4.6';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -1983,23 +1983,7 @@ const MesaApp = {
               MesaRollLog.syncFromRemote(p1Attrs._sys_roll_log);
             }
             if (p1Attrs._sys_combate && window.MesaCombate) {
-              const cb = p1Attrs._sys_combate;
-              const remoteTime = cb.updatedAt || 0;
-              const localTime = MesaCombate.lastLocalUpdate || 0;
-              if (remoteTime > localTime) {
-                if (cb.active && !MesaCombate.isActive) {
-                  MesaCombate.startCombat(cb, false);
-                } else if (!cb.active && MesaCombate.isActive) {
-                  MesaCombate.stopCombat(false);
-                } else if (cb.active && MesaCombate.isActive && cb.opponentName !== MesaCombate.opponentName) {
-                  MesaCombate.setOpponent(cb, false);
-                }
-                if (cb.turnCycle) {
-                  MesaCombate.syncTurnCycle(cb.turnCycle);
-                } else if (MesaCombate.turnCycle && MesaCombate.turnCycle.active && !cb.active) {
-                  MesaCombate.stopTurnCycle(false);
-                }
-              }
+              MesaCombate.syncFromRemote(p1Attrs._sys_combate);
             }
             if (p1Attrs._sys_owlbear_url && window.MesaOwlbear) {
               MesaOwlbear.syncFromRemote(p1Attrs._sys_owlbear_url);
@@ -2008,13 +1992,7 @@ const MesaApp = {
               MesaCenterArtwork.syncFromRemote(p1Attrs._sys_center_artwork);
             }
             if (p1Attrs._sys_esconderijo && window.MesaEsconderijo) {
-              const esc = p1Attrs._sys_esconderijo;
-              const isMaster = Boolean(this.state && this.state.isMaster);
-              if (esc.active && !MesaEsconderijo.isPanelOpen) {
-                MesaEsconderijo.handleIncomingStart(esc);
-              } else if (!esc.active && MesaEsconderijo.isPanelOpen && !isMaster) {
-                MesaEsconderijo.handleIncomingStop();
-              }
+              MesaEsconderijo.syncFromRemote(p1Attrs._sys_esconderijo);
             }
           }
         } catch(eSync) {}
@@ -2125,23 +2103,7 @@ const MesaApp = {
             MesaRollLog.syncFromRemote(attrs._sys_roll_log);
           }
           if (attrs && attrs._sys_combate && window.MesaCombate) {
-            const cb = attrs._sys_combate;
-            const remoteTime = cb.updatedAt || 0;
-            const localTime = MesaCombate.lastLocalUpdate || 0;
-            if (remoteTime > localTime) {
-              if (cb.active && !MesaCombate.isActive) {
-                MesaCombate.startCombat(cb, false);
-              } else if (!cb.active && MesaCombate.isActive) {
-                MesaCombate.stopCombat(false);
-              } else if (cb.active && MesaCombate.isActive && cb.opponentName !== MesaCombate.opponentName) {
-                MesaCombate.setOpponent(cb, false);
-              }
-              if (cb.turnCycle) {
-                MesaCombate.syncTurnCycle(cb.turnCycle);
-              } else if (MesaCombate.turnCycle && MesaCombate.turnCycle.active && !cb.active) {
-                MesaCombate.stopTurnCycle(false);
-              }
-            }
+            MesaCombate.syncFromRemote(attrs._sys_combate);
           }
 
           if (attrs && attrs._sys_fita_1 && window.MesaFita1) {
@@ -2225,13 +2187,7 @@ const MesaApp = {
             }
           }
           if (attrs && attrs._sys_esconderijo && window.MesaEsconderijo) {
-            const esc = attrs._sys_esconderijo;
-            const isMaster = Boolean(this.state && this.state.isMaster);
-            if (esc.active && !MesaEsconderijo.isPanelOpen) {
-              MesaEsconderijo.handleIncomingStart(esc);
-            } else if (!esc.active && MesaEsconderijo.isPanelOpen && !isMaster) {
-              MesaEsconderijo.handleIncomingStop();
-            }
+            MesaEsconderijo.syncFromRemote(attrs._sys_esconderijo);
           }
 
           // 6. Sincronizacao do Tabuleiro Mapa [Owlbear]
@@ -2554,24 +2510,28 @@ const MesaApp = {
     });
 
     channel.on('broadcast', { event: 'esconderijo_iniciar' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaEsconderijo) {
         MesaEsconderijo.handleIncomingStart(payload.payload);
       }
     });
 
     channel.on('broadcast', { event: 'esconderijo_busca' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaEsconderijo) {
         MesaEsconderijo.handleIncomingSearch(payload.payload);
       }
     });
 
     channel.on('broadcast', { event: 'esconderijo_encerrar' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaEsconderijo) {
         MesaEsconderijo.handleIncomingStop(payload.payload);
       }
     });
 
     channel.on('broadcast', { event: 'esconderijo_fase' }, (payload) => {
+      if (isFromSelf(payload)) return;
       if (window.MesaEsconderijo) {
         MesaEsconderijo.handleIncomingPhase(payload.payload);
       }
@@ -15105,9 +15065,14 @@ window.MesaIgrisShop = MesaIgrisShop;
 const MesaCombate = {
   isActive: false,
   lastLocalUpdate: 0,
+  _lastSentTs: 0,
+  _lastAppliedRemoteTs: 0,
+  _pendingSyncCount: 0,
+  _videoStallTimer: null,
+  _videoRetryCount: 0,
   opponentId: 'assasino',
   opponentName: '???',
-  videoUrl: 'assets/videos/assasino1.mp4',
+  videoUrl: 'assets/videos/assasino1.mp4?v=2.4.6',
   selectedPresetId: 'assasino',
   turnCycle: null,
   playerHpCache: {},
@@ -15125,23 +15090,76 @@ const MesaCombate = {
     {
       id: 'assasino',
       name: '???',
-      video: 'assets/videos/assasino1.mp4',
-      videoEsconderijo: 'assets/videos/assasino1_vermelho.mp4',
+      video: 'assets/videos/assasino1.mp4?v=2.4.6',
+      videoEsconderijo: 'assets/videos/assasino1_vermelho.mp4?v=2.4.6',
       desc: 'Oponente misterioso com variação carmesim no esconderijo'
     },
     {
       id: 'ratos',
       name: 'Ratos',
-      video: 'assets/videos/rato_cinematica.mp4?v=3',
+      video: 'assets/videos/rato_cinematica.mp4?v=4',
       desc: 'Infestação voraz de roedores carniceiros na escuridão'
     },
     {
       id: 'unknown',
       name: 'Inimigo Antigo',
-      video: 'assets/videos/inimigo_antigo.mp4',
+      video: 'assets/videos/inimigo_antigo.mp4?v=2.4.6',
       desc: 'Arquivo do oponente anterior guardado'
     }
   ],
+
+  /** Returns true when the current or supplied opponent uses the assasino video pair. */
+  isAssasinoOpponent(url = '') {
+    const u = String(url || this.videoUrl || '').toLowerCase();
+    return u.includes('assasino1') || this.opponentId === 'assasino' || this.opponentName === '???';
+  },
+
+  /** Maps the assasino video to its crimson hiding variant when Esconderijo is active, preserving other opponents. */
+  resolveVideoVariantUrl(url, isEsconderijo) {
+    const trimmed = String(url || '').trim();
+    if (!this.isAssasinoOpponent(trimmed)) return trimmed;
+    return isEsconderijo
+      ? 'assets/videos/assasino1_vermelho.mp4?v=2.4.6'
+      : 'assets/videos/assasino1.mp4?v=2.4.6';
+  },
+
+  /** Synchronizes combat overlay, opponent video, and turn cycle from Supabase row 1 without local clock skew bugs. */
+  syncFromRemote(cb) {
+    if (!cb || typeof cb !== 'object') return;
+    const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    const remoteTime = Number(cb.updatedAt) || 0;
+
+    if (isMaster) {
+      if ((this._pendingSyncCount || 0) > 0) return;
+      if (remoteTime && this._lastSentTs && remoteTime < this._lastSentTs) return;
+      if (Date.now() - (this.lastLocalUpdate || 0) < 4000) return;
+    } else {
+      if (remoteTime && remoteTime < (this._lastAppliedRemoteTs || 0)) return;
+    }
+    if (remoteTime) this._lastAppliedRemoteTs = remoteTime;
+
+    const currentEsc = document.body.classList.contains('esconderijo-active');
+    const resolvedRemoteVid = this.resolveVideoVariantUrl(cb.videoUrl || '', Boolean(cb.isEsconderijo) || currentEsc);
+
+    if (cb.active && !this.isActive) {
+      this.startCombat({ ...cb, videoUrl: resolvedRemoteVid || cb.videoUrl }, false);
+    } else if (!cb.active && this.isActive) {
+      this.stopCombat(false);
+    } else if (cb.active && this.isActive) {
+      const sameName = (cb.opponentName || '') === (this.opponentName || '');
+      const sameId = (cb.opponentId || '') === (this.opponentId || '');
+      const sameVid = (resolvedRemoteVid || '') === (this.videoUrl || '');
+      if (!sameName || !sameId || !sameVid) {
+        this.setOpponent({ ...cb, videoUrl: resolvedRemoteVid || cb.videoUrl }, false);
+      }
+    }
+
+    if (cb.turnCycle) {
+      this.syncTurnCycle(cb.turnCycle);
+    } else if (this.turnCycle && this.turnCycle.active && !cb.active) {
+      this.stopTurnCycle(false);
+    }
+  },
 
   init() {
     this.renderPresets();
@@ -15198,32 +15216,28 @@ const MesaCombate = {
 
   async saveCombatStateToSupabase() {
     if (!window.MesaApp || !MesaApp.supabase || !MesaApp.state || !MesaApp.state.isMaster) return;
+    const now = Date.now();
+    this._lastSentTs = Math.max(this._lastSentTs || 0, now);
+    const isEsc = document.body.classList.contains('esconderijo-active');
+    const currentVid = this.resolveVideoVariantUrl(this.videoUrl || 'assets/videos/assasino1.mp4?v=2.4.6', isEsc);
+    const payload = {
+      active: !!this.isActive,
+      opponentId: this.opponentId || 'assasino',
+      opponentName: this.opponentName || '???',
+      videoUrl: currentVid,
+      isEsconderijo: isEsc,
+      turnCycle: this.turnCycle ? JSON.parse(JSON.stringify(this.turnCycle)) : null,
+      updatedAt: now
+    };
+    this._pendingSyncCount = (this._pendingSyncCount || 0) + 1;
     try {
-      const { data } = await MesaApp.supabase
-        .from('personagens')
-        .select('atributos')
-        .eq('id', 1)
-        .single();
-      const attrs = data && data.atributos 
-        ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos) 
-        : {};
-      const isEsc = document.body.classList.contains('esconderijo-active');
-      const currentVid = isEsc ? 'assets/videos/assasino1_vermelho.mp4' : (this.videoUrl || 'assets/videos/assasino1.mp4');
-      attrs._sys_combate = {
-        active: !!this.isActive,
-        opponentId: this.opponentId || 'assasino',
-        opponentName: this.opponentName || '???',
-        videoUrl: currentVid,
-        isEsconderijo: isEsc,
-        turnCycle: this.turnCycle ? JSON.parse(JSON.stringify(this.turnCycle)) : null,
-        updatedAt: Date.now()
-      };
-      await MesaApp.supabase
-        .from('personagens')
-        .update({ atributos: attrs })
-        .eq('id', 1);
+      await MesaApp.queueRow1Update((attrs) => {
+        attrs._sys_combate = payload;
+      });
     } catch(e) {
       console.warn("Erro ao persistir estado de combate no Supabase:", e);
+    } finally {
+      this._pendingSyncCount = Math.max(0, (this._pendingSyncCount || 1) - 1);
     }
   },
 
@@ -15251,7 +15265,7 @@ const MesaCombate = {
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
     if (nameInput) nameInput.value = this.opponentName || '???';
-    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/assasino1.mp4';
+    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/assasino1.mp4?v=2.4.6';
 
     const localNotice = document.getElementById('combat-local-badge');
     if (localNotice) {
@@ -15305,7 +15319,7 @@ const MesaCombate = {
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
     const name = (nameInput && nameInput.value.trim()) || this.opponentName || '???';
-    const video = (videoInput && videoInput.value.trim()) || this.videoUrl || 'assets/videos/assasino1.mp4';
+    const video = (videoInput && videoInput.value.trim()) || this.videoUrl || 'assets/videos/assasino1.mp4?v=2.4.6';
 
     this.closeSelectModal();
 
@@ -15319,11 +15333,17 @@ const MesaCombate = {
   startCombat(data = {}, shouldBroadcast = true) {
     if (shouldBroadcast && (!MesaApp.state || !MesaApp.state.isMaster)) return;
 
+    const now = Date.now();
     this.isActive = true;
-    this.lastLocalUpdate = Date.now();
+    this.lastLocalUpdate = now;
+    if (shouldBroadcast) {
+      this._lastSentTs = now;
+    } else if (data.updatedAt) {
+      this._lastAppliedRemoteTs = Math.max(this._lastAppliedRemoteTs || 0, Number(data.updatedAt) || 0);
+    }
     this.opponentId = data.opponentId || 'unknown';
     this.opponentName = (data.opponentName !== undefined && data.opponentName !== null && data.opponentName !== '') ? data.opponentName : (this.opponentName || '???');
-    this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=3');
+    this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=4');
 
     // Reseta cache de PV dos personagens
     this.playerHpCache = {};
@@ -15387,7 +15407,8 @@ const MesaCombate = {
               opponentId: this.opponentId,
               opponentName: this.opponentName,
               videoUrl: this.videoUrl,
-              turnCycle: this.turnCycle
+              turnCycle: this.turnCycle,
+              updatedAt: now
             }
           });
         } catch(e) {}
@@ -15398,6 +15419,14 @@ const MesaCombate = {
 
   setOpponent(data = {}, shouldBroadcast = true) {
     if (shouldBroadcast && (!MesaApp.state || !MesaApp.state.isMaster)) return;
+
+    const now = Date.now();
+    this.lastLocalUpdate = now;
+    if (shouldBroadcast) {
+      this._lastSentTs = now;
+    } else if (data.updatedAt) {
+      this._lastAppliedRemoteTs = Math.max(this._lastAppliedRemoteTs || 0, Number(data.updatedAt) || 0);
+    }
 
     this.opponentId = data.opponentId || this.opponentId;
     this.opponentName = data.opponentName || this.opponentName;
@@ -15431,7 +15460,8 @@ const MesaCombate = {
             payload: {
               opponentId: this.opponentId,
               opponentName: this.opponentName,
-              videoUrl: this.videoUrl
+              videoUrl: this.videoUrl,
+              updatedAt: now
             }
           });
         } catch(e) {}
@@ -15443,8 +15473,15 @@ const MesaCombate = {
   stopCombat(shouldBroadcast = true) {
     if (shouldBroadcast && (!MesaApp.state || !MesaApp.state.isMaster)) return;
 
+    const now = Date.now();
     this.isActive = false;
-    this.lastLocalUpdate = Date.now();
+    this.lastLocalUpdate = now;
+    if (shouldBroadcast) {
+      this._lastSentTs = now;
+    }
+    this._clearVideoStallTimer();
+    this._videoRetryCount = 0;
+
     if (this.turnCycle) {
       this.turnCycle.active = false;
     }
@@ -15467,7 +15504,10 @@ const MesaCombate = {
       try { video.pause(); } catch(e) {}
       video.classList.remove('playing');
       video.removeAttribute('src');
+      video.load();
     }
+    const fallback = document.getElementById('combat-video-fallback');
+    if (fallback) fallback.style.display = 'flex';
 
     this.updateNavLabels();
     this.updateMasterControls();
@@ -15479,7 +15519,7 @@ const MesaCombate = {
           chan.send({
             type: 'broadcast',
             event: 'combat_stop',
-            payload: {}
+            payload: { updatedAt: now }
           });
         } catch(e) {}
       }
@@ -15487,33 +15527,110 @@ const MesaCombate = {
     }
   },
 
-  loadVideo(url) {
+  _clearVideoStallTimer() {
+    if (this._videoStallTimer) {
+      clearTimeout(this._videoStallTimer);
+      this._videoStallTimer = null;
+    }
+  },
+
+  /** Binds one-time lifecycle handlers on the combat background video to reveal decoded frames and recover from stalls. */
+  ensureVideoListeners(video) {
+    if (!video || video._mesaBound) return;
+    video._mesaBound = true;
+
+    const revealIfReady = () => {
+      const fallback = document.getElementById('combat-video-fallback');
+      if (!this.isActive) return;
+      if (video.getAttribute('src') && !video.error && video.readyState >= 2) {
+        video.classList.add('playing');
+        if (fallback) fallback.style.display = 'none';
+      }
+    };
+
+    const scheduleStallRecovery = () => {
+      this._clearVideoStallTimer();
+      if (!this.isActive || !video.getAttribute('src')) return;
+      this._videoStallTimer = setTimeout(() => {
+        if (!this.isActive || !video.getAttribute('src')) return;
+        if (video.paused && !video.ended) {
+          video.muted = true;
+          video.play().catch(() => {});
+        }
+        if (video.readyState < 2 && this._videoRetryCount < 2) {
+          this._videoRetryCount++;
+          const srcNow = video.getAttribute('src');
+          if (srcNow) {
+            video.load();
+            video.play().catch(() => {});
+          }
+        }
+      }, 2500);
+    };
+
+    video.addEventListener('loadeddata', () => {
+      this._clearVideoStallTimer();
+      this._videoRetryCount = 0;
+      revealIfReady();
+    });
+    video.addEventListener('canplay', () => {
+      this._clearVideoStallTimer();
+      revealIfReady();
+      if (this.isActive && video.paused) {
+        video.muted = true;
+        video.play().catch(() => {});
+      }
+    });
+    video.addEventListener('playing', () => {
+      this._clearVideoStallTimer();
+      this._videoRetryCount = 0;
+      revealIfReady();
+    });
+    video.addEventListener('waiting', scheduleStallRecovery);
+    video.addEventListener('stalled', scheduleStallRecovery);
+    video.addEventListener('error', () => {
+      const fallback = document.getElementById('combat-video-fallback');
+      this._clearVideoStallTimer();
+      console.error('Erro de carregamento no video de combate:', video.error);
+      if (this.isActive && this._videoRetryCount < 1 && video.getAttribute('src')) {
+        this._videoRetryCount++;
+        const rawSrc = video.getAttribute('src');
+        const retrySrc = rawSrc.includes('retry=') ? rawSrc : `${rawSrc}${rawSrc.includes('?') ? '&' : '?'}retry=1`;
+        setTimeout(() => {
+          if (!this.isActive) return;
+          video.src = retrySrc;
+          video.setAttribute('src', retrySrc);
+          video.load();
+          video.play().catch(() => {});
+        }, 600);
+        return;
+      }
+      video.classList.remove('playing');
+      if (fallback) fallback.style.display = 'flex';
+    });
+  },
+
+  loadVideo(url, opts = {}) {
     const video = document.getElementById('combat-bg-video');
     const fallback = document.getElementById('combat-video-fallback');
     const fallbackLabel = document.getElementById('combat-fallback-label');
     if (!video) return;
 
+    this.ensureVideoListeners(video);
+
     if (fallbackLabel) {
       fallbackLabel.textContent = this.opponentName || 'ÁREA DE COMBATE';
     }
 
-    let trimmedUrl = (url && url.trim()) || '';
     const isEsconderijoNow = document.body.classList.contains('esconderijo-active');
-    const isAssasinoVideo = trimmedUrl.includes('assasino1') || this.opponentId === 'assasino' || this.opponentName === '???';
-    if (isAssasinoVideo) {
-      video.classList.add('video-assasino');
-    } else {
-      video.classList.remove('video-assasino');
-    }
+    const isAssasinoVideo = this.isAssasinoOpponent(url);
+    video.classList.toggle('video-assasino', isAssasinoVideo);
 
-    if (isAssasinoVideo && isEsconderijoNow) {
-      trimmedUrl = 'assets/videos/assasino1_vermelho.mp4';
-    } else if (trimmedUrl.includes('assasino1') && !isEsconderijoNow) {
-      trimmedUrl = 'assets/videos/assasino1.mp4';
-    }
+    const trimmedUrl = this.resolveVideoVariantUrl(url, isEsconderijoNow);
     if (trimmedUrl) {
-      const currentSrc = video.currentSrc || video.src || video.getAttribute('src') || '';
-      
+      this.videoUrl = trimmedUrl;
+      const attrSrc = (video.getAttribute('src') || '').trim();
+
       video.muted = true;
       video.defaultMuted = true;
       video.setAttribute('muted', '');
@@ -15521,33 +15638,56 @@ const MesaCombate = {
       video.setAttribute('playsinline', '');
       video.loop = true;
       video.setAttribute('loop', '');
+      video.preload = 'auto';
 
-      if (currentSrc.includes(trimmedUrl) && !video.paused && video.readyState >= 2) {
-        video.classList.add('playing');
-        if (fallback) fallback.style.display = 'none';
+      const applyPreserveTime = () => {
+        const pt = Number(opts && opts.preserveTime) || 0;
+        if (pt > 0 && video.duration && !isNaN(video.duration) && video.duration > 0.5) {
+          try { video.currentTime = pt % video.duration; } catch(e) {}
+        }
+      };
+
+      if (attrSrc === trimmedUrl && !video.error) {
+        if (video.readyState >= 2) {
+          video.classList.add('playing');
+          if (fallback) fallback.style.display = 'none';
+          if (video.paused) video.play().catch(() => {});
+        } else {
+          if (video.paused) video.play().catch(() => {});
+        }
         return;
       }
 
-      if (!currentSrc.includes(trimmedUrl)) {
-        video.src = trimmedUrl;
-        video.setAttribute('src', trimmedUrl);
-        video.load();
+      this._clearVideoStallTimer();
+      this._videoRetryCount = 0;
+
+      // Mantem o fallback visivel ate que o primeiro frame real esteja decodificado (evita tela preta durante buffering)
+      video.classList.remove('playing');
+      if (fallback) fallback.style.display = 'flex';
+
+      if (opts && opts.preserveTime) {
+        video.addEventListener('loadedmetadata', applyPreserveTime, { once: true });
       }
 
-      video.classList.add('playing');
-      if (fallback) fallback.style.display = 'none';
+      video.src = trimmedUrl;
+      video.setAttribute('src', trimmedUrl);
+      video.load();
 
       const playPromise = video.play();
       if (playPromise !== undefined) {
         playPromise.then(() => {
-          video.classList.add('playing');
-          if (fallback) fallback.style.display = 'none';
+          if (video.readyState >= 2) {
+            video.classList.add('playing');
+            if (fallback) fallback.style.display = 'none';
+          }
         }).catch((err) => {
           console.warn('Playback inicial bloqueado pelo navegador, forcando muted:', err);
           video.muted = true;
           video.play().then(() => {
-            video.classList.add('playing');
-            if (fallback) fallback.style.display = 'none';
+            if (video.readyState >= 2) {
+              video.classList.add('playing');
+              if (fallback) fallback.style.display = 'none';
+            }
           }).catch((err2) => {
             console.error('Falha irrecuperavel ao reproduzir video de combate:', err2);
             video.classList.remove('playing');
@@ -15555,12 +15695,8 @@ const MesaCombate = {
           });
         });
       }
-      video.onerror = () => {
-        console.error('Erro de carregamento no video de combate:', video.error);
-        video.classList.remove('playing');
-        if (fallback) fallback.style.display = 'flex';
-      };
     } else {
+      this._clearVideoStallTimer();
       video.classList.remove('playing');
       video.removeAttribute('src');
       video.load();
@@ -16442,79 +16578,21 @@ const MesaCombate = {
 
   updateVideoVariant(isEsconderijo) {
     const video = document.getElementById('combat-bg-video');
-    const fallback = document.getElementById('combat-video-fallback');
     if (!video) return;
 
-    const currentSrc = video.currentSrc || video.src || video.getAttribute('src') || '';
-    const isAssasino = currentSrc.includes('assasino1') || 
-                       (this.videoUrl && this.videoUrl.includes('assasino1')) || 
-                       this.opponentId === 'assasino' ||
-                       this.opponentName === '???';
-    if (!isAssasino) {
+    if (!this.isAssasinoOpponent(video.getAttribute('src') || '')) {
       video.classList.remove('video-assasino');
       return;
     }
-    video.classList.add('video-assasino');
 
-    const targetUrl = isEsconderijo ? 'assets/videos/assasino1_vermelho.mp4' : 'assets/videos/assasino1.mp4';
-    this.videoUrl = targetUrl;
-
-    if (currentSrc.includes(targetUrl) && !video.paused && video.readyState >= 2) {
-      video.classList.add('playing');
-      if (fallback) fallback.style.display = 'none';
-      return;
-    }
-
-    const prevTime = video.currentTime || 0;
+    const targetUrl = this.resolveVideoVariantUrl('assets/videos/assasino1.mp4?v=2.4.6', isEsconderijo);
+    const prevTime = (!isNaN(video.currentTime) && video.currentTime > 0) ? video.currentTime : 0;
     video.style.transition = 'none';
-    video.muted = true;
-    video.defaultMuted = true;
-    video.setAttribute('muted', '');
-    video.playsInline = true;
-    video.setAttribute('playsinline', '');
-    video.loop = true;
-    video.setAttribute('loop', '');
+    this.loadVideo(targetUrl, { preserveTime: prevTime });
 
-    video.src = targetUrl;
-    video.setAttribute('src', targetUrl);
-    video.load();
-
-    video.classList.add('playing');
-    if (fallback) fallback.style.display = 'none';
-
-    const restoreTime = () => {
-      if (prevTime > 0 && !isNaN(prevTime)) {
-        try { video.currentTime = prevTime; } catch(e) {}
-      }
-    };
-    if (video.readyState >= 1) {
-      restoreTime();
-    } else {
-      video.onloadedmetadata = () => {
-        restoreTime();
-        video.onloadedmetadata = null;
-      };
-    }
-
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise.then(() => {
-        video.classList.add('playing');
-        if (fallback) fallback.style.display = 'none';
-      }).catch((err) => {
-        console.warn('Playback automatico da variacao bloqueado, forcando muted:', err);
-        video.muted = true;
-        video.play().then(() => {
-          video.classList.add('playing');
-          if (fallback) fallback.style.display = 'none';
-        }).catch((err2) => {
-          console.error('Falha ao reproduzir variacao de combate:', err2);
-        });
-      });
-    }
-
-    // Se for o Mestre, transmite atualizacao de combate para garantir alinhamento de video de todos
     if (MesaApp.state && MesaApp.state.isMaster && this.isActive) {
+      const now = Date.now();
+      this._lastSentTs = Math.max(this._lastSentTs || 0, now);
       const chan = this.getChannel();
       if (chan) {
         try {
@@ -16524,7 +16602,8 @@ const MesaCombate = {
             payload: {
               opponentId: this.opponentId,
               opponentName: this.opponentName,
-              videoUrl: targetUrl
+              videoUrl: targetUrl,
+              updatedAt: now
             }
           });
         } catch(e) {}
@@ -16917,6 +16996,10 @@ const MesaEsconderijo = {
   roomName: 'Sala Média',
   isMasterActive: false,
   isPanelOpen: false,
+  lastLocalActionTs: 0,
+  _lastSentTs: 0,
+  _lastAppliedRemoteTs: 0,
+  _pendingSyncCount: 0,
   currentPhase: 'sobreviventes',
   declaredSectors: [],
   selectedSector: null,
@@ -16935,39 +17018,15 @@ const MesaEsconderijo = {
   },
 
   toggleSurvivalPanel(shouldBroadcast = true) {
-    this.isPanelOpen = !this.isPanelOpen;
     const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
-    const panel = document.getElementById('combat-survival-panel');
-    const toggleBtn = document.getElementById('combat-survival-toggle-btn');
-    if (panel) {
-      if (this.isPanelOpen) {
-        panel.classList.add('active');
-        if (toggleBtn) toggleBtn.classList.add('active');
-        document.body.classList.add('esconderijo-active');
-        if (window.MesaCombate && typeof MesaCombate.updateVideoVariant === 'function') MesaCombate.updateVideoVariant(true);
-        this.startPanelWave();
-        this.renderSurvivalPanel();
-
-        if (isMaster && shouldBroadcast) {
-          this.isMasterActive = true;
-          this.broadcastStart();
-          this.syncStateToSupabase(true);
-        }
+    if (this.isPanelOpen) {
+      if (isMaster && shouldBroadcast) {
+        this.stopHidingRound(false);
       } else {
-        panel.classList.remove('active');
-        if (toggleBtn) toggleBtn.classList.remove('active');
-        if (!this.isMasterActive || isMaster) {
-          document.body.classList.remove('esconderijo-active');
-          if (window.MesaCombate && typeof MesaCombate.updateVideoVariant === 'function') MesaCombate.updateVideoVariant(false);
-        }
-        this.stopPanelWave();
-
-        if (isMaster && shouldBroadcast) {
-          this.isMasterActive = false;
-          this.broadcastStop();
-          this.syncStateToSupabase(false);
-        }
+        this.closeSurvivalPanel(false);
       }
+    } else {
+      this.openSurvivalPanel(shouldBroadcast);
     }
   },
 
@@ -16985,15 +17044,24 @@ const MesaEsconderijo = {
       this.renderSurvivalPanel();
     }
     if (isMaster && shouldBroadcast) {
+      const now = Date.now();
+      this.lastLocalActionTs = now;
+      this._lastSentTs = Math.max(this._lastSentTs || 0, now);
       this.isMasterActive = true;
-      this.broadcastStart();
-      this.syncStateToSupabase(true);
+      this.broadcastStart(now);
+      this.syncStateToSupabase(true, now);
     }
   },
 
   closeSurvivalPanel(shouldBroadcast = false) {
-    this.isPanelOpen = false;
     const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    // Se o Mestre fechar pelo botao X enquanto a rodada esta ativa, encerra globalmente para nao reabrir no polling
+    if (isMaster && (shouldBroadcast || this.isMasterActive || document.body.classList.contains('esconderijo-active'))) {
+      this.stopHidingRound(!shouldBroadcast);
+      return;
+    }
+
+    this.isPanelOpen = false;
     const panel = document.getElementById('combat-survival-panel');
     const toggleBtn = document.getElementById('combat-survival-toggle-btn');
     if (panel) {
@@ -17005,15 +17073,14 @@ const MesaEsconderijo = {
       }
       this.stopPanelWave();
     }
-    if (isMaster && shouldBroadcast) {
-      this.isMasterActive = false;
-      this.broadcastStop();
-      this.syncStateToSupabase(false);
-    }
   },
 
-  broadcastStart() {
-    const chan = (window.MesaChat && MesaChat.channel) || (window.MesaApp && MesaApp.channel);
+  getChannel() {
+    return (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel) || null;
+  },
+
+  broadcastStart(timestamp = Date.now()) {
+    const chan = this.getChannel();
     if (chan) {
       try {
         chan.send({
@@ -17024,16 +17091,16 @@ const MesaEsconderijo = {
             roomSides: this.roomSides,
             roomName: this.roomName,
             phase: this.currentPhase,
-            videoUrl: 'assets/videos/assasino1_vermelho.mp4',
-            timestamp: Date.now()
+            videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.4.6',
+            timestamp
           }
         });
       } catch (e) {}
     }
   },
 
-  broadcastStop() {
-    const chan = (window.MesaChat && MesaChat.channel) || (window.MesaApp && MesaApp.channel);
+  broadcastStop(timestamp = Date.now()) {
+    const chan = this.getChannel();
     if (chan) {
       try {
         chan.send({
@@ -17041,51 +17108,73 @@ const MesaEsconderijo = {
           event: 'esconderijo_encerrar',
           payload: {
             active: false,
-            videoUrl: 'assets/videos/assasino1.mp4',
-            timestamp: Date.now()
+            videoUrl: 'assets/videos/assasino1.mp4?v=2.4.6',
+            timestamp
           }
         });
       } catch (e) {}
     }
   },
 
-  syncStateToSupabase(isActive) {
-    if (!window.MesaApp || !MesaApp.supabase) return;
-    const now = Date.now();
+  async syncStateToSupabase(isActive, timestamp = Date.now()) {
+    if (!window.MesaApp || !MesaApp.supabase || !MesaApp.state || !MesaApp.state.isMaster) return;
+    const now = Number(timestamp) || Date.now();
+    this.lastLocalActionTs = Math.max(this.lastLocalActionTs || 0, Date.now());
+    this._lastSentTs = Math.max(this._lastSentTs || 0, now);
+
     const payload = isActive ? {
       active: true,
       roomSides: this.roomSides,
       roomName: this.roomName,
       phase: this.currentPhase,
-      videoUrl: 'assets/videos/assasino1_vermelho.mp4',
+      videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.4.6',
       timestamp: now
     } : {
       active: false,
-      videoUrl: 'assets/videos/assasino1.mp4',
+      videoUrl: 'assets/videos/assasino1.mp4?v=2.4.6',
       timestamp: now
     };
 
-    if (MesaApp.state && MesaApp.state.rawRow1Atributos) {
+    if (MesaApp.state.rawRow1Atributos) {
       MesaApp.state.rawRow1Atributos._sys_esconderijo = payload;
     }
 
-    (async () => {
-      try {
-        const { data } = await MesaApp.supabase
-          .from('personagens')
-          .select('atributos')
-          .eq('id', 1)
-          .single();
-        const attrs = data && data.atributos
-          ? (typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos)
-          : {};
+    this._pendingSyncCount = (this._pendingSyncCount || 0) + 1;
+    try {
+      await MesaApp.queueRow1Update((attrs) => {
         attrs._sys_esconderijo = payload;
-        await MesaApp.supabase
-          .from('personagens')
-          .update({ atributos: attrs })
-          .eq('id', 1);
-      } catch (e) {}
-    })();
+      });
+    } catch (e) {
+      console.warn("Erro ao sincronizar estado de esconderijo no Supabase:", e);
+    } finally {
+      this._pendingSyncCount = Math.max(0, (this._pendingSyncCount || 1) - 1);
+    }
+  },
+
+  /** Applies remote _sys_esconderijo snapshots idempotently without fighting in-flight Master actions. */
+  syncFromRemote(esc) {
+    if (!esc || typeof esc !== 'object') return;
+    const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    const remoteTs = Number(esc.timestamp) || 0;
+
+    if (isMaster) {
+      if ((this._pendingSyncCount || 0) > 0) return;
+      if (remoteTs && this._lastSentTs && remoteTs < this._lastSentTs) return;
+      if (Date.now() - (this.lastLocalActionTs || 0) < 4000) return;
+    } else {
+      if (remoteTs && remoteTs < (this._lastAppliedRemoteTs || 0)) return;
+    }
+
+    if (remoteTs && remoteTs === this._lastAppliedRemoteTs) return;
+    if (remoteTs) this._lastAppliedRemoteTs = remoteTs;
+
+    if (esc.active) {
+      this.handleIncomingStart(esc);
+    } else {
+      if (this.isPanelOpen || this.isMasterActive || document.body.classList.contains('esconderijo-active')) {
+        this.handleIncomingStop(esc);
+      }
+    }
   },
 
   startPanelWave() {
@@ -17181,12 +17270,22 @@ const MesaEsconderijo = {
   advanceEsconderijoPhase(shouldBroadcast = true) {
     this.currentPhase = (this.currentPhase === 'sobreviventes') ? 'perseguidor' : 'sobreviventes';
     this.updatePhaseUI();
-    if (shouldBroadcast && MesaChat && MesaChat.channel) {
-      MesaChat.channel.send({
-        type: 'broadcast',
-        event: 'esconderijo_fase',
-        payload: { phase: this.currentPhase, timestamp: Date.now() }
-      });
+    const isMaster = Boolean(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    const now = Date.now();
+    if (shouldBroadcast) {
+      const chan = this.getChannel();
+      if (chan) {
+        try {
+          chan.send({
+            type: 'broadcast',
+            event: 'esconderijo_fase',
+            payload: { phase: this.currentPhase, timestamp: now }
+          });
+        } catch (e) {}
+      }
+      if (isMaster && this.isPanelOpen) {
+        this.syncStateToSupabase(true, now);
+      }
     }
     const phaseName = (this.currentPhase === 'sobreviventes') ? 'Fase dos Sobreviventes' : 'Fase do Perseguidor';
     if (window.MesaApp && typeof MesaApp.showToast === 'function') {
@@ -17474,7 +17573,14 @@ const MesaEsconderijo = {
 
   handleIncomingStart(payload) {
     if (!payload) return;
-    if (payload.roomSides) this.roomSides = payload.roomSides;
+    const ts = Number(payload.timestamp) || 0;
+    if (ts && ts < (this._lastAppliedRemoteTs || 0)) return;
+    if (ts) this._lastAppliedRemoteTs = ts;
+
+    if (payload.roomSides) {
+      this.roomSides = payload.roomSides;
+      this.room = payload.roomSides === 4 ? 'pequena' : (payload.roomSides === 8 ? 'grande' : 'media');
+    }
     if (payload.roomName) this.roomName = payload.roomName;
     if (payload.phase) this.currentPhase = payload.phase;
     this.playerHidden = true;
@@ -17484,7 +17590,11 @@ const MesaEsconderijo = {
     this.openSurvivalPanel(false);
   },
 
-  handleIncomingStop() {
+  handleIncomingStop(payload) {
+    const ts = Number(payload && payload.timestamp) || 0;
+    if (ts && ts < (this._lastAppliedRemoteTs || 0)) return;
+    if (ts) this._lastAppliedRemoteTs = ts;
+
     this.playerHidden = false;
     this.playerSector = null;
     this.isMasterActive = false;
@@ -17503,22 +17613,32 @@ const MesaEsconderijo = {
     }
   },
 
-  stopHidingRound() {
+  stopHidingRound(announceInChat = true) {
+    const now = Date.now();
+    this.lastLocalActionTs = now;
+    this._lastSentTs = Math.max(this._lastSentTs || 0, now);
     this.declaredSectors = [];
     this.selectedSector = null;
     this.playerHidden = false;
     this.playerSector = null;
     this.isMasterActive = false;
+    this.isPanelOpen = false;
+
+    const panel = document.getElementById('combat-survival-panel');
+    const toggleBtn = document.getElementById('combat-survival-toggle-btn');
+    if (panel) panel.classList.remove('active');
+    if (toggleBtn) toggleBtn.classList.remove('active');
     document.body.classList.remove('esconderijo-active');
+    this.stopPanelWave();
+
     if (window.MesaCombate && typeof MesaCombate.updateVideoVariant === 'function') {
       MesaCombate.updateVideoVariant(false);
     }
-    this.closeSurvivalPanel(false);
-    this.broadcastStop();
-    this.syncStateToSupabase(false);
-    if (window.MesaChat && typeof MesaChat.receiveMessage === 'function') {
+    this.broadcastStop(now);
+    this.syncStateToSupabase(false, now);
+    if (announceInChat && window.MesaChat && typeof MesaChat.receiveMessage === 'function') {
       MesaChat.receiveMessage({
-        id: 'hiding_end_' + Date.now(),
+        id: 'hiding_end_' + now,
         sender_name: 'Mestre',
         is_master: true,
         content: '[PERSEGUIÇÃO]: A rodada de esconderijo foi encerrada.',
