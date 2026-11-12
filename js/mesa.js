@@ -5016,8 +5016,12 @@ const MesaDice = {
     }
   },
 
+  openDiceModal() {
+    this.openModal();
+  },
+
   openModal() {
-    if (!MesaApp.state.myToken && !MesaApp.state.isMaster) {
+    if (!MesaApp.state.myToken && !MesaApp.state.isMaster && !MesaApp.state.myPlayerSlot) {
       alert("Observadores não podem rolar dados. Conecte seu token de personagem para rolar dados na mesa.");
       MesaApp.openTokenModal();
       return;
@@ -5028,14 +5032,21 @@ const MesaDice = {
       return;
     }
 
+    const isMaster = Boolean(MesaApp.state && MesaApp.state.isMaster);
     let p = null;
     if (MesaApp.state && MesaApp.state.mySlot && MesaApp.state.players) {
       p = MesaApp.state.players[MesaApp.state.mySlot - 1];
     } else if (MesaApp.state && MesaApp.state.activeViewingPlayer) {
       p = MesaApp.state.activeViewingPlayer;
     }
-    if (p && p.dadoDePavor) {
-      this.manualPavorActive = true;
+    // Apenas o Mestre tem controle manual do Dado de Pavor no modal
+    // Se um jogador ja tiver status de pavor atribuido na ficha pelo Mestre, herda na rolagem
+    if (isMaster) {
+      if (p && p.dadoDePavor) {
+        this.manualPavorActive = true;
+      }
+    } else {
+      this.manualPavorActive = Boolean(p && p.dadoDePavor);
     }
 
     MesaApp.openModal('dice-modal');
@@ -5075,16 +5086,17 @@ const MesaDice = {
 
   updatePavorChipUI() {
     const btn = document.getElementById('dice-pavor-chip-btn');
-    if (!btn) return;
     const isMaster = Boolean(MesaApp.state && MesaApp.state.isMaster);
+    const card = document.getElementById('dice-pavor-card') || (btn ? btn.closest('.dice-pavor-card') : null);
+    if (card) {
+      card.style.display = isMaster ? 'block' : 'none';
+      card.classList.toggle('active', Boolean(this.manualPavorActive));
+    }
+    if (!btn) return;
     btn.style.cursor = isMaster ? 'pointer' : 'not-allowed';
     btn.title = isMaster ? 'Alternar Dado de Pavor nesta rolagem' : 'Apenas o Mestre pode alterar o Dado de Pavor';
     const isActive = Boolean(this.manualPavorActive);
     btn.classList.toggle('active', isActive);
-    const card = document.getElementById('dice-pavor-card') || btn.closest('.dice-pavor-card');
-    if (card) {
-      card.classList.toggle('active', isActive);
-    }
     const label = document.getElementById('dice-pavor-chip-label');
     if (label) {
       label.textContent = isActive ? 'LIGADO' : 'DESLIGADO';
