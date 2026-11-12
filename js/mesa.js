@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.1';
+const MESA_VERSION = 'v2.5.3';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -4099,6 +4099,633 @@ const MesaReactions = {
 };
 
 
+// ---- 5B. MOTOR 3D VOLUMÉTRICO REAL PARA DADOS POLIÉDRICOS (CANVAS 3D) ----
+const Mesa3DDice = {
+  _solidsCache: {},
+  _instances: new Map(),
+  _rafId: null,
+
+  _vecNorm(v) {
+    const l = Math.hypot(v[0], v[1], v[2]) || 1;
+    return [v[0] / l, v[1] / l, v[2] / l];
+  },
+  _vecSub(a, b) { return [a[0] - b[0], a[1] - b[1], a[2] - b[2]]; },
+  _vecAdd(a, b) { return [a[0] + b[0], a[1] + b[1], a[2] + b[2]]; },
+  _vecScale(v, s) { return [v[0] * s, v[1] * s, v[2] * s]; },
+  _vecDot(a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; },
+  _vecCross(a, b) {
+    return [
+      a[1] * b[2] - a[2] * b[1],
+      a[2] * b[0] - a[0] * b[2],
+      a[0] * b[1] - a[1] * b[0]
+    ];
+  },
+  _distPointToSeg(p, a, b) {
+    const ab = this._vecSub(b, a);
+    const ap = this._vecSub(p, a);
+    const t = Math.max(0, Math.min(1, this._vecDot(ap, ab) / (this._vecDot(ab, ab) || 1)));
+    const closest = this._vecAdd(a, this._vecScale(ab, t));
+    const d = this._vecSub(p, closest);
+    return Math.hypot(d[0], d[1], d[2]);
+  },
+
+  _finalizeSolid(vertsIn, facesRaw, opts = {}) {
+    let nScale;
+    if (opts.preservePlanarScale) {
+      const m = Math.max(...vertsIn.map(v => Math.hypot(v[0], v[1], v[2]))) || 1;
+      nScale = vertsIn.map(v => this._vecScale(v, 1 / m));
+    } else {
+      nScale = vertsIn.map(v => this._vecNorm(v));
+    }
+
+    const f0 = facesRaw[0];
+    let n0 = this._vecNorm(this._vecCross(
+      this._vecSub(nScale[f0[1]], nScale[f0[0]]),
+      this._vecSub(nScale[f0[2]], nScale[f0[0]])
+    ));
+    const c0 = f0.reduce((a, i) => this._vecAdd(a, nScale[i]), [0, 0, 0]).map(x => x / f0.length);
+    if (this._vecDot(n0, c0) < 0) n0 = this._vecScale(n0, -1);
+
+    let upHint = Math.abs(n0[1]) < 0.9 ? [0, 1, 0] : [0, 0, -1];
+    if (opts.upFromEdgeMidpoint && f0.length === 3) {
+      upHint = this._vecSub(nScale[f0[0]], this._vecScale(this._vecAdd(nScale[f0[1]], nScale[f0[2]]), 0.5));
+    } else if (opts.kiteApexIndex !== undefined) {
+      upHint = this._vecSub(nScale[f0[opts.kiteApexIndex]], c0);
+    }
+
+    let v0 = this._vecNorm(this._vecSub(upHint, this._vecScale(n0, this._vecDot(upHint, n0))));
+    const u0 = this._vecNorm(this._vecCross(v0, n0));
+    v0 = this._vecNorm(this._vecCross(n0, u0));
+
+    const verts = nScale.map(p => [this._vecDot(p, u0), this._vecDot(p, v0), this._vecDot(p, n0)]);
+    const faces = facesRaw.map((rawF, fi) => {
+      const cAvg = rawF.reduce((a, i) => this._vecAdd(a, verts[i]), [0, 0, 0]).map(x => x / rawF.length);
+      let n = this._vecNorm(this._vecCross(
+        this._vecSub(verts[rawF[1]], verts[rawF[0]]),
+        this._vecSub(verts[rawF[2]], verts[rawF[0]])
+      ));
+      const indices = this._vecDot(n, cAvg) >= 0 ? [...rawF] : [...rawF].reverse();
+      n = this._vecNorm(this._vecCross(
+        this._vecSub(verts[indices[1]], verts[indices[0]]),
+        this._vecSub(verts[indices[2]], verts[indices[0]])
+      ));
+
+      let center = cAvg;
+      if (opts.kiteWeight && indices.length === 4) {
+        const d02 = Math.hypot(...this._vecSub(verts[indices[0]], verts[indices[2]]));
+        const d13 = Math.hypot(...this._vecSub(verts[indices[1]], verts[indices[3]]));
+        center = d02 > d13
+          ? this._vecAdd(
+              this._vecAdd(this._vecScale(verts[indices[0]], 0.2), this._vecScale(verts[indices[2]], 0.2)),
+              this._vecAdd(this._vecScale(verts[indices[1]], 0.3), this._vecScale(verts[indices[3]], 0.3))
+            )
+          : this._vecAdd(
+              this._vecAdd(this._vecScale(verts[indices[1]], 0.2), this._vecScale(verts[indices[3]], 0.2)),
+              this._vecAdd(this._vecScale(verts[indices[0]], 0.3), this._vecScale(verts[indices[2]], 0.3))
+            );
+      }
+
+      let inradius = Infinity;
+      for (let i = 0; i < indices.length; i++) {
+        inradius = Math.min(inradius, this._distPointToSeg(center, verts[indices[i]], verts[indices[(i + 1) % indices.length]]));
+      }
+
+      const ref = fi === 0 ? [0, -1, 0] : (Math.abs(n[1]) < 0.9 ? [0, -1, 0] : [0, 0, -1]);
+      const fv = this._vecNorm(this._vecSub(ref, this._vecScale(n, this._vecDot(ref, n))));
+      const fu = this._vecNorm(this._vecCross(n, fv));
+      return { indices, center, normal: n, uAxis: fu, vAxis: fv, inradius };
+    });
+
+    return { verts, faces, endTilt: opts.endTilt || { rx: -0.16, ry: 0.22 } };
+  },
+
+  _buildTrapezohedron(n, endTilt) {
+    const H = 1.05;
+    const r = 0.92;
+    const cHalf = Math.cos(Math.PI / n);
+    const yRing = H * (1 - cHalf) / (1 + cHalf);
+    const verts = [[0, H, 0], [0, -H, 0]];
+    for (let k = 0; k < n; k++) {
+      const a = (2 * Math.PI * k) / n;
+      verts.push([r * Math.cos(a), yRing, r * Math.sin(a)]);
+    }
+    for (let k = 0; k < n; k++) {
+      const a = (2 * Math.PI * k) / n + Math.PI / n;
+      verts.push([r * Math.cos(a), -yRing, r * Math.sin(a)]);
+    }
+    const faces = [];
+    for (let k = 0; k < n; k++) {
+      const u0 = 2 + k;
+      const u1 = 2 + ((k + 1) % n);
+      const l0 = 2 + n + k;
+      const lPrev = 2 + n + ((k - 1 + n) % n);
+      faces.push([0, u1, l0, u0]);
+      faces.push([1, lPrev, u0, l0]);
+    }
+    return this._finalizeSolid(verts, faces, {
+      preservePlanarScale: true,
+      kiteApexIndex: 0,
+      kiteWeight: true,
+      endTilt
+    });
+  },
+
+  getSolid(sides) {
+    const s = Number(sides) || 20;
+    const key = [4, 6, 8, 10, 12, 16, 20].includes(s) ? s : (s === 100 ? 10 : 20);
+    if (this._solidsCache[key]) return this._solidsCache[key];
+
+    let solid;
+    if (key === 4) {
+      solid = this._finalizeSolid(
+        [[1, 1, 1], [1, -1, -1], [-1, 1, -1], [-1, -1, 1]],
+        [[0, 1, 2], [0, 3, 1], [0, 2, 3], [1, 3, 2]],
+        { upFromEdgeMidpoint: true, endTilt: { rx: -0.22, ry: 0.52 } }
+      );
+    } else if (key === 6) {
+      solid = this._finalizeSolid(
+        [[-1, -1, 1], [1, -1, 1], [1, 1, 1], [-1, 1, 1], [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1]],
+        [[0, 1, 2, 3], [5, 4, 7, 6], [1, 5, 6, 2], [4, 0, 3, 7], [3, 2, 6, 7], [4, 5, 1, 0]],
+        { preservePlanarScale: true, endTilt: { rx: -0.20, ry: 0.24 } }
+      );
+    } else if (key === 8) {
+      solid = this._finalizeSolid(
+        [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]],
+        [[2, 0, 4], [2, 4, 1], [3, 1, 4], [3, 4, 0], [2, 5, 0], [2, 1, 5], [3, 5, 1], [3, 0, 5]],
+        { upFromEdgeMidpoint: true, endTilt: { rx: -0.18, ry: 0.22 } }
+      );
+    } else if (key === 10) {
+      solid = this._buildTrapezohedron(5, { rx: -0.16, ry: 0.22 });
+    } else if (key === 16) {
+      solid = this._buildTrapezohedron(8, { rx: -0.16, ry: 0.22 });
+    } else {
+      const phi = (1 + Math.sqrt(5)) / 2;
+      const icoVerts = [
+        [-1, phi, 0], [1, phi, 0], [-1, -phi, 0], [1, -phi, 0],
+        [0, -1, phi], [0, 1, phi], [0, -1, -phi], [0, 1, -phi],
+        [phi, 0, -1], [phi, 0, 1], [-phi, 0, -1], [-phi, 0, 1]
+      ];
+      const icoFaces = [
+        [0, 11, 5], [0, 5, 1], [0, 1, 7], [0, 7, 10], [0, 10, 11],
+        [1, 5, 9], [5, 11, 4], [11, 10, 2], [10, 7, 6], [7, 1, 8],
+        [3, 9, 4], [3, 4, 2], [3, 2, 6], [3, 6, 8], [3, 8, 9],
+        [4, 9, 5], [2, 4, 11], [6, 2, 10], [8, 6, 7], [9, 8, 1]
+      ];
+      if (key === 12) {
+        const dodecaVerts = icoFaces.map(f => this._vecNorm(
+          this._vecAdd(this._vecAdd(icoVerts[f[0]], icoVerts[f[1]]), icoVerts[f[2]])
+        ));
+        const dodecaFaces = icoVerts.map((v, vi) => {
+          const vn = this._vecNorm(v);
+          const ring = [];
+          icoFaces.forEach((f, fi) => { if (f.includes(vi)) ring.push(fi); });
+          const refUp = Math.abs(vn[1]) < 0.9 ? [0, 1, 0] : [0, 0, -1];
+          const ux = this._vecNorm(this._vecCross(refUp, vn));
+          const vy = this._vecNorm(this._vecCross(vn, ux));
+          ring.sort((a, b) =>
+            Math.atan2(this._vecDot(dodecaVerts[a], vy), this._vecDot(dodecaVerts[a], ux)) -
+            Math.atan2(this._vecDot(dodecaVerts[b], vy), this._vecDot(dodecaVerts[b], ux))
+          );
+          return ring;
+        });
+        solid = this._finalizeSolid(dodecaVerts, dodecaFaces, {
+          preservePlanarScale: true,
+          endTilt: { rx: -0.16, ry: 0.22 }
+        });
+      } else {
+        solid = this._finalizeSolid(icoVerts, icoFaces, {
+          upFromEdgeMidpoint: true,
+          endTilt: { rx: -0.16, ry: 0.22 }
+        });
+      }
+    }
+
+    this._solidsCache[key] = solid;
+    return solid;
+  },
+
+  _buildFaceLabels(sides, faceCount, targetVal) {
+    const s = Number(sides) || 20;
+    const labels = new Array(faceCount);
+    const valStr = String(targetVal ?? '?');
+    labels[0] = valStr;
+
+    let pool = [];
+    if (s === 100) {
+      pool = ['00', '10', '20', '30', '40', '50', '60', '70', '80', '90'].filter(x => x !== valStr);
+    } else if (s <= faceCount) {
+      const targetNum = Number(targetVal);
+      for (let i = 1; i <= s; i++) {
+        if (i !== targetNum) pool.push(String(i));
+      }
+    } else {
+      for (let i = 1; i < faceCount; i++) {
+        pool.push(String(((i * 7) % s) + 1));
+      }
+    }
+
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = pool[i];
+      pool[i] = pool[j];
+      pool[j] = tmp;
+    }
+
+    for (let i = 1; i < faceCount; i++) {
+      labels[i] = pool[(i - 1) % pool.length] || String(i);
+    }
+    return labels;
+  },
+
+  _rotateVec(p, cx, sx, cy, sy, cz, sz) {
+    const x0 = p[0], y0 = p[1], z0 = p[2];
+    const y1 = y0 * cx - z0 * sx;
+    const z1 = y0 * sx + z0 * cx;
+    const x2 = x0 * cy + z1 * sy;
+    const z2 = -x0 * sy + z1 * cy;
+    const x3 = x2 * cz - y1 * sz;
+    const y3 = x2 * sz + y1 * cz;
+    return [x3, y3, z2];
+  },
+
+  _resolvePalette(theme, isShaking) {
+    if (theme === 'pavor') {
+      return {
+        isGothicPavor: true,
+        baseRgb: [6, 2, 4],
+        litRgb: [36, 7, 15],
+        specRgb: [215, 185, 190],
+        stroke: '#6b081b',
+        strokeLit: '#b81d38',
+        innerHighlight: 'rgba(225, 205, 198, 0.24)',
+        gothicBevel: 'rgba(218, 196, 188, 0.34)',
+        halo: 'rgba(130, 8, 30, 0.52)',
+        text: '#efe5dc'
+      };
+    }
+    if (theme === 'esconderijo') {
+      return {
+        baseRgb: [22, 2, 7],
+        litRgb: [112, 10, 30],
+        specRgb: [255, 138, 158],
+        stroke: isShaking ? '#ffffff' : '#ff1133',
+        strokeLit: isShaking ? '#ffffff' : '#ff6b85',
+        innerHighlight: 'rgba(255, 120, 145, 0.16)',
+        halo: 'rgba(255, 17, 51, 0.36)',
+        text: '#ffffff'
+      };
+    }
+    if (theme === 'crit-max') {
+      return {
+        baseRgb: [36, 24, 4],
+        litRgb: [128, 90, 14],
+        specRgb: [255, 244, 178],
+        stroke: '#ffcc55',
+        strokeLit: '#fff0a8',
+        innerHighlight: 'rgba(255, 235, 150, 0.22)',
+        halo: 'rgba(255, 204, 85, 0.42)',
+        text: '#fff5cc'
+      };
+    }
+    if (theme === 'crit-min') {
+      return {
+        baseRgb: [32, 3, 8],
+        litRgb: [104, 8, 24],
+        specRgb: [255, 140, 155],
+        stroke: '#ff2244',
+        strokeLit: '#ff7085',
+        innerHighlight: 'rgba(255, 130, 150, 0.16)',
+        halo: 'rgba(255, 34, 68, 0.38)',
+        text: '#ffe0e5'
+      };
+    }
+    return {
+      baseRgb: [20, 7, 2],
+      litRgb: [96, 35, 10],
+      specRgb: [255, 182, 106],
+      stroke: '#ff6614',
+      strokeLit: '#ffaa58',
+      innerHighlight: 'rgba(255, 195, 135, 0.14)',
+      halo: 'rgba(255, 85, 0, 0.32)',
+      text: '#ffffff'
+    };
+  },
+
+  _renderDie(inst, rx, ry, rz, bounceScale = 1) {
+    const { canvas, solid, labels, theme } = inst;
+    if (!canvas || !canvas.isConnected) return;
+
+    const logicalSize = Number(inst.size) || 106;
+    const dpr = Math.min(2.5, Math.max(1.5, window.devicePixelRatio || 1));
+    const pxSize = Math.round(logicalSize * dpr);
+    if (canvas.width !== pxSize || canvas.height !== pxSize) {
+      canvas.width = pxSize;
+      canvas.height = pxSize;
+    }
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, logicalSize, logicalSize);
+
+    const box = canvas.closest('.dice-tumble-box');
+    const isShaking = Boolean(box && box.classList.contains('shaking'));
+    const pal = this._resolvePalette(theme, isShaking);
+
+    const cx = Math.cos(rx), sx = Math.sin(rx);
+    const cy = Math.cos(ry), sy = Math.sin(ry);
+    const cz = Math.cos(rz), sz = Math.sin(rz);
+
+    const half = logicalSize / 2;
+    const focal = 4.2;
+    const baseRadius = logicalSize * 0.355 * bounceScale;
+
+    // Subtle soft radial halo behind the 3D solid (or gothic occult halo for Dado de Pavor)
+    const haloGrad = ctx.createRadialGradient(half, half, 4, half, half, logicalSize * 0.47);
+    haloGrad.addColorStop(0, pal.halo);
+    haloGrad.addColorStop(0.62, pal.isGothicPavor ? 'rgba(30, 0, 8, 0.5)' : 'rgba(0,0,0,0)');
+    haloGrad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = haloGrad;
+    ctx.beginPath();
+    ctx.arc(half, half, logicalSize * 0.47, 0, Math.PI * 2);
+    ctx.fill();
+
+    if (pal.isGothicPavor) {
+      const auraAngle = (rx * 0.14 + ry * 0.22);
+      ctx.save();
+      ctx.translate(half, half);
+      ctx.rotate(auraAngle);
+      // 8 thorny gothic iron spires + occult ritual circle behind the die
+      ctx.strokeStyle = 'rgba(165, 22, 48, 0.62)';
+      ctx.lineWidth = 1.1;
+      ctx.beginPath();
+      ctx.arc(0, 0, logicalSize * 0.415, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.strokeStyle = 'rgba(220, 198, 190, 0.28)';
+      ctx.setLineDash([3, 4]);
+      ctx.beginPath();
+      ctx.arc(0, 0, logicalSize * 0.365, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      for (let sp = 0; sp < 8; sp++) {
+        const ang = (sp * Math.PI) / 4;
+        const innerR = logicalSize * 0.35;
+        const outerR = sp % 2 === 0 ? logicalSize * 0.475 : logicalSize * 0.425;
+        ctx.save();
+        ctx.rotate(ang);
+        ctx.beginPath();
+        ctx.moveTo(0, -outerR);
+        ctx.lineTo(2.4, -innerR);
+        ctx.lineTo(-2.4, -innerR);
+        ctx.closePath();
+        ctx.fillStyle = sp % 2 === 0 ? 'rgba(130, 10, 30, 0.85)' : 'rgba(60, 4, 15, 0.85)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(225, 200, 190, 0.35)';
+        ctx.lineWidth = 0.7;
+        ctx.stroke();
+        ctx.restore();
+      }
+      ctx.restore();
+    }
+
+    const rotVerts = solid.verts.map(v => this._rotateVec(v, cx, sx, cy, sy, cz, sz));
+    const projVerts = rotVerts.map(p => {
+      const s = focal / (focal - p[2]);
+      return { x: half + p[0] * baseRadius * s, y: half - p[1] * baseRadius * s };
+    });
+
+    const lightMain = [-0.42, 0.56, 0.71];
+    const halfVec = this._vecNorm([lightMain[0], lightMain[1], lightMain[2] + 1]);
+
+    const visibleFaces = [];
+    for (let fi = 0; fi < solid.faces.length; fi++) {
+      const f = solid.faces[fi];
+      const rn = this._rotateVec(f.normal, cx, sx, cy, sy, cz, sz);
+      if (rn[2] <= 0.01) continue;
+      let zAvg = 0;
+      for (let k = 0; k < f.indices.length; k++) zAvg += rotVerts[f.indices[k]][2];
+      zAvg /= f.indices.length;
+      visibleFaces.push({ fi, f, rn, zAvg });
+    }
+    visibleFaces.sort((a, b) => a.zAvg - b.zAvg);
+
+    const GLYPH_REF = 22;
+
+    for (let vi = 0; vi < visibleFaces.length; vi++) {
+      const { fi, f, rn } = visibleFaces[vi];
+      const pts = f.indices.map(idx => projVerts[idx]);
+
+      const diff = Math.max(0, this._vecDot(rn, lightMain));
+      const spec = Math.pow(Math.max(0, this._vecDot(rn, halfVec)), 18) * 0.42;
+      const frontBoost = fi === 0 && inst.settled ? 0.14 : 0;
+      const mix = Math.min(1, 0.14 + diff * 0.82 + frontBoost);
+
+      const r = Math.min(255, Math.round(pal.baseRgb[0] + (pal.litRgb[0] - pal.baseRgb[0]) * mix + pal.specRgb[0] * spec));
+      const g = Math.min(255, Math.round(pal.baseRgb[1] + (pal.litRgb[1] - pal.baseRgb[1]) * mix + pal.specRgb[1] * spec));
+      const b = Math.min(255, Math.round(pal.baseRgb[2] + (pal.litRgb[2] - pal.baseRgb[2]) * mix + pal.specRgb[2] * spec));
+
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (let p = 1; p < pts.length; p++) ctx.lineTo(pts[p].x, pts[p].y);
+      ctx.closePath();
+
+      ctx.fillStyle = `rgb(${r},${g},${b})`;
+      ctx.fill();
+
+      // Subtle inner specular highlight along upper bevel
+      if (diff > 0.35 || (fi === 0 && inst.settled)) {
+        ctx.save();
+        ctx.strokeStyle = pal.innerHighlight;
+        ctx.lineWidth = 2.6;
+        ctx.clip();
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      ctx.strokeStyle = diff > 0.6 ? pal.strokeLit : pal.stroke;
+      ctx.lineWidth = (fi === 0 && inst.settled) ? 2.0 : 1.5;
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+
+      // Moldura gótica chanfrada nas faces do Dado de Pavor
+      if (pal.isGothicPavor && pts.length >= 3) {
+        let fcx = 0, fcy = 0;
+        for (let p = 0; p < pts.length; p++) { fcx += pts[p].x; fcy += pts[p].y; }
+        fcx /= pts.length;
+        fcy /= pts.length;
+        const inset = 0.78;
+        ctx.save();
+        ctx.beginPath();
+        for (let p = 0; p < pts.length; p++) {
+          const ix = fcx + (pts[p].x - fcx) * inset;
+          const iy = fcy + (pts[p].y - fcy) * inset;
+          if (p === 0) ctx.moveTo(ix, iy);
+          else ctx.lineTo(ix, iy);
+        }
+        ctx.closePath();
+        ctx.strokeStyle = (fi === 0 && inst.settled) ? 'rgba(230, 212, 204, 0.46)' : pal.gothicBevel;
+        ctx.lineWidth = 0.9;
+        ctx.stroke();
+
+        ctx.beginPath();
+        for (let p = 0; p < pts.length; p++) {
+          const ix = fcx + (pts[p].x - fcx) * inset;
+          const iy = fcy + (pts[p].y - fcy) * inset;
+          ctx.moveTo(pts[p].x, pts[p].y);
+          ctx.lineTo(ix, iy);
+        }
+        ctx.strokeStyle = 'rgba(184, 29, 56, 0.45)';
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Project affine tangent frame to render face number locked onto the 3D facet
+      if (rn[2] > 0.08) {
+        const rc = this._rotateVec(f.center, cx, sx, cy, sy, cz, sz);
+        const ru = this._rotateVec(f.uAxis, cx, sx, cy, sy, cz, sz);
+        const rv = this._rotateVec(f.vAxis, cx, sx, cy, sy, cz, sz);
+        const glyphHalf = f.inradius * 0.78;
+        const pC3 = rc;
+        const pU3 = this._vecAdd(rc, this._vecScale(ru, glyphHalf));
+        const pV3 = this._vecAdd(rc, this._vecScale(rv, glyphHalf));
+
+        const sC = focal / (focal - pC3[2]);
+        const sU = focal / (focal - pU3[2]);
+        const sV = focal / (focal - pV3[2]);
+        const xC = half + pC3[0] * baseRadius * sC;
+        const yC = half - pC3[1] * baseRadius * sC;
+        const dux = (half + pU3[0] * baseRadius * sU) - xC;
+        const duy = (half - pU3[1] * baseRadius * sU) - yC;
+        const dvx = (half + pV3[0] * baseRadius * sV) - xC;
+        const dvy = (half - pV3[1] * baseRadius * sV) - yC;
+
+        const det = dux * dvy - duy * dvx;
+        if (det > 1.5) {
+          const txt = String(labels[fi] || '');
+          if (txt) {
+            const alpha = Math.min(1, Math.max(0.15, (rn[2] - 0.08) / 0.34));
+            const fontPx = txt.length >= 3 ? 21 : (txt.length === 2 ? 26 : 31);
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(pts[0].x, pts[0].y);
+            for (let p = 1; p < pts.length; p++) ctx.lineTo(pts[p].x, pts[p].y);
+            ctx.closePath();
+            ctx.clip();
+
+            ctx.transform(dux / GLYPH_REF, duy / GLYPH_REF, dvx / GLYPH_REF, dvy / GLYPH_REF, xC, yC);
+            ctx.globalAlpha = alpha;
+            ctx.font = pal.isGothicPavor
+              ? `800 ${fontPx}px "Cinzel", "Times New Roman", serif`
+              : `900 ${fontPx}px "Courier New", monospace`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.lineJoin = 'round';
+            ctx.lineWidth = pal.isGothicPavor ? 4.8 : 4.2;
+            ctx.strokeStyle = pal.isGothicPavor ? 'rgba(38, 0, 10, 0.96)' : 'rgba(0, 0, 0, 0.88)';
+            ctx.strokeText(txt, 0, 1);
+            ctx.fillStyle = pal.text;
+            ctx.fillText(txt, 0, 1);
+
+            if (txt === '6' || txt === '9') {
+              ctx.fillRect(-7, fontPx * 0.44, 14, 2.4);
+            }
+            ctx.restore();
+          }
+        }
+      }
+    }
+  },
+
+  attach(canvas, {
+    sides = 20,
+    targetVal = '?',
+    theme = 'normal',
+    durationMs = 1150,
+    easePower = 3.2,
+    instantSettle = false,
+    size = 106
+  } = {}) {
+    if (!canvas) return null;
+    const solid = this.getSolid(sides);
+    const labels = this._buildFaceLabels(sides, solid.faces.length, targetVal);
+    const pickDir = () => (Math.random() < 0.5 ? -1 : 1);
+    const turns = instantSettle ? { x: 0, y: 0, z: 0 } : {
+      x: pickDir() * (Math.PI * 2 * (2 + Math.random() * 1.8) + 0.9),
+      y: pickDir() * (Math.PI * 2 * (1.8 + Math.random() * 1.6) + 0.7),
+      z: pickDir() * (Math.PI * 2 * (1.1 + Math.random() * 1.2) + 0.5)
+    };
+    const inst = {
+      canvas,
+      sides: Number(sides) || 20,
+      solid,
+      labels,
+      theme,
+      durationMs: Math.max(120, Number(durationMs) || 1150),
+      easePower: Number(easePower) || 3.2,
+      startTime: performance.now(),
+      turns,
+      settled: Boolean(instantSettle),
+      size
+    };
+    this._instances.set(canvas, inst);
+    if (instantSettle) {
+      this._renderDie(inst, solid.endTilt.rx, solid.endTilt.ry, 0, 1);
+    } else {
+      this._ensureLoop();
+    }
+    return inst;
+  },
+
+  settle(canvas, targetVal, theme) {
+    if (!canvas) return;
+    const inst = this._instances.get(canvas);
+    if (!inst) return;
+    if (targetVal !== undefined && targetVal !== null) {
+      inst.labels[0] = String(targetVal);
+    }
+    if (theme) inst.theme = theme;
+    inst.settled = true;
+    this._renderDie(inst, inst.solid.endTilt.rx, inst.solid.endTilt.ry, 0, 1);
+  },
+
+  _ensureLoop() {
+    if (this._rafId) return;
+    const step = (now) => {
+      let hasActive = false;
+      this._instances.forEach((inst, canvas) => {
+        if (!canvas.isConnected) {
+          this._instances.delete(canvas);
+          return;
+        }
+        if (inst.settled) return;
+        hasActive = true;
+        const elapsed = now - inst.startTime;
+        const rawT = Math.min(1, Math.max(0, elapsed / inst.durationMs));
+        const rem = Math.pow(1 - rawT, inst.easePower);
+        const rx = inst.solid.endTilt.rx + inst.turns.x * rem;
+        const ry = inst.solid.endTilt.ry + inst.turns.y * rem;
+        const rz = inst.turns.z * rem;
+        const impactBoost = rawT > 0.85 ? 1 + Math.sin(((rawT - 0.85) / 0.15) * Math.PI) * 0.08 : 1;
+        this._renderDie(inst, rx, ry, rz, impactBoost);
+        if (rawT >= 1) {
+          inst.settled = true;
+          this._renderDie(inst, inst.solid.endTilt.rx, inst.solid.endTilt.ry, 0, 1);
+        }
+      });
+      if (hasActive) {
+        this._rafId = requestAnimationFrame(step);
+      } else {
+        this._rafId = null;
+      }
+    };
+    this._rafId = requestAnimationFrame(step);
+  }
+};
+window.Mesa3DDice = Mesa3DDice;
+
 // ---- 6. MOTOR DE ROLAGEM DE DADOS COM ALEATORIEDADE CRIPTOGRÁFICA (CSPRNG) ----
 const MesaDice = {
   selectedDice: [20], // padrão inicial: 1d20
@@ -4461,97 +5088,35 @@ const MesaDice = {
     }
   },
 
-  /** Returns polygon outline and inner facet SVG paths matching the die face count. */
+  /** Returns normalized shape key for a die face count. */
   getDieShapeSpec(sides) {
     const s = Number(sides) || 20;
-    const shapes = {
-      4: {
-        outline: '50,6 95,86 5,86',
-        upperShade: '50,6 95,86 50,58',
-        facets: 'M50,6 L50,58 M95,86 L50,58 M5,86 L50,58',
-        shapeKey: 'd4'
-      },
-      6: {
-        outline: '14,14 86,14 86,86 14,86',
-        upperShade: '14,14 86,14 75,25 25,25',
-        facets: 'M25,25 L75,25 L75,75 L25,75 Z M14,14 L25,25 M86,14 L75,25 M86,86 L75,75 M14,86 L25,75',
-        shapeKey: 'd6'
-      },
-      8: {
-        outline: '50,4 93,50 50,96 7,50',
-        upperShade: '50,4 93,50 7,50',
-        facets: 'M50,18 L80,66 L20,66 Z M50,4 L50,18 M7,50 L20,66 M93,50 L80,66 M50,96 L20,66 M50,96 L80,66',
-        shapeKey: 'd8'
-      },
-      10: {
-        outline: '50,4 92,43 50,96 8,43',
-        upperShade: '50,4 70,45 50,70 30,45',
-        facets: 'M50,4 L70,45 L50,70 L30,45 Z M8,43 L30,45 M92,43 L70,45 M50,70 L50,96 M8,43 L50,70 M92,43 L50,70',
-        shapeKey: 'd10'
-      },
-      12: {
-        outline: '50,5 77,14 93,36 93,64 77,86 50,95 23,86 7,64 7,36 23,14',
-        upperShade: '50,24 75,42 65,71 35,71 25,42',
-        facets: 'M50,24 L75,42 L65,71 L35,71 L25,42 Z M50,5 L50,24 M93,36 L75,42 M77,86 L65,71 M23,86 L35,71 M7,36 L25,42',
-        shapeKey: 'd12'
-      },
-      16: {
-        outline: '50,5 81,18 95,50 81,82 50,95 19,82 5,50 19,18',
-        upperShade: '50,5 81,18 50,50 19,18',
-        facets: 'M50,19 L72,28 L81,50 L72,72 L50,81 L28,72 L19,50 L28,28 Z M50,5 L50,19 M81,18 L72,28 M95,50 L81,50 M81,82 L72,72 M50,95 L50,81 M19,82 L28,72 M5,50 L19,50 M19,18 L28,28',
-        shapeKey: 'd16'
-      },
-      20: {
-        outline: '50,5 90,27 90,73 50,95 10,73 10,27',
-        upperShade: '50,5 90,27 74,67 26,67 10,27',
-        facets: 'M50,22 L74,67 L26,67 Z M50,5 L50,22 M50,5 L10,27 M50,5 L90,27 M10,27 L26,67 M90,27 L74,67 M10,27 L50,22 M90,27 L50,22 M10,73 L26,67 M90,73 L74,67 M50,95 L26,67 M50,95 L74,67',
-        shapeKey: 'd20'
-      },
-      100: {
-        outline: '50,4 92,43 50,96 8,43',
-        upperShade: '50,4 70,45 50,70 30,45',
-        facets: 'M50,4 L70,45 L50,70 L30,45 Z M8,43 L30,45 M92,43 L70,45 M50,70 L50,96 M50,13 L83,43 L50,86 L17,43 Z',
-        shapeKey: 'd100'
-      }
-    };
-    if (shapes[s]) return shapes[s];
-    return { ...shapes[20], shapeKey: `d${s}` };
+    const valid = [4, 6, 8, 10, 12, 16, 20, 100];
+    return { shapeKey: valid.includes(s) ? `d${s}` : `d${s}` };
   },
 
-  /** Builds a faceted polyhedral die element matching the die sides and theme. */
+  /** Builds a real 3D Canvas polyhedral die element matching the die sides and theme. */
   buildPolyhedralDieHtml({
     id = '',
     sides = 20,
-    valId = '',
     initialVal = '?',
     boxClass = 'rolling',
-    valClass = '',
     title = '',
     topTagHtml = '',
     bottomTagHtml = '',
-    showType = true
+    showType = true,
+    typeLabel = ''
   } = {}) {
     const s = Number(sides) || 20;
     const spec = this.getDieShapeSpec(s);
     const idAttr = id ? `id="${id}"` : '';
     const titleAttr = title ? `title="${title}"` : '';
-    const valIdAttr = valId ? `id="${valId}"` : '';
-    const valClasses = valClass ? `dice-tumble-val ${valClass}` : 'dice-tumble-val';
+    const labelText = typeLabel || `d${s}`;
     return `
-      <div ${idAttr} class="dice-tumble-box ${boxClass}" data-die-sides="${spec.shapeKey}" ${titleAttr}>
+      <div ${idAttr} class="dice-tumble-box ${boxClass}" data-die-sides="${spec.shapeKey}" data-die-val="${initialVal}" ${titleAttr}>
         ${topTagHtml}
-        <div class="die-poly-rotor">
-          <svg class="die-poly-svg" viewBox="0 0 100 100" aria-hidden="true">
-            <polygon class="die-poly-body" points="${spec.outline}" />
-            <polygon class="die-poly-shade" points="${spec.upperShade}" />
-            <path class="die-poly-facets" d="${spec.facets}" />
-            <polygon class="die-poly-rim" points="${spec.outline}" />
-          </svg>
-          <div class="die-poly-face-content">
-            ${showType ? `<span class="dice-tumble-type">d${s}</span>` : ''}
-            <span ${valIdAttr} class="${valClasses}">${initialVal}</span>
-          </div>
-        </div>
+        <canvas class="die-3d-canvas" aria-hidden="true"></canvas>
+        ${showType ? `<span class="die-3d-type-label">${labelText}</span>` : ''}
         ${bottomTagHtml}
       </div>
     `;
@@ -4565,7 +5130,8 @@ const MesaDice = {
     if (!stage) return;
 
     if (this.rollTimeout) clearTimeout(this.rollTimeout);
-    if (this._commonInterval) clearInterval(this._commonInterval);
+    if (this.rollClearTimeout) clearTimeout(this.rollClearTimeout);
+    if (this._commonInterval) clearTimeout(this._commonInterval);
     const rollGen = (this._rollGen = (this._rollGen || 0) + 1);
 
     // Trava global ativa enquanto a rolagem ocorre no palco
@@ -4577,7 +5143,7 @@ const MesaDice = {
 
     const hasPavor = Boolean(data.pavorResult);
 
-    // Etapa 1: Renderiza dados comuns rolando. O Dado de Pavor fica oculto inicialmente.
+    // Etapa 1: Renderiza dados 3D comuns rolando em múltiplas direções. O Dado de Pavor fica oculto inicialmente.
     stage.innerHTML = `
       <div class="dice-roller-badge ${data.isMaster ? 'is-master' : ''}">
         ${data.rollerName} está rolando...
@@ -4586,7 +5152,6 @@ const MesaDice = {
         ${data.results.map((d, i) => this.buildPolyhedralDieHtml({
           id: `dice-box-${i}`,
           sides: d.sides,
-          valId: `dice-val-${i}`,
           initialVal: '?',
           boxClass: 'rolling'
         })).join('')}
@@ -4595,34 +5160,40 @@ const MesaDice = {
     `;
 
     const arena = stage.querySelector('#dice-tumbling-arena');
-
-    // Rola dados comuns
-    const commonInterval = setInterval(() => {
-      if (this._rollGen !== rollGen) {
-        clearInterval(commonInterval);
-        return;
+    data.results.forEach((d, i) => {
+      const box = stage.querySelector(`#dice-box-${i}`);
+      const canvas = box ? box.querySelector('.die-3d-canvas') : null;
+      if (canvas && window.Mesa3DDice) {
+        Mesa3DDice.attach(canvas, {
+          sides: d.sides,
+          targetVal: d.val,
+          theme: 'normal',
+          durationMs: 1120,
+          easePower: 3.1,
+          size: 96
+        });
       }
-      data.results.forEach((d, i) => {
-        const valEl = stage.querySelector(`#dice-val-${i}`);
-        if (valEl) {
-          valEl.textContent = this.cryptoRandomInt(1, d.sides);
-        }
-      });
-    }, 45);
-    this._commonInterval = commonInterval;
+    });
 
-    // Fim da Etapa 1: Estabiliza dados comuns após 1.15s e exibe o total parcial
-    setTimeout(() => {
-      clearInterval(commonInterval);
+    // Fim da Etapa 1: Estabiliza os modelos 3D após 1.15s e exibe o total parcial
+    this._commonInterval = setTimeout(() => {
       if (this._rollGen !== rollGen) return;
 
       data.results.forEach((d, i) => {
         const box = stage.querySelector(`#dice-box-${i}`);
-        const valEl = stage.querySelector(`#dice-val-${i}`);
-        if (box && valEl) {
+        const canvas = box ? box.querySelector('.die-3d-canvas') : null;
+        if (box) {
           box.classList.remove('rolling');
           box.classList.add('settled');
-          valEl.textContent = d.val;
+          box.dataset.dieVal = String(d.val);
+          if (d.val === d.sides && d.sides >= 4) box.classList.add('crit-max');
+          else if (d.val === 1 && d.sides >= 4) box.classList.add('crit-min');
+        }
+        if (canvas && window.Mesa3DDice) {
+          const theme = (d.val === d.sides && d.sides >= 4)
+            ? 'crit-max'
+            : ((d.val === 1 && d.sides >= 4) ? 'crit-min' : 'normal');
+          Mesa3DDice.settle(canvas, d.val, theme);
         }
       });
 
@@ -4636,6 +5207,7 @@ const MesaDice = {
       if (!hasPavor) {
         // Rolagem padrão sem pavor: exibe total final diretamente
         if (totalBox) {
+          totalBox.classList.remove('has-pavor');
           let formulaParts = '';
           if (data.results.length > 1) {
             formulaParts = `${commonDiceBreakdown} [${commonSum}]${modStr} =`;
@@ -4655,6 +5227,7 @@ const MesaDice = {
 
       // Se há pavor: exibe o total parcial provisório no centro
       if (totalBox) {
+        totalBox.classList.add('has-pavor');
         let partialFormula = data.results.length > 1 ? `${commonDiceBreakdown} [${commonSum}]${modStr} =` : `${commonDiceBreakdown}${modStr} =`;
         totalBox.style.display = 'flex';
         totalBox.innerHTML = `
@@ -4665,7 +5238,7 @@ const MesaDice = {
         `;
       }
 
-      // Etapa 2: Após suspense de 900ms, o Dado de Pavor surge no palco e rola com desaceleração tensa
+      // Etapa 2: Após suspense de 900ms, o Dado de Pavor gótico 3D surge no palco e gira com desaceleração tensa
       setTimeout(() => {
         if (this._rollGen !== rollGen || !arena) return;
 
@@ -4673,98 +5246,79 @@ const MesaDice = {
         pavorTemp.innerHTML = this.buildPolyhedralDieHtml({
           id: 'dice-pavor-box',
           sides: data.pavorResult.sides,
-          valId: 'dice-pavor-val',
           initialVal: '?',
           boxClass: 'pavor-box pavor-entrance rolling',
-          valClass: 'pavor-number',
           title: 'Dado de Pavor (Fios do Medo)',
-          topTagHtml: '<span class="pavor-box-top-tag">PAVOR</span>',
-          bottomTagHtml: '<span class="pavor-box-sub">SUBTRAI</span>'
+          typeLabel: `PAVOR • d${data.pavorResult.sides}`
         }).trim();
         const pavorEl = pavorTemp.firstElementChild;
         arena.appendChild(pavorEl);
 
-        // Agenda progressiva (~2.75s): rápida no início e mais lenta ao final para gerar tensão
-        const pavorDelays = [
-          45, 45, 50, 50, 55, 60, 65, 70, 75, 85,
-          95, 110, 125, 145, 170, 200, 240, 290, 350, 430
-        ];
-        let pStep = 0;
+        const pavorCanvas = pavorEl.querySelector('.die-3d-canvas');
+        if (pavorCanvas && window.Mesa3DDice) {
+          Mesa3DDice.attach(pavorCanvas, {
+            sides: data.pavorResult.sides,
+            targetVal: data.pavorResult.val,
+            theme: 'pavor',
+            durationMs: 2780,
+            easePower: 3.8,
+            size: 96
+          });
+        }
+
         const finishPavorRoll = () => {
+          if (this._rollGen !== rollGen || !stage.classList.contains('active')) return;
           pavorEl.classList.remove('rolling');
           pavorEl.classList.add('settled-pavor');
-          const pVal = stage.querySelector('#dice-pavor-val');
-          if (pVal) pVal.textContent = data.pavorResult.val;
-
-          // Desintegração em poeira do total provisório antigo
-          const oldTotalNum = stage.querySelector('#dice-partial-total-num');
-          if (oldTotalNum) {
-            this.createDustVanishEffect(oldTotalNum, '#ffffff', 28);
+          pavorEl.dataset.dieVal = String(data.pavorResult.val);
+          if (pavorCanvas && window.Mesa3DDice) {
+            Mesa3DDice.settle(pavorCanvas, data.pavorResult.val, 'pavor');
           }
 
-          // Após desintegração, substitui pelo novo total já subtraído em destaque carmesim
-          setTimeout(() => {
-            if (this._rollGen !== rollGen) return;
-            if (totalBox) {
-              let formulaParts = data.results.length > 1
-                ? `${commonDiceBreakdown} [${commonSum}] <span class="pavor-breakdown-minus">− PAVOR (${data.pavorResult.val})</span>${modStr} =`
-                : `${commonDiceBreakdown} <span class="pavor-breakdown-minus">− PAVOR (${data.pavorResult.val})</span>${modStr} =`;
+          if (totalBox) {
+            let formulaParts = data.results.length > 1
+              ? `${commonDiceBreakdown} [${commonSum}] <span class="pavor-breakdown-minus">− PAVOR (${data.pavorResult.val})</span>${modStr} =`
+              : `${commonDiceBreakdown} <span class="pavor-breakdown-minus">− PAVOR (${data.pavorResult.val})</span>${modStr} =`;
 
-              let alivioHtml = '';
-              if (data.pavorResult.val === 1) {
-                alivioHtml = `
-                  <div class="pavor-alivio-badge">
-                    <span class="pavor-alivio-icon">✦</span>
-                    <span class="pavor-alivio-title">PAVOR SUPERADO</span>
-                    <span class="pavor-alivio-desc">Resultado 1 no Dado de Pavor: o terror foi dissipado</span>
-                  </div>
-                `;
-                setTimeout(() => {
-                  this.createDustVanishEffect(pavorEl, '#ff1133', 45);
-                }, 900);
-              } else {
-                setTimeout(() => {
-                  this.createDustVanishEffect(pavorEl, 'rgba(255, 17, 51, 0.65)', 16);
-                }, 600);
-              }
-
-              totalBox.innerHTML = `
-                <div class="dice-formula-container">
-                  <span class="dice-breakdown-text">${formulaParts}</span>
-                  <span class="dice-grand-total with-pavor">${data.total}</span>
+            let alivioHtml = '';
+            if (data.pavorResult.val === 1) {
+              alivioHtml = `
+                <div class="pavor-alivio-badge">
+                  <span class="pavor-alivio-icon">✦</span>
+                  <span class="pavor-alivio-title">PAVOR SUPERADO</span>
+                  <span class="pavor-alivio-desc">Resultado 1 no Dado de Pavor: o terror foi dissipado</span>
                 </div>
-                ${alivioHtml}
               `;
             }
-          }, 340);
-        };
 
-        const tickPavor = () => {
-          const pVal = stage.querySelector('#dice-pavor-val');
-          if (this._rollGen !== rollGen || !pVal || !stage.classList.contains('active')) return;
-          if (pStep < pavorDelays.length) {
-            pVal.textContent = this.cryptoRandomInt(1, data.pavorResult.sides);
-            const wait = pavorDelays[pStep++];
-            setTimeout(tickPavor, wait);
-          } else {
-            finishPavorRoll();
+            totalBox.innerHTML = `
+              <div class="dice-formula-container">
+                <span class="dice-breakdown-text">${formulaParts}</span>
+                <span class="dice-grand-total with-pavor">${data.total}</span>
+              </div>
+              ${alivioHtml}
+            `;
           }
         };
-        tickPavor();
+
+        setTimeout(finishPavorRoll, 2800);
 
       }, 900);
 
     }, 1150);
 
-    // Mantém na tela e retorna ao estado de repouso liberando a trava global
-    const totalDuration = hasPavor ? 10200 : 5000;
+    // Mantém todos os dados visíveis juntos e desaparecem simultaneamente ao encerrar o palco
+    const totalDuration = hasPavor ? 7900 : 4700;
     this.rollTimeout = setTimeout(() => {
       if (this._rollGen !== rollGen) return;
       stage.classList.remove('active');
-      stage.innerHTML = '';
-      this.isGlobalRolling = false;
-      this.currentRoller = null;
-      this.updateRollButtonLabel();
+      this.rollClearTimeout = setTimeout(() => {
+        if (this._rollGen !== rollGen) return;
+        stage.innerHTML = '';
+        this.isGlobalRolling = false;
+        this.currentRoller = null;
+        this.updateRollButtonLabel();
+      }, 320);
     }, totalDuration);
   }
 };
@@ -15201,7 +15755,7 @@ const MesaCombate = {
   _videoRetryCount: 0,
   opponentId: 'assasino',
   opponentName: '???',
-  videoUrl: 'assets/videos/assasino1.mp4?v=2.5.1',
+  videoUrl: 'assets/videos/assasino1.mp4?v=2.5.3',
   selectedPresetId: 'assasino',
   turnCycle: null,
   playerHpCache: {},
@@ -15219,20 +15773,20 @@ const MesaCombate = {
     {
       id: 'assasino',
       name: '???',
-      video: 'assets/videos/assasino1.mp4?v=2.5.1',
-      videoEsconderijo: 'assets/videos/assasino1_vermelho.mp4?v=2.5.1',
+      video: 'assets/videos/assasino1.mp4?v=2.5.3',
+      videoEsconderijo: 'assets/videos/assasino1_vermelho.mp4?v=2.5.3',
       desc: 'Oponente misterioso com variação carmesim no esconderijo'
     },
     {
       id: 'ratos',
       name: 'Ratos',
-      video: 'assets/videos/rato_cinematica.mp4?v=2.5.1',
+      video: 'assets/videos/rato_cinematica.mp4?v=2.5.3',
       desc: 'Infestação voraz de roedores carniceiros na escuridão'
     },
     {
       id: 'unknown',
       name: 'Inimigo Antigo',
-      video: 'assets/videos/inimigo_antigo.mp4?v=2.5.1',
+      video: 'assets/videos/inimigo_antigo.mp4?v=2.5.3',
       desc: 'Arquivo do oponente anterior guardado'
     }
   ],
@@ -15248,8 +15802,8 @@ const MesaCombate = {
     const trimmed = String(url || '').trim();
     if (!this.isAssasinoOpponent(trimmed)) return trimmed;
     return isEsconderijo
-      ? 'assets/videos/assasino1_vermelho.mp4?v=2.5.1'
-      : 'assets/videos/assasino1.mp4?v=2.5.1';
+      ? 'assets/videos/assasino1_vermelho.mp4?v=2.5.3'
+      : 'assets/videos/assasino1.mp4?v=2.5.3';
   },
 
   /** Synchronizes combat overlay, opponent video, and turn cycle from Supabase row 1 without local clock skew bugs. */
@@ -15324,10 +15878,10 @@ const MesaCombate = {
     const ctrl = typeof AbortController === 'function' ? new AbortController() : null;
     this._preloadAbort = ctrl;
     const urls = [
-      'assets/videos/assasino1.mp4?v=2.5.1',
-      'assets/videos/assasino1_vermelho.mp4?v=2.5.1',
-      'assets/videos/rato_cinematica.mp4?v=2.5.1',
-      'assets/videos/inimigo_antigo.mp4?v=2.5.1'
+      'assets/videos/assasino1.mp4?v=2.5.3',
+      'assets/videos/assasino1_vermelho.mp4?v=2.5.3',
+      'assets/videos/rato_cinematica.mp4?v=2.5.3',
+      'assets/videos/inimigo_antigo.mp4?v=2.5.3'
     ];
     for (const u of urls) {
       if (this.isActive || (ctrl && ctrl.signal.aborted)) break;
@@ -15382,7 +15936,7 @@ const MesaCombate = {
     const now = Date.now();
     this._lastSentTs = Math.max(this._lastSentTs || 0, now);
     const isEsc = document.body.classList.contains('esconderijo-active');
-    const currentVid = this.resolveVideoVariantUrl(this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.1', isEsc);
+    const currentVid = this.resolveVideoVariantUrl(this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.3', isEsc);
     const payload = {
       active: !!this.isActive,
       opponentId: this.opponentId || 'assasino',
@@ -15428,7 +15982,7 @@ const MesaCombate = {
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
     if (nameInput) nameInput.value = this.opponentName || '???';
-    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.1';
+    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.3';
 
     const localNotice = document.getElementById('combat-local-badge');
     if (localNotice) {
@@ -15482,7 +16036,7 @@ const MesaCombate = {
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
     const name = (nameInput && nameInput.value.trim()) || this.opponentName || '???';
-    const video = (videoInput && videoInput.value.trim()) || this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.1';
+    const video = (videoInput && videoInput.value.trim()) || this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.3';
 
     this.closeSelectModal();
 
@@ -15506,7 +16060,7 @@ const MesaCombate = {
     }
     this.opponentId = data.opponentId || 'unknown';
     this.opponentName = (data.opponentName !== undefined && data.opponentName !== null && data.opponentName !== '') ? data.opponentName : (this.opponentName || '???');
-    this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=2.5.1');
+    this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=2.5.3');
 
     // Reseta cache de PV dos personagens
     this.playerHpCache = {};
@@ -16777,7 +17331,7 @@ const MesaCombate = {
       return;
     }
 
-    const targetUrl = this.resolveVideoVariantUrl('assets/videos/assasino1.mp4?v=2.5.1', isEsconderijo);
+    const targetUrl = this.resolveVideoVariantUrl('assets/videos/assasino1.mp4?v=2.5.3', isEsconderijo);
     const prevTime = (!isNaN(video.currentTime) && video.currentTime > 0) ? video.currentTime : 0;
     video.style.transition = 'none';
     this.loadVideo(targetUrl, { preserveTime: prevTime });
@@ -17396,54 +17950,48 @@ const MesaEsconderijo = {
     `;
     stage.classList.add('active');
 
-    // Agenda progressiva (~2.55s): rápida no início e desacelera no final para criar tensão
-    const rollDelays = [
-      55, 55, 60, 60, 65, 70, 75, 85, 95, 110,
-      125, 145, 170, 200, 240, 290, 350, 440
-    ];
-    let step = 0;
-    const tick = () => {
-      const frameUsed = new Set();
-      for (let i = 0; i < rolledValues.length; i++) {
-        let v = this._randomSector(maxSides);
-        if (maxSides >= rolledValues.length) {
-          let guard = 0;
-          while (frameUsed.has(v) && guard++ < 12) {
-            v = this._randomSector(maxSides);
-          }
-          frameUsed.add(v);
-        }
-        const valEl = stage.querySelector(`#esc-die-box-${i} .dice-tumble-val`);
-        if (valEl) valEl.textContent = String(v);
+    rolledValues.forEach((val, i) => {
+      const box = stage.querySelector(`#esc-die-box-${i}`);
+      const canvas = box ? box.querySelector('.die-3d-canvas') : null;
+      if (canvas && window.Mesa3DDice) {
+        Mesa3DDice.attach(canvas, {
+          sides: maxSides,
+          targetVal: val,
+          theme: 'esconderijo',
+          durationMs: 2560,
+          easePower: 3.5,
+          size: 110
+        });
       }
-      if (step < rollDelays.length) {
-        const wait = rollDelays[step++];
-        this._diceRollTimer = setTimeout(tick, wait);
-      } else {
-        this._clearDiceTimers();
-        for (let i = 0; i < rolledValues.length; i++) {
-          const box = stage.querySelector(`#esc-die-box-${i}`);
-          const valEl = stage.querySelector(`#esc-die-box-${i} .dice-tumble-val`);
-          if (box) {
-            box.classList.remove('rolling');
-            box.classList.add('settled');
-          }
-          if (valEl) valEl.textContent = String(rolledValues[i]);
-        }
-        const subEl = stage.querySelector('#esc-roll-sub');
-        if (subEl) {
-          subEl.textContent = `Setor(es) vinculados: ${rolledValues.join(' • ')}`;
-        }
-        this._isRollingDice = false;
-        commitResults();
+    });
 
-        this._diceHideTimer = setTimeout(() => {
-          stage.classList.remove('active');
-          stage.innerHTML = '';
-        }, 1250);
+    this._diceRollTimer = setTimeout(() => {
+      this._clearDiceTimers();
+      for (let i = 0; i < rolledValues.length; i++) {
+        const box = stage.querySelector(`#esc-die-box-${i}`);
+        const valEl = stage.querySelector(`#esc-die-box-${i} .dice-tumble-val`);
+        const canvas = box ? box.querySelector('.die-3d-canvas') : null;
+        if (box) {
+          box.classList.remove('rolling');
+          box.classList.add('settled');
+        }
+        if (valEl) valEl.textContent = String(rolledValues[i]);
+        if (canvas && window.Mesa3DDice) {
+          Mesa3DDice.settle(canvas, rolledValues[i], 'esconderijo');
+        }
       }
-    };
-    tick();
+      const subEl = stage.querySelector('#esc-roll-sub');
+      if (subEl) {
+        subEl.textContent = `Setor(es) vinculados: ${rolledValues.join(' • ')}`;
+      }
+      this._isRollingDice = false;
+      commitResults();
+
+      this._diceHideTimer = setTimeout(() => {
+        stage.classList.remove('active');
+        stage.innerHTML = '';
+      }, 1250);
+    }, 2600);
   },
 
   /** Triggers the initial 2-dice camouflage roll once per hiding round on non-Master clients. */
@@ -17551,7 +18099,7 @@ const MesaEsconderijo = {
             roomSides: this.roomSides,
             roomName: this.roomName,
             phase: this.currentPhase,
-            videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.5.1',
+            videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.5.3',
             timestamp
           }
         });
@@ -17568,7 +18116,7 @@ const MesaEsconderijo = {
           event: 'esconderijo_encerrar',
           payload: {
             active: false,
-            videoUrl: 'assets/videos/assasino1.mp4?v=2.5.1',
+            videoUrl: 'assets/videos/assasino1.mp4?v=2.5.3',
             timestamp
           }
         });
@@ -17589,13 +18137,13 @@ const MesaEsconderijo = {
       roomName: this.roomName,
       phase: this.currentPhase,
       lastSearch: this.lastSearch || null,
-      videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.5.1',
+      videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.5.3',
       timestamp: now
     } : {
       active: false,
       roundId: null,
       lastSearch: null,
-      videoUrl: 'assets/videos/assasino1.mp4?v=2.5.1',
+      videoUrl: 'assets/videos/assasino1.mp4?v=2.5.3',
       timestamp: now
     };
 
@@ -17683,7 +18231,7 @@ const MesaEsconderijo = {
   },
 
   drawPanelWave(canvas, ctx) {
-    const w = 32;
+    const w = 44;
     const h = canvas.parentElement ? canvas.parentElement.clientHeight : window.innerHeight;
     if (canvas.width !== w || canvas.height !== h) {
       canvas.width = w;
@@ -17692,6 +18240,7 @@ const MesaEsconderijo = {
     ctx.clearRect(0, 0, w, h);
 
     const pixelSize = 4;
+    const waveCenter = 24;
     const t = (performance.now() - (this._panelWaveStartTime || 0)) * 0.001;
     const numSteps = Math.ceil(h / pixelSize);
 
@@ -17702,7 +18251,7 @@ const MesaEsconderijo = {
       const y = i * pixelSize;
       const w1 = Math.sin(y * 0.012 - t * 2.2) * 8.0;
       const w2 = Math.cos(y * 0.028 + t * 2.8) * 4.5;
-      const x = Math.round((14 + w1 + w2) / pixelSize) * pixelSize;
+      const x = Math.round((waveCenter + w1 + w2) / pixelSize) * pixelSize;
       if (i === 0) {
         ctx.moveTo(x, 0);
       } else {
@@ -17714,13 +18263,18 @@ const MesaEsconderijo = {
     ctx.closePath();
     ctx.fill();
 
+    // Brilho suave que acompanha apenas a onda pixelada, sem formar linha reta na borda direita
+    ctx.shadowColor = 'rgba(255, 17, 51, 0.72)';
+    ctx.shadowBlur = 7;
+    ctx.shadowOffsetX = -3;
+    ctx.shadowOffsetY = 0;
     ctx.fillStyle = '#ff1133';
     let prevX = null;
     for (let i = 0; i <= numSteps; i++) {
       const y = i * pixelSize;
       const w1 = Math.sin(y * 0.012 - t * 2.2) * 8.0;
       const w2 = Math.cos(y * 0.028 + t * 2.8) * 4.5;
-      const x = Math.round((14 + w1 + w2) / pixelSize) * pixelSize;
+      const x = Math.round((waveCenter + w1 + w2) / pixelSize) * pixelSize;
 
       ctx.fillRect(x, y, pixelSize, pixelSize);
       if (prevX !== null && prevX !== x) {
@@ -18122,18 +18676,32 @@ const MesaEsconderijo = {
               id: `esc-found-die-${i}`,
               sides: maxSides,
               initialVal: String(sector),
-              boxClass: 'esconderijo-die-box shaking'
+              boxClass: 'esconderijo-die-box shaking',
+              showType: false
             })
           : `
             <div id="esc-found-die-${i}" class="dice-tumble-box esconderijo-die-box shaking" data-die-sides="d${maxSides}">
               <span class="dice-tumble-val">${sector}</span>
-              <span class="dice-tumble-type">d${maxSides}</span>
             </div>
           `
         ).join('')}
       </div>
     `;
     stage.classList.add('active');
+
+    for (let i = 0; i < count; i++) {
+      const box = stage.querySelector(`#esc-found-die-${i}`);
+      const canvas = box ? box.querySelector('.die-3d-canvas') : null;
+      if (canvas && window.Mesa3DDice) {
+        Mesa3DDice.attach(canvas, {
+          sides: maxSides,
+          targetVal: sector,
+          theme: 'esconderijo',
+          instantSettle: true,
+          size: 114
+        });
+      }
+    }
 
     this._diceRollTimer = setTimeout(() => {
       for (let i = 0; i < count; i++) {
