@@ -18784,6 +18784,8 @@ body:not(.is-master) .survival-close-btn {
 body.is-master .survival-section.master-item,
 body.is-master .survival-phase-actions.master-item {
   display: flex !important;
+  pointer-events: all !important;
+  visibility: visible !important;
 }
 
 body.is-master .survival-close-btn,
