@@ -5559,7 +5559,7 @@ const MesaDice = {
 
               // Ativa rachaduras 3D em tempo real diretamente no modelo poliedrico
               if (pavorCanvas && window.Mesa3DDice) {
-                Mesa3DDice.startSuperadoFracture(pavorCanvas, 1000);
+                Mesa3DDice.startSuperadoFracture(pavorCanvas, 2400);
               }
 
               // Injeta fissuras de rachadura verdes/carmesins sobre o dado
@@ -5572,7 +5572,7 @@ const MesaDice = {
               `;
               pavorEl.appendChild(crackOverlay);
 
-              // 4. Após 950ms de tremor e rachadura, ele quebra com explosão de poeira e partículas
+              // 4. Apos 2400ms de tremor e rachadura, ele quebra com explosao de poeira e particulas
               setTimeout(() => {
                 if (this._rollGen !== rollGen) return;
 
@@ -5580,7 +5580,7 @@ const MesaDice = {
                   Mesa3DDice.stopFracture(pavorCanvas);
                 }
 
-                // Efeito de fragmentação / estilhaço
+                // Efeito de fragmentacao / estilhaco
                 this.createDustVanishEffect(pavorEl, '#22c55e', 45);
                 this.createDustVanishEffect(pavorEl, '#ef4444', 35);
 
@@ -5590,16 +5590,15 @@ const MesaDice = {
                 stage.classList.add('pavor-superado-flash');
                 setTimeout(() => stage.classList.remove('pavor-superado-flash'), 700);
 
-                // Exibe o aviso em verde no centro: "O PAVOR FOI SUPERADO"
+                // Exibe o texto limpo em verde no centro: "Pavor superado"
                 const superadoBanner = document.createElement('div');
                 superadoBanner.className = 'pavor-superado-cinematic-banner';
                 superadoBanner.innerHTML = `
-                  <div class="pavor-superado-cinematic-title">O PAVOR FOI SUPERADO</div>
-                  <div class="pavor-superado-cinematic-sub">Resultado 1 no Dado de Pavor • O terror foi aniquilado sem penalidade</div>
+                  <div class="pavor-superado-cinematic-title">Pavor superado</div>
                 `;
                 arena.appendChild(superadoBanner);
 
-                // 5. Após 1250ms do estilhaço, os outros dados voltam e o total final é revelado sem subtração
+                // 5. Apos 2200ms do estilhaco, os outros dados voltam e o total final e revelado sem subtracao
                 setTimeout(() => {
                   if (this._rollGen !== rollGen) return;
                   arena.classList.remove('pavor-solo-mode');
@@ -5620,9 +5619,9 @@ const MesaDice = {
                       </div>
                     `;
                   }
-                }, 1250);
+                }, 2200);
 
-              }, 950);
+              }, 2400);
 
             }, 600);
 
@@ -5649,8 +5648,8 @@ const MesaDice = {
 
     }, 1150);
 
-    // Duração do palco: se for pavor 1, estende para 11600ms para a cinematica completa ser apreciada
-    const totalDuration = isPavorOne ? 11600 : (hasPavor ? 7900 : 4700);
+    // Duração do palco: se for pavor 1, estende para 15000ms para a cinematica completa ser apreciada
+    const totalDuration = isPavorOne ? 15000 : (hasPavor ? 7900 : 4700);
     this.rollTimeout = setTimeout(() => {
       if (this._rollGen !== rollGen) return;
       stage.classList.remove('active');
