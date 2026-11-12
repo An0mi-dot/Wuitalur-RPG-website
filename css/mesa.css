@@ -14736,6 +14736,13 @@ body:has(#notebook-sara-overlay.active) .mesa-version {
   z-index: 120;
   pointer-events: none;
   animation: pavorSuperadoBannerPop 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transition: opacity 0.35s ease-out, transform 0.35s ease-out;
+}
+
+.pavor-superado-cinematic-banner.fade-out {
+  opacity: 0 !important;
+  transform: translate(-50%, -68%) scale(0.85) !important;
+  pointer-events: none !important;
 }
 
 @keyframes pavorSuperadoBannerPop {

@@ -5598,28 +5598,41 @@ const MesaDice = {
                 `;
                 arena.appendChild(superadoBanner);
 
-                // 5. Apos 2200ms do estilhaco, os outros dados voltam e o total final e revelado sem subtracao
+                // 5. Apos 1900ms do estilhaco, o texto "Pavor superado" faz fade-out para dar espaco aos dados
                 setTimeout(() => {
                   if (this._rollGen !== rollGen) return;
-                  arena.classList.remove('pavor-solo-mode');
-                  pavorEl.classList.add('pavor-shattered-collapsed');
-                  otherDice.forEach(box => box.classList.remove('pavor-superado-hide'));
-
-                  if (totalBox) {
-                    totalBox.style.opacity = '1';
-                    totalBox.style.pointerEvents = 'all';
-                    totalBox.innerHTML = `
-                      <div class="dice-formula-container">
-                        <span class="dice-breakdown-text">
-                          ${commonDiceBreakdown} ${data.results.length > 1 ? `[${commonSum}]` : ''} 
-                          <span class="pavor-breakdown-superado-pill">PAVOR SUPERADO (+0)</span>
-                          ${modStr} =
-                        </span>
-                        <span class="dice-grand-total pavor-superado-total">${data.total}</span>
-                      </div>
-                    `;
+                  if (superadoBanner) {
+                    superadoBanner.classList.add('fade-out');
                   }
-                }, 2200);
+
+                  // Apos o fade-out do texto (300ms), remove o banner, restaura os dados comuns e revela o total
+                  setTimeout(() => {
+                    if (this._rollGen !== rollGen) return;
+                    if (superadoBanner && superadoBanner.parentNode) {
+                      superadoBanner.remove();
+                    }
+
+                    arena.classList.remove('pavor-solo-mode');
+                    pavorEl.classList.add('pavor-shattered-collapsed');
+                    otherDice.forEach(box => box.classList.remove('pavor-superado-hide'));
+
+                    if (totalBox) {
+                      totalBox.style.opacity = '1';
+                      totalBox.style.pointerEvents = 'all';
+                      totalBox.innerHTML = `
+                        <div class="dice-formula-container">
+                          <span class="dice-breakdown-text">
+                            ${commonDiceBreakdown} ${data.results.length > 1 ? `[${commonSum}]` : ''} 
+                            <span class="pavor-breakdown-superado-pill">PAVOR SUPERADO (+0)</span>
+                            ${modStr} =
+                          </span>
+                          <span class="dice-grand-total pavor-superado-total">${data.total}</span>
+                        </div>
+                      `;
+                    }
+                  }, 300);
+
+                }, 1900);
 
               }, 2400);
 
