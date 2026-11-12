@@ -3154,12 +3154,68 @@ body.is-master .coletaveis-master-deliver-btn {
   margin-bottom: 8px;
 }
 
-.dice-selector-section, .dice-pool-container, .dice-modifier-section {
+.dice-principal-section, .dice-selector-section, .dice-pool-container, .dice-modifier-section {
   margin-bottom: 16px;
   background: rgba(0, 0, 0, 0.45);
   padding: 12px;
   border-radius: 0;
   border: 1px solid rgba(255, 85, 0, 0.2);
+}
+
+.dice-principal-section {
+  background: rgba(12, 4, 1, 0.65);
+  border-color: rgba(255, 136, 0, 0.38);
+}
+
+.dice-principal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.dice-principal-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 2px solid rgba(255, 136, 0, 0.42);
+  color: #ffffff;
+  padding: 11px 4px;
+  font-weight: 900;
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  font-family: 'Press Start 2P', monospace, sans-serif;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
+  position: relative;
+}
+
+.dice-principal-btn:hover {
+  background: rgba(255, 136, 0, 0.2);
+  border-color: #ff8800;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(255, 136, 0, 0.35);
+}
+
+.dice-principal-btn.active {
+  background: linear-gradient(135deg, rgba(255, 136, 0, 0.38) 0%, rgba(180, 50, 0, 0.5) 100%);
+  border-color: #ffaa33;
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(255, 136, 0, 0.6), inset 0 0 10px rgba(255, 170, 51, 0.3);
+  transform: scale(1.03);
+}
+
+.dice-principal-btn.active::after {
+  content: 'ATIVO';
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff8800;
+  color: #000000;
+  font-size: 0.44rem;
+  font-weight: 900;
+  padding: 1px 5px;
+  letter-spacing: 0.04em;
+  border-radius: 2px;
 }
 
 .dice-chips-grid {
@@ -3214,6 +3270,29 @@ body.is-master .coletaveis-master-deliver-btn {
   align-items: center;
   gap: 6px;
   animation: diceBadgePop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.selected-die-badge.principal-die-badge {
+  background: rgba(255, 136, 0, 0.28);
+  border: 1.8px solid #ffaa33;
+  box-shadow: 0 0 12px rgba(255, 136, 0, 0.45);
+  color: #ffffff;
+}
+
+.selected-die-badge .principal-tag {
+  font-size: 0.52rem;
+  color: #ffaa33;
+  letter-spacing: 0.08em;
+  font-weight: 900;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 1px 5px;
+  border-radius: 2px;
+}
+
+.selected-die-badge .principal-star {
+  color: #ffaa33;
+  font-size: 0.72rem;
+  line-height: 1;
 }
 
 @keyframes diceBadgePop {
@@ -3351,6 +3430,13 @@ body.is-master .coletaveis-master-deliver-btn {
   gap: 28px;
   margin-bottom: 28px;
   padding: 12px 14px;
+  position: relative;
+  min-height: 118px;
+  transition: gap 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dice-tumbling-arena.pavor-solo-mode {
+  gap: 0px;
 }
 
 .dice-tumble-box {
@@ -3363,6 +3449,12 @@ body.is-master .coletaveis-master-deliver-btn {
   align-items: center;
   justify-content: center;
   position: relative;
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+}
+
+.dice-tumble-box.is-principal-die .die-3d-type-label {
+  color: #ffaa33;
+  text-shadow: 0 0 8px rgba(255, 170, 51, 0.8);
 }
 
 .die-3d-canvas {
@@ -14539,6 +14631,145 @@ body:has(#notebook-sara-overlay.active) .mesa-version {
   font-size: 0.42rem;
   color: #a7f3d0;
   letter-spacing: 0.04em;
+}
+
+/* === CINEMATICA ESPECIAL: PAVOR SUPERADO (RESULTADO 1) === */
+.dice-tumble-box.pavor-superado-hide {
+  width: 0px !important;
+  opacity: 0 !important;
+  transform: scale(0.35) translateY(22px) !important;
+  filter: blur(4px) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
+
+.dice-tumble-box.pavor-box.pavor-superado-focus {
+  transform: scale(1.42) translateY(-6px);
+  z-index: 100;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dice-tumble-box.pavor-box.pavor-superado-shake {
+  animation: pavorSuperadoViolentShake 0.85s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite !important;
+}
+
+@keyframes pavorSuperadoViolentShake {
+  0%, 100% { transform: scale(1.42) translate(0px, -6px) rotate(0deg); }
+  14% { transform: scale(1.46) translate(-4px, -3px) rotate(-3.5deg); }
+  28% { transform: scale(1.38) translate(4px, -9px) rotate(3.5deg); }
+  42% { transform: scale(1.47) translate(-5px, -7px) rotate(-4.5deg); }
+  57% { transform: scale(1.39) translate(5px, -3px) rotate(4deg); }
+  71% { transform: scale(1.48) translate(-3px, -2px) rotate(-2.5deg); }
+  85% { transform: scale(1.41) translate(4px, -8px) rotate(2.5deg); }
+}
+
+.pavor-crack-fissures {
+  position: absolute;
+  inset: -6px;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.pavor-crack-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 8px #22c55e) drop-shadow(0 0 14px rgba(74, 222, 128, 0.9));
+}
+
+.crack-path {
+  stroke: #4ade80;
+  stroke-width: 3.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 160;
+  stroke-dashoffset: 160;
+  animation: pavorCrackExpand 0.8s ease-out forwards;
+}
+
+@keyframes pavorCrackExpand {
+  to { stroke-dashoffset: 0; }
+}
+
+.dice-tumble-box.pavor-box.pavor-shattered {
+  opacity: 0 !important;
+  transform: scale(1.9) translateY(-10px) !important;
+  filter: blur(8px) !important;
+  pointer-events: none !important;
+  transition: all 0.25s ease-out !important;
+}
+
+.dice-tumble-box.pavor-box.pavor-shattered-collapsed {
+  width: 0px !important;
+  height: 0px !important;
+  opacity: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
+
+.dice-stage.pavor-superado-flash {
+  box-shadow: inset 0 0 110px rgba(34, 197, 94, 0.45);
+}
+
+.pavor-superado-cinematic-banner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 28px;
+  background: rgba(4, 22, 11, 0.94);
+  border: 2px solid #22c55e;
+  box-shadow: 0 0 32px rgba(34, 197, 94, 0.65), inset 0 0 18px rgba(34, 197, 94, 0.28);
+  z-index: 120;
+  min-width: 320px;
+  pointer-events: none;
+  animation: pavorSuperadoBannerPop 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes pavorSuperadoBannerPop {
+  0% { transform: translate(-50%, -50%) scale(0.65); opacity: 0; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+.pavor-superado-cinematic-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.94rem;
+  color: #4ade80;
+  letter-spacing: 0.12em;
+  text-shadow: 0 0 16px rgba(74, 222, 128, 0.95), 0 0 28px rgba(34, 197, 94, 0.75);
+  text-align: center;
+}
+
+.pavor-superado-cinematic-sub {
+  font-family: 'Cinzel', 'Times New Roman', serif;
+  font-size: 0.75rem;
+  color: #bbf7d0;
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+
+.pavor-breakdown-superado-pill {
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.16);
+  border: 1px solid #22c55e;
+  padding: 2px 7px;
+  font-weight: 900;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  margin: 0 4px;
+}
+
+.dice-grand-total.pavor-superado-total {
+  color: #4ade80 !important;
+  text-shadow: 0 0 20px rgba(74, 222, 128, 0.85), 0 0 36px rgba(34, 197, 94, 0.6) !important;
 }
 
 /* 3. ANIMAÇÃO DE VANISH / POEIRA SE DISSOLVENDO */

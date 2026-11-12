@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.3';
+const MESA_VERSION = 'v2.5.4';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -4728,7 +4728,8 @@ window.Mesa3DDice = Mesa3DDice;
 
 // ---- 6. MOTOR DE ROLAGEM DE DADOS COM ALEATORIEDADE CRIPTOGRÁFICA (CSPRNG) ----
 const MesaDice = {
-  selectedDice: [20], // padrão inicial: 1d20
+  principalDie: 8, // padrão inicial: d8 (opções: 4, 8, 12, 16)
+  extraDice: [],
   modifier: 0,
   manualPavorActive: false,
   isRolling: false,
@@ -4737,6 +4738,24 @@ const MesaDice = {
   lastRollTimestamp: 0,
   ROLL_COOLDOWN_MS: 3500,
   rollTimeout: null,
+
+  get selectedDice() {
+    return [this.principalDie, ...(this.extraDice || [])].filter(Boolean);
+  },
+  set selectedDice(arr) {
+    if (Array.isArray(arr) && arr.length > 0) {
+      const first = Number(arr[0]);
+      if ([4, 8, 12, 16].includes(first)) {
+        this.principalDie = first;
+        this.extraDice = arr.slice(1).map(Number);
+      } else {
+        this.principalDie = 8;
+        this.extraDice = arr.map(Number);
+      }
+    } else {
+      this.extraDice = [];
+    }
+  },
 
   init() {
     this.renderSelectedList();
@@ -4787,6 +4806,31 @@ const MesaDice = {
     return this.cryptoRandomInt(1, sides);
   },
 
+  setPrincipalDie(sides) {
+    const s = Number(sides);
+    if (![4, 8, 12, 16].includes(s)) return;
+    this.principalDie = s;
+    this.updatePrincipalButtonsUI();
+    this.updatePavorDescUI();
+    this.renderSelectedList();
+    this.updateRollButtonLabel();
+  },
+
+  updatePrincipalButtonsUI() {
+    const btns = document.querySelectorAll('.dice-principal-btn');
+    btns.forEach(b => {
+      const bSides = Number(b.dataset.sides);
+      b.classList.toggle('active', bSides === this.principalDie);
+    });
+  },
+
+  updatePavorDescUI() {
+    const desc = document.getElementById('dice-pavor-desc');
+    if (desc) {
+      desc.textContent = `Copia o Dado Principal (d${this.principalDie}) e subtrai o valor do total. Se tirar 1, o pavor é superado.`;
+    }
+  },
+
   openModal() {
     if (!MesaApp.state.myToken && !MesaApp.state.isMaster) {
       alert("Observadores não podem rolar dados. Conecte seu token de personagem para rolar dados na mesa.");
@@ -4810,6 +4854,8 @@ const MesaDice = {
     }
 
     MesaApp.openModal('dice-modal');
+    this.updatePrincipalButtonsUI();
+    this.updatePavorDescUI();
     this.renderSelectedList();
     this.updatePavorChipUI();
   },
@@ -4860,26 +4906,40 @@ const MesaDice = {
     }
   },
 
-  addDie(sides) {
+  addExtraDie(sides) {
     if (this.selectedDice.length >= 8) {
       alert("Limite de 8 dados por rolagem atingido.");
       return;
     }
-    this.selectedDice.push(sides);
+    this.extraDice.push(Number(sides) || 6);
+    this.renderSelectedList();
+  },
+
+  addDie(sides) {
+    this.addExtraDie(sides);
+  },
+
+  removeExtraDie(index) {
+    if (this.extraDice && index >= 0 && index < this.extraDice.length) {
+      this.extraDice.splice(index, 1);
+    }
     this.renderSelectedList();
   },
 
   removeDie(index) {
-    this.selectedDice.splice(index, 1);
-    this.renderSelectedList();
+    if (index === 0) {
+      return;
+    }
+    this.removeExtraDie(index - 1);
   },
 
   clearPool() {
-    this.selectedDice = [];
+    this.extraDice = [];
     this.modifier = 0;
     const modInput = document.getElementById('dice-modifier-input');
     if (modInput) modInput.value = 0;
     this.renderSelectedList();
+    this.updateRollButtonLabel();
   },
 
   adjustModifier(delta) {
@@ -4899,17 +4959,23 @@ const MesaDice = {
     const container = document.getElementById('dice-selected-list');
     if (!container) return;
 
-    if (this.selectedDice.length === 0) {
-      container.innerHTML = `<span class="dice-empty-hint">Nenhum dado selecionado (clique nos botões de dados acima)</span>`;
-    } else {
-      container.innerHTML = this.selectedDice.map((sides, idx) => `
-        <span class="selected-die-badge">
-          d${sides}
-          <button class="remove-die-btn" onclick="MesaDice.removeDie(${idx})" title="Remover">&times;</button>
-        </span>
-      `).join('');
-    }
+    const principalHtml = `
+      <span class="selected-die-badge principal-die-badge" title="Dado Principal (Atributo)">
+        <span class="principal-star">★</span>
+        d${this.principalDie}
+        <span class="principal-tag">PRINCIPAL</span>
+      </span>
+    `;
 
+    const extraHtml = (this.extraDice || []).map((sides, idx) => `
+      <span class="selected-die-badge">
+        + d${sides}
+        <button type="button" class="remove-die-btn" onclick="MesaDice.removeExtraDie(${idx})" title="Remover dado extra">&times;</button>
+      </span>
+    `).join('');
+
+    container.innerHTML = principalHtml + extraHtml;
+    this.updatePrincipalButtonsUI();
     this.updateRollButtonLabel();
   },
 
@@ -4925,23 +4991,18 @@ const MesaDice = {
       return;
     }
 
-    if (this.selectedDice.length === 0) {
-      btn.textContent = 'SELECIONE AO MENOS 1 DADO';
-      btn.disabled = true;
-      btn.style.opacity = '0.5';
-      btn.style.cursor = 'not-allowed';
-      return;
-    }
-
     btn.disabled = false;
     btn.style.opacity = '1';
     btn.style.cursor = 'pointer';
 
-    // Agrupa dados para exibição (ex: 2d12 + 1d4)
-    const counts = {};
-    this.selectedDice.forEach(s => counts[s] = (counts[s] || 0) + 1);
-    const diceStr = Object.keys(counts).map(s => `${counts[s]}d${s}`).join(' + ');
-
+    // Agrupa dados para exibição (ex: d8 [Principal] + 1d6)
+    let diceParts = [`d${this.principalDie}`];
+    if (this.extraDice && this.extraDice.length > 0) {
+      const counts = {};
+      this.extraDice.forEach(s => counts[s] = (counts[s] || 0) + 1);
+      Object.keys(counts).forEach(s => diceParts.push(`${counts[s]}d${s}`));
+    }
+    const diceStr = diceParts.join(' + ');
     const modStr = this.modifier > 0 ? ` + ${this.modifier}` : (this.modifier < 0 ? ` - ${Math.abs(this.modifier)}` : '');
     btn.textContent = `ROLAR (${diceStr}${modStr})`;
   },
@@ -4954,7 +5015,7 @@ const MesaDice = {
 
     // 1. Trava contra concorrência global (alguém já rolando no palco)
     if (this.isGlobalRolling) {
-      alert(`[MESA OCUPADA]: ${this.currentRoller || 'Outro jogador'} está rolando dados neste momento. Aguarde o resultado!`);
+      alert(`[MESA OCUPADA]: ${this.currentRoller || 'Outro jogador'} está rolando dados neste momento. Aguarde o resultado.`);
       return;
     }
 
@@ -4967,16 +5028,22 @@ const MesaDice = {
       return;
     }
 
-    if (this.selectedDice.length === 0) return;
-
     this.lastRollTimestamp = now;
     MesaApp.closeModal('dice-modal');
 
     // 3. Gera resultados criptograficamente seguros para cada dado
-    const diceResults = this.selectedDice.map(sides => ({
-      sides: sides,
-      val: this.cryptoRandomInt(1, sides)
-    }));
+    const diceResults = [
+      {
+        sides: this.principalDie,
+        val: this.cryptoRandomInt(1, this.principalDie),
+        isPrincipal: true
+      },
+      ...(this.extraDice || []).map(sides => ({
+        sides: sides,
+        val: this.cryptoRandomInt(1, sides),
+        isPrincipal: false
+      }))
+    ];
 
     const sender = MesaChat.getCurrentSender();
 
@@ -4994,9 +5061,8 @@ const MesaDice = {
     const isPavorActive = Boolean(this.manualPavorActive || (rollerPlayer && rollerPlayer.dadoDePavor));
 
     if (isPavorActive) {
-      const mirroredSides = (this.selectedDice && this.selectedDice.length > 0)
-        ? Math.max(...this.selectedDice)
-        : 20;
+      // O Dado de Pavor SEMPRE copia o Dado Principal selecionado
+      const mirroredSides = this.principalDie || 8;
       const pavorVal = this.cryptoRandomPavor(mirroredSides);
       pavorResult = {
         sides: mirroredSides,
@@ -5004,7 +5070,13 @@ const MesaDice = {
         playerSlot: rollerPlayer ? rollerPlayer.slot : null,
         playerName: rollerPlayer ? rollerPlayer.nome : sender.name
       };
-      finalTotal = diceSum - pavorVal + this.modifier;
+
+      if (pavorVal === 1) {
+        // PAVOR SUPERADO: o valor 1 NÃO é subtraído do total!
+        finalTotal = diceSum + this.modifier;
+      } else {
+        finalTotal = diceSum - pavorVal + this.modifier;
+      }
     }
 
     const rollPayload = {
@@ -5029,9 +5101,13 @@ const MesaDice = {
     }
 
     // 6. Log no chat da mesa
-    let breakdown = diceResults.map(d => `[d${d.sides}: ${d.val}]`).join(' + ');
+    let breakdown = diceResults.map(d => `[${d.isPrincipal ? 'Principal ' : ''}d${d.sides}: ${d.val}]`).join(' + ');
     if (pavorResult) {
-      breakdown += ` - [Pavor d${pavorResult.sides}: ${pavorResult.val}]`;
+      if (pavorResult.val === 1) {
+        breakdown += ` - [Pavor d${pavorResult.sides}: 1 (SUPERADO / +0)]`;
+      } else {
+        breakdown += ` - [Pavor d${pavorResult.sides}: ${pavorResult.val}]`;
+      }
     }
     const modStr = this.modifier !== 0 ? (this.modifier > 0 ? ` + ${this.modifier}` : ` - ${Math.abs(this.modifier)}`) : '';
     const chatContent = `Rolou ${breakdown}${modStr} -> Total: ${finalTotal}`;
@@ -5045,7 +5121,7 @@ const MesaDice = {
               id: 'pavor_clear_' + Date.now(),
               sender_name: 'Fios do Medo',
               is_master: true,
-              content: `O Dado de Pavor de ${rollerPlayer.nome} sorteou 1 e se desfez em cinzas. O terror foi superado.`,
+              content: `O Dado de Pavor de ${rollerPlayer.nome} sorteou 1 e foi estilhaçado. O terror foi superado e nenhuma penalidade foi aplicada.`,
               created_at: new Date().toISOString()
             });
             rollerPlayer.dadoDePavor = false;
@@ -5057,7 +5133,7 @@ const MesaDice = {
                 payload: { slot: rollerPlayer.slot, dadoDePavor: false }
               });
             }
-          }, 2500);
+          }, 3200);
         }
       } else {
         if (!rollerPlayer || !rollerPlayer.dadoDePavor) {
@@ -5142,6 +5218,7 @@ const MesaDice = {
     stage.classList.add('active');
 
     const hasPavor = Boolean(data.pavorResult);
+    const isPavorOne = Boolean(hasPavor && data.pavorResult.val === 1);
 
     // Etapa 1: Renderiza dados 3D comuns rolando em múltiplas direções. O Dado de Pavor fica oculto inicialmente.
     stage.innerHTML = `
@@ -5153,7 +5230,8 @@ const MesaDice = {
           id: `dice-box-${i}`,
           sides: d.sides,
           initialVal: '?',
-          boxClass: 'rolling'
+          boxClass: `rolling ${d.isPrincipal ? 'is-principal-die' : ''}`,
+          typeLabel: d.isPrincipal ? `PRINCIPAL • d${d.sides}` : `d${d.sides}`
         })).join('')}
       </div>
       <div id="dice-total-box" class="dice-total-banner" style="display:none;"></div>
@@ -5197,7 +5275,7 @@ const MesaDice = {
         }
       });
 
-      const commonDiceBreakdown = data.results.map(d => `d${d.sides}(${d.val})`).join(' + ');
+      const commonDiceBreakdown = data.results.map(d => `${d.isPrincipal ? '★' : ''}d${d.sides}(${d.val})`).join(' + ');
       const commonSum = data.results.reduce((a, b) => a + b.val, 0);
       const modStr = data.modifier !== 0 ? (data.modifier > 0 ? ` + ${data.modifier}` : ` − ${Math.abs(data.modifier)}`) : '';
       const partialTotal = commonSum + data.modifier;
@@ -5275,29 +5353,99 @@ const MesaDice = {
             Mesa3DDice.settle(pavorCanvas, data.pavorResult.val, 'pavor');
           }
 
-          if (totalBox) {
-            let formulaParts = data.results.length > 1
-              ? `${commonDiceBreakdown} [${commonSum}] <span class="pavor-breakdown-minus">− PAVOR (${data.pavorResult.val})</span>${modStr} =`
-              : `${commonDiceBreakdown} <span class="pavor-breakdown-minus">− PAVOR (${data.pavorResult.val})</span>${modStr} =`;
+          if (data.pavorResult.val === 1) {
+            // === CINEMÁTICA ESPECIAL: PAVOR SUPERADO (VALOR 1) ===
+            // 1. Temporariamente os outros dados somem com transição suave
+            const otherDice = arena.querySelectorAll('.dice-tumble-box:not(#dice-pavor-box)');
+            arena.classList.add('pavor-solo-mode');
+            otherDice.forEach(box => box.classList.add('pavor-superado-hide'));
+            if (totalBox) {
+              totalBox.style.opacity = '0';
+              totalBox.style.pointerEvents = 'none';
+            }
 
-            let alivioHtml = '';
-            if (data.pavorResult.val === 1) {
-              alivioHtml = `
-                <div class="pavor-alivio-badge">
-                  <span class="pavor-alivio-icon">✦</span>
-                  <span class="pavor-alivio-title">PAVOR SUPERADO</span>
-                  <span class="pavor-alivio-desc">Resultado 1 no Dado de Pavor: o terror foi dissipado</span>
+            // 2. O Dado de Pavor vai para o centro e ganha zoom
+            pavorEl.classList.add('pavor-superado-focus');
+
+            // 3. Após zoom (600ms), começa a rachar e tremer
+            setTimeout(() => {
+              if (this._rollGen !== rollGen) return;
+              pavorEl.classList.add('pavor-superado-shake');
+
+              // Injeta fissuras de rachadura verdes/carmesins sobre o dado
+              const crackOverlay = document.createElement('div');
+              crackOverlay.className = 'pavor-crack-fissures';
+              crackOverlay.innerHTML = `
+                <svg viewBox="0 0 100 100" class="pavor-crack-svg">
+                  <path class="crack-path" d="M50 12 L48 34 L40 46 L54 60 L46 74 L50 88 M48 34 L64 38 L76 30 M40 46 L26 54 L14 48 M54 60 L68 64 L82 78 M46 74 L32 82" />
+                </svg>
+              `;
+              pavorEl.appendChild(crackOverlay);
+
+              // 4. Após 950ms de tremor e rachadura, ele quebra com explosão de poeira e partículas
+              setTimeout(() => {
+                if (this._rollGen !== rollGen) return;
+
+                // Efeito de fragmentação / estilhaço
+                this.createDustVanishEffect(pavorEl, '#22c55e', 45);
+                this.createDustVanishEffect(pavorEl, '#ef4444', 35);
+
+                pavorEl.classList.add('pavor-shattered');
+
+                // Flash sutil no palco
+                stage.classList.add('pavor-superado-flash');
+                setTimeout(() => stage.classList.remove('pavor-superado-flash'), 700);
+
+                // Exibe o aviso em verde no centro: "O PAVOR FOI SUPERADO"
+                const superadoBanner = document.createElement('div');
+                superadoBanner.className = 'pavor-superado-cinematic-banner';
+                superadoBanner.innerHTML = `
+                  <div class="pavor-superado-cinematic-title">O PAVOR FOI SUPERADO</div>
+                  <div class="pavor-superado-cinematic-sub">Resultado 1 no Dado de Pavor • O terror foi aniquilado sem penalidade</div>
+                `;
+                arena.appendChild(superadoBanner);
+
+                // 5. Após 1250ms do estilhaço, os outros dados voltam e o total final é revelado sem subtração
+                setTimeout(() => {
+                  if (this._rollGen !== rollGen) return;
+                  arena.classList.remove('pavor-solo-mode');
+                  pavorEl.classList.add('pavor-shattered-collapsed');
+                  otherDice.forEach(box => box.classList.remove('pavor-superado-hide'));
+
+                  if (totalBox) {
+                    totalBox.style.opacity = '1';
+                    totalBox.style.pointerEvents = 'all';
+                    totalBox.innerHTML = `
+                      <div class="dice-formula-container">
+                        <span class="dice-breakdown-text">
+                          ${commonDiceBreakdown} ${data.results.length > 1 ? `[${commonSum}]` : ''} 
+                          <span class="pavor-breakdown-superado-pill">PAVOR SUPERADO (+0)</span>
+                          ${modStr} =
+                        </span>
+                        <span class="dice-grand-total pavor-superado-total">${data.total}</span>
+                      </div>
+                    `;
+                  }
+                }, 1250);
+
+              }, 950);
+
+            }, 600);
+
+          } else {
+            // Caso padrão (valor > 1): subtrai o pavor normalmente
+            if (totalBox) {
+              let formulaParts = data.results.length > 1
+                ? `${commonDiceBreakdown} [${commonSum}] <span class="pavor-breakdown-minus">− PAVOR (${data.pavorResult.val})</span>${modStr} =`
+                : `${commonDiceBreakdown} <span class="pavor-breakdown-minus">− PAVOR (${data.pavorResult.val})</span>${modStr} =`;
+
+              totalBox.innerHTML = `
+                <div class="dice-formula-container">
+                  <span class="dice-breakdown-text">${formulaParts}</span>
+                  <span class="dice-grand-total with-pavor">${data.total}</span>
                 </div>
               `;
             }
-
-            totalBox.innerHTML = `
-              <div class="dice-formula-container">
-                <span class="dice-breakdown-text">${formulaParts}</span>
-                <span class="dice-grand-total with-pavor">${data.total}</span>
-              </div>
-              ${alivioHtml}
-            `;
           }
         };
 
@@ -5307,8 +5455,8 @@ const MesaDice = {
 
     }, 1150);
 
-    // Mantém todos os dados visíveis juntos e desaparecem simultaneamente ao encerrar o palco
-    const totalDuration = hasPavor ? 7900 : 4700;
+    // Duração do palco: se for pavor 1, estende para 11600ms para a cinematica completa ser apreciada
+    const totalDuration = isPavorOne ? 11600 : (hasPavor ? 7900 : 4700);
     this.rollTimeout = setTimeout(() => {
       if (this._rollGen !== rollGen) return;
       stage.classList.remove('active');
@@ -15755,7 +15903,7 @@ const MesaCombate = {
   _videoRetryCount: 0,
   opponentId: 'assasino',
   opponentName: '???',
-  videoUrl: 'assets/videos/assasino1.mp4?v=2.5.3',
+  videoUrl: 'assets/videos/assasino1.mp4?v=2.5.4',
   selectedPresetId: 'assasino',
   turnCycle: null,
   playerHpCache: {},
@@ -15773,20 +15921,20 @@ const MesaCombate = {
     {
       id: 'assasino',
       name: '???',
-      video: 'assets/videos/assasino1.mp4?v=2.5.3',
-      videoEsconderijo: 'assets/videos/assasino1_vermelho.mp4?v=2.5.3',
+      video: 'assets/videos/assasino1.mp4?v=2.5.4',
+      videoEsconderijo: 'assets/videos/assasino1_vermelho.mp4?v=2.5.4',
       desc: 'Oponente misterioso com variação carmesim no esconderijo'
     },
     {
       id: 'ratos',
       name: 'Ratos',
-      video: 'assets/videos/rato_cinematica.mp4?v=2.5.3',
+      video: 'assets/videos/rato_cinematica.mp4?v=2.5.4',
       desc: 'Infestação voraz de roedores carniceiros na escuridão'
     },
     {
       id: 'unknown',
       name: 'Inimigo Antigo',
-      video: 'assets/videos/inimigo_antigo.mp4?v=2.5.3',
+      video: 'assets/videos/inimigo_antigo.mp4?v=2.5.4',
       desc: 'Arquivo do oponente anterior guardado'
     }
   ],
@@ -15802,8 +15950,8 @@ const MesaCombate = {
     const trimmed = String(url || '').trim();
     if (!this.isAssasinoOpponent(trimmed)) return trimmed;
     return isEsconderijo
-      ? 'assets/videos/assasino1_vermelho.mp4?v=2.5.3'
-      : 'assets/videos/assasino1.mp4?v=2.5.3';
+      ? 'assets/videos/assasino1_vermelho.mp4?v=2.5.4'
+      : 'assets/videos/assasino1.mp4?v=2.5.4';
   },
 
   /** Synchronizes combat overlay, opponent video, and turn cycle from Supabase row 1 without local clock skew bugs. */
@@ -15817,9 +15965,10 @@ const MesaCombate = {
       if (remoteTime && this._lastSentTs && remoteTime < this._lastSentTs) return;
       if (Date.now() - (this.lastLocalUpdate || 0) < 4000) return;
     } else {
-      if (remoteTime && remoteTime < (this._lastAppliedRemoteTs || 0)) return;
+      if (this._lastAppliedRemoteTs && remoteTime <= this._lastAppliedRemoteTs) return;
+      if (Date.now() - (this.lastLocalUpdate || 0) < 5000 && !cb.active) return;
     }
-    if (remoteTime) this._lastAppliedRemoteTs = remoteTime;
+    if (remoteTime) this._lastAppliedRemoteTs = Math.max(this._lastAppliedRemoteTs || 0, remoteTime);
 
     const currentEsc = document.body.classList.contains('esconderijo-active');
     const resolvedRemoteVid = this.resolveVideoVariantUrl(cb.videoUrl || '', Boolean(cb.isEsconderijo) || currentEsc);
@@ -15878,10 +16027,10 @@ const MesaCombate = {
     const ctrl = typeof AbortController === 'function' ? new AbortController() : null;
     this._preloadAbort = ctrl;
     const urls = [
-      'assets/videos/assasino1.mp4?v=2.5.3',
-      'assets/videos/assasino1_vermelho.mp4?v=2.5.3',
-      'assets/videos/rato_cinematica.mp4?v=2.5.3',
-      'assets/videos/inimigo_antigo.mp4?v=2.5.3'
+      'assets/videos/assasino1.mp4?v=2.5.4',
+      'assets/videos/assasino1_vermelho.mp4?v=2.5.4',
+      'assets/videos/rato_cinematica.mp4?v=2.5.4',
+      'assets/videos/inimigo_antigo.mp4?v=2.5.4'
     ];
     for (const u of urls) {
       if (this.isActive || (ctrl && ctrl.signal.aborted)) break;
@@ -15936,7 +16085,7 @@ const MesaCombate = {
     const now = Date.now();
     this._lastSentTs = Math.max(this._lastSentTs || 0, now);
     const isEsc = document.body.classList.contains('esconderijo-active');
-    const currentVid = this.resolveVideoVariantUrl(this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.3', isEsc);
+    const currentVid = this.resolveVideoVariantUrl(this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.4', isEsc);
     const payload = {
       active: !!this.isActive,
       opponentId: this.opponentId || 'assasino',
@@ -15982,7 +16131,7 @@ const MesaCombate = {
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
     if (nameInput) nameInput.value = this.opponentName || '???';
-    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.3';
+    if (videoInput) videoInput.value = this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.4';
 
     const localNotice = document.getElementById('combat-local-badge');
     if (localNotice) {
@@ -16036,7 +16185,7 @@ const MesaCombate = {
     const nameInput = document.getElementById('combat-custom-name');
     const videoInput = document.getElementById('combat-custom-video');
     const name = (nameInput && nameInput.value.trim()) || this.opponentName || '???';
-    const video = (videoInput && videoInput.value.trim()) || this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.3';
+    const video = (videoInput && videoInput.value.trim()) || this.videoUrl || 'assets/videos/assasino1.mp4?v=2.5.4';
 
     this.closeSelectModal();
 
@@ -16060,7 +16209,7 @@ const MesaCombate = {
     }
     this.opponentId = data.opponentId || 'unknown';
     this.opponentName = (data.opponentName !== undefined && data.opponentName !== null && data.opponentName !== '') ? data.opponentName : (this.opponentName || '???');
-    this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=2.5.3');
+    this.videoUrl = data.videoUrl !== undefined ? data.videoUrl : (this.videoUrl || 'assets/videos/rato_cinematica.mp4?v=2.5.4');
 
     // Reseta cache de PV dos personagens
     this.playerHpCache = {};
@@ -17331,7 +17480,7 @@ const MesaCombate = {
       return;
     }
 
-    const targetUrl = this.resolveVideoVariantUrl('assets/videos/assasino1.mp4?v=2.5.3', isEsconderijo);
+    const targetUrl = this.resolveVideoVariantUrl('assets/videos/assasino1.mp4?v=2.5.4', isEsconderijo);
     const prevTime = (!isNaN(video.currentTime) && video.currentTime > 0) ? video.currentTime : 0;
     video.style.transition = 'none';
     this.loadVideo(targetUrl, { preserveTime: prevTime });
@@ -18099,7 +18248,7 @@ const MesaEsconderijo = {
             roomSides: this.roomSides,
             roomName: this.roomName,
             phase: this.currentPhase,
-            videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.5.3',
+            videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.5.4',
             timestamp
           }
         });
@@ -18116,7 +18265,7 @@ const MesaEsconderijo = {
           event: 'esconderijo_encerrar',
           payload: {
             active: false,
-            videoUrl: 'assets/videos/assasino1.mp4?v=2.5.3',
+            videoUrl: 'assets/videos/assasino1.mp4?v=2.5.4',
             timestamp
           }
         });
@@ -18137,13 +18286,13 @@ const MesaEsconderijo = {
       roomName: this.roomName,
       phase: this.currentPhase,
       lastSearch: this.lastSearch || null,
-      videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.5.3',
+      videoUrl: 'assets/videos/assasino1_vermelho.mp4?v=2.5.4',
       timestamp: now
     } : {
       active: false,
       roundId: null,
       lastSearch: null,
-      videoUrl: 'assets/videos/assasino1.mp4?v=2.5.3',
+      videoUrl: 'assets/videos/assasino1.mp4?v=2.5.4',
       timestamp: now
     };
 
@@ -19041,7 +19190,7 @@ const MesaRollLog = {
     container.innerHTML = filtered.map(r => {
       const timeStr = r.timeFormatted || (r.timestamp ? new Date(r.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' • ' + new Date(r.timestamp).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) : '');
       const diceChips = (r.results || []).map(d => '<span class="roll-log-dice-chip">d' + d.sides + ': <strong>' + d.val + '</strong></span>').join('');
-      const pavorChip = r.pavorResult ? '<span class="roll-log-pavor-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> PAVOR d' + r.pavorResult.sides + ': <strong>-' + r.pavorResult.val + '</strong></span>' : '';
+      const pavorChip = r.pavorResult ? '<span class="roll-log-pavor-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> PAVOR d' + r.pavorResult.sides + ': <strong>' + (r.pavorResult.val === 1 ? '1 (SUPERADO / +0)' : '-' + r.pavorResult.val) + '</strong></span>' : '';
       const pavorReliefBadge = (r.pavorResult && r.pavorResult.val === 1) ? '<span class="roll-log-relief-badge">Pavor Superado (Tirou 1)</span>' : '';
       const modChip = (r.modifier !== undefined && r.modifier !== 0) ? '<span class="roll-log-mod-chip">Mod: <strong>' + (r.modifier > 0 ? '+' + r.modifier : r.modifier) + '</strong></span>' : '';
       const slotLabel = r.rollerSlot ? 'S' + r.rollerSlot : 'JOGADOR';

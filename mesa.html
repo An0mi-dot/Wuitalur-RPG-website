@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.5.3">
+  <link rel="stylesheet" href="css/mesa.css?v=2.5.4">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -444,17 +444,29 @@
         <button class="mesa-modal-close" onclick="MesaApp.closeModal('dice-modal')">&times;</button>
         <div class="ink-ribbon-title">ROLAGEM DE DADOS</div>
         
+        <!-- SELETOR DO DADO PRINCIPAL (ATRIBUTO) -->
+        <div class="dice-principal-section">
+          <div class="dice-section-label">DADO PRINCIPAL:</div>
+          <div class="dice-principal-grid">
+            <button type="button" class="dice-principal-btn" data-sides="4" onclick="MesaDice.setPrincipalDie(4)">d4</button>
+            <button type="button" class="dice-principal-btn active" data-sides="8" onclick="MesaDice.setPrincipalDie(8)">d8</button>
+            <button type="button" class="dice-principal-btn" data-sides="12" onclick="MesaDice.setPrincipalDie(12)">d12</button>
+            <button type="button" class="dice-principal-btn" data-sides="16" onclick="MesaDice.setPrincipalDie(16)">d16</button>
+          </div>
+        </div>
+
+        <!-- ADICIONAR DADOS EXTRAS À ROLAGEM -->
         <div class="dice-selector-section">
-          <div class="dice-section-label">ADICIONAR DADO À ROLAGEM:</div>
+          <div class="dice-section-label">DADOS EXTRAS (OPCIONAL):</div>
           <div class="dice-chips-grid">
-            <button type="button" class="dice-chip-btn" onclick="MesaDice.addDie(4)">+ d4</button>
-            <button type="button" class="dice-chip-btn" onclick="MesaDice.addDie(6)">+ d6</button>
-            <button type="button" class="dice-chip-btn" onclick="MesaDice.addDie(8)">+ d8</button>
-            <button type="button" class="dice-chip-btn" onclick="MesaDice.addDie(10)">+ d10</button>
-            <button type="button" class="dice-chip-btn" onclick="MesaDice.addDie(12)">+ d12</button>
-            <button type="button" class="dice-chip-btn" onclick="MesaDice.addDie(16)">+ d16</button>
-            <button type="button" class="dice-chip-btn" onclick="MesaDice.addDie(20)">+ d20</button>
-            <button type="button" class="dice-chip-btn" onclick="MesaDice.addDie(100)">+ d100</button>
+            <button type="button" class="dice-chip-btn" onclick="MesaDice.addExtraDie(4)">+ d4</button>
+            <button type="button" class="dice-chip-btn" onclick="MesaDice.addExtraDie(6)">+ d6</button>
+            <button type="button" class="dice-chip-btn" onclick="MesaDice.addExtraDie(8)">+ d8</button>
+            <button type="button" class="dice-chip-btn" onclick="MesaDice.addExtraDie(10)">+ d10</button>
+            <button type="button" class="dice-chip-btn" onclick="MesaDice.addExtraDie(12)">+ d12</button>
+            <button type="button" class="dice-chip-btn" onclick="MesaDice.addExtraDie(16)">+ d16</button>
+            <button type="button" class="dice-chip-btn" onclick="MesaDice.addExtraDie(20)">+ d20</button>
+            <button type="button" class="dice-chip-btn" onclick="MesaDice.addExtraDie(100)">+ d100</button>
           </div>
         </div>
 
@@ -465,7 +477,7 @@
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff1133" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
               <div class="dice-pavor-texts">
                 <span class="dice-pavor-title">Ativar Dado de Pavor nesta Rolagem</span>
-                <span class="dice-pavor-desc">Espelha o maior dado selecionado e subtrai o valor do total (Fios do Medo)</span>
+                <span class="dice-pavor-desc" id="dice-pavor-desc">Copia o Dado Principal (d8) e subtrai o valor do total. Se tirar 1, o pavor é superado.</span>
               </div>
             </div>
             <button type="button" id="dice-pavor-chip-btn" class="dice-pavor-toggle-btn" onclick="MesaDice.togglePavorInModal()" title="Alternar Dado de Pavor nesta rolagem">
@@ -485,7 +497,7 @@
 
         <!-- Modificador Numérico Cru -->
         <div class="dice-modifier-section">
-          <div class="dice-section-label">MODIFICADOR (NÚMERO CRU):</div>
+          <div class="dice-section-label">MODIFICADOR (VALOR BRUTO):</div>
           <div class="dice-modifier-control">
             <button class="mod-btn" onclick="MesaDice.adjustModifier(-1)">-1</button>
             <input type="number" id="dice-modifier-input" class="mod-input" value="0" onchange="MesaDice.setModifier(this.value)">
@@ -1325,11 +1337,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=2.5.3"></script>
+<script src="js/campaign-data.js?v=2.5.4"></script>
 
-<script src="js/mesa.js?v=2.5.3"></script>
+<script src="js/mesa.js?v=2.5.4"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.5.3</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.5.4</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
