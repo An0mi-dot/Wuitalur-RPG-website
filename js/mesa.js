@@ -7324,6 +7324,20 @@ const MesaQuickMenu = {
     const myToken = MesaApp && MesaApp.state && MesaApp.state.myToken;
     const hasSession = Boolean(isMaster || myToken);
 
+    const masterSection = document.getElementById('quick-menu-master-section');
+    if (masterSection) {
+      masterSection.style.display = isMaster ? 'block' : 'none';
+    }
+    const masterBadge = document.getElementById('quick-menu-master-badge');
+    if (masterBadge) {
+      masterBadge.style.display = isMaster ? 'inline-block' : 'none';
+    }
+
+    const menuAreaBtn = document.getElementById('menu-area-btn');
+    if (menuAreaBtn) {
+      menuAreaBtn.style.display = isMaster ? 'flex' : 'none';
+    }
+
     const npcsBtn = document.getElementById('menu-npcs-btn');
     if (npcsBtn) {
       npcsBtn.style.display = isMaster ? 'flex' : 'none';

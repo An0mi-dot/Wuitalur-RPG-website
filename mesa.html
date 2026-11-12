@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.5.5">
+  <link rel="stylesheet" href="css/mesa.css?v=2.5.6">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -126,116 +126,134 @@
 
           <!-- Dropdown Elegante das Ferramentas Secundárias -->
           <div id="mesa-quick-menu-dropdown" class="mesa-quick-menu-dropdown">
-            <div class="quick-menu-header">FERRAMENTAS DA MESA</div>
-            
-            <button type="button" class="quick-menu-item" onclick="MesaDice.openModal(); MesaQuickMenu.close();">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="3" ry="3"></rect><path d="M8 8h.01"></path><path d="M16 8h.01"></path><path d="M12 12h.01"></path><path d="M8 16h.01"></path><path d="M16 16h.01"></path></svg>
-              <span>Rolar Dados</span>
-            </button>
-            <button type="button" class="quick-menu-item" onclick="MesaRollLog.openModal(); MesaQuickMenu.close();">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-              <span>Registro de Rolagens</span>
-            </button>
+            <div class="quick-menu-header-bar">
+              <div class="quick-menu-header-title">
+                <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                <span>MENU DA MESA</span>
+              </div>
+              <span id="quick-menu-master-badge" class="quick-menu-header-badge master-badge" style="display: none;">MESTRE</span>
+            </div>
 
-            <button type="button" class="quick-menu-item" onclick="MesaChat.toggleChat(); MesaQuickMenu.close();">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-              <span>Chat da Sala</span>
-              <span id="menu-chat-unread-badge" class="chat-unread-pip" style="display:none; margin-left: auto;"></span>
-            </button>
+            <div class="quick-menu-content-scroll">
+              <!-- SEÇÃO 1: JOGO & UTILIDADES -->
+              <div class="quick-menu-group">
+                <div class="quick-menu-group-label">AÇÕES DA MESA</div>
+                
+                <button type="button" class="quick-menu-item" onclick="MesaDice.openModal(); MesaQuickMenu.close();">
+                  <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="3" ry="3"></rect><path d="M8 8h.01"></path><path d="M16 8h.01"></path><path d="M12 12h.01"></path><path d="M8 16h.01"></path><path d="M16 16h.01"></path></svg>
+                  <span>Rolar Dados</span>
+                </button>
+                
+                <button type="button" class="quick-menu-item" onclick="MesaRollLog.openModal(); MesaQuickMenu.close();">
+                  <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                  <span>Registro de Rolagens</span>
+                </button>
 
-            
-            <button type="button" class="quick-menu-item" onclick="MesaReactions.togglePicker(); MesaQuickMenu.close();">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
-              <span>Reações Rápidas</span>
-            </button>
+                <button type="button" class="quick-menu-item" onclick="MesaChat.toggleChat(); MesaQuickMenu.close();">
+                  <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                  <span>Chat da Sala</span>
+                  <span id="menu-chat-unread-badge" class="chat-unread-pip" style="display:none; margin-left: auto;"></span>
+                </button>
 
-            <button type="button" class="quick-menu-item" onclick="MesaSara.openModal(); MesaQuickMenu.close();">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
-              <span>Sobre Sara</span>
-            </button>
+                <button type="button" class="quick-menu-item" onclick="MesaReactions.togglePicker(); MesaQuickMenu.close();">
+                  <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+                  <span>Reações Rápidas</span>
+                </button>
 
-            <button type="button" class="quick-menu-item" onclick="MesaOwlbear.open(); MesaQuickMenu.close();" style="color: #38bdf8;">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
-                <line x1="8" y1="2" x2="8" y2="18"></line>
-                <line x1="16" y1="6" x2="16" y2="22"></line>
-              </svg>
-              <span>Mapa [Owlbear]</span>
-            </button>
+                <button type="button" class="quick-menu-item" onclick="MesaSara.openModal(); MesaQuickMenu.close();">
+                  <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
+                  <span>Sobre Sara</span>
+                </button>
 
-            <button type="button" class="quick-menu-item" onclick="MesaOwlbear.editUrl(); MesaQuickMenu.close();" style="color: #7dd3fc; font-size: 0.8rem; padding-left: 32px; margin-top: -4px;">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-              </svg>
-              <span>Configurar Link Owlbear</span>
-            </button>
+                <div class="quick-menu-item-row">
+                  <button type="button" class="quick-menu-item row-primary-btn" onclick="MesaOwlbear.open(); MesaQuickMenu.close();">
+                    <svg class="ink-icon accent-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+                      <line x1="8" y1="2" x2="8" y2="18"></line>
+                      <line x1="16" y1="6" x2="16" y2="22"></line>
+                    </svg>
+                    <span>Mapa [Owlbear]</span>
+                  </button>
+                  <button type="button" class="quick-menu-icon-btn" onclick="MesaOwlbear.editUrl(); MesaQuickMenu.close();" title="Configurar Link Owlbear">
+                    <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
 
-            <button type="button" id="menu-coletaveis-btn" class="quick-menu-item master-item" onclick="MesaColetaveis.openModal(); MesaQuickMenu.close();" style="display: none; color: #f59e0b;">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-              <span>Coletáveis</span>
-              <span class="quick-menu-badge-master">Mestre</span>
-            </button>
+              <!-- SEÇÃO 2: PAINEL DO MESTRE (EXCLUSIVO) -->
+              <div id="quick-menu-master-section" class="quick-menu-group master-group" style="display: none;">
+                <div class="quick-menu-group-label master-label">
+                  <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                  <span>CONTROLE DO MESTRE</span>
+                </div>
 
-            
-            <button type="button" id="menu-area-btn" class="quick-menu-item master-item" onclick="MesaAreaManager.openMapModal(); MesaQuickMenu.close();" style="display: none; color: #fbbf24;">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
-              <span>Mudar Área / Mapa</span>
-              <span class="quick-menu-badge-master">Mestre</span>
-            </button>
-            <button type="button" id="menu-esconderijo-btn" class="quick-menu-item master-item" onclick="MesaEsconderijo.openContextualModal(); MesaQuickMenu.close();" style="display: none; color: #ff1133;">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-              <span>Modo Esconderijo</span>
-              <span class="quick-menu-badge-master">Mestre</span>
-            </button>
-            <button type="button" id="menu-dispositivos-btn" class="quick-menu-item master-item" onclick="MesaDispositivos.toggleDrawer(); MesaQuickMenu.close();" style="display: none; color: #38bdf8;">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                <line x1="8" y1="21" x2="16" y2="21"></line>
-                <line x1="12" y1="17" x2="12" y2="21"></line>
-              </svg>
-              <span>Dispositivos da Campanha</span>
-              <span class="quick-menu-badge-master">Mestre</span>
-            </button>
-            <button type="button" id="menu-combate-btn" class="quick-menu-item master-item" onclick="MesaCombate.handleNavClick(); MesaQuickMenu.close();" style="display: none; color: var(--mesa-orange, #ff5500);">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
-              <span id="menu-combate-label">Iniciar Combate</span>
-              <span class="quick-menu-badge-master">Mestre</span>
-            </button>
-                                    <button type="button" id="menu-abertura-btn" class="quick-menu-item master-item" onclick="MesaAbertura.play(); MesaQuickMenu.close();" style="display: none; color: #10b981;">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              <span>Tocar Abertura</span>
-              <span class="quick-menu-badge-master">Mestre</span>
-            </button>
-<button type="button" id="menu-media-btn" class="quick-menu-item master-item" onclick="MesaMediaPlayer.toggleDrawer(); MesaQuickMenu.close();" style="display: none; color: #f43f5e;">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              <span>Player de Mídia</span>
-              <span class="quick-menu-badge-master">Mestre</span>
-            </button>
-            <button type="button" id="menu-roteiro-btn" class="quick-menu-item master-item" onclick="MesaRoteiro.openModal(); MesaQuickMenu.close();" style="display: none; color: #a78bfa;">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-              <span>Roteiro da Campanha</span>
-              <span class="quick-menu-badge-master">Mestre</span>
-            </button>
+                <!-- SUB-SEÇÃO: CENA & COMBATE -->
+                <div class="quick-menu-subgroup-title">Cena & Combate</div>
+                <div class="quick-menu-grid">
+                  <button type="button" id="menu-combate-btn" class="quick-menu-tile tile-danger" onclick="MesaCombate.handleNavClick(); MesaQuickMenu.close();">
+                    <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
+                    <span id="menu-combate-label">Combate</span>
+                  </button>
+                  <button type="button" id="menu-esconderijo-btn" class="quick-menu-tile tile-warning" onclick="MesaEsconderijo.openContextualModal(); MesaQuickMenu.close();">
+                    <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    <span>Esconderijo</span>
+                  </button>
+                  <button type="button" id="menu-area-btn" class="quick-menu-tile tile-amber" onclick="MesaAreaManager.openMapModal(); MesaQuickMenu.close();">
+                    <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+                    <span>Mudar Área</span>
+                  </button>
+                  <button type="button" id="menu-coletaveis-btn" class="quick-menu-tile tile-amber" onclick="MesaColetaveis.openModal(); MesaQuickMenu.close();">
+                    <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    <span>Coletáveis</span>
+                  </button>
+                </div>
 
+                <!-- SUB-SEÇÃO: NARRATIVA & MÍDIA -->
+                <div class="quick-menu-subgroup-title">Narrativa & Mídia</div>
+                <div class="quick-menu-grid">
+                  <button type="button" id="menu-roteiro-btn" class="quick-menu-tile tile-purple" onclick="MesaRoteiro.openModal(); MesaQuickMenu.close();">
+                    <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                    <span>Roteiro</span>
+                  </button>
+                  <button type="button" id="menu-npcs-btn" class="quick-menu-tile tile-blue" onclick="MesaAreaManager.openNpcModal(); MesaQuickMenu.close();">
+                    <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>Dossiê NPCs</span>
+                  </button>
+                  <button type="button" id="menu-dispositivos-btn" class="quick-menu-tile tile-blue" onclick="MesaDispositivos.toggleDrawer(); MesaQuickMenu.close();">
+                    <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                    <span>Dispositivos</span>
+                  </button>
+                  <button type="button" id="menu-media-btn" class="quick-menu-tile tile-rose" onclick="MesaMediaPlayer.toggleDrawer(); MesaQuickMenu.close();">
+                    <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    <span>Player Mídia</span>
+                  </button>
+                </div>
+                
+                <button type="button" id="menu-abertura-btn" class="quick-menu-item master-full-btn" onclick="MesaAbertura.play(); MesaQuickMenu.close();">
+                  <svg class="ink-icon accent-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  <span>Tocar Vídeo de Abertura</span>
+                </button>
+              </div>
 
-            <button type="button" id="menu-npcs-btn" class="quick-menu-item master-item" onclick="MesaAreaManager.openNpcModal(); MesaQuickMenu.close();" style="display: none; color: #38bdf8;">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              <span>Dossiê de NPCs</span>
-              <span class="quick-menu-badge-master">Mestre</span>
-            </button>
+              <!-- SEÇÃO 3: SESSÃO & CONTA -->
+              <div class="quick-menu-group footer-group">
+                <div class="quick-menu-group-label">SESSÃO</div>
+                
+                <button type="button" class="quick-menu-item" onclick="MesaApp.openTokenModal(); MesaQuickMenu.close();">
+                  <svg class="ink-icon accent-amber" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
+                  <span id="menu-token-label">Autenticar Token</span>
+                  <span id="menu-token-alert-badge" class="chat-unread-pip" style="display:none; margin-left: auto;"></span>
+                </button>
 
-            <div class="quick-menu-divider"></div>
-
-            <button type="button" class="quick-menu-item" onclick="MesaApp.openTokenModal(); MesaQuickMenu.close();">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
-              <span id="menu-token-label">Autenticar Token</span>
-            </button>
-
-            <button type="button" id="menu-logout-btn" class="quick-menu-item logout-item" onclick="MesaApp.logout()" style="display: none; color: #f87171;">
-              <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-              <span>Sair / Trocar Sessão</span>
-            </button>
+                <button type="button" id="menu-logout-btn" class="quick-menu-item logout-item" onclick="MesaApp.logout()" style="display: none;">
+                  <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                  <span>Sair / Trocar Sessão</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
         <!-- Indicador de autenticacao (nunca exibe o token em si) -->
@@ -1337,11 +1355,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=2.5.5"></script>
+<script src="js/campaign-data.js?v=2.5.6"></script>
 
-<script src="js/mesa.js?v=2.5.5"></script>
+<script src="js/mesa.js?v=2.5.6"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.5.5</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.5.6</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
