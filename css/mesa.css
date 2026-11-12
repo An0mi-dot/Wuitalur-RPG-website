@@ -1713,13 +1713,15 @@ body.is-master .coletaveis-master-deliver-btn {
 /* 1. Linha de PV (Verde) e PE com Controles Editáveis */
 .ficha-vital-row {
   display: flex;
-  gap: 24px;
+  flex-wrap: wrap;
+  gap: 16px 22px;
   align-items: center;
   background: rgba(0, 0, 0, 0.55);
   padding: 8px 16px;
   border-left: 5px solid var(--mesa-orange);
   filter: url(#nanquim-rough);
   width: fit-content;
+  max-width: 100%;
 }
 
 .vital-stat-block {
@@ -8696,6 +8698,19 @@ body:has(#abertura-overlay.active) .reaction-picker-popover {
   white-space: nowrap;
 }
 
+.coletavel-stock-badge {
+  font-size: 0.68rem;
+  padding: 2px 7px;
+  background: rgba(245, 158, 11, 0.14);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 0 !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
 .coletavel-card-resumo {
   font-family: var(--font-body, 'Merriweather', serif);
   font-size: 0.82rem;
@@ -13633,6 +13648,81 @@ body:not(.is-master) .igris-floating-close-btn {
   align-items: center;
   gap: 4px;
   letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   RECURSO: TOTENS DO CONCLAVE (FICHA DE PERSONAGEM & BARRA DO INVENTÁRIO)
+   ========================================================================== */
+.totem-conclave-icon {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  flex-shrink: 0;
+  color: #f87171;
+  filter: drop-shadow(0 0 3px rgba(220, 38, 38, 0.55));
+}
+
+.vital-stat-block.vital-stat-totens {
+  border-left: 2px solid rgba(220, 38, 38, 0.45);
+  padding-left: 10px;
+}
+
+.vital-stat-tag.totens-tag {
+  background: #7f1d1d;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 0 6px rgba(220, 38, 38, 0.4);
+}
+
+.vital-stat-tag.totens-tag .totem-conclave-icon {
+  color: #fecaca;
+}
+
+.ficha-inventory-totens-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fecaca;
+  background: rgba(0, 0, 0, 0.48);
+  border: 1px solid rgba(248, 113, 113, 0.45);
+  padding: 1px 8px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.totens-inline-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 2px;
+}
+
+.totens-mini-btn {
+  background: rgba(127, 29, 29, 0.75);
+  border: 1px solid rgba(248, 113, 113, 0.5);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  line-height: 1;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, transform 0.12s ease;
+}
+
+.totens-mini-btn:hover {
+  background: #b91c1c;
+  transform: scale(1.06);
 }
 
 .igris-user-saldo-badge {

@@ -786,6 +786,9 @@ const MesaSecurity = {
 };
 
 
+// Símbolo circular canônico do Conclave (SVG sem emoji)
+const CONCLAVE_TOTEM_SVG = `<svg class="totem-conclave-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="4.5"></circle><path d="M12 3v3M12 18v3M3 12h3M18 12h3"></path><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"></circle></svg>`;
+
 // ---- 3. MESA APP (GERENCIADOR DE ESTADO, SUPABASE E TOKENS SEGUROS) ----
 const MesaApp = {
   SUPABASE_URL: 'https://qkupdpgcjusbedaoahwi.supabase.co', 
@@ -1425,6 +1428,10 @@ const MesaApp = {
       ]
     };
     
+    this.state.players.forEach(p => {
+      if (p && p.totens == null) p.totens = 0;
+    });
+
     this.renderMesa();
   },
 
@@ -1506,11 +1513,21 @@ const MesaApp = {
               }
               return 15;
             })(),
+            totens: (() => {
+              const parsed = typeof raw.atributos === 'string' ? JSON.parse(raw.atributos || '{}') : (raw.atributos || {});
+              if (parsed && parsed.totens !== undefined && parsed.totens !== null) {
+                return Math.max(0, Number(parsed.totens) || 0);
+              }
+              if (raw.totens !== undefined && raw.totens !== null) {
+                return Math.max(0, Number(raw.totens) || 0);
+              }
+              return 0;
+            })(),
             atributos: (() => {
               const parsed = typeof raw.atributos === 'string' ? JSON.parse(raw.atributos || '{}') : (raw.atributos || {});
               const clean = {};
               for (const [k, v] of Object.entries(parsed)) {
-                if (!k.startsWith('_') && !k.startsWith('$') && k !== 'vidrilhos' && typeof v !== 'object') {
+                if (!k.startsWith('_') && !k.startsWith('$') && k !== 'vidrilhos' && k !== 'totens' && typeof v !== 'object') {
                   clean[k] = v;
                 }
               }
@@ -1818,9 +1835,15 @@ const MesaApp = {
             const vNum = Number(v.vidrilhos);
             p.vidrilhos = vNum === 0 ? 15 : vNum;
           }
+          if (v.totens !== undefined && v.totens !== null) {
+            p.totens = Math.max(0, Number(v.totens) || 0);
+          }
         }
         if (p && (p.vidrilhos === 0 || p.vidrilhos == null)) {
           p.vidrilhos = 15;
+        }
+        if (p && (p.totens == null || isNaN(Number(p.totens)))) {
+          p.totens = 0;
         }
       }
 
@@ -1999,7 +2022,7 @@ const MesaApp = {
 
       const visualSig = JSON.stringify((this.state.players || []).map(p => p ? [
         p.id, p.slot, p.nome, p.hp, p.hpMax, p.pe, p.peMax, p.st, p.stMax,
-        p.stressPoints, p.stressPointsMax, p.vidrilhos, p.dadoDePavor, p.imagem, p.avatar
+        p.stressPoints, p.stressPointsMax, p.vidrilhos, p.totens, p.dadoDePavor, p.imagem, p.avatar
       ] : null));
       if (visualSig !== this._lastPlayersVisualSig) {
         this._lastPlayersVisualSig = visualSig;
@@ -2797,6 +2820,12 @@ const MesaApp = {
     if (vidEl) vidEl.textContent = `${vidVal}`;
     if (vidInvEl) vidInvEl.textContent = `${vidVal}`;
 
+    const totEl = document.getElementById('ficha-totens-val');
+    const totInvEl = document.getElementById('ficha-inv-totens-val');
+    const totVal = player.totens != null ? player.totens : 0;
+    if (totEl) totEl.textContent = `${totVal}`;
+    if (totInvEl) totInvEl.textContent = `${totVal}`;
+
     const isMaster = Boolean(this.state && this.state.isMaster);
     const fichaPavorBtn = document.querySelector('.ficha-pavor-toggle-btn');
     if (fichaPavorBtn) {
@@ -2909,7 +2938,8 @@ const MesaApp = {
         stMax: player.stMax,
         stressPoints: player.stressPoints,
         stressPointsMax: player.stressPointsMax,
-        vidrilhos: player.vidrilhos
+        vidrilhos: player.vidrilhos,
+        totens: player.totens != null ? player.totens : 0
       };
       localStorage.setItem('wu_mesa_vitals_cache', JSON.stringify(cache));
     } catch(e) {}
@@ -2946,7 +2976,8 @@ const MesaApp = {
             stMax: player.stMax,
             stressPoints: player.stressPoints,
             stressPointsMax: player.stressPointsMax,
-            vidrilhos: player.vidrilhos
+            vidrilhos: player.vidrilhos,
+            totens: player.totens != null ? player.totens : 0
           };
           await this.supabase
             .from('personagens')
@@ -2959,7 +2990,8 @@ const MesaApp = {
     }
   },
 
-  async savePlayerVidrilhos(slot, vidrilhos) {
+  /** Persists a numeric character counter (vidrilhos or totens) to local cache, character row, and shared slot vitals. */
+  async savePlayerCounter(slot, field, value) {
     const player = this.state.players[slot - 1];
     if (!player || !this.supabase) return;
 
@@ -2969,7 +3001,7 @@ const MesaApp = {
         const cacheStr = localStorage.getItem('wu_mesa_vitals_cache');
         const cache = cacheStr ? JSON.parse(cacheStr) : {};
         if (!cache[slot]) cache[slot] = {};
-        cache[slot].vidrilhos = vidrilhos;
+        cache[slot][field] = value;
         localStorage.setItem('wu_mesa_vitals_cache', JSON.stringify(cache));
       } catch(e) {}
 
@@ -2985,7 +3017,7 @@ const MesaApp = {
         if (data && data.atributos) {
           currentAttrs = typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos;
         }
-        currentAttrs.vidrilhos = vidrilhos;
+        currentAttrs[field] = value;
 
         await this.supabase
           .from('personagens')
@@ -3004,15 +3036,23 @@ const MesaApp = {
         : {};
       if (!mAttrs._sys_players_vitals) mAttrs._sys_players_vitals = {};
       if (!mAttrs._sys_players_vitals[slot]) mAttrs._sys_players_vitals[slot] = {};
-      mAttrs._sys_players_vitals[slot].vidrilhos = vidrilhos;
+      mAttrs._sys_players_vitals[slot][field] = value;
 
       await this.supabase
         .from('personagens')
         .update({ atributos: mAttrs })
         .eq('id', 1);
     } catch(err) {
-      console.error("Erro ao salvar Vidrilhos no Supabase:", err);
+      console.error(`Erro ao salvar ${field} no Supabase:`, err);
     }
+  },
+
+  async savePlayerVidrilhos(slot, vidrilhos) {
+    return this.savePlayerCounter(slot, 'vidrilhos', vidrilhos);
+  },
+
+  async savePlayerTotens(slot, totens) {
+    return this.savePlayerCounter(slot, 'totens', totens);
   },
 
   async updateVidrilhos(slot, delta) {
@@ -3066,6 +3106,53 @@ const MesaApp = {
     await this.updateVidrilhos(slot, delta);
   },
 
+  async updateTotens(slot, delta) {
+    const player = this.state.players[slot - 1];
+    if (!player || !this.canEdit(player)) return;
+
+    const current = (player.totens != null && !isNaN(Number(player.totens))) ? Number(player.totens) : 0;
+    const next = Math.max(0, current + delta);
+    player.totens = next;
+
+    // 1. Atualiza cirurgicamente no DOM
+    this.updateVitalsUI(player);
+    this.renderMesa();
+
+    // 2. Transmissao WebSocket em tempo real
+    const chan = (window.MesaChat && MesaChat.channel) || this.channel;
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'vitals_sync',
+          payload: {
+            slot: player.slot,
+            totens: player.totens
+          }
+        });
+      } catch(e) {}
+    }
+
+    // 3. Persiste no banco Supabase
+    await this.savePlayerTotens(slot, next);
+  },
+
+  async promptSetTotens(slot) {
+    const player = this.state.players[slot - 1];
+    if (!player || !this.canEdit(player)) return;
+
+    const current = (player.totens != null && !isNaN(Number(player.totens))) ? Number(player.totens) : 0;
+    const input = prompt(`Definir quantidade de Totens do Conclave para ${player.nome}:`, current);
+    if (input === null) return;
+    const val = parseInt(input.trim(), 10);
+    if (isNaN(val) || val < 0) {
+      alert('Por favor, informe um número inteiro válido maior ou igual a zero.');
+      return;
+    }
+    const delta = val - current;
+    await this.updateTotens(slot, delta);
+  },
+
   // RECEBE SINCRONIZAÇÃO DE STATUS EM TEMPO REAL VIA WEBSOCKET
   handleIncomingVitals(data) {
     if (!data || !data.slot) return;
@@ -3095,7 +3182,8 @@ const MesaApp = {
         stMax: player.stMax,
         stressPoints: player.stressPoints,
         stressPointsMax: player.stressPointsMax,
-        ...(data.vidrilhos !== undefined ? { vidrilhos: data.vidrilhos } : {})
+        ...(data.vidrilhos !== undefined ? { vidrilhos: data.vidrilhos } : {}),
+        ...(data.totens !== undefined ? { totens: data.totens } : {})
       };
       localStorage.setItem('wu_mesa_vitals_cache', JSON.stringify(cache));
     } catch(e) {}
@@ -3105,6 +3193,10 @@ const MesaApp = {
       if (window.MesaIgrisShop && MesaIgrisShop.isOpen) {
         MesaIgrisShop.updateUserChip();
       }
+    }
+
+    if (data.totens !== undefined) {
+      player.totens = Math.max(0, Number(data.totens) || 0);
     }
 
     // Atualiza o card correspondente na mesa
@@ -3144,8 +3236,8 @@ const MesaApp = {
       { origem: `Arquétipo (${player.arquetipo || 'Curioso'})`, desc: '+d4 em Mente' }
     ];
 
-    // Atributos limpos (ignora metadados e namespaces internos como _wuitter e a moeda vidrilhos)
-    let validKeys = Object.keys(rawAttrs).filter(k => !k.startsWith('_') && !k.startsWith('$') && k !== 'vidrilhos' && typeof rawAttrs[k] !== 'object');
+    // Atributos limpos (ignora metadados e namespaces internos como _wuitter e os contadores vidrilhos/totens)
+    let validKeys = Object.keys(rawAttrs).filter(k => !k.startsWith('_') && !k.startsWith('$') && k !== 'vidrilhos' && k !== 'totens' && typeof rawAttrs[k] !== 'object');
     if (validKeys.length === 0) {
       const fallbackMap = {
         1: { 'Saúde': 'd12', 'Vigor': 'd16', 'Força': 'd4', 'Mente': 'd8' },
@@ -3160,7 +3252,7 @@ const MesaApp = {
       const defaults = fallbackMap[player.slot] || { 'Saúde': 'd12', 'Vigor': 'd16', 'Força': 'd4', 'Mente': 'd8' };
       player.atributos = { ...defaults, ...rawAttrs };
       rawAttrs = player.atributos;
-      validKeys = Object.keys(rawAttrs).filter(k => !k.startsWith('_') && !k.startsWith('$') && k !== 'vidrilhos' && typeof rawAttrs[k] !== 'object');
+      validKeys = Object.keys(rawAttrs).filter(k => !k.startsWith('_') && !k.startsWith('$') && k !== 'vidrilhos' && k !== 'totens' && typeof rawAttrs[k] !== 'object');
     }
     let attrsHtml = validKeys.map((k, idx) => {
       let val = rawAttrs[k];
@@ -3295,6 +3387,16 @@ const MesaApp = {
               <button class="stat-edit-btn" onclick="MesaApp.promptSetVidrilhos(${player.slot})" title="Definir Valor Exato">&#9998;</button>
             ` : ''}
           </div>
+
+          <div class="vital-stat-block vital-stat-totens">
+            <span class="vital-stat-tag totens-tag">${CONCLAVE_TOTEM_SVG} TOTENS</span>
+            <span id="ficha-totens-val" class="vital-stat-val">${player.totens != null ? player.totens : 0}</span>
+            ${editable ? `
+              <button class="stat-edit-btn" onclick="MesaApp.updateTotens(${player.slot}, -1)" title="Diminuir Totens">-</button>
+              <button class="stat-edit-btn" onclick="MesaApp.updateTotens(${player.slot}, +1)" title="Aumentar Totens">+</button>
+              <button class="stat-edit-btn" onclick="MesaApp.promptSetTotens(${player.slot})" title="Definir Valor Exato de Totens">&#9998;</button>
+            ` : ''}
+          </div>
         </div>
 
         <!-- 2. Barra Roxa de Estresse e 6 Bolinhas Transparentes Abaixo -->
@@ -3363,10 +3465,21 @@ const MesaApp = {
 
         <!-- 5. Coletáveis e Itens da Campanha -->
         <div class="ficha-open-section ficha-section-coletaveis" style="margin-top: 18px; width: 100%;">
-          <div class="ink-ribbon-title ficha-coletaveis-title" style="background: #d97706; display: flex; align-items: center; justify-content: space-between; transform: none !important; clip-path: none !important; width: 100%; box-sizing: border-box; border-radius: 0;">
-            <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="ink-ribbon-title ficha-coletaveis-title" style="background: #d97706; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; transform: none !important; clip-path: none !important; width: 100%; box-sizing: border-box; border-radius: 0;">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
               <span>ITENS E COLETÁVEIS EM POSSE</span>
               <span class="ficha-inventory-vidrilhos-pill" title="Saldo de Vidrilhos"><img src="assets/vidrilhos.png" class="vidrilhos-icon" alt="" /> <strong id="ficha-inv-vidrilhos-val">${player.vidrilhos != null ? player.vidrilhos : 0}</strong> Vidrilhos</span>
+              <span class="ficha-inventory-totens-pill" title="Totens do Conclave">
+                ${CONCLAVE_TOTEM_SVG}
+                <span>Totens: <strong id="ficha-inv-totens-val">${player.totens != null ? player.totens : 0}</strong></span>
+                ${editable ? `
+                  <span class="totens-inline-controls">
+                    <button type="button" class="totens-mini-btn" onclick="MesaApp.updateTotens(${player.slot}, -1)" title="Diminuir Totem">-</button>
+                    <button type="button" class="totens-mini-btn" onclick="MesaApp.updateTotens(${player.slot}, +1)" title="Aumentar Totem">+</button>
+                    <button type="button" class="totens-mini-btn" onclick="MesaApp.promptSetTotens(${player.slot})" title="Editar Totens">&#9998;</button>
+                  </span>
+                ` : ''}
+              </span>
             </div>
             ${isMaster ? `
               <div style="display: flex; align-items: center; gap: 6px;">
@@ -6555,6 +6668,14 @@ const MesaColetaveis = {
           merged[idx].resumo = can.resumo;
           changed = true;
         }
+        if (can.estoque !== undefined && merged[idx].estoque === undefined) {
+          merged[idx].estoque = can.estoque;
+          changed = true;
+        }
+        if (can.quantidade !== undefined && merged[idx].quantidade === undefined) {
+          merged[idx].quantidade = can.quantidade;
+          changed = true;
+        }
         if (merged[idx].posse === undefined) {
           merged[idx].posse = can.posse !== undefined ? can.posse : null;
           changed = true;
@@ -7003,6 +7124,7 @@ const MesaColetaveis = {
                 <div class="coletavel-card-badges">
                   <span class="coletavel-card-badge">${it.tipo || 'Item'}</span>
                   <span class="coletavel-weight-badge">Peso ${it.peso !== undefined ? it.peso : 0}</span>
+                  ${(it.estoque != null || (it.quantidade != null && Number(it.quantidade) > 0)) ? `<span class="coletavel-stock-badge">Estoque: ${it.estoque != null ? it.estoque : it.quantidade}</span>` : ''}
                 </div>
               </div>
               ${it.area ? `
@@ -7147,6 +7269,7 @@ const MesaColetaveis = {
                   ${isMaster ? `<span class="coletavel-status-badge ${it.desbloqueado ? 'unlocked' : 'locked'}">${it.desbloqueado ? 'Liberado' : 'Bloqueado'}</span>` : ''}
                   <span class="coletavel-card-badge">${it.tipo || 'Pista'}</span>
                   <span class="coletavel-weight-badge">Peso ${it.peso !== undefined ? it.peso : 0}</span>
+                  ${(it.estoque != null || (it.quantidade != null && Number(it.quantidade) > 0)) ? `<span class="coletavel-stock-badge">Estoque: ${it.estoque != null ? it.estoque : it.quantidade}</span>` : ''}
                 </div>
               </div>
               ${it.area ? `
