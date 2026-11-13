@@ -1444,6 +1444,43 @@
       posse: 8,
       resumo: "Um maço de papel mole e amarelado pela umidade, amarrado com um elástico velho. Lá dentro há apenas dois cigarros escuros, enrolados de forma irregular, que estalam baixinho quando acesos e soltam uma fumaça densa e adocicada.",
       detalhe: "Consumível, 2 usos por maço. O cheiro forte de cravo queimado corta qualquer fedor do ambiente e acalma a tremedeira nas mãos. Recupera 1d4 de Estresse/Sanidade ou PE e anula penalidades por náusea ou mau cheiro."
+    },
+    {
+      id: "col_livro_rei_palido",
+      nome: "O Rei Pálido (Lorena Valente, 2013)",
+      peso: 1,
+      tipo: "Item Investigativo Único",
+      campo_tipo: "Aparência Física",
+      area: "Investigação / Objeto Maldito",
+      desbloqueado: true,
+      imagem: "assets/coletaveis/livro_rei_palido_capa.webp",
+      resumo: "Um livro de capa dura cinza-chumbo, áspero e bastante desgastado pelo tempo. No centro da capa, a pintura gasta e perturbadora de uma figura encapuzada de rosto em vazio negro absoluto.",
+      detalhe: "Um livro de capa dura cinza-chumbo, áspero e bastante desgastado pelo tempo. O título \"O REI PÁLIDO\" e o nome da autora estão impressos em letras prateadas descascadas. No centro da capa, há uma pintura gasta e perturbadora de uma figura vestindo um capuz branco pálido, cujo rosto é um vazio negro e absoluto. Ao abri-lo, nota-se que dezenas de páginas foram violentamente rasgadas e removidas, deixando o miolo irregular. No entanto, sete páginas específicas foram cuidadosamente grampeadas juntas, separadas do resto da obra de forma claramente proposital.",
+      mestre_info: "Efeitos e Usos em Jogo:\n• Leitura Perturbadora: A prosa do livro não é apenas assustadora; ela carrega o peso real da maldição. Ler essas páginas soa profundamente perturbador, evocando um medo visceral e sensações ruins que se tornam desconfortantes demais para a mente suportar. Para cada 10 segundos de leitura, o personagem recebe 5 pontos de dano de Sanidade.\n• Reconhecimento Histórico: Quem possuir perícia em História já conhecia esta obra anteriormente. Trata-se de uma coletânea de histórias de terror escrita por Lorena Valente, autora famosa na época que lançou diversos contos de grande repercussão, incluindo um de seus melhores e mais aclamados trabalhos: o conto de terror O Carniceiro."
+    },
+    {
+      id: "col_anotacoes_caixa_negra",
+      nome: "Páginas de Pesquisa e Anotações de Constança",
+      peso: 0,
+      tipo: "Item Investigativo Único",
+      campo_tipo: "Aparência Física",
+      area: "Investigação / Registro Arcano",
+      desbloqueado: true,
+      imagem: "assets/coletaveis/anotacoes_caixa_1.webp",
+      resumo: "Folhas duplas de papel envelhecido e amarelado dispostas lado a lado com ilustrações técnicas de uma caixa de pedra com entalhes dourados e caligrafia cursiva elegante em tinta roxa.",
+      detalhe: "Folhas duplas de papel envelhecido e amarelado dispostas lado a lado. A primeira folha exibe desenhos técnicos detalhados e geométricos feitos à mão de uma caixa de pedra com entalhes dourados, apresentando duas visões distintas (uma fechada com medidas estruturais e a legenda \"Trancada\", e outra aberta revelando o interior totalmente escuro). Sobreposta a essas ilustrações, há anotações cursivas manuscritas em tinta roxa com questionamentos ansiosos e confusos. A segunda folha traz longos parágrafos densos e reflexivos preenchidos inteiramente com a mesma caligrafia elegante em tinta roxa."
+    },
+    {
+      id: "col_anotacao_solta_constanca",
+      nome: "Página Solta de Reflexão de Constança",
+      peso: 0,
+      tipo: "Item Investigativo Único",
+      campo_tipo: "Aparência Física",
+      area: "Investigação / Manuscrito Oculto",
+      desbloqueado: true,
+      imagem: "assets/coletaveis/anotacao_constanca_solta.webp",
+      resumo: "Uma folha de papel única e envelhecida, disposta verticalmente, contendo dogmas e justificativas macabras em caligrafia cursiva elegante em louvor à entidade.",
+      detalhe: "Uma folha de papel única e envelhecida, com bordas levemente gastas e manchas amareladas, disposta verticalmente sobre uma mesa de madeira. O papel contém um texto centralizado escrito com uma caligrafia cursiva elegante e imaculada, detalhando dogmas e justificativas macabras sobre o sacrifício e a purificação em louvor à entidade."
     }
   ];
 

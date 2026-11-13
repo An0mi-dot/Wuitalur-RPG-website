@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.8';
+const MESA_VERSION = 'v2.5.9';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -2612,6 +2612,27 @@ const MesaApp = {
       if (isFromSelf(payload)) return;
       if (window.MesaCenterArtwork && payload.payload) {
         MesaCenterArtwork.syncFromRemote(payload.payload);
+      }
+    });
+
+    channel.on('broadcast', { event: 'rei_palido_page' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaReiPalido && payload.payload) {
+        MesaReiPalido.handleIncomingPage(payload.payload);
+      }
+    });
+
+    channel.on('broadcast', { event: 'rei_palido_spotlight' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaReiPalido && payload.payload) {
+        MesaReiPalido.handleIncomingSpotlight(payload.payload);
+      }
+    });
+
+    channel.on('broadcast', { event: 'rei_palido_timer' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaReiPalido && payload.payload) {
+        MesaReiPalido.handleIncomingTimer(payload.payload);
       }
     });
 
@@ -7552,6 +7573,7 @@ window.MesaMobileMenu = MesaMobileMenu;
 document.addEventListener('DOMContentLoaded', async () => {
   if (window.MesaMediaPlayer) MesaMediaPlayer.init();
   if (window.MesaCombate) MesaCombate.init();
+  if (window.MesaReiPalido) MesaReiPalido.init();
   MesaMobileMenu.init();
   const savedToken = localStorage.getItem('wu_user_token') || localStorage.getItem('mesa_token');
   await MesaApp.init(savedToken);
@@ -7705,6 +7727,10 @@ const MesaColetaveis = {
           merged[idx].resumo = can.resumo;
           changed = true;
         }
+        if (can.mestre_info && merged[idx].mestre_info !== can.mestre_info) {
+          merged[idx].mestre_info = can.mestre_info;
+          changed = true;
+        }
         if (can.estoque !== undefined && merged[idx].estoque === undefined) {
           merged[idx].estoque = can.estoque;
           changed = true;
@@ -7717,7 +7743,7 @@ const MesaColetaveis = {
           merged[idx].posse = can.posse !== undefined ? can.posse : null;
           changed = true;
         }
-        if (['col_notebook_sara', 'col_livro_viajante_terra', 'col_caixa_negra_dourada', 'col_fita_01', 'col_fita_02'].includes(can.id)) {
+        if (['col_notebook_sara', 'col_livro_viajante_terra', 'col_caixa_negra_dourada', 'col_fita_01', 'col_fita_02', 'col_livro_rei_palido', 'col_anotacoes_caixa_negra', 'col_anotacao_solta_constanca'].includes(can.id)) {
           if (!merged[idx].desbloqueado) {
             merged[idx].desbloqueado = true;
             changed = true;
@@ -8143,6 +8169,9 @@ const MesaColetaveis = {
     container.innerHTML = `
       <div class="coletaveis-cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px;">
         ${playerItems.map(it => {
+          const isReiPalido = it.id === 'col_livro_rei_palido';
+          const isAnotacoesCaixa = it.id === 'col_anotacoes_caixa_negra';
+          const isAnotacaoSolta = it.id === 'col_anotacao_solta_constanca';
           const isBook = it.id === 'col_livro_viajante_terra' || (it.paginas && it.paginas.length > 0);
           const isDiario = it.id === 'col_diario_sara';
           const isCaixa = it.id === 'col_caixa_negra_dourada';
@@ -8150,9 +8179,9 @@ const MesaColetaveis = {
           const isCartaz = it.id === 'col_cartaz_desaparecido' || it.id === 'col_panfleto_anotado_kali';
           const isGravador = it.id === 'col_gravador_fita_01' || it.id === 'col_gravador_bolso_02';
           const isFita = it.id === 'col_fita_01' || it.id === 'col_fita_02';
-          const isClickable = isBook || isDiario || isCaixa || isNotebook || isCartaz || isGravador || isFita;
-          const clickAction = isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : (isCartaz ? `MesaLivroReader.open('col_cartaz_desaparecido')` : ((isGravador || isFita) ? `MesaLivroReader.open('${it.id}')` : '')))));
-          const clickTitle = isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : (isCartaz ? 'Clique para examinar o cartaz e ler o verso' : (isFita ? 'Clique para ouvir os ecos da fita espectral' : '')))));
+          const isClickable = isBook || isDiario || isCaixa || isNotebook || isCartaz || isGravador || isFita || isReiPalido || isAnotacoesCaixa || isAnotacaoSolta;
+          const clickAction = isReiPalido ? (isMaster ? `MesaReiPalido.open('capa')` : `MesaReiPalido.playerInspect()`) : (isAnotacoesCaixa ? `MesaLivroReader.open('col_anotacoes_caixa_negra')` : (isAnotacaoSolta ? `MesaLivroReader.open('col_anotacao_solta_constanca')` : (isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : (isCartaz ? `MesaLivroReader.open('col_cartaz_desaparecido')` : ((isGravador || isFita) ? `MesaLivroReader.open('${it.id}')` : ''))))))));
+          const clickTitle = isReiPalido ? (isMaster ? 'Clique para abrir o leitor sob a penumbra com lanterna e sanidade' : 'Páginas grampeadas sob escuridão') : (isAnotacoesCaixa ? 'Clique para examinar as folhas de pesquisa da caixa' : (isAnotacaoSolta ? 'Clique para examinar a página solta de reflexão' : (isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : (isCartaz ? 'Clique para examinar o cartaz e ler o verso' : (isFita ? 'Clique para ouvir os ecos da fita espectral' : ''))))))));
 
           return `
             <div class="coletavel-card ${isClickable ? 'clickable-item' : ''}" style="padding: 12px 14px;" ${isClickable ? `onclick="${clickAction}" title="${clickTitle}"` : ''}>
@@ -8176,6 +8205,42 @@ const MesaColetaveis = {
                   <strong>${it.campo_tipo || (it.efeito ? 'Efeito' : 'Detalhe')}:</strong>
                   ${it.detalhe || it.desc}
                 </p>
+              ` : ''}
+              ${(isMaster && it.mestre_info) ? `
+                <div class="coletavel-master-secrets master-item" style="margin-top: 8px; padding: 8px 10px; background: rgba(220, 38, 38, 0.12); border-left: 3px solid #dc2626; border-radius: 3px;">
+                  <strong style="color: #ef4444; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Informações Exclusivas do Mestre:</strong>
+                  <div style="font-size: 0.76rem; color: #e5e5e5; line-height: 1.45; white-space: pre-line;">${it.mestre_info}</div>
+                </div>
+              ` : ''}
+              ${it.imagem ? `
+                <div class="coletavel-card-media" style="margin: 8px 0; border-radius: 4px; overflow: hidden; border: 1px solid rgba(245, 158, 11, 0.25); background: #08070b; text-align: center; max-height: 180px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <img src="${it.imagem}" alt="${it.nome}" style="max-height: 180px; width: 100%; object-fit: contain; display: block;" />
+                </div>
+              ` : ''}
+              ${isReiPalido ? `
+                ${isMaster ? `
+                  <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaReiPalido.open('capa');" style="background: rgba(185, 28, 28, 0.2); border-color: #dc2626; color: #fca5a5;">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                    <span>Abrir Leitura Sob a Penumbra (Lanterna &amp; Sanidade)</span>
+                  </button>
+                ` : `
+                  <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaReiPalido.playerInspect();" style="background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.2); color: #d4d4d4;">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                    <span>Examinar Páginas Grampeadas</span>
+                  </button>
+                `}
+              ` : ''}
+              ${isAnotacoesCaixa ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_anotacoes_caixa_negra');" style="background: rgba(168, 85, 247, 0.16); border-color: rgba(168, 85, 247, 0.45); color: #c084fc;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                  <span>Examinar Páginas de Pesquisa (2 Folhas)</span>
+                </button>
+              ` : ''}
+              ${isAnotacaoSolta ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_anotacao_solta_constanca');" style="background: rgba(245, 158, 11, 0.16); border-color: rgba(245, 158, 11, 0.45); color: #fbbf24;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                  <span>Examinar Página Solta de Reflexão (1 Folha)</span>
+                </button>
               ` : ''}
               ${it.imagem ? `
                 <div class="coletavel-card-media" style="margin: 8px 0; border-radius: 4px; overflow: hidden; border: 1px solid rgba(245, 158, 11, 0.25); background: #08070b; text-align: center; max-height: 180px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
@@ -8287,6 +8352,9 @@ const MesaColetaveis = {
     container.innerHTML = `
       <div class="coletaveis-cards-grid">
         ${filtered.map(it => {
+          const isReiPalido = it.id === 'col_livro_rei_palido';
+          const isAnotacoesCaixa = it.id === 'col_anotacoes_caixa_negra';
+          const isAnotacaoSolta = it.id === 'col_anotacao_solta_constanca';
           const isBook = it.id === 'col_livro_viajante_terra' || (it.paginas && it.paginas.length > 0);
           const isDiario = it.id === 'col_diario_sara';
           const isCaixa = it.id === 'col_caixa_negra_dourada';
@@ -8294,9 +8362,9 @@ const MesaColetaveis = {
           const isCartaz = it.id === 'col_cartaz_desaparecido' || it.id === 'col_panfleto_anotado_kali';
           const isGravador = it.id === 'col_gravador_fita_01' || it.id === 'col_gravador_bolso_02';
           const isFita = it.id === 'col_fita_01' || it.id === 'col_fita_02';
-          const isClickable = isBook || isDiario || isCaixa || isNotebook || isCartaz || isGravador || isFita;
-          const clickAction = isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : (isCartaz ? `MesaLivroReader.open('col_cartaz_desaparecido')` : ((isGravador || isFita) ? `MesaLivroReader.open('${it.id}')` : '')))));
-          const clickTitle = isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : (isCartaz ? 'Clique para examinar o cartaz e ler o verso' : (isFita ? 'Clique para ouvir os ecos da fita espectral' : '')))));
+          const isClickable = isBook || isDiario || isCaixa || isNotebook || isCartaz || isGravador || isFita || isReiPalido || isAnotacoesCaixa || isAnotacaoSolta;
+          const clickAction = isReiPalido ? (isMaster ? `MesaReiPalido.open('capa')` : `MesaReiPalido.playerInspect()`) : (isAnotacoesCaixa ? `MesaLivroReader.open('col_anotacoes_caixa_negra')` : (isAnotacaoSolta ? `MesaLivroReader.open('col_anotacao_solta_constanca')` : (isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : (isCartaz ? `MesaLivroReader.open('col_cartaz_desaparecido')` : ((isGravador || isFita) ? `MesaLivroReader.open('${it.id}')` : ''))))))));
+          const clickTitle = isReiPalido ? (isMaster ? 'Clique para abrir o leitor sob a penumbra com lanterna e sanidade' : 'Páginas grampeadas sob escuridão') : (isAnotacoesCaixa ? 'Clique para examinar as folhas de pesquisa da caixa' : (isAnotacaoSolta ? 'Clique para examinar a página solta de reflexão' : (isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : (isCartaz ? 'Clique para examinar o cartaz e ler o verso' : (isFita ? 'Clique para ouvir os ecos da fita espectral' : ''))))))));
 
           return `
             <div class="coletavel-card ${isMaster ? (it.desbloqueado ? 'master-unlocked' : 'master-locked') : ''} ${isClickable ? 'clickable-item' : ''}" ${isClickable ? `onclick="${clickAction}" title="${clickTitle}"` : ''}>
@@ -8321,6 +8389,42 @@ const MesaColetaveis = {
                   <strong>${it.campo_tipo || (it.efeito ? 'Efeito' : 'Detalhe')}:</strong>
                   ${it.detalhe || it.desc}
                 </p>
+              ` : ''}
+              ${(isMaster && it.mestre_info) ? `
+                <div class="coletavel-master-secrets master-item" style="margin-top: 8px; padding: 8px 10px; background: rgba(220, 38, 38, 0.12); border-left: 3px solid #dc2626; border-radius: 3px;">
+                  <strong style="color: #ef4444; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Informações Exclusivas do Mestre:</strong>
+                  <div style="font-size: 0.76rem; color: #e5e5e5; line-height: 1.45; white-space: pre-line;">${it.mestre_info}</div>
+                </div>
+              ` : ''}
+              ${it.imagem ? `
+                <div class="coletavel-card-media" style="margin: 8px 0; border-radius: 4px; overflow: hidden; border: 1px solid rgba(245, 158, 11, 0.25); background: #08070b; text-align: center; max-height: 180px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <img src="${it.imagem}" alt="${it.nome}" style="max-height: 180px; width: 100%; object-fit: contain; display: block;" />
+                </div>
+              ` : ''}
+              ${isReiPalido ? `
+                ${isMaster ? `
+                  <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaReiPalido.open('capa');" style="background: rgba(185, 28, 28, 0.2); border-color: #dc2626; color: #fca5a5;">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                    <span>Abrir Leitura Sob a Penumbra (Lanterna &amp; Sanidade)</span>
+                  </button>
+                ` : `
+                  <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaReiPalido.playerInspect();" style="background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.2); color: #d4d4d4;">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                    <span>Examinar Páginas Grampeadas</span>
+                  </button>
+                `}
+              ` : ''}
+              ${isAnotacoesCaixa ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_anotacoes_caixa_negra');" style="background: rgba(168, 85, 247, 0.16); border-color: rgba(168, 85, 247, 0.45); color: #c084fc;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                  <span>Examinar Páginas de Pesquisa (2 Folhas)</span>
+                </button>
+              ` : ''}
+              ${isAnotacaoSolta ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_anotacao_solta_constanca');" style="background: rgba(245, 158, 11, 0.16); border-color: rgba(245, 158, 11, 0.45); color: #fbbf24;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                  <span>Examinar Página Solta de Reflexão (1 Folha)</span>
+                </button>
               ` : ''}
               ${it.imagem ? `
                 <div class="coletavel-card-media" style="margin: 8px 0; border-radius: 4px; overflow: hidden; border: 1px solid rgba(245, 158, 11, 0.25); background: #08070b; text-align: center; max-height: 180px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
@@ -8445,6 +8549,9 @@ const MesaLivroReader = {
   ],
 
   open(itemId = 'col_livro_viajante_terra', page = 1) {
+    if (window.MesaReiPalido && MesaReiPalido.isOpen) {
+      MesaReiPalido.close();
+    }
     this.currentDocId = itemId || 'col_livro_viajante_terra';
     this.currentPage = page;
     this.mode = 'single';
@@ -8496,6 +8603,85 @@ const MesaLivroReader = {
     const controls = document.getElementById('livro-reader-controls');
     const container = document.getElementById('livro-reader-body');
     const note = document.getElementById('livro-reader-note');
+
+    // MODO ANOTAÇÕES DE ESTUDO DA CAIXA NEGRA (CONSTANÇA)
+    if (this.currentDocId === 'col_anotacoes_caixa_negra') {
+      if (badge) {
+        badge.textContent = 'DOCUMENTO DA CAMPANHA • REGISTRO ARCANO';
+        badge.style.display = 'inline-block';
+      }
+      if (title) title.textContent = 'PÁGINAS DE PESQUISA E ANOTAÇÕES DE CONSTANÇA';
+      if (subtitle) {
+        subtitle.textContent = 'Folhas Duplas Envelhecidas • Estudos Geométricos e Ocultos';
+        subtitle.style.display = 'block';
+      }
+      if (controls) controls.style.display = 'none';
+      if (note) note.textContent = 'Folhas de papel amarelado com desenhos técnicos da caixa de pedra e longas reflexões em tinta roxa.';
+      if (container) {
+        container.innerHTML = `
+          <div class="livro-single-doc-wrap" style="display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 6px 4px; max-width: 900px; margin: 0 auto;">
+            
+            <div style="width: 100%; background: #0c0a10; border: 1.5px solid rgba(168, 85, 247, 0.45); border-radius: 6px; padding: 20px 22px; box-shadow: 0 10px 32px rgba(0,0,0,0.85);">
+              <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(168, 85, 247, 0.3); padding-bottom: 8px; margin-bottom: 14px;">
+                <span style="font-size: 0.85rem; font-weight: 800; color: #c084fc; letter-spacing: 1.5px; font-family: monospace;">FOLHA 1 • DESENHOS TÉCNICOS DA CAIXA</span>
+                <span style="font-size: 0.72rem; color: #a855f7; font-family: monospace;">ESQUEMA ESTRUTURAL</span>
+              </div>
+              <div style="border-radius: 4px; overflow: hidden; border: 1px solid rgba(168, 85, 247, 0.25); background: #000; text-align: center; margin-bottom: 12px;">
+                <img src="assets/coletaveis/anotacoes_caixa_1.webp" alt="Folha 1 - Desenhos Técnicos da Caixa" style="width: 100%; max-height: 580px; object-fit: contain; display: block;" />
+              </div>
+              <p style="font-size: 0.86rem; color: #d8b4fe; line-height: 1.6; margin: 0; font-family: 'JetBrains Mono', monospace;">
+                A primeira folha exibe desenhos técnicos geométricos da caixa de pedra com entalhes dourados (visão trancada e visão aberta revelando o interior totalmente escuro), sobrepostos por questionamentos ansiosos em tinta roxa.
+              </p>
+            </div>
+
+            <div style="width: 100%; background: #0c0a10; border: 1.5px solid rgba(168, 85, 247, 0.45); border-radius: 6px; padding: 20px 22px; box-shadow: 0 10px 32px rgba(0,0,0,0.85);">
+              <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(168, 85, 247, 0.3); padding-bottom: 8px; margin-bottom: 14px;">
+                <span style="font-size: 0.85rem; font-weight: 800; color: #c084fc; letter-spacing: 1.5px; font-family: monospace;">FOLHA 2 • REFLEXÕES EM TINTA ROXA</span>
+                <span style="font-size: 0.72rem; color: #a855f7; font-family: monospace;">MANUSCRITO CURSIVO</span>
+              </div>
+              <div style="border-radius: 4px; overflow: hidden; border: 1px solid rgba(168, 85, 247, 0.25); background: #000; text-align: center; margin-bottom: 12px;">
+                <img src="assets/coletaveis/anotacoes_caixa_2.webp" alt="Folha 2 - Reflexões em Tinta Roxa" style="width: 100%; max-height: 580px; object-fit: contain; display: block;" />
+              </div>
+              <p style="font-size: 0.86rem; color: #d8b4fe; line-height: 1.6; margin: 0; font-family: 'JetBrains Mono', monospace;">
+                A segunda folha traz longos parágrafos densos e reflexivos preenchidos inteiramente com a caligrafia elegante em tinta roxa de Constança.
+              </p>
+            </div>
+
+          </div>
+        `;
+      }
+      return;
+    }
+
+    // MODO ANOTAÇÃO SOLTA DE CONSTANÇA
+    if (this.currentDocId === 'col_anotacao_solta_constanca') {
+      if (badge) {
+        badge.textContent = 'DOCUMENTO DA CAMPANHA • MANUSCRITO OCULTO';
+        badge.style.display = 'inline-block';
+      }
+      if (title) title.textContent = 'PÁGINA SOLTA DE REFLEXÃO DE CONSTANÇA';
+      if (subtitle) {
+        subtitle.textContent = 'Folha Amarelada Única • Dogmas do Sacrifício';
+        subtitle.style.display = 'block';
+      }
+      if (controls) controls.style.display = 'none';
+      if (note) note.textContent = 'Folha de papel envelhecido com manchas amareladas, detalhando dogmas sobre o sacrifício e a purificação em louvor à entidade.';
+      if (container) {
+        container.innerHTML = `
+          <div class="livro-single-doc-wrap" style="display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 6px 4px; max-width: 760px; margin: 0 auto;">
+            <div style="width: 100%; background: #0c0a10; border: 1.5px solid rgba(245, 158, 11, 0.45); border-radius: 6px; padding: 20px 22px; box-shadow: 0 10px 32px rgba(0,0,0,0.85);">
+              <div style="border-radius: 4px; overflow: hidden; border: 1px solid rgba(245, 158, 11, 0.25); background: #000; text-align: center; margin-bottom: 14px;">
+                <img src="assets/coletaveis/anotacao_constanca_solta.webp" alt="Página Solta de Reflexão de Constança" style="width: 100%; max-height: 640px; object-fit: contain; display: block;" />
+              </div>
+              <p style="font-size: 0.86rem; color: #fbbf24; line-height: 1.6; margin: 0; font-family: 'JetBrains Mono', monospace;">
+                Uma folha de papel única e envelhecida com bordas gastas. O texto centralizado em caligrafia cursiva detalha dogmas e justificativas sobre o sacrifício e a purificação em louvor à entidade.
+              </p>
+            </div>
+          </div>
+        `;
+      }
+      return;
+    }
 
     // MODO 0: CARTAZ DE DESAPARECIDO (FRENTE E VERSO)
     if (this.currentDocId === 'col_cartaz_desaparecido' || this.currentDocId === 'col_panfleto_anotado_kali') {
@@ -8958,6 +9144,378 @@ document.addEventListener('keydown', (e) => {
     }
   }
 });
+
+// ==========================================================================
+// MESA REI PÁLIDO (LIVRO INVESTIGATIVO ÚNICO COM LANTERNA E SANIDADE)
+// ==========================================================================
+const MesaReiPalido = {
+  isOpen: false,
+  currentPage: 'capa',
+  pages: {
+    capa: {
+      id: 'capa',
+      title: 'CAPA DO LIVRO',
+      src: 'assets/coletaveis/livro_rei_palido_capa.webp'
+    },
+    p1: {
+      id: 'p1',
+      title: 'PÁGINAS 1 & 2',
+      src: 'assets/coletaveis/livro_rei_palido_p1.webp'
+    },
+    p2: {
+      id: 'p2',
+      title: 'PÁGINAS 3 & 4',
+      src: 'assets/coletaveis/livro_rei_palido_p2.webp'
+    },
+    p3: {
+      id: 'p3',
+      title: 'PÁGINAS 5 & 6',
+      src: 'assets/coletaveis/livro_rei_palido_p3.webp'
+    }
+  },
+  timer: {
+    running: false,
+    startTime: 0,
+    elapsedMs: 0,
+    rafId: null,
+    lastTens: 0,
+    sanidade: 0
+  },
+  lastSpotlightSend: 0,
+
+  init() {
+    this.bindEvents();
+  },
+
+  bindEvents() {
+    const viewport = document.getElementById('rei-palido-viewport');
+    if (!viewport) return;
+
+    const handleMove = (e) => {
+      if (!this.isOpen) return;
+      const isMaster = Boolean((window.MesaApp && MesaApp.state && MesaApp.state.isMaster) || document.body.classList.contains('is-master'));
+      if (!isMaster) return; // O mouse dos jogadores NAO emite luz
+
+      const container = document.getElementById('rei-palido-sheet-container');
+      if (!container) return;
+
+      const rect = container.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      container.style.setProperty('--light-x', mouseX + 'px');
+      container.style.setProperty('--light-y', mouseY + 'px');
+
+      const now = performance.now();
+      if (now - this.lastSpotlightSend > 45) {
+        this.lastSpotlightSend = now;
+        const percentX = mouseX / rect.width;
+        const percentY = mouseY / rect.height;
+        this.broadcastSpotlight(percentX, percentY);
+      }
+    };
+
+    viewport.addEventListener('mousemove', handleMove);
+    viewport.addEventListener('touchmove', (e) => {
+      if (e.touches && e.touches[0]) {
+        handleMove(e.touches[0]);
+      }
+    }, { passive: true });
+
+    window.addEventListener('keydown', (e) => {
+      if (this.isOpen && e.key === 'Escape') {
+        this.close();
+      }
+    });
+  },
+
+  open(pageId = 'capa') {
+    const modal = document.getElementById('rei-palido-modal');
+    if (!modal) return;
+    if (window.MesaLivroReader) MesaLivroReader.close();
+
+    this.isOpen = true;
+    modal.style.display = 'flex';
+    this.selectPage(pageId, true);
+
+    const isMaster = Boolean((window.MesaApp && MesaApp.state && MesaApp.state.isMaster) || document.body.classList.contains('is-master'));
+    if (isMaster) {
+      this.broadcastPage(pageId, 'open');
+    }
+  },
+
+  close() {
+    const modal = document.getElementById('rei-palido-modal');
+    if (modal) modal.style.display = 'none';
+    this.isOpen = false;
+
+    const container = document.getElementById('rei-palido-sheet-container');
+    if (container) {
+      container.style.setProperty('--light-x', '-9999px');
+      container.style.setProperty('--light-y', '-9999px');
+    }
+
+    const isMaster = Boolean((window.MesaApp && MesaApp.state && MesaApp.state.isMaster) || document.body.classList.contains('is-master'));
+    if (isMaster) {
+      this.broadcastPage(this.currentPage, 'close');
+    }
+  },
+
+  selectPage(pageId, isOpening = false) {
+    if (!this.pages[pageId]) pageId = 'capa';
+    this.currentPage = pageId;
+
+    const pageData = this.pages[pageId];
+    const img = document.getElementById('rei-palido-img');
+    const title = document.getElementById('rei-palido-page-name');
+
+    if (img) img.src = pageData.src;
+    if (title) title.textContent = pageData.title;
+
+    document.querySelectorAll('.rei-palido-page-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.page === pageId);
+    });
+
+    const isMaster = Boolean((window.MesaApp && MesaApp.state && MesaApp.state.isMaster) || document.body.classList.contains('is-master'));
+    if (isMaster && !isOpening) {
+      this.broadcastPage(pageId, 'open');
+    }
+  },
+
+  playerInspect() {
+    if (this.isOpen) {
+      const modal = document.getElementById('rei-palido-modal');
+      if (modal) modal.style.display = 'flex';
+    } else {
+      if (window.MesaApp && typeof MesaApp.showToast === 'function') {
+        MesaApp.showToast('[O REI PÁLIDO] O miolo irregular está selado na escuridão. O Mestre deve abrir a obra para iniciar a leitura sob a penumbra.');
+      }
+    }
+  },
+
+  toggleTimer() {
+    if (this.timer.running) {
+      this.pauseTimer();
+    } else {
+      this.startTimer();
+    }
+  },
+
+  startTimer() {
+    this.timer.running = true;
+    this.timer.startTime = performance.now() - this.timer.elapsedMs;
+
+    const btn = document.getElementById('rei-palido-play-btn');
+    if (btn) btn.textContent = 'PAUSAR';
+
+    this.runTimerLoop();
+    this.broadcastTimerState();
+  },
+
+  pauseTimer() {
+    this.timer.running = false;
+    if (this.timer.rafId) {
+      cancelAnimationFrame(this.timer.rafId);
+      this.timer.rafId = null;
+    }
+
+    const btn = document.getElementById('rei-palido-play-btn');
+    if (btn) btn.textContent = 'CONTINUAR';
+
+    this.broadcastTimerState();
+  },
+
+  resetTimer() {
+    this.timer.running = false;
+    if (this.timer.rafId) {
+      cancelAnimationFrame(this.timer.rafId);
+      this.timer.rafId = null;
+    }
+    this.timer.elapsedMs = 0;
+    this.timer.lastTens = 0;
+    this.timer.sanidade = 0;
+
+    const btn = document.getElementById('rei-palido-play-btn');
+    if (btn) btn.textContent = 'INICIAR';
+
+    const display = document.getElementById('rei-palido-timer-display');
+    if (display) display.textContent = '00:00.000';
+
+    const sanVal = document.getElementById('rei-palido-sanidade-val');
+    if (sanVal) {
+      sanVal.textContent = '0';
+      sanVal.classList.remove('pulse');
+    }
+
+    this.broadcastTimerState();
+  },
+
+  runTimerLoop() {
+    if (!this.timer.running) return;
+
+    const now = performance.now();
+    this.timer.elapsedMs = now - this.timer.startTime;
+
+    const totalSec = Math.floor(this.timer.elapsedMs / 1000);
+    const min = Math.floor(totalSec / 60);
+    const sec = totalSec % 60;
+    const ms = Math.floor(this.timer.elapsedMs % 1000);
+
+    const pad = (n, len) => String(n).padStart(len, '0');
+    const display = document.getElementById('rei-palido-timer-display');
+    if (display) {
+      display.textContent = `${pad(min, 2)}:${pad(sec, 2)}.${pad(ms, 3)}`;
+    }
+
+    const currentTens = Math.floor(totalSec / 10);
+    if (currentTens > this.timer.lastTens) {
+      this.timer.lastTens = currentTens;
+      this.timer.sanidade = currentTens * 5;
+      this.triggerSanidadePulse(this.timer.sanidade);
+    }
+
+    this.timer.rafId = requestAnimationFrame(() => this.runTimerLoop());
+  },
+
+  triggerSanidadePulse(newVal) {
+    const sanVal = document.getElementById('rei-palido-sanidade-val');
+    if (sanVal) {
+      sanVal.textContent = newVal;
+      sanVal.classList.remove('pulse');
+      void sanVal.offsetWidth;
+      sanVal.classList.add('pulse');
+      setTimeout(() => {
+        if (sanVal) sanVal.classList.remove('pulse');
+      }, 500);
+    }
+    this.broadcastTimerState();
+  },
+
+  broadcastPage(pageId, action = 'open') {
+    if (!window.MesaApp || !MesaApp.supabase) return;
+    const chan = MesaApp.channel || (typeof MesaApp.getChannel === 'function' ? MesaApp.getChannel() : null);
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'rei_palido_page',
+          payload: {
+            action,
+            page: pageId,
+            _senderId: MesaApp.clientId || null
+          }
+        });
+      } catch(e) {}
+    }
+  },
+
+  broadcastSpotlight(percentX, percentY) {
+    if (!window.MesaApp || !MesaApp.supabase) return;
+    const chan = MesaApp.channel || (typeof MesaApp.getChannel === 'function' ? MesaApp.getChannel() : null);
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'rei_palido_spotlight',
+          payload: {
+            percentX,
+            percentY,
+            _senderId: MesaApp.clientId || null
+          }
+        });
+      } catch(e) {}
+    }
+  },
+
+  broadcastTimerState() {
+    if (!window.MesaApp || !MesaApp.supabase) return;
+    const chan = MesaApp.channel || (typeof MesaApp.getChannel === 'function' ? MesaApp.getChannel() : null);
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'rei_palido_timer',
+          payload: {
+            running: this.timer.running,
+            elapsedMs: this.timer.elapsedMs,
+            sanidade: this.timer.sanidade,
+            _senderId: MesaApp.clientId || null
+          }
+        });
+      } catch(e) {}
+    }
+  },
+
+  handleIncomingPage(data) {
+    if (!data) return;
+    if (data.action === 'close') {
+      const modal = document.getElementById('rei-palido-modal');
+      if (modal) modal.style.display = 'none';
+      this.isOpen = false;
+      return;
+    }
+    if (data.action === 'open') {
+      const modal = document.getElementById('rei-palido-modal');
+      if (modal) modal.style.display = 'flex';
+      this.isOpen = true;
+      if (data.page) {
+        this.selectPage(data.page, true);
+      }
+    }
+  },
+
+  handleIncomingSpotlight(data) {
+    if (!data || typeof data.percentX !== 'number' || typeof data.percentY !== 'number') return;
+    const container = document.getElementById('rei-palido-sheet-container');
+    if (!container) return;
+
+    const rect = container.getBoundingClientRect();
+    const mouseX = data.percentX * rect.width;
+    const mouseY = data.percentY * rect.height;
+
+    container.style.setProperty('--light-x', mouseX + 'px');
+    container.style.setProperty('--light-y', mouseY + 'px');
+  },
+
+  handleIncomingTimer(data) {
+    if (!data) return;
+    this.timer.running = data.running;
+    this.timer.elapsedMs = data.elapsedMs || 0;
+    this.timer.sanidade = data.sanidade || 0;
+
+    const totalSec = Math.floor(this.timer.elapsedMs / 1000);
+    const min = Math.floor(totalSec / 60);
+    const sec = totalSec % 60;
+    const ms = Math.floor(this.timer.elapsedMs % 1000);
+    const pad = (n, len) => String(n).padStart(len, '0');
+
+    const display = document.getElementById('rei-palido-timer-display');
+    if (display) {
+      display.textContent = `${pad(min, 2)}:${pad(sec, 2)}.${pad(ms, 3)}`;
+    }
+
+    const sanVal = document.getElementById('rei-palido-sanidade-val');
+    if (sanVal) {
+      const oldVal = parseInt(sanVal.textContent, 10) || 0;
+      sanVal.textContent = this.timer.sanidade;
+      if (this.timer.sanidade > oldVal) {
+        sanVal.classList.remove('pulse');
+        void sanVal.offsetWidth;
+        sanVal.classList.add('pulse');
+        setTimeout(() => sanVal.classList.remove('pulse'), 500);
+      }
+    }
+
+    if (this.timer.running && !this.timer.rafId) {
+      this.timer.startTime = performance.now() - this.timer.elapsedMs;
+      this.runTimerLoop();
+    } else if (!this.timer.running && this.timer.rafId) {
+      cancelAnimationFrame(this.timer.rafId);
+      this.timer.rafId = null;
+    }
+  }
+};
+window.MesaReiPalido = MesaReiPalido;
 
 
 const MesaSara = {
