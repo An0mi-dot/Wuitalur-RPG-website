@@ -1,0 +1,490 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* ============================================================
+   DESKRPG — ESTÉTICA VISUAL ORIGINAL
+   Fonte pixel, fundo #000, bordas brancas, barras coloridas:
+   HP #cc2222 (vermelho), EA #66bbee (azul), SAN #664488 (roxo),
+   destaque de turno #ffcc00 (amarelo).
+   ============================================================ */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: #000;
+  color: #fff;
+  font-family: 'Press Start 2P', monospace;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+}
+
+/* ========== LAYOUT GERAL ========== */
+
+.battle-row {
+  flex: 1;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+}
+
+.content-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========== BANNER DE TURNO ========== */
+
+.turn-banner {
+  flex-shrink: 0;
+  padding: 12px 16px;
+  border-bottom: 3px solid #fff;
+  background: #000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.6rem;
+  color: #ffcc00;
+  letter-spacing: 2px;
+}
+
+.turn-banner .turn-active-name {
+  color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 60%;
+}
+
+/* ========== ZONA DO INIMIGO (CENTRO) ========== */
+
+.enemy-zone {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  min-height: 0;
+  min-width: 0;
+}
+
+.enemy-zone .placeholder {
+  font-size: 0.5rem;
+  opacity: 0.3;
+  letter-spacing: 4px;
+}
+
+.enemy-card-display {
+  flex: 1;
+  max-width: 720px;
+  height: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  border: 3px solid #fff;
+  padding: 14px;
+  background: #000;
+}
+
+.enemy-card-display.active {
+  outline: 3px solid #ffcc00;
+  outline-offset: -3px;
+}
+
+.enemy-name {
+  align-self: center;
+  color: #fff;
+  border: 3px solid #ff2222;
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90%;
+}
+
+/* ========== BARRA DE PARTY (EMBAIXO) ========== */
+
+.party-bar {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 10px 16px;
+  border-top: 3px solid #fff;
+  background: #000;
+  flex-shrink: 0;
+  overflow-x: auto;
+}
+
+.party-empty {
+  color: #777;
+  font-size: 0.5rem;
+  letter-spacing: 3px;
+  align-self: center;
+}
+
+/* ========== CARD DE PERSONAGEM (160x200) ========== */
+
+.char-card {
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s;
+}
+
+.char-card:hover { transform: translateY(-2px); }
+
+.char-card.active {
+  outline: 3px solid #ffcc00;
+  outline-offset: 2px;
+}
+
+.card-frame {
+  width: 160px;
+  height: 200px;
+  border: 2px solid #fff;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.character-card.npc .card-frame,
+.char-card.npc .card-frame { border-color: #ff4444; }
+
+.card-info {
+  flex: 1;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
+
+.card-name-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.card-name {
+  font-size: 0.45rem;
+  color: #fff;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.card-level {
+  font-size: 0.4rem;
+  color: #000;
+  background: #ffcc00;
+  border: 1px solid #fff;
+  padding: 1px 4px;
+}
+
+.card-sub {
+  font-size: 0.35rem;
+  color: #888;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-hp { font-size: 0.5rem; color: #cc2222; }
+.card-ea { font-size: 0.5rem; color: #66bbee; }
+
+.card-san-row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 2px;
+}
+
+.card-san-text {
+  font-size: 0.5rem;
+  color: #664488;
+}
+
+.card-san-bar {
+  width: 100%;
+  height: 8px;
+  background: #000;
+  border: 1px solid #fff;
+  position: relative;
+}
+
+.card-san-fill {
+  height: 100%;
+  background: #664488;
+  transition: width 0.3s;
+}
+
+/* ========== FICHA DO TURNO (LATERAL DIREITA) ========== */
+
+.turn-card {
+  width: 0;
+  overflow: hidden;
+  background: #000;
+  border-left: 3px solid #fff;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.turn-card.show { width: 340px; }
+
+.turn-card-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.turn-card.entering .turn-card-inner {
+  animation: card-from-top 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes card-from-top {
+  0%   { transform: translateY(-100%); opacity: 0.6; filter: brightness(1.4); }
+  100% { transform: translateY(0); opacity: 1; filter: brightness(1); }
+}
+
+.turn-card-header {
+  flex-shrink: 0;
+  padding: 16px 14px 10px;
+  border-bottom: 2px solid #fff;
+  text-align: center;
+}
+
+.turn-card-title {
+  font-size: 0.45rem;
+  color: #ffcc00;
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+}
+
+.turn-card-name {
+  font-size: 0.8rem;
+  color: #fff;
+  letter-spacing: 2px;
+  word-break: break-word;
+}
+
+.turn-card-class {
+  font-size: 0.45rem;
+  color: #888;
+  letter-spacing: 1px;
+  margin-top: 6px;
+}
+
+.turn-card-stats {
+  flex-shrink: 0;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+}
+
+.turn-card-stat { position: relative; }
+
+.turn-card-stat-label {
+  font-size: 0.4rem;
+  color: #999;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 5px;
+}
+
+.turn-card-bar {
+  width: 100%;
+  height: 16px;
+  background: #000;
+  border: 2px solid #fff;
+  position: relative;
+}
+
+.turn-card-bar-fill {
+  height: 100%;
+  transition: width 0.3s;
+}
+
+.turn-card-bar-fill.hp { background: #cc2222; }
+.turn-card-bar-fill.ea { background: #66bbee; }
+.turn-card-bar-fill.san { background: #664488; }
+.turn-card-bar-fill.shield { background: #ffffff; }
+
+.turn-card-stat-num {
+  position: absolute;
+  right: 2px;
+  top: -2px;
+  font-size: 0.4rem;
+  color: #fff;
+  text-shadow: 1px 1px 0 #000;
+}
+
+.turn-card-san-lv {
+  font-size: 0.35rem;
+  color: #000;
+  background: #664488;
+  padding: 2px 4px;
+  border: 1px solid #fff;
+}
+
+.turn-card-attrs {
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  padding: 10px 14px;
+  border-top: 1px solid #261d1d;
+}
+
+.turn-card-attr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  padding: 5px 2px;
+  font-size: 0.4rem;
+  color: #999;
+  letter-spacing: 1px;
+}
+
+.turn-card-attr b {
+  font-size: 0.85rem;
+  color: #fff;
+  margin-top: 1px;
+}
+
+.turn-card-footer {
+  flex-shrink: 0;
+  padding: 8px 14px 14px;
+  text-align: center;
+}
+
+.turn-card-level-badge {
+  display: inline-block;
+  font-size: 0.5rem;
+  color: #000;
+  background: #ffcc00;
+  border: 1px solid #fff;
+  padding: 4px 10px;
+  letter-spacing: 1px;
+}
+
+/* ========== ESCUDO / PARTICULAS (mantidos do visual original) ========== */
+
+.shield-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  border: 2px solid rgba(255,255,255,0.5);
+  box-shadow: inset 0 0 12px rgba(255,255,255,0.2);
+  animation: shield-pulse 2s ease-in-out infinite;
+}
+
+@keyframes shield-pulse {
+  0%, 100% { box-shadow: inset 0 0 12px rgba(255,255,255,0.2); }
+  50%      { box-shadow: inset 0 0 20px rgba(255,255,255,0.4); }
+}
+
+.particles-container {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 10;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particle-float var(--duration) ease-out forwards;
+}
+
+@keyframes particle-float {
+  0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+  100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
+}
+
+/* ========== ANIMAÇÕES DE DANO ========== */
+
+@keyframes damage-shake-img {
+  10%, 90% { transform: translate3d(-3px, 0, 0); }
+  20%, 80% { transform: translate3d(5px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+  40%, 60% { transform: translate3d(6px, 0, 0); }
+}
+
+.anim-damage .card-frame,
+.anim-damage .enemy-card-display { animation: damage-shake-img 0.3s ease-out; }
+
+@keyframes lowhp-tremble {
+  0%, 100% { transform: translate(0, 0); }
+  25%      { transform: translate(-1px, 1px); }
+  50%      { transform: translate(1px, -1px); }
+  75%      { transform: translate(-1px, 0); }
+}
+
+.lowhp-tremble .card-frame,
+.lowhp-tremble .enemy-card-display {
+  animation: lowhp-tremble 0.2s linear infinite;
+}
+
+/* ========== SCROLLBARS ========== */
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #664488; }
+
+/* ========== BADGE (teste visual) ========== */
+
+.desk-badge {
+  position: fixed;
+  left: 8px;
+  bottom: 6px;
+  z-index: 999;
+  font-size: 0.4rem;
+  color: #444;
+  letter-spacing: 2px;
+  pointer-events: none;
+}
+
+/* ========== RESPONSIVO ========== */
+
+@media (max-width: 800px) {
+  .turn-card.show { width: 280px; }
+  .card-frame { width: 130px; height: 170px; }
+}
+
+@media (max-width: 560px) {
+  .turn-card.show { width: 220px; }
+  .card-frame { width: 110px; height: 150px; }
+  .enemy-card-display { border-width: 2px; padding: 8px; }
+}
