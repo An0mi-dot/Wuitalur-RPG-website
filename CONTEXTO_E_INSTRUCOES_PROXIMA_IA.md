@@ -153,7 +153,7 @@ Ao executar a alteracao de cores, a proxima IA deve atualizar:
 
 ---
 
-## 6. Pendencias Ativas (estado em v2.5.10)
+## 6. Pendencias Ativas (estado em v2.5.11)
 
 ### A. Video do Amalgama (aguardando arquivo)
 - O inimigo `Amalgama` ja esta registrado em `js/mesa.js` dentro de `MesaCombate.presets`:
@@ -166,8 +166,9 @@ Ao executar a alteracao de cores, a proxima IA deve atualizar:
   3. Opcional: gerar uma variante `assets/videos/amalgama_vermelho.mp4` e adicionar `videoEsconderijo` no preset, seguindo o padrao do `assasino`.
   4. Bumpar a versao (`MESA_VERSION`, `mesa.html`) para invalidar cache.
 
-### B. Coletaveis com imagem (corrigido em v2.5.10)
+### B. Coletaveis com imagem (corrigido em v2.5.10 / v2.5.11)
 - As imagens de `assets/coletaveis/*.webp` existiam apenas localmente: o commit que as criou nunca foi enviado, entao o GitHub Pages devolvia 404 e os cards ficavam sem imagem.
 - Correcao aplicada: `git push` dos commits pendentes + remocao do bloco duplicado de imagem nos dois renderizadores de card + `loading="lazy"`/`decoding="async"` + aviso `[ IMAGEM INDISPONIVEL ]` quando o arquivo falha (`.coletavel-media-missing`).
+- Em v2.5.11 o `mergeCanonical` tambem sincroniza o campo `nome` a partir de `js/campaign-data.js`. Sem isso, nomes antigos gravados no Supabase (ex.: "Paginas de Pesquisa e Anotacoes de Constanca") nunca eram corrigidos, porque o merge so atualizava imagem/detalhe/resumo. Ao abrir a mesa como Mestre, o app regrava o `_sys_coletaveis` e propaga os nomes novos para todos.
 - As imagens sao grandes (1 a 1,6 MB cada, 7 arquivos, ~9 MB no total). Se o carregamento no celular continuar lento, reencodar para ~200 KB mantendo a mesma resolucao.
 

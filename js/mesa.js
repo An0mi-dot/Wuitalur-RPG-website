@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.10';
+const MESA_VERSION = 'v2.5.11';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -7713,6 +7713,10 @@ const MesaColetaveis = {
       } else {
         if (can.imagem && merged[idx].imagem !== can.imagem) {
           merged[idx].imagem = can.imagem;
+          changed = true;
+        }
+        if (can.nome && merged[idx].nome !== can.nome) {
+          merged[idx].nome = can.nome;
           changed = true;
         }
         if (can.paginas && !merged[idx].paginas) {
@@ -16732,7 +16736,7 @@ const MesaCombate = {
     {
       id: 'amalgama',
       name: 'Amálgama',
-      video: 'assets/videos/amalgama.mp4?v=2.5.10',
+      video: 'assets/videos/amalgama.mp4?v=2.5.11',
       desc: 'A coisa que cresce sob o pavilhão. Arena nova reservada para a cinemática do encontro.',
       arena: 'amalgama',
       pendingVideo: true
