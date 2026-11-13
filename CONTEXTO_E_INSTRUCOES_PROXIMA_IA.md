@@ -153,12 +153,12 @@ Ao executar a alteracao de cores, a proxima IA deve atualizar:
 
 ---
 
-## 6. Pendencias Ativas (estado em v2.5.11)
+## 6. Pendencias Ativas (estado em v2.5.12)
 
 ### A. Video do Amalgama (aguardando arquivo)
 - O inimigo `Amalgama` ja esta registrado em `js/mesa.js` dentro de `MesaCombate.presets`:
   - `id: 'amalgama'`, `arena: 'amalgama'`, `pendingVideo: true`.
-  - O caminho esperado do video e `assets/videos/amalgama.mp4` (o preset aponta para `assets/videos/amalgama.mp4?v=2.5.10`).
+  - O caminho esperado do video e `assets/videos/amalgama.mp4` (o preset aponta para `assets/videos/amalgama.mp4?v=2.5.12`).
 - Enquanto o arquivo nao existir, a tela de combate cai no fallback animado (`#combat-video-fallback`) com o tema de arena verde-podre (`.combat-arena--amalgama` em `css/mesa.css`). Nada quebra.
 - Quando o video chegar:
   1. Salvar em `assets/videos/amalgama.mp4`.

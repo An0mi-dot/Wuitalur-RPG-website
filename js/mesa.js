@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.11';
+const MESA_VERSION = 'v2.5.12';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -16736,7 +16736,7 @@ const MesaCombate = {
     {
       id: 'amalgama',
       name: 'Amálgama',
-      video: 'assets/videos/amalgama.mp4?v=2.5.11',
+      video: 'assets/videos/amalgama.mp4?v=2.5.12',
       desc: 'A coisa que cresce sob o pavilhão. Arena nova reservada para a cinemática do encontro.',
       arena: 'amalgama',
       pendingVideo: true
@@ -17362,6 +17362,20 @@ const MesaCombate = {
     video.classList.toggle('video-assasino', isAssasinoVideo);
 
     const trimmedUrl = this.resolveVideoVariantUrl(url, isEsconderijoNow);
+
+    // Preset com video ainda nao enviado: mostra o fallback sem disparar 404 nem retry.
+    const pendingPreset = this.presets.find(p => p.pendingVideo && p.video && p.video === trimmedUrl);
+    if (pendingPreset) {
+      this._clearVideoStallTimer();
+      this._videoRetryCount = 0;
+      this.videoUrl = trimmedUrl;
+      video.classList.remove('playing');
+      video.removeAttribute('src');
+      try { video.load(); } catch (e) {}
+      if (fallback) fallback.style.display = 'flex';
+      return;
+    }
+
     if (trimmedUrl) {
       this.videoUrl = trimmedUrl;
       const attrSrc = (video.getAttribute('src') || '').trim();
