@@ -149,3 +149,25 @@ Ao executar a alteracao de cores, a proxima IA deve atualizar:
    - Sempre conferir se o total de `{` e `}` bate perfeitamente apos editar qualquer arquivo CSS.
 4. **Sem commits**:
    - O comando do usuario e claro: nada de `git commit`. Apenas alteracoes locais unstaged.
+   - Excecao: quando o usuario pedir explicitamente "commit e push" porque o deploy remoto esta desatualizado, ai sim commitar e enviar para `origin/main` (GitHub Pages publica a raiz deste repositorio).
+
+---
+
+## 6. Pendencias Ativas (estado em v2.5.10)
+
+### A. Video do Amalgama (aguardando arquivo)
+- O inimigo `Amalgama` ja esta registrado em `js/mesa.js` dentro de `MesaCombate.presets`:
+  - `id: 'amalgama'`, `arena: 'amalgama'`, `pendingVideo: true`.
+  - O caminho esperado do video e `assets/videos/amalgama.mp4` (o preset aponta para `assets/videos/amalgama.mp4?v=2.5.10`).
+- Enquanto o arquivo nao existir, a tela de combate cai no fallback animado (`#combat-video-fallback`) com o tema de arena verde-podre (`.combat-arena--amalgama` em `css/mesa.css`). Nada quebra.
+- Quando o video chegar:
+  1. Salvar em `assets/videos/amalgama.mp4`.
+  2. Remover `pendingVideo: true` do preset (isso libera o preload em `MesaCombate.preloadVideos`).
+  3. Opcional: gerar uma variante `assets/videos/amalgama_vermelho.mp4` e adicionar `videoEsconderijo` no preset, seguindo o padrao do `assasino`.
+  4. Bumpar a versao (`MESA_VERSION`, `mesa.html`) para invalidar cache.
+
+### B. Coletaveis com imagem (corrigido em v2.5.10)
+- As imagens de `assets/coletaveis/*.webp` existiam apenas localmente: o commit que as criou nunca foi enviado, entao o GitHub Pages devolvia 404 e os cards ficavam sem imagem.
+- Correcao aplicada: `git push` dos commits pendentes + remocao do bloco duplicado de imagem nos dois renderizadores de card + `loading="lazy"`/`decoding="async"` + aviso `[ IMAGEM INDISPONIVEL ]` quando o arquivo falha (`.coletavel-media-missing`).
+- As imagens sao grandes (1 a 1,6 MB cada, 7 arquivos, ~9 MB no total). Se o carregamento no celular continuar lento, reencodar para ~200 KB mantendo a mesma resolucao.
+

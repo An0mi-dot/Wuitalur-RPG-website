@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.9';
+const MESA_VERSION = 'v2.5.10';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -7755,7 +7755,21 @@ const MesaColetaveis = {
     return { items: merged, changed };
   },
 
+  /** Troca imagens quebradas por um aviso legivel (arquivo ausente, caminho errado ou deploy incompleto). */
+  bindImageFallbacks() {
+    if (this._imageFallbackBound) return;
+    this._imageFallbackBound = true;
+    document.addEventListener('error', (e) => {
+      const img = e.target;
+      if (!img || img.tagName !== 'IMG') return;
+      const media = img.closest('.coletavel-card-media');
+      if (!media || media.querySelector('.coletavel-media-missing')) return;
+      media.innerHTML = '<div class="coletavel-media-missing">[ IMAGEM INDISPONÍVEL ]</div>';
+    }, true);
+  },
+
   init() {
+    this.bindImageFallbacks();
     const canonical = window.CAMPAIGN_COLETAVEIS || window.MESA_COLETAVEIS || [];
 
     // Prioridade 1: Sincronização canônica remota do Supabase
@@ -8214,7 +8228,7 @@ const MesaColetaveis = {
               ` : ''}
               ${it.imagem ? `
                 <div class="coletavel-card-media" style="margin: 8px 0; border-radius: 4px; overflow: hidden; border: 1px solid rgba(245, 158, 11, 0.25); background: #08070b; text-align: center; max-height: 180px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                  <img src="${it.imagem}" alt="${it.nome}" style="max-height: 180px; width: 100%; object-fit: contain; display: block;" />
+                  <img src="${it.imagem}" alt="${it.nome}" loading="lazy" decoding="async" style="max-height: 180px; width: 100%; object-fit: contain; display: block;" />
                 </div>
               ` : ''}
               ${isReiPalido ? `
@@ -8241,11 +8255,6 @@ const MesaColetaveis = {
                   <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
                   <span>Examinar Página Solta de Reflexão (1 Folha)</span>
                 </button>
-              ` : ''}
-              ${it.imagem ? `
-                <div class="coletavel-card-media" style="margin: 8px 0; border-radius: 4px; overflow: hidden; border: 1px solid rgba(245, 158, 11, 0.25); background: #08070b; text-align: center; max-height: 180px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                  <img src="${it.imagem}" alt="${it.nome}" style="max-height: 180px; width: 100%; object-fit: contain; display: block;" />
-                </div>
               ` : ''}
               ${isBook ? `
                 <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_livro_viajante_terra');">
@@ -8398,7 +8407,7 @@ const MesaColetaveis = {
               ` : ''}
               ${it.imagem ? `
                 <div class="coletavel-card-media" style="margin: 8px 0; border-radius: 4px; overflow: hidden; border: 1px solid rgba(245, 158, 11, 0.25); background: #08070b; text-align: center; max-height: 180px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                  <img src="${it.imagem}" alt="${it.nome}" style="max-height: 180px; width: 100%; object-fit: contain; display: block;" />
+                  <img src="${it.imagem}" alt="${it.nome}" loading="lazy" decoding="async" style="max-height: 180px; width: 100%; object-fit: contain; display: block;" />
                 </div>
               ` : ''}
               ${isReiPalido ? `
@@ -8425,11 +8434,6 @@ const MesaColetaveis = {
                   <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
                   <span>Examinar Página Solta de Reflexão (1 Folha)</span>
                 </button>
-              ` : ''}
-              ${it.imagem ? `
-                <div class="coletavel-card-media" style="margin: 8px 0; border-radius: 4px; overflow: hidden; border: 1px solid rgba(245, 158, 11, 0.25); background: #08070b; text-align: center; max-height: 180px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                  <img src="${it.imagem}" alt="${it.nome}" style="max-height: 180px; width: 100%; object-fit: contain; display: block;" />
-                </div>
               ` : ''}
               ${isBook ? `
                 <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_livro_viajante_terra');">
@@ -16726,6 +16730,14 @@ const MesaCombate = {
       desc: 'Infestação voraz de roedores carniceiros na escuridão'
     },
     {
+      id: 'amalgama',
+      name: 'Amálgama',
+      video: 'assets/videos/amalgama.mp4?v=2.5.10',
+      desc: 'A coisa que cresce sob o pavilhão. Arena nova reservada para a cinemática do encontro.',
+      arena: 'amalgama',
+      pendingVideo: true
+    },
+    {
       id: 'unknown',
       name: 'Inimigo Antigo',
       video: 'assets/videos/inimigo_antigo.mp4?v=2.5.4',
@@ -16820,12 +16832,13 @@ const MesaCombate = {
     this._videosPreloaded = true;
     const ctrl = typeof AbortController === 'function' ? new AbortController() : null;
     this._preloadAbort = ctrl;
-    const urls = [
-      'assets/videos/assasino1.mp4?v=2.5.4',
-      'assets/videos/assasino1_vermelho.mp4?v=2.5.4',
-      'assets/videos/rato_cinematica.mp4?v=2.5.4',
-      'assets/videos/inimigo_antigo.mp4?v=2.5.4'
-    ];
+    const urls = this.presets
+      .filter(p => p && !p.pendingVideo)
+      .reduce((acc, p) => {
+        if (p.video) acc.push(p.video);
+        if (p.videoEsconderijo) acc.push(p.videoEsconderijo);
+        return acc;
+      }, []);
     for (const u of urls) {
       if (this.isActive || (ctrl && ctrl.signal.aborted)) break;
       try {
@@ -16945,14 +16958,27 @@ const MesaCombate = {
     if (!grid) return;
 
     grid.innerHTML = this.presets.map(p => `
-      <div class="combat-preset-card ${p.id === this.selectedPresetId ? 'selected' : ''}" 
+      <div class="combat-preset-card ${p.id === this.selectedPresetId ? 'selected' : ''} ${p.pendingVideo ? 'pending-video' : ''}" 
            onclick="MesaCombate.selectPreset('${p.id}')"
            ondblclick="MesaCombate.selectAndStart('${p.id}')"
            title="Clique para selecionar ou duplo clique para iniciar combate imediatamente">
         <div class="combat-preset-name">${p.name}</div>
         <div class="combat-preset-desc">${p.desc}</div>
+        ${p.pendingVideo ? `<span class="combat-preset-tag">VÍDEO PENDENTE</span>` : ''}
       </div>
     `).join('');
+  },
+
+  /** Marca o overlay com o tema da arena do oponente atual (ex.: amalgama). */
+  applyArenaTheme() {
+    const overlay = document.getElementById('mesa-combat-overlay');
+    if (!overlay) return;
+    Array.from(overlay.classList)
+      .filter(c => c.indexOf('combat-arena--') === 0)
+      .forEach(c => overlay.classList.remove(c));
+    const preset = this.presets.find(p => p.id === this.opponentId);
+    const arena = (preset && preset.arena) || (this.opponentId === 'amalgama' ? 'amalgama' : '');
+    if (arena) overlay.classList.add(`combat-arena--${arena}`);
   },
 
   selectAndStart(id) {
@@ -17044,6 +17070,8 @@ const MesaCombate = {
       titleEl.classList.add('slam');
     }
 
+    this.applyArenaTheme();
+
     // Carrega o vídeo ou ativa o fallback atmosférico
     this.loadVideo(this.videoUrl, { preserveCrimson: !shouldBroadcast });
 
@@ -17100,6 +17128,8 @@ const MesaCombate = {
       titleEl.classList.add('slam');
     }
 
+    this.applyArenaTheme();
+
     // Se houver um oponente no ciclo de turnos, atualiza o nome dele na iniciativa
     if (this.turnCycle && this.turnCycle.order) {
       this.turnCycle.order.forEach(i => {
@@ -17148,6 +17178,13 @@ const MesaCombate = {
     this.updateTurnUI();
 
     document.body.classList.remove('combat-active');
+
+    const overlayEl = document.getElementById('mesa-combat-overlay');
+    if (overlayEl) {
+      Array.from(overlayEl.classList)
+        .filter(c => c.indexOf('combat-arena--') === 0)
+        .forEach(c => overlayEl.classList.remove(c));
+    }
 
     if (window.MesaCombatMenu && typeof MesaCombatMenu.close === 'function') {
       MesaCombatMenu.close();
