@@ -1456,11 +1456,11 @@
       imagem: "assets/coletaveis/livro_rei_palido_capa.webp",
       resumo: "Um livro de capa dura cinza-chumbo, áspero e bastante desgastado pelo tempo. No centro da capa, a pintura gasta e perturbadora de uma figura encapuzada de rosto em vazio negro absoluto.",
       detalhe: "Um livro de capa dura cinza-chumbo, áspero e bastante desgastado pelo tempo. O título \"O REI PÁLIDO\" e o nome da autora estão impressos em letras prateadas descascadas. No centro da capa, há uma pintura gasta e perturbadora de uma figura vestindo um capuz branco pálido, cujo rosto é um vazio negro e absoluto. Ao abri-lo, nota-se que dezenas de páginas foram violentamente rasgadas e removidas, deixando o miolo irregular. No entanto, sete páginas específicas foram cuidadosamente grampeadas juntas, separadas do resto da obra de forma claramente proposital.",
-      mestre_info: "Efeitos e Usos em Jogo:\n• Leitura Perturbadora: A prosa do livro não é apenas assustadora; ela carrega o peso real da maldição. Ler essas páginas soa profundamente perturbador, evocando um medo visceral e sensações ruins que se tornam desconfortantes demais para a mente suportar. Para cada 10 segundos de leitura, o personagem recebe 5 pontos de dano de Sanidade.\n• Reconhecimento Histórico: Quem possuir perícia em História já conhecia esta obra anteriormente. Trata-se de uma coletânea de histórias de terror escrita por Lorena Valente, autora famosa na época que lançou diversos contos de grande repercussão, incluindo um de seus melhores e mais aclamados trabalhos: o conto de terror O Carniceiro."
+      mestre_info: "Efeitos e Usos em Jogo:\n• Leitura Perturbadora: A prosa do livro não é apenas assustadora; ela carrega o peso real da maldição. Ler essas páginas soa profundamente perturbador, evocando um medo visceral e sensações ruins que se tornam desconfortantes demais para a mente suportar. Para cada 10 segundos de leitura, o personagem recebe 3 pontos de dano de Sanidade.\n• Reconhecimento Histórico: Quem possuir perícia em História já conhecia esta obra anteriormente. Trata-se de uma coletânea de histórias de terror escrita por Lorena Valente, autora famosa na época que lançou diversos contos de grande repercussão, incluindo um de seus melhores e mais aclamados trabalhos: o conto de terror O Carniceiro."
     },
     {
       id: "col_anotacoes_caixa_negra",
-      nome: "Páginas de Pesquisa e Anotações de Constança",
+      nome: "Páginas de Pesquisa e Anotações",
       peso: 0,
       tipo: "Item Investigativo Único",
       campo_tipo: "Aparência Física",
@@ -1472,7 +1472,7 @@
     },
     {
       id: "col_anotacao_solta_constanca",
-      nome: "Página Solta de Reflexão de Constança",
+      nome: "Página Solta de Reflexão",
       peso: 0,
       tipo: "Item Investigativo Único",
       campo_tipo: "Aparência Física",

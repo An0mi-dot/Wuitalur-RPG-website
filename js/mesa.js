@@ -8610,7 +8610,7 @@ const MesaLivroReader = {
         badge.textContent = 'DOCUMENTO DA CAMPANHA • REGISTRO ARCANO';
         badge.style.display = 'inline-block';
       }
-      if (title) title.textContent = 'PÁGINAS DE PESQUISA E ANOTAÇÕES DE CONSTANÇA';
+      if (title) title.textContent = 'PÁGINAS DE PESQUISA E ANOTAÇÕES';
       if (subtitle) {
         subtitle.textContent = 'Folhas Duplas Envelhecidas • Estudos Geométricos e Ocultos';
         subtitle.style.display = 'block';
@@ -8659,7 +8659,7 @@ const MesaLivroReader = {
         badge.textContent = 'DOCUMENTO DA CAMPANHA • MANUSCRITO OCULTO';
         badge.style.display = 'inline-block';
       }
-      if (title) title.textContent = 'PÁGINA SOLTA DE REFLEXÃO DE CONSTANÇA';
+      if (title) title.textContent = 'PÁGINA SOLTA DE REFLEXÃO';
       if (subtitle) {
         subtitle.textContent = 'Folha Amarelada Única • Dogmas do Sacrifício';
         subtitle.style.display = 'block';
@@ -9370,7 +9370,7 @@ const MesaReiPalido = {
     const currentTens = Math.floor(totalSec / 10);
     if (currentTens > this.timer.lastTens) {
       this.timer.lastTens = currentTens;
-      this.timer.sanidade = currentTens * 5;
+      this.timer.sanidade = currentTens * 3;
       this.triggerSanidadePulse(this.timer.sanidade);
     }
 

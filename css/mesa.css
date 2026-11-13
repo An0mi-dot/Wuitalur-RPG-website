@@ -19264,6 +19264,16 @@ body.is-master #survival-camouflage-block {
   mix-blend-mode: screen;
 }
 
+/* ===== Controles visíveis apenas para o Mestre ===== */
+/* Por padrão, .master-only-ui fica oculto para jogadores */
+.master-only-ui {
+  display: none !important;
+}
+/* Quando o body tiver .is-master, mostra novamente */
+body.is-master .master-only-ui {
+  display: flex !important;
+}
+
 @media (max-width: 768px) {
   .rei-palido-hud {
     top: 60px;
