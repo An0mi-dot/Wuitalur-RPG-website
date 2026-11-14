@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.5.13">
+  <link rel="stylesheet" href="css/mesa.css?v=2.5.14">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1076,15 +1076,15 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
     </div>
   </div>
 
-  <!-- MODAL: LEITURA IMERSIVA DO LIVRO "O REI PÁLIDO" (COM LANTERNA E CRONÔMETRO DE SANIDADE) -->
+  <!-- MODAL: LEITOR DO LIVRO "O REI PÁLIDO" (DESVENDADO / LEITURA ABERTA) -->
   <div id="rei-palido-modal" class="rei-palido-overlay" style="display: none;" role="dialog" aria-label="Leitor O Rei Pálido">
-    <!-- Barra Superior / Controles do Mestre -->
+    <!-- Barra Superior / Controles de Navegação -->
     <header class="rei-palido-topbar">
       <div class="rei-palido-info-tag">
         <span class="rei-palido-tag-title">O REI PÁLIDO</span>
         <span class="rei-palido-tag-sub" id="rei-palido-page-name">CAPA DO LIVRO</span>
       </div>
-      <div class="rei-palido-page-selectors master-only-ui">
+      <div class="rei-palido-page-selectors">
         <button type="button" class="rei-palido-page-btn active" data-page="capa" onclick="MesaReiPalido.selectPage('capa')">Capa</button>
         <button type="button" class="rei-palido-page-btn" data-page="p1" onclick="MesaReiPalido.selectPage('p1')">Págs 1 &amp; 2</button>
         <button type="button" class="rei-palido-page-btn" data-page="p2" onclick="MesaReiPalido.selectPage('p2')">Págs 3 &amp; 4</button>
@@ -1095,30 +1095,19 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       </div>
     </header>
 
-    <!-- HUD Cronômetro e Dano de Sanidade (Canto Superior Esquerdo) -->
-    <div class="rei-palido-hud">
-      <div class="rei-palido-timer-row">
-        <div class="rei-palido-pixel-timer" id="rei-palido-timer-display">00:00.000</div>
-        <div class="rei-palido-timer-actions master-only-ui">
-          <button type="button" class="rei-palido-timer-btn" id="rei-palido-play-btn" onclick="MesaReiPalido.toggleTimer()">INICIAR</button>
-          <button type="button" class="rei-palido-timer-btn reset" onclick="MesaReiPalido.resetTimer()">ZERAR</button>
-        </div>
-      </div>
-      <div class="rei-palido-sanidade-box">
-        <span class="rei-palido-sanidade-label">DANO DE SANIDADE</span>
-        <span class="rei-palido-sanidade-value" id="rei-palido-sanidade-val">0</span>
-      </div>
-    </div>
-
-    <!-- Palco Central com a Imagem e Camadas de Escuridão + Lanterna -->
+    <!-- Palco Central com a Imagem Limpa e Controles de Folhear -->
     <main class="rei-palido-viewport" id="rei-palido-viewport">
+      <button type="button" class="rei-palido-nav-arrow prev" onclick="MesaReiPalido.prevPage()" title="Página Anterior">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+
       <div class="rei-palido-sheet-container" id="rei-palido-sheet-container">
         <img id="rei-palido-img" class="rei-palido-img" src="assets/coletaveis/livro_rei_palido_capa.webp" alt="Página do Livro O Rei Pálido" draggable="false" />
-        <!-- Camada 100% preta de escuridão com máscara radial seguindo o mouse do Mestre -->
-        <div class="rei-palido-darkness" id="rei-palido-darkness"></div>
-        <!-- Halo suave de luz amarelada da lanterna -->
-        <div class="rei-palido-glow" id="rei-palido-glow"></div>
       </div>
+
+      <button type="button" class="rei-palido-nav-arrow next" onclick="MesaReiPalido.nextPage()" title="Próxima Página">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
     </main>
   </div>
 
@@ -1401,11 +1390,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=2.5.13"></script>
+<script src="js/campaign-data.js?v=2.5.14"></script>
 
-<script src="js/mesa.js?v=2.5.13"></script>
+<script src="js/mesa.js?v=2.5.14"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.5.13</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.5.14</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>

@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.13';
+const MESA_VERSION = 'v2.5.14';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -9145,6 +9145,7 @@ document.addEventListener('keydown', (e) => {
 const MesaReiPalido = {
   isOpen: false,
   currentPage: 'capa',
+  order: ['capa', 'p1', 'p2', 'p3'],
   pages: {
     capa: {
       id: 'capa',
@@ -9167,58 +9168,20 @@ const MesaReiPalido = {
       src: 'assets/coletaveis/livro_rei_palido_p3.webp'
     }
   },
-  timer: {
-    running: false,
-    startTime: 0,
-    elapsedMs: 0,
-    rafId: null,
-    lastTens: 0,
-    sanidade: 0
-  },
-  lastSpotlightSend: 0,
 
   init() {
     this.bindEvents();
   },
 
   bindEvents() {
-    const viewport = document.getElementById('rei-palido-viewport');
-    if (!viewport) return;
-
-    const handleMove = (e) => {
-      if (!this.isOpen) return;
-      const isMaster = Boolean((window.MesaApp && MesaApp.state && MesaApp.state.isMaster) || document.body.classList.contains('is-master'));
-      if (!isMaster) return; // O mouse dos jogadores NAO emite luz
-
-      const container = document.getElementById('rei-palido-sheet-container');
-      if (!container) return;
-
-      const rect = container.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
-
-      container.style.setProperty('--light-x', mouseX + 'px');
-      container.style.setProperty('--light-y', mouseY + 'px');
-
-      const now = performance.now();
-      if (now - this.lastSpotlightSend > 45) {
-        this.lastSpotlightSend = now;
-        const percentX = mouseX / rect.width;
-        const percentY = mouseY / rect.height;
-        this.broadcastSpotlight(percentX, percentY);
-      }
-    };
-
-    viewport.addEventListener('mousemove', handleMove);
-    viewport.addEventListener('touchmove', (e) => {
-      if (e.touches && e.touches[0]) {
-        handleMove(e.touches[0]);
-      }
-    }, { passive: true });
-
     window.addEventListener('keydown', (e) => {
-      if (this.isOpen && e.key === 'Escape') {
+      if (!this.isOpen) return;
+      if (e.key === 'Escape') {
         this.close();
+      } else if (e.key === 'ArrowLeft') {
+        this.prevPage();
+      } else if (e.key === 'ArrowRight') {
+        this.nextPage();
       }
     });
   },
@@ -9230,30 +9193,16 @@ const MesaReiPalido = {
 
     this.isOpen = true;
     modal.style.display = 'flex';
-    this.selectPage(pageId, true);
-
-    // Mecânica de forçar tela de todos desativada por enquanto conforme solicitado:
-    // O leitor fica sob demanda quando o usuário clica no item.
+    this.selectPage(pageId);
   },
 
   close() {
     const modal = document.getElementById('rei-palido-modal');
     if (modal) modal.style.display = 'none';
     this.isOpen = false;
-
-    const container = document.getElementById('rei-palido-sheet-container');
-    if (container) {
-      container.style.setProperty('--light-x', '-9999px');
-      container.style.setProperty('--light-y', '-9999px');
-    }
-
-    const isMaster = Boolean((window.MesaApp && MesaApp.state && MesaApp.state.isMaster) || document.body.classList.contains('is-master'));
-    if (isMaster) {
-      this.broadcastPage(this.currentPage, 'close');
-    }
   },
 
-  selectPage(pageId, isOpening = false) {
+  selectPage(pageId) {
     if (!this.pages[pageId]) pageId = 'capa';
     this.currentPage = pageId;
 
@@ -9267,239 +9216,19 @@ const MesaReiPalido = {
     document.querySelectorAll('.rei-palido-page-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.page === pageId);
     });
+  },
 
-    const isMaster = Boolean((window.MesaApp && MesaApp.state && MesaApp.state.isMaster) || document.body.classList.contains('is-master'));
-    if (isMaster && !isOpening) {
-      this.broadcastPage(pageId, 'open');
+  prevPage() {
+    const idx = this.order.indexOf(this.currentPage);
+    if (idx > 0) {
+      this.selectPage(this.order[idx - 1]);
     }
   },
 
-  playerInspect() {
-    if (this.isOpen) {
-      const modal = document.getElementById('rei-palido-modal');
-      if (modal) modal.style.display = 'flex';
-    } else {
-      if (window.MesaApp && typeof MesaApp.showToast === 'function') {
-        MesaApp.showToast('[O REI PÁLIDO] O miolo irregular está selado na escuridão. O Mestre deve abrir a obra para iniciar a leitura sob a penumbra.');
-      }
-    }
-  },
-
-  toggleTimer() {
-    if (this.timer.running) {
-      this.pauseTimer();
-    } else {
-      this.startTimer();
-    }
-  },
-
-  startTimer() {
-    this.timer.running = true;
-    this.timer.startTime = performance.now() - this.timer.elapsedMs;
-
-    const btn = document.getElementById('rei-palido-play-btn');
-    if (btn) btn.textContent = 'PAUSAR';
-
-    this.runTimerLoop();
-    this.broadcastTimerState();
-  },
-
-  pauseTimer() {
-    this.timer.running = false;
-    if (this.timer.rafId) {
-      cancelAnimationFrame(this.timer.rafId);
-      this.timer.rafId = null;
-    }
-
-    const btn = document.getElementById('rei-palido-play-btn');
-    if (btn) btn.textContent = 'CONTINUAR';
-
-    this.broadcastTimerState();
-  },
-
-  resetTimer() {
-    this.timer.running = false;
-    if (this.timer.rafId) {
-      cancelAnimationFrame(this.timer.rafId);
-      this.timer.rafId = null;
-    }
-    this.timer.elapsedMs = 0;
-    this.timer.lastTens = 0;
-    this.timer.sanidade = 0;
-
-    const btn = document.getElementById('rei-palido-play-btn');
-    if (btn) btn.textContent = 'INICIAR';
-
-    const display = document.getElementById('rei-palido-timer-display');
-    if (display) display.textContent = '00:00.000';
-
-    const sanVal = document.getElementById('rei-palido-sanidade-val');
-    if (sanVal) {
-      sanVal.textContent = '0';
-      sanVal.classList.remove('pulse');
-    }
-
-    this.broadcastTimerState();
-  },
-
-  runTimerLoop() {
-    if (!this.timer.running) return;
-
-    const now = performance.now();
-    this.timer.elapsedMs = now - this.timer.startTime;
-
-    const totalSec = Math.floor(this.timer.elapsedMs / 1000);
-    const min = Math.floor(totalSec / 60);
-    const sec = totalSec % 60;
-    const ms = Math.floor(this.timer.elapsedMs % 1000);
-
-    const pad = (n, len) => String(n).padStart(len, '0');
-    const display = document.getElementById('rei-palido-timer-display');
-    if (display) {
-      display.textContent = `${pad(min, 2)}:${pad(sec, 2)}.${pad(ms, 3)}`;
-    }
-
-    const currentTens = Math.floor(totalSec / 10);
-    if (currentTens > this.timer.lastTens) {
-      this.timer.lastTens = currentTens;
-      this.timer.sanidade = currentTens * 3;
-      this.triggerSanidadePulse(this.timer.sanidade);
-    }
-
-    this.timer.rafId = requestAnimationFrame(() => this.runTimerLoop());
-  },
-
-  triggerSanidadePulse(newVal) {
-    const sanVal = document.getElementById('rei-palido-sanidade-val');
-    if (sanVal) {
-      sanVal.textContent = newVal;
-      sanVal.classList.remove('pulse');
-      void sanVal.offsetWidth;
-      sanVal.classList.add('pulse');
-      setTimeout(() => {
-        if (sanVal) sanVal.classList.remove('pulse');
-      }, 500);
-    }
-    this.broadcastTimerState();
-  },
-
-  broadcastPage(pageId, action = 'open') {
-    if (!window.MesaApp || !MesaApp.supabase) return;
-    const chan = MesaApp.channel || (typeof MesaApp.getChannel === 'function' ? MesaApp.getChannel() : null);
-    if (chan) {
-      try {
-        chan.send({
-          type: 'broadcast',
-          event: 'rei_palido_page',
-          payload: {
-            action,
-            page: pageId,
-            _senderId: MesaApp.clientId || null
-          }
-        });
-      } catch(e) {}
-    }
-  },
-
-  broadcastSpotlight(percentX, percentY) {
-    if (!window.MesaApp || !MesaApp.supabase) return;
-    const chan = MesaApp.channel || (typeof MesaApp.getChannel === 'function' ? MesaApp.getChannel() : null);
-    if (chan) {
-      try {
-        chan.send({
-          type: 'broadcast',
-          event: 'rei_palido_spotlight',
-          payload: {
-            percentX,
-            percentY,
-            _senderId: MesaApp.clientId || null
-          }
-        });
-      } catch(e) {}
-    }
-  },
-
-  broadcastTimerState() {
-    if (!window.MesaApp || !MesaApp.supabase) return;
-    const chan = MesaApp.channel || (typeof MesaApp.getChannel === 'function' ? MesaApp.getChannel() : null);
-    if (chan) {
-      try {
-        chan.send({
-          type: 'broadcast',
-          event: 'rei_palido_timer',
-          payload: {
-            running: this.timer.running,
-            elapsedMs: this.timer.elapsedMs,
-            sanidade: this.timer.sanidade,
-            _senderId: MesaApp.clientId || null
-          }
-        });
-      } catch(e) {}
-    }
-  },
-
-  handleIncomingPage(data) {
-    if (!data) return;
-    if (data.action === 'close') {
-      const modal = document.getElementById('rei-palido-modal');
-      if (modal) modal.style.display = 'none';
-      this.isOpen = false;
-      return;
-    }
-    // Se o jogador estiver com o livro aberto e o mestre mudar de pagina, atualiza a pagina sem forcar abertura
-    if (data.action === 'open' && this.isOpen && data.page) {
-      this.selectPage(data.page, true);
-    }
-  },
-
-  handleIncomingSpotlight(data) {
-    if (!data || typeof data.percentX !== 'number' || typeof data.percentY !== 'number') return;
-    const container = document.getElementById('rei-palido-sheet-container');
-    if (!container) return;
-
-    const rect = container.getBoundingClientRect();
-    const mouseX = data.percentX * rect.width;
-    const mouseY = data.percentY * rect.height;
-
-    container.style.setProperty('--light-x', mouseX + 'px');
-    container.style.setProperty('--light-y', mouseY + 'px');
-  },
-
-  handleIncomingTimer(data) {
-    if (!data) return;
-    this.timer.running = data.running;
-    this.timer.elapsedMs = data.elapsedMs || 0;
-    this.timer.sanidade = data.sanidade || 0;
-
-    const totalSec = Math.floor(this.timer.elapsedMs / 1000);
-    const min = Math.floor(totalSec / 60);
-    const sec = totalSec % 60;
-    const ms = Math.floor(this.timer.elapsedMs % 1000);
-    const pad = (n, len) => String(n).padStart(len, '0');
-
-    const display = document.getElementById('rei-palido-timer-display');
-    if (display) {
-      display.textContent = `${pad(min, 2)}:${pad(sec, 2)}.${pad(ms, 3)}`;
-    }
-
-    const sanVal = document.getElementById('rei-palido-sanidade-val');
-    if (sanVal) {
-      const oldVal = parseInt(sanVal.textContent, 10) || 0;
-      sanVal.textContent = this.timer.sanidade;
-      if (this.timer.sanidade > oldVal) {
-        sanVal.classList.remove('pulse');
-        void sanVal.offsetWidth;
-        sanVal.classList.add('pulse');
-        setTimeout(() => sanVal.classList.remove('pulse'), 500);
-      }
-    }
-
-    if (this.timer.running && !this.timer.rafId) {
-      this.timer.startTime = performance.now() - this.timer.elapsedMs;
-      this.runTimerLoop();
-    } else if (!this.timer.running && this.timer.rafId) {
-      cancelAnimationFrame(this.timer.rafId);
-      this.timer.rafId = null;
+  nextPage() {
+    const idx = this.order.indexOf(this.currentPage);
+    if (idx >= 0 && idx < this.order.length - 1) {
+      this.selectPage(this.order[idx + 1]);
     }
   }
 };

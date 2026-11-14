@@ -19206,7 +19206,7 @@ body.is-master #survival-camouflage-block {
   animation: reiPalidoPulse 0.45s ease-out;
 }
 
-/* Palco Central e Efeito de Lanterna */
+/* Palco Central e Imagem do Livro Desvendado */
 .rei-palido-viewport {
   position: relative;
   width: 100vw;
@@ -19215,32 +19215,79 @@ body.is-master #survival-camouflage-block {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #000000;
-  cursor: crosshair;
+  background: radial-gradient(circle at center, #111015 0%, #050508 100%);
+  cursor: default;
+}
+
+.rei-palido-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 64px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #d4d4d4;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 50;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(6px);
+}
+
+.rei-palido-nav-arrow:hover {
+  background: rgba(220, 38, 38, 0.3);
+  border-color: #ef4444;
+  color: #ffffff;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.rei-palido-nav-arrow.prev {
+  left: 24px;
+}
+
+.rei-palido-nav-arrow.next {
+  right: 24px;
+}
+
+@media (max-width: 768px) {
+  .rei-palido-nav-arrow {
+    width: 38px;
+    height: 48px;
+  }
+  .rei-palido-nav-arrow.prev {
+    left: 8px;
+  }
+  .rei-palido-nav-arrow.next {
+    right: 8px;
+  }
 }
 
 .rei-palido-sheet-container {
   position: relative;
-  max-width: 95vw;
-  max-height: calc(100vh - 65px);
-  display: inline-block;
-  box-shadow: 0 0 80px rgba(0, 0, 0, 1);
-  background: #000000;
+  max-width: 90vw;
+  max-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.85);
+  background: transparent;
   border-radius: 4px;
   overflow: hidden;
-  --light-x: -9999px;
-  --light-y: -9999px;
 }
 
 .rei-palido-img {
-  max-width: 95vw;
-  max-height: calc(100vh - 65px);
+  max-width: 90vw;
+  max-height: calc(100vh - 80px);
   width: auto;
   height: auto;
   object-fit: contain;
   display: block;
   user-select: none;
-  pointer-events: none;
+  border-radius: 4px;
 }
 
 /* Camada 100% preta com máscara circular para a luz da lanterna */
