@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.12';
+const MESA_VERSION = 'v2.5.13';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -8198,8 +8198,8 @@ const MesaColetaveis = {
           const isGravador = it.id === 'col_gravador_fita_01' || it.id === 'col_gravador_bolso_02';
           const isFita = it.id === 'col_fita_01' || it.id === 'col_fita_02';
           const isClickable = isBook || isDiario || isCaixa || isNotebook || isCartaz || isGravador || isFita || isReiPalido || isAnotacoesCaixa || isAnotacaoSolta;
-          const clickAction = isReiPalido ? (isMaster ? `MesaReiPalido.open('capa')` : `MesaReiPalido.playerInspect()`) : (isAnotacoesCaixa ? `MesaLivroReader.open('col_anotacoes_caixa_negra')` : (isAnotacaoSolta ? `MesaLivroReader.open('col_anotacao_solta_constanca')` : (isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : (isCartaz ? `MesaLivroReader.open('col_cartaz_desaparecido')` : ((isGravador || isFita) ? `MesaLivroReader.open('${it.id}')` : ''))))))));
-          const clickTitle = isReiPalido ? (isMaster ? 'Clique para abrir o leitor sob a penumbra com lanterna e sanidade' : 'Páginas grampeadas sob escuridão') : (isAnotacoesCaixa ? 'Clique para examinar as folhas de pesquisa da caixa' : (isAnotacaoSolta ? 'Clique para examinar a página solta de reflexão' : (isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : (isCartaz ? 'Clique para examinar o cartaz e ler o verso' : (isFita ? 'Clique para ouvir os ecos da fita espectral' : ''))))))));
+          const clickAction = isReiPalido ? `MesaReiPalido.open('capa')` : (isAnotacoesCaixa ? `MesaLivroReader.open('col_anotacoes_caixa_negra')` : (isAnotacaoSolta ? `MesaLivroReader.open('col_anotacao_solta_constanca')` : (isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : (isCartaz ? `MesaLivroReader.open('col_cartaz_desaparecido')` : ((isGravador || isFita) ? `MesaLivroReader.open('${it.id}')` : ''))))))));
+          const clickTitle = isReiPalido ? 'Clique para abrir o leitor do livro O Rei Pálido' : (isAnotacoesCaixa ? 'Clique para examinar as folhas de pesquisa da caixa' : (isAnotacaoSolta ? 'Clique para examinar a página solta de reflexão' : (isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : (isCartaz ? 'Clique para examinar o cartaz e ler o verso' : (isFita ? 'Clique para ouvir os ecos da fita espectral' : ''))))))));
 
           return `
             <div class="coletavel-card ${isClickable ? 'clickable-item' : ''}" style="padding: 12px 14px;" ${isClickable ? `onclick="${clickAction}" title="${clickTitle}"` : ''}>
@@ -8236,17 +8236,10 @@ const MesaColetaveis = {
                 </div>
               ` : ''}
               ${isReiPalido ? `
-                ${isMaster ? `
-                  <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaReiPalido.open('capa');" style="background: rgba(185, 28, 28, 0.2); border-color: #dc2626; color: #fca5a5;">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                    <span>Abrir Leitura Sob a Penumbra (Lanterna &amp; Sanidade)</span>
-                  </button>
-                ` : `
-                  <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaReiPalido.playerInspect();" style="background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.2); color: #d4d4d4;">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
-                    <span>Examinar Páginas Grampeadas</span>
-                  </button>
-                `}
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaReiPalido.open('capa');" style="background: rgba(185, 28, 28, 0.2); border-color: #dc2626; color: #fca5a5;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                  <span>Abrir Leitura do Livro (O Rei Pálido)</span>
+                </button>
               ` : ''}
               ${isAnotacoesCaixa ? `
                 <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_anotacoes_caixa_negra');" style="background: rgba(168, 85, 247, 0.16); border-color: rgba(168, 85, 247, 0.45); color: #c084fc;">
@@ -8376,8 +8369,8 @@ const MesaColetaveis = {
           const isGravador = it.id === 'col_gravador_fita_01' || it.id === 'col_gravador_bolso_02';
           const isFita = it.id === 'col_fita_01' || it.id === 'col_fita_02';
           const isClickable = isBook || isDiario || isCaixa || isNotebook || isCartaz || isGravador || isFita || isReiPalido || isAnotacoesCaixa || isAnotacaoSolta;
-          const clickAction = isReiPalido ? (isMaster ? `MesaReiPalido.open('capa')` : `MesaReiPalido.playerInspect()`) : (isAnotacoesCaixa ? `MesaLivroReader.open('col_anotacoes_caixa_negra')` : (isAnotacaoSolta ? `MesaLivroReader.open('col_anotacao_solta_constanca')` : (isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : (isCartaz ? `MesaLivroReader.open('col_cartaz_desaparecido')` : ((isGravador || isFita) ? `MesaLivroReader.open('${it.id}')` : ''))))))));
-          const clickTitle = isReiPalido ? (isMaster ? 'Clique para abrir o leitor sob a penumbra com lanterna e sanidade' : 'Páginas grampeadas sob escuridão') : (isAnotacoesCaixa ? 'Clique para examinar as folhas de pesquisa da caixa' : (isAnotacaoSolta ? 'Clique para examinar a página solta de reflexão' : (isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : (isCartaz ? 'Clique para examinar o cartaz e ler o verso' : (isFita ? 'Clique para ouvir os ecos da fita espectral' : ''))))))));
+          const clickAction = isReiPalido ? `MesaReiPalido.open('capa')` : (isAnotacoesCaixa ? `MesaLivroReader.open('col_anotacoes_caixa_negra')` : (isAnotacaoSolta ? `MesaLivroReader.open('col_anotacao_solta_constanca')` : (isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : (isCartaz ? `MesaLivroReader.open('col_cartaz_desaparecido')` : ((isGravador || isFita) ? `MesaLivroReader.open('${it.id}')` : ''))))))));
+          const clickTitle = isReiPalido ? 'Clique para abrir o leitor do livro O Rei Pálido' : (isAnotacoesCaixa ? 'Clique para examinar as folhas de pesquisa da caixa' : (isAnotacaoSolta ? 'Clique para examinar a página solta de reflexão' : (isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : (isCartaz ? 'Clique para examinar o cartaz e ler o verso' : (isFita ? 'Clique para ouvir os ecos da fita espectral' : ''))))))));
 
           return `
             <div class="coletavel-card ${isMaster ? (it.desbloqueado ? 'master-unlocked' : 'master-locked') : ''} ${isClickable ? 'clickable-item' : ''}" ${isClickable ? `onclick="${clickAction}" title="${clickTitle}"` : ''}>
@@ -8415,17 +8408,10 @@ const MesaColetaveis = {
                 </div>
               ` : ''}
               ${isReiPalido ? `
-                ${isMaster ? `
-                  <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaReiPalido.open('capa');" style="background: rgba(185, 28, 28, 0.2); border-color: #dc2626; color: #fca5a5;">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                    <span>Abrir Leitura Sob a Penumbra (Lanterna &amp; Sanidade)</span>
-                  </button>
-                ` : `
-                  <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaReiPalido.playerInspect();" style="background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.2); color: #d4d4d4;">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
-                    <span>Examinar Páginas Grampeadas</span>
-                  </button>
-                `}
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaReiPalido.open('capa');" style="background: rgba(185, 28, 28, 0.2); border-color: #dc2626; color: #fca5a5;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                  <span>Abrir Leitura do Livro (O Rei Pálido)</span>
+                </button>
               ` : ''}
               ${isAnotacoesCaixa ? `
                 <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_anotacoes_caixa_negra');" style="background: rgba(168, 85, 247, 0.16); border-color: rgba(168, 85, 247, 0.45); color: #c084fc;">
@@ -9246,10 +9232,8 @@ const MesaReiPalido = {
     modal.style.display = 'flex';
     this.selectPage(pageId, true);
 
-    const isMaster = Boolean((window.MesaApp && MesaApp.state && MesaApp.state.isMaster) || document.body.classList.contains('is-master'));
-    if (isMaster) {
-      this.broadcastPage(pageId, 'open');
-    }
+    // Mecânica de forçar tela de todos desativada por enquanto conforme solicitado:
+    // O leitor fica sob demanda quando o usuário clica no item.
   },
 
   close() {
@@ -9462,13 +9446,9 @@ const MesaReiPalido = {
       this.isOpen = false;
       return;
     }
-    if (data.action === 'open') {
-      const modal = document.getElementById('rei-palido-modal');
-      if (modal) modal.style.display = 'flex';
-      this.isOpen = true;
-      if (data.page) {
-        this.selectPage(data.page, true);
-      }
+    // Se o jogador estiver com o livro aberto e o mestre mudar de pagina, atualiza a pagina sem forcar abertura
+    if (data.action === 'open' && this.isOpen && data.page) {
+      this.selectPage(data.page, true);
     }
   },
 
@@ -16736,10 +16716,10 @@ const MesaCombate = {
     {
       id: 'amalgama',
       name: 'Amálgama',
-      video: 'assets/videos/amalgama.mp4?v=2.5.12',
+      video: 'assets/videos/amalgama.mp4?v=2.5.13',
       desc: 'A coisa que cresce sob o pavilhão. Arena nova reservada para a cinemática do encontro.',
       arena: 'amalgama',
-      pendingVideo: true
+      pendingVideo: false
     },
     {
       id: 'unknown',
