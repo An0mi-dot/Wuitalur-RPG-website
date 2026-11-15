@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.5.14">
+  <link rel="stylesheet" href="css/mesa.css?v=2.5.15">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -995,18 +995,17 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
             </div>
           </div>
           <div>
-            <label style="display: block; font-size: 0.75rem; color: #a3a3a3; margin-bottom: 4px; font-weight: 700; text-transform: uppercase;">Posse / Entregue ao Personagem</label>
-            <select id="coletavel-form-posse" class="coletaveis-search-input" style="padding-left: 8px; background: #0d0d10; color: #fff;">
-              <option value="">-- Nenhum (No Acervo Geral do Grupo) --</option>
-              <option value="1">Slot 1 - Thulita De La Benevidez</option>
-              <option value="2">Slot 2 - Sanguiminerva "Minerva" Qamari</option>
-              <option value="3">Slot 3 - Eric "Blade" Tepes Adams</option>
-              <option value="4">Slot 4 - Pera Hylidae da Silva</option>
-              <option value="5">Slot 5 - Willian Kars</option>
-              <option value="6">Slot 6 - John Doe</option>
-              <option value="7">Slot 7 - Odara De La Benevidez</option>
-              <option value="8">Slot 8 - Canneth 'Blinko' Biloxi</option>
-            </select>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label style="display: block; font-size: 0.75rem; color: #a3a3a3; font-weight: 700; text-transform: uppercase;">Posse / Entregue aos Personagens (Multi-seleção)</label>
+              <div style="display: flex; gap: 4px;">
+                <button type="button" class="coletavel-assign-quick-btn" onclick="MesaColetaveis.formSelectAllPlayers(true)">Todos</button>
+                <button type="button" class="coletavel-assign-quick-btn" onclick="MesaColetaveis.formSelectAllPlayers(false)">Nenhum</button>
+              </div>
+            </div>
+            <div id="coletavel-form-posse-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 6px; background: #0d0d10; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 8px;">
+              <!-- Renderizado dinamicamente por MesaColetaveis.renderFormPlayers() -->
+            </div>
+            <input type="hidden" id="coletavel-form-posse" value="" />
           </div>
           <div>
             <label style="display: block; font-size: 0.75rem; color: #a3a3a3; margin-bottom: 4px; font-weight: 700; text-transform: uppercase;">Arquivo / URL da Imagem (Opcional)</label>
@@ -1390,11 +1389,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=2.5.14"></script>
+<script src="js/campaign-data.js?v=2.5.15"></script>
 
-<script src="js/mesa.js?v=2.5.14"></script>
+<script src="js/mesa.js?v=2.5.15"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.5.14</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.5.15</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>

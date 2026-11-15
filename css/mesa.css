@@ -12782,17 +12782,29 @@ body.combat-active .combat-black-ramp {
   z-index: 100050 !important;
 }
 
-/* Controles de Posse e Atribuicao de Coletaveis */
-.coletavel-assign-row {
+/* Controles de Posse e Multi-Atribuicao de Coletaveis */
+.coletavel-assign-box {
   margin-top: 10px;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  padding: 8px 10px;
+  border-radius: 4px;
+  box-sizing: border-box;
   display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color 0.15s ease;
+}
+
+.coletavel-assign-box:hover {
+  border-color: rgba(245, 158, 11, 0.55);
+}
+
+.coletavel-assign-header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 8px;
-  background: rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(245, 158, 11, 0.25);
-  padding: 6px 10px;
-  border-radius: 3px;
-  box-sizing: border-box;
 }
 
 .coletavel-assign-label {
@@ -12800,24 +12812,139 @@ body.combat-active .combat-black-ramp {
   color: #fbbf24;
   font-weight: 700;
   text-transform: uppercase;
-  white-space: nowrap;
   font-family: monospace;
+  letter-spacing: 0.4px;
 }
 
-.coletavel-assign-select {
-  flex: 1;
-  background: #111016;
-  border: 1px solid rgba(245, 158, 11, 0.4);
-  color: #f3f4f6;
-  font-size: 0.75rem;
-  padding: 4px 8px;
-  border-radius: 2px;
+.coletavel-assign-count-badge {
+  font-size: 0.65rem;
+  color: #94a3b8;
+  font-weight: normal;
+  text-transform: none;
+}
+
+.coletavel-assign-count-badge.has-owners {
+  color: #34d399;
+  font-weight: 600;
+}
+
+.coletavel-assign-quick-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.coletavel-assign-quick-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #cbd5e1;
+  font-size: 0.65rem;
+  padding: 2px 7px;
+  border-radius: 3px;
   cursor: pointer;
-  outline: none;
+  transition: all 0.15s ease;
+  font-family: monospace;
+  text-transform: uppercase;
 }
 
-.coletavel-assign-select:focus {
+.coletavel-assign-quick-btn:hover {
+  background: rgba(245, 158, 11, 0.22);
   border-color: #fbbf24;
+  color: #fbbf24;
+}
+
+.coletavel-assign-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.coletavel-player-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #94a3b8;
+  font-size: 0.7rem;
+  padding: 3px 7px;
+  border-radius: 3px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+  font-family: var(--font-body, -apple-system, sans-serif);
+}
+
+.coletavel-player-chip:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(245, 158, 11, 0.5);
+  color: #f8fafc;
+  transform: translateY(-1px);
+}
+
+.coletavel-player-chip.active {
+  background: rgba(245, 158, 11, 0.22);
+  border-color: #f59e0b;
+  color: #fef3c7;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.28);
+  font-weight: 600;
+}
+
+.coletavel-player-chip .chip-slot {
+  display: inline-block;
+  font-family: monospace;
+  font-size: 0.64rem;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 0 4px;
+  border-radius: 2px;
+  color: #fbbf24;
+}
+
+.coletavel-player-chip.active .chip-slot {
+  background: #f59e0b;
+  color: #000;
+  font-weight: 700;
+}
+
+.coletavel-player-chip .chip-name {
+  max-width: 95px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.coletavel-player-chip .chip-check {
+  font-size: 0.68rem;
+  color: #34d399;
+  font-weight: 800;
+  margin-left: 1px;
+}
+
+/* Modal Form Checkboxes */
+.coletavel-form-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: #cbd5e1;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 5px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+}
+
+.coletavel-form-checkbox-label:hover {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #fef3c7;
+}
+
+.coletavel-form-checkbox-label input[type="checkbox"] {
+  accent-color: #f59e0b;
+  cursor: pointer;
 }
 
 .coletavel-posse-tag {

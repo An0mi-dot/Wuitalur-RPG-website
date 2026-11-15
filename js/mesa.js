@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.14';
+const MESA_VERSION = 'v2.5.15';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -7826,17 +7826,47 @@ const MesaColetaveis = {
     }
   },
 
-  assignItem(itemId, slotValue) {
+  // Retorna os slots (1 a 8) dos jogadores que possuem o item
+  getItemOwners(it) {
+    if (!it) return [];
+    if (Array.isArray(it.posse)) {
+      return it.posse.map(Number).filter(n => !isNaN(n) && n >= 1 && n <= 8);
+    }
+    if (Array.isArray(it.posses)) {
+      return it.posses.map(Number).filter(n => !isNaN(n) && n >= 1 && n <= 8);
+    }
+    if (it.posse !== null && it.posse !== undefined && it.posse !== '') {
+      const num = Number(it.posse);
+      return (!isNaN(num) && num >= 1 && num <= 8) ? [num] : [];
+    }
+    return [];
+  },
+
+  // Verifica se o item esta na posse de determinado slot
+  isItemInSlot(it, slot) {
+    const owners = this.getItemOwners(it);
+    return owners.includes(Number(slot));
+  },
+
+  // Alterna a posse de um slot especifico (adiciona ou remove)
+  toggleSlotAssign(itemId, slot) {
     if (!MesaApp || !MesaApp.state || !MesaApp.state.isMaster) return;
     const item = this.items.find(it => it.id === itemId);
     if (!item) return;
 
-    const newSlot = (slotValue === '' || slotValue === 'none' || slotValue === null || slotValue === undefined)
-      ? null
-      : parseInt(slotValue, 10);
+    const slotNum = Number(slot);
+    let owners = this.getItemOwners(item);
+    const hadSlot = owners.includes(slotNum);
 
-    item.posse = newSlot;
-    if (newSlot !== null) {
+    if (hadSlot) {
+      owners = owners.filter(s => s !== slotNum);
+    } else {
+      owners.push(slotNum);
+      owners.sort((a, b) => a - b);
+    }
+
+    item.posse = owners.length > 0 ? owners : null;
+    if (owners.length > 0) {
       item.desbloqueado = true;
     }
 
@@ -7844,10 +7874,38 @@ const MesaColetaveis = {
     this.render();
     this.renderFicha();
 
-    let targetName = 'Acervo Geral do Grupo';
-    if (newSlot !== null) {
-      targetName = this.getPlayerName(newSlot) || `Slot ${newSlot}`;
+    const playerName = this.getPlayerName(slotNum) || `Slot ${slotNum}`;
+    if (MesaChat && MesaChat.channel) {
+      try {
+        MesaChat.channel.send({
+          type: 'broadcast',
+          event: 'chat_message',
+          payload: {
+            id: 'msg_' + Date.now(),
+            text: !hadSlot
+              ? `[ITEM ATRIBUÍDO]: "${item.nome}" foi entregue a ${playerName}! O item já aparece na ficha.`
+              : `[ITEM DESVINCULADO]: "${item.nome}" foi desvinculado de ${playerName}.`,
+            sender: 'Mestre',
+            role: 'mestre',
+            timestamp: Date.now()
+          }
+        });
+      } catch(e) {}
     }
+  },
+
+  // Atribui o item a todos os 8 jogadores disponíveis
+  assignAll(itemId) {
+    if (!MesaApp || !MesaApp.state || !MesaApp.state.isMaster) return;
+    const item = this.items.find(it => it.id === itemId);
+    if (!item) return;
+
+    item.posse = [1, 2, 3, 4, 5, 6, 7, 8];
+    item.desbloqueado = true;
+
+    this.saveAndSync();
+    this.render();
+    this.renderFicha();
 
     if (MesaChat && MesaChat.channel) {
       try {
@@ -7856,9 +7914,7 @@ const MesaColetaveis = {
           event: 'chat_message',
           payload: {
             id: 'msg_' + Date.now(),
-            text: newSlot !== null
-              ? `[ITEM ENTREGUE]: "${item.nome}" foi entregue a ${targetName}! O item já aparece na ficha do personagem.`
-              : `[ITEM RECOLHIDO]: "${item.nome}" foi devolvido ao acervo geral pelo Mestre.`,
+            text: `[ITEM COMPARTILHADO]: "${item.nome}" foi atribuído a TODOS os investigadores pelo Mestre!`,
             sender: 'Mestre',
             role: 'mestre',
             timestamp: Date.now()
@@ -7866,6 +7922,103 @@ const MesaColetaveis = {
         });
       } catch(e) {}
     }
+  },
+
+  // Limpa a posse do item (devolve ao acervo geral)
+  clearAssign(itemId) {
+    if (!MesaApp || !MesaApp.state || !MesaApp.state.isMaster) return;
+    const item = this.items.find(it => it.id === itemId);
+    if (!item) return;
+
+    item.posse = null;
+
+    this.saveAndSync();
+    this.render();
+    this.renderFicha();
+
+    if (MesaChat && MesaChat.channel) {
+      try {
+        MesaChat.channel.send({
+          type: 'broadcast',
+          event: 'chat_message',
+          payload: {
+            id: 'msg_' + Date.now(),
+            text: `[ITEM RECOLHIDO]: "${item.nome}" foi devolvido ao acervo geral pelo Mestre.`,
+            sender: 'Mestre',
+            role: 'mestre',
+            timestamp: Date.now()
+          }
+        });
+      } catch(e) {}
+    }
+  },
+
+  // Desvincula o item de um jogador especifico (usado no botao da ficha)
+  unassignItemFromSlot(itemId, slot) {
+    if (!MesaApp || !MesaApp.state || !MesaApp.state.isMaster) return;
+    const item = this.items.find(it => it.id === itemId);
+    if (!item) return;
+
+    const slotNum = Number(slot);
+    let owners = this.getItemOwners(item);
+    owners = owners.filter(s => s !== slotNum);
+
+    item.posse = owners.length > 0 ? owners : null;
+
+    this.saveAndSync();
+    this.render();
+    this.renderFicha();
+
+    const playerName = this.getPlayerName(slotNum) || `Slot ${slotNum}`;
+    if (MesaChat && MesaChat.channel) {
+      try {
+        MesaChat.channel.send({
+          type: 'broadcast',
+          event: 'chat_message',
+          payload: {
+            id: 'msg_' + Date.now(),
+            text: `[ITEM DESVINCULADO]: "${item.nome}" foi removido da ficha de ${playerName}.`,
+            sender: 'Mestre',
+            role: 'mestre',
+            timestamp: Date.now()
+          }
+        });
+      } catch(e) {}
+    }
+  },
+
+  // Retrocompatibilidade para chamadas antigas de assignItem
+  assignItem(itemId, slotValue) {
+    if (slotValue === '' || slotValue === 'none' || slotValue === null || slotValue === undefined) {
+      this.clearAssign(itemId);
+    } else {
+      this.toggleSlotAssign(itemId, parseInt(slotValue, 10));
+    }
+  },
+
+  // Renderiza checkboxes de jogadores no modal de criacao/edicao
+  renderFormPlayers(selectedSlots = []) {
+    const listEl = document.getElementById('coletavel-form-posse-list');
+    if (!listEl) return;
+    const playerOptions = this.getPlayerOptions();
+    const selectedNums = (selectedSlots || []).map(Number);
+
+    listEl.innerHTML = playerOptions.map(opt => {
+      const isChecked = selectedNums.includes(opt.slot);
+      return `
+        <label class="coletavel-form-checkbox-label">
+          <input type="checkbox" name="coletavel-player-slot" value="${opt.slot}" ${isChecked ? 'checked' : ''} />
+          <span style="font-family: monospace; color: #fbbf24; font-size: 0.7rem;">[Slot ${opt.slot}]</span>
+          <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${opt.name}</span>
+        </label>
+      `;
+    }).join('');
+  },
+
+  // Seleciona ou desmarca todos os checkboxes no modal de formulario
+  formSelectAllPlayers(selectAll = true) {
+    const checkboxes = document.querySelectorAll('input[name="coletavel-player-slot"]');
+    checkboxes.forEach(cb => { cb.checked = Boolean(selectAll); });
   },
 
   openModal() {
@@ -7902,7 +8055,6 @@ const MesaColetaveis = {
     const areaEl = document.getElementById('coletavel-form-area');
     const campoTipoEl = document.getElementById('coletavel-form-campo-tipo');
     const statusEl = document.getElementById('coletavel-form-status');
-    const posseEl = document.getElementById('coletavel-form-posse');
     const resumoEl = document.getElementById('coletavel-form-resumo');
     const detalheEl = document.getElementById('coletavel-form-detalhe');
 
@@ -7915,7 +8067,7 @@ const MesaColetaveis = {
     if (areaEl) areaEl.value = '';
     if (campoTipoEl) campoTipoEl.value = 'Detalhe';
     if (statusEl) statusEl.value = 'unlocked';
-    if (posseEl) posseEl.value = '';
+    this.renderFormPlayers([]);
     const imgEl = document.getElementById('coletavel-form-imagem'); if (imgEl) imgEl.value = '';
     if (resumoEl) resumoEl.value = '';
     if (detalheEl) detalheEl.value = '';
@@ -7937,7 +8089,6 @@ const MesaColetaveis = {
     const areaEl = document.getElementById('coletavel-form-area');
     const campoTipoEl = document.getElementById('coletavel-form-campo-tipo');
     const statusEl = document.getElementById('coletavel-form-status');
-    const posseEl = document.getElementById('coletavel-form-posse');
     const resumoEl = document.getElementById('coletavel-form-resumo');
     const detalheEl = document.getElementById('coletavel-form-detalhe');
 
@@ -7950,7 +8101,7 @@ const MesaColetaveis = {
     if (areaEl) areaEl.value = item.area || '';
     if (campoTipoEl) campoTipoEl.value = item.campo_tipo || 'Detalhe';
     if (statusEl) statusEl.value = item.desbloqueado ? 'unlocked' : 'locked';
-    if (posseEl) posseEl.value = item.posse !== null && item.posse !== undefined ? String(item.posse) : '';
+    this.renderFormPlayers(this.getItemOwners(item));
     const imgEl = document.getElementById('coletavel-form-imagem'); if (imgEl) imgEl.value = item.imagem || '';
     if (resumoEl) resumoEl.value = item.resumo || '';
     if (detalheEl) detalheEl.value = item.detalhe || item.desc || '';
@@ -7978,8 +8129,16 @@ const MesaColetaveis = {
     const campo_tipo = (document.getElementById('coletavel-form-campo-tipo')?.value || '').trim() || 'Detalhe';
     const statusVal = document.getElementById('coletavel-form-status')?.value;
     const desbloqueado = (statusVal === 'unlocked');
-    const posseVal = document.getElementById('coletavel-form-posse')?.value;
-    const posse = (posseVal === '' || posseVal === null || posseVal === undefined) ? null : parseInt(posseVal, 10);
+    
+    // Coleta todos os slots marcados no container de checkboxes
+    const checkedSlots = [];
+    document.querySelectorAll('input[name="coletavel-player-slot"]:checked').forEach(cb => {
+      const val = parseInt(cb.value, 10);
+      if (!isNaN(val)) checkedSlots.push(val);
+    });
+    checkedSlots.sort((a, b) => a - b);
+    const posse = checkedSlots.length > 0 ? checkedSlots : null;
+
     const imagem = (document.getElementById('coletavel-form-imagem')?.value || '').trim();
     const resumo = (document.getElementById('coletavel-form-resumo')?.value || '').trim();
     const detalhe = (document.getElementById('coletavel-form-detalhe')?.value || '').trim() || 'Sem detalhes adicionais.';
@@ -8047,9 +8206,9 @@ const MesaColetaveis = {
     }
 
     this.saveAndSync();
-    this.closeFormModal();
     this.render();
     this.renderFicha();
+    this.closeFormModal();
   },
 
   handleCreate(e) {
@@ -8162,8 +8321,8 @@ const MesaColetaveis = {
     const playerSlot = activePlayer.slot;
     const playerName = activePlayer.nome || `Slot ${playerSlot}`;
 
-    // Filtra estritamente os itens que estão na posse deste personagem
-    const playerItems = this.items.filter(it => it.posse !== null && it.posse !== undefined && it.posse !== '' && String(it.posse) === String(playerSlot));
+    // Filtra os itens que estao na posse deste personagem (individual ou compartilhada)
+    const playerItems = this.items.filter(it => this.isItemInSlot(it, playerSlot));
 
     if (playerItems.length === 0) {
       container.innerHTML = `
@@ -8297,8 +8456,16 @@ const MesaColetaveis = {
               ` : ''}
               ${isMaster ? `
                 <div class="coletavel-card-footer" style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-top:8px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 6px;">
-                  <span style="font-size: 0.7rem; color: #a3a3a3;">Posse: Slot ${playerSlot}</span>
-                  <button type="button" class="coletavel-delete-btn" onclick="event.stopPropagation(); MesaColetaveis.assignItem('${it.id}', '');" title="Desvincular item deste personagem" style="font-size: 0.72rem; padding: 2px 6px;">
+                  <span style="font-size: 0.7rem; color: #a3a3a3;">
+                    ${(() => {
+                      const owners = MesaColetaveis.getItemOwners(it);
+                      if (owners.length > 1) {
+                        return `<span style="color: #fbbf24;" title="Na posse dos slots: ${owners.join(', ')}">Posse Compartilhada (${owners.length} investigadores)</span>`;
+                      }
+                      return `Posse: Slot ${playerSlot}`;
+                    })()}
+                  </span>
+                  <button type="button" class="coletavel-delete-btn" onclick="event.stopPropagation(); MesaColetaveis.unassignItemFromSlot('${it.id}', ${playerSlot});" title="Desvincular item deste personagem" style="font-size: 0.72rem; padding: 2px 6px;">
                     Desvincular
                   </button>
                 </div>
@@ -8469,16 +8636,40 @@ const MesaColetaveis = {
               ` : ''}
 
               ${isMaster ? `
-                <div class="coletavel-assign-row" onclick="event.stopPropagation();">
-                  <span class="coletavel-assign-label">Posse:</span>
-                  <select class="coletavel-assign-select" onchange="MesaColetaveis.assignItem('${it.id}', this.value)">
-                    <option value="" ${!it.posse ? 'selected' : ''}>-- Nenhum (Acervo Geral do Grupo) --</option>
-                    ${playerOptions.map(opt => `
-                      <option value="${opt.slot}" ${String(it.posse) === String(opt.slot) ? 'selected' : ''}>
-                        Slot ${opt.slot}: ${opt.name}
-                      </option>
-                    `).join('')}
-                  </select>
+                <div class="coletavel-assign-box" onclick="event.stopPropagation();">
+                  <div class="coletavel-assign-header">
+                    <span class="coletavel-assign-label">
+                      Posse 
+                      <span class="coletavel-assign-count-badge ${MesaColetaveis.getItemOwners(it).length > 0 ? 'has-owners' : ''}">
+                        (${(() => {
+                          const count = MesaColetaveis.getItemOwners(it).length;
+                          if (count === 0) return 'Acervo Geral';
+                          if (count === 1) return '1 jogador';
+                          return `${count} jogadores`;
+                        })()})
+                      </span>
+                    </span>
+                    <div class="coletavel-assign-quick-actions">
+                      <button type="button" class="coletavel-assign-quick-btn" onclick="MesaColetaveis.assignAll('${it.id}')" title="Atribuir a todos os 8 jogadores">Todos</button>
+                      <button type="button" class="coletavel-assign-quick-btn" onclick="MesaColetaveis.clearAssign('${it.id}')" title="Remover de todos (devolver ao acervo)">Limpar</button>
+                    </div>
+                  </div>
+                  <div class="coletavel-assign-chips">
+                    ${playerOptions.map(opt => {
+                      const isAssigned = MesaColetaveis.isItemInSlot(it, opt.slot);
+                      const firstName = (opt.name || `P${opt.slot}`).split(' ')[0];
+                      return `
+                        <button type="button" 
+                                class="coletavel-player-chip ${isAssigned ? 'active' : ''}" 
+                                onclick="MesaColetaveis.toggleSlotAssign('${it.id}', ${opt.slot})"
+                                title="${isAssigned ? 'Remover posse de ' + opt.name : 'Atribuir posse a ' + opt.name}">
+                          <span class="chip-slot">${opt.slot}</span>
+                          <span class="chip-name">${firstName}</span>
+                          ${isAssigned ? '<span class="chip-check">✓</span>' : ''}
+                        </button>
+                      `;
+                    }).join('')}
+                  </div>
                 </div>
                 <div class="coletavel-card-footer" style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-top:10px;">
                   <button type="button" class="coletavel-lock-btn ${it.desbloqueado ? 'lock-action' : 'unlock-action'}" onclick="event.stopPropagation(); MesaColetaveis.toggleLock('${it.id}')">
@@ -16224,7 +16415,14 @@ const MesaIgrisShop = {
           };
           MesaColetaveis.items.push(colItem);
         } else if (colItem) {
-          colItem.posse = slotNum;
+          const owners = (window.MesaColetaveis && typeof MesaColetaveis.getItemOwners === 'function')
+            ? MesaColetaveis.getItemOwners(colItem)
+            : (Array.isArray(colItem.posse) ? colItem.posse : (colItem.posse ? [Number(colItem.posse)] : []));
+          if (!owners.includes(slotNum)) {
+            owners.push(slotNum);
+            owners.sort((a, b) => a - b);
+          }
+          colItem.posse = owners;
           colItem.desbloqueado = true;
         }
       });
