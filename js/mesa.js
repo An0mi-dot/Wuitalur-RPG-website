@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.15';
+const MESA_VERSION = 'v2.5.16';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -1878,15 +1878,18 @@ const MesaApp = {
           if (p1Attrs) {
             this.state.rawRow1Atributos = p1Attrs;
             if (Array.isArray(p1Attrs._sys_coletaveis) && p1Attrs._sys_coletaveis.length > 0 && window.MesaColetaveis) {
-              const { items: merged, changed } = MesaColetaveis.mergeCanonical(p1Attrs._sys_coletaveis);
-              const remoteStr = JSON.stringify(merged);
-              if (remoteStr !== JSON.stringify(MesaColetaveis.items)) {
-                MesaColetaveis.items = merged;
-                localStorage.setItem('wu_coletaveis_v2', remoteStr);
-                if (typeof MesaColetaveis.render === 'function') MesaColetaveis.render();
-                if (typeof MesaColetaveis.renderFicha === 'function') MesaColetaveis.renderFicha();
-                if (changed && MesaApp && MesaApp.state && MesaApp.state.isMaster) {
-                  MesaColetaveis.saveAndSync();
+              const isMasterRecentlySaved = this.state && this.state.isMaster && (Date.now() - (MesaColetaveis._lastLocalSave || 0) < 4000);
+              if (!isMasterRecentlySaved) {
+                const { items: merged, changed } = MesaColetaveis.mergeCanonical(p1Attrs._sys_coletaveis);
+                const remoteStr = JSON.stringify(merged);
+                if (remoteStr !== JSON.stringify(MesaColetaveis.items)) {
+                  MesaColetaveis.items = merged;
+                  localStorage.setItem('wu_coletaveis_v2', remoteStr);
+                  if (typeof MesaColetaveis.render === 'function') MesaColetaveis.render();
+                  if (typeof MesaColetaveis.renderFicha === 'function') MesaColetaveis.renderFicha();
+                  if (changed && MesaApp && MesaApp.state && MesaApp.state.isMaster) {
+                    MesaColetaveis.saveAndSync();
+                  }
                 }
               }
             }
@@ -2069,14 +2072,21 @@ const MesaApp = {
 
           // 2. Sincronização de Coletáveis (liberações/edições do Mestre)
           if (attrs && Array.isArray(attrs._sys_coletaveis) && window.MesaColetaveis) {
-            const { items: merged } = MesaColetaveis.mergeCanonical(attrs._sys_coletaveis);
-            const remoteStr = JSON.stringify(merged);
-            const localStr = JSON.stringify(MesaColetaveis.items);
-            if (remoteStr !== localStr) {
-              MesaColetaveis.items = merged;
-              localStorage.setItem('wu_coletaveis_v2', remoteStr);
-              MesaColetaveis.render();
-              if (typeof MesaColetaveis.renderFicha === 'function') MesaColetaveis.renderFicha();
+            const isMasterRecentlySaved = this.state && this.state.isMaster && (Date.now() - (MesaColetaveis._lastLocalSave || 0) < 4000);
+            if (!isMasterRecentlySaved) {
+              const { items: merged } = MesaColetaveis.mergeCanonical(attrs._sys_coletaveis);
+              const remoteStr = JSON.stringify(merged);
+              const localStr = JSON.stringify(MesaColetaveis.items);
+              if (remoteStr !== localStr) {
+                MesaColetaveis.items = merged;
+                localStorage.setItem('wu_coletaveis_v2', remoteStr);
+                if (this.state) {
+                  if (!this.state.rawRow1Atributos) this.state.rawRow1Atributos = {};
+                  this.state.rawRow1Atributos._sys_coletaveis = merged;
+                }
+                MesaColetaveis.render();
+                if (typeof MesaColetaveis.renderFicha === 'function') MesaColetaveis.renderFicha();
+              }
             }
           }
 
@@ -7772,7 +7782,9 @@ const MesaColetaveis = {
     }, true);
   },
 
-  init() {
+  init(force = false) {
+    if (this._initialized && !force && Array.isArray(this.items) && this.items.length > 0) return;
+    this._initialized = true;
     this.bindImageFallbacks();
     const canonical = window.CAMPAIGN_COLETAVEIS || window.MESA_COLETAVEIS || [];
 
@@ -8026,7 +8038,7 @@ const MesaColetaveis = {
       alert('[ACESSO RESTRITO]: O Catálogo Geral de Coletáveis é exclusivo do Mestre. Os itens obtidos pelo seu personagem ficam disponíveis na sua ficha.');
       return;
     }
-    this.init();
+    if (!this._initialized) this.init();
     this.searchQuery = '';
     const input = document.getElementById('coletaveis-search-input');
     if (input) input.value = '';
@@ -8263,14 +8275,24 @@ const MesaColetaveis = {
   },
 
   saveAndSync() {
+    this._lastLocalSave = Date.now();
     localStorage.setItem('wu_coletaveis_v2', JSON.stringify(this.items));
+    if (MesaApp && MesaApp.state) {
+      if (!MesaApp.state.rawRow1Atributos || typeof MesaApp.state.rawRow1Atributos !== 'object') {
+        MesaApp.state.rawRow1Atributos = {};
+      }
+      MesaApp.state.rawRow1Atributos._sys_coletaveis = JSON.parse(JSON.stringify(this.items));
+    }
     const chan = (MesaChat && MesaChat.channel) || (MesaApp && MesaApp.channel);
     if (chan) {
       try {
         chan.send({
           type: 'broadcast',
           event: 'coletaveis_sync',
-          payload: { items: this.items }
+          payload: { 
+            items: this.items,
+            _senderId: (MesaApp && MesaApp.clientId) || null
+          }
         });
       } catch(e) {}
     }
@@ -8292,6 +8314,9 @@ const MesaColetaveis = {
             .from('personagens')
             .update({ atributos: attrs })
             .eq('id', 1);
+          if (MesaApp.state) {
+            MesaApp.state.rawRow1Atributos = attrs;
+          }
         } catch(err) {
           console.error("Erro ao persistir coletáveis no Supabase:", err);
         }
@@ -8312,7 +8337,7 @@ const MesaColetaveis = {
   renderFicha(targetPlayer) {
     const container = document.getElementById('ficha-coletaveis-container');
     if (!container) return;
-    this.init();
+    if (!this._initialized) this.init();
 
     const isMaster = Boolean(MesaApp && MesaApp.state && MesaApp.state.isMaster);
     const activePlayer = targetPlayer || (MesaApp && MesaApp.state && MesaApp.state.activeViewingPlayer);
