@@ -109,43 +109,70 @@
       line-height: 1.5;
     }
 
-    .round-track-grid {
+    .vigor-tier-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: var(--space-md);
       margin: var(--space-lg) 0;
     }
-    .round-track-card {
+    .vigor-tier-card {
       background: #111118;
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
       padding: var(--space-md);
       text-align: center;
       transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
     }
-    .round-track-card:hover {
-      border-color: var(--border-medium);
+    .vigor-tier-card:hover {
+      border-color: rgba(245, 158, 11, 0.45);
       transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
     }
-    .round-track-step {
-      font-family: var(--font-heading);
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--text-muted);
-      margin-bottom: 4px;
+    .vigor-tier-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--attr-fdm-vigor, #f59e0b);
     }
-    .round-track-value {
+    .vigor-tier-name {
       font-family: var(--font-heading);
-      font-size: 1.4rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: #fbbf24;
-      margin-bottom: 4px;
+      margin-bottom: var(--space-sm);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
     }
-    .round-track-desc {
-      font-size: 0.8rem;
+    .vigor-step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .vigor-step-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 8px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 4px;
+      font-size: 0.84rem;
+    }
+    .vigor-step-label {
       color: var(--text-secondary);
-      line-height: 1.4;
+    }
+    .vigor-step-dt {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      color: #fff;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: 4px;
+      padding: 1px 7px;
+      font-size: 0.85rem;
     }
 
     .death-outcome-grid {
@@ -390,29 +417,85 @@
 
           <div class="death-card warning">
             <div class="death-card-header">
-              <h3>Progressão da Dificuldade</h3>
+              <h3>Dificuldade Adaptável por Dado de Vigor</h3>
               <span class="death-badge amber">Teste no Início do Turno</span>
             </div>
 
             <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: var(--space-md);">
-              No início do turno do personagem em morrendo, role o dado de Vigor. A dificuldade aumenta a cada rodada:
+              No início do turno do personagem em morrendo, role o dado de Vigor. A dificuldade é proporcional ao dado do personagem, começando na metade do valor máximo + 1 e aumentando em +1 a cada rodada.
             </p>
 
-            <div class="round-track-grid">
-              <div class="round-track-card">
-                <div class="round-track-step">1ª Rodada em Morrendo</div>
-                <div class="round-track-value">DT 6</div>
-                <div class="round-track-desc">Primeiro limiar de resistência corporal</div>
+            <div class="vigor-tier-grid">
+              <div class="vigor-tier-card">
+                <div class="vigor-tier-name">Vigor d4</div>
+                <div class="vigor-step-list">
+                  <div class="vigor-step-row">
+                    <span class="vigor-step-label">1ª rodada</span>
+                    <span class="vigor-step-dt">DT 3</span>
+                  </div>
+                  <div class="vigor-step-row">
+                    <span class="vigor-step-label">2ª rodada</span>
+                    <span class="vigor-step-dt">DT 4</span>
+                  </div>
+                  <div class="vigor-step-row">
+                    <span class="vigor-step-label">3ª rodada</span>
+                    <span class="vigor-step-dt">DT 5</span>
+                  </div>
+                </div>
               </div>
-              <div class="round-track-card">
-                <div class="round-track-step">2ª Rodada em Morrendo</div>
-                <div class="round-track-value">DT 8</div>
-                <div class="round-track-desc">O corpo perde forças rapidamente</div>
+
+              <div class="vigor-tier-card">
+                <div class="vigor-tier-name">Vigor d8</div>
+                <div class="vigor-step-list">
+                  <div class="vigor-step-row">
+                    <span class="vigor-step-label">1ª rodada</span>
+                    <span class="vigor-step-dt">DT 5</span>
+                  </div>
+                  <div class="vigor-step-row">
+                    <span class="vigor-step-label">2ª rodada</span>
+                    <span class="vigor-step-dt">DT 6</span>
+                  </div>
+                  <div class="vigor-step-row">
+                    <span class="vigor-step-label">3ª rodada</span>
+                    <span class="vigor-step-dt">DT 7</span>
+                  </div>
+                </div>
               </div>
-              <div class="round-track-card">
-                <div class="round-track-step">3ª Rodada em Morrendo</div>
-                <div class="round-track-value">DT 10</div>
-                <div class="round-track-desc">Última oportunidade antes do colapso fatal</div>
+
+              <div class="vigor-tier-card">
+                <div class="vigor-tier-name">Vigor d12</div>
+                <div class="vigor-step-list">
+                  <div class="vigor-step-row">
+                    <span class="vigor-step-label">1ª rodada</span>
+                    <span class="vigor-step-dt">DT 7</span>
+                  </div>
+                  <div class="vigor-step-row">
+                    <span class="vigor-step-label">2ª rodada</span>
+                    <span class="vigor-step-dt">DT 8</span>
+                  </div>
+                  <div class="vigor-step-row">
+                    <span class="vigor-step-label">3ª rodada</span>
+                    <span class="vigor-step-dt">DT 9</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="vigor-tier-card">
+                <div class="vigor-tier-name">Vigor d16</div>
+                <div class="vigor-step-list">
+                  <div class="vigor-step-row">
+                    <span class="vigor-step-label">1ª rodada</span>
+                    <span class="vigor-step-dt">DT 9</span>
+                  </div>
+                  <div class="vigor-step-row">
+                    <span class="vigor-step-label">2ª rodada</span>
+                    <span class="vigor-step-dt">DT 10</span>
+                  </div>
+                  <div class="vigor-step-row">
+                    <span class="vigor-step-label">3ª rodada</span>
+                    <span class="vigor-step-dt">DT 11</span>
+                  </div>
+                </div>
               </div>
             </div>
 
