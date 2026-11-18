@@ -36,53 +36,6 @@
       border-color: rgba(6, 182, 212, 0.35);
       background: linear-gradient(180deg, rgba(6, 182, 212, 0.05) 0%, var(--bg-surface) 100%);
     }
-    .death-card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--space-md);
-      border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: var(--space-md);
-      margin-bottom: var(--space-lg);
-    }
-    .death-card-header h3 {
-      font-family: var(--font-heading);
-      font-size: 1.15rem;
-      color: #fff;
-      margin: 0;
-      letter-spacing: 0.04em;
-    }
-    .death-badge {
-      display: inline-flex;
-      align-items: center;
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      padding: 3px 10px;
-      border-radius: 4px;
-      border: 1px solid;
-    }
-    .death-badge.red {
-      background: rgba(255, 17, 51, 0.15);
-      color: #ff4d6d;
-      border-color: rgba(255, 17, 51, 0.4);
-    }
-    .death-badge.amber {
-      background: rgba(245, 158, 11, 0.15);
-      color: #fbbf24;
-      border-color: rgba(245, 158, 11, 0.4);
-    }
-    .death-badge.teal {
-      background: rgba(6, 182, 212, 0.15);
-      color: #22d3ee;
-      border-color: rgba(6, 182, 212, 0.4);
-    }
-    .death-badge.green {
-      background: rgba(16, 185, 129, 0.15);
-      color: #34d399;
-      border-color: rgba(16, 185, 129, 0.4);
-    }
 
     .death-rule-list {
       list-style: none;
@@ -340,7 +293,7 @@
       <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
       <a href="sanidade.html" class="sidebar-link featured-sanidade"><span class="icon"></span> Sanidade <span class="sidebar-badge-featured">!</span></a>
       <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
-      <a href="morrendo.html" class="sidebar-link active"><span class="icon"></span> Morrendo e Lesões</a>
+      <a href="morrendo.html" class="sidebar-link active featured-important"><span class="icon"></span> Morrendo e Lesões <span class="sidebar-badge-featured">!</span></a>
       <a href="mecanicas.html" class="sidebar-link featured-mecanicas"><span class="icon"></span> Mecânicas <span class="sidebar-badge-featured">!</span></a>
       <a href="investigacao.html" class="sidebar-link featured-investigacao"><span class="icon"></span> Investigação <span class="sidebar-badge-featured">!</span></a>
       <a href="perseguicao.html" class="sidebar-link featured-perseguicao"><span class="icon"></span> Perseguição <span class="sidebar-badge-featured">!</span></a>
@@ -371,7 +324,7 @@
     <main class="page-content">
 
       <div class="pdi-essential-banner" style="margin-top: 20px; margin-bottom: 0;">
-        <span>Regras de Sobrevivência e Morte</span>
+        <span>Mecânica Importante</span>
       </div>
 
       <div class="death-section">
@@ -383,11 +336,6 @@
           </div>
 
           <div class="death-card critical">
-            <div class="death-card-header">
-              <h3>Entrando no Limiar da Morte</h3>
-              <span class="death-badge red">0 Pontos de Vida</span>
-            </div>
-
             <p style="font-size: 0.95rem; color: #fff; line-height: 1.8; margin-bottom: var(--space-md);">
               Ao atingir 0 Pontos de Vida, o personagem fica inconsciente e entra no estado Morrendo.
             </p>
@@ -416,11 +364,6 @@
           </div>
 
           <div class="death-card warning">
-            <div class="death-card-header">
-              <h3>Dificuldade Adaptável por Dado de Vigor</h3>
-              <span class="death-badge amber">Teste no Início do Turno</span>
-            </div>
-
             <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: var(--space-md);">
               No início do turno do personagem em morrendo, role o dado de Vigor. A dificuldade é proporcional ao dado do personagem, começando na metade do valor máximo + 1 e aumentando em +1 a cada rodada.
             </p>
@@ -532,11 +475,6 @@
           </div>
 
           <div class="death-card critical">
-            <div class="death-card-header">
-              <h3>Rolagem de Sobrevivência Extrema</h3>
-              <span class="death-badge red">1d20 Puro</span>
-            </div>
-
             <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: var(--space-md);">
               Ao falhar no Vigor, o jogador rola 1d20 puro, sem somar nenhum bônus de atributo ou perícia.
             </p>
@@ -574,11 +512,6 @@
           </div>
 
           <div class="death-card">
-            <div class="death-card-header">
-              <h3>Tabela de Sequela e Dano Grave</h3>
-              <span class="death-badge amber">Decisão do Mestre</span>
-            </div>
-
             <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: var(--space-lg);">
               O mestre decide qual lesão o personagem sofre de acordo com a narrativa e o tipo de ataque que o derrubou. Apresente em tabela ou cartões informativos os seguintes exemplos:
             </p>
@@ -659,11 +592,6 @@
           </div>
 
           <div class="death-card info">
-            <div class="death-card-header">
-              <h3>Estabilização por Aliados</h3>
-              <span class="death-badge teal">DT Fixa 8</span>
-            </div>
-
             <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: var(--space-md);">
               Um aliado adjacente pode gastar uma ação padrão para estabilizar o personagem ferido.
             </p>
