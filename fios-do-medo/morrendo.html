@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morrendo e o Dado da Morte — Fios do Medo — Wuitalur RPG</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="css/fdm.css">
+  <style>
+    .death-section {
+      max-width: 860px;
+      margin: 0 auto var(--space-2xl);
+    }
+    .death-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      margin-bottom: var(--space-xl);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.25s ease;
+    }
+    .death-card.critical {
+      border-color: rgba(255, 17, 51, 0.4);
+      background: linear-gradient(180deg, rgba(255, 17, 51, 0.07) 0%, var(--bg-surface) 100%);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+    .death-card.warning {
+      border-color: rgba(245, 158, 11, 0.35);
+      background: linear-gradient(180deg, rgba(245, 158, 11, 0.05) 0%, var(--bg-surface) 100%);
+    }
+    .death-card.info {
+      border-color: rgba(6, 182, 212, 0.35);
+      background: linear-gradient(180deg, rgba(6, 182, 212, 0.05) 0%, var(--bg-surface) 100%);
+    }
+    .death-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: var(--space-md);
+      margin-bottom: var(--space-lg);
+    }
+    .death-card-header h3 {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      color: #fff;
+      margin: 0;
+      letter-spacing: 0.04em;
+    }
+    .death-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 3px 10px;
+      border-radius: 4px;
+      border: 1px solid;
+    }
+    .death-badge.red {
+      background: rgba(255, 17, 51, 0.15);
+      color: #ff4d6d;
+      border-color: rgba(255, 17, 51, 0.4);
+    }
+    .death-badge.amber {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+    .death-badge.teal {
+      background: rgba(6, 182, 212, 0.15);
+      color: #22d3ee;
+      border-color: rgba(6, 182, 212, 0.4);
+    }
+    .death-badge.green {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+
+    .death-rule-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .death-rule-item {
+      position: relative;
+      padding-left: 24px;
+      margin-bottom: var(--space-sm);
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+    .death-rule-item:last-child {
+      margin-bottom: 0;
+    }
+    .death-rule-item::before {
+      content: "▪";
+      position: absolute;
+      left: 6px;
+      color: var(--accent-red);
+      font-size: 1.1rem;
+      line-height: 1.5;
+    }
+
+    .round-track-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--space-md);
+      margin: var(--space-lg) 0;
+    }
+    .round-track-card {
+      background: #111118;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+    .round-track-card:hover {
+      border-color: var(--border-medium);
+      transform: translateY(-2px);
+    }
+    .round-track-step {
+      font-family: var(--font-heading);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .round-track-value {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fbbf24;
+      margin-bottom: 4px;
+    }
+    .round-track-desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .death-outcome-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+      margin-top: var(--space-md);
+    }
+    @media (max-width: 680px) {
+      .death-outcome-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .death-outcome-card {
+      background: #111118;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+    }
+    .death-outcome-card.fail {
+      border-color: rgba(255, 17, 51, 0.35);
+      background: rgba(255, 17, 51, 0.04);
+    }
+    .death-outcome-card.success {
+      border-color: rgba(16, 185, 129, 0.35);
+      background: rgba(16, 185, 129, 0.04);
+    }
+    .death-outcome-title {
+      font-family: var(--font-heading);
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .death-outcome-title.fail {
+      color: #ff5566;
+    }
+    .death-outcome-title.success {
+      color: #34d399;
+    }
+    .death-outcome-desc {
+      font-size: 0.86rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .lesoes-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      text-align: left;
+    }
+    .lesoes-table th {
+      background: #1b1b26;
+      color: #f1f1f6;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 14px 18px;
+      border-bottom: 2px solid var(--border-subtle);
+    }
+    .lesoes-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(46, 46, 62, 0.6);
+      vertical-align: top;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+    .lesoes-table tr:last-child td {
+      border-bottom: none;
+    }
+    .lesoes-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .lesao-nome {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #fff;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .lesao-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: rgba(255, 17, 51, 0.12);
+      color: #ff6680;
+      border: 1px solid rgba(255, 17, 51, 0.3);
+    }
+
+    .callout-clean {
+      background: rgba(245, 158, 11, 0.06);
+      border-left: 3px solid #f59e0b;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: var(--space-md) var(--space-lg);
+      margin: var(--space-lg) 0;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: #f3f3f7;
+    }
+    .callout-clean strong {
+      color: #fbbf24;
+    }
+
+    .callout-danger {
+      background: rgba(255, 17, 51, 0.06);
+      border-left: 3px solid #ff1133;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: var(--space-md) var(--space-lg);
+      margin: var(--space-lg) 0;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: #f3f3f7;
+    }
+    .callout-danger strong {
+      color: #ff6680;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- SIDEBAR LATERAL -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        WUITALUR
+        <span>Suplemento Fios do Medo v1.0.0</span>
+      </div>
+    </div>
+
+    <a href="../index.html" class="sidebar-back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Voltar ao Sistema Principal</span>
+    </a>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Extras</div>
+      <a href="../suplementos.html" class="sidebar-link"><span class="icon"></span> Suplementos</a>
+      <a href="../mesa.html" class="sidebar-link" style="color: #ff7700;"><span class="icon"></span> Mesa Virtual</a>
+      <a href="../wuitter.html" class="sidebar-link" style="color: #1d9bf0;"><span class="icon"></span> Wuitter</a>
+
+      <div class="sidebar-section-title">Principal</div>
+      <a href="index.html" class="sidebar-link"><span class="icon"></span> Início</a>
+      <a href="atributos.html" class="sidebar-link"><span class="icon"></span> Atributos</a>
+      <a href="racas.html" class="sidebar-link"><span class="icon"></span> Raças</a>
+      <a href="arquetipos.html" class="sidebar-link"><span class="icon"></span> Arquétipos</a>
+      <a href="criacao-personagem.html" class="sidebar-link"><span class="icon"></span> Criação de Personagem</a>
+
+      <div class="sidebar-section-title">Regras</div>
+      <a href="pericias.html" class="sidebar-link"><span class="icon"></span> Perícias</a>
+      <a href="sanidade.html" class="sidebar-link featured-sanidade"><span class="icon"></span> Sanidade <span class="sidebar-badge-featured">!</span></a>
+      <a href="condicoes.html" class="sidebar-link"><span class="icon"></span> Condições</a>
+      <a href="morrendo.html" class="sidebar-link active"><span class="icon"></span> Morrendo e Lesões</a>
+      <a href="mecanicas.html" class="sidebar-link featured-mecanicas"><span class="icon"></span> Mecânicas <span class="sidebar-badge-featured">!</span></a>
+      <a href="investigacao.html" class="sidebar-link featured-investigacao"><span class="icon"></span> Investigação <span class="sidebar-badge-featured">!</span></a>
+      <a href="perseguicao.html" class="sidebar-link featured-perseguicao"><span class="icon"></span> Perseguição <span class="sidebar-badge-featured">!</span></a>
+      <a href="glossario.html" class="sidebar-link"><span class="icon"></span> Glossário</a>
+
+      <div class="sidebar-section-title">Conteúdo</div>
+      <a href="elementos.html" class="sidebar-link"><span class="icon"></span> Elementos</a>
+
+      <div class="sidebar-section-title">Ferramentas</div>
+      <a href="changelog.html" class="sidebar-link"><span class="icon"></span> Changelog</a>
+    </nav>
+  </aside>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="main-wrapper">
+
+    <header class="page-header">
+      <h1>Morrendo e o Dado da Morte</h1>
+      <div style="position:relative">
+        <button class="wiki-btn" id="wiki-menu-btn" title="Menu">&#x2630;</button>
+        <div class="wiki-dropdown" id="wiki-menu-dropdown">
+          <a href="changelog.html" class="wiki-dropdown-item"><span class="icon">&#x21BB;</span> Changelog</a>
+          <a href="glossario.html" class="wiki-dropdown-item"><span class="icon">&#x00A7;</span> Glossário</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <div class="pdi-essential-banner" style="margin-top: 20px; margin-bottom: 0;">
+        <span>Regras de Sobrevivência e Morte</span>
+      </div>
+
+      <div class="death-section">
+
+        <!-- SEÇÃO 1: O ESTADO MORRENDO -->
+        <section class="subsection" id="estado-morrendo">
+          <div class="section-heading">
+            <h2>O Estado Morrendo</h2>
+          </div>
+
+          <div class="death-card critical">
+            <div class="death-card-header">
+              <h3>Entrando no Limiar da Morte</h3>
+              <span class="death-badge red">0 Pontos de Vida</span>
+            </div>
+
+            <p style="font-size: 0.95rem; color: #fff; line-height: 1.8; margin-bottom: var(--space-md);">
+              Ao atingir 0 Pontos de Vida, o personagem fica inconsciente e entra no estado Morrendo.
+            </p>
+
+            <ul class="death-rule-list">
+              <li class="death-rule-item">
+                O personagem não pode realizar ações, reações ou se locomover.
+              </li>
+              <li class="death-rule-item">
+                O personagem permanece inconsciente enquanto estiver morrendo. Ele só recupera a consciência quando receber cura e ficar com PV acima de 0.
+              </li>
+              <li class="death-rule-item">
+                O limite é de 3 rodadas em morrendo. Se completar a 3ª rodada sem ser estabilizado, morre.
+              </li>
+              <li class="death-rule-item">
+                No início de cada um dos seus turnos, o jogador faz um teste de Vigor.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- SEÇÃO 2: TESTE DE VIGOR -->
+        <section class="subsection" id="teste-vigor">
+          <div class="section-heading">
+            <h2>Teste de Vigor</h2>
+          </div>
+
+          <div class="death-card warning">
+            <div class="death-card-header">
+              <h3>Progressão da Dificuldade</h3>
+              <span class="death-badge amber">Teste no Início do Turno</span>
+            </div>
+
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: var(--space-md);">
+              No início do turno do personagem em morrendo, role o dado de Vigor. A dificuldade aumenta a cada rodada:
+            </p>
+
+            <div class="round-track-grid">
+              <div class="round-track-card">
+                <div class="round-track-step">1ª Rodada em Morrendo</div>
+                <div class="round-track-value">DT 6</div>
+                <div class="round-track-desc">Primeiro limiar de resistência corporal</div>
+              </div>
+              <div class="round-track-card">
+                <div class="round-track-step">2ª Rodada em Morrendo</div>
+                <div class="round-track-value">DT 8</div>
+                <div class="round-track-desc">O corpo perde forças rapidamente</div>
+              </div>
+              <div class="round-track-card">
+                <div class="round-track-step">3ª Rodada em Morrendo</div>
+                <div class="round-track-value">DT 10</div>
+                <div class="round-track-desc">Última oportunidade antes do colapso fatal</div>
+              </div>
+            </div>
+
+            <div class="callout-clean">
+              Se o personagem for estabilizado e cair para 0 PV de novo no mesmo combate, a DT base aumenta em +2 cumulativo para as próximas quedas.
+            </div>
+
+            <div class="death-outcome-grid">
+              <div class="death-outcome-card success">
+                <div class="death-outcome-title success">
+                  <span>✔</span> Sucesso no Vigor
+                </div>
+                <p class="death-outcome-desc">
+                  O personagem não sofre lesão nesta rodada e apenas desconta 1 rodada do seu limite de 3 rodadas em morrendo.
+                </p>
+              </div>
+
+              <div class="death-outcome-card fail">
+                <div class="death-outcome-title fail">
+                  <span>✖</span> Falha no Vigor
+                </div>
+                <p class="death-outcome-desc">
+                  O personagem deve rolar o Dado da Morte.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SEÇÃO 3: DADO DA MORTE -->
+        <section class="subsection" id="dado-morte">
+          <div class="section-heading">
+            <h2>Dado da Morte</h2>
+          </div>
+
+          <div class="death-card critical">
+            <div class="death-card-header">
+              <h3>Rolagem de Sobrevivência Extrema</h3>
+              <span class="death-badge red">1d20 Puro</span>
+            </div>
+
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: var(--space-md);">
+              Ao falhar no Vigor, o jogador rola 1d20 puro, sem somar nenhum bônus de atributo ou perícia.
+            </p>
+
+            <div class="callout-danger">
+              <strong>Margem de Morte Inicial:</strong> De 1 a 4.
+            </div>
+
+            <div class="death-outcome-grid">
+              <div class="death-outcome-card fail">
+                <div class="death-outcome-title fail">
+                  <span>✖</span> Tirou dentro da margem de morte
+                </div>
+                <p class="death-outcome-desc">
+                  O personagem morre imediatamente.
+                </p>
+              </div>
+
+              <div class="death-outcome-card">
+                <div class="death-outcome-title" style="color: #fbbf24;">
+                  <span>▲</span> Tirou fora da margem de morte
+                </div>
+                <p class="death-outcome-desc">
+                  O personagem continua vivo em morrendo, mas recebe uma lesão. O número rolado substitui o limite anterior e expande a margem de morte para os próximos testes. Por exemplo, se o jogador tirou 12, a margem de morte nos testes seguintes passa a ser de 1 a 12.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SEÇÃO 4: EXEMPLOS DE LESÕES -->
+        <section class="subsection" id="exemplos-lesoes">
+          <div class="section-heading">
+            <h2>Exemplos de Lesões</h2>
+          </div>
+
+          <div class="death-card">
+            <div class="death-card-header">
+              <h3>Tabela de Sequela e Dano Grave</h3>
+              <span class="death-badge amber">Decisão do Mestre</span>
+            </div>
+
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: var(--space-lg);">
+              O mestre decide qual lesão o personagem sofre de acordo com a narrativa e o tipo de ataque que o derrubou. Apresente em tabela ou cartões informativos os seguintes exemplos:
+            </p>
+
+            <div class="pdi-table-wrapper" style="border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-subtle);">
+              <table class="lesoes-table">
+                <thead>
+                  <tr>
+                    <th style="width: 32%;">Lesão</th>
+                    <th style="width: 68%;">Efeito e Descrição</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <span class="lesao-nome">Amputação de Membro</span>
+                      <span class="lesao-tag">Sequela Severa</span>
+                    </td>
+                    <td>
+                      Perda definitiva de uma mão, pé, braço ou perna.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="lesao-nome">Trauma Sensorial</span>
+                      <span class="lesao-tag">Sentidos</span>
+                    </td>
+                    <td>
+                      Perda de um olho ou surdez permanente em um dos ouvidos. Aplica penalidade de um degrau em testes de percepção.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="lesao-nome">Fratura Exposta</span>
+                      <span class="lesao-tag">Locomoção e Uso</span>
+                    </td>
+                    <td>
+                      Braço quebrado ou perna fraturada. Reduz o deslocamento pela metade ou impede o uso daquele membro até receber tratamento médico.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="lesao-nome">Hemorragia Severa</span>
+                      <span class="lesao-tag">Tempo Limite</span>
+                    </td>
+                    <td>
+                      O limite restante de rodadas em morrendo é reduzido em 1 rodada.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="lesao-nome">Trauma Craniano</span>
+                      <span class="lesao-tag">Sanidade</span>
+                    </td>
+                    <td>
+                      Perda permanente de 2 pontos de Sanidade máxima.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="lesao-nome">Cicatriz Permanente</span>
+                      <span class="lesao-tag">Estético</span>
+                    </td>
+                    <td>
+                      Marca profunda deixada pelo ferimento, sem penalidade mecânica numérica.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- SEÇÃO 5: TESTE DE MEDICINA -->
+        <section class="subsection" id="teste-medicina">
+          <div class="section-heading">
+            <h2>Teste de Medicina</h2>
+          </div>
+
+          <div class="death-card info">
+            <div class="death-card-header">
+              <h3>Estabilização por Aliados</h3>
+              <span class="death-badge teal">DT Fixa 8</span>
+            </div>
+
+            <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: var(--space-md);">
+              Um aliado adjacente pode gastar uma ação padrão para estabilizar o personagem ferido.
+            </p>
+
+            <ul class="death-rule-list" style="margin-bottom: var(--space-md);">
+              <li class="death-rule-item">
+                O teste de Medicina possui DT fixa de 8.
+              </li>
+              <li class="death-rule-item">
+                Nenhum teste ou poder elemental pode substituir o teste de Medicina para reanimar ou levantar o personagem. Apenas a perícia Medicina é válida para essa estabilização.
+              </li>
+            </ul>
+
+            <div class="death-outcome-grid">
+              <div class="death-outcome-card success">
+                <div class="death-outcome-title success">
+                  <span>✔</span> Sucesso
+                </div>
+                <p class="death-outcome-desc">
+                  O personagem é estabilizado. A contagem de rodadas de morrendo para e ele não precisa mais rolar Vigor nem o Dado da Morte. Ele continua inconsciente até recuperar ao menos 1 PV.
+                </p>
+              </div>
+
+              <div class="death-outcome-card fail">
+                <div class="death-outcome-title fail">
+                  <span>✖</span> Falha
+                </div>
+                <p class="death-outcome-desc">
+                  O personagem continua no estado morrendo.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menu">&#x2630;</button>
+
+<script src="../js/conditions.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
