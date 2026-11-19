@@ -225,6 +225,26 @@
       color: #ff6680;
       border: 1px solid rgba(255, 17, 51, 0.3);
     }
+    .lesao-tag.attr-saude {
+      background: rgba(16, 185, 129, 0.12);
+      color: #10b981;
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+    .lesao-tag.attr-vigor {
+      background: rgba(245, 158, 11, 0.12);
+      color: #f59e0b;
+      border-color: rgba(245, 158, 11, 0.35);
+    }
+    .lesao-tag.attr-forca {
+      background: rgba(255, 17, 51, 0.12);
+      color: #ff3355;
+      border-color: rgba(255, 17, 51, 0.35);
+    }
+    .lesao-tag.attr-mente {
+      background: rgba(6, 182, 212, 0.12);
+      color: #06b6d4;
+      border-color: rgba(6, 182, 212, 0.35);
+    }
 
     .callout-clean {
       background: rgba(245, 158, 11, 0.06);
@@ -534,7 +554,7 @@
               <table class="lesoes-table">
                 <thead>
                   <tr>
-                    <th style="width: 28%;">Condição e Lesão</th>
+                    <th style="width: 28%;">Condição e Atributo</th>
                     <th style="width: 72%;">Efeito e Descrição</th>
                   </tr>
                 </thead>
@@ -542,7 +562,7 @@
                   <tr>
                     <td>
                       <span class="lesao-nome">Morte Lenta</span>
-                      <span class="lesao-tag" style="background: rgba(255, 17, 51, 0.2); color: #ff3355; border-color: rgba(255, 17, 51, 0.4);">Fatal</span>
+                      <span class="lesao-tag attr-saude" style="background: rgba(255, 17, 51, 0.2); color: #ff3355; border-color: rgba(255, 17, 51, 0.4);">Saúde &bull; Fatal</span>
                     </td>
                     <td>
                       O ferimento é fatal, mas gera um surto de adrenalina que permite a você agir uma última vez. Você recupera 1 PV e, se estava inconsciente, acorda, podendo agir na rodada seguinte. Contudo, ao fim dela, você morre. Nenhum efeito pode impedir isso. Use esse tempo para um último ato heroico ou, pelo menos, para dizer suas últimas palavras.
@@ -551,82 +571,82 @@
                   <tr>
                     <td>
                       <span class="lesao-nome">Laceração Profunda</span>
-                      <span class="lesao-tag">Dano em PV</span>
+                      <span class="lesao-tag attr-saude">Saúde</span>
                     </td>
                     <td>
-                      Uma ferida que reduz sua capacidade física. Perde 2 PV. Você pode ter este ferimento permanente mais de uma vez; seus efeitos se acumulam.
+                      Uma ferida profunda que reduz sua capacidade física corporal. Perde 2 Pontos de Vida máximos. Você pode ter este ferimento permanente mais de uma vez; seus efeitos se acumulam.
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <span class="lesao-nome">Sem Olho</span>
-                      <span class="lesao-tag">Sentidos</span>
+                      <span class="lesao-tag attr-mente">Mente</span>
                     </td>
                     <td>
-                      Você perde o uso de um olho. Sofre -1 em Percepção e Pontaria.
+                      Você perde o uso de um olho. Sofre penalidade de um degrau em testes de <span class="attr-fdm-mente">Percepção</span> e em testes de ataque à distância.
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <span class="lesao-nome">Sem Mão</span>
-                      <span class="lesao-tag">Membros</span>
+                      <span class="lesao-tag attr-forca">Força</span>
                     </td>
                     <td>
-                      Você perde o uso de uma mão ou de um braço. O membro pode ter sido decepado ou inutilizado, como por ter nervos rompidos ou ossos estilhaçados. Só pode empunhar um item e, em tarefas que precisam das duas mãos, sofre uma redução de passo ou até mesmo falha automaticamente, a critério do mestre.
+                      Você perde o uso de uma mão ou de um braço. O membro pode ter sido decepado ou inutilizado, como por ter nervos rompidos ou ossos estilhaçados. Só pode empunhar um item e, em tarefas que precisam das duas mãos, sofre redução de um degrau no dado do teste ou até mesmo falha automaticamente, a critério do mestre.
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <span class="lesao-nome">Sem Pé</span>
-                      <span class="lesao-tag">Locomoção</span>
+                      <span class="lesao-tag attr-vigor">Vigor</span>
                     </td>
                     <td>
-                      Você perde o uso de um pé ou de uma perna. O membro pode ter sido decepado ou inutilizado, como por ter nervos rompidos ou ossos estilhaçados. Sofre duas reduções de passo em testes da ação movimentar-se e em testes de perseguição a pé.
+                      Você perde o uso de um pé ou de uma perna. O membro pode ter sido decepado ou inutilizado, como por ter nervos rompidos ou ossos estilhaçados. Sofre redução de dois degraus no dado em testes de <span class="attr-fdm-vigor">Disparada</span> e em testes de perseguição a pé.
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <span class="lesao-nome">Tendão Comprometido</span>
-                      <span class="lesao-tag">Agilidade</span>
+                      <span class="lesao-tag attr-vigor">Vigor</span>
                     </td>
                     <td>
-                      Um de seus tendões tem sua capacidade reduzida, diminuindo sua agilidade e flexibilidade. Sofre -2 em Acrobacia.
+                      Um de seus tendões tem sua capacidade reduzida, diminuindo sua flexibilidade e coordenação. Sofre -2 em testes de <span class="attr-fdm-vigor">Acrobacia</span>.
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <span class="lesao-nome">Músculo Comprometido</span>
-                      <span class="lesao-tag">Força</span>
+                      <span class="lesao-tag attr-forca">Força</span>
                     </td>
                     <td>
-                      Um de seus músculos tem sua capacidade reduzida, diminuindo sua força e rapidez. Sofre -2 em Atletismo.
+                      Um de seus músculos tem sua capacidade reduzida, diminuindo sua força física e potência. Sofre -2 em testes de <span class="attr-fdm-forca">Atletismo</span>.
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <span class="lesao-nome">Órgão Interno Comprometido</span>
-                      <span class="lesao-tag">Vitalidade</span>
+                      <span class="lesao-tag attr-vigor">Vigor</span>
                     </td>
                     <td>
-                      Um de seus órgãos internos, como coração, pulmão ou fígado, tem sua capacidade reduzida. Sofre -2 em Vigor.
+                      Um de seus órgãos internos, como coração, pulmão ou fígado, tem sua capacidade reduzida. Sofre -2 em testes de <span class="attr-fdm-vigor">Vigor</span>.
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <span class="lesao-nome">Órgão Sensorial Comprometido</span>
-                      <span class="lesao-tag">Sentidos</span>
+                      <span class="lesao-tag attr-mente">Mente</span>
                     </td>
                     <td>
-                      Um de seus órgãos sensoriais, como um olho, um ouvido ou o nariz, tem sua capacidade reduzida. Sofre -2 em Percepção.
+                      Um de seus órgãos sensoriais, como um olho, um ouvido ou o nariz, tem sua capacidade reduzida. Sofre -2 em testes de <span class="attr-fdm-mente">Percepção</span>.
                     </td>
                   </tr>
                   <tr>
                     <td>
                       <span class="lesao-nome">Cicatriz Assustadora</span>
-                      <span class="lesao-tag">Social</span>
+                      <span class="lesao-tag attr-mente">Mente</span> <span class="lesao-tag attr-forca">Força</span>
                     </td>
                     <td>
-                      Sofre -2 em Persuasão, mas recebe +1 em Intimidar.
+                      Sofre -2 em testes de <span class="attr-fdm-mente">Diplomacia</span>, mas recebe +1 em testes de <span class="attr-fdm-forca">Intimidação</span>.
                     </td>
                   </tr>
                 </tbody>
