@@ -527,70 +527,106 @@
 
           <div class="death-card">
             <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: var(--space-lg);">
-              O mestre decide qual lesão o personagem sofre de acordo com a narrativa e o tipo de ataque que o derrubou. Apresente em tabela ou cartões informativos os seguintes exemplos:
+              O mestre decide qual lesão o personagem sofre de acordo com a narrativa e o tipo de ataque que o derrubou. Abaixo estão os exemplos de condições e sequelas graves:
             </p>
 
             <div class="pdi-table-wrapper" style="border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-subtle);">
               <table class="lesoes-table">
                 <thead>
                   <tr>
-                    <th style="width: 32%;">Lesão</th>
-                    <th style="width: 68%;">Efeito e Descrição</th>
+                    <th style="width: 28%;">Condição e Lesão</th>
+                    <th style="width: 72%;">Efeito e Descrição</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>
-                      <span class="lesao-nome">Amputação de Membro</span>
-                      <span class="lesao-tag">Sequela Severa</span>
+                      <span class="lesao-nome">Morte Lenta</span>
+                      <span class="lesao-tag" style="background: rgba(255, 17, 51, 0.2); color: #ff3355; border-color: rgba(255, 17, 51, 0.4);">Fatal</span>
                     </td>
                     <td>
-                      Perda definitiva de uma mão, pé, braço ou perna.
+                      O ferimento é fatal, mas gera um surto de adrenalina que permite a você agir uma última vez. Você recupera 1 PV e, se estava inconsciente, acorda, podendo agir na rodada seguinte. Contudo, ao fim dela, você morre. Nenhum efeito pode impedir isso. Use esse tempo para um último ato heroico ou, pelo menos, para dizer suas últimas palavras.
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <span class="lesao-nome">Trauma Sensorial</span>
+                      <span class="lesao-nome">Laceração Profunda</span>
+                      <span class="lesao-tag">Dano em PV</span>
+                    </td>
+                    <td>
+                      Uma ferida que reduz sua capacidade física. Perde 2 PV. Você pode ter este ferimento permanente mais de uma vez; seus efeitos se acumulam.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="lesao-nome">Sem Olho</span>
                       <span class="lesao-tag">Sentidos</span>
                     </td>
                     <td>
-                      Perda de um olho ou surdez permanente em um dos ouvidos. Aplica penalidade de um degrau em testes de percepção.
+                      Você perde o uso de um olho. Sofre -1 em Percepção e Pontaria.
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <span class="lesao-nome">Fratura Exposta</span>
-                      <span class="lesao-tag">Locomoção e Uso</span>
+                      <span class="lesao-nome">Sem Mão</span>
+                      <span class="lesao-tag">Membros</span>
                     </td>
                     <td>
-                      Braço quebrado ou perna fraturada. Reduz o deslocamento pela metade ou impede o uso daquele membro até receber tratamento médico.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span class="lesao-nome">Hemorragia Severa</span>
-                      <span class="lesao-tag">Tempo Limite</span>
-                    </td>
-                    <td>
-                      O limite restante de rodadas em morrendo é reduzido em 1 rodada.
+                      Você perde o uso de uma mão ou de um braço. O membro pode ter sido decepado ou inutilizado, como por ter nervos rompidos ou ossos estilhaçados. Só pode empunhar um item e, em tarefas que precisam das duas mãos, sofre uma redução de passo ou até mesmo falha automaticamente, a critério do mestre.
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <span class="lesao-nome">Trauma Craniano</span>
-                      <span class="lesao-tag">Sanidade</span>
+                      <span class="lesao-nome">Sem Pé</span>
+                      <span class="lesao-tag">Locomoção</span>
                     </td>
                     <td>
-                      Perda permanente de 2 pontos de Sanidade máxima.
+                      Você perde o uso de um pé ou de uma perna. O membro pode ter sido decepado ou inutilizado, como por ter nervos rompidos ou ossos estilhaçados. Sofre duas reduções de passo em testes da ação movimentar-se e em testes de perseguição a pé.
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <span class="lesao-nome">Cicatriz Permanente</span>
-                      <span class="lesao-tag">Estético</span>
+                      <span class="lesao-nome">Tendão Comprometido</span>
+                      <span class="lesao-tag">Agilidade</span>
                     </td>
                     <td>
-                      Marca profunda deixada pelo ferimento, sem penalidade mecânica numérica.
+                      Um de seus tendões tem sua capacidade reduzida, diminuindo sua agilidade e flexibilidade. Sofre -2 em Acrobacia.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="lesao-nome">Músculo Comprometido</span>
+                      <span class="lesao-tag">Força</span>
+                    </td>
+                    <td>
+                      Um de seus músculos tem sua capacidade reduzida, diminuindo sua força e rapidez. Sofre -2 em Atletismo.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="lesao-nome">Órgão Interno Comprometido</span>
+                      <span class="lesao-tag">Vitalidade</span>
+                    </td>
+                    <td>
+                      Um de seus órgãos internos, como coração, pulmão ou fígado, tem sua capacidade reduzida. Sofre -2 em Vigor.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="lesao-nome">Órgão Sensorial Comprometido</span>
+                      <span class="lesao-tag">Sentidos</span>
+                    </td>
+                    <td>
+                      Um de seus órgãos sensoriais, como um olho, um ouvido ou o nariz, tem sua capacidade reduzida. Sofre -2 em Percepção.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="lesao-nome">Cicatriz Assustadora</span>
+                      <span class="lesao-tag">Social</span>
+                    </td>
+                    <td>
+                      Sofre -2 em Persuasão, mas recebe +1 em Intimidar.
                     </td>
                   </tr>
                 </tbody>
