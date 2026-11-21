@@ -686,15 +686,69 @@
         </div>
       </div>
 
-      <!-- Barra de Atalhos Rápidos para Consulta Imediata (Sem Scroll Horizontal) -->
-      <nav class="sistema-pills-bar" aria-label="Atalhos Rápidos de Fios do Medo">
-        <button type="button" class="sistema-pill-btn active" data-url="fios-do-medo/pericias.html" onclick="MesaSistema.navigateTo('fios-do-medo/pericias.html')">Perícias</button>
-        <button type="button" class="sistema-pill-btn" data-url="fios-do-medo/sanidade.html" onclick="MesaSistema.navigateTo('fios-do-medo/sanidade.html')">Sanidade</button>
-        <button type="button" class="sistema-pill-btn" data-url="fios-do-medo/morrendo.html" onclick="MesaSistema.navigateTo('fios-do-medo/morrendo.html')">Morrendo &amp; Lesões</button>
-        <button type="button" class="sistema-pill-btn" data-url="fios-do-medo/condicoes.html" onclick="MesaSistema.navigateTo('fios-do-medo/condicoes.html')">Condições</button>
-        <button type="button" class="sistema-pill-btn" data-url="fios-do-medo/atributos.html" onclick="MesaSistema.navigateTo('fios-do-medo/atributos.html')">Atributos</button>
-        <button type="button" class="sistema-pill-btn" data-url="fios-do-medo/investigacao.html" onclick="MesaSistema.navigateTo('fios-do-medo/investigacao.html')">Investigação</button>
-      </nav>
+      <!-- Barra de Controle do Menu de Abas -->
+      <div class="sistema-nav-bar">
+        <button type="button" class="sistema-menu-toggle-btn" id="sistema-menu-toggle-btn" onclick="MesaSistema.toggleMenu()" title="Ver todas as abas">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+          <span id="sistema-current-tab-label">Página: Perícias</span>
+          <svg class="sistema-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+
+        <div class="sistema-quick-pills">
+          <button type="button" class="sistema-pill-btn active" data-url="fios-do-medo/pericias.html" onclick="MesaSistema.navigateTo('fios-do-medo/pericias.html', 'Perícias')">Perícias</button>
+          <button type="button" class="sistema-pill-btn" data-url="fios-do-medo/sanidade.html" onclick="MesaSistema.navigateTo('fios-do-medo/sanidade.html', 'Sanidade')">Sanidade</button>
+          <button type="button" class="sistema-pill-btn" data-url="fios-do-medo/morrendo.html" onclick="MesaSistema.navigateTo('fios-do-medo/morrendo.html', 'Morrendo &amp; Lesões')">Morrendo</button>
+        </div>
+      </div>
+
+      <!-- Dropdown Expansível com TODAS as Abas -->
+      <div id="sistema-tabs-dropdown" class="sistema-tabs-dropdown" aria-hidden="true">
+        <div class="sistema-tabs-dropdown-header">
+          <span>TODAS AS ABAS DO SISTEMA</span>
+          <button type="button" class="sistema-tabs-close-btn" onclick="MesaSistema.closeMenu()" title="Fechar Menu">&times;</button>
+        </div>
+
+        <div class="sistema-tabs-scroll-area">
+          <div class="sistema-tabs-group">
+            <div class="sistema-group-title">Principal</div>
+            <div class="sistema-tabs-grid">
+              <button type="button" class="sistema-tab-item" data-url="fios-do-medo/index.html" onclick="MesaSistema.navigateTo('fios-do-medo/index.html', 'Início')">Início</button>
+              <button type="button" class="sistema-tab-item" data-url="fios-do-medo/atributos.html" onclick="MesaSistema.navigateTo('fios-do-medo/atributos.html', 'Atributos')">Atributos</button>
+              <button type="button" class="sistema-tab-item" data-url="fios-do-medo/racas.html" onclick="MesaSistema.navigateTo('fios-do-medo/racas.html', 'Raças')">Raças</button>
+              <button type="button" class="sistema-tab-item" data-url="fios-do-medo/arquetipos.html" onclick="MesaSistema.navigateTo('fios-do-medo/arquetipos.html', 'Arquétipos')">Arquétipos</button>
+              <button type="button" class="sistema-tab-item" data-url="fios-do-medo/criacao-personagem.html" onclick="MesaSistema.navigateTo('fios-do-medo/criacao-personagem.html', 'Criação')">Criação de Personagem</button>
+            </div>
+          </div>
+
+          <div class="sistema-tabs-group">
+            <div class="sistema-group-title">Regras de Jogo</div>
+            <div class="sistema-tabs-grid">
+              <button type="button" class="sistema-tab-item active" data-url="fios-do-medo/pericias.html" onclick="MesaSistema.navigateTo('fios-do-medo/pericias.html', 'Perícias')">Perícias</button>
+              <button type="button" class="sistema-tab-item" data-url="fios-do-medo/sanidade.html" onclick="MesaSistema.navigateTo('fios-do-medo/sanidade.html', 'Sanidade')">Sanidade</button>
+              <button type="button" class="sistema-tab-item" data-url="fios-do-medo/condicoes.html" onclick="MesaSistema.navigateTo('fios-do-medo/condicoes.html', 'Condições')">Condições</button>
+              <button type="button" class="sistema-tab-item" data-url="fios-do-medo/morrendo.html" onclick="MesaSistema.navigateTo('fios-do-medo/morrendo.html', 'Morrendo &amp; Lesões')">Morrendo &amp; Lesões</button>
+              <button type="button" class="sistema-tab-item" data-url="fios-do-medo/mecanicas.html" onclick="MesaSistema.navigateTo('fios-do-medo/mecanicas.html', 'Mecânicas')">Mecânicas</button>
+              <button type="button" class="sistema-tab-item" data-url="fios-do-medo/investigacao.html" onclick="MesaSistema.navigateTo('fios-do-medo/investigacao.html', 'Investigação')">Investigação</button>
+              <button type="button" class="sistema-tab-item" data-url="fios-do-medo/perseguicao.html" onclick="MesaSistema.navigateTo('fios-do-medo/perseguicao.html', 'Perseguição')">Perseguição</button>
+              <button type="button" class="sistema-tab-item" data-url="fios-do-medo/glossario.html" onclick="MesaSistema.navigateTo('fios-do-medo/glossario.html', 'Glossário')">Glossário</button>
+            </div>
+          </div>
+
+          <div class="sistema-tabs-group">
+            <div class="sistema-group-title">Conteúdo &amp; Extras</div>
+            <div class="sistema-tabs-grid">
+              <button type="button" class="sistema-tab-item" data-url="fios-do-medo/elementos.html" onclick="MesaSistema.navigateTo('fios-do-medo/elementos.html', 'Elementos')">Elementos</button>
+              <button type="button" class="sistema-tab-item" data-url="fios-do-medo/changelog.html" onclick="MesaSistema.navigateTo('fios-do-medo/changelog.html', 'Changelog')">Changelog</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Frame do Conteúdo do Suplemento -->
       <div class="sistema-drawer-body">

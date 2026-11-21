@@ -7642,8 +7642,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (window.MesaQuickMenu) {
         MesaQuickMenu.close();
       }
-      if (window.MesaSistema && MesaSistema.isOpen) {
-        MesaSistema.closeDrawer();
+      if (window.MesaSistema) {
+        if (MesaSistema.isMenuOpen) {
+          MesaSistema.closeMenu();
+          return;
+        }
+        if (MesaSistema.isOpen) {
+          MesaSistema.closeDrawer();
+          return;
+        }
       }
     }
   });
@@ -20016,6 +20023,7 @@ window.MesaRollLog = MesaRollLog;
 // ==========================================================================
 const MesaSistema = {
   isOpen: false,
+  isMenuOpen: false,
   loaded: false,
   defaultUrl: 'fios-do-medo/pericias.html',
   currentUrl: 'fios-do-medo/pericias.html',
@@ -20081,6 +20089,7 @@ const MesaSistema = {
   },
 
   closeDrawer() {
+    this.closeMenu();
     this.isOpen = false;
     document.body.classList.remove('sistema-drawer-open');
     const drawer = document.getElementById('sistema-drawer');
@@ -20090,17 +20099,42 @@ const MesaSistema = {
     if (btn) btn.classList.remove('active-sistema-open');
   },
 
-  navigateTo(url) {
+  toggleMenu() {
+    if (this.isMenuOpen) {
+      this.closeMenu();
+    } else {
+      this.openMenu();
+    }
+  },
+
+  openMenu() {
+    this.isMenuOpen = true;
+    const drawer = document.getElementById('sistema-drawer');
+    if (drawer) drawer.classList.add('sistema-menu-open');
+    const dropdown = document.getElementById('sistema-tabs-dropdown');
+    if (dropdown) dropdown.setAttribute('aria-hidden', 'false');
+  },
+
+  closeMenu() {
+    this.isMenuOpen = false;
+    const drawer = document.getElementById('sistema-drawer');
+    if (drawer) drawer.classList.remove('sistema-menu-open');
+    const dropdown = document.getElementById('sistema-tabs-dropdown');
+    if (dropdown) dropdown.setAttribute('aria-hidden', 'true');
+  },
+
+  navigateTo(url, label) {
     this.currentUrl = url;
+    this.closeMenu();
     const iframe = document.getElementById('sistema-drawer-iframe');
     if (iframe) {
       iframe.src = url;
       this.loaded = true;
     }
-    this.updateActivePill(url);
+    this.updateActivePill(url, label);
   },
 
-  updateActivePill(url) {
+  updateActivePill(url, customLabel) {
     const pills = document.querySelectorAll('.sistema-pill-btn');
     pills.forEach((p) => {
       const dataUrl = p.getAttribute('data-url');
@@ -20110,6 +20144,23 @@ const MesaSistema = {
         p.classList.remove('active');
       }
     });
+
+    const tabItems = document.querySelectorAll('.sistema-tab-item');
+    let detectedLabel = customLabel || '';
+    tabItems.forEach((item) => {
+      const dataUrl = item.getAttribute('data-url');
+      if (dataUrl && (url === dataUrl || url.endsWith(dataUrl))) {
+        item.classList.add('active');
+        if (!detectedLabel) detectedLabel = item.textContent.trim();
+      } else {
+        item.classList.remove('active');
+      }
+    });
+
+    const labelEl = document.getElementById('sistema-current-tab-label');
+    if (labelEl) {
+      labelEl.textContent = detectedLabel ? `Página: ${detectedLabel}` : 'Todas as Abas';
+    }
   },
 
   openExternal() {

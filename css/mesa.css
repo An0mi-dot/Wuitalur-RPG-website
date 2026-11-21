@@ -19659,34 +19659,74 @@ body.sistema-drawer-open .mesa-floating-nav {
   line-height: 1;
 }
 
-/* Barra de Atalhos Rápidos (Grid Sem Scroll) */
-.sistema-pills-bar {
+/* Barra de Navegação Superior da Gaveta */
+.sistema-nav-bar {
   flex-shrink: 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  padding: 8px 12px;
-  background: #08080c;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 14px;
+  background: #0b0b10;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  overflow: hidden;
+  position: relative;
+}
+
+.sistema-menu-toggle-btn {
+  background: rgba(255, 85, 0, 0.12);
+  border: 1px solid rgba(255, 85, 0, 0.35);
+  color: #ffaa66;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm, 4px);
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.sistema-menu-toggle-btn:hover {
+  background: rgba(255, 85, 0, 0.22);
+  border-color: #ff5500;
+  color: #fff;
+}
+
+.sistema-menu-toggle-btn .ink-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.sistema-chevron {
+  width: 12px;
+  height: 12px;
+  transition: transform 0.25s ease;
+}
+
+.sistema-drawer.sistema-menu-open .sistema-chevron {
+  transform: rotate(180deg);
+}
+
+.sistema-quick-pills {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .sistema-pill-btn {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--text-secondary, #94a3b8);
-  padding: 6px 4px;
+  padding: 5px 9px;
   border-radius: var(--radius-sm, 4px);
-  font-size: 0.74rem;
+  font-size: 0.73rem;
   font-weight: 600;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
   cursor: pointer;
   transition: all 0.18s ease;
   font-family: inherit;
-  width: 100%;
 }
 
 .sistema-pill-btn:hover {
@@ -19699,6 +19739,121 @@ body.sistema-drawer-open .mesa-floating-nav {
   background: rgba(255, 85, 0, 0.2);
   border-color: #ff5500;
   color: #ffaa66;
+}
+
+/* Dropdown Suspenso com Todas as Abas */
+.sistema-tabs-dropdown {
+  position: absolute;
+  top: 104px;
+  left: 0;
+  right: 0;
+  background: #0a0a0f;
+  border-bottom: 2px solid #ff5500;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.95), 0 0 25px rgba(0, 0, 0, 0.8);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100% - 110px);
+  transform: translateY(-10px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.sistema-drawer.sistema-menu-open .sistema-tabs-dropdown {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.sistema-tabs-dropdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #111118;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: #ff5500;
+  font-weight: 700;
+}
+
+.sistema-tabs-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 4px;
+}
+
+.sistema-tabs-close-btn:hover {
+  color: #fff;
+}
+
+.sistema-tabs-scroll-area {
+  padding: 12px 14px 18px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sistema-tabs-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sistema-group-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted, #71717a);
+  padding-left: 2px;
+}
+
+.sistema-tabs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+}
+
+.sistema-tab-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  color: var(--text-secondary, #cbd5e1);
+  padding: 8px 10px;
+  border-radius: var(--radius-sm, 4px);
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: inherit;
+}
+
+.sistema-tab-item:hover {
+  background: rgba(255, 85, 0, 0.12);
+  border-color: rgba(255, 85, 0, 0.35);
+  color: #fff;
+  transform: translateX(2px);
+}
+
+.sistema-tab-item.active {
+  background: rgba(255, 85, 0, 0.22);
+  border-color: #ff5500;
+  color: #ffaa66;
+  font-weight: 700;
 }
 
 /* Corpo e Iframe */
