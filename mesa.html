@@ -165,6 +165,11 @@
                   <span>Sobre Sara</span>
                 </button>
 
+                <button type="button" class="quick-menu-item" onclick="MesaSistema.toggleDrawer(); MesaQuickMenu.close();">
+                  <svg class="ink-icon accent-amber" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                  <span>Sistema: Fios do Medo</span>
+                </button>
+
                 <div class="quick-menu-item-row">
                   <button type="button" class="quick-menu-item row-primary-btn" onclick="MesaOwlbear.open(); MesaQuickMenu.close();">
                     <svg class="ink-icon accent-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -320,6 +325,15 @@
             </svg>
           </span>
           <span id="nav-about-area-label">Sobre: Colégio Primórdio</span>
+        </button>
+
+        <!-- Botão Sistema Atual (Fios do Medo) -->
+        <button id="nav-sistema-btn" class="ink-tag nav-sistema" onclick="MesaSistema.toggleDrawer()" title="Consultar Sistema Atual (Fios do Medo)">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+          <span>Fios do Medo</span>
         </button>
 
         <!-- Botão Mapa [Owlbear] -->
@@ -647,6 +661,48 @@
     </div>
 
     
+    <!-- GAVETA LATERAL DO SISTEMA ATUAL (FIOS DO MEDO) -->
+    <aside id="sistema-drawer" class="sistema-drawer" aria-label="Sistema Atual: Fios do Medo" aria-hidden="true">
+      <div class="sistema-drawer-header">
+        <div class="sistema-header-title-box">
+          <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+          <div class="sistema-header-titles">
+            <span class="sistema-drawer-badge">SISTEMA ATUAL</span>
+            <h2 class="sistema-drawer-title">Fios do Medo</h2>
+          </div>
+        </div>
+        <div class="sistema-header-actions">
+          <button type="button" class="sistema-icon-btn" onclick="MesaSistema.openExternal()" title="Abrir em Nova Aba">
+            <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </button>
+          <button type="button" class="sistema-drawer-close-btn" onclick="MesaSistema.closeDrawer()" title="Recolher Gaveta">&laquo;</button>
+        </div>
+      </div>
+
+      <!-- Barra de Atalhos Rápidos para Consulta Imediata -->
+      <nav class="sistema-pills-bar" aria-label="Atalhos Rápidos de Fios do Medo">
+        <button type="button" class="sistema-pill-btn active" data-url="fios-do-medo/index.html" onclick="MesaSistema.navigateTo('fios-do-medo/index.html')">Início</button>
+        <button type="button" class="sistema-pill-btn" data-url="fios-do-medo/pericias.html" onclick="MesaSistema.navigateTo('fios-do-medo/pericias.html')">Perícias</button>
+        <button type="button" class="sistema-pill-btn" data-url="fios-do-medo/sanidade.html" onclick="MesaSistema.navigateTo('fios-do-medo/sanidade.html')">Sanidade</button>
+        <button type="button" class="sistema-pill-btn" data-url="fios-do-medo/morrendo.html" onclick="MesaSistema.navigateTo('fios-do-medo/morrendo.html')">Morrendo &amp; Lesões</button>
+        <button type="button" class="sistema-pill-btn" data-url="fios-do-medo/condicoes.html" onclick="MesaSistema.navigateTo('fios-do-medo/condicoes.html')">Condições</button>
+        <button type="button" class="sistema-pill-btn" data-url="fios-do-medo/atributos.html" onclick="MesaSistema.navigateTo('fios-do-medo/atributos.html')">Atributos</button>
+        <button type="button" class="sistema-pill-btn" data-url="fios-do-medo/investigacao.html" onclick="MesaSistema.navigateTo('fios-do-medo/investigacao.html')">Investigação</button>
+      </nav>
+
+      <!-- Frame do Conteúdo do Suplemento -->
+      <div class="sistema-drawer-body">
+        <iframe id="sistema-drawer-iframe" src="about:blank" data-src="fios-do-medo/index.html" class="sistema-drawer-iframe" title="Suplemento Fios do Medo"></iframe>
+      </div>
+    </aside>
+
     <!-- Interior Drawer -->
     <div id="interior-drawer-backdrop" class="interior-drawer-backdrop" onclick="MesaAreaManager.closeInteriorDrawer()"></div>
     <aside id="interior-drawer" class="interior-drawer" aria-label="Interior da Casa">

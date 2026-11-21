@@ -7642,6 +7642,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (window.MesaQuickMenu) {
         MesaQuickMenu.close();
       }
+      if (window.MesaSistema && MesaSistema.isOpen) {
+        MesaSistema.closeDrawer();
+      }
     }
   });
 
@@ -7660,6 +7663,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   if (window.MesaCenterArtwork) {
     MesaCenterArtwork.init();
+  }
+  if (window.MesaSistema) {
+    MesaSistema.init();
   }
 });
 
@@ -20003,6 +20009,102 @@ const MesaRollLog = {
   }
 };
 window.MesaRollLog = MesaRollLog;
+
+
+// ==========================================================================
+// SISTEMA ATUAL NA MESA VIRTUAL (FIOS DO MEDO DOCKED DRAWER)
+// ==========================================================================
+const MesaSistema = {
+  isOpen: false,
+  loaded: false,
+  defaultUrl: 'fios-do-medo/index.html',
+  currentUrl: 'fios-do-medo/index.html',
+
+  init() {
+    // Carrega antecipadamente se o iframe tiver data-src e for aberto
+    const iframe = document.getElementById('sistema-drawer-iframe');
+    if (iframe && this.isOpen) {
+      this.ensureLoaded();
+    }
+  },
+
+  ensureLoaded(targetUrl) {
+    const iframe = document.getElementById('sistema-drawer-iframe');
+    if (!iframe) return;
+    const url = targetUrl || this.currentUrl || this.defaultUrl;
+    if (!this.loaded || iframe.getAttribute('src') === 'about:blank') {
+      iframe.src = url;
+      this.loaded = true;
+    } else if (targetUrl && iframe.getAttribute('src') !== targetUrl) {
+      iframe.src = targetUrl;
+    }
+    this.updateActivePill(url);
+  },
+
+  toggleDrawer() {
+    if (this.isOpen) {
+      this.closeDrawer();
+    } else {
+      this.openDrawer();
+    }
+  },
+
+  openDrawer(targetPath) {
+    this.isOpen = true;
+    document.body.classList.add('sistema-drawer-open');
+    const drawer = document.getElementById('sistema-drawer');
+    if (drawer) drawer.setAttribute('aria-hidden', 'false');
+
+    const btn = document.getElementById('nav-sistema-btn');
+    if (btn) btn.classList.add('active-sistema-open');
+
+    this.ensureLoaded(targetPath);
+  },
+
+  closeDrawer() {
+    this.isOpen = false;
+    document.body.classList.remove('sistema-drawer-open');
+    const drawer = document.getElementById('sistema-drawer');
+    if (drawer) drawer.setAttribute('aria-hidden', 'true');
+
+    const btn = document.getElementById('nav-sistema-btn');
+    if (btn) btn.classList.remove('active-sistema-open');
+  },
+
+  navigateTo(url) {
+    this.currentUrl = url;
+    const iframe = document.getElementById('sistema-drawer-iframe');
+    if (iframe) {
+      iframe.src = url;
+      this.loaded = true;
+    }
+    this.updateActivePill(url);
+  },
+
+  updateActivePill(url) {
+    const pills = document.querySelectorAll('.sistema-pill-btn');
+    pills.forEach((p) => {
+      const dataUrl = p.getAttribute('data-url');
+      if (dataUrl && (url === dataUrl || url.endsWith(dataUrl))) {
+        p.classList.add('active');
+      } else {
+        p.classList.remove('active');
+      }
+    });
+  },
+
+  openExternal() {
+    const iframe = document.getElementById('sistema-drawer-iframe');
+    let target = this.currentUrl || this.defaultUrl;
+    try {
+      if (iframe && iframe.contentWindow && iframe.contentWindow.location && iframe.contentWindow.location.href && iframe.contentWindow.location.href !== 'about:blank') {
+        target = iframe.contentWindow.location.href;
+      }
+    } catch(e) {}
+    window.open(target, '_blank');
+  }
+};
+window.MesaSistema = MesaSistema;
 
 
 // ==========================================================================
