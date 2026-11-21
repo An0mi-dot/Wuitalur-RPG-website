@@ -19659,38 +19659,34 @@ body.sistema-drawer-open .mesa-floating-nav {
   line-height: 1;
 }
 
-/* Barra de Atalhos Rápidos (Pills) */
+/* Barra de Atalhos Rápidos (Grid Sem Scroll) */
 .sistema-pills-bar {
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 6px;
-  padding: 10px 14px;
+  padding: 8px 12px;
   background: #08080c;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  overflow-x: auto;
-  scrollbar-width: thin;
-}
-
-.sistema-pills-bar::-webkit-scrollbar {
-  height: 4px;
-}
-.sistema-pills-bar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
 }
 
 .sistema-pill-btn {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--text-secondary, #94a3b8);
-  padding: 5px 11px;
-  border-radius: 999px;
-  font-size: 0.75rem;
+  padding: 6px 4px;
+  border-radius: var(--radius-sm, 4px);
+  font-size: 0.74rem;
   font-weight: 600;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
   cursor: pointer;
   transition: all 0.18s ease;
   font-family: inherit;
+  width: 100%;
 }
 
 .sistema-pill-btn:hover {

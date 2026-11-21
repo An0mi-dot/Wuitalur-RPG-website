@@ -20017,15 +20017,34 @@ window.MesaRollLog = MesaRollLog;
 const MesaSistema = {
   isOpen: false,
   loaded: false,
-  defaultUrl: 'fios-do-medo/index.html',
-  currentUrl: 'fios-do-medo/index.html',
+  defaultUrl: 'fios-do-medo/pericias.html',
+  currentUrl: 'fios-do-medo/pericias.html',
 
   init() {
-    // Carrega antecipadamente se o iframe tiver data-src e for aberto
     const iframe = document.getElementById('sistema-drawer-iframe');
-    if (iframe && this.isOpen) {
-      this.ensureLoaded();
+    if (iframe) {
+      iframe.addEventListener('load', () => {
+        this.cleanIframeMobileToggle(iframe);
+      });
+      if (this.isOpen) {
+        this.ensureLoaded();
+      }
     }
+  },
+
+  cleanIframeMobileToggle(iframe) {
+    try {
+      const doc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
+      if (doc) {
+        doc.documentElement.classList.add('in-iframe');
+        if (doc.body) doc.body.classList.add('in-iframe');
+        const toggle = doc.getElementById('sidebar-toggle');
+        if (toggle) toggle.style.setProperty('display', 'none', 'important');
+        const style = doc.createElement('style');
+        style.textContent = '#sidebar-toggle, .sidebar-toggle, .sidebar-overlay, .sidebar-backdrop { display: none !important; visibility: hidden !important; pointer-events: none !important; }';
+        doc.head.appendChild(style);
+      }
+    } catch(e) {}
   },
 
   ensureLoaded(targetUrl) {

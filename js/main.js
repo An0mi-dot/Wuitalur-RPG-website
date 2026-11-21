@@ -1,3 +1,12 @@
+// In-iframe detection for embedded views (e.g. Mesa Virtual)
+if (typeof window !== 'undefined' && window.self !== window.top) {
+  try {
+    document.documentElement.classList.add('in-iframe');
+    if (document.body) document.body.classList.add('in-iframe');
+    else document.addEventListener('DOMContentLoaded', () => document.body && document.body.classList.add('in-iframe'));
+  } catch(e) {}
+}
+
 // Per-letter trembling for Umbra text
 function initUmbraTremble() {
   document.querySelectorAll('.elem-umbra').forEach(el => {

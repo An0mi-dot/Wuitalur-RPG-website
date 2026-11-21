@@ -833,3 +833,13 @@
     gap: var(--space-md);
   }
 }
+
+/* Oculta o botao hamburger quando embutido em iframe (Mesa Virtual) */
+body.in-iframe #sidebar-toggle,
+body.in-iframe .sidebar-toggle,
+html.in-iframe #sidebar-toggle,
+html.in-iframe .sidebar-toggle {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

@@ -167,7 +167,7 @@
 
                 <button type="button" class="quick-menu-item" onclick="MesaSistema.toggleDrawer(); MesaQuickMenu.close();">
                   <svg class="ink-icon accent-amber" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                  <span>Sistema: Fios do Medo</span>
+                  <span>Sistema Atual</span>
                 </button>
 
                 <div class="quick-menu-item-row">
@@ -328,12 +328,12 @@
         </button>
 
         <!-- Botão Sistema Atual (Fios do Medo) -->
-        <button id="nav-sistema-btn" class="ink-tag nav-sistema" onclick="MesaSistema.toggleDrawer()" title="Consultar Sistema Atual (Fios do Medo)">
+        <button id="nav-sistema-btn" class="ink-tag nav-sistema" onclick="MesaSistema.toggleDrawer()" title="Consultar Sistema Atual">
           <svg class="ink-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
             <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
           </svg>
-          <span>Fios do Medo</span>
+          <span>Sistema Atual</span>
         </button>
 
         <!-- Botão Mapa [Owlbear] -->
@@ -686,10 +686,9 @@
         </div>
       </div>
 
-      <!-- Barra de Atalhos Rápidos para Consulta Imediata -->
+      <!-- Barra de Atalhos Rápidos para Consulta Imediata (Sem Scroll Horizontal) -->
       <nav class="sistema-pills-bar" aria-label="Atalhos Rápidos de Fios do Medo">
-        <button type="button" class="sistema-pill-btn active" data-url="fios-do-medo/index.html" onclick="MesaSistema.navigateTo('fios-do-medo/index.html')">Início</button>
-        <button type="button" class="sistema-pill-btn" data-url="fios-do-medo/pericias.html" onclick="MesaSistema.navigateTo('fios-do-medo/pericias.html')">Perícias</button>
+        <button type="button" class="sistema-pill-btn active" data-url="fios-do-medo/pericias.html" onclick="MesaSistema.navigateTo('fios-do-medo/pericias.html')">Perícias</button>
         <button type="button" class="sistema-pill-btn" data-url="fios-do-medo/sanidade.html" onclick="MesaSistema.navigateTo('fios-do-medo/sanidade.html')">Sanidade</button>
         <button type="button" class="sistema-pill-btn" data-url="fios-do-medo/morrendo.html" onclick="MesaSistema.navigateTo('fios-do-medo/morrendo.html')">Morrendo &amp; Lesões</button>
         <button type="button" class="sistema-pill-btn" data-url="fios-do-medo/condicoes.html" onclick="MesaSistema.navigateTo('fios-do-medo/condicoes.html')">Condições</button>
@@ -699,7 +698,7 @@
 
       <!-- Frame do Conteúdo do Suplemento -->
       <div class="sistema-drawer-body">
-        <iframe id="sistema-drawer-iframe" src="about:blank" data-src="fios-do-medo/index.html" class="sistema-drawer-iframe" title="Suplemento Fios do Medo"></iframe>
+        <iframe id="sistema-drawer-iframe" src="about:blank" data-src="fios-do-medo/pericias.html" class="sistema-drawer-iframe" title="Suplemento Fios do Medo"></iframe>
       </div>
     </aside>
 
