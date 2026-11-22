@@ -2536,9 +2536,9 @@ body.has-showcase.is-detail-view .showcase-detail-view {
 }
 
 .showcase-hero-art[data-class="bestial"] {
-  --art-scale: 1.05;
+  --art-scale: 1.08;
   --art-offset-x: 0%;
-  --art-offset-y: 0%;
+  --art-offset-y: -2%;
 }
 
 .showcase-hero-art[data-class="anomalo"] {

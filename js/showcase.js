@@ -221,7 +221,7 @@ const ShowcaseEngine = {
     lampinario: { scale: 1.15, x: 5, y: 4, maskStart: 42, maskEnd: 88 },
     furtassaltantes: { scale: 1.32, x: 0, y: -10 },
     pistoleiro: { scale: 1.0, x: 0, y: 2 },
-    bestial: { scale: 1.05, x: 0, y: 0 },
+    bestial: { scale: 1.08, x: 0, y: -2 },
     anomalo: { scale: 1.18, x: 0, y: -6 },
     'atirador-espectral': { scale: 1.35, x: 0, y: -34 },
     sobrevivente: { scale: 1.08, x: 0, y: 0 },
@@ -262,12 +262,12 @@ const ShowcaseEngine = {
       border: 'rgba(245, 158, 11, 0.45)'
     },
     bestial: {
-      accent: '#EF4444',
-      accentLight: '#FCA5A5',
+      accent: '#FF1133',
+      accentLight: '#FFA3AB',
       contrast: '#FFFFFF',
-      rgb: '239, 68, 68',
-      darkTint: '#240E10',
-      border: 'rgba(239, 68, 68, 0.45)'
+      rgb: '255, 17, 51',
+      darkTint: '#260408',
+      border: 'rgba(255, 17, 51, 0.55)'
     },
     'cavaleiros-paladium': {
       accent: '#DC2626',

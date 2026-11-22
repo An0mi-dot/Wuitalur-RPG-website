@@ -2727,9 +2727,9 @@ body:not(.mesa-body) .tactical-chip * {
    BESTIAL - A FOME DE VHAALGOR
    ============================================================ */
 .bestial-mechanic-box {
-  background: #140d0e !important;
-  border: 1px solid #3d1417 !important;
-  border-left: 4px solid #ef4444 !important;
+  background: #150608 !important;
+  border: 1px solid #4d0a12 !important;
+  border-left: 4px solid #ff1133 !important;
   padding: 24px !important;
   margin-bottom: 32px !important;
 }
@@ -2741,50 +2741,50 @@ body:not(.mesa-body) .tactical-chip * {
 }
 .bestial-mechanic-box .compact-section-label {
   font-size: 0.95rem !important;
-  color: #ef4444 !important;
+  color: #ff1133 !important;
   letter-spacing: 0.1em !important;
   text-transform: uppercase !important;
   margin-top: 20px !important;
   margin-bottom: 16px !important;
   padding-bottom: 4px !important;
-  border-bottom: 1px dashed #7f1d1d !important;
+  border-bottom: 1px dashed #990f20 !important;
 }
 .bestial-mechanic-box .race-subability,
 #bestial .race-subability,
 .compendium-content-body[data-class="bestial"] .race-subability {
-  background: #180d0f !important;
-  border: 1px solid #3d1417 !important;
-  border-left: 3px solid #ef4444 !important;
+  background: #180608 !important;
+  border: 1px solid #4d0a12 !important;
+  border-left: 3px solid #ff1133 !important;
   margin-top: 12px !important;
   margin-bottom: 12px !important;
 }
 .bestial-mechanic-box .race-subability h6,
 #bestial .race-subability h6,
 .compendium-content-body[data-class="bestial"] .race-subability h6 {
-  color: #fca5a5 !important;
+  color: #ffa3ab !important;
 }
 .bestial-mechanic-box .dice,
 #bestial .dice,
 .compendium-content-body[data-class="bestial"] .dice {
-  border-color: #ef4444 !important;
+  border-color: #ff1133 !important;
   box-shadow: 2px 2px 0px #000000 !important;
 }
 .bestial-mechanic-box .dice::before,
 #bestial .dice::before,
 .compendium-content-body[data-class="bestial"] .dice::before {
-  border-color: #ef4444 !important;
-  filter: brightness(1.2) drop-shadow(0 0 3px rgba(239, 68, 68, 0.7)) !important;
+  border-color: #ff1133 !important;
+  filter: brightness(1.2) drop-shadow(0 0 3px rgba(255, 17, 51, 0.8)) !important;
 }
 .bestial-mechanic-box .dice:hover,
 #bestial .dice:hover,
 .compendium-content-body[data-class="bestial"] .dice:hover {
-  border-color: #f87171 !important;
-  box-shadow: 3px 3px 0px #ef4444 !important;
+  border-color: #ff3352 !important;
+  box-shadow: 3px 3px 0px #ff1133 !important;
 }
 .bestial-mechanic-box .dice:hover::before,
 #bestial .dice:hover::before,
 .compendium-content-body[data-class="bestial"] .dice:hover::before {
-  filter: brightness(1.4) drop-shadow(0 0 6px rgba(239, 68, 68, 0.9)) !important;
+  filter: brightness(1.4) drop-shadow(0 0 6px rgba(255, 17, 51, 1)) !important;
 }
 
 
