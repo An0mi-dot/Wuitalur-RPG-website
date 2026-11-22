@@ -2773,6 +2773,18 @@ body:not(.mesa-body) .tactical-chip * {
 #bestial .dice::before,
 .compendium-content-body[data-class="bestial"] .dice::before {
   border-color: #ef4444 !important;
+  filter: brightness(1.2) drop-shadow(0 0 3px rgba(239, 68, 68, 0.7)) !important;
+}
+.bestial-mechanic-box .dice:hover,
+#bestial .dice:hover,
+.compendium-content-body[data-class="bestial"] .dice:hover {
+  border-color: #f87171 !important;
+  box-shadow: 3px 3px 0px #ef4444 !important;
+}
+.bestial-mechanic-box .dice:hover::before,
+#bestial .dice:hover::before,
+.compendium-content-body[data-class="bestial"] .dice:hover::before {
+  filter: brightness(1.4) drop-shadow(0 0 6px rgba(239, 68, 68, 0.9)) !important;
 }
 
 
