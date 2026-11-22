@@ -376,23 +376,32 @@ const ShowcaseEngine = {
       border: 'rgba(245, 158, 11, 0.45)'
     };
 
-    const target = document.getElementById('spotlight-viewport') || document.getElementById('showcase-viewport') || document.documentElement;
+    const targets = [
+      document.documentElement,
+      document.getElementById('spotlight-viewport'),
+      document.getElementById('showcase-viewport'),
+      this.elements ? this.elements.compendiumBody : null,
+      this.elements ? this.elements.compendiumPane : null
+    ].filter(Boolean);
 
-    target.style.setProperty('--spotlight-accent', p.accent);
-    target.style.setProperty('--spotlight-accent-light', p.accentLight);
-    target.style.setProperty('--spotlight-accent-contrast', p.contrast);
-    target.style.setProperty('--spotlight-accent-border', p.border);
-    target.style.setProperty('--spotlight-backdrop-tint', p.darkTint);
-    target.style.setProperty('--spotlight-accent-glow-subtle', `rgba(${p.rgb}, 0.22)`);
-    target.style.setProperty('--spotlight-backlight', `rgba(${p.rgb}, 0.26)`);
-    target.style.setProperty('--spotlight-backlight-outer', `rgba(${p.rgb}, 0.08)`);
-    target.style.setProperty('--spotlight-halftone-color', `rgba(${p.rgb}, 0.35)`);
-    target.style.setProperty('--spotlight-slash-bg', `rgba(${p.rgb}, 0.12)`);
-    target.style.setProperty('--spotlight-slash-border', `rgba(${p.rgb}, 0.4)`);
-    target.style.setProperty('--spotlight-slash-border-subtle', `rgba(${p.rgb}, 0.15)`);
-    target.style.setProperty('--spotlight-poly-color', `rgba(${p.rgb}, 0.2)`);
-    target.style.setProperty('--spotlight-shadow-glow', `rgba(${p.rgb}, 0.35)`);
-    target.style.setProperty('--spotlight-hazard-color', `rgba(${p.rgb}, 0.22)`);
+    targets.forEach(target => {
+      target.style.setProperty('--spotlight-accent', p.accent);
+      target.style.setProperty('--spotlight-accent-light', p.accentLight);
+      target.style.setProperty('--spotlight-accent-contrast', p.contrast);
+      target.style.setProperty('--spotlight-accent-border', p.border);
+      target.style.setProperty('--border-accent', p.accent);
+      target.style.setProperty('--spotlight-backdrop-tint', p.darkTint);
+      target.style.setProperty('--spotlight-accent-glow-subtle', `rgba(${p.rgb}, 0.22)`);
+      target.style.setProperty('--spotlight-backlight', `rgba(${p.rgb}, 0.26)`);
+      target.style.setProperty('--spotlight-backlight-outer', `rgba(${p.rgb}, 0.08)`);
+      target.style.setProperty('--spotlight-halftone-color', `rgba(${p.rgb}, 0.35)`);
+      target.style.setProperty('--spotlight-slash-bg', `rgba(${p.rgb}, 0.12)`);
+      target.style.setProperty('--spotlight-slash-border', `rgba(${p.rgb}, 0.4)`);
+      target.style.setProperty('--spotlight-slash-border-subtle', `rgba(${p.rgb}, 0.15)`);
+      target.style.setProperty('--spotlight-poly-color', `rgba(${p.rgb}, 0.2)`);
+      target.style.setProperty('--spotlight-shadow-glow', `rgba(${p.rgb}, 0.35)`);
+      target.style.setProperty('--spotlight-hazard-color', `rgba(${p.rgb}, 0.22)`);
+    });
 
     // Aplica o enquadramento (escala e offset X/Y) e fade inferior específico da ilustração
     const framing = this.classFraming[itemId] || { scale: 1.0, x: 0, y: 0 };
@@ -1219,6 +1228,11 @@ const ShowcaseEngine = {
 
   renderCompendium(item) {
     if (!this.elements.compendiumTabs || !this.elements.compendiumBody) return;
+
+    this.elements.compendiumBody.setAttribute('data-class', item.id);
+    if (this.elements.compendiumPane) {
+      this.elements.compendiumPane.setAttribute('data-class', item.id);
+    }
 
     // Tópicos textuais da classe (ignora tópico 0 de ilustração)
     const textTopics = item.topics.filter(t => !t.isIllustration);
