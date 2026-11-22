@@ -6,6 +6,51 @@
 
 const BOLETINS_DATA = [
   {
+    id: "edicao-09",
+    numero: 9,
+    edicao: "Edição 9",
+    epoca: "Novembro 2026",
+    data: "22 de Novembro de 2026",
+    dataIso: "2026-11-22",
+    titulo: "O Rework do Bestial e a Queda dos Deuses Bestiais",
+    subtitulo: "A partir da edição 2.0, os antigos Deuses Bestiais deixam de existir oficialmente no cenário, dando lugar a Vhaalgor, A Fome Ancestral.",
+    autor: "Mestre (Guilherme)",
+    tempoLeitura: "4 min",
+    resumo: "Eu vinha pensando há um bom tempo sobre a identidade do Bestial e decidi passar a régua em como a classe funcionava. A partir desta edição 2.0 e para todas as próximas histórias do universo de Wuitalur, os antigos Deuses Bestiais deixam de existir oficialmente no cenário.",
+    tags: ["Sistema 2.0", "Classes", "Bestial", "Vhaalgor", "Lore", "Rework"],
+    conteudoHtml: `<section class="boletim-section">
+        <p class="boletim-lead">
+          Eu vinha pensando há um bom tempo sobre a identidade do Bestial e decidi passar a régua em como a classe funcionava. A partir desta edição 2.0 e para todas as próximas histórias do universo de Wuitalur, os antigos Deuses Bestiais deixam de existir oficialmente no cenário.
+        </p>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">Por que os antigos Deuses Bestiais foram cortados</h3>
+        <p>
+          Na minha visão, aquela lista de deuses animais como Touro, Tubarão e Cobra só estava ali preenchendo espaço vazio no sistema. Eles não tinham uma função narrativa real, fragmentavam as regras à toa e o conceito deles não me convencia. Ficar dividindo o personagem entre vantagens de gato ou bônus de pug tirava o foco do que essa classe realmente deveria representar.
+        </p>
+        <p>
+          Para o 2.0, eu decidi comprimir tudo isso em um único Deus, com lore própria, visual próprio e regras próprias: Vhaalgor, A Fome Ancestral.
+        </p>
+        <p>
+          Essa mudança foi algo que eu realmente quis fazer. Eu acho que ter uma entidade única dedicada a essa questão da ferocidade da besta em si é uma abordagem bem mais legal para desenvolver a classe a longo prazo. O Bestial deixa de ser aquele personagem que fica escolhendo bicho diferente e passa a carregar o poder de um predador esquecido, alguém que abraçou a ideia simples de que no fim das contas só existem predadores e presas.
+        </p>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">A Nova Identidade</h3>
+        <p>
+          Com Vhaalgor, o poder elemental da classe ganhou uma assinatura visual clara. As manifestações não são técnicas refinadas de combate; elas brotam da carne na forma de chamas negras com pontas avermelhadas escarlate. É esse fogo escuro que alimenta a carcaça do guerreiro conforme o sangue jorra na cena.
+        </p>
+        <p>
+          Mecanicamente, a classe agora ficou mais simples no papel, mas ao mesmo tempo ela é um pouco mais complicada de pilotar. Você tem um tanto de coisa para considerar e se lembrar no meio do combate: gerenciar os pontos de Ferocidade, decidir na hora se ataca com garras, se salta para derrubar ou se usa a mordida na ação bônus para roubar vida, além de ficar atento aos gatilhos de cura passiva e nas mortes que acontecem ao redor.
+        </p>
+        <p>
+          Além disso, o Bestial é a primeira classe do RPG que tem a capacidade real de executar um alvo. Se um lacaio ou inimigo comum cair dentro do seu limiar de dano, ele simplesmente é partido ao meio na hora, sem enrolação de rolar dado desnecessário. Eu genuinamente quero ver como essa classe vai se sair em campanhas futuras, caso alguém resolva jogar com ela na mesa.
+        </p>
+      </section>`
+  },
+  {
     id: "edicao-08",
     numero: 8,
     edicao: "Edição 8",
