@@ -677,6 +677,146 @@ O Compactador pode detonar a energia mantida em um Estado de Compactação ativo
   * **Ação**: Ação Padrão
   * Colapsa a gravidade em um ponto visível a até 8B, gerando um poço gravitacional devastador em 6B de raio. Todas as criaturas na área são puxadas com violência para o centro da singularidade, sofrem o seu Dano Base + Nível de Maestria em dano contundente e têm sua Armadura anulada por 1 rodada. Criaturas de tamanho grande ou menor realizam um teste de Força; em caso de falha, sofrem a condição **Paralisado** até o início do seu próximo turno.
 
+---
+
+### Classe 3: Bestial
+**Papel Tático**: `COMBATENTE` | `PREDADOR` | `COLOSSO`
+
+#### 1. Visão Geral
+Os Bestiais são os receptáculos mortais de Vhaalgor, A Fome Ancestral, uma divindade primordial esquecida pelo panteão civilizado. Vhaalgor não responde a orações silenciosas nem aceita oferendas de incenso; ele é a personificação da primeira fera que já existiu no mundo, a vontade cega de estraçalhar, devorar e sobreviver. Aqueles que carregam seu pacto de sangue abdicaram da técnica marcial polida para abraçar um instinto de abate que queima diretamente na carne.
+
+A influência de Vhaalgor é inconfundível no campo de batalha. O poder desse Deus Esquecido não se manifesta através de doutrinas elementais refinadas, mas através de chamas negras com pontas avermelhadas escarlate. Esse fogo sombrio não é um elemento comum de fogueira; ele brota dos dentes, das garras e das feridas do Bestial como uma emanação elemental viscosa e ardente, alimentando-se do calor do sangue derramado e consumindo a própria dor do guerreiro para mantê-lo de pé.
+
+Você cultua Vhaalgor porque descobriu da forma mais brutal que as leis, a moral e a piedade são ilusões frágeis em Wuitalur. Quando o aço quebra e as cidades caem, o cosmos sempre retorna ao seu estado mais primitivo: predadores e presas. Seus seguidores são sobreviventes que encararam a beira do túmulo, gladiadores de fossas sangrentas ou párias que sentiram o chamado da fome ao provar o primeiro gosto da carnificina. Eles não lutam pela glória; lutam para alimentar o fogo escarlate que ruge em suas veias e para garantir que nunca mais serão caçados por ninguém.
+
+Na linha de frente, o Bestial avança como um colosso envolto em chamas negras elementais. Ele ignora ferimentos mortais com uma regeneração predatória, arremessa inimigos como se fossem carcaças leves e executa oponentes mais fracos em explosões instantâneas de violência pura, deixando apenas cinzas escuras e sangue onde pisa.
+
+#### 2. Características da Classe
+* **Pontos de Vida Iniciais**: 12 + Vigor
+* **Pontos de Vida por Nível**: 7 + Vigor
+* **Energia Astral Inicial**: 12
+* **Energia Astral por Nível**: 3
+
+#### 3. Proficiências
+* **Armas**: Armas simples, armas marciais corpo a corpo e ataques desarmados.
+* **Armaduras**: Armaduras leves e médias.
+* **Testes de Resistência**: Força e Vigor.
+* **Nível de Maestria**:
+  * Níveis 1 ao 4: 2
+  * Níveis 5 ao 8: 4
+  * Níveis 9 ao 12: 8
+  * Níveis 13 ao 15: 16
+
+#### 4. Dano Base
+O Dano Base da classe escala conforme a evolução de níveis:
+* **Níveis 1 ao 4**: 1d10
+* **Níveis 5 ao 8**: 2d10
+* **Níveis 9 ao 12**: 3d10
+* **Níveis 13 ao 15**: 4d10
+
+#### 5. Mecânica de Classe — A Fome de Vhaalgor
+A Ferocidade mede a intensidade com que a presença elemental de Vhaalgor desperta na carne do Bestial. Quando o sangue corre no campo de batalha, o corpo do guerreiro é envolto por chamas negras com pontas avermelhadas escarlate. A classe opera com uma reserva de Ferocidade de 0 a 5 pontos.
+
+##### Como Acumular Ferocidade
+* **No Ataque**: Ganha 1 ponto de Ferocidade sempre que acertar um ataque corporal contra um oponente.
+* **No Sangue**: Ganha 1 ponto de Ferocidade na primeira vez a cada rodada em que sofrer dano proveniente de um ataque inimigo.
+* **No Abate**: Ganha 1 ponto de Ferocidade imediato sempre que eliminar uma criatura através de um Abate Brutal.
+* **Limite e Duração**: O valor máximo que pode ser mantido acumulado é de 5 pontos de Ferocidade. Todos os pontos não utilizados são zerados ao final da cena de combate.
+
+##### Efeitos Passivos da Ferocidade
+* **Regeneração Orgânica**: No início de cada um dos seus turnos, se possuir pelo menos 1 ponto de Ferocidade acumulado, o calor das chamas negras fecha as feridas do Bestial, recuperando Pontos de Vida igual ao seu Nível de Maestria. Essa regeneração só opera enquanto o Bestial estiver com metade dos seus PVs máximos ou menos. Ela cessa imediatamente assim que a vida alcançar 50% do total.
+* **Pele Curtida**: Para cada 2 pontos de Ferocidade acumulados na reserva, a carcaça do Bestial se solidifica sob as brasas escuras, adicionando +1 na sua DEF passiva contra ataques físicos.
+* **Banquete de Sangue**: A morte no campo de batalha alimenta a chama de Vhaalgor. Sempre que qualquer criatura morrer no combate a até 10B do Bestial, ele absorve o calor vital residual e recupera Pontos de Vida iguais ao seu Nível de Maestria. Se o golpe fatal foi desferido diretamente pelas mãos do Bestial, a oferenda é plena: ele consome a força da vítima, recuperando o dobro do seu Nível de Maestria somado ao seu valor de Vigor.
+
+##### Armas Naturais de Vhaalgor
+Quando o Bestial decide lutar desarmado, a incorporação de Vhaalgor atinge o nível mais visceral e físico da possessão. Uma onda de calor ardente sobe pela espinha, os músculos se retorcem em espasmos de puro êxtase e a mandíbula estala sob uma sede desesperada de rasgar carne viva. O guerreiro não empunha armas de ferro forjado porque seu próprio corpo se transforma no instrumento do Deus Esquecido, sentindo um prazer primitivo e inebriante a cada golpe desferido, uma fome irresistível que exige o contato direto dos dentes e das garras na carne do inimigo.
+* **Precisão Primal**: O Bestial soma o seu Nível de Maestria em todas as jogadas de acerto realizadas com suas armas naturais desarmadas.
+Sempre que combater desarmado, ele manifesta as seguintes armas naturais:
+* **Garras de Fogo Negro**: Ação Padrão. Causa dano cortante igual ao Dano Base + Força. As unhas se projetam como lâminas ardentes que abrem feridas profundas. O alvo acertado sofre a condição Sangramento por 2 rodadas.
+* **Salto Predatório**: Ação Padrão. Causa dano contundente igual ao Dano Base + Força. O Bestial projeta seu corpo em um salto de até 2B em linha reta antes de desferir o impacto. O alvo atingido deve passar em um teste de Vigor contra DT 8 + Maestria + Força ou é lançado ao chão, sofrendo a condição Caído.
+* **Presas Carmesim**: Ação Bônus. O Bestial desfere uma mordida violenta contra uma criatura a até 1B, causando 1d6 + Força em dano perfurante. O Bestial recupera Pontos de Vida em quantidade exatamente igual ao dano total que causar com esse ataque.
+
+##### Abate Brutal
+A voracidade de Vhaalgor não tolera fraqueza e consome presas menores instantaneamente:
+* **Limiar de Execução**: Dano Base Máximo da classe + Modificador de Força do personagem.
+* **Exemplo Prático**: Considerando um personagem que evolua sua Força ao longo dos níveis:
+  * No nível 1 com Dano Base 1d10 e Força 3: o teto máximo de dano é 10, somando 3 de Força, executa alvos com 13 PV ou menos.
+  * No nível 5 com Dano Base 2d10 e Força 4: o teto máximo de dano é 20, somando 4 de Força, executa alvos com 24 PV ou menos.
+  * No nível 9 com Dano Base 3d10 e Força 5: o teto máximo de dano é 30, somando 5 de Força, executa alvos com 35 PV ou menos.
+  * No nível 13 com Dano Base 4d10 e Força 6: o teto máximo de dano é 40, somando 6 de Força, executa alvos com 46 PV ou menos.
+* **Efeito**: Ao acertar um ataque corpo a corpo contra um lacaio ou inimigo comum, se o PV restante da criatura for igual ou inferior ao seu Limiar de Execução, o alvo morre imediatamente, sendo estraçalhado pelas chamas negras sem direito a testes de resistência.
+* **Ímpeto**: Ao realizar o abate, além de ativar o Banquete de Sangue e ganhar 1 ponto de Ferocidade, o Bestial pode se deslocar até 2B em direção à próxima presa sem gastar ações.
+
+##### Liberação de Ferocidade
+Como parte de um ataque ou ação no turno, o Bestial pode consumir pontos de Ferocidade acumulados para canalizar explosões viscerais de chamas negras escarlate:
+* **2 Ferocidade — Dilacerar**: O ataque manifesta garras escuras que adicionam o seu Nível de Maestria ao dano e infligem a condição Sangramento no alvo por 2 rodadas.
+* **3 Ferocidade — Arremesso de Presa**: Se o ataque acertar, o Bestial agarra o inimigo pelas brasas corporais e o lança a até 4B de distância em qualquer direção. O alvo atinge o solo e sofre a condição Caído. Se colidir com uma parede ou obstáculo rígido, sofre dano contundente extra igual à Força do Bestial.
+* **5 Ferocidade — Frenesi da Fome**: O Bestial desfere um golpe titânico envolto em uma erupção de fogo negro que causa o dobro do seu Dano Base e arremessa todas as criaturas adjacentes 2B para trás.
+
+#### 6. Habilidades de Classe
+
+##### Nível 1
+* **Habilidade Característica — O Chamado da Fome**
+  * O sangue de Vhaalgor afia os sentidos biológicos do Bestial a níveis sobre-humanos. Ele fareja sangue fresco, veneno, carniça e a pulsação de criaturas vivas num raio de 30B, mesmo através de portas fechadas ou frestas de rocha, reconhecendo o odor individual de qualquer um que já tenha sangrado perto dele e rastreando presas sem necessidade de testes em terreno aberto. Ele recebe vantagem em testes de Percepção baseados em olfato ou audição, nunca pode ser pego de surpresa e o peso da carcaça predatória o torna inabalável contra empurrões, puxões ou quedas forçadas enquanto estiver consciente.
+
+* **Escolha de Habilidade**
+  *O jogador escolhe 1 entre as duas opções abaixo:*
+  * **Bote Devorador**
+    * **Custo**: 5 EA
+    * **Ação**: Ação Padrão
+    * O Bestial salta até 3B em linha reta em direção a uma presa e desfere um ataque corporal com garras, presas ou armas envoltas em chamas negras. O golpe causa o dano da arma somado ao seu Dano Base. Se o alvo for de tamanho Médio ou menor, é lançado ao chão com o impacto e sofre a condição Caído. Esse mesmo ímpeto muscular permite realizar saltos de até 4B para transpor abismos, galhos altos ou telhados, somando o Dano Base em testes de Força para demolir barricadas e arrombar portões. Gera 1 ponto de Ferocidade.
+  * **Olhar do Predador Supremo**
+    * **Custo**: 5 EA
+    * **Ação**: Ação Bônus
+    * O Bestial expele brasas escarlates e projeta a presença aterrorizante do Deus Esquecido num raio de 4B. Todas as criaturas inimigas na área devem passar em um teste de Vigor contra DT 8 + Maestria ou sofrem a condição Abalado por 1 rodada. Enquanto estiverem abaladas, as criaturas tremem diante do predador, sofrendo desvantagem em todos os seus testes de ataque e ficando impedidas de se aproximar voluntariamente do Bestial. Essa mesma aura predatória concede vantagem em testes de Intimidação, permite farejar o medo e a mentira pela aceleração do pulso e pelo suor do interlocutor, e faz feras selvagens comuns recuarem intimidadas sem atacar. Gera 1 ponto de Ferocidade.
+
+##### Nível 4
+* **Habilidade Característica — Couraça Escarlate**
+  * Chamas negras fundem brasas escarlates à carne do Bestial, concedendo +10 Pontos de Vida máximos permanentes e imunidade total a venenos e doenças comuns.
+
+* **Escolha de Habilidade**
+  *O jogador escolhe 1 entre as duas opções abaixo:*
+  * **Frenesi de Estraçalhar**
+    * **Custo**: 10 EA
+    * **Ação**: Ação Padrão
+    * Envolvido em fogo negro e brasas escarlates, o Bestial desfere dois ataques corporais consecutivos no mesmo alvo. Cada acerto causa o dano da arma somado à sua Maestria e reduz a Armadura do inimigo em um valor igual à sua Maestria até o fim da cena. Fora de combate, as garras em brasa rasgam grades de ferro, correntes e portas maciças. Gera 1 ponto de Ferocidade.
+  * **Marca da Presa**
+    * **Custo**: 10 EA
+    * **Ação**: Ação Bônus
+    * O Bestial lança fagulhas negras invisíveis na alma de um alvo a até 10B, marcando-o para a fome de Vhaalgor. Contra a presa marcada, ele ganha +2B de deslocamento ao avançar e soma sua Maestria em todas as jogadas de dano. Fora de combate, o rastro escarlate da marca revela a direção exata e o pulsar do coração do alvo em qualquer distância. Gera 1 ponto de Ferocidade.
+
+##### Nível 7 — Escolha
+*O jogador escolhe 1 entre as duas opções abaixo:*
+* **Onda Escarlate**
+  * **Custo**: 15 EA
+  * **Ação**: Ação Padrão
+  * O Bestial esmurra o solo com ferocidade bruta, projetando uma torrente de chamas negras com pontas escarlates em cone de 4B à sua frente. Todas as criaturas na área sofrem o Dano Base somado à sua Força e devem passar em um teste de Vigor contra DT 8 + Maestria + Força ou sofrem as condições Caído e Queimando por 2 rodadas. Gera 1 ponto de Ferocidade.
+* **Mandíbula do Titã**
+  * **Custo**: 15 EA
+  * **Ação**: Ação Bônus
+  * Uma bocarra colossal de chamas negras se projeta sobre o Bestial ao atacar. Ao acertar um golpe corporal nesta rodada, a mandíbula crava no oponente, aplicando a condição Agarrado e infligindo Sangramento contínuo igual à sua Maestria por 2 rodadas. Enquanto mantiver o inimigo preso, o Bestial pode gastar uma Ação Bônus nos turnos seguintes para mastigar o alvo, causando o seu Dano Base e curando Pontos de Vida iguais ao dano provocado. Gera 1 ponto de Ferocidade.
+
+##### Nível 10 — Escolha
+*O jogador escolhe 1 entre as duas opções abaixo:*
+* **Colosso de Fogo Negro**
+  * **Custo**: 20 EA
+  * **Ação**: Ação Bônus
+  * O Bestial canaliza o corpo colossal de Vhaalgor, crescendo para tamanho Grande por 3 rodadas sob uma couraça de chamas negras ardentes. Enquanto a forma durar, o alcance de seus ataques corporais aumenta para 2B, sua DEF passiva aumenta em valor igual à sua Maestria e qualquer inimigo que começar o turno adjacente a ele ou acertá-lo em combate sofre o seu Dano Base em dano de fogo. Gera 2 pontos de Ferocidade.
+* **Chacina em Cadeia**
+  * **Custo**: 20 EA
+  * **Ação**: Ação Padrão
+  * O Bestial se torna um turbilhão de lâminas negras, avançando em linha reta até o dobro do seu deslocamento e desferindo ataques contra até 3 criaturas no trajeto. Cada alvo atingido sofre o seu Dano Base somado à sua Força e deve passar em um teste de Vigor contra DT 8 + Maestria + Força ou sofre as condições Imobilizado e Sangramento por 2 rodadas. Inimigos que caírem dentro do limiar de Abate Brutal são executados imediatamente. Gera 2 pontos de Ferocidade.
+
+##### Nível 13 — Escolha
+*O jogador escolhe 1 entre as duas opções abaixo:*
+* **Avatar da Fome Ancestral**
+  * **Custo**: 25 EA
+  * **Ação**: Ação Bônus
+  * O Bestial rompe as amarras da carne mortal e se funde por completo à presença de Vhaalgor por 3 rodadas, transformando-se em uma monstruosidade titânica envolvida em chamas negras e pontas escarlates. Enquanto a transformação durar, sua reserva de Ferocidade permanece travada no teto máximo de 5 pontos e não diminui ao gastar manobras, seu deslocamento é dobrado e seus ataques desarmados causam o dobro do Dano Base. Inimigos atingidos por ele perdem todas as suas reações na rodada e, se qualquer criatura for abatida pelo Bestial enquanto a forma estiver ativa, ele recupera metade dos seus Pontos de Vida máximos de forma instantânea.
+* **Gorja Primordial**
+  * **Custo**: 25 EA
+  * **Ação**: Ação Padrão
+  * O Bestial abre o peito e a boca em uma fenda que evoca o apetite cósmico de Vhaalgor, detonando uma tempestade apocalíptica de fogo negro escarlate em um raio de 8B ao seu redor. Todos os inimigos na área sofrem o dobro do seu Dano Base somado à sua Força e Maestria, além de terem toda a sua Armadura e DEF anuladas por 1 rodada. Criaturas de tamanho Grande ou menor são arrastadas para perto do Bestial e sofrem a condição Paralisado até o início do seu próximo turno. Qualquer lacaio ou criatura na área que esteja dentro do limiar de Abate Brutal é engolida viva imediatamente, convertendo toda a vida restante dela em cura direta para o Bestial.
 
 ---
 
