@@ -148,7 +148,7 @@ const ShowcaseEngine = {
     // Classes
     consagrados: ['ESTRATEGISTA', 'SUPORTE', 'CONTROLADOR'],
     compactador: ['DEFENSOR', 'COLOSSO', 'TANQUE'],
-    bestial: ['ATACANTE', 'COLOSSO', 'DUELISTA'],
+    bestial: ['COMBATENTE', 'PREDADOR', 'COLOSSO'],
     'cavaleiros-paladium': ['DEFENSOR', 'TANQUE', 'SUPORTE'],
     eterno: ['ATACANTE', 'CANHÃO DE VIDRO', 'DUELISTA'],
     furtassaltantes: ['ATACANTE', 'DUELISTA', 'UTILITÁRIO'],
