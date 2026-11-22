@@ -147,6 +147,7 @@
   padding-bottom: var(--space-md);
   border-bottom: 1px solid var(--border-subtle);
   margin-bottom: var(--space-md);
+  flex-shrink: 0;
 }
 
 .boletim-archive-header-row {
@@ -208,6 +209,8 @@
   flex-direction: column;
   gap: var(--space-sm);
   overflow-y: auto;
+  min-height: 0;
+  flex: 1 1 auto;
   padding-right: 4px;
 }
 
@@ -222,6 +225,8 @@
 
 /* Card Individual na Lista Lateral */
 .boletim-nav-card {
+  flex-shrink: 0;
+  min-height: fit-content;
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
   border-radius: 0;
@@ -305,6 +310,8 @@
   color: var(--text-primary);
   margin: 0 0 6px;
   line-height: 1.35;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .boletim-nav-card.active .boletim-nav-card-title {
