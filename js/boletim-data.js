@@ -12,7 +12,7 @@ const BOLETINS_DATA = [
     epoca: "Novembro 2026",
     data: "22 de Novembro de 2026",
     dataIso: "2026-11-22",
-    titulo: "O Rework do Bestial e a Queda dos Deuses Bestiais",
+    titulo: "Rework do Bestial e Remoção dos Deuses Bestiais",
     subtitulo: "A partir da edição 2.0, os antigos Deuses Bestiais deixam de existir oficialmente no cenário, dando lugar a Vhaalgor, A Fome Ancestral.",
     autor: "Mestre (Guilherme)",
     tempoLeitura: "4 min",

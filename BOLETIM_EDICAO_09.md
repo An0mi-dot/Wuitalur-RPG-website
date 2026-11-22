@@ -1,4 +1,4 @@
-# O Rework do Bestial e a Queda dos Deuses Bestiais
+# Rework do Bestial e Remoção dos Deuses Bestiais
 Eu vinha pensando há um bom tempo sobre a identidade do Bestial e decidi passar a régua em como a classe funcionava. A partir desta edição 2.0 e para todas as próximas histórias do universo de Wuitalur, os antigos Deuses Bestiais deixam de existir oficialmente no cenário.
 
 **Data de Publicação**  
