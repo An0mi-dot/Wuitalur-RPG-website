@@ -9832,7 +9832,7 @@ const MesaAnotacoes = {
     const indEl = document.getElementById('anotacoes-save-indicator');
     if (indEl) {
       indEl.textContent = 'Salvo';
-      indEl.style.color = '#2dd4bf';
+      indEl.style.color = '#fbbf24';
     }
 
     // 2. Broadcast em tempo real para instâncias do mesmo jogador
@@ -9905,7 +9905,6 @@ const MesaAnotacoes = {
       const isActive = block.id === activeBlock.id;
       return `
         <button type="button" class="anotacoes-tab-btn ${isActive ? 'active' : ''}" onclick="MesaAnotacoes.setActiveTab(${slot}, '${block.id}')" title="Alternar para ${this.escapeHtml(block.titulo)}">
-          <span class="anotacoes-tab-dot"></span>
           <span class="anotacoes-tab-label">${this.escapeHtml(block.titulo || `Bloco ${idx + 1}`)}</span>
         </button>
       `;
@@ -9930,20 +9929,18 @@ const MesaAnotacoes = {
       const isActive = block.id === activeBlock.id;
       return `
         <button type="button" class="anotacoes-tab-btn ${isActive ? 'active' : ''}" onclick="MesaAnotacoes.setActiveTab(${player.slot}, '${block.id}')" title="Alternar para ${this.escapeHtml(block.titulo)}">
-          <span class="anotacoes-tab-dot"></span>
           <span class="anotacoes-tab-label">${this.escapeHtml(block.titulo || `Bloco ${idx + 1}`)}</span>
         </button>
       `;
     }).join('');
 
     container.innerHTML = `
-      <div class="ink-ribbon-title ficha-anotacoes-title" style="background: #0f766e; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; transform: none !important; clip-path: none !important; width: 100%; box-sizing: border-box; border-radius: 0;">
+      <div class="ink-ribbon-title ficha-anotacoes-title" style="background: #d97706; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; transform: none !important; clip-path: none !important; width: 100%; box-sizing: border-box; border-radius: 0;">
         <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
           <span style="display: inline-flex; align-items: center; gap: 6px;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             ANOTAÇÕES PESSOAIS
           </span>
-          <span class="anotacoes-privacy-pill" title="Apenas o seu token pode visualizar e editar estas anotações">&#128274; PRIVADO // APENAS SEU TOKEN</span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
           <span id="anotacoes-save-indicator" class="anotacoes-status-pill">Sincronizado</span>
