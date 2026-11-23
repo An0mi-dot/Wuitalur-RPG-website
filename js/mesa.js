@@ -1862,6 +1862,9 @@ const MesaApp = {
           if (v.totens !== undefined && v.totens !== null) {
             p.totens = Math.max(0, Number(v.totens) || 0);
           }
+          if (v._anotacoes && Array.isArray(v._anotacoes)) {
+            p._anotacoes = v._anotacoes;
+          }
         }
         if (p && (p.vidrilhos === 0 || p.vidrilhos == null)) {
           p.vidrilhos = 15;
@@ -2308,6 +2311,21 @@ const MesaApp = {
         }
         MesaColetaveis.render();
         if (typeof MesaColetaveis.renderFicha === 'function') MesaColetaveis.renderFicha();
+      }
+    });
+
+    // 2.1 Sincronização de Anotações Pessoais (Privado por Token)
+    channel.on('broadcast', { event: 'anotacoes_sync' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      const data = payload.payload;
+      if (!data || !data.slot || !Array.isArray(data.notes)) return;
+      const target = this.state.players[data.slot - 1];
+      // Só processa e aceita se este cliente for dono autorizado da ficha
+      if (target && this.canEdit(target)) {
+        target._anotacoes = data.notes;
+        if (this.state.activeViewingPlayer && this.state.activeViewingPlayer.slot === target.slot) {
+          if (window.MesaAnotacoes) MesaAnotacoes.renderFicha(target);
+        }
       }
     });
 
@@ -3512,6 +3530,13 @@ const MesaApp = {
           </div>
           <div id="ficha-coletaveis-container" class="ficha-coletaveis-container" style="margin-top: 12px;"></div>
         </div>
+
+        <!-- 6. Bloco de Anotações Pessoais (Privado) -->
+        ${editable ? `
+        <div id="ficha-section-anotacoes" class="ficha-open-section ficha-section-anotacoes" style="margin-top: 18px; width: 100%;">
+          <div id="ficha-anotacoes-container"></div>
+        </div>
+        ` : ''}
       </div>
     `;
 
@@ -3535,6 +3560,9 @@ const MesaApp = {
     }
     if (window.MesaColetaveis) {
       MesaColetaveis.renderFicha();
+    }
+    if (editable && window.MesaAnotacoes) {
+      MesaAnotacoes.renderFicha(player);
     }
 
     // Inicia o motor de glitch procedural na ilustração (mesma frequência e tipos do BG)
@@ -9625,6 +9653,348 @@ const MesaRoteiro = {
   }
 };
 
+// ============================================================
+// SISTEMA DE ANOTAÇÕES PESSOAIS DA FICHA - PRIVADO POR TOKEN
+// ============================================================
+const MesaAnotacoes = {
+  activeTabs: {}, // Map of slot -> activeBlockId
+  _saveDebounceTimers: {},
+
+  getNotes(player) {
+    if (!player) return [];
+    if (!window.MesaApp || !MesaApp.canEdit(player)) return [];
+
+    let notes = player._anotacoes;
+
+    // Se ainda não estiver em memória, tenta recuperar do cache local
+    if (!Array.isArray(notes) || notes.length === 0) {
+      const tokenKey = player.token ? `wu_mesa_anotacoes_token_${player.token.toUpperCase()}` : null;
+      const slotKey = `wu_mesa_anotacoes_slot_${player.slot}`;
+      try {
+        const cached = (tokenKey && localStorage.getItem(tokenKey)) || localStorage.getItem(slotKey);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            notes = parsed;
+          }
+        }
+      } catch (e) {}
+    }
+
+    // Inicialização padrão de primeiro acesso
+    if (!Array.isArray(notes) || notes.length === 0) {
+      notes = [
+        { id: 'bloco_1', titulo: 'Bloco 1', conteudo: '' }
+      ];
+    }
+
+    // Garante no máximo 3 blocos
+    if (notes.length > 3) {
+      notes = notes.slice(0, 3);
+    }
+
+    player._anotacoes = notes;
+    return notes;
+  },
+
+  getActiveBlock(player) {
+    const notes = this.getNotes(player);
+    const activeId = this.activeTabs[player.slot];
+    let found = notes.find(n => n.id === activeId);
+    if (!found && notes.length > 0) {
+      found = notes[0];
+      this.activeTabs[player.slot] = found.id;
+    }
+    return found || notes[0];
+  },
+
+  setActiveTab(slot, blockId) {
+    this.activeTabs[slot] = blockId;
+    const player = (window.MesaApp && MesaApp.state && MesaApp.state.players) ? MesaApp.state.players[slot - 1] : null;
+    if (player) {
+      this.renderFicha(player);
+    }
+  },
+
+  addBlock(slot) {
+    const player = (window.MesaApp && MesaApp.state && MesaApp.state.players) ? MesaApp.state.players[slot - 1] : null;
+    if (!player || !MesaApp.canEdit(player)) return;
+
+    const notes = this.getNotes(player);
+    if (notes.length >= 3) {
+      if (typeof MesaApp.showToast === 'function') {
+        MesaApp.showToast('Limite de 3 blocos de anotações atingido.');
+      }
+      return;
+    }
+
+    const nextNum = notes.length + 1;
+    const newId = 'bloco_' + Date.now();
+    const newBlock = {
+      id: newId,
+      titulo: `Bloco ${nextNum}`,
+      conteudo: ''
+    };
+
+    notes.push(newBlock);
+    player._anotacoes = notes;
+    this.activeTabs[slot] = newId;
+
+    this.save(player, notes, true);
+    this.renderFicha(player);
+
+    setTimeout(() => {
+      const textarea = document.getElementById('anotacoes-textarea');
+      if (textarea) textarea.focus();
+    }, 50);
+  },
+
+  deleteBlock(slot, blockId) {
+    const player = (window.MesaApp && MesaApp.state && MesaApp.state.players) ? MesaApp.state.players[slot - 1] : null;
+    if (!player || !MesaApp.canEdit(player)) return;
+
+    let notes = this.getNotes(player);
+    if (notes.length <= 1) {
+      if (typeof MesaApp.showToast === 'function') {
+        MesaApp.showToast('Você deve manter ao menos 1 bloco de anotações.');
+      }
+      return;
+    }
+
+    const targetBlock = notes.find(n => n.id === blockId);
+    const title = targetBlock ? targetBlock.titulo : 'este bloco';
+    if (!confirm(`Deseja realmente excluir "${title}"? O texto contido será perdido.`)) {
+      return;
+    }
+
+    notes = notes.filter(n => n.id !== blockId);
+    player._anotacoes = notes;
+    this.activeTabs[slot] = notes[0].id;
+
+    this.save(player, notes, true);
+    this.renderFicha(player);
+  },
+
+  updateBlockTitle(slot, blockId, newTitle) {
+    const player = (window.MesaApp && MesaApp.state && MesaApp.state.players) ? MesaApp.state.players[slot - 1] : null;
+    if (!player || !MesaApp.canEdit(player)) return;
+
+    const notes = this.getNotes(player);
+    const block = notes.find(n => n.id === blockId);
+    if (block) {
+      block.titulo = (newTitle || 'Bloco').trim().slice(0, 30);
+      this.save(player, notes, false);
+      this.renderTabsOnly(slot, notes);
+    }
+  },
+
+  onContentInput(slot, blockId, value) {
+    const player = (window.MesaApp && MesaApp.state && MesaApp.state.players) ? MesaApp.state.players[slot - 1] : null;
+    if (!player || !MesaApp.canEdit(player)) return;
+
+    const notes = this.getNotes(player);
+    const block = notes.find(n => n.id === blockId);
+    if (block) {
+      block.conteudo = value;
+
+      const charEl = document.getElementById('anotacoes-char-count');
+      if (charEl) {
+        charEl.textContent = `${value.length} caracteres`;
+      }
+
+      const indEl = document.getElementById('anotacoes-save-indicator');
+      if (indEl) {
+        indEl.textContent = 'Salvando...';
+        indEl.style.color = '#fbbf24';
+      }
+
+      if (this._saveDebounceTimers[slot]) {
+        clearTimeout(this._saveDebounceTimers[slot]);
+      }
+      this._saveDebounceTimers[slot] = setTimeout(() => {
+        this.save(player, notes, false);
+      }, 400);
+    }
+  },
+
+  save(player, notes, immediate = false) {
+    if (!player) return;
+
+    // 1. Cache Local por Slot e por Token
+    try {
+      const slotKey = `wu_mesa_anotacoes_slot_${player.slot}`;
+      localStorage.setItem(slotKey, JSON.stringify(notes));
+      if (player.token) {
+        localStorage.setItem(`wu_mesa_anotacoes_token_${player.token.toUpperCase()}`, JSON.stringify(notes));
+      }
+    } catch (e) {}
+
+    const indEl = document.getElementById('anotacoes-save-indicator');
+    if (indEl) {
+      indEl.textContent = 'Salvo';
+      indEl.style.color = '#2dd4bf';
+    }
+
+    // 2. Broadcast em tempo real para instâncias do mesmo jogador
+    const chan = (window.MesaChat && MesaChat.channel) || (window.MesaApp && MesaApp.channel);
+    if (chan) {
+      try {
+        chan.send({
+          type: 'broadcast',
+          event: 'anotacoes_sync',
+          payload: {
+            slot: player.slot,
+            token: player.token,
+            notes: notes,
+            _senderId: (window.MesaApp && MesaApp.clientId) || null
+          }
+        });
+      } catch (e) {}
+    }
+
+    // 3. Persistência no Supabase
+    if (window.MesaApp && MesaApp.supabase) {
+      (async () => {
+        try {
+          const { data: mData } = await MesaApp.supabase
+            .from('personagens')
+            .select('atributos')
+            .eq('id', 1)
+            .single();
+
+          const mAttrs = mData && mData.atributos
+            ? (typeof mData.atributos === 'string' ? JSON.parse(mData.atributos) : mData.atributos)
+            : {};
+          if (!mAttrs._sys_players_vitals) mAttrs._sys_players_vitals = {};
+          if (!mAttrs._sys_players_vitals[player.slot]) mAttrs._sys_players_vitals[player.slot] = {};
+          mAttrs._sys_players_vitals[player.slot]._anotacoes = notes;
+
+          await MesaApp.supabase
+            .from('personagens')
+            .update({ atributos: mAttrs })
+            .eq('id', 1);
+
+          if (player.id && (player.id === 1 || player.id === 3)) {
+            const { data } = await MesaApp.supabase
+              .from('personagens')
+              .select('atributos')
+              .eq('id', player.id)
+              .single();
+            let pAttrs = {};
+            if (data && data.atributos) {
+              pAttrs = typeof data.atributos === 'string' ? JSON.parse(data.atributos) : data.atributos;
+            }
+            pAttrs._anotacoes = notes;
+            await MesaApp.supabase
+              .from('personagens')
+              .update({ atributos: pAttrs })
+              .eq('id', player.id);
+          }
+        } catch (err) {
+          console.error("Erro ao salvar anotações no Supabase:", err);
+        }
+      })();
+    }
+  },
+
+  renderTabsOnly(slot, notes) {
+    const tabsContainer = document.querySelector('.anotacoes-tabs-bar');
+    if (!tabsContainer) return;
+    const activeBlock = this.getActiveBlock({ slot, _anotacoes: notes });
+    tabsContainer.innerHTML = notes.map((block, idx) => {
+      const isActive = block.id === activeBlock.id;
+      return `
+        <button type="button" class="anotacoes-tab-btn ${isActive ? 'active' : ''}" onclick="MesaAnotacoes.setActiveTab(${slot}, '${block.id}')" title="Alternar para ${this.escapeHtml(block.titulo)}">
+          <span class="anotacoes-tab-dot"></span>
+          <span class="anotacoes-tab-label">${this.escapeHtml(block.titulo || `Bloco ${idx + 1}`)}</span>
+        </button>
+      `;
+    }).join('');
+  },
+
+  renderFicha(player) {
+    const container = document.getElementById('ficha-anotacoes-container');
+    if (!container) return;
+
+    // Regra rígida de privacidade: apenas usuários autenticados para esta ficha podem vê-la
+    if (!player || !MesaApp.canEdit(player)) {
+      const section = document.getElementById('ficha-section-anotacoes');
+      if (section) section.remove();
+      return;
+    }
+
+    const notes = this.getNotes(player);
+    const activeBlock = this.getActiveBlock(player);
+
+    const tabsHtml = notes.map((block, idx) => {
+      const isActive = block.id === activeBlock.id;
+      return `
+        <button type="button" class="anotacoes-tab-btn ${isActive ? 'active' : ''}" onclick="MesaAnotacoes.setActiveTab(${player.slot}, '${block.id}')" title="Alternar para ${this.escapeHtml(block.titulo)}">
+          <span class="anotacoes-tab-dot"></span>
+          <span class="anotacoes-tab-label">${this.escapeHtml(block.titulo || `Bloco ${idx + 1}`)}</span>
+        </button>
+      `;
+    }).join('');
+
+    container.innerHTML = `
+      <div class="ink-ribbon-title ficha-anotacoes-title" style="background: #0f766e; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; transform: none !important; clip-path: none !important; width: 100%; box-sizing: border-box; border-radius: 0;">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+          <span style="display: inline-flex; align-items: center; gap: 6px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            ANOTAÇÕES PESSOAIS
+          </span>
+          <span class="anotacoes-privacy-pill" title="Apenas o seu token pode visualizar e editar estas anotações">&#128274; PRIVADO // APENAS SEU TOKEN</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span id="anotacoes-save-indicator" class="anotacoes-status-pill">Sincronizado</span>
+          ${notes.length < 3 ? `
+            <button type="button" class="anotacoes-add-btn" onclick="MesaAnotacoes.addBlock(${player.slot})" title="Criar novo campo de anotação // Máximo de 3">
+              + Novo Bloco // ${notes.length} de 3
+            </button>
+          ` : `
+            <span class="anotacoes-max-pill" title="Limite máximo de 3 blocos atingido">3/3 Blocos</span>
+          `}
+        </div>
+      </div>
+
+      <div class="ficha-anotacoes-body">
+        <div class="anotacoes-tabs-bar">
+          ${tabsHtml}
+        </div>
+
+        <div class="anotacoes-active-editor">
+          <div class="anotacoes-editor-header">
+            <div class="anotacoes-title-edit-wrap">
+              <input type="text" class="anotacoes-block-title-input" id="anotacoes-current-title" value="${this.escapeHtml(activeBlock.titulo)}" placeholder="Nome do bloco..." maxlength="26" oninput="MesaAnotacoes.updateBlockTitle(${player.slot}, '${activeBlock.id}', this.value)" />
+              <span class="anotacoes-edit-hint" title="Edite o título do bloco">&#9998; renomear</span>
+            </div>
+            <div class="anotacoes-meta-wrap">
+              <span class="anotacoes-char-count" id="anotacoes-char-count">${(activeBlock.conteudo || '').length} caracteres</span>
+              ${notes.length > 1 ? `
+                <button type="button" class="anotacoes-delete-btn" onclick="MesaAnotacoes.deleteBlock(${player.slot}, '${activeBlock.id}')" title="Excluir este bloco de anotações">
+                  Excluir Bloco
+                </button>
+              ` : ''}
+            </div>
+          </div>
+
+          <textarea id="anotacoes-textarea" class="anotacoes-textarea" placeholder="Escreva suas anotações aqui... Tudo o que você registrar é privado e visível apenas para o seu token." oninput="MesaAnotacoes.onContentInput(${player.slot}, '${activeBlock.id}', this.value)" onblur="MesaAnotacoes.save(MesaApp.state.players[${player.slot - 1}], MesaAnotacoes.getNotes(MesaApp.state.players[${player.slot - 1}]), true)">${this.escapeHtml(activeBlock.conteudo || '')}</textarea>
+        </div>
+      </div>
+    `;
+  },
+
+  escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+};
+
 // Fix for global visibility of modules
 window.MesaApp = MesaApp;
 
@@ -9634,6 +10004,7 @@ window.MesaQuickMenu = MesaQuickMenu;
 window.MesaMobileMenu = MesaMobileMenu;
 window.MesaSecurity = MesaSecurity;
 window.MesaColetaveis = MesaColetaveis;
+window.MesaAnotacoes = MesaAnotacoes;
   window.MesaSara = MesaSara;
 window.MesaRoteiro = MesaRoteiro;
 window.MesaReactions = MesaReactions;
