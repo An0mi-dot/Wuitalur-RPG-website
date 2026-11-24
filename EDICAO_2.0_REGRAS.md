@@ -820,6 +820,149 @@ Como parte de um ataque ou ação no turno, o Bestial pode consumir pontos de Fe
 
 ---
 
+Classe 4: Cavaleiro de Paladium
+==============================
+**Papel Tático**: `DEFENSOR` | `INQUISIDOR` | `JULGADOR`
+
+1. Visão Geral
+--------------
+Os Cavaleiros de Paladium são a força máxima de imposição, obediência e controle do reino de Paladium, conhecidos por sua devoção inabalável ao Deus Solar, Cadamor, e por sua brutalidade revestida de santidade. São escolhidos a dedo entre os guerreiros mais disciplinados, leais e impiedosos, moldados desde cedo para servir como instrumentos vivos da vontade solar.
+
+Todos os Cavaleiros de Paladium são vinculados exclusivamente ao elemento Solar, canalizando a luz não como símbolo de esperança, mas como uma chama julgadora que consome o impuro, o desobediente e o indigno. Seus corpos são marcados por rituais sagrados e seu treinamento é implacável, extirpando qualquer traço de compaixão ou hesitação.
+
+Organizados em uma rígida hierarquia de Ranks de 1 a 5, sua autoridade cresce conforme demonstram maior zelo, poder e fanatismo. Os de Rank 1 são considerados quase santos, vistos pelo povo como avatares da justiça solar.
+
+Não são meros soldados: são executores, inquisidores e juízes. Suas armaduras resplandecem como faróis da fé de Paladium, mas seus passos são temidos como os de um carrasco. Para os que vivem fora do ideal solar, sua presença é um presságio de dor e silêncio. Para os nobres, são ferramentas de estabilidade e ordem.
+
+2. Características da Classe
+----------------------------
+* **Pontos de Vida Iniciais**: 12 + Vigor
+* **Pontos de Vida por Nível**: 7 + Vigor
+* **Energia Astral Inicial**: 15
+* **Energia Astral por Nível**: 3
+
+3. Proficiências
+----------------
+* **Armas**: Armas simples e marciais.
+* **Armaduras**: Armaduras leves, médias, pesadas e todos os escudos.
+* **Testes de Resistência**: Força e Vigor.
+* **Nível de Maestria**:
+  * Níveis 1 ao 4: 2
+  * Níveis 5 ao 8: 4
+  * Níveis 9 ao 12: 8
+  * Níveis 13 ao 15: 16
+
+4. Dano Base Solar
+------------------
+A evolução do Dano Base Solar acompanha os seguintes marcos de nível:
+* Níveis 1 ao 4: 1d10
+* Níveis 5 ao 8: 2d10
+* Níveis 9 ao 12: 3d10
+* Níveis 13 ao 15: 4d10
+
+5. Mecânica de Classe
+---------------------
+
+Carga Solar
+~~~~~~~~~~~
+A Carga Solar representa o acúmulo de energia solar e fervor inquisitório no ápice do combate, operando com uma reserva de 0 a 8 cargas.
+
+Como Acumular Carga Solar:
+* No Acerto: Ganha 1 ponto de Carga Solar ao acertar um ataque corpo a corpo.
+* No Impacto: Ganha 1 ponto de Carga Solar ao sofrer dano de um ataque inimigo, com limite de 1 vez por rodada.
+* Limite e Duração: A reserva comporta no máximo 8 cargas. Todas as cargas não consumidas se dissipam ao final da cena de combate.
+
+Efeitos Passivos da Carga Solar:
+* 1+ Cargas — Lâmina Solar: A arma do Cavaleiro reluz com calor radiante, concedendo +1 em testes de ataque corpo a corpo.
+* 3+ Cargas — Aura Incandescente: A armadura irradia calor inquisitório. Inimigos adjacentes a até 2B sofrem 1d8 de dano Solar no final de seus turnos.
+* 5+ Cargas — Fulgor Julgador: A aura de calor se intensifica, aumentando o dano para 2d6 de dano Solar em inimigos adjacentes a até 2B.
+* 8 Cargas — Coroa Solar e Descarga Solar: Ao acumular 8 cargas, o Cavaleiro atinge o estado de Coroa Solar. Uma vez por turno, ao acertar um ataque corpo a corpo, o Cavaleiro pode liberar a Descarga Solar, adicionando o dobro do seu Dano Base Solar completo ao dano do golpe e consumindo todas as 8 cargas solares.
+
+Hierarquia dos Ranks de Paladium
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A ordem inquisitória organiza seus membros em 5 Ranks de autoridade universal, concedendo prerrogativas políticas e sociais sustentadas pela fé e pela Expressão do guerreiro:
+* Rank 1 — Acólito da Alvorada: Direito a porte ostensivo de armas e armaduras pesadas em qualquer povoado. Adiciona seu modificador de Expressão em testes sociais de intimidação e persuasão contra cidadãos comuns e suspeitos.
+* Rank 2 — Guardião Solar: Jurisdição inquisitória em vilas e cidades aliadas. Permite requisitar abrigo, provisões e passagem por portões sem pagamento de tributos, somando Expressão para obter cooperação de guardas e autoridades locais.
+* Rank 3 — Inquisidor de Paladium: Mandado oficial para conduzir julgamentos em campo e interrogar suspeitos com poder de prisão imediata. Concede vantagem em testes de Intuição e Investigação somados com Expressão perante qualquer tribunal.
+* Rank 4 — Alto Juiz da Fé: Comando formal de guarnições e santuários de Paladium. Possui imunidade perante juízes regionais e poder de requisição de combatentes aliados, somando Expressão em testes de liderança marcial.
+* Rank 5 — Santo Executor da Coroa: Autoridade máxima do clero inquisitório. Sua palavra possui força de lei sagrada absoluta, subjugando ordens inferiores e somando o dobro de Expressão em confrontos sociais com nobres, sacerdotes e governantes.
+
+6. Habilidades de Classe
+------------------------
+
+Nível 1
+~~~~~~~
+* **Habilidade Característica — Olhar de Cadamor**
+  * Passiva.
+  * Os olhos do Cavaleiro reluzem com o fogo inquisitório do Deus Solar, detectando falsidade e intenções desonestas em um raio de 10B. Criaturas que tentarem mentir ou dissimular sua verdadeira natureza na presença do Cavaleiro emitem uma aura dourada visível apenas para ele. Concede vantagem constante em testes de Percepção e Intuição para apurar a verdade.
+
+* **Escolha de Habilidade**
+  O jogador escolhe 1 entre as duas opções abaixo:
+  * **Golpe Solar**
+    * Custo: 5 EA
+    * Ação: Ação Padrão
+    * O Cavaleiro imbui sua arma com a chama ardente de Cadamor e desfere um ataque corpo a corpo. O golpe causa o dano da arma somado ao seu Dano Base Solar e gera 1 Carga Solar. Se o oponente for uma criatura corrompida ou das trevas, o ataque soma o seu Nível de Maestria ao dano total.
+  * **Égide Radiante**
+    * Custo: 5 EA
+    * Ação: Ação Padrão
+    * O Cavaleiro projeta um escudo de luz brilhante em si mesmo ou em um aliado a até 6B, concedendo Pontos de Vida temporários equivalentes a 1d10 somado ao seu Vigor por 3 rodadas. Enquanto a barreira persistir, o beneficiado recebe +1 de DEF. Gera 1 Carga Solar.
+
+Nível 4
+~~~~~~~
+* **Habilidade Característica — Fervor do Alvorecer**
+  * Passiva.
+  * A devoção sagrada fortifica o corpo e a mente do Cavaleiro de Paladium. Concede +10 Pontos de Vida máximos permanentes e torna o personagem imune à condição Amedrontado.
+
+* **Escolha de Habilidade**
+  O jogador escolhe 1 entre as duas opções abaixo:
+  * **Julgamento Ardente**
+    * Custo: 10 EA
+    * Ação: Ação Padrão
+    * Marca um inimigo a até 6B com o sigilo ardente de Cadamor. O alvo sofre a condição Queimando por 3 rodadas, recebendo dano Solar equivalente à metade dos dados do seu Dano Base Solar no início de cada um de seus turnos. Gera 1 Carga Solar.
+  * **Solo Consagrado**
+    * Custo: 10 EA
+    * Ação: Ação Padrão
+    * Bate com o escudo ou arma no chão, abençoando uma área de 6B de raio ao seu redor por 3 rodadas. Inimigos que iniciarem seus turnos na área sofrem 2d6 de dano Solar. Aliados dentro da área recebem +1 de DEF e vantagem em testes de resistência contra medo e abalo. Gera 1 Carga Solar.
+
+Nível 7 — Escolha
+~~~~~~~~~~~~~~~~~
+O jogador escolhe 1 entre as duas opções abaixo:
+* **Fincada Inquisitória**
+  * Custo: 15 EA
+  * Ação: Ação Padrão
+  * O Cavaleiro desfere uma investida impiedosa que perfura o oponente a até 3B, causando o dano da arma somado ao dobro do Dano Base Solar. Em caso de acerto, o oponente é pregado ao solo, sofrendo as condições Caído e Imobilizado por 1 rodada. Gera 1 Carga Solar.
+* **Coroa de Chamas**
+  * Custo: 15 EA
+  * Ação: Ação Bônus
+  * Labaredas sagradas envolvem a armadura e o elmo do Cavaleiro por 3 rodadas. No início de cada um de seus turnos, o Cavaleiro gera 1 Carga Solar adicional automática. A aura de calor do Cavaleiro passa também a curar aliados adjacentes a até 2B no mesmo valor de dano causado a oponentes.
+
+Nível 10 — Escolha
+~~~~~~~~~~~~~~~~~~
+O jogador escolhe 1 entre as duas opções abaixo:
+* **Vontade de Paladium**
+  * Custo: 20 EA
+  * Ação: Ação Bônus
+  * O Cavaleiro canaliza a resolução inquebrável da justiça solar. Por 3 rodadas, o Cavaleiro e aliados a até 6B tornam-se imunes a efeitos de controle mental e medo, além de somarem o Nível de Maestria em todas as jogadas de dano. Gera 2 Cargas Solares.
+* **Sentença Solar**
+  * Custo: 20 EA
+  * Ação: Ação Padrão
+  * Arremessa uma lança de luz pura contra um oponente a até 12B. Causa o dobro do Dano Base Solar somado à Força e ignora defesas e resistências do alvo. Se o alvo estiver sob a condição Queimando ou Abalado, a lâmina detona, causando o Dano Base Solar a todas as criaturas a até 3B do impacto. Gera 2 Cargas Solares.
+
+Nível 13 — Escolha
+~~~~~~~~~~~~~~~~~~
+O jogador escolhe 1 entre as duas opções abaixo:
+* **Avatar da Estrela Ardente**
+  * Custo: 25 EA
+  * Ação: Ação Bônus
+  * O Cavaleiro se transforma no canal supremo de Cadamor por 3 rodadas. A reserva de Cargas Solares permanece travada no máximo de 8 cargas durante toda a duração, permitindo desferir a Descarga Solar em cada rodada sem perder as cargas acumuladas. O alcance corpo a corpo aumenta em 2B com lâminas solares e o Cavaleiro torna-se imune a dano de fogo e dano Solar.
+* **Bastilha da Alvorada**
+  * Custo: 25 EA
+  * Ação: Ação Padrão
+  * O Cavaleiro finca seu escudo no solo e ergue uma cidadela impenetrável de luz sagrada em um raio de 6B. O Cavaleiro e todos os aliados na área recebem 15 + Maestria em Pontos de Vida temporários imediatos por 3 rodadas. Enquanto permanecerem na área consagrada, recebem redução de dano igual ao Vigor do Cavaleiro contra qualquer ataque externo. Gera 2 Cargas Solares.
+
+
+---
+
 # CAPÍTULO 6: EQUIPAMENTOS E SISTEMA DE CARGA
 
 O inventário em Wuitalur 2.0 é regido por espaços de carga objetivos. A capacidade física do personagem define o volume de suprimentos, armas sobressalentes e utilitários que ele consegue transportar sem sofrer penalidades de movimento e agilidade.

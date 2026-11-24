@@ -6,6 +6,52 @@
 
 const BOLETINS_DATA = [
   {
+    id: "edicao-10",
+    numero: 10,
+    edicao: "Edição 10",
+    epoca: "Novembro 2026",
+    data: "24 de Novembro de 2026",
+    dataIso: "2026-11-24",
+    titulo: "O Cavaleiro de Paladium no 2.0",
+    subtitulo: "Como uma classe sólida e consagrada foi adaptada com precisão para o novo motor sem perder sua essência.",
+    autor: "Mestre",
+    tempoLeitura: "3 min",
+    resumo: "Quando comecei a transição das classes para a edição 2.0, o Cavaleiro de Paladium sempre esteve em uma posição muito clara na minha cabeça. Diferente de outras classes que precisavam de reformulações profundas em suas bases, o Cavaleiro já era uma das classes mais sólidas e queridas de Wuitalur. Por isso, a missão aqui foi de pura precisão: calibrar números, alinhar a progressão aos quinze níveis e polir cada detalhe sem tocar na essência de defensor inquisidor que todo mundo já conhece.",
+    tags: ["Sistema 2.0", "Classes", "Cavaleiro de Paladium", "Cadamor", "Carga Solar", "Ranks"],
+    conteudoHtml: `<section class="boletim-section">
+        <p class="boletim-lead">
+          Quando comecei a transição das classes para a edição 2.0, o Cavaleiro de Paladium sempre esteve em uma posição muito clara na minha cabeça. Diferente de outras classes que precisavam de reformulações profundas em suas bases, o Cavaleiro já era uma das classes mais sólidas e queridas de Wuitalur. Por isso, a missão aqui foi de pura precisão: calibrar números, alinhar a progressão aos quinze níveis e polir cada detalhe sem tocar na essência de defensor inquisidor que todo mundo já conhece.
+        </p>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">Uma Base Firme que Dispensa Invenções</h3>
+        <p>
+          O Cavaleiro de Paladium sempre funcionou muito bem em mesa porque sua proposta de jogo é direta e imponente. Ele é o bastião blindado da fé solar de Cadamor, o guerreiro que marcha na vanguarda para proteger aliados e castigar oponentes com autoridade implacável. No motor antigo, no entanto, a progressão até o nível vinte dispersava certas escolhas e inflava recursos.
+        </p>
+        <p>
+          No 2.0, a vida inicial sobe para doze mais Vigor e a vida por nível passa para sete mais Vigor, enquanto a Energia Astral se fixa em quinze inicial com ganho de três por nível, criando uma carcaça resistente que aguenta a linha de frente do combate sem vacilar.
+        </p>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">Carga Solar e Hierarquia dos Ranks</h3>
+        <p>
+          A mecânica central da Carga Solar continua sendo a espinha dorsal da classe, acumulando de zero a oito cargas conforme você acerta golpes ou absorve ataques inimigos. Os bônus progressivos em uma, três e cinco cargas mantêm a pressão constante no combate, enquanto a Coroa Solar em oito cargas agora culmina na temida Descarga Solar, dobrando o Dano Base Solar completo em um golpe decisivo.
+        </p>
+        <p>
+          Em paralelo, a clássica hierarquia de cinco Ranks de Paladium foi preservada integralmente, amarrando a autoridade inquisitória do guerreiro aos testes de Expressão para garantir respeito perante civis, nobres e sacerdotes.
+        </p>
+      </section>
+
+      <section class="boletim-section">
+        <h3 class="boletim-section-title">O Caminho dos Quinze Níveis</h3>
+        <p>
+          A estrutura de habilidades agora segue à risca o padrão do 2.0, com escolhas binárias nos marcos fundamentais de níveis um, quatro, sete, dez e treze, além das habilidades características consagradas: Olhar de Cadamor no nível um e Fervor do Alvorecer no nível quatro. Do Golpe Solar inicial ao impacto definitivo do Avatar da Estrela Ardente ou da Bastilha da Alvorada, o Cavaleiro de Paladium entrega exatamente o que promete: uma rocha solar inabalável, justa em seus termos e impiedosa com os infiéis.
+        </p>
+      </section>`
+  },
+  {
     id: "edicao-09",
     numero: 9,
     edicao: "Edição 9",
