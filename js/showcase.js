@@ -215,7 +215,7 @@ const ShowcaseEngine = {
     consagrados: { scale: 1.48, x: 0, y: -22 },
     compactador: { scale: 1.0, x: 0, y: 0 },
     eterno: { scale: 1.05, x: 0, y: 0 },
-    'cavaleiros-paladium': { scale: 1.42, x: 0, y: -15 },
+    'cavaleiros-paladium': { scale: 1.05, x: 0, y: 4 },
     rastejantes: { scale: 1.32, x: 0, y: -10 },
     protegidos: { scale: 1.48, x: 0, y: -17 },
     lampinario: { scale: 1.15, x: 5, y: 4, maskStart: 42, maskEnd: 88 },

@@ -2497,9 +2497,9 @@ body.has-showcase.is-detail-view .showcase-detail-view {
 }
 
 .showcase-hero-art[data-class="cavaleiros-paladium"] {
-  --art-scale: 1.42;
+  --art-scale: 1.05;
   --art-offset-x: 0%;
-  --art-offset-y: -15%;
+  --art-offset-y: 4%;
 }
 
 .showcase-hero-art[data-class="rastejantes"] {
