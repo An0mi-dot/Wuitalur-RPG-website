@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.29';
+const MESA_VERSION = 'v2.5.30';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -7550,6 +7550,43 @@ const MesaAreaManager = {
   },
 
   _dossierTab: 'npcs',
+  _npcVitalsCache: null,
+
+  _loadNpcVitals() {
+    if (this._npcVitalsCache) return this._npcVitalsCache;
+    try {
+      this._npcVitalsCache = JSON.parse(localStorage.getItem('mesa_npc_vitals_v1') || '{}') || {};
+    } catch (e) {
+      this._npcVitalsCache = {};
+    }
+    return this._npcVitalsCache;
+  },
+
+  getNpcVital(npc, field) {
+    const maxVal = Number(npc[field]);
+    if (isNaN(maxVal)) return { current: npc[field], max: npc[field] };
+    const store = this._loadNpcVitals();
+    const entry = store[npc.id];
+    const current = (entry && entry[field] !== undefined) ? Number(entry[field]) : maxVal;
+    return { current, max: maxVal };
+  },
+
+  updateNpcVital(npcId, field, delta) {
+    const all = [...this.getAllNpcs(), ...(Array.isArray(window.CAMPAIGN_MONSTROS) ? window.CAMPAIGN_MONSTROS : [])];
+    const npc = all.find(n => n.id === npcId);
+    if (!npc || npc[field] === undefined) return;
+    const maxVal = Number(npc[field]);
+    const store = this._loadNpcVitals();
+    if (!store[npcId]) store[npcId] = {};
+    const prev = store[npcId][field] !== undefined ? Number(store[npcId][field]) : maxVal;
+    const next = Math.max(0, prev + delta);
+    store[npcId][field] = next;
+    try {
+      localStorage.setItem('mesa_npc_vitals_v1', JSON.stringify(store));
+    } catch (e) {}
+    const el = document.getElementById(`npc-${field}-val`);
+    if (el) el.textContent = `${next} / ${maxVal}`;
+  },
 
   setDossierTab(tab) {
     this._dossierTab = tab === 'bestiario' ? 'bestiario' : 'npcs';
@@ -7755,8 +7792,24 @@ const MesaAreaManager = {
               <div class="npc-main-name-row">
                 <h2 class="npc-main-name">${npc.nome}</h2>
                 <div class="npc-vitals-wrap">
-                  ${npc.pv !== undefined ? `<span class="npc-vital-pill npc-pill-pv" title="Pontos de Vida"><strong class="pill-k">PV</strong> <span class="pill-v">${npc.pv}</span></span>` : ''}
-                  ${npc.pe !== undefined ? `<span class="npc-vital-pill npc-pill-pe" title="Pontos de Esforço"><strong class="pill-k">PE</strong> <span class="pill-v">${npc.pe}</span></span>` : ''}
+                  ${npc.pv !== undefined ? (() => {
+                    const v = this.getNpcVital(npc, 'pv');
+                    return `<span class="npc-vital-pill npc-pill-pv" title="Pontos de Vida">
+                      <strong class="pill-k">PV</strong>
+                      <span id="npc-pv-val" class="pill-v">${v.current} / ${v.max}</span>
+                      <button type="button" class="stat-edit-btn" onclick="MesaAreaManager.updateNpcVital('${npc.id}', 'pv', -1)" title="Diminuir PV">-</button>
+                      <button type="button" class="stat-edit-btn" onclick="MesaAreaManager.updateNpcVital('${npc.id}', 'pv', 1)" title="Aumentar PV">+</button>
+                    </span>`;
+                  })() : ''}
+                  ${npc.pe !== undefined ? (() => {
+                    const v = this.getNpcVital(npc, 'pe');
+                    return `<span class="npc-vital-pill npc-pill-pe" title="Pontos de Esforço">
+                      <strong class="pill-k">PE</strong>
+                      <span id="npc-pe-val" class="pill-v">${v.current} / ${v.max}</span>
+                      <button type="button" class="stat-edit-btn" onclick="MesaAreaManager.updateNpcVital('${npc.id}', 'pe', -1)" title="Diminuir PE">-</button>
+                      <button type="button" class="stat-edit-btn" onclick="MesaAreaManager.updateNpcVital('${npc.id}', 'pe', 1)" title="Aumentar PE">+</button>
+                    </span>`;
+                  })() : ''}
                   ${npc.deslocamento ? `<span class="npc-vital-pill npc-pill-desloc" title="Deslocamento"><strong class="pill-k">DESL</strong> <span class="pill-v">${npc.deslocamento}</span></span>` : ''}
                 </div>
               </div>
