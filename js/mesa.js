@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.26';
+const MESA_VERSION = 'v2.5.27';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -7466,6 +7466,13 @@ const MesaAreaManager = {
     }
   },
 
+  _dossierTab: 'npcs',
+
+  setDossierTab(tab) {
+    this._dossierTab = tab === 'bestiario' ? 'bestiario' : 'npcs';
+    this.openNpcModal(null);
+  },
+
   openNpcModal(npcId = null) {
     if (!MesaApp || !MesaApp.state || !MesaApp.state.isMaster) {
       alert("[ACESSO RESTRITO] O Dossiê de NPCs e seus segredos são confidenciais e exclusivos do Mestre. Autentique seu Token de Mestre para consultar.");
@@ -7477,7 +7484,15 @@ const MesaAreaManager = {
       MesaApp.closeModal('area-info-modal');
     }
 
-    const npcsList = this.getAllNpcs();
+    const monstersList = Array.isArray(window.CAMPAIGN_MONSTROS) ? window.CAMPAIGN_MONSTROS : [];
+    const baseNpcsList = this.getAllNpcs();
+    if (npcId && monstersList.some(m => m.id === npcId)) {
+      this._dossierTab = 'bestiario';
+    } else if (npcId && baseNpcsList.some(n => n.id === npcId)) {
+      this._dossierTab = 'npcs';
+    }
+
+    const npcsList = this._dossierTab === 'bestiario' ? monstersList : baseNpcsList;
     if (npcsList.length === 0) return;
 
     const targetId = npcId || npcsList[0].id;
@@ -7636,8 +7651,12 @@ const MesaAreaManager = {
       <div class="npc-dossier-layout">
         <!-- Coluna Lateral de Seleção -->
         <aside class="npc-dossier-sidebar">
+          <div style="display:flex; gap:4px; padding:8px; border-bottom:1px solid rgba(255,255,255,0.08);">
+            <button type="button" onclick="MesaAreaManager.setDossierTab('npcs')" style="flex:1; padding:6px 8px; font-size:11px; font-weight:700; border-radius:4px; cursor:pointer; border:1px solid ${this._dossierTab === 'npcs' ? '#38bdf8' : 'rgba(255,255,255,0.14)'}; background:${this._dossierTab === 'npcs' ? 'rgba(56,189,248,0.18)' : 'transparent'}; color:${this._dossierTab === 'npcs' ? '#7dd3fc' : '#94a3b8'};">NPCs (${baseNpcsList.length})</button>
+            <button type="button" onclick="MesaAreaManager.setDossierTab('bestiario')" style="flex:1; padding:6px 8px; font-size:11px; font-weight:700; border-radius:4px; cursor:pointer; border:1px solid ${this._dossierTab === 'bestiario' ? '#ef4444' : 'rgba(255,255,255,0.14)'}; background:${this._dossierTab === 'bestiario' ? 'rgba(239,68,68,0.18)' : 'transparent'}; color:${this._dossierTab === 'bestiario' ? '#fca5a5' : '#94a3b8'};">Bestiário (${monstersList.length})</button>
+          </div>
           <div class="npc-sidebar-head">
-            <span class="npc-sidebar-title">Personagens</span>
+            <span class="npc-sidebar-title">${this._dossierTab === 'bestiario' ? 'Monstros' : 'Personagens'}</span>
             <span class="npc-sidebar-count">${npcsList.length}</span>
           </div>
           <div class="npc-sidebar-list">
@@ -7659,6 +7678,7 @@ const MesaAreaManager = {
                 </div>
               </div>
               <div class="npc-main-role">${roleName}</div>
+              ${npc.vulnerabilidade ? `<div style="margin-top:8px; padding:7px 10px; background:rgba(220,38,38,0.14); border-left:3px solid #ef4444; border-radius:4px; font-size:12px; color:#fecaca;"><strong>Vulnerabilidade:</strong> ${npc.vulnerabilidade}</div>` : ''}
             </div>
             
             ${artworkHeaderHtml}

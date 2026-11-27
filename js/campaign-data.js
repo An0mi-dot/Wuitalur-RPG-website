@@ -243,6 +243,166 @@
       segredo_util: "Por trás dos buracos escuros da máscara lisa não há um olhar comum, mas feixes de fios alaranjados acesos como brasas e sigilos ocultos que parecem costurar a própria máscara à carne, impedindo que seu rosto seja revelado à força.",
       gatilho_revelacao: "Percepção ou Medicina (DT 7) durante um confronto próximo para notar que seus golpes não são de um assassino descontrolado, mas cortes cirúrgicos perfeitos de quem conhece anatomia profundamente; ou Investigação (DT 8) para enxergar os fios laranjas e sigilos dourados pulsando por dentro das frestas da máscara.",
       notas_mestre: "Atua como a ameaça física inexorável da campanha nas áreas isoladas e escuras. O objetivo dramático de suas aparições é manter a sensação constante de caça e claustrofobia, forçando os jogadores a fugirem para lugares cada vez mais profundos (como o Pavilhão e o esgoto) para protegerem a Caixa Negra."
+    },
+    {
+      id: "ancia-vespera",
+      nome: "Anciã Vespera",
+      papel: "A Sacerdotisa da Névoa • Líder Espiritual do Pomar do Éden",
+      pv: 12,
+      pe: 8,
+      deslocamento: "5B",
+      atributos: { Vigor: "D6", Força: "D4", Saúde: "D8", Mente: "D16" },
+      equipamento: [
+        "Cajado de madeira pálida entrelaçada",
+        "Mantos cerimoniais de fibra vegetal",
+        "Bolsa de cinzas luminescentes"
+      ],
+      pericias: [
+        "Elementos",
+        "Intuição",
+        "Diplomacia",
+        "História",
+        "Percepção"
+      ],
+      habilidades: [
+        {
+          nome: "Sermão da Serenidade",
+          tipo: "Ação Padrão (2 PE)",
+          efeito: "Entoa cânticos no idioma do Pomar que ecoam na névoa. Todos os inimigos em alcance médio devem passar em um teste de Intuição (CT 9) ou sofrem 1d4 de dano de Estresse e ficam hesitantes no próximo turno."
+        },
+        {
+          nome: "Enraizamento Protetor",
+          tipo: "Reação (1 PE)",
+          efeito: "Quando sofre um ataque corpo a corpo, ordena que as vinhas do solo subam por suas pernas, ganhando redução de dano física por 1 turno e tentando imobilizar o atacante com Elementos vs Atletismo."
+        },
+        {
+          nome: "Chamado do Rebanho",
+          tipo: "Ação Bônus (1 PE)",
+          efeito: "Com um toque do cajado no chão, alerta todos os moradores do vilarejo em alcance longo, concedendo vantagem tática aos aliados próximos na rodada."
+        }
+      ],
+      personalidade: "Serena, acolhedora e maternal, mas com um olhar fixo e inexpressivo que raramente pisca. Age com absoluta convicção religiosa, tratando visitantes com gentileza passiva até que qualquer ameaça à fé do vilarejo seja detectada.",
+      historia_resumida: "Guiava os moradores antigos da floresta quando uma praga devastou suas plantações há um ano. Quando o Emissário de Madeira surgiu trazendo a névoa protetora e o novo idioma, Vespera tornou-se a principal intérprete do \"Jardineiro\", liderando tanto as cerimônias de \"Passagem\" quanto a execução coletiva do apóstata Corvus.",
+      o_que_sabe: [
+        "A Chegada do Emissário: Há exato um ano, o Emissário de Madeira brotou no centro da praça, ergueu a barreira de névoa ao redor do vilarejo e implantou o alfabeto rúnico nas mentes dos habitantes.",
+        "O Ritual da Passagem: Os moradores doentes ou escolhidos atravessam a porta diante da árvore central para alcançar o suposto Jardim Prometido, deixando para trás cascas secas que viram fertilizante para as raízes.",
+        "O Jardim Terreno: Sabe que as lápides negras brotam sozinhas do musgo e que os contadores brilhantes registram a \"colheita\" de cada alma ao longo de todos os campos.",
+        "A Execução de Corvus: Ordenou pessoalmente que os moradores pregassem a cabana do apóstata e o executassem quando ele tentou convencer a praça de que o Jardim era uma mentira."
+      ],
+      o_que_nao_sabe: [
+        "A Farsa das 13 Portas: Acredita genuinamente que o Jardim Prometido é um paraíso espiritual e desconhece que se trata de um estômago ilusório criado por uma entidade parasita.",
+        "A Origem em Fragktus: Não faz ideia de quem são Constança Montenegro, Sara ou os alunos do Colégio Primórdio, embora reconheça os nomes dos jogadores por terem brotado nas lápides pela manhã."
+      ],
+      informacao_livre: "Recebe os visitantes com hospitalidade calma, explica que o Pomar do Éden é protegido pela névoa do Jardineiro e entrega a Cartilha do Alfabeto Invertido caso perceba que o grupo não entende a língua local.",
+      segredo_util: "Sob a gola de seu manto, filamentos prateados finos estão fundidos diretamente à sua carapaça e coluna, provando que ela já foi parcialmente assimilada pelo Emissário de Madeira.",
+      gatilho_revelacao: "Diplomacia (CT 8) demonstrando respeito às tradições locais para extrair o significado das palavras cerimoniais das placas, ou Intimidação (CT 10) confrontando-a com o caderno de Corvus.",
+      notas_mestre: "Encontrada próxima à Árvore do Emissário de Madeira na praça. Se os jogadores tentarem interromper a cerimônia da Passagem, ela lidera os moradores sem hesitar para capturar o grupo."
+    },
+    {
+      id: "kaelen",
+      nome: "Kaelen",
+      papel: "O Vigia da Bruma • Guardião das Trilhas do Pomar",
+      pv: 18,
+      pe: 6,
+      deslocamento: "7B",
+      atributos: { Vigor: "D14", Força: "D12", Saúde: "D10", Mente: "D6" },
+      equipamento: [
+        "Lança longa de madeira petrificada",
+        "Adaga de osso",
+        "Manto de couro gasto"
+      ],
+      pericias: [
+        "Atletismo",
+        "Sobrevivência",
+        "Percepção",
+        "Furtividade",
+        "Intimidação"
+      ],
+      habilidades: [
+        {
+          nome: "Investida da Névoa",
+          tipo: "Ação Padrão (1 PE)",
+          efeito: "Avança até o limite do seu deslocamento saindo da bruma e desfere um golpe perfurante com a lança petrificada, somando um dado extra de dano se o alvo ainda não tiver agido na rodada."
+        },
+        {
+          nome: "Sentinela Silencioso",
+          tipo: "Reação (1 PE)",
+          efeito: "Quando um inimigo tenta se mover furtivamente ou recuar em alcance curto, Kaelen realiza um ataque de oportunidade imediato para bloquear a passagem."
+        },
+        {
+          nome: "Rastro da Bruma",
+          tipo: "Ação Bônus (1 PE)",
+          efeito: "Mistura-se à névoa baixa do vilarejo, recebendo vantagem em testes de Furtividade e Percepção até o início do seu próximo turno."
+        }
+      ],
+      personalidade: "Vigilante, calado e de postura rígida. Observa cada passo dos forasteiros com olhos atentos, posicionando-se sempre entre o grupo e as áreas restritas do vilarejo.",
+      historia_resumida: "Antigo batedor da floresta que perdeu toda a família para a doença antes da chegada da névoa. A gratidão por ter sobrevivido transformou-se em devoção cega, tornando-o o principal executor das ordens da Anciã Vespera e o vigia responsável por impedir que alguém se aproxime da cabana selada de Corvus.",
+      o_que_sabe: [
+        "Os Limites da Névoa: Conhece cada trilha interna do Pomar do Éden e sabe que nenhum morador consegue ou deseja cruzar o limite externo da bruma sem autorização do Emissário.",
+        "O Destino de Corvus: Participou diretamente da execução do apóstata e vigia a cabana pregada na borda leste para garantir que ninguém entre lá dentro.",
+        "A Chegada dos Visitantes: Notou os rastros do grupo na trilha de vinhas antes mesmo de eles atravessarem a parede de névoa."
+      ],
+      o_que_nao_sabe: [
+        "O Baú Escondido: Acredita que todas as anotações de Corvus foram destruídas na noite da execução e desconhece o fundo falso sob a escrivaninha quebrada.",
+        "A Natureza Parasita: Não percebe que sua lança de madeira petrificada drena lentamente sua própria vitalidade sempre que ele a empunha em combate."
+      ],
+      informacao_livre: "Alerta de forma seca que os visitantes devem permanecer na praça central e evitar a cabana abandonada na borda leste, alegando que ali morava um louco que amaldiçoou o próprio solo.",
+      segredo_util: "Suas botas estão sempre completamente limpas e secas mesmo após patrulhar a lama da mata, revelando que ele nunca cruza o limite real para o mundo exterior.",
+      gatilho_revelacao: "Intimidação (CT 9) confrontando-o sobre as manchas de sangue na cabana selada ou Percepção (CT 8) durante o diálogo para notar a seiva doce escorrendo da ponta de sua lança.",
+      notas_mestre: "Patrulha a borda leste entre a praça e a Cabana do Apóstata. Falhar em testes de furtividade ao invadir a cabana atrai Kaelen imediatamente ao local."
+    },
+    {
+      id: "lira",
+      nome: "Lira",
+      papel: "A Tecelã de Raízes • Artesã do Santuário",
+      pv: 10,
+      pe: 6,
+      deslocamento: "6B",
+      atributos: { Vigor: "D12", Força: "D4", Saúde: "D8", Mente: "D12" },
+      equipamento: [
+        "Fuso de madeira afiado",
+        "Rolos de fios de vinha prateada",
+        "Tesoura de poda rústica"
+      ],
+      pericias: [
+        "Astúcia",
+        "Elementos",
+        "Acrobacia",
+        "Investigação",
+        "Percepção"
+      ],
+      habilidades: [
+        {
+          nome: "Laço de Fibras Prateadas",
+          tipo: "Ação Padrão (1 PE)",
+          efeito: "Arremessa um feixe de fios de vinha tratada contra um alvo em alcance curto; o alvo deve passar em Acrobacia ou Atletismo (CT 8) ou fica enredado, tendo seu deslocamento reduzido à metade."
+        },
+        {
+          nome: "Costura de Emergência",
+          tipo: "Ação Padrão (2 PE)",
+          efeito: "Entrelaça fibras orgânicas sobre os ferimentos de um aliado adjacente, estancando sangramentos e recuperando 1d6 PV."
+        },
+        {
+          nome: "Esquiva Ágil",
+          tipo: "Reação (1 PE)",
+          efeito: "Ao ser alvo de um ataque à distância, salta por trás do tear ou cobertura próxima, impondo desvantagem ao disparo."
+        }
+      ],
+      personalidade: "Curiosa, gentil e quase infantil em sua empolgação religiosa. Fala com suavidade enquanto trabalha sem parar em seu tear manual, tratando os horrores do culto como bênçãos cotidianas.",
+      historia_resumida: "Jovem artesã do vilarejo encarregada de colher as fibras secas ao redor do Jardim Terreno para tecer os mantos cerimoniais usados nas Passagens. Sua devoção ingênua a impede de enxergar a violência por trás dos rituais.",
+      o_que_sabe: [
+        "As Novas Lápides: Viu pessoalmente as lápides com os nomes dos jogadores brotarem do musgo no Jardim Terreno na manhã de 04/08/2061 e interpretou isso como uma profecia de boas-vindas.",
+        "A Matéria-Prima dos Mantos: Sabe que os fios cinzentos e prateados usados nas vestes sagradas são colhidos diretamente das raízes que envolvem as lápides e o Emissário.",
+        "Os Sinos da Cerimônia: Sabe que a próxima cerimônia de Passagem começará assim que a névoa escurecer totalmente sobre a praça."
+      ],
+      o_que_nao_sabe: [
+        "O Significado das Contagens: Sabe ler os glifos básicos, mas não entende por que os números nas lápides dos jogadores oscilam sem parar como um erro.",
+        "O Conteúdo da Cabana de Corvus: Nunca entrou na cabana selada e apenas repete o que os mais velhos dizem sobre o apóstata."
+      ],
+      informacao_livre: "Comenta abertamente que o Pomar esperava por viajantes de fora desde que novas pedras surgiram no Jardim Terreno hoje cedo, chamando os jogadores de \"flores próximas da colheita\".",
+      segredo_util: "Seus dedos possuem dezenas de pequenos cortes cicatrizados de onde escorre uma seiva transparente e brilhante em vez de sangue comum.",
+      gatilho_revelacao: "Diplomacia (CT 7) conversando com paciência sobre seu trabalho no tear ou Investigação (CT 8) examinando os fios que ela entrelaça.",
+      notas_mestre: "É o NPC mais acessível e ingênuo do Pomar do Éden, ideal para entregar pistas iniciais e reforçar o contraste perturbador entre a doçura dos moradores e a crueldade do culto."
     }
   ];
 
@@ -1161,10 +1321,10 @@
     "resumo_atmosfera": "Após atravessar a parede espessa de névoa seguindo a trilha de vinhas na floresta, todos os sons da mata desaparecem. Surge um vilarejo antigo e silencioso de casas de madeira escura e pedra rústica, iluminado por lanternas de fogo quente e amarelado. Moradores de diversas espécies caminham com serenidade quase hipnótica entre hortas pálidas e altares de raízes, enquanto placas entalhadas em um idioma rúnico desconhecido marcam cada construção.",
     "requisitos_acesso": "O vilarejo só pode ser alcançado seguindo o rastro contínuo de vinhas prateadas na floresta profunda com Sobrevivência (CT 7) e atravessando a barreira de névoa densa. Dentro do vilarejo não há portões trancados; os moradores recebem visitantes com hospitalidade passiva, mas observam qualquer movimento próximo ao Jardim Terreno, ao Emissário de Madeira ou à cabana selada na borda leste.",
     "npcs_presentes": [
-      "Anciã Vespera (líder espiritual insectoide)",
-      "Kaelen (guardião nômade das trilhas)",
-      "Lira (jovem tecelã animalesca)",
-      "Isaque (aliado acompanhando o grupo)"
+      "ancia-vespera",
+      "kaelen",
+      "lira",
+      "isaque-valente"
     ],
     "pontos_de_interesse": [
       {
@@ -1907,9 +2067,71 @@
   ];
 
   // ============================================================
+  // 4. BESTIÁRIO / MONSTROS DA CAMPANHA
+  // ============================================================
+  const CAMPAIGN_MONSTROS = [
+    {
+      id: "arnaldo-tavares",
+      nome: "Arnaldo Tavares",
+      papel: "O Cozinheiro Mutado • Hospedeiro Tomado pelas Vinhas",
+      pv: 50,
+      pe: 10,
+      deslocamento: "6B",
+      vulnerabilidade: "Fraqueza a dano de Fogo ou Solar (sofre dano dobrado dessas fontes e perde a regeneração da carapaça por 1 rodada)",
+      atributos: { Vigor: "D10", Força: "D16", Saúde: "D14", Mente: "D4" },
+      equipamento: [
+        "Garras de Madeira Retorcida — Golpe corpo a corpo brutal que causa 1d8 de dano físico"
+      ],
+      pericias: [
+        "Atletismo",
+        "Intimidação",
+        "Elementos",
+        "Percepção"
+      ],
+      habilidades: [
+        {
+          nome: "Fincada Enraizada",
+          tipo: "Ação Padrão (2 PE)",
+          efeito: "Projeta estacas pontiagudas de madeira endurecida diretamente de seu braço deformado para perfurar um alvo adjacente, causando 2d6 de dano perfurante e prendendo o alvo no chão até o início do próximo turno dele caso falhe em um teste de Atletismo (CT 9)."
+        },
+        {
+          nome: "Chicote de Raiz Fermentada",
+          tipo: "Ação Padrão (1 PE)",
+          efeito: "Estende o braço tomado por vinhas rígidas para golpear um alvo a até 2B de distância, causando 1d8 de dano contundente e empurrando o alvo 1B para trás se falhar em Atletismo (CT 9)."
+        },
+        {
+          nome: "Esporos de Apatia",
+          tipo: "Ação Padrão (2 PE)",
+          efeito: "Libera uma nuvem densa de esporos adocicados das fendas em seu tronco. Todos os personagens adjacentes devem passar em Medicina ou Elementos (CT 9) ou sofrem 2d6 de dano de Estresse e ficam enjoados por 1 rodada."
+        },
+        {
+          nome: "Carapaça Vegetal",
+          tipo: "Reação (1 PE)",
+          efeito: "Ao sofrer dano cortante ou perfurante (exceto fogo ou solar), as fibras de madeira se fecham rapidamente sobre o ferimento, reduzindo o dano recebido em 3 pontos."
+        }
+      ],
+      personalidade: "Antes da mutação completa, um homem exausto, paranoico e atormentado pela culpa; após as vinhas romperem seu corpo no banheiro em 04/08/2061, torna-se uma criatura irracional movida por dor extrema e instinto agressivo.",
+      historia_resumida: "Funcionário dedicado da cantina do Colégio Integrado Primórdio de Fragktus. Em 21/07/2061, aceitou misturar um composto orgânico fornecido pela Diretora Constança Montenegro na merenda escolar, sendo contaminado no mesmo dia. Em duas semanas, perdeu a saúde, afastou a esposa Helena (que pediu divórcio em 30/07/2061) e recebeu mensagens anônimas pressionando-o a abrir sua Caixa Negra. Por ter resistido até o fim sem abrir a caixa, foi tomado à força pelas vinhas dentro do banheiro de sua própria casa.",
+      o_que_sabe: [
+        "A Adulteração da Merenda: Misturou o composto fornecido por Constança apenas nos lotes destinados às refeições principais dos alunos, seguindo instruções diretas da diretoria.",
+        "A Caixa Fechada: Resistiu às vozes e às mensagens anônimas durante quatorze dias, mantendo sua integridade mental até o limite físico."
+      ],
+      o_que_nao_sabe: [
+        "A Identidade do Remetente Anônimo: Nunca soube que as mensagens enviadas ao seu e-mail vinham de Sara.",
+        "O Propósito Final: Não compreendia a existência do Jardineiro ou das 13 Portas, sabendo apenas que o líquido escuro estava destruindo seu corpo e sua mente."
+      ],
+      informacao_livre: "Não é possível dialogar com Arnaldo na residência; ele já está trancado no banheiro sofrendo a mutação final, comunicando-se apenas por gemidos ofegantes e estalos de madeira e ossos.",
+      segredo_util: "A Caixa Negra entregue a ele permanece intacta e completamente selada dentro de seu guarda-roupa ou próximo ao boxe do banheiro, provando que a tomada forçada ocorre quando a vítima se recusa a ceder ao desespero.",
+      gatilho_revelacao: "Toda a história e cronologia de Arnaldo são reveladas através dos documentos, do computador e da despensa de sua residência (Investigação CT 8 nos respectivos PDIs).",
+      notas_mestre: "Arnaldo funciona como o chefe de combate da Rota 2. Caso o grupo consiga imobilizá-lo sem matá-lo ou estudá-lo após o combate (Medicina CT 9), confirmam que os filamentos em seu corpo são idênticos aos das amostras da escola e do esgoto."
+    }
+  ];
+
+  // ============================================================
   // EXPORTAÇÃO GLOBAL E MÓDULO
   // ============================================================
   global.CAMPAIGN_NPCS = CAMPAIGN_NPCS;
+  global.CAMPAIGN_MONSTROS = CAMPAIGN_MONSTROS;
   global.CAMPAIGN_AREAS = CAMPAIGN_AREAS;
   global.CAMPAIGN_COLETAVEIS = CAMPAIGN_COLETAVEIS;
   global.MESA_COLETAVEIS = CAMPAIGN_COLETAVEIS;
@@ -1917,6 +2139,7 @@
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
       CAMPAIGN_NPCS,
+      CAMPAIGN_MONSTROS,
       CAMPAIGN_AREAS,
       CAMPAIGN_COLETAVEIS
     };
