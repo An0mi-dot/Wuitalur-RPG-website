@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.22';
+const MESA_VERSION = 'v2.5.23';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -21032,6 +21032,10 @@ window.MesaComputadorArnaldo = {
     ]
   },
 
+  getChannel() {
+    return (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel) || null;
+  },
+
   open(fromRemote = false) {
     const overlay = document.getElementById('computador-arnaldo-overlay');
     const bezel = document.getElementById('arnaldo-crt-bezel');
@@ -21061,9 +21065,10 @@ window.MesaComputadorArnaldo = {
       return;
     }
     this.open(false);
-    if (MesaApp.state.realtimeChannel) {
+    const chan = this.getChannel();
+    if (chan) {
       try {
-        MesaApp.state.realtimeChannel.send({ type: 'broadcast', event: 'arnaldo_pc_open', payload: {} });
+        chan.send({ type: 'broadcast', event: 'arnaldo_pc_open', payload: {} });
       } catch (e) {}
     }
     const btnPlay = document.getElementById('btn-transmit-arnaldo-pc');
@@ -21088,10 +21093,13 @@ window.MesaComputadorArnaldo = {
         if (!overlay.classList.contains('active')) overlay.style.display = 'none';
       }, 400);
     }
-    if (!fromRemote && window.MesaApp && MesaApp.state && MesaApp.state.isMaster && MesaApp.state.realtimeChannel) {
-      try {
-        MesaApp.state.realtimeChannel.send({ type: 'broadcast', event: 'arnaldo_pc_close', payload: {} });
-      } catch (e) {}
+    if (!fromRemote && window.MesaApp && MesaApp.state && MesaApp.state.isMaster) {
+      const chan = this.getChannel();
+      if (chan) {
+        try {
+          chan.send({ type: 'broadcast', event: 'arnaldo_pc_close', payload: {} });
+        } catch (e) {}
+      }
     }
     const btnPlay = document.getElementById('btn-transmit-arnaldo-pc');
     const btnStop = document.getElementById('btn-stop-arnaldo-pc');
