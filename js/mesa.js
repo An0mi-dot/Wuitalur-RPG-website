@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.21';
+const MESA_VERSION = 'v2.5.22';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -20980,7 +20980,7 @@ window.MesaSistema = MesaSistema;
 })();
 
 // ============================================================================
-// DISPOSITIVO: COMPUTADOR DE ARNALDO (TERMINAL BEGE + FRAGKTUSMAIL WEB)
+// DISPOSITIVO: COMPUTADOR DE ARNALDO (TERMINAL BEGE + FRAGKTUSMAIL)
 // ============================================================================
 window.MesaComputadorArnaldo = {
   currentFolder: 'inbox',
@@ -20989,7 +20989,6 @@ window.MesaComputadorArnaldo = {
     inbox: [
       {
         id: 'email1',
-        titulo: 'E-mail 1 — Início do Fornecimento Especial',
         de: 'constanca.montenegro@primordiofragktus.edu.fgk',
         para: 'arnaldo.tavares@fragktusmail.com',
         data: '21/07/2061 — 19h42',
@@ -20998,7 +20997,6 @@ window.MesaComputadorArnaldo = {
       },
       {
         id: 'email2',
-        titulo: 'E-mail 2 — Acompanhamento da Ruína Física e Mental',
         de: 'constanca.montenegro@primordiofragktus.edu.fgk',
         para: 'arnaldo.tavares@fragktusmail.com',
         data: '31/07/2061 — 21h18',
@@ -21007,27 +21005,24 @@ window.MesaComputadorArnaldo = {
       },
       {
         id: 'email3',
-        titulo: 'E-mail 3 — Primeira Mensagem do Remetente Anônimo',
-        de: 'sem_nome_00@redeoculta.fg',
+        de: 'Usuário Anônimo',
         para: 'arnaldo.tavares@fragktusmail.com',
-        data: '02/08/2061 — 03h14',
-        assunto: 'O jardim',
-        corpo: `Você ainda não abriu. Dá para sentir daqui o peso que você está carregando sozinho nessa casa vazia.\n\nA minha passagem já foi completa. Ele me mostrou o jardim. Não existe mais dor, nem perda, nem medo lá dentro. Pare de segurar a tranca.`
+        data: '03/08/2061 — 20h25',
+        assunto: 'Outros já estão florescendo',
+        corpo: `Novos voluntários já apareceram por aqui. Dá para notar que as sementes deles já começaram a germinar — as perdas, o cansaço e a sombra já estão fazendo o trabalho silencioso por dentro.\n\nVou deixá-los florescendo por conta própria enquanto termino de preparar a sua passagem. Espero que, quando eu chegar aí, você já esteja pronto e tenha parado de segurar a tranca, porque logo depois precisarei voltar para guiar os que estão amadurecendo agora.`
       },
       {
         id: 'email4',
-        titulo: 'E-mail 4 — Última Mensagem do Remetente Anônimo',
-        de: 'sem_nome_00@redeoculta.fg',
+        de: 'Usuário Anônimo',
         para: 'arnaldo.tavares@fragktusmail.com',
         data: '03/08/2061 — 23h51',
         assunto: 'Sem assunto',
-        corpo: `Você resistiu demais e a caixa permaneceu fechada. Ele não espera para sempre por vasos teimosos.\n\nAgora sua passagem está em minhas mãos. Amanhã o jardim vai cobrar o que foi plantado em você.`
+        corpo: `Tempo esgotado.\n\nVocê escolheu continuar acordado quando já não restava mais nada para proteger. Se você não abrir por vontade própria, as raízes vão cobrar o que foi plantado aí dentro antes do próximo dia terminar.`
       }
     ],
     drafts: [
       {
         id: 'draft1',
-        titulo: 'Rascunho Não Enviado — Salvo em 04/08/2061 às 06h02',
         de: 'arnaldo.tavares@fragktusmail.com (Rascunho)',
         para: 'constanca.montenegro@primordiofragktus.edu.fgk',
         data: '04/08/2061 — 06h02',
@@ -21039,42 +21034,69 @@ window.MesaComputadorArnaldo = {
 
   open(fromRemote = false) {
     const overlay = document.getElementById('computador-arnaldo-overlay');
+    const bezel = document.getElementById('arnaldo-crt-bezel');
     if (!overlay) return;
-    overlay.classList.add('active');
+    const isMaster = !!(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    overlay.classList.toggle('viewer-only', !isMaster);
+    if (bezel) bezel.classList.remove('pc-visible');
+    overlay.style.display = 'flex';
+    // Trigger black fade-in first, then CRT computer appears
+    requestAnimationFrame(() => {
+      overlay.classList.add('active');
+      setTimeout(() => {
+        if (overlay.classList.contains('active') && bezel) {
+          bezel.classList.add('pc-visible');
+        }
+      }, 450);
+    });
     this.openApp('mail');
     this.selectFolder('inbox');
-    if (!fromRemote && window.MesaApp && MesaApp.state && MesaApp.state.isMaster) {
-      const badge = document.getElementById('arnaldo-pc-status-badge');
-      if (badge) badge.textContent = 'Aberto';
-    }
   },
 
   broadcastOpen() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) {
+      if (window.MesaApp && typeof MesaApp.showToast === 'function') {
+        MesaApp.showToast('Autentique seu Token de Mestre para transmitir a cena.');
+      }
+      return;
+    }
     this.open(false);
-    if (window.MesaApp && MesaApp.state && MesaApp.state.isMaster && MesaApp.state.realtimeChannel) {
+    if (MesaApp.state.realtimeChannel) {
       try {
         MesaApp.state.realtimeChannel.send({ type: 'broadcast', event: 'arnaldo_pc_open', payload: {} });
       } catch (e) {}
-      const btnStop = document.getElementById('btn-stop-arnaldo-pc');
-      const badge = document.getElementById('arnaldo-pc-status-badge');
-      if (btnStop) btnStop.style.display = 'inline-flex';
-      if (badge) {
-        badge.textContent = 'Transmitindo';
-        badge.className = 'dispositivo-status-badge transmitting';
-      }
+    }
+    const btnPlay = document.getElementById('btn-transmit-arnaldo-pc');
+    const btnStop = document.getElementById('btn-stop-arnaldo-pc');
+    const badge = document.getElementById('arnaldo-pc-status-badge');
+    if (btnPlay) btnPlay.style.display = 'none';
+    if (btnStop) btnStop.style.display = 'inline-flex';
+    if (badge) {
+      badge.textContent = 'Transmitindo';
+      badge.className = 'dispositivo-status-badge transmitting';
     }
   },
 
   stop(fromRemote = false) {
+    if (!fromRemote && (!MesaApp.state || !MesaApp.state.isMaster)) return;
     const overlay = document.getElementById('computador-arnaldo-overlay');
-    if (overlay) overlay.classList.remove('active');
+    const bezel = document.getElementById('arnaldo-crt-bezel');
+    if (bezel) bezel.classList.remove('pc-visible');
+    if (overlay) {
+      overlay.classList.remove('active');
+      setTimeout(() => {
+        if (!overlay.classList.contains('active')) overlay.style.display = 'none';
+      }, 400);
+    }
     if (!fromRemote && window.MesaApp && MesaApp.state && MesaApp.state.isMaster && MesaApp.state.realtimeChannel) {
       try {
         MesaApp.state.realtimeChannel.send({ type: 'broadcast', event: 'arnaldo_pc_close', payload: {} });
       } catch (e) {}
     }
+    const btnPlay = document.getElementById('btn-transmit-arnaldo-pc');
     const btnStop = document.getElementById('btn-stop-arnaldo-pc');
     const badge = document.getElementById('arnaldo-pc-status-badge');
+    if (btnPlay) btnPlay.style.display = 'inline-flex';
     if (btnStop) btnStop.style.display = 'none';
     if (badge) {
       badge.textContent = 'Pronto';
@@ -21085,9 +21107,11 @@ window.MesaComputadorArnaldo = {
   openApp(app) {
     const mailWin = document.getElementById('arnaldo-win-mail');
     const folderWin = document.getElementById('arnaldo-win-folder');
+    const sheetWin = document.getElementById('arnaldo-win-sheet');
     const trashWin = document.getElementById('arnaldo-win-trash');
     if (mailWin) mailWin.style.display = app === 'mail' ? 'flex' : 'none';
     if (folderWin) folderWin.style.display = app === 'folder' ? 'flex' : 'none';
+    if (sheetWin) sheetWin.style.display = app === 'sheet' ? 'flex' : 'none';
     if (trashWin) trashWin.style.display = app === 'trash' ? 'flex' : 'none';
   },
 
@@ -21133,7 +21157,6 @@ window.MesaComputadorArnaldo = {
     }
     container.innerHTML = `
       <div class="arnaldo-mail-header">
-        <div class="arnaldo-mail-tag">${mail.titulo}</div>
         <h4>${mail.assunto}</h4>
         <div class="arnaldo-mail-meta">
           <div><strong>De:</strong> ${mail.de}</div>
@@ -21146,13 +21169,55 @@ window.MesaComputadorArnaldo = {
   },
 
   openSpreadsheet(name) {
-    const prev = document.getElementById('arnaldo-spreadsheet-preview');
-    if (!prev) return;
-    const data = {
-      'controle_hortalicas_jun2061.xls': '<strong>controle_hortalicas_jun2061.xls (28/06/2061):</strong><br>Alface Crespa: 18 kg • Tomate Italiano: 22 kg • Cenoura Orgânica: 15 kg — Fornecedor Padrão Fragktus. Tudo regular.',
-      'peso_raizes_jul2061_sem1.xls': '<strong>peso_raizes_jul2061_sem1.xls (11/07/2061):</strong><br>Batata Inglesa: 30 kg • Beterraba: 12 kg • Mandioca: 16 kg — Entrega semanal da cantina. Tudo regular.',
-      'cotacao_fornecedor_18jul.xls': '<strong>cotacao_fornecedor_18jul.xls (18/07/2061):</strong><br>Último lançamento comum de hortaliças antes do atendimento médico em 21/07/2061. Planilha abandonada sem atualização desde então.'
+    const sheets = {
+      'controle_hortalicas_jun2061.xls': [
+        ['Item', 'Quantidade', 'Valor Unit.', 'Total', 'Data'],
+        ['Alface Crespa', '18 kg', 'R$ 4,50', 'R$ 81,00', '28/06/2061'],
+        ['Tomate Italiano', '22 kg', 'R$ 6,20', 'R$ 136,40', '28/06/2061'],
+        ['Cenoura Orgânica', '15 kg', 'R$ 3,80', 'R$ 57,00', '28/06/2061'],
+        ['Cheiro-Verde', '6 maços', 'R$ 2,50', 'R$ 15,00', '28/06/2061']
+      ],
+      'peso_raizes_jul2061_sem1.xls': [
+        ['Raiz / Tubérculo', 'Peso Bruto', 'Peso Líq.', 'Valor Total', 'Data'],
+        ['Batata Inglesa', '30 kg', '28,5 kg', 'R$ 114,00', '11/07/2061'],
+        ['Beterraba', '12 kg', '11,2 kg', 'R$ 46,80', '11/07/2061'],
+        ['Mandioca Descascada', '16 kg', '16,0 kg', 'R$ 72,00', '11/07/2061'],
+        ['Inhame', '8 kg', '7,4 kg', 'R$ 39,20', '11/07/2061']
+      ],
+      'cotacao_fornecedor_18jul.xls': [
+        ['Fornecedor', 'Produto', 'Peso', 'Preço/kg', 'Atualização'],
+        ['Horta Vale Verde', 'Repolho Roxo', '14 kg', 'R$ 3,90', '18/07/2061'],
+        ['Horta Vale Verde', 'Abobrinha', '10 kg', 'R$ 4,10', '18/07/2061'],
+        ['Sítio Pedra Clara', 'Batata Doce', '20 kg', 'R$ 4,40', '18/07/2061'],
+        ['Sítio Pedra Clara', 'Cebola Branca', '15 kg', 'R$ 5,10', '18/07/2061']
+      ]
     };
-    prev.innerHTML = data[name] || '';
+    const rows = sheets[name];
+    if (!rows) return;
+    const titleEl = document.getElementById('arnaldo-sheet-title');
+    const gridEl = document.getElementById('arnaldo-spreadsheet-grid');
+    if (titleEl) titleEl.textContent = name;
+    if (gridEl) {
+      const cols = ['A', 'B', 'C', 'D', 'E'];
+      gridEl.innerHTML = `
+        <table class="arnaldo-excel-table">
+          <thead>
+            <tr>
+              <th class="arnaldo-excel-corner"></th>
+              ${cols.map(c => `<th>${c}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.map((r, rIdx) => `
+              <tr>
+                <td class="arnaldo-excel-rownum">${rIdx + 1}</td>
+                ${r.map(cell => `<td class="${rIdx === 0 ? 'arnaldo-excel-headcell' : ''}">${cell}</td>`).join('')}
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+    this.openApp('sheet');
   }
 };

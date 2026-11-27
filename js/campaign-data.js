@@ -1838,48 +1838,48 @@
       nome: "Comprovante de Atendimento e Medicação de Arnaldo",
       peso: 0,
       tipo: "Item Investigativo",
-      campo_tipo: "Conteúdo Integral",
+      campo_tipo: "Aparência Física",
       area: "Residência de Arnaldo",
       desbloqueado: false,
       imagem: "assets/coletaveis/comprovante_arnaldo.png",
-      resumo: "Uma folha estreita de papel térmico amassado de clínica médica, com manchas de gordura e umidade, acompanhada de uma receita simples dobrada em quatro partes com um carimbo azul borrado.",
-      detalhe: "PRONTO-ATENDIMENTO CLÍNICO CENTRAL DE FRAGKTUS\nREGISTRO DE TRIAGEM E PRESCRIÇÃO\nPaciente: Arnaldo Tavares\nData do Atendimento: 21/07/2061\nQueixa Principal: Tontura súbita, calafrios noturnos, palidez extrema e sensação de pressão atrás dos olhos após manuseio de adubo orgânico.\nExames Preliminares: Pressão arterial estável. Nenhuma infecção viral ou bacteriana detectada no hemograma básico.\nPrescrição: Analgésico comum (1 comprimido a cada 8 horas) e repouso domiciliar. Retornar caso os sintomas persistam.\nCarimbo: Dr. Henrique Valença — CRM/FG 4419"
+      resumo: "Folha estreita de papel térmico amassado de clínica médica, acompanhada de uma receita simples dobrada.",
+      detalhe: "Uma folha estreita de papel térmico amassado de clínica médica, com manchas de gordura e umidade por ter sido jogada no lixo da cozinha, acompanhada de uma receita simples dobrada em quatro partes com um carimbo azul borrado no canto inferior."
     },
     {
       id: "col_divorcio_arnaldo",
       nome: "Documentos de Divórcio de Arnaldo",
       peso: 0,
       tipo: "Item Investigativo",
-      campo_tipo: "Conteúdo Integral",
+      campo_tipo: "Aparência Física",
       area: "Residência de Arnaldo",
       desbloqueado: false,
       imagem: "assets/coletaveis/divorcio_arnaldo.png",
-      resumo: "Um maço de três folhas jurídicas em papel timbrado de cartório com marcas de grampo oxidado, acompanhado por um bilhete manuscrito em caneta azul manchado por gotas secas.",
-      detalhe: "Documento 1 — Petição Jurídica:\nCARTÓRIO DO 2º OFÍCIO DE NOTAS E REGISTROS CIVIS DE FRAGKTUS\nSOLICITAÇÃO DE DISSOLUÇÃO DE VÍNCULO MATRIMONIAL CONSENSUAL\nRequerente: Helena Martins Tavares | Requerido: Arnaldo Tavares | Data de Protocolo: 30/07/2061\nResumo do Termo: A requerente solicita a abertura imediata do processo de divórcio direto e a averbação de saída do lar conjugal, declarando incompatibilidade irreconciliável de convivência e abandono afetivo severo nas últimas duas semanas. (Assinado apenas por Helena Martins Tavares; campo do requerido em branco).\n\nDocumento 2 — Bilhete Manuscrito Anexo:\n\"Arnaldo, Eu tentei conversar com você todas as noites desde que você voltou daquele posto médico. Você não dorme, não come, fica olhando para a parede da cozinha como se estivesse ouvindo alguém te chamar e me trata como uma estranha dentro da nossa própria casa. Desde que você começou com essa obsessão por aquelas caixas de entrega da escola, você virou outra pessoa. Eu não aguento mais ter medo do meu próprio marido. Assina os papéis quando tiver coragem. Eu levei minhas coisas. — Helena\""
+      resumo: "Maço de três folhas jurídicas em papel timbrado de cartório, acompanhado de um bilhete manuscrito em papel pautado.",
+      detalhe: "Um maço de três folhas jurídicas em papel timbrado de cartório com marcas de grampo oxidado e dobras amassadas, acompanhado por um pequeno pedaço de papel pautado arrancado de um bloco de notas, escrito à mão com caneta azul e manchado por gotas secas que enrugaram a fibra do papel."
     },
     {
       id: "col_memorando_dispensa",
       nome: "Memorando Administrativo de Dispensa",
       peso: 0,
       tipo: "Item Investigativo",
-      campo_tipo: "Conteúdo Integral",
+      campo_tipo: "Aparência Física",
       area: "Colégio Integrado Primórdio",
       desbloqueado: false,
       imagem: "assets/coletaveis/memorando_dispensa.png",
-      resumo: "Folha timbrada oficial do Colégio Integrado Primórdio de Fragktus com brasão institucional em preto e branco e assinatura cursiva impecável em tinta roxa escura.",
-      detalhe: "COLÉGIO INTEGRADO PRIMÓRDIO DE FRAGKTUS — DEPARTAMENTO DE ADMINISTRAÇÃO E RECURSOS HUMANOS\nMEMORANDO INTERNO Nº 042/2061\nPara: Setor de Nutrição, Copa e Almoxarifado | De: Diretoria Geral — Constança Montenegro\nAssunto: Afastamento Médico Imediato e Retenção de Lote\n\nFica determinado, a partir desta data, o afastamento imediato por tempo indeterminado do colaborador Arnaldo Tavares, responsável pelo fornecimento e preparo base dos insumos orgânicos da cantina escolar, em virtude de quadro agudo de exaustão física e debilidade clínica constatado pela diretoria.\nOs lotes de hortaliças e raízes entregues na manhã de hoje permanecem sob supervisão exclusiva da diretoria para triagem sanitária, estando proibida a interferência de terceiros ou o descarte sem autorização expressa desta administração.\nAssinado: Constança Montenegro (tinta roxa) | Data: 04/08/2061, 07h15."
+      resumo: "Folha timbrada oficial do Colégio Integrado Primórdio de Fragktus assinada em tinta roxa escura.",
+      detalhe: "Uma folha timbrada oficial do Colégio Integrado Primórdio de Fragktus, datilografada e impressa em papel sulfite branco de gramatura firme, encontrada sobre a mesa da diretoria. No cabeçalho há o brasão institucional em preto e branco, e no rodapé consta uma assinatura cursiva impecável escrita em tinta roxa escura, com a tinta ainda levemente brilhante."
     },
     {
       id: "col_caderno_corvus",
       nome: "Caderno de Anotações de Corvus",
       peso: 1,
       tipo: "Item Investigativo Único",
-      campo_tipo: "Verdade Sobre a Cópia",
+      campo_tipo: "Aparência Física",
       area: "Pomar do Éden • Cabana do Apóstata",
       desbloqueado: false,
       imagem: "assets/coletaveis/caderno_corvus.png",
-      resumo: "Um caderno artesanal rústico encadernado em couro cru escurecido, com folhas grossas e amareladas presas por barbante encerado, manchado de fuligem seca e carvão.",
-      detalhe: "Efeitos e Usos em Jogo — Verdade Sobre a Cópia: Contém o mapeamento completo que comprova que as 13 Portas e o Jardim Prometido são imitações criadas para digerir almas, servindo como prova irrefutável para tentar despertar moradores condicionados ou fundamentar testes de Elementos contra manifestações do culto.\n\nPágina 1: \"O Emissário de Madeira nos deu o idioma, nos deu a névoa e nos prometeu a cura... Por que um deus precisa de treze entradas diferentes para o mesmo jardim?\"\nPágina 2 (Diagrama a carvão com 13 arcos ligados a um órgão pulsante): \"...As treze portas não levam a lugar nenhum. São réplicas. O Jardim Prometido não é um paraíso — é um estômago. Ele nos engorda de esperança e desespero para nos digerir devagar.\"\nPágina 3 (Caligrafia trêmula): \"Tentei falar com Vespera. Ela sorriu sem piscar e disse que minha fé estava doente... Se alguém de fora atravessar a névoa um dia e encontrar isto: não entrem nas portas. Não há salvação lá dentro, apenas fome.\""
+      resumo: "Pequeno caderno artesanal encadernado em couro cru escurecido, manchado de fuligem e carvão.",
+      detalhe: "Um caderno artesanal rústico encadernado em couro cru escurecido, com folhas grossas e amareladas presas por barbante encerado. A capa está manchada de fuligem seca e carvão, e as páginas internas contêm um diagrama feito a carvão e parágrafos manuscritos com caligrafia cada vez mais trêmula nas últimas linhas."
     },
     {
       id: "col_emails_arnaldo",

@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.5.21">
+  <link rel="stylesheet" href="css/mesa.css?v=2.5.22">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1497,11 +1497,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=2.5.21"></script>
+<script src="js/campaign-data.js?v=2.5.22"></script>
 
-<script src="js/mesa.js?v=2.5.21"></script>
+<script src="js/mesa.js?v=2.5.22"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.5.21</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.5.22</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -1581,14 +1581,12 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
           </p>
 
           <div class="dispositivo-actions" style="flex-wrap: wrap; gap: 8px;">
-            <button type="button" class="dispositivo-btn-primary" onclick="MesaComputadorArnaldo.open()" style="background: #92400e; border-color: #f59e0b; color: #fef3c7;">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-              <span>Abrir Computador</span>
-            </button>
-            <button type="button" id="btn-transmit-arnaldo-pc" class="dispositivo-btn-secondary" onclick="MesaComputadorArnaldo.broadcastOpen()" title="Transmite a tela do computador de Arnaldo para todos os jogadores">
-              <span>Transmitir para Todos</span>
+            <button type="button" id="btn-transmit-arnaldo-pc" class="dispositivo-btn-primary" onclick="MesaComputadorArnaldo.broadcastOpen()" style="background: #92400e; border-color: #f59e0b; color: #fef3c7;">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Transmitir para Todos (Tela Cheia)</span>
             </button>
             <button type="button" id="btn-stop-arnaldo-pc" class="dispositivo-btn-stop" onclick="MesaComputadorArnaldo.stop()" style="display: none;">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12"></rect></svg>
               <span>Encerrar Transmissão</span>
             </button>
           </div>
@@ -2587,15 +2585,15 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
   </div>
 
   <!-- ========================================================================== -->
-  <!-- OVERLAY: COMPUTADOR DE ARNALDO (SISTEMA BEGE DEFASADO + WEBMAIL)         -->
+  <!-- OVERLAY: COMPUTADOR DE ARNALDO (SISTEMA BEGE DEFASADO + FRAGKTUSMAIL)     -->
   <!-- ========================================================================== -->
   <div id="computador-arnaldo-overlay" class="arnaldo-pc-overlay">
-    <div class="arnaldo-crt-bezel">
+    <div class="arnaldo-crt-bezel" id="arnaldo-crt-bezel">
       <div class="arnaldo-crt-topbar">
-        <span class="arnaldo-crt-model">FRAGKTUS-PC // MONITOR CRT 15" • arnaldo.tavares</span>
+        <span></span>
         <div class="arnaldo-crt-actions">
           <span class="arnaldo-crt-led"></span>
-          <button type="button" class="arnaldo-crt-close" onclick="MesaComputadorArnaldo.stop()" title="Desligar / Fechar Computador">&times;</button>
+          <button type="button" id="arnaldo-pc-close-btn" class="arnaldo-crt-close master-item" onclick="MesaComputadorArnaldo.stop()" title="Encerrar Transmissão">&times;</button>
         </div>
       </div>
 
@@ -2603,46 +2601,53 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         <!-- Ícones da Área de Trabalho -->
         <div class="arnaldo-desktop-icons">
           <button type="button" class="arnaldo-desk-icon" onclick="MesaComputadorArnaldo.openApp('mail')">
-            <div class="arnaldo-icon-glyph mail"></div>
+            <div class="arnaldo-icon-svg mail">
+              <svg viewBox="0 0 36 36" width="36" height="36" fill="none">
+                <rect x="2" y="6" width="32" height="24" rx="2" fill="#f8fafc" stroke="#1e293b" stroke-width="2"/>
+                <path d="M2 8 L18 20 L34 8" stroke="#dc2626" stroke-width="2.5" fill="none"/>
+                <path d="M2 28 L12 18 M34 28 L24 18" stroke="#94a3b8" stroke-width="1.5"/>
+              </svg>
+            </div>
             <span>FragktusMail</span>
           </button>
           <button type="button" class="arnaldo-desk-icon" onclick="MesaComputadorArnaldo.openApp('folder')">
-            <div class="arnaldo-icon-glyph folder"></div>
+            <div class="arnaldo-icon-svg folder">
+              <svg viewBox="0 0 36 36" width="36" height="36" fill="none">
+                <path d="M3 8 C3 6.5 4 5.5 5.5 5.5 H14 L17 9 H31.5 C32.8 9 33.5 10 33.5 11.2 V28.5 C33.5 29.8 32.5 30.5 31.5 30.5 H5 C3.8 30.5 3 29.5 3 28.5 Z" fill="#facc15" stroke="#713f12" stroke-width="2"/>
+                <path d="M3 13 H33.5" stroke="#ca8a04" stroke-width="1.5"/>
+              </svg>
+            </div>
             <span>Planilhas Cantina</span>
           </button>
           <button type="button" class="arnaldo-desk-icon" onclick="MesaComputadorArnaldo.openApp('trash')">
-            <div class="arnaldo-icon-glyph trash"></div>
-            <span>Lixeira (Vazia)</span>
+            <div class="arnaldo-icon-svg trash">
+              <svg viewBox="0 0 36 36" width="36" height="36" fill="none">
+                <path d="M9 10 H27 L25 31 H11 Z" fill="#cbd5e1" stroke="#334155" stroke-width="2"/>
+                <path d="M7 10 H29 M14 6 H22" stroke="#334155" stroke-width="2.2" stroke-linecap="round"/>
+                <path d="M14 14 V27 M18 14 V27 M22 14 V27" stroke="#64748b" stroke-width="1.6"/>
+              </svg>
+            </div>
+            <span>Lixeira</span>
           </button>
         </div>
 
-        <!-- Janela Principal: Navegador Webmail Antigo (Aberta por Padrão) -->
+        <!-- Janela Principal: FragktusMail -->
         <div class="arnaldo-win-window" id="arnaldo-win-mail">
           <div class="arnaldo-win-titlebar">
-            <span>Navegador Antigo — FragktusMail Web (arnaldo.tavares@fragktusmail.com)</span>
+            <span>FragktusMail — arnaldo.tavares@fragktusmail.com</span>
             <div class="arnaldo-win-controls">
-              <button type="button" onclick="MesaComputadorArnaldo.openApp('folder')" title="Abrir Planilhas">_</button>
-              <button type="button" onclick="MesaComputadorArnaldo.stop()" title="Fechar">&times;</button>
+              <button type="button" onclick="MesaComputadorArnaldo.openApp('folder')" title="Planilhas Cantina">_</button>
+              <button type="button" class="master-item" onclick="MesaComputadorArnaldo.stop()" title="Fechar">&times;</button>
             </div>
-          </div>
-          <div class="arnaldo-mail-toolbar">
-            <span>Endereço: <code>http://webmail.fragktusmail.com/inbox?user=arnaldo.tavares</code></span>
-            <span class="arnaldo-mail-account">Conta: <strong>arnaldo.tavares@fragktusmail.com</strong></span>
-          </div>
-          <div class="arnaldo-mail-chrono-note">
-            <strong>Observação Cronológica:</strong> Antes de <strong>21/07/2061</strong> (data do atendimento médico), a caixa de entrada possui apenas propagandas antigas e notas fiscais comuns de sementes. Todas as mensagens relevantes surgiram exatamente após a infecção.
           </div>
           <div class="arnaldo-mail-layout">
             <aside class="arnaldo-mail-sidebar">
               <button type="button" class="arnaldo-folder-btn active" id="arnaldo-tab-inbox" onclick="MesaComputadorArnaldo.selectFolder('inbox')">
-                Caixa de Entrada (4)
+                Caixa de Entrada
               </button>
               <button type="button" class="arnaldo-folder-btn" id="arnaldo-tab-drafts" onclick="MesaComputadorArnaldo.selectFolder('drafts')">
-                Enviados e Rascunhos (1)
+                Enviados e Rascunhos
               </button>
-              <div class="arnaldo-sidebar-hint">
-                Sistema operacional defasado e lento. Papel de parede: foto antiga e desbotada de uma horta familiar.
-              </div>
             </aside>
             <div class="arnaldo-mail-list" id="arnaldo-mail-list"></div>
             <div class="arnaldo-mail-reader" id="arnaldo-mail-reader"></div>
@@ -2652,29 +2657,41 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         <!-- Janela Secundária: Pasta Planilhas Cantina -->
         <div class="arnaldo-win-window arnaldo-win-small" id="arnaldo-win-folder" style="display: none;">
           <div class="arnaldo-win-titlebar">
-            <span>C:\Desktop\Planilhas Cantina</span>
+            <span>Planilhas Cantina</span>
             <div class="arnaldo-win-controls">
-              <button type="button" onclick="MesaComputadorArnaldo.openApp('mail')" title="Voltar ao Webmail">&times;</button>
+              <button type="button" onclick="MesaComputadorArnaldo.openApp('mail')" title="Voltar">&times;</button>
             </div>
           </div>
           <div class="arnaldo-folder-body">
-            <p class="arnaldo-folder-note">Três arquivos simples de controle de peso e preço de hortaliças (todos normais até 18/07/2061 e abandonados sem atualização depois disso):</p>
             <div class="arnaldo-file-list">
               <div class="arnaldo-file-row" onclick="MesaComputadorArnaldo.openSpreadsheet('controle_hortalicas_jun2061.xls')">
                 <span>controle_hortalicas_jun2061.xls</span>
-                <small>28/06/2061 • 14 KB • Normal</small>
+                <small>28/06/2061 • 14 KB</small>
               </div>
               <div class="arnaldo-file-row" onclick="MesaComputadorArnaldo.openSpreadsheet('peso_raizes_jul2061_sem1.xls')">
                 <span>peso_raizes_jul2061_sem1.xls</span>
-                <small>11/07/2061 • 12 KB • Normal</small>
+                <small>11/07/2061 • 12 KB</small>
               </div>
               <div class="arnaldo-file-row" onclick="MesaComputadorArnaldo.openSpreadsheet('cotacao_fornecedor_18jul.xls')">
                 <span>cotacao_fornecedor_18jul.xls</span>
-                <small>18/07/2061 • 11 KB • Sem atualização após esta data</small>
+                <small>18/07/2061 • 11 KB</small>
               </div>
             </div>
-            <div id="arnaldo-spreadsheet-preview" class="arnaldo-spreadsheet-preview">Clique em uma planilha acima para inspecionar os lançamentos.</div>
           </div>
+        </div>
+
+        <!-- Janela Planilha Aberta (Visualizador de Planilha Real) -->
+        <div class="arnaldo-win-window arnaldo-win-sheet" id="arnaldo-win-sheet" style="display: none;">
+          <div class="arnaldo-win-titlebar">
+            <span id="arnaldo-sheet-title">Planilha</span>
+            <div class="arnaldo-win-controls">
+              <button type="button" onclick="MesaComputadorArnaldo.openApp('folder')" title="Fechar Planilha">&times;</button>
+            </div>
+          </div>
+          <div class="arnaldo-sheet-menubar">
+            <span>Arquivo</span><span>Editar</span><span>Exibir</span><span>Inserir</span><span>Formatar</span><span>Dados</span>
+          </div>
+          <div id="arnaldo-spreadsheet-grid" class="arnaldo-spreadsheet-grid"></div>
         </div>
 
         <!-- Janela Secundária: Lixeira -->
@@ -2682,22 +2699,12 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
           <div class="arnaldo-win-titlebar">
             <span>Lixeira</span>
             <div class="arnaldo-win-controls">
-              <button type="button" onclick="MesaComputadorArnaldo.openApp('mail')" title="Voltar ao Webmail">&times;</button>
+              <button type="button" onclick="MesaComputadorArnaldo.openApp('mail')" title="Voltar">&times;</button>
             </div>
           </div>
           <div class="arnaldo-folder-body" style="text-align: center; padding: 36px 20px;">
             <p style="color: #444; font-weight: 700;">A Lixeira está vazia.</p>
-            <small style="color: #666;">Nenhum arquivo recente foi descartado neste terminal.</small>
           </div>
-        </div>
-
-        <!-- Barra de Tarefas Clássica -->
-        <div class="arnaldo-taskbar">
-          <button type="button" class="arnaldo-start-btn" onclick="MesaComputadorArnaldo.openApp('mail')">Iniciar</button>
-          <button type="button" class="arnaldo-task-btn" onclick="MesaComputadorArnaldo.openApp('mail')">FragktusMail Web</button>
-          <button type="button" class="arnaldo-task-btn" onclick="MesaComputadorArnaldo.openApp('folder')">Planilhas Cantina</button>
-          <button type="button" class="arnaldo-task-btn" onclick="MesaComputadorArnaldo.openApp('trash')">Lixeira</button>
-          <span class="arnaldo-task-clock">04/08/2061 • 06:04</span>
         </div>
       </div>
     </div>
