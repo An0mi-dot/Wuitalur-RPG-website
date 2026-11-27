@@ -20340,3 +20340,144 @@ body.sistema-drawer-open .mesa-floating-nav {
   background: #c7c3ba; border: 2px inset #fff; padding: 2px 10px; cursor: pointer; font-size: 11px;
 }
 .arnaldo-task-clock { margin-left: auto; font-size: 11px; color: #222; border: 1px inset #fff; padding: 2px 8px; }
+
+/* ==========================================================================
+   BAÚ SELADO DE CORVUS (TRANCA DE 6 ANÉIS COM GLIFOS)
+   ========================================================================== */
+.bau-corvus-overlay {
+  position: fixed; inset: 0; z-index: 99992;
+  background: rgba(5, 6, 8, 0.94);
+  display: none; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.bau-corvus-overlay.active { display: flex; opacity: 1; }
+.bau-corvus-overlay.viewer-only .master-item { display: none !important; }
+
+.bau-corvus-stage {
+  width: min(820px, 95vw);
+  display: flex; flex-direction: column; align-items: center; gap: 22px;
+}
+
+.bau-chest-box {
+  position: relative; width: 100%;
+  background: linear-gradient(160deg, #b8b09c 0%, #9b927c 45%, #7c7460 100%);
+  border: 4px solid #2b2723;
+  border-radius: 12px;
+  box-shadow: 0 32px 90px rgba(0,0,0,0.95), inset 0 2px 12px rgba(255,255,255,0.28);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+.bau-chest-box.shake {
+  animation: bauLockShake 0.45s cubic-bezier(.36,.07,.19,.97) both;
+}
+@keyframes bauLockShake {
+  10%, 90% { transform: translateX(-4px); }
+  20%, 80% { transform: translateX(6px); }
+  30%, 50%, 70% { transform: translateX(-8px); }
+  40%, 60% { transform: translateX(8px); }
+}
+
+.bau-chest-lid {
+  position: relative;
+  background: linear-gradient(180deg, #c7bfab 0%, #9b927c 100%);
+  border-bottom: 5px solid #1f1c18;
+  padding: 16px 24px;
+  text-align: center;
+}
+.bau-chest-inscription {
+  font-family: 'Courier New', monospace;
+  font-size: 12px; font-weight: 800; letter-spacing: 2px;
+  color: #292520; text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+}
+.bau-chest-body {
+  position: relative;
+  padding: 32px 26px 28px;
+  background: repeating-linear-gradient(90deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 2px, transparent 2px, transparent 24px);
+}
+.bau-iron-strap {
+  position: absolute; top: 0; bottom: 0; width: 22px;
+  background: linear-gradient(90deg, #1b1918 0%, #3a3634 50%, #161413 100%);
+  border-left: 1px solid #4a4542; border-right: 1px solid #0b0a09;
+  pointer-events: none;
+}
+.bau-iron-strap.left { left: 32px; }
+.bau-iron-strap.right { right: 32px; }
+
+.bau-rings-row {
+  position: relative; z-index: 2;
+  display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px; max-width: 660px; margin: 0 auto 24px;
+  background: #141312;
+  border: 3px solid #2b2724;
+  border-radius: 10px;
+  padding: 16px 14px;
+  box-shadow: inset 0 8px 24px rgba(0,0,0,0.9), 0 6px 16px rgba(0,0,0,0.55);
+}
+
+.bau-ring-col {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.bau-ring-btn {
+  width: 100%; height: 28px;
+  background: linear-gradient(180deg, #332f2c 0%, #1d1a18 100%);
+  border: 1.5px solid #4d4742; border-radius: 5px;
+  color: #cbd5e1; font-size: 13px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s, border-color 0.15s;
+}
+.bau-ring-btn:hover { background: #3f3a36; border-color: #5eead4; color: #5eead4; }
+
+.bau-ring-dial {
+  width: 100%; aspect-ratio: 1 / 1; min-height: 76px;
+  background: radial-gradient(circle at 50% 45%, #232220 0%, #0d0c0b 100%);
+  border: 2.5px solid #45403b;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #5eead4;
+  box-shadow: inset 0 4px 12px rgba(0,0,0,0.95), 0 0 10px rgba(94, 234, 212, 0.12);
+  user-select: none;
+}
+.bau-ring-dial svg {
+  width: 56%; height: 56%;
+  filter: drop-shadow(0 0 6px rgba(94, 234, 212, 0.45));
+}
+
+.bau-lock-controls {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.bau-unlock-btn {
+  background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
+  border: 2px solid #5eead4; color: #5eead4;
+  font-family: 'Courier New', monospace; font-size: 14px; font-weight: 800;
+  letter-spacing: 2px; padding: 10px 28px; border-radius: 6px;
+  cursor: pointer; box-shadow: 0 4px 18px rgba(0,0,0,0.6);
+  transition: transform 0.12s, background 0.2s;
+}
+.bau-unlock-btn:hover { background: #0f766e; color: #fff; transform: translateY(-1px); }
+
+.bau-lock-feedback {
+  font-family: 'Courier New', monospace; font-size: 12.5px; font-weight: 700;
+  color: #1f1c18; background: rgba(255,255,255,0.45); padding: 4px 12px; border-radius: 4px;
+}
+.bau-lock-feedback.error {
+  color: #fef2f2; background: #991b1b;
+}
+
+.bau-opened-content {
+  width: 100%; background: #0c0a09; border: 2px solid #5eead4;
+  border-radius: 10px; padding: 22px 24px; text-align: center;
+  color: #e2e8f0; box-shadow: 0 24px 60px rgba(0,0,0,0.95);
+}
+.bau-opened-badge {
+  display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 1.5px;
+  color: #042f2e; background: #5eead4; padding: 3px 10px; border-radius: 4px; margin-bottom: 8px;
+}
+.bau-opened-content h3 { color: #fde68a; font-size: 18px; margin-bottom: 8px; }
+.bau-opened-content p { font-size: 13.5px; color: #cbd5e1; max-width: 600px; margin: 0 auto 16px; }
+.bau-opened-img-wrap {
+  border: 1px solid rgba(94, 234, 212, 0.35); border-radius: 6px; overflow: hidden; background: #000;
+}
+.bau-opened-img-wrap img { width: 100%; max-height: 460px; object-fit: contain; display: block; }

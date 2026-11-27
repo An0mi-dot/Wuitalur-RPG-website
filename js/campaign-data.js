@@ -1306,26 +1306,26 @@
           {
             "cabecalho": {
               "nome": "Os Diagramas no Piso e nas Paredes",
-              "descricao_publica": "No centro do cômodo, o tapete foi arrancado e o assoalho de madeira está coberto por marcas de carvão e entalhes feitos com faca. São dezenas de esboços de portas arqueadas lado a lado, riscadas com linhas frenéticas."
+              "descricao_publica": "No centro do cômodo, o tapete foi arrancado e o assoalho de madeira está coberto por marcas de carvão e entalhes feitos com faca. São dezenas de esboços de portas arqueadas lado a lado, riscadas com linhas frenéticas ao redor de um grande estômago pulsante, tendo a palavra JARDIM escrita em glifos do idioma local e circulada com força várias vezes acima do desenho."
             },
             "testes": [
               { "pericia": "Investigação", "ct_dt": 8, "informacao_revelada": "Os desenhos comparam duas estruturas diferentes: de um lado, uma passagem espiritual única e antiga; do outro, treze réplicas artificiais desenhadas como bocas ou raízes convergindo para um mesmo centro." },
-              { "pericia": "Elementos", "ct_dt": 10, "informacao_revelada": "Analisando os cálculos e símbolos gravados ao redor das 13 portas desenhadas, o jogador compreende que o \"Jardim Prometido\" pregado pelo culto não é um plano divino, mas uma cópia ilusória criada como um estômago para digerir lentamente as mentes devoradas enquanto seus corpos viram vasos ocos." },
-              { "pericia": "História", "ct_dt": 9, "informacao_revelada": "Alguns glifos riscados nos cantos mostram que Corvus conhecia fragmentos reais de tradições antigas anteriores à chegada do Emissário de Madeira, o que lhe permitiu notar a falsificação." }
+              { "pericia": "Elementos", "ct_dt": 10, "informacao_revelada": "Analisando os cálculos e símbolos gravados ao redor das 13 portas desenhadas, o jogador compreende que o local pregado pelo culto não é um plano divino, mas uma cópia ilusória criada como um estômago para digerir lentamente as mentes devoradas." },
+              { "pericia": "Astúcia", "ct_dt": 8, "informacao_revelada": "Cruzando os glifos circulados na parede com a Cartilha do Alfabeto Invertido, confirma-se que a palavra destacada por Corvus para rotular a armadilha das 13 Portas é JARDIM." }
             ],
-            "notas_mestre": "Aqui os jogadores confirmam a verdadeira natureza parasita e fraudulenta das 13 Portas e do Jardim Prometido."
+            "notas_mestre": "Este PDI destaca visualmente a palavra-chave JARDIM na parede para que os jogadores identifiquem os 6 símbolos exatos da tranca sem dificuldade."
           },
           {
             "cabecalho": {
-              "nome": "A Mesa Quebrada e o Fundo Falso",
-              "descricao_publica": "Uma escrivaninha de madeira rústica está tombada no canto do quarto com as gavetas estilhaçadas e folhas em branco espalhadas pelo chão. Sob a estrutura partida, uma tábua solta do assoalho parece ligeiramente desalinhada.\n\nBarreira de Acesso: Encontrar o compartimento oculto exige notar o desnível com Percepção (CT 8) e forçar a trava emperrada da madeira com Astúcia (CT 8) ou Atletismo (CT 8)."
+              "nome": "A Mesa Quebrada e o Baú Selado no Assoalho",
+              "descricao_publica": "Uma escrivaninha de madeira rústica está tombada no canto do quarto com as gavetas estilhaçadas e folhas em branco espalhadas pelo chão. Sob a estrutura partida, uma tábua solta do assoalho esconde um baú baixo de madeira pálida petrificada, reforçado com cintas de ferro escuro e uma tranca circular composta por seis anéis entalhados com os glifos do vilarejo.\n\nBarreira de Acesso: Encontrar o compartimento sob a mesa exige notar o desnível na madeira com Percepção (CT 8). Para destravar o baú, os jogadores precisam alinhar os seis anéis formando a palavra JARDIM com base na Cartilha do Alfabeto Invertido — seja resolvendo diretamente pela tabela ou passando em Astúcia (CT 8)."
             },
             "testes": [
-              { "pericia": "Investigação", "ct_dt": 8, "informacao_revelada": "Dentro do fundo falso está escondido um pequeno caderno encadernado em couro cru que escapou da busca dos moradores (desbloqueia os Registros do Apóstata Corvus)." },
-              { "pericia": "Intuição", "ct_dt": 8, "informacao_revelada": "Lendo as últimas páginas escritas com caligrafia cada vez mais apressada e trêmula, percebe-se que Corvus sabia que seria morto ao tentar alertar os vizinhos na praça, mas decidiu falar mesmo assim para tentar impedir as \"Passagens\"." },
-              { "pericia": "Sobrevivência", "ct_dt": 9, "informacao_revelada": "Junto ao caderno há um mapa rústico riscado em casca de árvore mostrando que a névoa possui pontos mais finos próximos às raízes mortas, indicando uma rota segura de recuo caso o vilarejo se torne hostil." }
+              { "pericia": "Investigação", "ct_dt": 8, "informacao_revelada": "Assim que os seis glifos de JARDIM são alinhados, a tranca cede com um estalo seco, revelando o pequeno caderno encadernado em couro cru que escapou da busca dos moradores (desbloqueia o Caderno de Anotações de Corvus)." },
+              { "pericia": "Intuição", "ct_dt": 8, "informacao_revelada": "Lendo as últimas páginas escritas com caligrafia cada vez mais apressada e trêmula, percebe-se que Corvus sabia que seria morto ao tentar alertar os vizinhos na praça, mas trancou o caderno com o nome da falsa promessa para garantir que apenas quem enxergasse através da mentira pudesse lê-lo." },
+              { "pericia": "Sobrevivência", "ct_dt": 9, "informacao_revelada": "No fundo do baú, sob o caderno, há um pequeno esboço em casca de árvore mostrando que a névoa perde densidade onde as raízes externas estão secas e mortas, indicando o caminho seguro de saída do vilarejo." }
             ],
-            "notas_mestre": "Este é o esconderijo principal das anotações escritas de Corvus, protegido para que não pareça absurdo os moradores não terem queimado tudo quando o executaram."
+            "notas_mestre": "Se algum jogador tentar forçar a madeira petrificada do baú com força bruta em vez de alinhar os glifos, a tampa não cede e o mecanismo interno trava, exigindo Astúcia (CT 9) para destravar os anéis sem danificar o conteúdo."
           },
           {
             "cabecalho": {

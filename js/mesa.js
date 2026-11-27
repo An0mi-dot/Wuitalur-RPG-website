@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.25';
+const MESA_VERSION = 'v2.5.26';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -2469,6 +2469,27 @@ const MesaApp = {
       if (isFromSelf(payload)) return;
       if (window.MesaComputadorArnaldo && payload.payload) {
         MesaComputadorArnaldo.handleRemoteCursor(payload.payload);
+      }
+    });
+
+    channel.on('broadcast', { event: 'bau_corvus_open' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaBauCorvus) {
+        MesaBauCorvus.open(true);
+      }
+    });
+
+    channel.on('broadcast', { event: 'bau_corvus_close' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaBauCorvus) {
+        MesaBauCorvus.stop(true);
+      }
+    });
+
+    channel.on('broadcast', { event: 'bau_corvus_sync' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaBauCorvus && payload.payload) {
+        MesaBauCorvus.handleRemoteSync(payload.payload);
       }
     });
 
@@ -21348,5 +21369,261 @@ window.MesaComputadorArnaldo = {
       `;
     }
     this.openApp('sheet', fromRemote);
+  }
+};
+
+// ============================================================================
+// DISPOSITIVO: BAÚ SELADO DE CORVUS (TRANCA DE 6 ANÉIS - SENHA: JARDIM)
+// ============================================================================
+window.MesaBauCorvus = {
+  // Letras do alfabeto invertido na ordem dos anéis (inclui todas de JARDIM + outras do alfabeto)
+  alphabet: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'V', 'W', 'Z'],
+  targetWord: ['J', 'A', 'R', 'D', 'I', 'M'],
+  ringIndices: [0, 2, 4, 7, 10, 14], // Começa desalinhado
+  unlocked: false,
+  _audioCtx: null,
+
+  glyphSvgs: {
+    A: '<path d="M10 31 L20 9 L28 24 M15 22 L27 22"/><circle cx="20" cy="29" r="1.8" fill="currentColor" stroke="none"/>',
+    B: '<path d="M22 9 C26 9 26 15 20 17 L13 27 L23 30 C27 31 27 25 22 25"/>',
+    C: '<circle cx="20" cy="20" r="10"/><path d="M14 14 L20 20 L20 10"/>',
+    D: '<path d="M18 9 A11 11 0 0 0 18 31 M22 9 A11 11 0 0 1 22 31 M10 20 H24 M24 15 V25"/>',
+    E: '<path d="M12 15 V26 M17 26 V15 A5 5 0 0 1 27 15 V24"/>',
+    F: '<path d="M11 16 H29 M11 16 A9 9 0 0 0 29 16 M18 16 V22 H24"/>',
+    G: '<path d="M20 9 V24 M10 20 A10 10 0 0 0 30 20"/><circle cx="20" cy="26" r="1.6" fill="currentColor" stroke="none"/>',
+    H: '<path d="M10 23 A10 10 0 0 1 30 23 M14 23 A6 6 0 0 1 26 23 M20 14 V31"/>',
+    I: '<path d="M17 10 A11 11 0 1 0 23 10"/><circle cx="20" cy="9" r="1.8"/>',
+    J: '<path d="M18 9 A11 11 0 0 0 18 31 M22 9 A11 11 0 0 1 22 31"/>',
+    K: '<path d="M13 13 L27 11 L15 21 L28 19 L14 29 M17 24 L21 29"/>',
+    L: '<path d="M13 12 L22 20 L13 28 M18 10 A10 10 0 0 1 18 30"/>',
+    M: '<path d="M11 20 V29 H18 M20 11 H27 V22 H31"/>',
+    N: '<path d="M17 11 V18 H10 M23 11 V18 H30 M17 29 V22 H10 M23 29 V22 H30"/>',
+    O: '<path d="M18 10 A10 10 0 1 0 22 10 M20 12 V20 H29"/>',
+    P: '<path d="M12 14 A10 10 0 1 0 28 14"/><circle cx="20" cy="20" r="1.8" fill="currentColor" stroke="none"/>',
+    R: '<circle cx="20" cy="20" r="10"/><path d="M13 27 L27 13 M15 14 L22 14"/>',
+    S: '<path d="M27 12 H15 L15 20 H25 L25 28 H13"/><circle cx="19" cy="16" r="1.4" fill="currentColor" stroke="none"/>',
+    T: '<path d="M10 19 A10 10 0 0 0 30 19 M20 11 V28 M20 17 H27 V22"/>',
+    U: '<ellipse cx="20" cy="20" rx="11" ry="8"/><path d="M13 24 L27 16 M16 14 L24 26"/>',
+    V: '<path d="M12 22 L20 10 L28 18 L18 30 Z M15 20 L25 20"/>',
+    W: '<path d="M14 28 A10 10 0 1 1 26 28 M15 20 L20 14 L25 20"/>',
+    Z: '<path d="M15 11 H23 C27 11 27 18 21 19 C27 20 27 28 21 28 H15 Z"/>'
+  },
+
+  getChannel() {
+    return (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel) || null;
+  },
+
+  ensureAudio() {
+    if (!this._audioCtx) {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (Ctx) this._audioCtx = new Ctx();
+    }
+    if (this._audioCtx && this._audioCtx.state === 'suspended') {
+      this._audioCtx.resume().catch(() => {});
+    }
+    return this._audioCtx;
+  },
+
+  playTick() {
+    const ctx = this.ensureAudio();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(320, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(110, ctx.currentTime + 0.05);
+    gain.gain.setValueAtTime(0.18, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(); osc.stop(ctx.currentTime + 0.06);
+  },
+
+  playError() {
+    const ctx = this.ensureAudio();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(115, now);
+    osc.frequency.linearRampToValueAtTime(75, now + 0.25);
+    gain.gain.setValueAtTime(0.22, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(now); osc.stop(now + 0.3);
+  },
+
+  playUnlock() {
+    const ctx = this.ensureAudio();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    [220, 330, 440, 660].forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + i * 0.08);
+      gain.gain.setValueAtTime(0.16, now + i * 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.55);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(now + i * 0.08); osc.stop(now + i * 0.08 + 0.6);
+    });
+  },
+
+  open(fromRemote = false) {
+    const overlay = document.getElementById('bau-corvus-overlay');
+    if (!overlay) return;
+    const isMaster = !!(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
+    overlay.classList.toggle('viewer-only', !isMaster);
+    overlay.classList.add('active');
+    this.renderRings();
+  },
+
+  broadcastOpen() {
+    if (!MesaApp.state || !MesaApp.state.isMaster) {
+      if (window.MesaApp && typeof MesaApp.showToast === 'function') {
+        MesaApp.showToast('Autentique seu Token de Mestre para transmitir a cena.');
+      }
+      return;
+    }
+    this.unlocked = false;
+    this.ringIndices = [0, 2, 4, 7, 10, 14];
+    const chest = document.getElementById('bau-chest-box');
+    const opened = document.getElementById('bau-opened-content');
+    const fb = document.getElementById('bau-lock-feedback');
+    if (chest) chest.style.display = 'block';
+    if (opened) opened.style.display = 'none';
+    if (fb) {
+      fb.textContent = 'Alinhe os 6 glifos da tranca para abrir.';
+      fb.classList.remove('error');
+    }
+    this.open(false);
+    const chan = this.getChannel();
+    if (chan) {
+      try { chan.send({ type: 'broadcast', event: 'bau_corvus_open', payload: {} }); } catch (e) {}
+    }
+    const btnPlay = document.getElementById('btn-transmit-bau-corvus');
+    const btnStop = document.getElementById('btn-stop-bau-corvus');
+    const badge = document.getElementById('bau-corvus-status-badge');
+    if (btnPlay) btnPlay.style.display = 'none';
+    if (btnStop) btnStop.style.display = 'inline-flex';
+    if (badge) {
+      badge.textContent = 'Transmitindo';
+      badge.className = 'dispositivo-status-badge transmitting';
+    }
+  },
+
+  stop(fromRemote = false) {
+    if (!fromRemote && (!MesaApp.state || !MesaApp.state.isMaster)) return;
+    const overlay = document.getElementById('bau-corvus-overlay');
+    if (overlay) overlay.classList.remove('active');
+    if (!fromRemote && window.MesaApp && MesaApp.state && MesaApp.state.isMaster) {
+      const chan = this.getChannel();
+      if (chan) {
+        try { chan.send({ type: 'broadcast', event: 'bau_corvus_close', payload: {} }); } catch (e) {}
+      }
+    }
+    const btnPlay = document.getElementById('btn-transmit-bau-corvus');
+    const btnStop = document.getElementById('btn-stop-bau-corvus');
+    const badge = document.getElementById('bau-corvus-status-badge');
+    if (btnPlay) btnPlay.style.display = 'inline-flex';
+    if (btnStop) btnStop.style.display = 'none';
+    if (badge) {
+      badge.textContent = 'Pronto';
+      badge.className = 'dispositivo-status-badge ready';
+    }
+  },
+
+  stepRing(slot, delta) {
+    if (this.unlocked) return;
+    const len = this.alphabet.length;
+    this.ringIndices[slot] = (this.ringIndices[slot] + delta + len) % len;
+    this.playTick();
+    this.renderRings();
+    this.broadcastSync('step');
+  },
+
+  attemptUnlock(fromRemote = false) {
+    if (this.unlocked) return;
+    const currentWord = this.ringIndices.map(idx => this.alphabet[idx]);
+    const isMatch = this.targetWord.every((letter, i) => currentWord[i] === letter);
+    const chest = document.getElementById('bau-chest-box');
+    const opened = document.getElementById('bau-opened-content');
+    const fb = document.getElementById('bau-lock-feedback');
+
+    if (isMatch) {
+      this.unlocked = true;
+      this.playUnlock();
+      if (chest) chest.style.display = 'none';
+      if (opened) opened.style.display = 'block';
+      if (!fromRemote) this.broadcastSync('unlock');
+    } else {
+      this.playError();
+      if (chest) {
+        chest.classList.remove('shake');
+        void chest.offsetWidth;
+        chest.classList.add('shake');
+      }
+      if (fb) {
+        fb.textContent = 'A tranca não cede. A sequência de glifos está incorreta.';
+        fb.classList.add('error');
+      }
+      if (!fromRemote) this.broadcastSync('error');
+    }
+  },
+
+  broadcastSync(action) {
+    const chan = this.getChannel();
+    if (!chan) return;
+    try {
+      chan.send({
+        type: 'broadcast',
+        event: 'bau_corvus_sync',
+        payload: { ringIndices: this.ringIndices, unlocked: this.unlocked, action }
+      });
+    } catch (e) {}
+  },
+
+  handleRemoteSync(data) {
+    if (!data) return;
+    if (Array.isArray(data.ringIndices)) {
+      this.ringIndices = data.ringIndices;
+    }
+    this.renderRings();
+    if (data.action === 'step') this.playTick();
+    if (data.action === 'error') {
+      this.playError();
+      const chest = document.getElementById('bau-chest-box');
+      const fb = document.getElementById('bau-lock-feedback');
+      if (chest) { chest.classList.remove('shake'); void chest.offsetWidth; chest.classList.add('shake'); }
+      if (fb) { fb.textContent = 'A tranca não cede. A sequência de glifos está incorreta.'; fb.classList.add('error'); }
+    }
+    if (data.unlocked && !this.unlocked) {
+      this.unlocked = true;
+      this.playUnlock();
+      const chest = document.getElementById('bau-chest-box');
+      const opened = document.getElementById('bau-opened-content');
+      if (chest) chest.style.display = 'none';
+      if (opened) opened.style.display = 'block';
+    }
+  },
+
+  renderRings() {
+    const row = document.getElementById('bau-rings-row');
+    if (!row) return;
+    row.innerHTML = this.ringIndices.map((alphaIdx, slot) => {
+      const letter = this.alphabet[alphaIdx];
+      const svgInner = this.glyphSvgs[letter] || '';
+      return `
+        <div class="bau-ring-col">
+          <button type="button" class="bau-ring-btn" onclick="MesaBauCorvus.stepRing(${slot}, -1)" title="Girar anel para cima">&#9650;</button>
+          <div class="bau-ring-dial" aria-label="Anel ${slot + 1}">
+            <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              ${svgInner}
+            </svg>
+          </div>
+          <button type="button" class="bau-ring-btn" onclick="MesaBauCorvus.stepRing(${slot}, 1)" title="Girar anel para baixo">&#9660;</button>
+        </div>
+      `;
+    }).join('');
   }
 };

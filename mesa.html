@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.5.25">
+  <link rel="stylesheet" href="css/mesa.css?v=2.5.26">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1497,11 +1497,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=2.5.25"></script>
+<script src="js/campaign-data.js?v=2.5.26"></script>
 
-<script src="js/mesa.js?v=2.5.25"></script>
+<script src="js/mesa.js?v=2.5.26"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.5.25</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.5.26</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -1532,13 +1532,13 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
 
       <div class="dispositivos-category-tabs" role="tablist">
         <button type="button" class="dispositivo-category-tab active" data-category="all" onclick="MesaDispositivos.setCategory('all')">
-          <span>Todos</span> <span class="disp-tab-count" id="disp-count-all">10</span>
+          <span>Todos</span> <span class="disp-tab-count" id="disp-count-all">11</span>
         </button>
         <button type="button" class="dispositivo-category-tab" data-category="cinematica" onclick="MesaDispositivos.setCategory('cinematica')">
           <span>Cinemáticas</span> <span class="disp-tab-count" id="disp-count-cinematica">4</span>
         </button>
         <button type="button" class="dispositivo-category-tab" data-category="mesa" onclick="MesaDispositivos.setCategory('mesa')">
-          <span>Cena &amp; Mesa</span> <span class="disp-tab-count" id="disp-count-mesa">5</span>
+          <span>Cena &amp; Mesa</span> <span class="disp-tab-count" id="disp-count-mesa">6</span>
         </button>
         <button type="button" class="dispositivo-category-tab" data-category="mapa" onclick="MesaDispositivos.setCategory('mapa')">
           <span>Mapas</span> <span class="disp-tab-count" id="disp-count-mapa">1</span>
@@ -1556,6 +1556,42 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       </div>
 
       <div class="dispositivos-list">
+        <!-- 0.0 Card Dispositivo: Baú Selado de Corvus (Cena & Mesa) -->
+        <div class="dispositivo-card" id="dispositivo-card-bau-corvus" data-category="mesa" data-title="Bau Selado de Corvus Cadeado Senha Glifos Jardim Cabana Apostata">
+          <div class="dispositivo-card-header" style="cursor: pointer;" onclick="MesaBauCorvus.broadcastOpen()" title="Clique para transmitir o Baú Selado de Corvus">
+            <div class="dispositivo-icon-box" style="background: rgba(20, 184, 166, 0.16); border-color: rgba(94, 234, 212, 0.45); color: #5eead4;">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                <circle cx="12" cy="16" r="1.5"></circle>
+              </svg>
+            </div>
+            <div class="dispositivo-meta">
+              <div class="dispositivo-title-row">
+                <div class="dispositivo-title">Baú Selado de Corvus</div>
+                <span class="dispositivo-cat-tag cat-mesa">Cena &amp; Mesa</span>
+              </div>
+              <div class="dispositivo-subtitle">Tranca de 6 Anéis • Cabana do Apóstata</div>
+            </div>
+            <span id="bau-corvus-status-badge" class="dispositivo-status-badge ready" style="border-color: #5eead4; color: #5eead4;">Pronto</span>
+          </div>
+
+          <p class="dispositivo-card-desc">
+            Baú baixo de madeira pálida petrificada com tranca circular de seis anéis entalhados nos glifos do Pomar do Éden. Senha: <strong>JARDIM</strong>.
+          </p>
+
+          <div class="dispositivo-actions" style="flex-wrap: wrap; gap: 8px;">
+            <button type="button" id="btn-transmit-bau-corvus" class="dispositivo-btn-primary" onclick="MesaBauCorvus.broadcastOpen()" style="background: #0f766e; border-color: #5eead4; color: #f0fdfa;">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Transmitir para Todos (Tela Cheia)</span>
+            </button>
+            <button type="button" id="btn-stop-bau-corvus" class="dispositivo-btn-stop" onclick="MesaBauCorvus.stop()" style="display: none;">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12"></rect></svg>
+              <span>Encerrar Transmissão</span>
+            </button>
+          </div>
+        </div>
+
         <!-- 0. Card Dispositivo: Computador de Arnaldo (Cena & Mesa) -->
         <div class="dispositivo-card" id="dispositivo-card-computador-arnaldo" data-category="mesa" data-title="Computador de Arnaldo Webmail FragktusMail Planilhas Cantina Residencia">
           <div class="dispositivo-card-header" style="cursor: pointer;" onclick="MesaComputadorArnaldo.open()" title="Clique para abrir o Computador de Arnaldo">
@@ -2579,6 +2615,48 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
               Item concedido e travado exclusivamente para este jogador!
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================== -->
+  <!-- OVERLAY: BAÚ SELADO DE CORVUS (TRANCA DE 6 ANÉIS COM GLIFOS)               -->
+  <!-- ========================================================================== -->
+  <div id="bau-corvus-overlay" class="bau-corvus-overlay">
+    <button type="button" id="bau-corvus-close-btn" class="dispositivo-floating-close-btn master-item" onclick="MesaBauCorvus.stop()" title="Fechar Baú">&times;</button>
+
+    <div class="bau-corvus-stage" id="bau-corvus-stage">
+      <div class="bau-chest-box" id="bau-chest-box">
+        <div class="bau-chest-lid">
+          <div class="bau-iron-strap left"></div>
+          <div class="bau-iron-strap right"></div>
+          <span class="bau-chest-inscription">TRANCA DE MADEIRA PETRIFICADA • 6 ANÉIS</span>
+        </div>
+
+        <div class="bau-chest-body">
+          <div class="bau-iron-strap left"></div>
+          <div class="bau-iron-strap right"></div>
+
+          <!-- Os 6 Anéis Giratórios -->
+          <div class="bau-rings-row" id="bau-rings-row"></div>
+
+          <div class="bau-lock-controls">
+            <button type="button" class="bau-unlock-btn" id="bau-unlock-btn" onclick="MesaBauCorvus.attemptUnlock()">
+              DESTRAVAR BAÚ
+            </button>
+            <div class="bau-lock-feedback" id="bau-lock-feedback">Alinhe os 6 glifos da tranca para abrir.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conteúdo Revelado ao Abrir -->
+      <div class="bau-opened-content" id="bau-opened-content" style="display: none;">
+        <div class="bau-opened-badge">TRANCA DESTRAVADA</div>
+        <h3>CADERNO DE ANOTAÇÕES DE CORVUS</h3>
+        <p>A tampa de madeira petrificada cede com um estalo seco, revelando o pequeno caderno encadernado em couro cru escondido no fundo falso.</p>
+        <div class="bau-opened-img-wrap">
+          <img src="assets/coletaveis/caderno_corvus.png" alt="Caderno de Anotações de Corvus" />
         </div>
       </div>
     </div>
