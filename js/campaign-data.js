@@ -1148,6 +1148,212 @@
         "gancho": "Pista ligada ao ponto de interesse da periferia."
       }
     ]
+  },
+  "pomar-do-eden": {
+    "id": "pomar-do-eden",
+    "nome": "Pomar do Éden",
+    "shortName": "Pomar do Éden",
+    "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 22v-8\"></path><path d=\"M12 14c-4.5 0-7-3-7-7 0-2.5 2-4.5 4.5-4.5 1.1 0 2 .4 2.5 1 .5-.6 1.4-1 2.5-1C17 2.5 19 4.5 19 7c0 4-2.5 7-7 7z\"></path><path d=\"M8 22h8\"></path></svg>",
+    "themeClass": "area-pomar-do-eden",
+    "district": "Clareira Oculta na Névoa • Floresta Profunda de Fragktus",
+    "dangerLevel": "Vilarejo Isolado, Dissonância Temporal e Heresia",
+    "dangerLevelClass": "danger",
+    "resumo_atmosfera": "Após atravessar a parede espessa de névoa seguindo a trilha de vinhas na floresta, todos os sons da mata desaparecem. Surge um vilarejo antigo e silencioso de casas de madeira escura e pedra rústica, iluminado por lanternas de fogo quente e amarelado. Moradores de diversas espécies caminham com serenidade quase hipnótica entre hortas pálidas e altares de raízes, enquanto placas entalhadas em um idioma rúnico desconhecido marcam cada construção.",
+    "requisitos_acesso": "O vilarejo só pode ser alcançado seguindo o rastro contínuo de vinhas prateadas na floresta profunda com Sobrevivência (CT 7) e atravessando a barreira de névoa densa. Dentro do vilarejo não há portões trancados; os moradores recebem visitantes com hospitalidade passiva, mas observam qualquer movimento próximo ao Jardim Terreno, ao Emissário de Madeira ou à cabana selada na borda leste.",
+    "npcs_presentes": [
+      "Anciã Vespera (líder espiritual insectoide)",
+      "Kaelen (guardião nômade das trilhas)",
+      "Lira (jovem tecelã animalesca)",
+      "Isaque (aliado acompanhando o grupo)"
+    ],
+    "pontos_de_interesse": [
+      {
+        "cabecalho": {
+          "nome": "A Árvore do Emissário de Madeira",
+          "descricao_publica": "No centro da praça do vilarejo ergue-se uma árvore retorcida e pálida de galhos entrelaçados que lembram uma silhueta humanoide congelada. Na base do tronco há oferendas de frutas secas, velas derretidas e tiras de tecido amarradas, mas a estrutura permanece imóvel e silenciosa."
+        },
+        "testes": [
+          {
+            "pericia": "Elementos",
+            "ct_dt": 10,
+            "informacao_revelada": "A árvore não está morta nem petrificada; sob a casca pálida há uma pulsação térmica fraca e fendas fechadas que lembram pálpebras seladas com seiva prateada seca, idêntica à estética do altar no esgoto de Fragktus."
+          },
+          {
+            "pericia": "Investigação",
+            "ct_dt": 9,
+            "informacao_revelada": "Examinando as oferendas na base sem tocar nas raízes, nota-se que as cinzas ao redor do tronco têm um brilho metálico sutil nas cores ciano, rosa e verde."
+          },
+          {
+            "pericia": "Sobrevivência",
+            "ct_dt": 8,
+            "informacao_revelada": "As raízes desta árvore não se alimentam do solo comum; elas crescem para cima e se conectam diretamente aos fios da névoa que cobre o vilarejo."
+          }
+        ],
+        "notas_mestre": "Este é o ponto central onde ocorrerá a cerimônia da \"Passagem\" e o combate pela captura caso os jogadores observem o sacrifício."
+      },
+      {
+        "cabecalho": {
+          "nome": "As Placas Rúnicas e o Pergaminho do Santuário",
+          "descricao_publica": "Nas fachadas das casas e no pequeno santuário aberto ao lado da praça, há tábuas de madeira entalhadas com glifos angulares e sequências de pontos e traços que não pertencem a nenhum alfabeto conhecido da região.\n\nBarreira de Acesso: O pergaminho principal com as tabelas de contagem fica pendurado em uma viga alta do santuário; para alcançá-lo sem chamar atenção dos moradores, é preciso passar em Furtividade (CT 8) ou Acrobacia (CT 8)."
+        },
+        "testes": [
+          {
+            "pericia": "Astúcia ou Investigação",
+            "ct_dt": 9,
+            "informacao_revelada": "Cruzando os símbolos das placas com as falas dos moradores sobre \"O Jardineiro\" e \"A Passagem\", o jogador decifra a lógica do idioma rúnico local e compreende o sistema numérico usado para contar ciclos e mortes."
+          },
+          {
+            "pericia": "Percepção",
+            "ct_dt": 8,
+            "informacao_revelada": "Observando os padrões repetidos nas tábuas das casas, nota-se que todas trazem a mesma inscrição cerimonial: \"O Jardineiro poda os galhos doentes em todos os campos para que apenas a flor pura permaneça no Jardim Prometido.\""
+          },
+          {
+            "pericia": "História",
+            "ct_dt": 10,
+            "informacao_revelada": "Os glifos misturam raízes linguísticas antigas com símbolos modernos distorcidos, indicando que este idioma foi implantado artificialmente há cerca de um ano."
+          }
+        ],
+        "notas_mestre": "Decifrar o idioma aqui permite aos jogadores lerem imediatamente os nomes e os contadores numéricos nas lápides do Jardim Terreno."
+      },
+      {
+        "cabecalho": {
+          "nome": "O Jardim Terreno",
+          "descricao_publica": "Nos fundos do vilarejo, onde a névoa é mais densa e fria, abre-se uma clareira silenciosa tomada por musgo cinzento. Centenas de lápides de pedra negra e madeira fossilizada brotam do chão em ângulos irregulares, sem qualquer sinal de terra revirada ou covas cavadas. No centro da clareira, lápides recém-erguidas trazem os nomes dos próprios jogadores, de Sara e de Isaque.\n\nBarreira de Acesso: A névoa pesada na entrada da clareira provoca tontura, ecos auditivos e sensação de pânico; para avançar até o centro sem recuar ou perder o foco, cada jogador precisa passar em Intuição (CT 8) ou Sobrevivência (CT 8) para se orientar na bruma."
+        },
+        "testes": [
+          {
+            "pericia": "Investigação",
+            "ct_dt": 10,
+            "informacao_revelada": "As letras e números nas lápides não foram cinzelados, mas formados por nervuras douradas e prateadas que pulsam sob a pedra. Com o idioma decifrado, revela-se que os números indicam quantas vezes cada pessoa morreu em outras realidades: Sara e Constança possuem números fixos e absurdamente imensos, enquanto os números dos jogadores mudam sem parar em alta velocidade como um erro."
+          },
+          {
+            "pericia": "Percepção",
+            "ct_dt": 9,
+            "informacao_revelada": "Ao pé das lápides com os nomes dos jogadores, há oferendas deixadas pelos moradores: objetos pessoais idênticos aos que o grupo carrega agora, mas quebrados, queimados ou manchados de sangue seco."
+          },
+          {
+            "pericia": "Elementos",
+            "ct_dt": 11,
+            "informacao_revelada": "Encarar o contador instável da própria lápide revela que a existência do grupo ainda está em aberto e resistindo à poda multiversal, mas causa uma onda súbita de vertigem e 1d4 de dano de Sanidade."
+          }
+        ],
+        "notas_mestre": "Assim que os jogadores analisarem este PDI, os sinos do vilarejo começam a tocar anunciando a cerimônia na praça."
+      },
+      {
+        "cabecalho": {
+          "nome": "A Cabana Selada nas Bordas do Pomar",
+          "descricao_publica": "Afastada das demais construções, quase encostada na parede de névoa na borda leste, ergue-se uma cabana de madeira escurecida com a porta e as janelas pregadas por tábuas rústicas e sufocadas por um emaranhado denso de vinhas prateadas secas. Os moradores evitam passar perto dela e mudam de expressão imediatamente caso alguém pergunte a respeito."
+        },
+        "testes": [
+          {
+            "pericia": "Diplomacia ou Intimidação",
+            "ct_dt": 8,
+            "informacao_revelada": "Questionando os moradores sobre a cabana, eles respondem com desprezo frio que ali vivia Corvus (um apóstata que enlouqueceu, cuspiu na graça do Jardineiro e recebeu a \"poda merecida\" do povo), proibindo terminantemente que os visitantes se aproximem."
+          },
+          {
+            "pericia": "Percepção",
+            "ct_dt": 8,
+            "informacao_revelada": "As tábuas pregadas nas janelas não foram colocadas para impedir que algo saísse, mas sim marteladas pelo lado de fora para esconder o que ficou lá dentro; há manchas antigas de sangue seco nos degraus da entrada."
+          },
+          {
+            "pericia": "Elementos",
+            "ct_dt": 9,
+            "informacao_revelada": "As vinhas prateadas ao redor desta cabana não pulsam com luz como as da praça — elas estão cinzentas e ressecadas, como se tivessem rejeitado o lugar após a morte do antigo morador."
+          }
+        ],
+        "notas_mestre": "Este PDI serve como gatilho para desbloquear a sub-área Cabana do Apóstata, incentivando os jogadores a invadirem o local furtivamente."
+      }
+    ],
+    "npcs_investigaveis": [
+      {
+        "nome": "Anciã Vespera",
+        "descricao_fisica": "Uma mulher insectoide idosa de carapaça esbranquiçada e desgastada, vestindo mantos tecidos com fibras vegetais pálidas e carregando um cajado de madeira retorcida.",
+        "testes": [
+          { "pericia": "Intuição", "ct_dt": 8, "informacao_revelada": "Ela não está mentindo sobre a salvação do vilarejo; sua fé no \"Jardineiro\" é genuína e serena, mas seu olhar permanece fixo sem piscar sempre que menciona o Emissário de Madeira." },
+          { "pericia": "Percepção", "ct_dt": 9, "informacao_revelada": "Sob a gola do manto e nas juntas de sua carapaça, há filamentos finos e prateados incrustados na pele, exatamente como os vistos nas vítimas de Paládium." },
+          { "pericia": "Diplomacia", "ct_dt": 8, "informacao_revelada": "Conversando com respeito sobre as tradições locais, ela explica o significado básico dos glifos das placas e afirma que a névoa protege o povo da podridão do mundo exterior há um ano." }
+        ]
+      },
+      {
+        "nome": "Kaelen",
+        "descricao_fisica": "Um nômade alto de traços animalescos lupinos, vestido com roupas rústicas de couro gasto, que patrulha a borda interna da névoa com uma lança de madeira petrificada.",
+        "testes": [
+          { "pericia": "Percepção", "ct_dt": 8, "informacao_revelada": "As botas e as barras da calça dele estão completamente secas e limpas, mesmo caminhando pela lama úmida da floresta — ele nunca cruza o limite externo da névoa." },
+          { "pericia": "Intuição", "ct_dt": 9, "informacao_revelada": "Quando questionado sobre os doentes que desapareceram após a \"Passagem\", ele responde com um sorriso automático idêntico ao dos outros moradores, demonstrando um condicionamento mental profundo." },
+          { "pericia": "Sobrevivência", "ct_dt": 8, "informacao_revelada": "A lança que ele carrega foi talhada da mesma madeira pálida do Emissário central e exala um cheiro leve de seiva doce." }
+        ]
+      },
+      {
+        "nome": "Lira",
+        "descricao_fisica": "Uma jovem tecelã de traços animalescos felinos que trabalha em um tear manual próximo à praça, entrelaçando fios cinzentos e prateados em mantos cerimoniais.",
+        "testes": [
+          { "pericia": "Investigação", "ct_dt": 8, "informacao_revelada": "Os fios que ela usa no tear não são de algodão ou lã comum — são vinhas secas e desfiadas colhidas nas raízes ao redor do Jardim Terreno." },
+          { "pericia": "Percepção", "ct_dt": 9, "informacao_revelada": "Os dedos dela estão cobertos por pequenos cortes cicatrizados de onde escorre uma seiva clara em vez de sangue vermelho comum." },
+          { "pericia": "Diplomacia ou Intimidação", "ct_dt": 8, "informacao_revelada": "Ela comenta ingenuamente que novas lápides brotaram no Jardim Terreno hoje pela manhã com nomes estrangeiros que ninguém do vilarejo conhece, interpretando isso como um sinal de que \"novos viajantes estão próximos da colheita\"." }
+        ]
+      }
+    ],
+    "sub_areas": [
+      {
+        "id": "cabana-do-apostata",
+        "nome": "Cabana do Apóstata",
+        "localizacao": "Borda Leste do Pomar do Éden • Próximo à Névoa",
+        "tag": "Heresia, Cópia das Portas e Execução • 3 Pontos de Interesse",
+        "atmosfera": "O interior da cabana é escuro, abafado e cheira a madeira úmida, papel velho e cinzas frias. Móveis simples foram revirados e quebrados há meses, como se uma multidão tivesse invadido o local com violência. Frestas estreitas entre as tábuas das janelas deixam passar feixes finos da luz amarelada da névoa, iluminando desenhos geométricos rabiscados a carvão diretamente nas tábuas do piso e nas paredes.",
+        "acesso": "Como os moradores vigiam a praça e proíbem a entrada, os jogadores precisam esperar um momento de distração ou passar em Furtividade (CT 8) para se aproximar sem serem vistos. Para abrir uma fresta nas tábuas pregadas da janela lateral sem fazer barulho, é necessário passar em Astúcia (CT 8) (com ferramentas) ou Atletismo (CT 9) (falhar no teste silencioso faz a madeira estalar alto, deixando Kaelen ou outro morador em alerta nos arredores).",
+        "personagens": "Nenhum (Corvus foi executado pelos moradores há vários meses).",
+        "pontos_de_interesse": [
+          {
+            "cabecalho": {
+              "nome": "Os Diagramas no Piso e nas Paredes",
+              "descricao_publica": "No centro do cômodo, o tapete foi arrancado e o assoalho de madeira está coberto por marcas de carvão e entalhes feitos com faca. São dezenas de esboços de portas arqueadas lado a lado, riscadas com linhas frenéticas."
+            },
+            "testes": [
+              { "pericia": "Investigação", "ct_dt": 8, "informacao_revelada": "Os desenhos comparam duas estruturas diferentes: de um lado, uma passagem espiritual única e antiga; do outro, treze réplicas artificiais desenhadas como bocas ou raízes convergindo para um mesmo centro." },
+              { "pericia": "Elementos", "ct_dt": 10, "informacao_revelada": "Analisando os cálculos e símbolos gravados ao redor das 13 portas desenhadas, o jogador compreende que o \"Jardim Prometido\" pregado pelo culto não é um plano divino, mas uma cópia ilusória criada como um estômago para digerir lentamente as mentes devoradas enquanto seus corpos viram vasos ocos." },
+              { "pericia": "História", "ct_dt": 9, "informacao_revelada": "Alguns glifos riscados nos cantos mostram que Corvus conhecia fragmentos reais de tradições antigas anteriores à chegada do Emissário de Madeira, o que lhe permitiu notar a falsificação." }
+            ],
+            "notas_mestre": "Aqui os jogadores confirmam a verdadeira natureza parasita e fraudulenta das 13 Portas e do Jardim Prometido."
+          },
+          {
+            "cabecalho": {
+              "nome": "A Mesa Quebrada e o Fundo Falso",
+              "descricao_publica": "Uma escrivaninha de madeira rústica está tombada no canto do quarto com as gavetas estilhaçadas e folhas em branco espalhadas pelo chão. Sob a estrutura partida, uma tábua solta do assoalho parece ligeiramente desalinhada.\n\nBarreira de Acesso: Encontrar o compartimento oculto exige notar o desnível com Percepção (CT 8) e forçar a trava emperrada da madeira com Astúcia (CT 8) ou Atletismo (CT 8)."
+            },
+            "testes": [
+              { "pericia": "Investigação", "ct_dt": 8, "informacao_revelada": "Dentro do fundo falso está escondido um pequeno caderno encadernado em couro cru que escapou da busca dos moradores (desbloqueia os Registros do Apóstata Corvus)." },
+              { "pericia": "Intuição", "ct_dt": 8, "informacao_revelada": "Lendo as últimas páginas escritas com caligrafia cada vez mais apressada e trêmula, percebe-se que Corvus sabia que seria morto ao tentar alertar os vizinhos na praça, mas decidiu falar mesmo assim para tentar impedir as \"Passagens\"." },
+              { "pericia": "Sobrevivência", "ct_dt": 9, "informacao_revelada": "Junto ao caderno há um mapa rústico riscado em casca de árvore mostrando que a névoa possui pontos mais finos próximos às raízes mortas, indicando uma rota segura de recuo caso o vilarejo se torne hostil." }
+            ],
+            "notas_mestre": "Este é o esconderijo principal das anotações escritas de Corvus, protegido para que não pareça absurdo os moradores não terem queimado tudo quando o executaram."
+          },
+          {
+            "cabecalho": {
+              "nome": "As Marcas na Parede dos Fundos",
+              "descricao_publica": "Na parede oposta à porta, há sulcos profundos na madeira na altura de um tronco humano e uma mancha escura e extensa impregnada nas tábuas e no rodapé, parcialmente coberta por poeira e teias."
+            },
+            "testes": [
+              { "pericia": "Medicina ou Investigação", "ct_dt": 8, "informacao_revelada": "Os sulcos na parede são marcas de ferramentas agrícolas e lanças de madeira cravadas com força contra alguém que estava encostado ali — Corvus não morreu de doença nem desapareceu; ele foi executado brutalmente dentro da própria casa pelos moradores." },
+              { "pericia": "Percepção", "ct_dt": 9, "informacao_revelada": "Entre as frestas do rodapé manchado, encontra-se um fragmento quebrado de carapaça insectoide e fibras de tecido idênticas às usadas pelos habitantes da praça, confirmando que a execução foi um ato coletivo do vilarejo." },
+              { "pericia": "Intuição", "ct_dt": 8, "informacao_revelada": "A violência silenciosa desse lugar contrasta diretamente com a serenidade artificial da praça: os moradores eliminam sem hesitar qualquer pessoa que ameace a ilusão do Jardineiro." }
+            ],
+            "notas_mestre": "Essa descoberta prepara psicologicamente os jogadores para entenderem que os moradores do Pomar do Éden não são apenas vítimas indefesas, mas fanáticos capazes de matar para proteger a própria fé."
+          }
+        ]
+      }
+    ],
+    "conexoes_saida": [
+      {
+        "area_id": "floresta-proibida",
+        "nome": "Trilha de Vinhas na Floresta",
+        "gancho": "Rastro contínuo de vinhas prateadas atravessando a parede de névoa."
+      },
+      {
+        "area_id": "casa-da-arvore",
+        "nome": "Casa da Árvore",
+        "gancho": "Conexão pelas trilhas da mata profunda."
+      }
+    ]
   }
 };
 
@@ -1631,23 +1837,49 @@
       id: "col_comprovante_arnaldo",
       nome: "Comprovante de Atendimento e Medicação de Arnaldo",
       peso: 0,
-      tipo: "Documento Médico",
-      campo_tipo: "Cronologia",
+      tipo: "Item Investigativo",
+      campo_tipo: "Conteúdo Integral",
       area: "Residência de Arnaldo",
       desbloqueado: false,
-      resumo: "Comprovante médico amassado e frasco de remédio carimbados com a data de exatamente duas semanas atrás.",
-      detalhe: "Resgatado da lixeira sob a pia. Marca com exatidão a data do início dos sintomas de Arnaldo e estabelece a linha do tempo biológica da contaminação."
+      imagem: "assets/coletaveis/comprovante_arnaldo.png",
+      resumo: "Uma folha estreita de papel térmico amassado de clínica médica, com manchas de gordura e umidade, acompanhada de uma receita simples dobrada em quatro partes com um carimbo azul borrado.",
+      detalhe: "PRONTO-ATENDIMENTO CLÍNICO CENTRAL DE FRAGKTUS\nREGISTRO DE TRIAGEM E PRESCRIÇÃO\nPaciente: Arnaldo Tavares\nData do Atendimento: 21/07/2061\nQueixa Principal: Tontura súbita, calafrios noturnos, palidez extrema e sensação de pressão atrás dos olhos após manuseio de adubo orgânico.\nExames Preliminares: Pressão arterial estável. Nenhuma infecção viral ou bacteriana detectada no hemograma básico.\nPrescrição: Analgésico comum (1 comprimido a cada 8 horas) e repouso domiciliar. Retornar caso os sintomas persistam.\nCarimbo: Dr. Henrique Valença — CRM/FG 4419"
     },
     {
       id: "col_divorcio_arnaldo",
       nome: "Documentos de Divórcio de Arnaldo",
       peso: 0,
-      tipo: "Documento Pessoal",
-      campo_tipo: "Conteúdo",
+      tipo: "Item Investigativo",
+      campo_tipo: "Conteúdo Integral",
       area: "Residência de Arnaldo",
       desbloqueado: false,
-      resumo: "Petição de divórcio assinada há cinco dias acompanhada de um bilhete manuscrito da esposa de Arnaldo.",
-      detalhe: "Guardados no gaveteiro trancado da sala de estar. A esposa relata que Arnaldo se tornou um estranho frio e atormentado desde que aceitou o \"novo fornecimento\" da escola."
+      imagem: "assets/coletaveis/divorcio_arnaldo.png",
+      resumo: "Um maço de três folhas jurídicas em papel timbrado de cartório com marcas de grampo oxidado, acompanhado por um bilhete manuscrito em caneta azul manchado por gotas secas.",
+      detalhe: "Documento 1 — Petição Jurídica:\nCARTÓRIO DO 2º OFÍCIO DE NOTAS E REGISTROS CIVIS DE FRAGKTUS\nSOLICITAÇÃO DE DISSOLUÇÃO DE VÍNCULO MATRIMONIAL CONSENSUAL\nRequerente: Helena Martins Tavares | Requerido: Arnaldo Tavares | Data de Protocolo: 30/07/2061\nResumo do Termo: A requerente solicita a abertura imediata do processo de divórcio direto e a averbação de saída do lar conjugal, declarando incompatibilidade irreconciliável de convivência e abandono afetivo severo nas últimas duas semanas. (Assinado apenas por Helena Martins Tavares; campo do requerido em branco).\n\nDocumento 2 — Bilhete Manuscrito Anexo:\n\"Arnaldo, Eu tentei conversar com você todas as noites desde que você voltou daquele posto médico. Você não dorme, não come, fica olhando para a parede da cozinha como se estivesse ouvindo alguém te chamar e me trata como uma estranha dentro da nossa própria casa. Desde que você começou com essa obsessão por aquelas caixas de entrega da escola, você virou outra pessoa. Eu não aguento mais ter medo do meu próprio marido. Assina os papéis quando tiver coragem. Eu levei minhas coisas. — Helena\""
+    },
+    {
+      id: "col_memorando_dispensa",
+      nome: "Memorando Administrativo de Dispensa",
+      peso: 0,
+      tipo: "Item Investigativo",
+      campo_tipo: "Conteúdo Integral",
+      area: "Colégio Integrado Primórdio",
+      desbloqueado: false,
+      imagem: "assets/coletaveis/memorando_dispensa.png",
+      resumo: "Folha timbrada oficial do Colégio Integrado Primórdio de Fragktus com brasão institucional em preto e branco e assinatura cursiva impecável em tinta roxa escura.",
+      detalhe: "COLÉGIO INTEGRADO PRIMÓRDIO DE FRAGKTUS — DEPARTAMENTO DE ADMINISTRAÇÃO E RECURSOS HUMANOS\nMEMORANDO INTERNO Nº 042/2061\nPara: Setor de Nutrição, Copa e Almoxarifado | De: Diretoria Geral — Constança Montenegro\nAssunto: Afastamento Médico Imediato e Retenção de Lote\n\nFica determinado, a partir desta data, o afastamento imediato por tempo indeterminado do colaborador Arnaldo Tavares, responsável pelo fornecimento e preparo base dos insumos orgânicos da cantina escolar, em virtude de quadro agudo de exaustão física e debilidade clínica constatado pela diretoria.\nOs lotes de hortaliças e raízes entregues na manhã de hoje permanecem sob supervisão exclusiva da diretoria para triagem sanitária, estando proibida a interferência de terceiros ou o descarte sem autorização expressa desta administração.\nAssinado: Constança Montenegro (tinta roxa) | Data: 04/08/2061, 07h15."
+    },
+    {
+      id: "col_caderno_corvus",
+      nome: "Caderno de Anotações de Corvus",
+      peso: 1,
+      tipo: "Item Investigativo Único",
+      campo_tipo: "Verdade Sobre a Cópia",
+      area: "Pomar do Éden • Cabana do Apóstata",
+      desbloqueado: false,
+      imagem: "assets/coletaveis/caderno_corvus.png",
+      resumo: "Um caderno artesanal rústico encadernado em couro cru escurecido, com folhas grossas e amareladas presas por barbante encerado, manchado de fuligem seca e carvão.",
+      detalhe: "Efeitos e Usos em Jogo — Verdade Sobre a Cópia: Contém o mapeamento completo que comprova que as 13 Portas e o Jardim Prometido são imitações criadas para digerir almas, servindo como prova irrefutável para tentar despertar moradores condicionados ou fundamentar testes de Elementos contra manifestações do culto.\n\nPágina 1: \"O Emissário de Madeira nos deu o idioma, nos deu a névoa e nos prometeu a cura... Por que um deus precisa de treze entradas diferentes para o mesmo jardim?\"\nPágina 2 (Diagrama a carvão com 13 arcos ligados a um órgão pulsante): \"...As treze portas não levam a lugar nenhum. São réplicas. O Jardim Prometido não é um paraíso — é um estômago. Ele nos engorda de esperança e desespero para nos digerir devagar.\"\nPágina 3 (Caligrafia trêmula): \"Tentei falar com Vespera. Ela sorriu sem piscar e disse que minha fé estava doente... Se alguém de fora atravessar a névoa um dia e encontrar isto: não entrem nas portas. Não há salvação lá dentro, apenas fome.\""
     },
     {
       id: "col_emails_arnaldo",

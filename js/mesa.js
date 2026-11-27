@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.18';
+const MESA_VERSION = 'v2.5.19';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -6466,6 +6466,96 @@ const MESA_AREAS = {
         "notas_mestre": "Assim que os jogadores encerrarem este PDI ou tentarem abrir a porta do banheiro, o registro é arrancado por dentro e o confronto contra Arnaldo mutado tem início."
       }
     ]
+  },
+  "pomar-do-eden": {
+    "id": "pomar-do-eden",
+    "name": "Pomar do Éden",
+    "shortName": "Pomar do Éden",
+    "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 22v-8\"></path><path d=\"M12 14c-4.5 0-7-3-7-7 0-2.5 2-4.5 4.5-4.5 1.1 0 2 .4 2.5 1 .5-.6 1.4-1 2.5-1C17 2.5 19 4.5 19 7c0 4-2.5 7-7 7z\"></path><path d=\"M8 22h8\"></path></svg>",
+    "themeClass": "area-pomar-do-eden",
+    "district": "Clareira Oculta na Névoa • Floresta Profunda de Fragktus",
+    "dangerLevel": "Vilarejo Isolado, Dissonância Temporal e Heresia",
+    "dangerLevelClass": "danger",
+    "ambience": "Após atravessar a parede espessa de névoa seguindo a trilha de vinhas na floresta, todos os sons da mata desaparecem. Surge um vilarejo antigo e silencioso de casas de madeira escura e pedra rústica, iluminado por lanternas de fogo quente e amarelado. Moradores de diversas espécies caminham com serenidade quase hipnótica entre hortas pálidas e altares de raízes, enquanto placas entalhadas em um idioma rúnico desconhecido marcam cada construção.",
+    "lore": "Sub-Área Vinculada: Cabana do Apóstata (Borda Leste do Pomar do Éden) • 3 NPCs Investigáveis: Anciã Vespera, Kaelen e Lira.",
+    "rumor": "Rotas e Conexões de Saída: Trilha de Vinhas na Floresta • Casa da Árvore • Cabana do Apóstata",
+    "requisitos_acesso": "O vilarejo só pode ser alcançado seguindo o rastro contínuo de vinhas prateadas na floresta profunda com Sobrevivência (CT 7) e atravessando a barreira de névoa densa. Dentro do vilarejo não há portões trancados; os moradores recebem visitantes com hospitalidade passiva, mas observam qualquer movimento próximo ao Jardim Terreno, ao Emissário de Madeira ou à cabana selada na borda leste.",
+    "npcs_presentes": [
+      "Anciã Vespera (líder espiritual insectoide)",
+      "Kaelen (guardião nômade das trilhas)",
+      "Lira (jovem tecelã animalesca)",
+      "Isaque (aliado acompanhando o grupo)"
+    ],
+    "conexoes_saida": [
+      {
+        "area_id": "floresta-proibida",
+        "nome": "Trilha de Vinhas na Floresta",
+        "gancho": "Rastro contínuo de vinhas prateadas atravessando a parede de névoa."
+      },
+      {
+        "area_id": "casa-da-arvore",
+        "nome": "Casa da Árvore",
+        "gancho": "Conexão pelas trilhas da mata profunda."
+      }
+    ],
+    "pois": [
+      {
+        "num": 1,
+        "title": "A Árvore do Emissário de Madeira",
+        "cabecalho": {
+          "nome": "A Árvore do Emissário de Madeira",
+          "descricao_publica": "No centro da praça do vilarejo ergue-se uma árvore retorcida e pálida de galhos entrelaçados que lembram uma silhueta humanoide congelada. Na base do tronco há oferendas de frutas secas, velas derretidas e tiras de tecido amarradas, mas a estrutura permanece imóvel e silenciosa."
+        },
+        "testes": [
+          { "pericia": "Elementos", "ct_dt": 10, "informacao_revelada": "A árvore não está morta nem petrificada; sob a casca pálida há uma pulsação térmica fraca e fendas fechadas que lembram pálpebras seladas com seiva prateada seca, idêntica à estética do altar no esgoto de Fragktus." },
+          { "pericia": "Investigação", "ct_dt": 9, "informacao_revelada": "Examinando as oferendas na base sem tocar nas raízes, nota-se que as cinzas ao redor do tronco têm um brilho metálico sutil nas cores ciano, rosa e verde." },
+          { "pericia": "Sobrevivência", "ct_dt": 8, "informacao_revelada": "As raízes desta árvore não se alimentam do solo comum; elas crescem para cima e se conectam diretamente aos fios da névoa que cobre o vilarejo." }
+        ],
+        "notas_mestre": "Este é o ponto central onde ocorrerá a cerimônia da \"Passagem\" e o combate pela captura caso os jogadores observem o sacrifício."
+      },
+      {
+        "num": 2,
+        "title": "As Placas Rúnicas e o Pergaminho do Santuário",
+        "cabecalho": {
+          "nome": "As Placas Rúnicas e o Pergaminho do Santuário",
+          "descricao_publica": "Nas fachadas das casas e no pequeno santuário aberto ao lado da praça, há tábuas de madeira entalhadas com glifos angulares e sequências de pontos e traços que não pertencem a nenhum alfabeto conhecido da região.\n\nBarreira de Acesso: O pergaminho principal com as tabelas de contagem fica pendurado em uma viga alta do santuário; para alcançá-lo sem chamar atenção dos moradores, é preciso passar em Furtividade (CT 8) ou Acrobacia (CT 8)."
+        },
+        "testes": [
+          { "pericia": "Astúcia ou Investigação", "ct_dt": 9, "informacao_revelada": "Cruzando os símbolos das placas com as falas dos moradores sobre \"O Jardineiro\" e \"A Passagem\", o jogador decifra a lógica do idioma rúnico local e compreende o sistema numérico usado para contar ciclos e mortes." },
+          { "pericia": "Percepção", "ct_dt": 8, "informacao_revelada": "Observando os padrões repetidos nas tábuas das casas, nota-se que todas trazem a mesma inscrição cerimonial: \"O Jardineiro poda os galhos doentes em todos os campos para que apenas a flor pura permaneça no Jardim Prometido.\"" },
+          { "pericia": "História", "ct_dt": 10, "informacao_revelada": "Os glifos misturam raízes linguísticas antigas com símbolos modernos distorcidos, indicando que este idioma foi implantado artificialmente há cerca de um ano." }
+        ],
+        "notas_mestre": "Decifrar o idioma aqui permite aos jogadores lerem imediatamente os nomes e os contadores numéricos nas lápides do Jardim Terreno."
+      },
+      {
+        "num": 3,
+        "title": "O Jardim Terreno",
+        "cabecalho": {
+          "nome": "O Jardim Terreno",
+          "descricao_publica": "Nos fundos do vilarejo, onde a névoa é mais densa e fria, abre-se uma clareira silenciosa tomada por musgo cinzento. Centenas de lápides de pedra negra e madeira fossilizada brotam do chão em ângulos irregulares, sem qualquer sinal de terra revirada ou covas cavadas. No centro da clareira, lápides recém-erguidas trazem os nomes dos próprios jogadores, de Sara e de Isaque.\n\nBarreira de Acesso: A névoa pesada na entrada da clareira provoca tontura, ecos auditivos e sensação de pânico; para avançar até o centro sem recuar ou perder o foco, cada jogador precisa passar em Intuição (CT 8) ou Sobrevivência (CT 8) para se orientar na bruma."
+        },
+        "testes": [
+          { "pericia": "Investigação", "ct_dt": 10, "informacao_revelada": "As letras e números nas lápides não foram cinzelados, mas formados por nervuras douradas e prateadas que pulsam sob a pedra. Com o idioma decifrado, revela-se que os números indicam quantas vezes cada pessoa morreu em outras realidades: Sara e Constança possuem números fixos e absurdamente imensos, enquanto os números dos jogadores mudam sem parar em alta velocidade como um erro." },
+          { "pericia": "Percepção", "ct_dt": 9, "informacao_revelada": "Ao pé das lápides com os nomes dos jogadores, há oferendas deixadas pelos moradores: objetos pessoais idênticos aos que o grupo carrega agora, mas quebrados, queimados ou manchados de sangue seco." },
+          { "pericia": "Elementos", "ct_dt": 11, "informacao_revelada": "Encarar o contador instável da própria lápide revela que a existência do grupo ainda está em aberto e resistindo à poda multiversal, mas causa uma onda súbita de vertigem e 1d4 de dano de Sanidade." }
+        ],
+        "notas_mestre": "Assim que os jogadores analisarem este PDI, os sinos do vilarejo começam a tocar anunciando a cerimônia na praça."
+      },
+      {
+        "num": 4,
+        "title": "A Cabana Selada nas Bordas do Pomar",
+        "cabecalho": {
+          "nome": "A Cabana Selada nas Bordas do Pomar",
+          "descricao_publica": "Afastada das demais construções, quase encostada na parede de névoa na borda leste, ergue-se uma cabana de madeira escurecida com a porta e as janelas pregadas por tábuas rústicas e sufocadas por um emaranhado denso de vinhas prateadas secas. Os moradores evitam passar perto dela e mudam de expressão imediatamente caso alguém pergunte a respeito."
+        },
+        "testes": [
+          { "pericia": "Diplomacia ou Intimidação", "ct_dt": 8, "informacao_revelada": "Questionando os moradores sobre a cabana, eles respondem com desprezo frio que ali vivia Corvus (um apóstata que enlouqueceu, cuspiu na graça do Jardineiro e recebeu a \"poda merecida\" do povo), proibindo terminantemente que os visitantes se aproximem." },
+          { "pericia": "Percepção", "ct_dt": 8, "informacao_revelada": "As tábuas pregadas nas janelas não foram colocadas para impedir que algo saísse, mas sim marteladas pelo lado de fora para esconder o que ficou lá dentro; há manchas antigas de sangue seco nos degraus da entrada." },
+          { "pericia": "Elementos", "ct_dt": 9, "informacao_revelada": "As vinhas prateadas ao redor desta cabana não pulsam com luz como as da praça — elas estão cinzentas e ressecadas, como se tivessem rejeitado o lugar após a morte do antigo morador." }
+        ],
+        "notas_mestre": "Este PDI serve como gatilho para desbloquear a sub-área Cabana do Apóstata, incentivando os jogadores a invadirem o local furtivamente."
+      }
+    ]
   }
 };
 
@@ -6601,6 +6691,13 @@ const MesaAreaManager = {
             glow: 'rgba(217, 119, 6, 0.75)',
             roadD: 'M 280 320 C 260 240, 250 180, 240 128',
             roadTwinD: 'M 288 320 C 268 240, 258 180, 248 128'
+          },
+          'pomar-do-eden': {
+            xPct: 90, yPct: 65,
+            color: '#eab308',
+            glow: 'rgba(234, 179, 8, 0.75)',
+            roadD: 'M 720 320 C 800 340, 860 380, 900 416',
+            roadTwinD: 'M 720 328 C 800 348, 860 388, 900 424'
           }
     };
 
@@ -7147,6 +7244,125 @@ const MesaAreaManager = {
           <div class="pdis-accordion-list">
             ${accordionsHtml}
           </div>
+          ${(() => {
+            let extraHtml = '';
+            if (area.npcs_investigaveis && area.npcs_investigaveis.length > 0) {
+              extraHtml += `
+                <div class="pdis-toolbar" style="margin-top: 26px;">
+                  <div class="pdis-toolbar-title-wrap">
+                    <h4 class="pdis-toolbar-title">NPCS INVESTIGÁVEIS NO VILAREJO</h4>
+                    <span class="pdis-toolbar-subtitle">Testes sociais e de percepção exclusivos desta localidade.</span>
+                  </div>
+                </div>
+                <div class="pdis-accordion-list">
+                  ${area.npcs_investigaveis.map((npc, nIdx) => {
+                    const key = 'npc-' + nIdx;
+                    const rows = (npc.testes || []).map((t, tIdx) => `
+                      <tr class="skill-tint-${tIdx % 4}">
+                        <td class="poi-skill-cell">${t.pericia}</td>
+                        <td class="poi-dt-cell"><span class="mesa-pdi-dt-badge">CT ${t.ct_dt}</span></td>
+                        <td class="poi-info-cell">${t.informacao_revelada}</td>
+                      </tr>
+                    `).join('');
+                    return `
+                      <div class="pdi-accordion-card" id="pdi-accordion-${key}">
+                        <button type="button" class="pdi-accordion-header" onclick="MesaAreaManager.togglePdi('${key}')">
+                          <div class="pdi-accordion-header-left">
+                            <span class="pdi-num-badge">NPC</span>
+                            <strong class="pdi-title-text">${npc.nome}</strong>
+                          </div>
+                          <div class="pdi-accordion-header-right">
+                            <span class="pdi-tests-tag">${(npc.testes || []).length} Testes</span>
+                            <svg class="pdi-chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                          </div>
+                        </button>
+                        <div class="pdi-accordion-body">
+                          <div class="pdi-public-desc-box">
+                            <span class="pdi-box-mini-tag">DESCRIÇÃO FÍSICA</span>
+                            <p class="pdi-public-desc-text">${npc.descricao_fisica}</p>
+                          </div>
+                          <div class="poi-skills-table-wrap">
+                            <table class="poi-skills-table">
+                              <thead><tr><th class="th-pericia">Perícia</th><th class="th-dt">Classe de Teste</th><th class="th-info">Informação Revelada</th></tr></thead>
+                              <tbody>${rows}</tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              `;
+            }
+            if (area.sub_areas && area.sub_areas.length > 0) {
+              extraHtml += area.sub_areas.map((sub, sIdx) => {
+                const subPdis = (sub.pontos_de_interesse || []).map((poi, pIdx) => {
+                  const key = 'sub-' + sIdx + '-' + (pIdx + 1);
+                  const numLabel = (pIdx + 1) < 10 ? '0' + (pIdx + 1) : (pIdx + 1);
+                  const title = (poi.cabecalho && poi.cabecalho.nome) || '';
+                  const desc = (poi.cabecalho && poi.cabecalho.descricao_publica) || '';
+                  const tests = poi.testes || [];
+                  const rows = tests.map((t, tIdx) => `
+                    <tr class="skill-tint-${tIdx % 4}">
+                      <td class="poi-skill-cell">${t.pericia}</td>
+                      <td class="poi-dt-cell"><span class="mesa-pdi-dt-badge">CT ${t.ct_dt}</span></td>
+                      <td class="poi-info-cell">${t.informacao_revelada}</td>
+                    </tr>
+                  `).join('');
+                  return `
+                    <div class="pdi-accordion-card" id="pdi-accordion-${key}">
+                      <button type="button" class="pdi-accordion-header" onclick="MesaAreaManager.togglePdi('${key}')">
+                        <div class="pdi-accordion-header-left">
+                          <span class="pdi-num-badge">#${numLabel}</span>
+                          <strong class="pdi-title-text">${title}</strong>
+                        </div>
+                        <div class="pdi-accordion-header-right">
+                          <span class="pdi-tests-tag">${tests.length} Testes</span>
+                          <svg class="pdi-chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                      </button>
+                      <div class="pdi-accordion-body">
+                        <div class="pdi-public-desc-box">
+                          <span class="pdi-box-mini-tag">DESCRIÇÃO INICIAL / SENSORIAL</span>
+                          <p class="pdi-public-desc-text">${desc}</p>
+                        </div>
+                        <div class="poi-skills-table-wrap">
+                          <table class="poi-skills-table">
+                            <thead><tr><th class="th-pericia">Perícia</th><th class="th-dt">Classe de Teste</th><th class="th-info">Informação Revelada</th></tr></thead>
+                            <tbody>${rows}</tbody>
+                          </table>
+                        </div>
+                        <div class="mesa-master-notes-box">
+                          <div class="mesa-master-notes-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+                          <div class="mesa-master-notes-content">
+                            <span class="mesa-master-notes-label">[NOTAS DO MESTRE • SEGREDO CONFIDENCIAL]</span>
+                            <p>${poi.notas_mestre || ''}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                }).join('');
+                return `
+                  <div class="pdis-toolbar" style="margin-top: 28px; border-top: 1px dashed rgba(255,140,70,0.3); padding-top: 18px;">
+                    <div class="pdis-toolbar-title-wrap">
+                      <h4 class="pdis-toolbar-title">SUB-ÁREA VINCULADA: ${sub.nome.toUpperCase()}</h4>
+                      <span class="pdis-toolbar-subtitle">${sub.localizacao} • ${sub.tag}</span>
+                    </div>
+                  </div>
+                  <div class="backstage-panel-card" style="margin-bottom: 14px;">
+                    <div class="backstage-panel-body">
+                      <p class="pdi-public-desc-text" style="margin-bottom: 8px;"><strong>Atmosfera:</strong> ${sub.atmosfera}</p>
+                      <p class="backstage-access-desc" style="margin-bottom: 6px;"><strong>Acesso e Infiltração:</strong> ${sub.acesso}</p>
+                      <p class="backstage-access-desc"><strong>Personagens Presentes:</strong> ${sub.personagens}</p>
+                    </div>
+                  </div>
+                  <div class="pdis-accordion-list">${subPdis}</div>
+                `;
+              }).join('');
+            }
+            return extraHtml;
+          })()}
         `;
       }
     }
