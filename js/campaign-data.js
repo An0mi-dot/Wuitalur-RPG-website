@@ -1882,6 +1882,18 @@
       detalhe: "Um caderno artesanal rústico encadernado em couro cru escurecido, com folhas grossas e amareladas presas por barbante encerado. A capa está manchada de fuligem seca e carvão, e as páginas internas contêm um diagrama feito a carvão e parágrafos manuscritos com caligrafia cada vez mais trêmula nas últimas linhas."
     },
     {
+      id: "col_cartilha_alfabeto_invertido",
+      nome: "Cartilha do Alfabeto Invertido",
+      peso: 0,
+      tipo: "Item Investigativo",
+      campo_tipo: "Aparência Física",
+      area: "Pomar do Éden • Santuário",
+      desbloqueado: false,
+      imagem: "assets/coletaveis/cartilha_alfabeto_invertido.jpg",
+      resumo: "Folha única de papel antigo e fibroso com trinta e seis glifos geométricos e orgânicos em tinta azul-esverdeada pálida.",
+      detalhe: "Uma folha única de papel antigo e fibroso, amassada e desgastada pelas dobras, manchada pelo tempo. Em sua superfície estão alinhados trinta e seis glifos geométricos e orgânicos escritos em uma tinta azul-esverdeada pálida, distribuídos em sete fileiras horizontais sem nenhuma anotação ou tradução em idioma comum ao lado."
+    },
+    {
       id: "col_emails_arnaldo",
       nome: "Correspondências Eletrônicas de Arnaldo",
       peso: 0,
