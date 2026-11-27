@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.20';
+const MESA_VERSION = 'v2.5.21';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -2441,6 +2441,20 @@ const MesaApp = {
       if (isFromSelf(payload)) return;
       if (window.MesaNotebookSara && payload.payload) {
         MesaNotebookSara.handleIncomingSync(payload.payload);
+      }
+    });
+
+    channel.on('broadcast', { event: 'arnaldo_pc_open' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaComputadorArnaldo) {
+        MesaComputadorArnaldo.open(true);
+      }
+    });
+
+    channel.on('broadcast', { event: 'arnaldo_pc_close' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaComputadorArnaldo) {
+        MesaComputadorArnaldo.stop(true);
       }
     });
 
@@ -8778,9 +8792,10 @@ const MesaColetaveis = {
           const isCartaz = it.id === 'col_cartaz_desaparecido' || it.id === 'col_panfleto_anotado_kali';
           const isGravador = it.id === 'col_gravador_fita_01' || it.id === 'col_gravador_bolso_02';
           const isFita = it.id === 'col_fita_01' || it.id === 'col_fita_02';
-          const isClickable = isBook || isDiario || isCaixa || isNotebook || isCartaz || isGravador || isFita || isReiPalido || isAnotacoesCaixa || isAnotacaoSolta;
-          const clickAction = isReiPalido ? `MesaReiPalido.open('capa')` : (isAnotacoesCaixa ? `MesaLivroReader.open('col_anotacoes_caixa_negra')` : (isAnotacaoSolta ? `MesaLivroReader.open('col_anotacao_solta_constanca')` : (isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : (isCartaz ? `MesaLivroReader.open('col_cartaz_desaparecido')` : ((isGravador || isFita) ? `MesaLivroReader.open('${it.id}')` : ''))))))));
-          const clickTitle = isReiPalido ? 'Clique para abrir o leitor do livro O Rei Pálido' : (isAnotacoesCaixa ? 'Clique para examinar as folhas de pesquisa da caixa' : (isAnotacaoSolta ? 'Clique para examinar a página solta de reflexão' : (isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : (isCartaz ? 'Clique para examinar o cartaz e ler o verso' : (isFita ? 'Clique para ouvir os ecos da fita espectral' : ''))))))));
+          const isDocImage = Boolean(it.imagem) && !isReiPalido && !isAnotacoesCaixa && !isAnotacaoSolta && !isBook && !isDiario && !isCaixa && !isNotebook && !isCartaz && !isGravador && !isFita;
+          const isClickable = isBook || isDiario || isCaixa || isNotebook || isCartaz || isGravador || isFita || isReiPalido || isAnotacoesCaixa || isAnotacaoSolta || isDocImage;
+          const clickAction = isReiPalido ? `MesaReiPalido.open('capa')` : (isAnotacoesCaixa ? `MesaLivroReader.open('col_anotacoes_caixa_negra')` : (isAnotacaoSolta ? `MesaLivroReader.open('col_anotacao_solta_constanca')` : (isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : (isCartaz ? `MesaLivroReader.open('col_cartaz_desaparecido')` : ((isGravador || isFita || isDocImage) ? `MesaLivroReader.open('${it.id}')` : ''))))))));
+          const clickTitle = isReiPalido ? 'Clique para abrir o leitor do livro O Rei Pálido' : (isAnotacoesCaixa ? 'Clique para examinar as folhas de pesquisa da caixa' : (isAnotacaoSolta ? 'Clique para examinar a página solta de reflexão' : (isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : (isCartaz ? 'Clique para examinar o cartaz e ler o verso' : (isFita ? 'Clique para ouvir os ecos da fita espectral' : (isDocImage ? 'Clique para abrir e ler o documento em tela cheia' : '')))))))));
 
           return `
             <div class="coletavel-card ${isClickable ? 'clickable-item' : ''}" style="padding: 12px 14px;" ${isClickable ? `onclick="${clickAction}" title="${clickTitle}"` : ''}>
@@ -8832,6 +8847,12 @@ const MesaColetaveis = {
                 <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_anotacao_solta_constanca');" style="background: rgba(245, 158, 11, 0.16); border-color: rgba(245, 158, 11, 0.45); color: #fbbf24;">
                   <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
                   <span>Examinar Página Solta de Reflexão (1 Folha)</span>
+                </button>
+              ` : ''}
+              ${isDocImage ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('${it.id}');" style="background: rgba(245, 158, 11, 0.16); border-color: rgba(245, 158, 11, 0.45); color: #fbbf24;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  <span>Examinar e Ler Documento</span>
                 </button>
               ` : ''}
               ${isBook ? `
@@ -8957,9 +8978,10 @@ const MesaColetaveis = {
           const isCartaz = it.id === 'col_cartaz_desaparecido' || it.id === 'col_panfleto_anotado_kali';
           const isGravador = it.id === 'col_gravador_fita_01' || it.id === 'col_gravador_bolso_02';
           const isFita = it.id === 'col_fita_01' || it.id === 'col_fita_02';
-          const isClickable = isBook || isDiario || isCaixa || isNotebook || isCartaz || isGravador || isFita || isReiPalido || isAnotacoesCaixa || isAnotacaoSolta;
-          const clickAction = isReiPalido ? `MesaReiPalido.open('capa')` : (isAnotacoesCaixa ? `MesaLivroReader.open('col_anotacoes_caixa_negra')` : (isAnotacaoSolta ? `MesaLivroReader.open('col_anotacao_solta_constanca')` : (isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : (isCartaz ? `MesaLivroReader.open('col_cartaz_desaparecido')` : ((isGravador || isFita) ? `MesaLivroReader.open('${it.id}')` : ''))))))));
-          const clickTitle = isReiPalido ? 'Clique para abrir o leitor do livro O Rei Pálido' : (isAnotacoesCaixa ? 'Clique para examinar as folhas de pesquisa da caixa' : (isAnotacaoSolta ? 'Clique para examinar a página solta de reflexão' : (isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : (isCartaz ? 'Clique para examinar o cartaz e ler o verso' : (isFita ? 'Clique para ouvir os ecos da fita espectral' : ''))))))));
+          const isDocImage = Boolean(it.imagem) && !isReiPalido && !isAnotacoesCaixa && !isAnotacaoSolta && !isBook && !isDiario && !isCaixa && !isNotebook && !isCartaz && !isGravador && !isFita;
+          const isClickable = isBook || isDiario || isCaixa || isNotebook || isCartaz || isGravador || isFita || isReiPalido || isAnotacoesCaixa || isAnotacaoSolta || isDocImage;
+          const clickAction = isReiPalido ? `MesaReiPalido.open('capa')` : (isAnotacoesCaixa ? `MesaLivroReader.open('col_anotacoes_caixa_negra')` : (isAnotacaoSolta ? `MesaLivroReader.open('col_anotacao_solta_constanca')` : (isBook ? `MesaLivroReader.open('col_livro_viajante_terra')` : (isDiario ? `MesaLivroReader.open('col_diario_sara')` : (isCaixa ? `MesaLivroReader.open('col_caixa_negra_dourada')` : (isNotebook ? `if(window.MesaNotebookSara) MesaNotebookSara.open()` : (isCartaz ? `MesaLivroReader.open('col_cartaz_desaparecido')` : ((isGravador || isFita || isDocImage) ? `MesaLivroReader.open('${it.id}')` : ''))))))));
+          const clickTitle = isReiPalido ? 'Clique para abrir o leitor do livro O Rei Pálido' : (isAnotacoesCaixa ? 'Clique para examinar as folhas de pesquisa da caixa' : (isAnotacaoSolta ? 'Clique para examinar a página solta de reflexão' : (isBook ? 'Clique para folhear e ler este livro' : (isDiario ? 'Clique para abrir e ler a página do diário' : (isCaixa ? 'Clique para inspecionar a caixa selada' : (isNotebook ? 'Clique para acessar as câmeras de segurança' : (isCartaz ? 'Clique para examinar o cartaz e ler o verso' : (isFita ? 'Clique para ouvir os ecos da fita espectral' : (isDocImage ? 'Clique para abrir e ler o documento em tela cheia' : '')))))))));
 
           return `
             <div class="coletavel-card ${isMaster ? (it.desbloqueado ? 'master-unlocked' : 'master-locked') : ''} ${isClickable ? 'clickable-item' : ''}" ${isClickable ? `onclick="${clickAction}" title="${clickTitle}"` : ''}>
@@ -9012,6 +9034,12 @@ const MesaColetaveis = {
                 <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('col_anotacao_solta_constanca');" style="background: rgba(245, 158, 11, 0.16); border-color: rgba(245, 158, 11, 0.45); color: #fbbf24;">
                   <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
                   <span>Examinar Página Solta de Reflexão (1 Folha)</span>
+                </button>
+              ` : ''}
+              ${isDocImage ? `
+                <button type="button" class="coletavel-read-book-btn" onclick="event.stopPropagation(); MesaLivroReader.open('${it.id}');" style="background: rgba(245, 158, 11, 0.16); border-color: rgba(245, 158, 11, 0.45); color: #fbbf24;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  <span>Examinar e Ler Documento</span>
                 </button>
               ` : ''}
               ${isBook ? `
@@ -9283,6 +9311,36 @@ const MesaLivroReader = {
               <p style="font-size: 0.86rem; color: #fbbf24; line-height: 1.6; margin: 0; font-family: 'JetBrains Mono', monospace;">
                 Uma folha de papel única e envelhecida com bordas gastas. O texto centralizado em caligrafia cursiva detalha dogmas e justificativas sobre o sacrifício e a purificação em louvor à entidade.
               </p>
+            </div>
+          </div>
+        `;
+      }
+      return;
+    }
+
+    // MODO GENÉRICO: DOCUMENTOS E COLETÁVEIS COM ILUSTRAÇÃO
+    const customList = (window.CAMPAIGN_COLETAVEIS || window.MESA_COLETAVEIS || []);
+    const customItem = customList.find(c => c.id === this.currentDocId && c.imagem);
+    if (customItem) {
+      if (badge) {
+        badge.textContent = `DOCUMENTO DA CAMPANHA • ${(customItem.tipo || 'EVIDÊNCIA').toUpperCase()}`;
+        badge.style.display = 'inline-block';
+      }
+      if (title) title.textContent = (customItem.nome || 'DOCUMENTO').toUpperCase();
+      if (subtitle) {
+        subtitle.textContent = `${customItem.area || 'Arquivo Investigativo'} • ${customItem.campo_tipo || 'Conteúdo'}`;
+        subtitle.style.display = 'block';
+      }
+      if (controls) controls.style.display = 'none';
+      if (note) note.textContent = customItem.resumo || '';
+      if (container) {
+        container.innerHTML = `
+          <div class="livro-single-doc-wrap" style="display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 6px 4px; max-width: 880px; margin: 0 auto;">
+            <div style="width: 100%; background: #0c0a10; border: 1.5px solid rgba(245, 158, 11, 0.45); border-radius: 6px; padding: 18px 20px; box-shadow: 0 10px 32px rgba(0,0,0,0.85);">
+              <div style="border-radius: 4px; overflow: hidden; border: 1px solid rgba(245, 158, 11, 0.25); background: #050408; text-align: center; margin-bottom: 16px;">
+                <img src="${customItem.imagem}" alt="${customItem.nome}" style="width: 100%; max-height: 74vh; object-fit: contain; display: block;" />
+              </div>
+              <div style="font-size: 0.88rem; color: #fde68a; line-height: 1.65; margin: 0; font-family: 'JetBrains Mono', monospace; white-space: pre-line; background: rgba(245, 158, 11, 0.06); padding: 14px 16px; border-radius: 4px; border-left: 3px solid #f59e0b;">${customItem.detalhe || customItem.resumo || ''}</div>
             </div>
           </div>
         `;
@@ -20920,3 +20978,181 @@ window.MesaSistema = MesaSistema;
     window.addEventListener(ev, resumeSuspendedAudio, { passive: true });
   });
 })();
+
+// ============================================================================
+// DISPOSITIVO: COMPUTADOR DE ARNALDO (TERMINAL BEGE + FRAGKTUSMAIL WEB)
+// ============================================================================
+window.MesaComputadorArnaldo = {
+  currentFolder: 'inbox',
+  currentEmailId: 'email1',
+  emails: {
+    inbox: [
+      {
+        id: 'email1',
+        titulo: 'E-mail 1 — Início do Fornecimento Especial',
+        de: 'constanca.montenegro@primordiofragktus.edu.fgk',
+        para: 'arnaldo.tavares@fragktusmail.com',
+        data: '21/07/2061 — 19h42',
+        assunto: 'Novos insumos orgânicos para o refeitório',
+        corpo: `Boa noite, Sr. Arnaldo.\n\nAgradeço novamente pela sua dedicação à alimentação dos nossos alunos e espero que se recupere logo do mal-estar que sentiu hoje mais cedo. Como conversamos pessoalmente, o novo composto nutritivo que lhe entreguei deve ser misturado exclusivamente na remessa destinada às refeições principais do colégio.\n\nNão é necessário compartilhar a fórmula ou o lote com os demais funcionários da cozinha, para evitar confusão no preparo. O bem-estar e a tranquilidade dos nossos jovens dependem desse cuidado silencioso.\n\nAtenciosamente,\nConstança Montenegro\nDiretora Geral — Colégio Integrado Primórdio de Fragktus`
+      },
+      {
+        id: 'email2',
+        titulo: 'E-mail 2 — Acompanhamento da Ruína Física e Mental',
+        de: 'constanca.montenegro@primordiofragktus.edu.fgk',
+        para: 'arnaldo.tavares@fragktusmail.com',
+        data: '31/07/2061 — 21h18',
+        assunto: 'Re: Dores e insônia',
+        corpo: `Caro Arnaldo,\n\nLamento profundamente saber que sua esposa deixou a residência ontem e que as dores de cabeça e os calafrios continuam. Sei que o fardo parece pesado agora, mas peço que mantenha a entrega dos lotes exatamente como combinamos.\n\nQuando tudo ao redor desmorona, a resistência só prolonga o sofrimento. Lembre-se de que a verdadeira cura exige paciência até que a porta se abra.\n\nCom estima,\nConstança Montenegro`
+      },
+      {
+        id: 'email3',
+        titulo: 'E-mail 3 — Primeira Mensagem do Remetente Anônimo',
+        de: 'sem_nome_00@redeoculta.fg',
+        para: 'arnaldo.tavares@fragktusmail.com',
+        data: '02/08/2061 — 03h14',
+        assunto: 'O jardim',
+        corpo: `Você ainda não abriu. Dá para sentir daqui o peso que você está carregando sozinho nessa casa vazia.\n\nA minha passagem já foi completa. Ele me mostrou o jardim. Não existe mais dor, nem perda, nem medo lá dentro. Pare de segurar a tranca.`
+      },
+      {
+        id: 'email4',
+        titulo: 'E-mail 4 — Última Mensagem do Remetente Anônimo',
+        de: 'sem_nome_00@redeoculta.fg',
+        para: 'arnaldo.tavares@fragktusmail.com',
+        data: '03/08/2061 — 23h51',
+        assunto: 'Sem assunto',
+        corpo: `Você resistiu demais e a caixa permaneceu fechada. Ele não espera para sempre por vasos teimosos.\n\nAgora sua passagem está em minhas mãos. Amanhã o jardim vai cobrar o que foi plantado em você.`
+      }
+    ],
+    drafts: [
+      {
+        id: 'draft1',
+        titulo: 'Rascunho Não Enviado — Salvo em 04/08/2061 às 06h02',
+        de: 'arnaldo.tavares@fragktusmail.com (Rascunho)',
+        para: 'constanca.montenegro@primordiofragktus.edu.fgk',
+        data: '04/08/2061 — 06h02',
+        assunto: 'Não consigo mais',
+        corpo: `Diretora, eu não vou conseguir terminar o turno hoje. Tem alguma coisa errada comigo desde aquele dia. Meu braço está queimando por dentro, eu escuto passos no corredor quando estou sozinho e a comida está com o mesmo cheiro daquele líquido. Eu não quero abrir nada, eu só quero que isso pare. Eu vou pra casa tomar um banho frio e tentar dormir.`
+      }
+    ]
+  },
+
+  open(fromRemote = false) {
+    const overlay = document.getElementById('computador-arnaldo-overlay');
+    if (!overlay) return;
+    overlay.classList.add('active');
+    this.openApp('mail');
+    this.selectFolder('inbox');
+    if (!fromRemote && window.MesaApp && MesaApp.state && MesaApp.state.isMaster) {
+      const badge = document.getElementById('arnaldo-pc-status-badge');
+      if (badge) badge.textContent = 'Aberto';
+    }
+  },
+
+  broadcastOpen() {
+    this.open(false);
+    if (window.MesaApp && MesaApp.state && MesaApp.state.isMaster && MesaApp.state.realtimeChannel) {
+      try {
+        MesaApp.state.realtimeChannel.send({ type: 'broadcast', event: 'arnaldo_pc_open', payload: {} });
+      } catch (e) {}
+      const btnStop = document.getElementById('btn-stop-arnaldo-pc');
+      const badge = document.getElementById('arnaldo-pc-status-badge');
+      if (btnStop) btnStop.style.display = 'inline-flex';
+      if (badge) {
+        badge.textContent = 'Transmitindo';
+        badge.className = 'dispositivo-status-badge transmitting';
+      }
+    }
+  },
+
+  stop(fromRemote = false) {
+    const overlay = document.getElementById('computador-arnaldo-overlay');
+    if (overlay) overlay.classList.remove('active');
+    if (!fromRemote && window.MesaApp && MesaApp.state && MesaApp.state.isMaster && MesaApp.state.realtimeChannel) {
+      try {
+        MesaApp.state.realtimeChannel.send({ type: 'broadcast', event: 'arnaldo_pc_close', payload: {} });
+      } catch (e) {}
+    }
+    const btnStop = document.getElementById('btn-stop-arnaldo-pc');
+    const badge = document.getElementById('arnaldo-pc-status-badge');
+    if (btnStop) btnStop.style.display = 'none';
+    if (badge) {
+      badge.textContent = 'Pronto';
+      badge.className = 'dispositivo-status-badge ready';
+    }
+  },
+
+  openApp(app) {
+    const mailWin = document.getElementById('arnaldo-win-mail');
+    const folderWin = document.getElementById('arnaldo-win-folder');
+    const trashWin = document.getElementById('arnaldo-win-trash');
+    if (mailWin) mailWin.style.display = app === 'mail' ? 'flex' : 'none';
+    if (folderWin) folderWin.style.display = app === 'folder' ? 'flex' : 'none';
+    if (trashWin) trashWin.style.display = app === 'trash' ? 'flex' : 'none';
+  },
+
+  selectFolder(folder) {
+    this.currentFolder = folder;
+    const inboxBtn = document.getElementById('arnaldo-tab-inbox');
+    const draftsBtn = document.getElementById('arnaldo-tab-drafts');
+    if (inboxBtn) inboxBtn.classList.toggle('active', folder === 'inbox');
+    if (draftsBtn) draftsBtn.classList.toggle('active', folder === 'drafts');
+    const list = this.emails[folder] || [];
+    if (list.length > 0) this.currentEmailId = list[0].id;
+    this.renderMailList();
+    this.renderMailReader();
+  },
+
+  selectEmail(id) {
+    this.currentEmailId = id;
+    this.renderMailList();
+    this.renderMailReader();
+  },
+
+  renderMailList() {
+    const container = document.getElementById('arnaldo-mail-list');
+    if (!container) return;
+    const list = this.emails[this.currentFolder] || [];
+    container.innerHTML = list.map(m => `
+      <div class="arnaldo-mail-item ${m.id === this.currentEmailId ? 'active' : ''}" onclick="MesaComputadorArnaldo.selectEmail('${m.id}')">
+        <div class="arnaldo-mail-item-from">${m.de}</div>
+        <div class="arnaldo-mail-item-subj">${m.assunto}</div>
+        <div class="arnaldo-mail-item-date">${m.data}</div>
+      </div>
+    `).join('');
+  },
+
+  renderMailReader() {
+    const container = document.getElementById('arnaldo-mail-reader');
+    if (!container) return;
+    const list = this.emails[this.currentFolder] || [];
+    const mail = list.find(m => m.id === this.currentEmailId) || list[0];
+    if (!mail) {
+      container.innerHTML = '<p style="color:#666;">Selecione uma mensagem.</p>';
+      return;
+    }
+    container.innerHTML = `
+      <div class="arnaldo-mail-header">
+        <div class="arnaldo-mail-tag">${mail.titulo}</div>
+        <h4>${mail.assunto}</h4>
+        <div class="arnaldo-mail-meta">
+          <div><strong>De:</strong> ${mail.de}</div>
+          <div><strong>Para:</strong> ${mail.para}</div>
+          <div><strong>Data:</strong> ${mail.data}</div>
+        </div>
+      </div>
+      <div class="arnaldo-mail-body">${mail.corpo.replace(/\n/g, '<br>')}</div>
+    `;
+  },
+
+  openSpreadsheet(name) {
+    const prev = document.getElementById('arnaldo-spreadsheet-preview');
+    if (!prev) return;
+    const data = {
+      'controle_hortalicas_jun2061.xls': '<strong>controle_hortalicas_jun2061.xls (28/06/2061):</strong><br>Alface Crespa: 18 kg • Tomate Italiano: 22 kg • Cenoura Orgânica: 15 kg — Fornecedor Padrão Fragktus. Tudo regular.',
+      'peso_raizes_jul2061_sem1.xls': '<strong>peso_raizes_jul2061_sem1.xls (11/07/2061):</strong><br>Batata Inglesa: 30 kg • Beterraba: 12 kg • Mandioca: 16 kg — Entrega semanal da cantina. Tudo regular.',
+      'cotacao_fornecedor_18jul.xls': '<strong>cotacao_fornecedor_18jul.xls (18/07/2061):</strong><br>Último lançamento comum de hortaliças antes do atendimento médico em 21/07/2061. Planilha abandonada sem atualização desde então.'
+    };
+    prev.innerHTML = data[name] || '';
+  }
+};
