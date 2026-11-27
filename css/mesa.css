@@ -4770,14 +4770,14 @@ body.mesa-body.area-residencia-arnaldo {
 }
 
 body.mesa-body.area-pomar-do-eden {
-  --area-ambient-1: #713f12;
-  --area-ambient-2: #422006;
-  --area-ambient-3: #241103;
-  --area-ambient-dark: #0f0701;
-  --area-accent: #eab308;
-  --area-accent-trans: rgba(234, 179, 8, 0.4);
-  --area-glow: rgba(234, 179, 8, 0.45);
-  --area-badge-bg: rgba(234, 179, 8, 0.15);
+  --area-ambient-1: #474c54;
+  --area-ambient-2: #2b2f36;
+  --area-ambient-3: #181b20;
+  --area-ambient-dark: #0a0b0e;
+  --area-accent: #f1f5f9;
+  --area-accent-trans: rgba(241, 245, 249, 0.38);
+  --area-glow: rgba(248, 250, 252, 0.48);
+  --area-badge-bg: rgba(248, 250, 252, 0.14);
 }
 
 /* 2. MODAL DE ESCOLHA DE ÁREA / MAPA DE ESTRADAS INTERATIVO */

@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.19';
+const MESA_VERSION = 'v2.5.20';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -6694,8 +6694,8 @@ const MesaAreaManager = {
           },
           'pomar-do-eden': {
             xPct: 90, yPct: 65,
-            color: '#eab308',
-            glow: 'rgba(234, 179, 8, 0.75)',
+            color: '#f1f5f9',
+            glow: 'rgba(248, 250, 252, 0.75)',
             roadD: 'M 720 320 C 800 340, 860 380, 900 416',
             roadTwinD: 'M 720 328 C 800 348, 860 388, 900 424'
           }
