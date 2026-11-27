@@ -4780,6 +4780,17 @@ body.mesa-body.area-pomar-do-eden {
   --area-badge-bg: rgba(248, 250, 252, 0.14);
 }
 
+body.mesa-body.area-casa-da-arvore {
+  --area-ambient-1: #3f6212;
+  --area-ambient-2: #1a2e05;
+  --area-ambient-3: #0f1b03;
+  --area-ambient-dark: #060c01;
+  --area-accent: #84cc16;
+  --area-accent-trans: rgba(132, 204, 22, 0.4);
+  --area-glow: rgba(132, 204, 22, 0.45);
+  --area-badge-bg: rgba(132, 204, 22, 0.15);
+}
+
 /* 2. MODAL DE ESCOLHA DE ÁREA / MAPA DE ESTRADAS INTERATIVO */
 .area-map-modal-dialog {
   max-width: 1040px !important;

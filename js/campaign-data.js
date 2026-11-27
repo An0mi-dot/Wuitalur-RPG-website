@@ -1514,6 +1514,74 @@
         "gancho": "Conexão pelas trilhas da mata profunda."
       }
     ]
+  },
+  "casa-da-arvore": {
+    "id": "casa-da-arvore",
+    "nome": "Casa da Árvore",
+    "shortName": "Casa da Árvore",
+    "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 2L4 9h3v5h10V9h3L12 2z\"></path><path d=\"M12 14v8\"></path><path d=\"M8 22h8\"></path></svg>",
+    "themeClass": "area-casa-da-arvore",
+    "district": "Mata Densa • Limite Interno de Fragktus",
+    "dangerLevel": "Base de Operações e Cruzamento de Pistas",
+    "dangerLevelClass": "safe",
+    "resumo_atmosfera": "Erguida entre os galhos grossos de uma árvore centenária oculta pela folhagem espessa da mata, a estrutura de madeira rústica serve como o único refúgio longe dos olhos do colégio e das ruas de Fragktus. O interior é iluminado por lampiões a bateria e velas baixas, com mapas da cidade pregados nas paredes, caixotes improvisados como assentos e o som distante do vento cortando as copas das árvores lá fora.",
+    "requisitos_acesso": "Acesso livre para os investigadores e aliados autorizados através da escada de corda retrátil presa ao tronco principal. A altura e a copa fechada garantem ocultação natural contra observadores comuns no solo, embora rastros de vinhas prateadas comecem a surgir perigosamente perto das raízes inferiores da árvore.",
+    "npcs_presentes": ["isaque-valente"],
+    "pontos_de_interesse": [
+      {
+        "cabecalho": {
+          "nome": "A Mesa de Planejamento e os Mapas de Fragktus",
+          "descricao_publica": "Sobre tábuas apoiadas em caixotes no centro do cômodo, mapas topográficos de Fragktus estão espalhados junto com anotações dos episódios anteriores, fotografias reveladas e linhas de barbante vermelho conectando o esgoto, o Colégio Primórdio e a borda da Mata do Norte."
+        },
+        "testes": [
+          { "pericia": "Investigação", "ct_dt": 7, "informacao_revelada": "Cruzando os pontos de desaparecimento registrados nos últimos meses com o mapa da rede pluvial, nota-se que duas frentes distintas exigem atenção imediata hoje: um rastro denso de vinhas recém-formado avançando para o fundo da mata e o afastamento suspeito do cozinheiro da cantina escolar." },
+          { "pericia": "Sobrevivência", "ct_dt": 8, "informacao_revelada": "Analisando o relevo e a direção dos ventos na borda da Mata do Norte, percebe-se que a trilha de vinhas converge para uma depressão isolada onde a névoa nunca se dissipa, mesmo durante o dia." },
+          { "pericia": "História", "ct_dt": 9, "informacao_revelada": "Comparando os registros antigos da região com os pontos marcados no mapa, identifica-se que a área para onde as vinhas apontam corresponde a antigos assentamentos florestais que desapareceram dos mapas oficiais de Fragktus." }
+        ],
+        "notas_mestre": "Este é o ponto de partida da sessão onde o grupo escolhe entre seguir a Rota 1 pelo rastro na floresta ou a Rota 2 investigando a escola e a casa de Arnaldo."
+      },
+      {
+        "cabecalho": {
+          "nome": "O Caixote de Suprimentos e Equipamentos de Campo",
+          "descricao_publica": "Encostado na parede lateral da cabana, há um baú de madeira reforçada onde o grupo guarda ferramentas improvisadas, lanternas extras, kits de primeiros socorros e os equipamentos que Isaque trouxe de suas incursões na mata.\n\nBarreira de Acesso: O compartimento inferior do baú possui um fundo travado por um cadeado numérico antigo que Isaque trancou por precaução; para abri-lo sem pedir a combinação, é necessário passar em Astúcia (CT 8) ou convencer Isaque com Diplomacia (CT 7)."
+        },
+        "testes": [
+          { "pericia": "Percepção", "ct_dt": 7, "informacao_revelada": "No compartimento superior encontram-se suprimentos úteis para a expedição noturna, incluindo lanternas de longo alcance, cordas de escalada e frascos de álcool e isqueiros úteis contra ameaças vegetais." },
+          { "pericia": "Medicina", "ct_dt": 8, "informacao_revelada": "Organizando os materiais médicos guardados no caixote, o jogador monta um kit de estabilização capaz de conceder vantagem no próximo teste de primeiros socorros durante a noite." },
+          { "pericia": "Elementos", "ct_dt": 9, "informacao_revelada": "No fundo travado, junto às flechas reservas de Isaque, há um frasco selado contendo resíduos secos de névoa laranja e fibras prateadas recolhidas na noite do desaparecimento de Sara, útil como referência para comparar amostras coletadas na escola ou na casa de Arnaldo." }
+        ],
+        "notas_mestre": "Garante que os jogadores tenham recursos básicos de luz, fogo e comparação de amostras antes de se dividirem ou partirem para as rotas principais."
+      },
+      {
+        "cabecalho": {
+          "nome": "As Raízes na Base do Tronco e a Fresta da Janela",
+          "descricao_publica": "Pela abertura estreita da janela de madeira que dá vista para o solo escuro da floresta, o ar noturno entra mais frio e úmido do que o normal. Na base do tronco principal da árvore, algo reflete fracamente a luz da lua entre o musgo.\n\nBarreira de Acesso: Para descer silenciosamente até as raízes inferiores sem alertar possíveis observadores na mata, é necessário passar em Furtividade (CT 8) ou Acrobacia (CT 7)."
+        },
+        "testes": [
+          { "pericia": "Percepção", "ct_dt": 8, "informacao_revelada": "Entre as raízes expostas na base da árvore, há filamentos prateados finos e recém-brotados apontando na direção exata do fundo da mata — como se algo estivesse marcando o caminho ou rastreando a presença do grupo." },
+          { "pericia": "Elementos", "ct_dt": 9, "informacao_revelada": "Tocando o solo ao redor dos filamentos com cuidado, sente-se uma pulsação térmica muito leve e idêntica à vibração do altar no esgoto de Fragktus, confirmando que a influência do culto já começou a cercar o refúgio dos investigadores." },
+          { "pericia": "Intuição", "ct_dt": 8, "informacao_revelada": "Observando a floresta silenciosa ao redor da clareira, fica a sensação clara de que a Casa da Árvore não permanecerá oculta por muito mais tempo e que o grupo está sendo observado à distância." }
+        ],
+        "notas_mestre": "Este PDI cria tensão imediata logo no início do episódio, mostrando que a segurança da Casa da Árvore é temporária e reforçando a ligação com o e-mail anônimo que menciona os \"voluntários florescendo\"."
+      }
+    ],
+    "conexoes_saida": [
+      {
+        "area_id": "floresta-proibida",
+        "nome": "Trilha de Vinhas na Floresta",
+        "gancho": "Rastro denso de vinhas prateadas avançando para o fundo da mata."
+      },
+      {
+        "area_id": "colegio-primordio",
+        "nome": "Colégio Integrado Primórdio de Fragktus",
+        "gancho": "Rota 2: investigar o afastamento suspeito do cozinheiro da cantina."
+      },
+      {
+        "area_id": "residencia-arnaldo",
+        "nome": "Residência de Arnaldo",
+        "gancho": "Periferia residencial ligada ao caso do cozinheiro."
+      }
+    ]
   }
 };
 
