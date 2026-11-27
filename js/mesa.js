@@ -5,7 +5,7 @@
    - State, 4-Char Tokens, Mobile UI e Real-Time Live Editing (Zero Emojis, In-Place DOM Updates)
    ============================================================ */
 
-const MESA_VERSION = 'v2.5.23';
+const MESA_VERSION = 'v2.5.24';
 const FIOS_DO_MEDO_ARQUETIPOS_HABILIDADES = {
   'Raciocínio Lógico': {
     nome: 'Raciocínio Lógico',
@@ -2455,6 +2455,20 @@ const MesaApp = {
       if (isFromSelf(payload)) return;
       if (window.MesaComputadorArnaldo) {
         MesaComputadorArnaldo.stop(true);
+      }
+    });
+
+    channel.on('broadcast', { event: 'arnaldo_pc_sync' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaComputadorArnaldo && payload.payload) {
+        MesaComputadorArnaldo.handleRemoteSync(payload.payload);
+      }
+    });
+
+    channel.on('broadcast', { event: 'arnaldo_pc_cursor' }, (payload) => {
+      if (isFromSelf(payload)) return;
+      if (window.MesaComputadorArnaldo && payload.payload) {
+        MesaComputadorArnaldo.handleRemoteCursor(payload.payload);
       }
     });
 
@@ -20983,8 +20997,12 @@ window.MesaSistema = MesaSistema;
 // DISPOSITIVO: COMPUTADOR DE ARNALDO (TERMINAL BEGE + FRAGKTUSMAIL)
 // ============================================================================
 window.MesaComputadorArnaldo = {
+  currentApp: 'mail',
   currentFolder: 'inbox',
   currentEmailId: 'email1',
+  currentSheetName: null,
+  _lastCursorSentAt: 0,
+  _cursorBound: false,
   emails: {
     inbox: [
       {
@@ -21036,12 +21054,105 @@ window.MesaComputadorArnaldo = {
     return (window.MesaApp && MesaApp.channel) || (window.MesaChat && MesaChat.channel) || null;
   },
 
+  bindMasterCursor() {
+    if (this._cursorBound) return;
+    const desk = document.getElementById('arnaldo-os-desktop');
+    if (!desk) return;
+    this._cursorBound = true;
+
+    const getRelCoords = (e) => {
+      const rect = desk.getBoundingClientRect();
+      if (!rect.width || !rect.height) return null;
+      const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+      const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+      return { x: Number(x.toFixed(2)), y: Number(y.toFixed(2)) };
+    };
+
+    desk.addEventListener('mousemove', (e) => {
+      if (!window.MesaApp || !MesaApp.state || !MesaApp.state.isMaster) return;
+      const overlay = document.getElementById('computador-arnaldo-overlay');
+      if (!overlay || !overlay.classList.contains('active')) return;
+      const now = Date.now();
+      if (now - this._lastCursorSentAt < 45) return;
+      this._lastCursorSentAt = now;
+      const coords = getRelCoords(e);
+      if (!coords) return;
+      const chan = this.getChannel();
+      if (chan) {
+        try {
+          chan.send({ type: 'broadcast', event: 'arnaldo_pc_cursor', payload: { x: coords.x, y: coords.y, click: false } });
+        } catch (err) {}
+      }
+    });
+
+    desk.addEventListener('mousedown', (e) => {
+      if (!window.MesaApp || !MesaApp.state || !MesaApp.state.isMaster) return;
+      const overlay = document.getElementById('computador-arnaldo-overlay');
+      if (!overlay || !overlay.classList.contains('active')) return;
+      const coords = getRelCoords(e);
+      if (!coords) return;
+      const chan = this.getChannel();
+      if (chan) {
+        try {
+          chan.send({ type: 'broadcast', event: 'arnaldo_pc_cursor', payload: { x: coords.x, y: coords.y, click: true } });
+        } catch (err) {}
+      }
+    });
+  },
+
+  broadcastState() {
+    if (!window.MesaApp || !MesaApp.state || !MesaApp.state.isMaster) return;
+    const chan = this.getChannel();
+    if (!chan) return;
+    try {
+      chan.send({
+        type: 'broadcast',
+        event: 'arnaldo_pc_sync',
+        payload: {
+          app: this.currentApp,
+          folder: this.currentFolder,
+          emailId: this.currentEmailId,
+          sheetName: this.currentSheetName
+        }
+      });
+    } catch (e) {}
+  },
+
+  handleRemoteSync(state) {
+    if (!state) return;
+    if (state.app === 'sheet' && state.sheetName) {
+      this.openSpreadsheet(state.sheetName, true);
+      return;
+    }
+    this.openApp(state.app || 'mail', true);
+    if (state.app === 'mail' || !state.app) {
+      if (state.folder) this.selectFolder(state.folder, true);
+      if (state.emailId) this.selectEmail(state.emailId, true);
+    }
+  },
+
+  handleRemoteCursor(data) {
+    if (window.MesaApp && MesaApp.state && MesaApp.state.isMaster) return;
+    const cursor = document.getElementById('arnaldo-remote-cursor');
+    const ring = document.getElementById('arnaldo-remote-click-ring');
+    if (!cursor) return;
+    cursor.classList.add('visible');
+    cursor.style.left = `${data.x}%`;
+    cursor.style.top = `${data.y}%`;
+    if (data.click && ring) {
+      ring.classList.remove('pulsing');
+      void ring.offsetWidth;
+      ring.classList.add('pulsing');
+    }
+  },
+
   open(fromRemote = false) {
     const overlay = document.getElementById('computador-arnaldo-overlay');
     const bezel = document.getElementById('arnaldo-crt-bezel');
     if (!overlay) return;
     const isMaster = !!(window.MesaApp && MesaApp.state && MesaApp.state.isMaster);
     overlay.classList.toggle('viewer-only', !isMaster);
+    if (isMaster) this.bindMasterCursor();
     if (bezel) bezel.classList.remove('pc-visible');
     overlay.style.display = 'flex';
     // Trigger black fade-in first, then CRT computer appears
@@ -21053,8 +21164,8 @@ window.MesaComputadorArnaldo = {
         }
       }, 450);
     });
-    this.openApp('mail');
-    this.selectFolder('inbox');
+    this.openApp('mail', fromRemote);
+    this.selectFolder('inbox', fromRemote);
   },
 
   broadcastOpen() {
@@ -21112,7 +21223,10 @@ window.MesaComputadorArnaldo = {
     }
   },
 
-  openApp(app) {
+  openApp(app, fromRemote = false) {
+    if (!fromRemote && (!window.MesaApp || !MesaApp.state || !MesaApp.state.isMaster)) return;
+    this.currentApp = app;
+    if (app !== 'sheet') this.currentSheetName = null;
     const mailWin = document.getElementById('arnaldo-win-mail');
     const folderWin = document.getElementById('arnaldo-win-folder');
     const sheetWin = document.getElementById('arnaldo-win-sheet');
@@ -21121,24 +21235,29 @@ window.MesaComputadorArnaldo = {
     if (folderWin) folderWin.style.display = app === 'folder' ? 'flex' : 'none';
     if (sheetWin) sheetWin.style.display = app === 'sheet' ? 'flex' : 'none';
     if (trashWin) trashWin.style.display = app === 'trash' ? 'flex' : 'none';
+    if (!fromRemote) this.broadcastState();
   },
 
-  selectFolder(folder) {
+  selectFolder(folder, fromRemote = false) {
+    if (!fromRemote && (!window.MesaApp || !MesaApp.state || !MesaApp.state.isMaster)) return;
     this.currentFolder = folder;
     const inboxBtn = document.getElementById('arnaldo-tab-inbox');
     const draftsBtn = document.getElementById('arnaldo-tab-drafts');
     if (inboxBtn) inboxBtn.classList.toggle('active', folder === 'inbox');
     if (draftsBtn) draftsBtn.classList.toggle('active', folder === 'drafts');
     const list = this.emails[folder] || [];
-    if (list.length > 0) this.currentEmailId = list[0].id;
+    if (list.length > 0 && !fromRemote) this.currentEmailId = list[0].id;
     this.renderMailList();
     this.renderMailReader();
+    if (!fromRemote) this.broadcastState();
   },
 
-  selectEmail(id) {
+  selectEmail(id, fromRemote = false) {
+    if (!fromRemote && (!window.MesaApp || !MesaApp.state || !MesaApp.state.isMaster)) return;
     this.currentEmailId = id;
     this.renderMailList();
     this.renderMailReader();
+    if (!fromRemote) this.broadcastState();
   },
 
   renderMailList() {
@@ -21176,7 +21295,9 @@ window.MesaComputadorArnaldo = {
     `;
   },
 
-  openSpreadsheet(name) {
+  openSpreadsheet(name, fromRemote = false) {
+    if (!fromRemote && (!window.MesaApp || !MesaApp.state || !MesaApp.state.isMaster)) return;
+    this.currentSheetName = name;
     const sheets = {
       'controle_hortalicas_jun2061.xls': [
         ['Item', 'Quantidade', 'Valor Unit.', 'Total', 'Data'],
@@ -21226,6 +21347,6 @@ window.MesaComputadorArnaldo = {
         </table>
       `;
     }
-    this.openApp('sheet');
+    this.openApp('sheet', fromRemote);
   }
 };

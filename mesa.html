@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css?v=1.8.3">
   <link rel="stylesheet" href="css/components.css?v=1.8.3">
-  <link rel="stylesheet" href="css/mesa.css?v=2.5.23">
+  <link rel="stylesheet" href="css/mesa.css?v=2.5.24">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="mesa-body">
@@ -1497,11 +1497,11 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
       <!-- Biblioteca Marked.js para renderização de Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<script src="js/campaign-data.js?v=2.5.23"></script>
+<script src="js/campaign-data.js?v=2.5.24"></script>
 
-<script src="js/mesa.js?v=2.5.23"></script>
+<script src="js/mesa.js?v=2.5.24"></script>
   <!-- Versao da Mesa -->
-  <div id="mesa-version-badge" class="mesa-version">v2.5.23</div>
+  <div id="mesa-version-badge" class="mesa-version">v2.5.24</div>
 
   <!-- GAVETA LATERAL: DISPOSITIVOS DA CAMPANHA (EXCLUSIVO DO MESTRE) -->
   <div id="dispositivos-drawer-backdrop" class="dispositivos-drawer-backdrop" onclick="MesaDispositivos.closeDrawer()"></div>
@@ -2597,7 +2597,14 @@ Ao empurrar a porta, o feixe de luz da lanterna revela o caos. O quarto é um ab
         </div>
       </div>
 
-      <div class="arnaldo-os-desktop">
+      <div class="arnaldo-os-desktop" id="arnaldo-os-desktop">
+        <!-- Cursor Remoto do Mestre (Visível apenas para espectadores) -->
+        <div id="arnaldo-remote-cursor" class="arnaldo-remote-cursor" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22">
+            <path d="M4 2 L4 19 L9 14.5 L12.5 21 L15 19.7 L11.5 13 L18 13 Z" fill="#ffffff" stroke="#000000" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg>
+          <span class="arnaldo-remote-click-ring" id="arnaldo-remote-click-ring"></span>
+        </div>
         <!-- Ícones da Área de Trabalho -->
         <div class="arnaldo-desktop-icons">
           <button type="button" class="arnaldo-desk-icon" onclick="MesaComputadorArnaldo.openApp('mail')">

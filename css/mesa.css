@@ -20122,6 +20122,41 @@ body.sistema-drawer-open .mesa-floating-nav {
 }
 .arnaldo-pc-overlay.active { opacity: 1; }
 .arnaldo-pc-overlay.viewer-only .master-item { display: none !important; }
+.arnaldo-pc-overlay.viewer-only .arnaldo-os-desktop {
+  pointer-events: none;
+  user-select: none;
+}
+
+.arnaldo-remote-cursor {
+  position: absolute;
+  left: 50%; top: 50%;
+  z-index: 9999;
+  pointer-events: none;
+  display: none;
+  transform: translate(-2px, -2px);
+  transition: left 0.06s linear, top 0.06s linear;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.75));
+}
+.arnaldo-pc-overlay.viewer-only .arnaldo-remote-cursor.visible {
+  display: block;
+}
+.arnaldo-remote-click-ring {
+  position: absolute;
+  left: 2px; top: 2px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 2.5px solid #fbbf24;
+  transform: translate(-50%, -50%) scale(0.3);
+  opacity: 0;
+  pointer-events: none;
+}
+.arnaldo-remote-click-ring.pulsing {
+  animation: arnaldoClickPulse 0.45s ease-out forwards;
+}
+@keyframes arnaldoClickPulse {
+  0% { transform: translate(-50%, -50%) scale(0.35); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1.9); opacity: 0; }
+}
 
 .arnaldo-crt-bezel {
   width: min(1140px, 96vw); height: min(740px, 92vh);
