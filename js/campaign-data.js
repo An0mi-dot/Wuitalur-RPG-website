@@ -1025,6 +1025,129 @@
         "gancho": "Ruas traseiras do subúrbio de Fraguiktos após a saída do bueiro."
       }
     ]
+  },
+  "residencia-arnaldo": {
+    "id": "residencia-arnaldo",
+    "nome": "Residência de Arnaldo",
+    "shortName": "Residência de Arnaldo",
+    "svgIcon": "<svg class=\"area-svg-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"></path><polyline points=\"9 22 9 12 15 12 15 22\"></polyline></svg>",
+    "themeClass": "area-residencia-arnaldo",
+    "district": "Bairro Residencial • Periferia de Fragktus",
+    "dangerLevel": "Isolamento e Mutação Forçada",
+    "dangerLevelClass": "danger",
+    "resumo_atmosfera": "A noite já caiu sobre a rua residencial silenciosa. A casa simples de Arnaldo está completamente às escuras, com as cortinas cerradas e um odor denso e adocicado de matéria orgânica fermentada escapando pelas frestas das janelas. Ninguém atende às batidas na porta principal, mas, através das paredes finas, escuta-se o som contínuo e incessante de um chuveiro ligado no interior da casa, acompanhado por uma respiração pesada e irregular.",
+    "requisitos_acesso": "A porta da frente está trancada por dentro com chave e corrente. A janela basculante da área de serviço nos fundos está destrancada, mas exige um teste de Atletismo ou Acrobacia (CT 8) para escalar o muro baixo e passar pela abertura estreita sem derrubar ferramentas encostadas na parede; alternativamente, a porta dos fundos pode ser aberta com Astúcia (CT 8) para destrancar ou Atletismo (CT 9) para forçar. Em caso de falha no acesso silencioso, o barulho alerta Arnaldo e reduz em 1 rodada o tempo de investigação antes da mutação romper a porta do banheiro.",
+    "npcs_presentes": ["Arnaldo (em processo de mutação dentro do banheiro; hostil após o gatilho)"],
+    "pontos_de_interesse": [
+      {
+        "cabecalho": {
+          "nome": "A Despensa e a Bancada da Cozinha",
+          "descricao_publica": "Caixas de madeira destinadas à cozinha escolar estão abertas sobre a pia, repletas de verduras e raízes orgânicas que parecem frescas à primeira vista. O lixo sob a pia transborda de embalagens rasgadas e restos descartados às pressas."
+        },
+        "testes": [
+          {
+            "pericia": "Investigação",
+            "ct_dt": 8,
+            "informacao_revelada": "Entre os caules e folhas das verduras, o jogador encontra filamentos microscópicos esbranquiçados e rígidos crescendo de dentro para fora, idênticos às vinhas do esgoto de Fragktus (desbloqueia a Amostra de Insumo Orgânico Contaminado)."
+          },
+          {
+            "pericia": "Percepção",
+            "ct_dt": 9,
+            "informacao_revelada": "No fundo da prateleira alta da despensa (exige Atletismo CT 7 ou usar uma cadeira para alcançar), há um recipiente de vidro sem rótulo comercial com resíduos escuros e viscosos (desbloqueia o Frasco de Seiva Escura)."
+          },
+          {
+            "pericia": "Medicina ou Investigação",
+            "ct_dt": 8,
+            "informacao_revelada": "Vasculhando a lixeira sob a pia, encontra-se um comprovante médico amassado e um frasco de remédio carimbados com a data de exatamente duas semanas atrás, marcando o início dos sintomas de Arnaldo (desbloqueia o Comprovante de Atendimento e Medicação de Arnaldo)."
+          }
+        ],
+        "notas_mestre": "Este PDI estabelece a linha do tempo biológica da contaminação e entrega a prova material de que a merenda da escola estava sendo adulterada propositalmente."
+      },
+      {
+        "cabecalho": {
+          "nome": "O Gaveteiro Trancado da Sala de Estar",
+          "descricao_publica": "Sobre a mesa de centro há apenas contas de luz e água atrasadas espalhadas. No entanto, o gaveteiro lateral da estante está trancado à chave e apresenta marcas recentes de arranhões na madeira, como se tivesse sido fechado com força e raiva.\n\nBarreira de Acesso: Para abrir a gaveta sem destruir os papéis dentro, é necessário passar em Astúcia (CT 9) para destrancar a fechadura ou encontrar a chave caída sob o tapete com Percepção (CT 8)."
+        },
+        "testes": [
+          {
+            "pericia": "Investigação",
+            "ct_dt": 8,
+            "informacao_revelada": "Dentro da gaveta estão uma petição de divórcio assinada pela esposa de Arnaldo há cinco dias e um bilhete manuscrito dela afirmando que ele se tornou um estranho frio e atormentado desde que aceitou o \"novo fornecimento\" da escola (desbloqueia os Documentos de Divórcio de Arnaldo)."
+          },
+          {
+            "pericia": "Intuição",
+            "ct_dt": 8,
+            "informacao_revelada": "Analisando a ordem cronológica das cartas de cobrança, dos avisos de despejo e do divórcio, fica evidente que todos os pilares da vida pessoal e financeira de Arnaldo desmoronaram em menos de dez dias após o recibo médico."
+          },
+          {
+            "pericia": "Elementos",
+            "ct_dt": 10,
+            "informacao_revelada": "O padrão de ruína acelerada e isolamento em duas semanas corresponde exatamente ao estágio inicial da influência descrita no livro O Rei Pálido, usada para quebrar a vontade da vítima."
+          }
+        ],
+        "notas_mestre": "Os documentos do divórcio ficam protegidos dentro do gaveteiro para recompensar a exploração cuidadosa e provar como a maldição age destruindo a vida da vítima antes de tentar abrir sua porta mental."
+      },
+      {
+        "cabecalho": {
+          "nome": "O Computador na Escrivaninha",
+          "descricao_publica": "O monitor antigo ilumina a sala escura com um brilho azulado fraco. O cursor pisca sobre uma caixa de entrada de e-mails aberta, mas a tela está travada em um modo de descanso protegido por senha simples após alguns minutos de inatividade.\n\nBarreira de Acesso: Para desbloquear a sessão sem desligar a máquina, o jogador precisa deduzir a senha usando a data do recibo médico ou informações da casa com Astúcia (CT 8) ou Investigação (CT 8)."
+        },
+        "testes": [
+          {
+            "pericia": "Investigação",
+            "ct_dt": 8,
+            "informacao_revelada": "Todas as mensagens suspeitas começaram após a data do recibo médico. Há e-mails formais de Constança Montenegro agradecendo pelo \"empenho na distribuição dos novos insumos orgânicos\" e encerrando com \"Lembre-se de que a verdadeira cura exige paciência até que a porta se abra\" (desbloqueia as Correspondências Eletrônicas de Arnaldo)."
+          },
+          {
+            "pericia": "Percepção",
+            "ct_dt": 8,
+            "informacao_revelada": "Na aba de mensagens recentes, há dois e-mails de um remetente anônimo enviados anteontem e ontem: \"A minha passagem já foi completa. Ele me mostrou o jardim\" e \"Você resistiu demais e a caixa permaneceu fechada. Agora sua passagem está em minhas mãos.\""
+          },
+          {
+            "pericia": "Engenharia ou Astúcia",
+            "ct_dt": 10,
+            "informacao_revelada": "Analisando o roteamento técnico das mensagens anônimas, nota-se que foram enviadas através de um terminal público mascarado próximo ao centro de Fragktus, apagando a origem real."
+          }
+        ],
+        "notas_mestre": "As mensagens anônimas são de Sara, mas o texto não revela o nome dela diretamente; deixe que os jogadores conectem o estilo de escrita e o termo \"Passagem\" por conta própria."
+      },
+      {
+        "cabecalho": {
+          "nome": "A Porta do Banheiro e o Chuveiro Ligado",
+          "descricao_publica": "A água continua batendo contra o piso do boxe sem interrupção há tempo demais. Por baixo da fresta da porta escorre uma poça de água gelada misturada com resíduos escuros de terra e fibras vegetais, e o vapor que escapa pelo vão tem cheiro de raiz podre."
+        },
+        "testes": [
+          {
+            "pericia": "Percepção",
+            "ct_dt": 8,
+            "informacao_revelada": "Através do ruído da água, ouvem-se estalos secos de ossos se deslocando, madeira rachando e uma respiração ofegante que não soa mais totalmente humana."
+          },
+          {
+            "pericia": "Medicina",
+            "ct_dt": 9,
+            "informacao_revelada": "Pelo ritmo irregular da respiração e pela ausência de movimentos de banho, percebe-se que quem está lá dentro está sofrendo uma convulsão ou deformação física severa em tempo real."
+          },
+          {
+            "pericia": "Elementos",
+            "ct_dt": 10,
+            "informacao_revelada": "Sente-se uma vibração densa vinda do outro lado da porta — as vinhas estão forçando a tomada do corpo porque a vítima manteve sua integridade mental e impediu a abertura da Caixa Negra."
+          }
+        ],
+        "notas_mestre": "Assim que os jogadores encerrarem este PDI ou tentarem abrir a porta do banheiro, o registro é arrancado por dentro e o confronto contra Arnaldo mutado tem início."
+      }
+    ],
+    "conexoes_saida": [
+      {
+        "area_id": "colegio-primordio",
+        "nome": "Colégio Integrado Primórdio de Fragktus",
+        "gancho": "Origem das caixas de verduras e dos e-mails de Constança Montenegro."
+      },
+      {
+        "area_id": "casa-da-arvore",
+        "nome": "Casa da Árvore",
+        "gancho": "Pista ligada ao ponto de interesse da periferia."
+      }
+    ]
   }
 };
 
@@ -1481,6 +1604,61 @@
       imagem: "assets/coletaveis/anotacao_constanca_solta.webp",
       resumo: "Uma folha de papel única e envelhecida, disposta verticalmente, contendo dogmas e justificativas macabras em caligrafia cursiva elegante em louvor à entidade.",
       detalhe: "Uma folha de papel única e envelhecida, com bordas levemente gastas e manchas amareladas, disposta verticalmente sobre uma mesa de madeira. O papel contém um texto centralizado escrito com uma caligrafia cursiva elegante e imaculada, detalhando dogmas e justificativas macabras sobre o sacrifício e a purificação em louvor à entidade."
+    },
+    {
+      id: "col_amostra_insumo_contaminado",
+      nome: "Amostra de Insumo Orgânico Contaminado",
+      peso: 0,
+      tipo: "Prova Material / Biológica",
+      campo_tipo: "Descrição",
+      area: "Residência de Arnaldo",
+      desbloqueado: false,
+      resumo: "Verduras e raízes destinadas à cozinha escolar com filamentos microscópicos esbranquiçados crescendo de dentro para fora.",
+      detalhe: "Retirada das caixas de madeira sobre a pia de Arnaldo. Os filamentos rígidos e esbranquiçados são idênticos às vinhas encontradas no esgoto de Fragktus, comprovando que a merenda escolar estava sendo adulterada propositalmente."
+    },
+    {
+      id: "col_frasco_seiva_escura",
+      nome: "Frasco de Seiva Escura",
+      peso: 0,
+      tipo: "Substância Anômala",
+      campo_tipo: "Descrição",
+      area: "Residência de Arnaldo",
+      desbloqueado: false,
+      resumo: "Recipiente de vidro sem rótulo comercial contendo resíduos escuros e viscosos.",
+      detalhe: "Encontrado no fundo da prateleira alta da despensa de Arnaldo. O resíduo escuro e espesso exala o mesmo odor adocicado e fermentado sentido pelas frestas da casa."
+    },
+    {
+      id: "col_comprovante_arnaldo",
+      nome: "Comprovante de Atendimento e Medicação de Arnaldo",
+      peso: 0,
+      tipo: "Documento Médico",
+      campo_tipo: "Cronologia",
+      area: "Residência de Arnaldo",
+      desbloqueado: false,
+      resumo: "Comprovante médico amassado e frasco de remédio carimbados com a data de exatamente duas semanas atrás.",
+      detalhe: "Resgatado da lixeira sob a pia. Marca com exatidão a data do início dos sintomas de Arnaldo e estabelece a linha do tempo biológica da contaminação."
+    },
+    {
+      id: "col_divorcio_arnaldo",
+      nome: "Documentos de Divórcio de Arnaldo",
+      peso: 0,
+      tipo: "Documento Pessoal",
+      campo_tipo: "Conteúdo",
+      area: "Residência de Arnaldo",
+      desbloqueado: false,
+      resumo: "Petição de divórcio assinada há cinco dias acompanhada de um bilhete manuscrito da esposa de Arnaldo.",
+      detalhe: "Guardados no gaveteiro trancado da sala de estar. A esposa relata que Arnaldo se tornou um estranho frio e atormentado desde que aceitou o \"novo fornecimento\" da escola."
+    },
+    {
+      id: "col_emails_arnaldo",
+      nome: "Correspondências Eletrônicas de Arnaldo",
+      peso: 0,
+      tipo: "Registro Digital",
+      campo_tipo: "Mensagens",
+      area: "Residência de Arnaldo",
+      desbloqueado: false,
+      resumo: "E-mails formais de Constança Montenegro e mensagens anônimas enviadas ao computador de Arnaldo.",
+      detalhe: "Inclui agradecimentos de Constança pelo \"empenho na distribuição dos novos insumos orgânicos\" e a frase \"Lembre-se de que a verdadeira cura exige paciência até que a porta se abra\", além de mensagens anônimas sobre uma \"passagem\" já completa."
     }
   ];
 

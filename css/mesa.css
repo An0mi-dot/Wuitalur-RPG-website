@@ -4758,6 +4758,17 @@ body.mesa-body.area-refugio-gustavo {
   --area-badge-bg: rgba(239, 68, 68, 0.15);
 }
 
+body.mesa-body.area-residencia-arnaldo {
+  --area-ambient-1: #78350f;
+  --area-ambient-2: #451a03;
+  --area-ambient-3: #270e02;
+  --area-ambient-dark: #120600;
+  --area-accent: #d97706;
+  --area-accent-trans: rgba(217, 119, 6, 0.4);
+  --area-glow: rgba(217, 119, 6, 0.45);
+  --area-badge-bg: rgba(217, 119, 6, 0.15);
+}
+
 /* 2. MODAL DE ESCOLHA DE ÁREA / MAPA DE ESTRADAS INTERATIVO */
 .area-map-modal-dialog {
   max-width: 1040px !important;
